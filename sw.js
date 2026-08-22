@@ -5,7 +5,7 @@
    des sujets) pour un usage fiable même sans connexion.
    ============================================================ */
 
-const CACHE = "boussole4d-v2-v1";
+const CACHE = "boussole4d-v2-v2";
 const ASSETS = [
   "./",
   "./index.html",
