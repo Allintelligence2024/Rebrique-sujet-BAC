@@ -47,6 +47,22 @@ test("le hub affiche les années (2025 et 2024 actives, 2023 désactivée)", () 
   assert.equal($('#year-grid [data-year="2023"]').disabled, true);
 });
 
+test("les données portent désormais des consignes BAC explicites sur chaque pôle", async () => {
+  const { APP_CONFIG } = await import("../data/subjects.js");
+  const enabledYears = APP_CONFIG.years.filter(y => y.enabled);
+  for (const year of enabledYears) {
+    for (const sujet of year.sujets) {
+      for (const ex of sujet.exercises) {
+        for (const pole of ["N", "S", "E", "W"]) {
+          assert.equal(typeof ex.poles[pole].bacPrompt, "string", `${year.id}/S${sujet.id}/E${ex.number}/${pole} doit avoir bacPrompt`);
+          assert.ok(ex.poles[pole].bacPrompt.trim().length > 8, `${year.id}/S${sujet.id}/E${ex.number}/${pole} bacPrompt trop court`);
+          assert.equal(ex.poles[pole].bacPromptSource, "reconstructed", `${year.id}/S${sujet.id}/E${ex.number}/${pole} doit être marqué reconstructed tant qu'il n'est pas vérifié PDF`);
+        }
+      }
+    }
+  }
+});
+
 test("l'ouverture de l'Atlas 4D affiche les onglets, la recherche et les flashcards interactives", () => {
   click("#btn-atlas");
   assert.ok($(".drawer.open"));
@@ -94,7 +110,101 @@ test("le parcours aboutit au workspace via l'exercice pipeline", () => {
   assert.equal($$("#blocks-bank [data-block]").length, 8);
 });
 
+test("le mode brouillon Boussole s'ouvre, expose la fiche N/S/E/W et persiste les notes", () => {
+  assert.ok($("#boussole-scratch-card"));
+  click("#ws-brouillon");
+  assert.ok($(".drawer.open"));
+  assert.match($(".drawer").textContent, /ورقة N\/S\/E\/W/);
+  assert.match($(".drawer").textContent, /الفعل المكتشف/);
+  assert.match($(".drawer").textContent, /consigne brute BAC/);
+  assert.match($(".drawer").textContent, /consigne reconstruite/);
+  assert.match($(".drawer").textContent, /البلوك الأنسب: N/);
+  assert.ok($("#scratch-N"));
+  assert.ok($("#scratch-S"));
+
+  const scratchN = $("#scratch-N");
+  scratchN.value = "المشكل العلمي: كيف يؤثر المنبه على الاستجابة؟";
+  scratchN.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
+
+  click(".drawer [data-close]");
+  assert.equal($(".drawer"), null);
+
+  click("#ws-brouillon");
+  assert.equal($("#scratch-N").value, "المشكل العلمي: كيف يؤثر المنبه على الاستجابة؟");
+  click(".drawer [data-close]");
+});
+
+test("la copie finale du brouillon génère un texte rédigé puis peut l'injecter dans la réponse texte", () => {
+  $("#pipeline-var-indep").value = "تركيز الأدينوزين والكافيين";
+  $("#pipeline-var-dep").value = "شدة النشاط العصبي";
+  click('#ex-content [data-polo-check="N"]');
+  click('#view-workspace [data-switch="1"]');
+  assert.ok($("#fld-N"));
+  click("#ws-brouillon");
+
+  $("#scratch-N").value = "المشكل العلمي: كيف تتدخل مختلف أنواع ARN في تركيب البروتين؟";
+  $("#scratch-N").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
+  $("#scratch-S").value = "نلاحظ وجود ARN رسول وناقل وريبوزومي في الهيولى مع تكامل أدوارها.";
+  $("#scratch-S").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
+  $("#scratch-E").value = "يفسر ذلك بأن ARNm يحمل المعلومة وARNt ينقل الأحماض الأمينية وARNr يضمن الترجمة داخل الريبوزوم.";
+  $("#scratch-E").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
+  $("#scratch-W").value = "في الختام يؤدي تعطل هذه العناصر إلى توقف تركيب البروتين.";
+  $("#scratch-W").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
+
+  assert.match($("#brouillon-draft-current").value, /المشكل العلمي/);
+  assert.match($("#brouillon-draft-full").value, /وتبين المعطيات أن/);
+
+  click("#brouillon-insert-current");
+  assert.match($("#fld-N").value, /المشكل العلمي/);
+
+  click("#brouillon-insert-full");
+  assert.match($("#fld-N").value, /وتبين المعطيات أن/);
+  click(".drawer [data-close]");
+});
+
+test("le mini-contrôle du brouillon signale l'absence de comparaison avant injection", () => {
+  click('#stepnav [data-step="1"]');
+  click('#ex-content [data-check="N"]');
+  click('#view-workspace [data-switch="2"]');
+  click('#stepnav [data-step="2"]');
+  click("#ws-brouillon");
+  $("#scratch-S").value = "النمط الطبيعي ينمو جيداً.";
+  $("#scratch-S").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
+  assert.match($("#brouillon-preflight-current").textContent, /tu n’as pas mis de comparaison/);
+  click("#brouillon-insert-current");
+  assert.ok($(".modal"));
+  assert.match($(".modal").textContent, /tu n’as pas mis de comparaison/);
+  click('[data-close="btn"]');
+  click(".drawer [data-close]");
+});
+
+test("le mini-contrôle du brouillon signale une explication sans observation", () => {
+  click('#stepnav [data-step="3"]');
+  click("#ws-brouillon");
+  $("#scratch-S").value = "";
+  $("#scratch-S").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
+  $("#scratch-E").value = "يعود ذلك إلى خلل في الموقع الفعال للإنزيم.";
+  $("#scratch-E").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
+  assert.match($("#brouillon-preflight-current").textContent, /tu as expliqué sans observer/);
+  click(".drawer [data-close]");
+});
+
+test("le mini-contrôle du brouillon signale une conclusion hors problème", () => {
+  click('#stepnav [data-step="4"]');
+  click("#ws-brouillon");
+  $("#scratch-N").value = "المشكل العلمي: كيف تساهم البنية النسيجية للصانعة الخضراء في استغلال CO2؟";
+  $("#scratch-N").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
+  $("#scratch-W").value = "في الختام هذه الظاهرة مهمة للكائنات الحية.";
+  $("#scratch-W").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
+  assert.match($("#brouillon-preflight-full").textContent, /ta conclusion ne répond pas au problème/);
+  click(".drawer [data-close]");
+});
+
 test("le pipeline parfait est noté 1.50 / 1.50 (pôle W)", () => {
+  click('#stepnav [data-step="1"]');
+  $("#fld-N").value = "البيرينويد يرفع كفاءة استغلال CO2 عند الطحالب الطبيعية";
+  click('#ex-content [data-check="N"]');
+  click('#view-workspace [data-switch="3"]');
   for (const id of ["b1","b2","b3","b4","b5","b6","b7","b8"]) click(`#blocks-bank [data-block="${id}"]`);
   click('#ex-content [data-polo-check="W"]');
   const fb = $("#fb-W").textContent.trim();

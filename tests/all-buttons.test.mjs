@@ -142,6 +142,13 @@ test("5. Workspace : test de tous les boutons du header et navigation", () => {
   click('[data-close="ok"]');
   assert.equal($(".modal"), null);
 
+  // Boussole brouillon in workspace
+  click("#ws-brouillon");
+  assert.ok($(".drawer.open"));
+  assert.ok($("#scratch-N"));
+  click(".drawer [data-close]");
+  assert.equal($(".drawer"), null);
+
   // Atlas in workspace
   click("#ws-atlas");
   assert.ok($(".drawer.open"));

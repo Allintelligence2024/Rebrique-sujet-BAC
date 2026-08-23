@@ -9,6 +9,7 @@
    ============================================================ */
 
 import { APP_CONFIG, ATLAS_DATA, ADKAR_DATA, normalizeArabic } from "../data/subjects.js";
+import { BROUILLON_MODE_DATA } from "../data/brouillon.js";
 import { store, helpers } from "./store.js";
 import { timers, evaluateText, evaluatePipeline, scoreFromFraction, soundEngine } from "./engine.js";
 
@@ -27,6 +28,801 @@ const el = (html) => { const t = document.createElement("template"); t.innerHTML
 function yearObj(id) { return APP_CONFIG.years.find(y => y.id === id); }
 function sujetObj() { return yearObj(store.state.yearId)?.sujets.find(s => s.id === store.state.sujetId); }
 function exDef(num)  { return sujetObj()?.exercises.find(e => e.number === num); }
+function activePoleId() { return POLE_ORDER[(store.state.activeStep || 1) - 1] || "N"; }
+
+function brouillonPoleData(poleId) {
+  return BROUILLON_MODE_DATA.universalSheet.find(item => item.id === poleId) || BROUILLON_MODE_DATA.universalSheet[0];
+}
+
+function currentScratchExercise() {
+  const currentExercise = exDef(store.state.activeExercise) || sujetObj()?.exercises?.[0];
+  return store.exercise(store.state.sujetId, currentExercise?.number || 1);
+}
+
+function currentBrouillonContext() {
+  const exercise = exDef(store.state.activeExercise) || sujetObj()?.exercises?.[0];
+  const poleId = activePoleId();
+  const pole = exercise?.poles?.[poleId] || {};
+  const prompt = pole.prompt || "";
+  const rawPrompt = deriveRawBacPrompt(pole, poleId, exercise);
+  const exactVerb = detectExactVerb(rawPrompt || prompt) || inferVerbFromPole(poleId);
+  const route = detectBrouillonRoute(rawPrompt || prompt, poleId, exactVerb);
+  const bacPromptMeta = getBacPromptMeta(pole);
+  return {
+    exercise,
+    poleId,
+    guide: brouillonPoleData(poleId),
+    pole,
+    prompt,
+    rawPrompt,
+    exactVerb,
+    route,
+    bacPromptMeta
+  };
+}
+
+function routeByPole(poleId) {
+  return (BROUILLON_MODE_DATA.verbRouting || []).find(route => route.recommendedPole === poleId)
+    || { canonical: inferVerbFromPole(poleId), recommendedPole: poleId, label: "توجيه افتراضي", warning: "لم يظهر فعل صريح؛ تم اعتماد القطب الحالي." };
+}
+
+function getBacPromptMeta(pole) {
+  const source = pole?.bacPromptSource === "official" ? "official" : "reconstructed";
+  return source === "official"
+    ? { source, label: "consigne officielle", cls: "emerald", note: "صيغة مصادق عليها من النص الرسمي." }
+    : { source, label: "consigne reconstruite", cls: "amber", note: "صيغة محررة يدوياً وقريبة من السؤال الرسمي لكنها غير معلمة كنسخ حرفي من PDF." };
+}
+
+function inferVerbFromPole(poleId) {
+  const map = { N: "حدد", S: "استخرج", E: "فسر", W: "لخص" };
+  return map[poleId] || "حدد";
+}
+
+function detectExactVerb(text) {
+  const normalized = normalizeArabic(text || "").trim();
+  const entries = [
+    ["اكتب نصا علميا", ["اكتب نصا علميا", "حرر نصا علميا"]],
+    ["حرر", ["حرر"]],
+    ["لخص", ["لخص"]],
+    ["استخلص", ["استخلص", "استخلاص"]],
+    ["ناقش", ["ناقش"]],
+    ["علق", ["علق"]],
+    ["قارن", ["قارن", "مقارنه"]],
+    ["حلل", ["حلل", "تحليل"]],
+    ["استخرج", ["استخرج", "انتقاء"]],
+    ["وضح", ["وضح", "توضيح"]],
+    ["فسر", ["فسر", "تفسير"]],
+    ["بين", ["بين"]],
+    ["علل", ["علل", "تبرير", "برر"]],
+    ["صادق", ["صادق", "مصادقه"]],
+    ["اقترح", ["اقترح"]],
+    ["رتب", ["رتب", "مخطط", "المخطط التحصيلي"]],
+    ["حدد", ["حدد", "عين", "تعرف", "سم", "التعرف", "تأطير", "ضبط"]]
+  ];
+  for (const [label, patterns] of entries) {
+    if (patterns.some(pattern => normalized.startsWith(normalizeArabic(pattern)))) return label;
+  }
+  for (const [label, patterns] of entries) {
+    if (patterns.some(pattern => normalized.includes(normalizeArabic(pattern)))) return label;
+  }
+  return "";
+}
+
+function stripPedagogicalPrefix(prompt) {
+  const raw = String(prompt || "").trim();
+  const idx = raw.indexOf(":");
+  if (idx < 0) return raw;
+  const pedagogicalHeads = [
+    "تأطير الإشكالية", "تأطير المسألة", "تأطير المسعى", "انتقاء المفاهيم", "استغلال السندات",
+    "استغلال الشكل (أ)", "مصفوفة استغلال الوثائق بالأرقام", "تحليل الشكل (أ)", "هيكلة العرض السببي",
+    "العرض السببي", "الربط السببي", "الاستدلال", "الاستدلال العلمي", "الاستدلال والتفسير",
+    "الاستدلال والمصادقة", "الفرضية والربط", "التركيب", "الخاتمة", "الخاتمة التركيبية",
+    "المخطط التحصيلي", "المصادقة والمخطط المقارن", "التبرير", "الاستخلاص"
+  ];
+  const head = raw.slice(0, idx).trim();
+  return pedagogicalHeads.includes(head) ? raw.slice(idx + 1).trim() : raw;
+}
+
+function deriveRawBacPrompt(pole, poleId, exercise) {
+  const explicit = pole?.rawPrompt || pole?.bacPrompt || pole?.consigne || pole?.question;
+  if (explicit) return explicit;
+
+  const prompt = String(pole?.prompt || "").trim();
+  if (!prompt) return "";
+  const core = stripPedagogicalPrefix(prompt);
+  const normalizedPrompt = normalizeArabic(prompt);
+  const normalizedCore = normalizeArabic(core);
+  const detectedInCore = detectExactVerb(core);
+  const pedagogicalLeads = ["تاطير", "ضبط", "انتقاء", "هيكله", "مصفوفه", "الربط", "العرض", "الخاتمه", "الاستخلاص", "الاستدلال", "التركيب", "التبرير"];
+  if (detectedInCore && !pedagogicalLeads.some(lead => normalizedCore.startsWith(lead))) return core;
+
+  if (poleId === "N") {
+    if (normalizedPrompt.includes("المتغير") || normalizedCore.includes("المتغير")) return `حدد ${core}`;
+    if (normalizedPrompt.includes("فرضي") || normalizedCore.includes("فرضي")) return `اقترح فرضية تفسيرية حول ${core}`;
+    if (normalizedPrompt.includes("مشكل") || normalizedPrompt.includes("اشكالي") || normalizedCore.includes("كيف")) return `حدد المشكل العلمي حول ${core}`;
+    return `حدد الإشكالية العلمية المرتبطة بـ ${core}`;
+  }
+
+  if (poleId === "S") {
+    if (normalizedPrompt.includes("قارن") || normalizedPrompt.includes("مقارنه") || normalizedCore.includes("قارن") || normalizedCore.includes("مقارنه")) return `قارن ${core}`;
+    if (normalizedPrompt.includes("تحليل") || normalizedPrompt.includes("حلل") || normalizedPrompt.includes("مصفوفه") || normalizedPrompt.includes("الشكل")) return `حلل ${core}`;
+    if (normalizedPrompt.includes("علق")) return `علق ${core}`;
+    return `استخرج ${core}`;
+  }
+
+  if (poleId === "E") {
+    if (normalizedPrompt.includes("صادق") || normalizedPrompt.includes("مصادقه") || normalizedCore.includes("صادق")) return `صادق ${core}`;
+    if (normalizedPrompt.includes("بين") || normalizedCore.includes("كيف")) return `بين ${core}`;
+    if (normalizedPrompt.includes("وضح") || normalizedPrompt.includes("اليه") || normalizedPrompt.includes("مسار")) return `وضح ${core}`;
+    if (normalizedPrompt.includes("تبرير") || normalizedPrompt.includes("علل")) return `علل ${core}`;
+    if (normalizedPrompt.includes("اقترح")) return `اقترح ${core}`;
+    return `فسر ${core}`;
+  }
+
+  if (normalizedPrompt.includes("ناقش") || normalizedCore.includes("ناقش")) return `ناقش ${core}`;
+  if (normalizedPrompt.includes("مخطط") || normalizedPrompt.includes("رتب") || normalizedPrompt.includes("المخطط")) return `رتب ${core}`;
+  if (normalizedPrompt.includes("لخص") || normalizedCore.includes("لخص")) return `لخص ${core}`;
+  if (normalizedPrompt.includes("حرر") || normalizedCore.includes("حرر")) return `حرر ${core}`;
+  if (normalizedPrompt.includes("نص علمي") || normalizedCore.includes("نص علمي")) return `اكتب نصا علميا حول ${core}`;
+  if (normalizedPrompt.includes("استخلاص") || normalizedPrompt.includes("خاتمه") || normalizedCore.includes("كيف")) return `استخلص ${core}`;
+  return `اكتب ${core}`;
+}
+
+function detectBrouillonRoute(prompt, fallbackPole = activePoleId(), exactVerb = "") {
+  const normalizedPrompt = normalizeArabic(prompt || "");
+  const preferred = normalizeArabic(exactVerb || "");
+  const routes = BROUILLON_MODE_DATA.verbRouting || [];
+  if (preferred) {
+    const byVerb = routes.find(route => (route.patterns || []).some(pattern => normalizeArabic(pattern) === preferred));
+    if (byVerb) return byVerb;
+  }
+  for (const route of routes) {
+    for (const pattern of route.patterns || []) {
+      if (normalizedPrompt.includes(normalizeArabic(pattern))) {
+        return route;
+      }
+    }
+  }
+  return routeByPole(fallbackPole);
+}
+
+function routeMatchesVerbCard(item, route, exactVerb = "") {
+  const verb = normalizeArabic(item?.verb || "");
+  const exact = normalizeArabic(exactVerb || route?.canonical || "");
+  if (!verb || !route) return false;
+  if (exact && verb.includes(exact)) return true;
+  if (verb.includes(normalizeArabic(route.canonical || ""))) return true;
+  return (route.patterns || []).some(pattern => verb.includes(normalizeArabic(pattern)));
+}
+function cleanBrouillonText(text) {
+  return String(text || "")
+    .replace(/\r/g, "")
+    .split(/\n+/)
+    .map(line => line.replace(/^[-•\d\s.():]+/, "").trim())
+    .filter(Boolean)
+    .join(" ؛ ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function sentenceizeBrouillon(text, lead = "") {
+  const clean = cleanBrouillonText(text);
+  if (!clean) return "";
+  const head = String(lead || "").trim();
+  const merged = head && !normalizeArabic(clean).startsWith(normalizeArabic(head)) ? `${head} ${clean}` : clean;
+  return /[.!؟…]$/.test(merged) ? merged : `${merged}.`;
+}
+
+function readInputValue(id) {
+  const field = document.getElementById(id);
+  return field && typeof field.value === "string" ? field.value.trim() : "";
+}
+
+function buildPipelinePoleSource(ex, st, poleId) {
+  const groups = {
+    N: ["pipeline-var-indep", "pipeline-var-dep"],
+    S: ["pipeline-doc1a", "pipeline-doc1a-ded", "pipeline-doc1b", "pipeline-doc1b-ded"],
+    E: ["pipeline-hyp1", "pipeline-hyp2", "pipeline-doc2"]
+  };
+  if (poleId === "W") {
+    return (ex.streams || []).map((stream, idx) => {
+      const key = idx === 0 ? "stream1" : "stream2";
+      const ordered = (st.pipeline?.[key] || [])
+        .map(id => ex.blocksBank?.find(block => block.id === id)?.text || "")
+        .filter(Boolean);
+      return ordered.length ? `${stream.title}: ${ordered.join(" → ")}` : "";
+    }).filter(Boolean).join(" ؛ ");
+  }
+  return (groups[poleId] || []).map(id => readInputValue(id) || st.fields?.[id] || "").filter(Boolean).join(" ؛ ");
+}
+
+function getBrouillonSource(ex, st, poleId) {
+  const scratch = cleanBrouillonText(st.scratch?.[poleId] || "");
+  if (scratch) return scratch;
+  if (ex?.ui === "text") {
+    return cleanBrouillonText(readInputValue(`fld-${poleId}`) || st.text?.[poleId] || "");
+  }
+  return cleanBrouillonText(buildPipelinePoleSource(ex, st, poleId));
+}
+
+function hasNormalizedMarker(text, markers = []) {
+  const normalized = normalizeArabic(text || "");
+  return markers.some(marker => normalized.includes(normalizeArabic(marker)));
+}
+
+function ensureComparisonWording(text) {
+  const clean = cleanBrouillonText(text);
+  if (!clean) return "";
+  if (hasNormalizedMarker(clean, ["بينما", "بالمقابل", "مقارنة", "مقابل", "اكثر", "اقل"])) return clean;
+  const parts = clean.split(" ؛ ").filter(Boolean);
+  if (parts.length >= 2) {
+    return `${parts[0]} بينما ${parts.slice(1).join("، ")}`;
+  }
+  return clean;
+}
+
+function buildDiscussionWording(parts = []) {
+  const cleanParts = parts.map(cleanBrouillonText).filter(Boolean);
+  if (!cleanParts.length) return "";
+  if (cleanParts.length === 1) return cleanParts[0];
+  if (cleanParts.length === 2) return `من جهة ${cleanParts[0]} لكن ${cleanParts[1]}`;
+  return `من جهة ${cleanParts[0]} لكن ${cleanParts[1]} لذلك ${cleanParts.slice(2).join("، ")}`;
+}
+
+function buildCurrentPoleDraft(ex, st, poleId, route, prompt = "", rawPrompt = "", exactVerb = "") {
+  const note = getBrouillonSource(ex, st, poleId);
+  const noteS = getBrouillonSource(ex, st, "S");
+  const noteE = getBrouillonSource(ex, st, "E");
+  const noteW = getBrouillonSource(ex, st, "W");
+  const verb = exactVerb || route?.canonical || inferVerbFromPole(poleId);
+
+  if (poleId === "W") {
+    return buildFullBrouillonDraft(ex, st, { exactVerb: verb, rawPrompt });
+  }
+  if (!note && poleId !== "E") {
+    return "اكتب عناصر هذا القطب أولاً في ورقة البوصلة، ثم سيولد النص تلقائياً.";
+  }
+
+  if (["حدد", "عين", "سم", "تعرف"].includes(verb)) {
+    return sentenceizeBrouillon(note, "");
+  }
+  if (verb === "استخرج") {
+    return sentenceizeBrouillon(note, "نستخرج من الوثيقة أن");
+  }
+  if (verb === "قارن") {
+    return sentenceizeBrouillon(ensureComparisonWording(note), "بالمقارنة بين المعطيات");
+  }
+  if (verb === "حلل") {
+    return sentenceizeBrouillon(ensureComparisonWording(note), hasNormalizedMarker(note, ["نلاحظ", "يتبين", "تبين", "تظهر"]) ? "" : "يبين تحليل المعطيات أن");
+  }
+  if (verb === "علق") {
+    const commentBody = [note, noteE || noteW].filter(Boolean).join(" ؛ ");
+    return sentenceizeBrouillon(commentBody, "تظهر المعطيات أن");
+  }
+  if (verb === "صادق") {
+    const evidence = note || noteE || noteS || getBrouillonSource(ex, st, "N");
+    return evidence ? sentenceizeBrouillon(evidence, "تتأكد صحة الفرضية لأن") : "أنت لا تزال بلا مادة كافية للمصادقة على الفرضية.";
+  }
+  if (verb === "اقترح") {
+    const evidence = note || noteS || getBrouillonSource(ex, st, "N");
+    return evidence ? sentenceizeBrouillon(evidence, "نفترض أن") : "دوّن الخلل أو الملاحظة أولاً حتى تقترح فرضية قابلة للاختبار.";
+  }
+  if (verb === "بين") {
+    const evidence = note || noteE || noteS;
+    return evidence ? sentenceizeBrouillon(evidence, "يمكن بيان ذلك كما يلي:") : "اكتب الملاحظة والآلية أولاً ثم أعد التوليد.";
+  }
+  if (verb === "وضح") {
+    const evidence = note || noteE || noteS;
+    return evidence ? sentenceizeBrouillon(evidence, "ويمكن توضيح ذلك كما يلي:") : "اكتب الملاحظة والآلية أولاً ثم أعد التوليد.";
+  }
+  if (["علل", "برر"].includes(verb)) {
+    const evidence = note || noteE || noteS;
+    return evidence ? sentenceizeBrouillon(evidence, "يمكن تعليل ذلك بأن") : "دوّن الحكم وسببه العلمي أولاً.";
+  }
+  if (["فسر", "اشرح"].includes(verb)) {
+    const evidence = note || noteE || noteS || getBrouillonSource(ex, st, "N");
+    return evidence ? sentenceizeBrouillon(evidence, "يفسر ذلك بأن") : "أنت لا تزال بلا مادة تفسيرية كافية. دوّن الملاحظة والسبب أولاً ثم أعد التوليد.";
+  }
+  if (["ناقش", "لخص", "استخلص", "اكتب نصا علميا", "حرر", "اكتب", "رتب"].includes(verb)) {
+    return buildFullBrouillonDraft(ex, st, { exactVerb: verb, rawPrompt });
+  }
+
+  if (poleId === "N") return sentenceizeBrouillon(note, "");
+  if (poleId === "S") return sentenceizeBrouillon(note, "بالاعتماد على الوثيقة");
+  return sentenceizeBrouillon(note || noteS, "يفسر ذلك بأن");
+}
+
+function buildFullBrouillonDraft(ex, st, options = {}) {
+  const noteN = getBrouillonSource(ex, st, "N");
+  const noteS = getBrouillonSource(ex, st, "S");
+  const noteE = getBrouillonSource(ex, st, "E");
+  const noteW = getBrouillonSource(ex, st, "W");
+  const exactVerb = options.exactVerb || detectExactVerb(options.rawPrompt || "") || "لخص";
+  const parts = [];
+
+  if (exactVerb === "ناقش") {
+    return sentenceizeBrouillon(buildDiscussionWording([noteS || noteN, noteE, noteW]), "");
+      
+  }
+  if (exactVerb === "رتب") {
+    return sentenceizeBrouillon(noteW || [noteN, noteS, noteE].filter(Boolean).join(" → "), "");
+  }
+  if (exactVerb === "استخلص") {
+    const body = [noteS, noteE, noteW].filter(Boolean).join(" ؛ ");
+    return sentenceizeBrouillon(body, "نستخلص أن");
+  }
+  if (exactVerb === "اكتب نصا علميا" || exactVerb === "حرر" || exactVerb === "اكتب") {
+    if (noteN) parts.push(sentenceizeBrouillon(noteN, "تتمثل الإشكالية في"));
+    if (noteS) parts.push(sentenceizeBrouillon(noteS, "وتبين المعطيات أن"));
+    if (noteE) parts.push(sentenceizeBrouillon(noteE, "ويمكن تفسير ذلك بأن"));
+    if (noteW) parts.push(sentenceizeBrouillon(noteW, "وفي الختام"));
+    return parts.join(" ") || "املأ ملاحظات N / S / E / W أولاً. بدون مادة خام لن يخرج نص نهائي محترم.";
+  }
+
+  if (noteN) parts.push(sentenceizeBrouillon(noteN, "يتمثل تأطير المطلوب في"));
+  if (noteS) parts.push(sentenceizeBrouillon(noteS, "وتبين المعطيات أن"));
+  if (noteE) parts.push(sentenceizeBrouillon(noteE, "ويمكن تفسير ذلك بأن"));
+  if (noteW) parts.push(sentenceizeBrouillon(noteW, "وفي الختام"));
+  else if (noteE) parts.push(sentenceizeBrouillon(noteE, "وبذلك"));
+
+  return parts.join(" ") || "املأ ملاحظات N / S / E / W أولاً. بدون مادة خام لن يخرج نص نهائي محترم.";
+}
+
+function computeBrouillonDrafts() {
+  const context = currentBrouillonContext();
+  const { exercise, poleId, prompt, rawPrompt, exactVerb, route } = context;
+  const st = currentScratchExercise();
+  return {
+    ...context,
+    current: buildCurrentPoleDraft(exercise, st, poleId, route, prompt, rawPrompt, exactVerb),
+    full: buildFullBrouillonDraft(exercise, st, { exactVerb, rawPrompt })
+  };
+}
+
+function extractCoreKeywords(text) {
+  const stop = new Set(["حدد","استخرج","حلل","علق","وضح","فسر","بين","علل","صادق","ناقش","اكتب","حرر","لخص","استخلص","حول","من","في","على","الى","عن","ما","كيف","هذا","هذه","ذلك","التي","الذي","ثم","مع","بين","عند","وجود","غياب","حاله","حالة","دور","آليه","الية","المشكلة","الاشكالية","المساله","المسألة","العلمي","العلمية"]);
+  return [...new Set(normalizeArabic(text || "").split(" ").map(w => w.trim()).filter(w => w.length > 2 && !stop.has(w)).slice(0, 10))];
+}
+
+function buildDraftPreflight(kind, draftText, context) {
+  const st = currentScratchExercise();
+  const draft = String(draftText || "").trim();
+  const draftNorm = normalizeArabic(draft);
+  const exactVerb = context.exactVerb || context.route?.canonical || inferVerbFromPole(context.poleId);
+  const noteN = getBrouillonSource(context.exercise, st, "N");
+  const noteS = getBrouillonSource(context.exercise, st, "S");
+  const noteE = getBrouillonSource(context.exercise, st, "E");
+  const noteW = getBrouillonSource(context.exercise, st, "W");
+  const warnings = [];
+
+  const comparisonNeeded = ["قارن", "حلل", "علق"].includes(exactVerb)
+    || hasNormalizedMarker(context.rawPrompt, ["طبيعي", "طافر", "الشاهد", "المعالج", "المقارنة", "مقارنة", "الحالتين"]);
+  const hasExplicitContrast = hasNormalizedMarker(draftNorm, ["بينما", "بالمقابل", "مقابل", "على خلاف", "في حين"]);
+  const hasDualSubjects = (draftNorm.includes("طبيعي") && draftNorm.includes("طافر"))
+    || (draftNorm.includes("شاهد") && draftNorm.includes("معالج"))
+    || (draftNorm.includes("سليم") && draftNorm.includes("مصاب"));
+  const comparisonPresent = hasExplicitContrast || hasDualSubjects || /\d/.test(draft);
+  if (comparisonNeeded && !comparisonPresent) {
+    warnings.push("⚠️ لم تُظهر مقارنة واضحة (tu n’as pas mis de comparaison).");
+  }
+
+  const explanatoryVerb = ["فسر", "وضح", "بين", "علل", "صادق"].includes(exactVerb);
+  const causalPresent = hasNormalizedMarker(draftNorm, ["يعود", "لان", "مما", "يفسر", "بسبب", "نتيجه", "ينتج"]);
+  const observationPresent = hasNormalizedMarker(`${draft} ${noteS}`, ["نلاحظ", "تظهر", "يتبين", "تبين", "يسجل", "يرتفع", "ينخفض", "تزداد", "تتناقص"]) || /\d/.test(`${draft} ${noteS}`);
+  if ((explanatoryVerb || causalPresent || noteE) && !observationPresent) {
+    warnings.push("⚠️ أنت تشرح قبل تثبيت الملاحظة (tu as expliqué sans observer).");
+  }
+
+  const closingNeeded = kind === "full" || ["ناقش", "استخلص", "لخص", "اكتب نصا علميا", "حرر", "اكتب"].includes(exactVerb) || context.poleId === "W";
+  const problemKeywords = extractCoreKeywords(noteN || context.rawPrompt || context.prompt);
+  const hasConclusion = hasNormalizedMarker(draftNorm, ["في الختام", "نستخلص", "اذن", "وبذلك", "خلاصه", "خلاصة"]);
+  const conclusionProbe = noteW || (hasConclusion ? draft.split(/في الختام|نستخلص|اذن|وبذلك|خلاصه|خلاصة/).slice(-1)[0] : draft);
+  const conclusionNorm = normalizeArabic(conclusionProbe || "");
+  const overlap = problemKeywords.filter(word => conclusionNorm.includes(word)).length;
+  if (closingNeeded && problemKeywords.length && overlap < Math.min(2, problemKeywords.length)) {
+    warnings.push(hasConclusion
+      ? "⚠️ لديك خاتمة لفظية لكنها لا تعود بما يكفي إلى الإشكال (ta conclusion ne répond pas au problème)."
+      : "⚠️ خاتمتك لا تعود بوضوح إلى الإشكال (ta conclusion ne répond pas au problème).");
+  }
+
+  return { warnings, ok: warnings.length === 0 };
+}
+function currentAnswerField() {
+  const ex = exDef(store.state.activeExercise);
+  const poleId = activePoleId();
+  if (!ex || ex.ui !== "text") return null;
+  return document.getElementById(`fld-${poleId}`);
+}
+
+function persistCurrentAnswerField(value) {
+  const ex = exDef(store.state.activeExercise);
+  const poleId = activePoleId();
+  if (!ex || ex.ui !== "text") return;
+  const st = currentScratchExercise();
+  st.text[poleId] = value;
+  store.save();
+}
+
+function injectDraftIntoCurrentAnswer(text) {
+  const field = currentAnswerField();
+  if (!field) {
+    toast("الإرسال الآلي نحو خانة الجواب متاح فقط في الأقطاب النصية. في المخطط، انسخ الصياغة يدوياً مما يلزم.", "warn", 2600);
+    return;
+  }
+  const clean = String(text || "").trim();
+  if (!clean) {
+    toast("لا يوجد نص نهائي صالح للإرسال بعد.", "warn", 1800);
+    return;
+  }
+  const current = field.value.trim();
+  field.value = current && !current.includes(clean) ? `${current}
+${clean}` : (current || clean);
+  persistCurrentAnswerField(field.value);
+  field.dispatchEvent(new window.Event("input", { bubbles: true }));
+  toast("تم إرسال النسخة المصاغة إلى خانة الجواب الحالية.", "success", 2000);
+}
+
+function renderPreflightBox(title, preflight) {
+  if (!preflight.warnings.length) {
+    return `<div class="feedback good small"><b>${escapeHTML(title)}:</b> لا يوجد إنذار منهجي فوري قبل الإرسال.</div>`;
+  }
+  return `
+    <div class="feedback bad small">
+      <b>${escapeHTML(title)}:</b>
+      <ul>${preflight.warnings.map(item => `<li>${escapeHTML(item)}</li>`).join("")}</ul>
+    </div>
+  `;
+}
+
+function refreshBrouillonPreflight(drawer = document) {
+  const context = currentBrouillonContext();
+  const currentText = $("#brouillon-draft-current", drawer)?.value || "";
+  const fullText = $("#brouillon-draft-full", drawer)?.value || "";
+  const currentPreflight = buildDraftPreflight("current", currentText, context);
+  const fullPreflight = buildDraftPreflight("full", fullText, context);
+  const currentHost = $("#brouillon-preflight-current", drawer);
+  const fullHost = $("#brouillon-preflight-full", drawer);
+  if (currentHost) currentHost.innerHTML = renderPreflightBox("مراقبة القطب الحالي", currentPreflight);
+  if (fullHost) fullHost.innerHTML = renderPreflightBox("مراقبة النسخة التركيبية", fullPreflight);
+  return { currentPreflight, fullPreflight };
+}
+
+function attemptInjectDraft(kind, drawer = document) {
+  const selector = kind === "full" ? "#brouillon-draft-full" : "#brouillon-draft-current";
+  const draftText = $(selector, drawer)?.value || "";
+  const context = currentBrouillonContext();
+  const preflight = buildDraftPreflight(kind, draftText, context);
+  if (preflight.ok) {
+    injectDraftIntoCurrentAnswer(draftText);
+    return;
+  }
+
+  const body = `
+    <div class="stack">
+      <div class="small text-muted">قبل الإرسال توجد إنذارات منهجية. الأصل أن تصلحها أولاً:</div>
+      <ul class="small" style="padding-inline-start:1.2rem;line-height:1.8">
+        ${preflight.warnings.map(item => `<li>${escapeHTML(item)}</li>`).join("")}
+      </ul>
+      <div class="small text-muted">إذا كنت متأكداً من اختيارك، يمكنك الإرسال رغم ذلك.</div>
+    </div>
+  `;
+  openModal("⚠️ مراقبة قبل الإرسال", body, `<button class="btn btn-amber" id="draft-force-inject">إرسال رغم الإنذارات</button>`);
+  const forceBtn = $("#draft-force-inject");
+  if (forceBtn) {
+    forceBtn.addEventListener("click", () => {
+      closeModal();
+      injectDraftIntoCurrentAnswer(draftText);
+    });
+  }
+}
+
+function refreshBrouillonDraftOutputs(drawer = document, regenerate = true) {
+  const drafts = computeBrouillonDrafts();
+  const currentOutput = $("#brouillon-draft-current", drawer);
+  const fullOutput = $("#brouillon-draft-full", drawer);
+  const targetHint = $("#brouillon-insert-hint", drawer);
+  const canInject = !!currentAnswerField();
+
+  if (currentOutput && regenerate) currentOutput.value = drafts.current;
+  if (fullOutput && regenerate) fullOutput.value = drafts.full;
+  if (targetHint) {
+    targetHint.textContent = canInject
+      ? "يمكنك إرسال الصياغة مباشرة إلى خانة جواب القطب النصي الحالي."
+      : "في وضع المخطط لا يوجد حقل نص نهائي واحد؛ خذ ما يلزم من الصياغة وعدله يدوياً.";
+  }
+
+  ["#brouillon-insert-current", "#brouillon-insert-full"].forEach(sel => {
+    const btn = $(sel, drawer);
+    if (btn) btn.disabled = !canInject;
+  });
+
+  refreshBrouillonPreflight(drawer);
+}
+
+function renderBrouillonQuickCardBody() {
+  const { exercise, poleId, guide, prompt, rawPrompt, exactVerb, route, bacPromptMeta } = currentBrouillonContext();
+  const scratch = currentScratchExercise().scratch?.[poleId] || "";
+  const noteState = scratch.trim() ? "🟢 توجد ملاحظات محفوظة لهذا القطب." : "⚪ لا توجد ملاحظات بعد — افتح الورقة واكتب بسرعة.";
+  const needsSmartJump = route.recommendedPole && route.recommendedPole !== poleId;
+  return `
+    <div class="flex spread" style="align-items:center;gap:.6rem;flex-wrap:wrap">
+      <div>
+        <strong class="text-amber">📝 وضع البوصلة — brouillon حي</strong>
+        <div class="small text-muted mt-1">${escapeHTML(BROUILLON_MODE_DATA.intro.subtitle)}</div>
+      </div>
+      <button class="btn btn-ghost btn-sm" id="ws-brouillon-inline">فتح الورقة الكاملة</button>
+    </div>
+    <div class="flex gap-2" style="align-items:center;flex-wrap:wrap">
+      <span class="badge badge-${guide.color}">القطب الحالي: ${guide.id}</span>
+      <span class="badge badge-${POLE[route.recommendedPole]?.cls || guide.color}">الفعل → ${escapeHTML(exactVerb)} / البلوك → ${escapeHTML(route.recommendedPole)}</span>
+      <span class="small text-muted">${exercise ? `ت${exercise.number}` : "التمرين الحالي"} — ${escapeHTML(guide.poleTitle)}</span>
+    </div>
+    <p class="small mt-0 mb-0">${escapeHTML(guide.mission)}</p>
+    ${rawPrompt ? `<div class="brouillon-focus"><div class="flex gap-2" style="align-items:center;flex-wrap:wrap"><b>consigne brute BAC:</b><span class="badge badge-${bacPromptMeta.cls}">${escapeHTML(bacPromptMeta.label)}</span></div><div class="mt-1">${escapeHTML(rawPrompt)}</div><div class="small text-muted mt-1">${escapeHTML(bacPromptMeta.note)}</div></div>` : ""}
+    ${prompt ? `<div class="small text-muted">النسخة البيداغوجية الداخلية: ${escapeHTML(prompt)}</div>` : ""}
+    <div class="brouillon-smart-card small">
+      <b>الربط الذكي:</b> ${escapeHTML(route.label)} — ${escapeHTML(route.warning)}
+      ${needsSmartJump ? `<div class="mt-1"><button class="btn btn-ghost btn-sm" id="ws-brouillon-goto-pole" data-goto-pole="${route.recommendedPole}">اذهب مباشرة إلى القطب ${route.recommendedPole}</button></div>` : ""}
+    </div>
+    <ul class="small" style="padding-inline-start:1.2rem;line-height:1.8;margin:.1rem 0 0">
+      ${guide.prompts.slice(0, 3).map(item => `<li>${escapeHTML(item)}</li>`).join("")}
+    </ul>
+    <div class="atlas-golden"><b>صيغة انطلاق سريعة:</b> ${escapeHTML(guide.sentenceModels[0] || "")}</div>
+    <div class="small text-muted">${escapeHTML(noteState)}</div>
+  `;
+}
+
+function refreshBrouillonQuickCard() {
+  const host = $("#boussole-scratch-card");
+  if (!host) return;
+  host.innerHTML = renderBrouillonQuickCardBody();
+  const btn = $("#ws-brouillon-inline", host);
+  if (btn) btn.addEventListener("click", openBrouillonMode);
+  const smartStepBtn = $("#ws-brouillon-goto-pole", host);
+  if (smartStepBtn) {
+    smartStepBtn.addEventListener("click", () => {
+      const targetPole = smartStepBtn.dataset.gotoPole;
+      const idx = POLE_ORDER.indexOf(targetPole);
+      if (idx >= 0) goToStep(idx + 1);
+    });
+  }
+}
+
+function renderBrouillonCurrentSection() {
+  const { exercise, guide, prompt, rawPrompt, exactVerb, route, bacPromptMeta } = currentBrouillonContext();
+  const recommendedCls = POLE[route.recommendedPole]?.cls || guide.color;
+  return `
+    <div class="atlas-card brouillon-context-card recommended">
+      <div class="flex spread" style="align-items:center;gap:.5rem;flex-wrap:wrap">
+        <strong class="text-${guide.color}">${escapeHTML(guide.poleTitle)}</strong>
+        <div class="flex gap-2" style="align-items:center;flex-wrap:wrap">
+          <span class="badge badge-${guide.color}">${exercise ? `ت${exercise.number}` : "التمرين الحالي"}</span>
+          <span class="badge badge-${recommendedCls}">الفعل المكتشف: ${escapeHTML(exactVerb)}</span>
+          <span class="badge">البلوك الأنسب: ${escapeHTML(route.recommendedPole)}</span>
+        </div>
+      </div>
+      <p class="small mt-1 mb-0">${escapeHTML(guide.mission)}</p>
+      ${rawPrompt ? `<div class="brouillon-focus mt-1"><div class="flex gap-2" style="align-items:center;flex-wrap:wrap"><b>consigne brute BAC:</b><span class="badge badge-${bacPromptMeta.cls}">${escapeHTML(bacPromptMeta.label)}</span></div><div class="mt-1">${escapeHTML(rawPrompt)}</div><div class="small text-muted mt-1">${escapeHTML(bacPromptMeta.note)}</div></div>` : ""}
+      ${prompt ? `<div class="small text-muted">النسخة البيداغوجية الداخلية: ${escapeHTML(prompt)}</div>` : ""}
+      <div class="brouillon-smart-card small mt-1">
+        <b>الربط التلقائي:</b> ${escapeHTML(route.label)}<br>${escapeHTML(route.warning)}
+      </div>
+      <div class="flex gap-2" style="align-items:center;flex-wrap:wrap">
+        <button class="btn btn-ghost btn-sm" type="button" data-brouillon-jump="brouillon-pole-${route.recommendedPole}">اذهب إلى ورقة ${route.recommendedPole}</button>
+        <button class="btn btn-ghost btn-sm" type="button" data-brouillon-jump="brouillon-verbs">اذهب إلى جدول الأفعال</button>
+        <button class="btn btn-ghost btn-sm" type="button" data-brouillon-jump="brouillon-final">اذهب إلى copie finale</button>
+      </div>
+      <ul class="small mt-1" style="padding-inline-start:1.2rem;line-height:1.8">
+        ${guide.prompts.map(item => `<li>${escapeHTML(item)}</li>`).join("")}
+      </ul>
+      <div class="atlas-golden"><b>ابدأ بهذه الصيغة:</b> ${escapeHTML(guide.sentenceModels[0] || "")}</div>
+      <div class="atlas-trap"><b>ممنوع الآن:</b> ${escapeHTML((guide.forbidden || []).join(" — "))}</div>
+    </div>
+  `;
+}
+
+function renderBrouillonSheetSection() {
+  const scratch = currentScratchExercise().scratch || {};
+  const { route, exactVerb, rawPrompt, bacPromptMeta } = currentBrouillonContext();
+  return BROUILLON_MODE_DATA.universalSheet.map(item => `
+    <div class="atlas-card brouillon-sheet-card ${route.recommendedPole === item.id ? 'recommended' : ''}" id="brouillon-pole-${item.id}">
+      <div class="flex spread" style="align-items:center;gap:.5rem;flex-wrap:wrap">
+        <strong class="text-${item.color}">${escapeHTML(item.poleTitle)}</strong>
+        <div class="flex gap-2" style="align-items:center;flex-wrap:wrap">
+          <span class="badge badge-${item.color}">${escapeHTML(item.badge)}</span>
+          ${route.recommendedPole === item.id ? `<span class="badge">هذا هو البلوك الموصى به للفعل ${escapeHTML(exactVerb)}</span>` : ""}
+        </div>
+      </div>
+      ${route.recommendedPole === item.id && rawPrompt ? `<div class="small text-muted">يرتبط الآن بالصيغة الخام: ${escapeHTML(rawPrompt)} <span class="badge badge-${bacPromptMeta.cls}">${escapeHTML(bacPromptMeta.label)}</span></div>` : ""}
+      <p class="small mt-1">${escapeHTML(item.mission)}</p>
+      <div class="brouillon-mini-grid">
+        <div>
+          <div class="small bold text-muted">ماذا أكتب على المسودة؟</div>
+          <ul class="small mt-1" style="padding-inline-start:1.2rem;line-height:1.8">
+            ${item.prompts.map(prompt => `<li>${escapeHTML(prompt)}</li>`).join("")}
+          </ul>
+        </div>
+        <div>
+          <div class="small bold text-muted">جمل قصيرة جاهزة</div>
+          <div class="stack mt-1">
+            ${item.sentenceModels.map(model => `<div class="brouillon-chip">${escapeHTML(model)}</div>`).join("")}
+          </div>
+        </div>
+      </div>
+      <label class="small bold text-muted mt-1" for="scratch-${item.id}">مسودة ${item.id}</label>
+      <textarea class="field brouillon-area" id="scratch-${item.id}" data-scratch-key="${item.id}" rows="6" placeholder="${escapeHTML(item.placeholder)}">${escapeHTML(scratch[item.id] || "")}</textarea>
+      <div class="atlas-trap"><b>أخطاء ممنوعة:</b> ${escapeHTML((item.forbidden || []).join(" — "))}</div>
+    </div>
+  `).join("");
+}
+
+function renderBrouillonVerbsSection() {
+  const { route, exactVerb, rawPrompt, bacPromptMeta } = currentBrouillonContext();
+  return BROUILLON_MODE_DATA.bacVerbs.map(item => `
+    <div class="atlas-card brouillon-verb-card ${routeMatchesVerbCard(item, route, exactVerb) ? 'recommended' : ''}">
+      <div class="flex spread" style="align-items:center;gap:.5rem;flex-wrap:wrap">
+        <strong class="text-${POLE[item.pole]?.cls || 'emerald'}">${escapeHTML(item.verb)}</strong>
+        <div class="flex gap-2" style="align-items:center;flex-wrap:wrap">
+          <span class="badge badge-${POLE[item.pole]?.cls || 'emerald'}">${escapeHTML(item.family)}</span>
+          <span class="badge">${escapeHTML(item.pole)}</span>
+          ${routeMatchesVerbCard(item, route, exactVerb) ? `<span class="badge">الفعل الحالي</span>` : ""}
+        </div>
+      </div>
+      ${routeMatchesVerbCard(item, route, exactVerb) && rawPrompt ? `<div class="small text-muted">مطابق تقريباً لهذه الصيغة الخام: ${escapeHTML(rawPrompt)} <span class="badge badge-${bacPromptMeta.cls}">${escapeHTML(bacPromptMeta.label)}</span></div>` : ""}
+      <div class="brouillon-verb-grid mt-1">
+        <div><b>المطلوب:</b> ${escapeHTML(item.expected)}</div>
+        <div><b>الخطة السريعة:</b> ${escapeHTML(item.quickPlan)}</div>
+        <div><b>مثال قصير:</b> ${escapeHTML(item.model)}</div>
+        <div><b>الفخ:</b> ${escapeHTML(item.trap)}</div>
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderBrouillonPhrasesSection() {
+  return BROUILLON_MODE_DATA.sentenceModels.map(group => `
+    <div class="atlas-card brouillon-phrase-card">
+      <div class="flex spread" style="align-items:center;gap:.5rem;flex-wrap:wrap">
+        <strong class="text-${group.color}">${escapeHTML(group.title)}</strong>
+        <span class="badge badge-${group.color}">${group.items.length} صيغ</span>
+      </div>
+      <div class="stack mt-1">
+        ${group.items.map(item => `<div class="brouillon-chip">${escapeHTML(item)}</div>`).join("")}
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderBrouillonFinalSection() {
+  const drafts = computeBrouillonDrafts();
+  const canInject = !!currentAnswerField();
+  return `
+    <section id="brouillon-final" class="stack gap-2">
+      <div class="flex spread" style="align-items:center;gap:.5rem;flex-wrap:wrap">
+        <h3 class="mt-0 mb-0">Mini-mode copie finale</h3>
+        <span class="small text-muted">تحويل ملاحظات N / S / E / W إلى جواب مصاغ بسرعة حسب الفعل الخام: ${escapeHTML(drafts.exactVerb)}</span>
+      </div>
+      ${drafts.rawPrompt ? `<div class="brouillon-focus"><div class="flex gap-2" style="align-items:center;flex-wrap:wrap"><b>consigne brute BAC المعتمدة:</b><span class="badge badge-${drafts.bacPromptMeta.cls}">${escapeHTML(drafts.bacPromptMeta.label)}</span></div><div class="mt-1">${escapeHTML(drafts.rawPrompt)}</div><div class="small text-muted mt-1">${escapeHTML(drafts.bacPromptMeta.note)}</div></div>` : ""}
+      <div class="atlas-card recommended">
+        <div class="flex spread" style="align-items:center;gap:.5rem;flex-wrap:wrap">
+          <strong class="text-emerald">نسخة الجواب للقطب الحالي</strong>
+          <button class="btn btn-ghost btn-sm" type="button" id="brouillon-refresh-current">تحديث</button>
+        </div>
+        <div class="small text-muted mt-1">هذه الصياغة تبنى آلياً انطلاقاً من ملاحظاتك الحالية وبصياغة أقرب إلى الفعل المطلوب، وليست وحياً. راجعها قبل الاعتماد.</div>
+        <textarea class="field brouillon-area mt-1" id="brouillon-draft-current" rows="5">${escapeHTML(drafts.current)}</textarea>
+        <div id="brouillon-preflight-current" class="stack gap-2 mt-1"></div>
+        <div class="flex gap-2" style="align-items:center;flex-wrap:wrap">
+          <button class="btn btn-emerald btn-sm" type="button" id="brouillon-insert-current" ${canInject ? "" : "disabled"}>إرسال هذه النسخة إلى خانة الجواب</button>
+          <span class="small text-muted" id="brouillon-insert-hint"></span>
+        </div>
+      </div>
+      <div class="atlas-card">
+        <div class="flex spread" style="align-items:center;gap:.5rem;flex-wrap:wrap">
+          <strong class="text-purple">نسخة تركيبية كاملة</strong>
+          <button class="btn btn-ghost btn-sm" type="button" id="brouillon-refresh-full">تحديث</button>
+        </div>
+        <div class="small text-muted mt-1">تفيد خصوصاً عند القطب W أو قبل كتابة نص علمي نهائي، مع فحص سريع للإشكال والخاتمة.</div>
+        <textarea class="field brouillon-area mt-1" id="brouillon-draft-full" rows="7">${escapeHTML(drafts.full)}</textarea>
+        <div id="brouillon-preflight-full" class="stack gap-2 mt-1"></div>
+        <div class="flex gap-2" style="align-items:center;flex-wrap:wrap">
+          <button class="btn btn-purple btn-sm" type="button" id="brouillon-insert-full" ${canInject ? "" : "disabled"}>إرسال النسخة التركيبية إلى خانة الجواب</button>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function bindBrouillonDrawer(drawer) {
+  $$('[data-brouillon-jump]', drawer).forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = $(`#${btn.dataset.brouillonJump}`, drawer);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  $$('[data-scratch-key]', drawer).forEach(input => {
+    input.addEventListener('input', (e) => {
+      const key = e.target.dataset.scratchKey;
+      const st = currentScratchExercise();
+      st.scratch[key] = e.target.value;
+      store.save();
+      refreshBrouillonQuickCard();
+      refreshBrouillonDraftOutputs(drawer);
+    });
+  });
+
+  ["#brouillon-draft-current", "#brouillon-draft-full"].forEach(sel => {
+    const area = $(sel, drawer);
+    if (area) area.addEventListener("input", () => refreshBrouillonPreflight(drawer));
+  });
+
+  const refreshCurrent = $("#brouillon-refresh-current", drawer);
+  if (refreshCurrent) refreshCurrent.addEventListener("click", () => refreshBrouillonDraftOutputs(drawer, true));
+  const refreshFull = $("#brouillon-refresh-full", drawer);
+  if (refreshFull) refreshFull.addEventListener("click", () => refreshBrouillonDraftOutputs(drawer, true));
+  const insertCurrent = $("#brouillon-insert-current", drawer);
+  if (insertCurrent) insertCurrent.addEventListener("click", () => attemptInjectDraft("current", drawer));
+  const insertFull = $("#brouillon-insert-full", drawer);
+  if (insertFull) insertFull.addEventListener("click", () => attemptInjectDraft("full", drawer));
+
+  refreshBrouillonDraftOutputs(drawer, true);
+}
+
+function openBrouillonMode() {
+  const body = `
+    <div class="brouillon-shell stack">
+      <div class="atlas-header brouillon-topbar">
+        <div class="small text-muted">${escapeHTML(BROUILLON_MODE_DATA.intro.subtitle)}</div>
+        <div class="atlas-tabs">
+          <button class="atlas-tab-btn" type="button" data-brouillon-jump="brouillon-current">القطب الحالي</button>
+          <button class="atlas-tab-btn" type="button" data-brouillon-jump="brouillon-sheet">ورقة N/S/E/W</button>
+          <button class="atlas-tab-btn" type="button" data-brouillon-jump="brouillon-verbs">أفعال الباك</button>
+          <button class="atlas-tab-btn" type="button" data-brouillon-jump="brouillon-final">copie finale</button>
+          <button class="atlas-tab-btn" type="button" data-brouillon-jump="brouillon-phrases">جمل جاهزة</button>
+        </div>
+      </div>
+
+      <section id="brouillon-current" class="stack gap-2">
+        <div class="flex spread" style="align-items:center;gap:.5rem;flex-wrap:wrap">
+          <h3 class="mt-0 mb-0">التركيز الحالي</h3>
+          <span class="small text-muted">استعمل هذه المنطقة أولاً قبل كتابة الجواب النهائي.</span>
+        </div>
+        ${renderBrouillonCurrentSection()}
+      </section>
+
+      <section id="brouillon-sheet" class="stack gap-2">
+        <h3 class="mt-0 mb-0">ورقة N/S/E/W universelle</h3>
+        <div class="small text-muted">هذه ورقة عمل فعلية: اكتب فيها مسودتك، وستبقى محفوظة لكل تمرين.</div>
+        ${renderBrouillonSheetSection()}
+        <div class="atlas-card">
+          <strong class="text-indigo">${escapeHTML(BROUILLON_MODE_DATA.freePad.title)}</strong>
+          <div class="small text-muted mt-1">كلمات مفتاحية، أرقام، رسم سهمي سريع، أو إحالات إلى الوثائق.</div>
+          <textarea class="field brouillon-area mt-1" id="scratch-free" data-scratch-key="free" rows="5" placeholder="${escapeHTML(BROUILLON_MODE_DATA.freePad.placeholder)}">${escapeHTML(currentScratchExercise().scratch?.free || "")}</textarea>
+        </div>
+      </section>
+
+      <section id="brouillon-verbs" class="stack gap-2">
+        <h3 class="mt-0 mb-0">جدول أفعال البكالوريا</h3>
+        <div class="small text-muted">الخطأ الشائع هو الخلط بين الفعل والمنهج. هذا الجدول يحول كل فعل إلى خطة تنفيذ قصيرة.</div>
+        ${renderBrouillonVerbsSection()}
+      </section>
+
+      ${renderBrouillonFinalSection()}
+
+      <section id="brouillon-phrases" class="stack gap-2">
+        <h3 class="mt-0 mb-0">جمل نموذجية ultra-courtes</h3>
+        <div class="small text-muted">ليست للحفظ الأعمى؛ استعملها كبداية صحيحة ثم أكمل بمعطياتك الخاصة.</div>
+        ${renderBrouillonPhrasesSection()}
+      </section>
+    </div>
+  `;
+
+  const drawer = openDrawer("left", `📝 ${BROUILLON_MODE_DATA.intro.title}`, body);
+  if (drawer) {
+    drawer.dataset.kind = "brouillon";
+    bindBrouillonDrawer(drawer);
+  }
+}
 
 /* ---------- Router ---------- */
 function showScreen(id) {
@@ -435,6 +1231,7 @@ function renderWorkspace() {
         </div>
         <div class="flex gap-2" style="align-items:center;flex-wrap:wrap">
           <button class="btn btn-amber btn-sm" id="ws-panic">✨ فك القفل الذهني</button>
+          <button class="btn btn-ghost btn-sm" id="ws-brouillon">📝 ورقة البوصلة</button>
           <button class="btn-sound btn-sm" data-sound-toggle id="ws-sound">🎧 أصوات الهدوء</button>
           <button class="btn-adkar btn-sm" id="ws-adkar">🤲 أذكار الامتحان</button>
           <button class="btn btn-ghost btn-sm" id="ws-atlas">🔬 الأطلس 4D</button>
@@ -470,6 +1267,7 @@ function renderWorkspace() {
             </div>
           </div>
 
+          <div class="card stack" id="boussole-scratch-card"></div>
           <nav class="stepnav" id="stepnav"></nav>
           <div class="feedback mid small" style="background:rgba(16,185,129,.08)">⚠️ القاعدة: ركّز على كل قطب لحاله، وفُعلت باقي التمارين بعد إجابتك.</div>
         </aside>
@@ -481,6 +1279,7 @@ function renderWorkspace() {
   // liens
   $("#ws-home").addEventListener("click", returnToHub);
   $("#ws-panic").addEventListener("click", showPanic);
+  $("#ws-brouillon").addEventListener("click", openBrouillonMode);
   if ($("#ws-adkar")) $("#ws-adkar").addEventListener("click", openAdkarModal);
   if ($("#ws-atlas")) $("#ws-atlas").addEventListener("click", () => openAtlas());
   $("#ws-onb").addEventListener("click", () => { renderOnboarding(); showScreen("view-onboarding"); });
@@ -493,6 +1292,7 @@ function renderWorkspace() {
 
   renderStepnav(ex);
   renderExercise(ex);
+  refreshBrouillonQuickCard();
   goToStep(store.state.activeStep || 1);
   updateLiveScore();
 }
@@ -551,16 +1351,90 @@ function bindText(ex) {
   POLE_ORDER.forEach(p => {
     const input = $("#fld-" + p);
     if (input && st.text[p]) input.value = st.text[p];
+    if (input) {
+      input.addEventListener("input", () => {
+        st.text[p] = input.value;
+        store.save();
+      });
+    }
   });
 }
 
 /* ---------- Évaluation texte ---------- */
+function buildPoleRule(pole) {
+  return {
+    ...(pole.rule || {}),
+    minLength: pole.minLength || pole.rule?.minLength || 0,
+    modelAnswer: pole.modelAnswer || "",
+    prompt: pole.prompt || ""
+  };
+}
+
+function renderProfessorFeedback(res, score, pole, label = "النتيجة") {
+  if (res.empty) {
+    return `لم تُدخل أي إجابة بعد. اكتب تحليلك أولاً ثم أعد التصحيح.`;
+  }
+
+  let html = `${label}: <b>${score.toFixed(2)} / ${fmtPts(pole.points)}</b> (${Math.round(res.fraction * 100)}%)`;
+  html += `<br><span class="text-white"><b>حكم المصحح:</b> ${escapeHTML(res.verdict || "")}</span>`;
+
+  if (res.isKeywordDump) {
+    html += `<br><span class="text-rose">⛔ خطأ قاتل: كتبت كلمات مفتاحية معزولة دون جملة علمية مترابطة. في تصحيح البكالوريا هذا يساوي تقريباً صفراً.</span>`;
+    return html;
+  }
+
+  if (res.matched?.length) {
+    html += `<br><span class="text-emerald">✓ مفاهيم محققة:</span> <b>${res.matched.join("، ")}</b>`;
+  }
+  if (res.missing?.length) {
+    html += `<br><span class="text-amber">🔎 ما ينقصك للوصول للإجابة الرسمية:</span> <b>${res.missing.join("، ")}</b>`;
+  }
+
+  if (res.methodology) {
+    const taskLabel = res.methodology.taskLabel ? ` — <span class="text-white">نوع المطلوب: <b>${escapeHTML(res.methodology.taskLabel)}</b></span>` : "";
+    html += `<br><span class="text-indigo"><b>المنهجية (${Math.round((res.methodology.score || 0) * 100)}%)</b>:</span>${taskLabel} ${escapeHTML(res.methodology.summary || "")}`;
+    if (res.methodology.strengths?.length) {
+      html += `<br><span class="text-emerald">✓ ما أُنجز منهجياً:</span> ${res.methodology.strengths.map(escapeHTML).join("، ")}`;
+    }
+    if (res.methodology.missing?.length) {
+      html += `<br><span class="text-amber">⚠️ ما يجب إصلاحه:</span> ${res.methodology.missing.map(escapeHTML).join("، ")}`;
+    }
+  }
+
+  if (res.overlap?.matchedTokens?.length) {
+    html += `<br><span class="text-emerald">🧠 عناصر مطابقة لتصحيح الأستاذ:</span> ${res.overlap.matchedTokens.map(escapeHTML).join("، ")}`;
+  }
+  if (res.overlap?.missingTokens?.length) {
+    html += `<br><span class="text-dim">نقاط مرجعية غير مستثمرة بعد:</span> ${res.overlap.missingTokens.slice(0, 6).map(escapeHTML).join("، ")}`;
+  }
+
+  if (res.forbiddenFound?.length) {
+    html += `<br><span class="text-rose">⛔ خطأ منهجي: استعملت (${res.forbiddenFound.map(escapeHTML).join("، ")}) في خطوة لا تسمح به، لذلك خُفّضت العلامة.</span>`;
+  }
+  if (res.length < res.minLen && res.hits > 0) {
+    html += `<br><small class="text-muted">💡 الجواب ما زال قصيراً مقارنة بالمطلوب (${res.length}/${res.minLen} حرف تقريباً).</small>`;
+  }
+
+  return html;
+}
+
+function appendModelAnswer(html, title, text) {
+  if (!text) return html;
+  return html + `
+    <details class="model-box">
+      <summary class="model-summary">${title}</summary>
+      <div class="model-body">
+        <div class="model-text">${escapeHTML(text)}</div>
+      </div>
+    </details>`;
+}
+
 function checkText(exNum, p) {
   const ex = exDef(exNum);
   const pole = ex.poles[p];
   const input = $("#fld-" + p);
   const text = input ? input.value : "";
-  const res = evaluateText(text, pole.rule, p);
+  const res = evaluateText(text, buildPoleRule(pole), p);
 
   const st = store.exercise(store.state.sujetId, exNum);
   st.text[p] = text;
@@ -573,37 +1447,8 @@ function checkText(exNum, p) {
   fb.classList.remove("hidden");
   const grade = res.fraction >= 0.75 ? "good" : res.fraction >= 0.45 ? "mid" : "bad";
   fb.className = `feedback ${grade} mt-2`;
-  let html = `النتيجة: <b>${st.scores[p].toFixed(2)} / ${fmtPts(pole.points)}</b> (${Math.round(res.fraction * 100)}%)`;
-  
-  if (res.isKeywordDump) {
-    html += `<br><span class="text-rose">⛔ تنبيه منهجي: تم إدخال كلمات مفتاحية معزولة دون صياغة جملة علمية مفيدة (تتضمن أفعالاً وروابط منطقية). في البكالوريا، سرد المصطلحات دون صياغة جملة كاملة يُمنح عليه 0.</span>`;
-  } else {
-    if (res.matched && res.matched.length) {
-      html += `<br><span class="text-emerald">✓ مفاهيم محققة:</span> <b>${res.matched.join("، ")}</b>`;
-    }
-    if (res.missing && res.missing.length) {
-      html += `<br><span class="text-amber">🔎 مفاهيم مفتاحية ناقصة:</span> <b>${res.missing.join("، ")}</b>`;
-    }
-    if (res.forbiddenFound && res.forbiddenFound.length) {
-      html += `<br><span class="text-rose">⛔ تنبيه منهجي: تم استخدام مصطلحات غير ملائمة لهذه الخطوة (${res.forbiddenFound.join("، ")}) — خُفّضت العلامة.</span>`;
-    }
-    if (res.empty) {
-      html = `لم تُدخل أي إجابة بعد. اكتب تحليلك أو صياغتك أولاً.`;
-    } else if (res.length < res.minLen && res.hits > 0) {
-      html += `<br><small class="text-muted">💡 الصياغة موجزة نسبياً مقارنة بالمطلوب (${res.length}/${res.minLen} حرف).</small>`;
-    }
-  }
-
-  if (pole.modelAnswer) {
-    html += `
-      <details class="model-box">
-        <summary class="model-summary">📖 الإجابة النموذجية الرسمية الوزارية (انقر للمقارنة)</summary>
-        <div class="model-body">
-          <div class="model-text">${escapeHTML(pole.modelAnswer)}</div>
-        </div>
-      </details>`;
-  }
-
+  let html = renderProfessorFeedback(res, st.scores[p], pole, "النتيجة");
+  html = appendModelAnswer(html, "📖 الإجابة النموذجية الرسمية الوزارية (انقر للمقارنة)", pole.modelAnswer);
   fb.innerHTML = html;
 
   if (!res.empty && res.fraction > 0) goToSuccessStep(exNum);
@@ -699,7 +1544,7 @@ export const voiceEngine = {
                            (joinedSpoken ? joinedSpoken.trim() + " " : "") +
                            (interimBatch ? interimBatch.trim() : "");
           field.value = combined.trim();
-          field.dispatchEvent(new Event("input", { bubbles: true }));
+          field.dispatchEvent(new window.Event("input", { bubbles: true }));
         }
       };
 
@@ -898,6 +1743,13 @@ function bindPipeline(ex) {
   $$("#ex-content [data-polo-check]").forEach(b => b.addEventListener("click", () => checkPipelinePole(ex.number, b.dataset.poloCheck)));
   // mic buttons
   bindMicButtons();
+  const st = store.exercise(store.state.sujetId, ex.number);
+  $$("#ex-content .field").forEach(field => {
+    field.addEventListener("input", () => {
+      st.fields[field.id] = field.value;
+      store.save();
+    });
+  });
   // bank chips
   const bank = $("#blocks-bank");
   bank.innerHTML = "";
@@ -913,7 +1765,6 @@ function bindPipeline(ex) {
     clearBlock(ex, stream, +sl.dataset.slot);
   }));
   // restaure l'agencement et les zones de texte (persistance)
-  const st = store.exercise(store.state.sujetId, ex.number);
   renderPipeline(ex, st.pipeline);
   Object.entries(st.fields || {}).forEach(([id, val]) => {
     const f = $("#" + id);
@@ -923,12 +1774,22 @@ function bindPipeline(ex) {
 
 function placeBlock(ex, blockId) {
   const st = store.exercise(store.state.sujetId, ex.number);
+  if (Object.values(st.pipeline).flat().includes(blockId)) {
+    toast("هذا العنصر موضوع بالفعل داخل المخطط. انزعه أولاً إذا أردت تغيير مكانه.", "warn", 1800);
+    return;
+  }
   for (const key of ["stream1", "stream2"]) {
     const arr = st.pipeline[key];
     for (let i = 0; i < arr.length; i++) {
-      if (!arr[i]) { arr[i] = blockId; renderPipeline(ex, st.pipeline); store.save(); return; }
+      if (!arr[i]) {
+        arr[i] = blockId;
+        renderPipeline(ex, st.pipeline);
+        store.save();
+        return;
+      }
     }
   }
+  toast("كل الخانات ممتلئة. أزل عنصراً قبل إضافة عنصر جديد.", "warn", 1800);
 }
 
 function clearBlock(ex, stream, index) {
@@ -968,7 +1829,6 @@ function checkPipelinePole(exNum, p) {
   fb.classList.remove("hidden");
 
   if (p === "N" || p === "S" || p === "E") {
-    // persiste toutes les zones de saisie du pôle courant
     const FIELDS = {
       N: ["pipeline-var-indep", "pipeline-var-dep"],
       S: ["pipeline-doc1a", "pipeline-doc1a-ded", "pipeline-doc1b", "pipeline-doc1b-ded"],
@@ -978,55 +1838,41 @@ function checkPipelinePole(exNum, p) {
     let joined = "";
     ids.forEach(id => {
       const f = $("#" + id);
-      if (f) { st.fields[id] = f.value; joined += f.value + " "; }
+      if (f) {
+        st.fields[id] = f.value;
+        joined += f.value + " ";
+      }
     });
     const text = joined.trim();
-    const res = evaluateText(text, ex.poles[p].rule || { minLength: ex.poles[p].minLength || 40 }, p);
+    const res = evaluateText(text, buildPoleRule(ex.poles[p]), p);
     const score = scoreFromFraction(ex.poles[p].points, res.fraction);
     st.scores[p] = score;
     if (!st.answeredAny && text) st.answeredAny = true;
 
     const grade = res.fraction >= 0.75 ? "good" : res.fraction >= 0.45 ? "mid" : "bad";
     fb.className = `feedback ${grade} mt-2`;
-    let html = `نقاط القطب ${p}: <b>${score.toFixed(2)} / ${fmtPts(ex.poles[p].points)}</b> (${Math.round(res.fraction * 100)}%)`;
-    if (res.isKeywordDump) {
-      html += `<br><span class="text-rose">⛔ تنبيه منهجي: تم إدخال كلمات مبعثرة دون صياغة جملة تفسيرية مترابطة.</span>`;
-    } else {
-      if (res.matched && res.matched.length) html += `<br><span class="text-emerald">✓ عناصر محققة:</span> <b>${res.matched.join("، ")}</b>`;
-      if (res.missing && res.missing.length) html += `<br><span class="text-amber">🔎 عناصر ناقصة:</span> <b>${res.missing.join("، ")}</b>`;
-      if (res.forbiddenFound && res.forbiddenFound.length) html += `<br><span class="text-rose">⛔ تنبيه منهجي: تجنب (${res.forbiddenFound.join("، ")}).</span>`;
-      if (res.empty) html = `لم تُدخل أي إجابة بعد في حقول القطب ${p}.`;
-    }
-
-    if (ex.poles[p].modelAnswer) {
-      html += `
-        <details class="model-box">
-          <summary class="model-summary">📖 الإجابة النموذجية الرسمية للقطب ${p} (انقر للمقارنة)</summary>
-          <div class="model-body">
-            <div class="model-text">${escapeHTML(ex.poles[p].modelAnswer)}</div>
-          </div>
-        </details>`;
-    }
-
+    let html = renderProfessorFeedback(res, score, ex.poles[p], `نقاط القطب ${p}`);
+    html = appendModelAnswer(html, `📖 الإجابة النموذجية الرسمية للقطب ${p} (انقر للمقارنة)`, ex.poles[p].modelAnswer);
     fb.innerHTML = html;
   } else {
-    // pôle W : évaluation du pipeline (arrangement)
     const res = evaluatePipeline(ex.blocksBank, st.pipeline);
     const max = fmtPts(ex.poles[p].points);
     st.scores[p] = Math.round(res.fraction * ex.poles[p].points * 100) / 100;
     if (!st.answeredAny) st.answeredAny = true;
     fb.className = `feedback ${res.fraction >= 0.75 ? "good" : res.fraction >= 0.4 ? "mid" : "bad"} mt-2`;
-    let html = `المخطط: <b>${st.scores[p].toFixed(2)} / ${max}</b> (${res.correct}/${res.total} عنصر صحيح)` +
-      (res.wrongSlots.length ? `<br>⚠️ عناصر في غير موضعها: ${res.wrongSlots.length}` : "");
-    if (ex.poles[p].modelAnswer) {
-      html += `
-        <details class="model-box">
-          <summary class="model-summary">📖 المخطط التركيبي النموذجي</summary>
-          <div class="model-body">
-            <div class="model-text">${escapeHTML(ex.poles[p].modelAnswer)}</div>
-          </div>
-        </details>`;
+
+    const wrongOrder = res.wrongSlots.filter(x => x.reason === "wrong-order").length;
+    const wrongStream = res.wrongSlots.filter(x => x.reason === "wrong-stream").length;
+    let html = `المخطط: <b>${st.scores[p].toFixed(2)} / ${max}</b> (${res.correct}/${res.total} عنصر صحيح تماماً)`;
+    html += `<br><span class="text-white"><b>تصحيح الأستاذ:</b> في المخطط لا تكفي الفكرة العامة؛ يجب احترام المسار والترتيب معاً.</span>`;
+    html += `<br><span class="text-emerald">✓ عناصر صحيحة تماماً:</span> ${res.correct}`;
+    html += `<br><span class="text-indigo">≈ عناصر في المسار الصحيح لكن بترتيب خاطئ:</span> ${wrongOrder}`;
+    html += `<br><span class="text-amber">⚠️ عناصر في المسار الخاطئ:</span> ${wrongStream}`;
+    if (res.missingSlots.length) {
+      html += `<br><span class="text-rose">⛔ خانات ناقصة:</span> ${res.missingSlots.length}`;
     }
+    html += `<br><small class="text-muted">العلامة الجزئية تعتمد على: 1 نقطة للعنصر الصحيح تماماً، ونصف نقطة إذا كانت الفكرة في المسار الصحيح لكن في المكان الخطأ.</small>`;
+    html = appendModelAnswer(html, "📖 المخطط التركيبي النموذجي", ex.poles[p].modelAnswer);
     fb.innerHTML = html;
   }
   store.save();
@@ -1049,6 +1895,7 @@ function goToStep(n) {
   const poleText = $("#pole-text");
   if (poleText) poleText.textContent = `القطب: ${POLE[activePole].title.replace("القطب ", "")}`;
   $$("#stepnav [data-step]").forEach((b, i) => b.classList.toggle("active", i === n - 1));
+  refreshBrouillonQuickCard();
   return { ex, pole: activePole };
 }
 
@@ -1697,6 +2544,7 @@ function openDrawer(side, title, body) {
   $$(`[data-close]`, d).forEach(b => b.addEventListener("click", closeDrawer));
   drawerEscHandler = (e) => { if (e.key === "Escape") closeDrawer(); };
   document.addEventListener("keydown", drawerEscHandler);
+  return d;
 }
 
 /* ---------- Helpers ---------- */

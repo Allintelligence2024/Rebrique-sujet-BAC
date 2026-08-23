@@ -14,6 +14,7 @@ function emptyExercise() {
     answeredAny: false,
     scores: { N: 0, S: 0, E: 0, W: 0 },
     text: { N: "", S: "", E: "", W: "" },
+    scratch: { N: "", S: "", E: "", W: "", free: "" },
     fields: {},                 // zones de saisie multiples (exercice pipeline)
     pipeline: { stream1: [null, null, null, null], stream2: [null, null, null, null] }
   };
@@ -96,7 +97,13 @@ export const store = {
   exercise(sujetId, exNum) {
     if (!this.state.subjects[sujetId]) this.state.subjects[sujetId] = {};
     if (!this.state.subjects[sujetId][exNum]) this.state.subjects[sujetId][exNum] = emptyExercise();
-    return this.state.subjects[sujetId][exNum];
+    const ex = this.state.subjects[sujetId][exNum];
+    if (!ex.scores) ex.scores = { N: 0, S: 0, E: 0, W: 0 };
+    if (!ex.text) ex.text = { N: "", S: "", E: "", W: "" };
+    if (!ex.scratch) ex.scratch = { N: "", S: "", E: "", W: "", free: "" };
+    if (!ex.fields) ex.fields = {};
+    if (!ex.pipeline) ex.pipeline = { stream1: [null, null, null, null], stream2: [null, null, null, null] };
+    return ex;
   },
 
   enterSession(yearId, sujetId) {
