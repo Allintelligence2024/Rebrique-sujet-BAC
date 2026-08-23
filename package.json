@@ -6,7 +6,8 @@
   "description": "بوصلة كنز المنهجية 4D — المنصة التفاعلية الهادئة لبكالوريا الجزائر (v2 modulaire)",
   "scripts": {
     "start": "python3 -m http.server 8080",
-    "test": "node --test tests/*.test.mjs"
+    "test": "node --test tests/*.test.mjs",
+    "test:hard": "node --test tests/hard-benchmark.test.mjs"
   },
   "devDependencies": {
     "jsdom": "^24.0.0"
