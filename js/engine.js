@@ -127,7 +127,8 @@ export function matchConcept(text, conceptDef) {
     if (normText.includes(normSyn)) return true;
 
     const strippedSyn = stemArabicToken(normSyn);
-    if (strippedWords.some(w => w === strippedSyn || (strippedSyn.length >= 4 && w.startsWith(strippedSyn)))) {
+    // Stems trop courts (لأن → ان) collent à أنه / أن — faux positifs méthodologiques.
+    if (strippedSyn.length >= 3 && strippedWords.some(w => w === strippedSyn || (strippedSyn.length >= 4 && w.startsWith(strippedSyn)))) {
       return true;
     }
   }
