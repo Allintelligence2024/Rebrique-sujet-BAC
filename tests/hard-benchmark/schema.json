@@ -21,7 +21,11 @@
           "sujet": { "type": "integer", "minimum": 1 },
           "exercise": { "type": "integer", "minimum": 1 },
           "pole": { "type": "string", "enum": ["N", "S", "E", "W"] },
-          "category": { "type": "string", "minLength": 1 },
+          "category": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Catégories recommandées: excellent, incomplet, hors-sujet, methode-fausse, bonne-forme-fond-faux, confusion-concepts, reconstructed, test"
+          },
           "answer": { "type": "string", "minLength": 5 },
           "humanNote": { "type": "string" },
           "source": { "type": "string", "minLength": 1 },
@@ -32,7 +36,7 @@
             "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
           }
         },
-        "additionalProperties": false
+        "additionalProperties": true
       }
     }
   }

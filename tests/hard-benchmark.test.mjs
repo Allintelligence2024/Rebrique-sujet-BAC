@@ -1,9 +1,9 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { spawn } from "node:child_process";
+import { APP_CONFIG } from "../data/subjects.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CASES_PATH = join(__dirname, "hard-benchmark", "cases.json");
@@ -80,6 +80,33 @@ test("findPole retourne null pour un pôle inexistant", async () => {
 
 test("findPole retourne null pour une année désactivée", async () => {
   const { findPole } = await import("./hard-benchmark/_find-pole.mjs");
-  const result = findPole("2024", 1, 1, "N");
+  const result = findPole("2023", 1, 1, "N");
   assert.equal(result, null);
+});
+
+test("rapport de couverture : copies réelles par pôle APP_CONFIG", () => {
+  const data = loadCases();
+  const counts = new Map();
+  for (const year of APP_CONFIG.years) {
+    for (const sujet of year.sujets || []) {
+      for (const ex of sujet.exercises || []) {
+        for (const pole of ["N", "S", "E", "W"]) {
+          if (!ex.poles?.[pole]) continue;
+          const key = `${year.id}/S${sujet.id}/E${ex.number}/${pole}`;
+          counts.set(key, 0);
+        }
+      }
+    }
+  }
+  for (const c of data.cases) {
+    const key = `${c.year}/S${c.sujet}/E${c.exercise}/${c.pole}`;
+    if (counts.has(key)) counts.set(key, counts.get(key) + 1);
+  }
+  const empty = [...counts.entries()].filter(([, n]) => n === 0).map(([k]) => k);
+  console.log(`📊 Couverture hard-benchmark : ${data.cases.length} copie(s) réelle(s) / ${counts.size} pôle(s).`);
+  if (empty.length) {
+    console.log(`⚠️  Pôles sans aucune copie réelle (${empty.length}) :`);
+    empty.forEach(k => console.log(`   - ${k}`));
+  }
+  assert.ok(counts.size > 0, "APP_CONFIG doit exposer au moins un pôle");
 });
