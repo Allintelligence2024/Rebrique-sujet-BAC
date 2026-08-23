@@ -85,7 +85,39 @@ compare les réponses à des **mots-clés normalisés** (via `normalizeArabic`) 
 ```bash
 npm install      # installe jsdom (devDependency)
 npm test         # 11 tests : moteur (6) + intégration UI (5)
+npm run test:hard # tests du pipeline hard-benchmark + intégrité des données
 ```
+
+---
+
+## 🧱 Pipeline de collecte de copies réelles (hard benchmark)
+
+Le dossier `tests/hard-benchmark/` contient le pipeline pour ajouter des copies
+d'élèves réelles au format `cases.json`.
+
+### Commande
+
+```bash
+node tests/hard-benchmark/import-copy.mjs
+```
+
+Le script accepte soit un fichier JSON en argument, soit un mode interactif.
+
+### 5 étapes manuelles
+
+1. **Scan** — scanner le sujet officiel et les copies d'élèves anonymisées.
+2. **Anonymisation** — retirer nom/prénom/établissement/date de naissance.
+3. **Transcription** — transcrire la réponse de l'élève mot pour mot.
+4. **Annotation** — un correcteur humain attribue la catégorie et une note.
+5. **Import** — lancer le script ci-dessus ; il valide, génère l'ID, détecte
+   les marqueurs LLM et écrit dans `cases.json`.
+
+### Garde-fous
+
+- Le test `data-integrity.test.mjs` échoue si une `source` contient des mots-clés
+  synthétiques (`synthetic`, `généré`, `LLM`, `GPT`, `Claude`, `Gemini`, `chatbot`,
+  `fabriqué`).
+- `cases.json` est trié automatiquement par année/sujet/exercice/pôle.
 
 ---
 

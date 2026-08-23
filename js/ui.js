@@ -86,7 +86,7 @@ export function renderHub() {
           </div>
           <div>
             <h3 class="mt-0 mb-1">${y.label}</h3>
-            <p class="small text-muted mt-0">${disabled ? "لم تُرفق وثائق PDF لهذه الدورة بعد — قريباً." : "جلسة شاملة وفق نظام الأقطاب 4D الهادئ."}</p>
+            <p class="small text-muted mt-0">${disabled ? (y.loadingNote || "لم تُرفق وثائق PDF لهذه الدورة بعد — قريباً.") : "جلسة شاملة وفق نظام الأقطاب 4D الهادئ."}</p>
           </div>
         </div>
         <button class="btn btn-block ${y.theme === 'emerald' ? 'btn-emerald' : y.theme === 'indigo' ? 'btn-indigo' : 'btn-amber'}" ${disabled ? "disabled" : ""} data-year="${y.id}">
@@ -180,8 +180,22 @@ function renderStrategy(sujetNum) {
               <button class="btn btn-purple btn-sm" data-preview="2">الموضوع 02</button>
             </div>
           </div>
-          <div style="height:60vh;background:var(--bg)">
-            <iframe id="strategy-pdf" src="${(y.sujets[0] || {}).pdf || ''}" style="width:100%;height:100%;border:0"></iframe>
+          <div style="height:60vh;background:var(--bg)" id="pdf-preview-container">
+            ${(() => {
+              const s = y.sujets[0];
+              if (s && s.pdfAvailable && s.pdf) {
+                return `<iframe id="strategy-pdf" src="${s.pdf}" style="width:100%;height:100%;border:0"></iframe>`;
+              }
+              if (s && s.pdfExternalUrl) {
+                return `<div class="center stack" style="height:100%;justify-content:center">
+                  <p class="small text-muted">${s.pdfNote || "PDF non disponible localement."}</p>
+                  <a class="btn btn-indigo" href="${s.pdfExternalUrl}" target="_blank" rel="noopener noreferrer">📄 Ouvrir la source externe</a>
+                </div>`;
+              }
+              return `<div class="center stack" style="height:100%;justify-content:center">
+                <p class="small text-muted">Aucun PDF disponible pour cette session.</p>
+              </div>`;
+            })()}
           </div>
         </div>
 
@@ -231,8 +245,11 @@ function calcCard(n, theme) {
 
 function setPdfPreview(n) {
   const y = yearObj(store.state.yearId);
-  const pdf = y.sujets.find(s => s.id === n)?.pdf;
-  $("#strategy-pdf").src = pdf || "";
+  const s = y.sujets.find(s => s.id === n);
+  const iframe = $("#strategy-pdf");
+  if (iframe && s) {
+    iframe.src = s.pdfAvailable && s.pdf ? s.pdf : "about:blank";
+  }
   $$("#view-strategy [data-preview]").forEach(b => {
     const active = +b.dataset.preview === n;
     const color = active ? (n === 1 ? "btn-indigo" : "btn-purple") : "btn-ghost";
@@ -811,8 +828,17 @@ function openAtlas() {
 
 function openPdfDrawer() {
   const s = sujetObj();
-  openDrawer("right", `📄 وثيقة الموضوع ${s.id === 1 ? "الأول" : "الثاني"} المختار فقط (PDF)`,
-    `<iframe src="${s.pdf}" style="width:100%;height:100%;min-height:70vh;border:0"></iframe>`);
+  const body = s.pdfAvailable && s.pdf
+    ? `<iframe src="${s.pdf}" style="width:100%;height:100%;min-height:70vh;border:0"></iframe>`
+    : s.pdfExternalUrl
+      ? `<div class="center stack" style="height:100%;justify-content:center">
+           <p class="small text-muted">${s.pdfNote || "PDF non disponible localement."}</p>
+           <a class="btn btn-indigo" href="${s.pdfExternalUrl}" target="_blank" rel="noopener noreferrer">📄 Ouvrir la source externe</a>
+         </div>`
+      : `<div class="center stack" style="height:100%;justify-content:center">
+           <p class="small text-muted">Aucun PDF disponible pour cette session.</p>
+         </div>`;
+  openDrawer("right", `📄 وثيقة الموضوع ${s.id === 1 ? "الأول" : "الثاني"} المختار فقط (PDF)`, body);
 }
 
 function openDrawer(side, title, body) {

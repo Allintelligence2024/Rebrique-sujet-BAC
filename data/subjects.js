@@ -40,6 +40,8 @@ export const APP_CONFIG = {
         {
           id: 1,
           pdf: "BAC2025_SVT_Sujet1.pdf",
+          pdfAvailable: true,
+          pdfNote: "PDF officiel fourni dans le dépôt.",
           title: "الموضوع الأول",
           exercises: [
             {
@@ -111,6 +113,8 @@ export const APP_CONFIG = {
         {
           id: 2,
           pdf: "BAC2025_SVT_Sujet2.pdf",
+          pdfAvailable: true,
+          pdfNote: "PDF officiel fourni dans le dépôt.",
           title: "الموضوع الثاني",
           exercises: [
             {
@@ -173,15 +177,35 @@ export const APP_CONFIG = {
       label: "بكالوريا الجزائر دورة 2024",
       badge: "دورة رسمية",
       theme: "indigo",
-      enabled: false,          // PDF non fournis -> désactivé proprement
-      sujets: []
+      enabled: false,
+      sujets: [
+        {
+          id: 1,
+          pdf: null,
+          pdfAvailable: false,
+          pdfExternalUrl: "https://bac-algerie.net/sujets/2024/bac2024-Sciences-experimentales.pdf",
+          pdfNote: "PDF non redistribué dans le dépôt ; source externe: bac-algerie.net (consulté 2026-08-23). Session de remplacement non localisée.",
+          title: "الموضوع الأول",
+          exercises: []
+        },
+        {
+          id: 2,
+          pdf: null,
+          pdfAvailable: false,
+          pdfExternalUrl: "https://bac-algerie.net/sujets/2024/bac2024-Sciences-experimentales.pdf",
+          pdfNote: "PDF non redistribué dans le dépôt ; source externe: bac-algerie.net (consulté 2026-08-23). Session de remplacement non localisée.",
+          title: "الموضوع الثاني",
+          exercises: []
+        }
+      ]
     },
     {
       id: "2023",
       label: "بكالوريا الجزائر دورة 2023",
       badge: "تدريب منهجي",
       theme: "amber",
-      enabled: false,          // PDF non fournis -> désactivé proprement
+      enabled: false,
+      loadingNote: "Sujets 2023 non localisés au 2026-08-23 — source bac-algerie.net identifiée mais extraction texte en attente.",
       sujets: []
     }
   ]
