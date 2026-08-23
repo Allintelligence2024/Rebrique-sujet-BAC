@@ -85,6 +85,128 @@ test("évaluation texte — réponse vide = zéro", () => {
   assert.equal(res.fraction, 0);
 });
 
+test("évaluation texte — فعل التسمية يقبل جوابا قصيرا ودقيقا", () => {
+  const rule = {
+    prompt: "سم العضية المسؤولة عن تركيب البروتين",
+    modelAnswer: "الريبوزوم",
+    keywords: [["الريبوزوم", "ريبوزوم"]],
+    minHits: 1
+  };
+  const res = evaluateText("الريبوزوم", rule);
+  assert.equal(res.taskProfile?.id, "naming");
+  assert.equal(res.isKeywordDump, true);
+  assert.equal(res.fraction, 1);
+});
+
+test("évaluation texte — فعل الذكر لا ينهار لمجرد أنه تعداد قصير", () => {
+  const rule = {
+    prompt: "اذكر مراحل الانقسام الخيطي المتساوي",
+    modelAnswer: "التمهيدية، الاستوائية، الانفصالية، النهائية",
+    keywords: ["التمهيدية", "الاستوائية", "الانفصالية", "النهائية"],
+    minHits: 2
+  };
+  const res = evaluateText("التمهيدية، الاستوائية، الانفصالية، النهائية", rule);
+  assert.equal(res.taskProfile?.id, "listing");
+  assert.equal(res.fraction, 1);
+});
+
+test("évaluation texte — حدد المتغيرات selon le contexte", () => {
+  const rule = {
+    prompt: "حدد المتغير المستقل والتابع في تجربة نمو الخميرة",
+    modelAnswer: "المتغير المستقل هو تركيز الغلوكوز، والمتغير التابع هو عدد خلايا الخميرة.",
+    keywords: ["تركيز الغلوكوز", "عدد خلايا الخميرة"],
+    minHits: 2
+  };
+  const res = evaluateText("المتغير المستقل: تركيز الغلوكوز، والمتغير التابع: عدد خلايا الخميرة.", rule);
+  assert.equal(res.taskProfile?.id, "variables");
+  assert.equal(res.fraction, 1);
+});
+
+test("évaluation texte — حدد العلاقة devient une vraie relation et non une liste", () => {
+  const rule = {
+    prompt: "حدد العلاقة بين وجود الغلوكوز وعدد خلايا الخميرة",
+    modelAnswer: "كلما تواجد الغلوكوز في الوسط ازداد عدد خلايا الخميرة، فهي علاقة طردية.",
+    keywords: ["الغلوكوز", "عدد خلايا الخميرة", "علاقة طردية"],
+    minHits: 2
+  };
+  const res = evaluateText("كلما تواجد الغلوكوز في الوسط ازداد عدد خلايا الخميرة، فهي علاقة طردية.", rule);
+  assert.equal(res.taskProfile?.id, "relation");
+  assert.ok(res.fraction >= 0.75);
+});
+
+test("évaluation texte — استخرج المفتوحة exige un vrai passage par le document", () => {
+  const rule = {
+    prompt: "استخرج من الوثيقة شروط تركيب ATP انطلاقاً من معطيات التجربة",
+    modelAnswer: "تمثل الوثيقة شروط تركيب ATP، حيث يركب فقط بوجود ADP و Pi وتدرج بروتوني، ومنه نستنتج أن التدرج البروتوني شرط أساسي.",
+    keywords: ["ADP", "Pi", ["تدرج بروتوني", "التدرج البروتوني"], "ATP"],
+    minHits: 2
+  };
+  const res = evaluateText("تمثل الوثيقة شروط التركيب، حيث نلاحظ أن ATP لا يركب إلا بوجود ADP و Pi وتدرج بروتوني، ومنه نستنتج أن التدرج البروتوني شرط أساسي.", rule, "S");
+  assert.equal(res.taskProfile?.id, "extraction");
+  assert.ok(res.methodology.score >= 0.75);
+});
+
+test("évaluation texte — علق المفتوحة exige observation, explication et conclusion", () => {
+  const rule = {
+    prompt: "علق على نتائج الوثيقة المتعلقة بنشاط الإنزيم",
+    modelAnswer: "تمثل الوثيقة تغير نشاط الإنزيم بدلالة تركيز الركيزة؛ نلاحظ تزايد النشاط ثم ثباته، وهذا راجع إلى تشبع المواقع الفعالة، ومنه نستنتج أن السرعة ترتبط بتركيز الركيزة إلى غاية التشبع.",
+    keywords: ["نشاط الإنزيم", "تركيز الركيزة", "تشبع"],
+    minHits: 2
+  };
+  const res = evaluateText("تمثل الوثيقة تغير نشاط الإنزيم بدلالة تركيز الركيزة، حيث نلاحظ تزايد النشاط ثم ثباته، وهذا راجع إلى تشبع المواقع الفعالة، ومنه نستنتج أن السرعة ترتبط بتركيز الركيزة إلى غاية التشبع.", rule, "S");
+  assert.equal(res.taskProfile?.id, "commentary");
+  assert.ok(res.methodology.score >= 0.75);
+});
+
+test("évaluation texte — وضح المفتوحة تتطلب تحليلا قبل التفسير", () => {
+  const rule = {
+    prompt: "باستغلال الوثيقة وضح آلية تأثير الدواء على نشاط الإنزيم",
+    modelAnswer: "تمثل الوثيقة تغير نشاط الإنزيم في وجود وغياب الدواء، حيث نلاحظ انخفاض النشاط في وجوده، وهذا راجع إلى ارتباط الدواء بالموقع الفعال ومنع تشكل المعقد إنزيم-ركيزة، ومنه نستنتج أن الدواء مثبط تنافسي.",
+    keywords: ["الدواء", "نشاط الإنزيم", "الموقع الفعال", "مثبط تنافسي"],
+    minHits: 2
+  };
+  const res = evaluateText("تمثل الوثيقة تغير نشاط الإنزيم في وجود وغياب الدواء، حيث نلاحظ انخفاض النشاط في وجوده، وهذا راجع إلى ارتباط الدواء بالموقع الفعال ومنع تشكل المعقد إنزيم-ركيزة، ومنه نستنتج أن الدواء مثبط تنافسي.", rule, "E");
+  assert.equal(res.taskProfile?.id, "analysis-explanation");
+  assert.ok(res.methodology.score >= 0.8);
+});
+
+test("évaluation texte — وضح المفتوحة تعاقب القفز المباشر إلى السبب", () => {
+  const rule = {
+    prompt: "باستغلال الوثيقة وضح آلية تأثير الدواء على نشاط الإنزيم",
+    modelAnswer: "تمثل الوثيقة تغير نشاط الإنزيم في وجود وغياب الدواء، حيث نلاحظ انخفاض النشاط في وجوده، وهذا راجع إلى ارتباط الدواء بالموقع الفعال ومنع تشكل المعقد إنزيم-ركيزة، ومنه نستنتج أن الدواء مثبط تنافسي.",
+    keywords: ["الدواء", "نشاط الإنزيم", "الموقع الفعال", "مثبط تنافسي"],
+    minHits: 2
+  };
+  const res = evaluateText("يعود تأثير الدواء إلى ارتباطه بالموقع الفعال ومنع نشاط الإنزيم.", rule, "E");
+  assert.equal(res.taskProfile?.id, "analysis-explanation");
+  assert.ok(res.methodology.score < 0.75);
+});
+
+test("évaluation texte — وضح المفتوحة غير المكتملة لا تنال 100%", () => {
+  const rule = {
+    prompt: "باستغلال الوثيقة وضح آلية تأثير الدواء على نشاط الإنزيم",
+    modelAnswer: "تمثل الوثيقة تغير نشاط الإنزيم في وجود وغياب الدواء، حيث نلاحظ انخفاض النشاط في وجوده، وهذا راجع إلى ارتباط الدواء بالموقع الفعال ومنع تشكل المعقد إنزيم-ركيزة، ومنه نستنتج أن الدواء مثبط تنافسي.",
+    keywords: ["الدواء", "نشاط الإنزيم", "الموقع الفعال", "مثبط تنافسي"],
+    minHits: 2
+  };
+  const res = evaluateText("تمثل الوثيقة تغير نشاط الإنزيم، حيث نلاحظ انخفاضه بوجود الدواء.", rule, "E");
+  assert.equal(res.taskProfile?.id, "analysis-explanation");
+  assert.ok(res.methodology.score >= 0.75);
+  assert.ok(res.fraction < 1);
+});
+
+test("évaluation texte — analyse pure reste distincte de analyse plus تفسير", () => {
+  const rule = {
+    prompt: "حلل نتائج الوثيقة 1",
+    modelAnswer: "تمثل الوثيقة تغير عدد الخلايا بدلالة الزمن، حيث نلاحظ تزايداً تدريجياً ثم ثباتاً، ومنه نستنتج أن النمو يرتفع ثم يستقر.",
+    keywords: ["عدد الخلايا", "الزمن", "تزايد", "ثبات"],
+    minHits: 2
+  };
+  const pure = evaluateText("تمثل الوثيقة تغير عدد الخلايا بدلالة الزمن، حيث نلاحظ تزايداً تدريجياً ثم ثباتاً، ومنه نستنتج أن النمو يرتفع ثم يستقر.", rule, "S");
+  const contaminated = evaluateText("تمثل الوثيقة تغير عدد الخلايا بدلالة الزمن، حيث نلاحظ تزايداً تدريجياً ثم ثباتاً بسبب تنشيط الإنزيم، ومنه نستنتج أن النمو يرتفع ثم يستقر.", rule, "S");
+  assert.ok(pure.methodology.score > contaminated.methodology.score);
+});
+
 test("évaluation pipeline — arrangement parfait = 100%", () => {
   const perfect = { stream1: ["b1","b2","b3","b4"], stream2: ["b5","b6","b7","b8"] };
   const res = evaluatePipeline(ex3.blocksBank, perfect);
