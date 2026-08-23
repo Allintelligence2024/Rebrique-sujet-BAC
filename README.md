@@ -75,8 +75,18 @@ Le **barème 4D** adapte les points officiels à la méthode (N/S/E/W), et l'év
 compare les réponses à des **mots-clés normalisés** (via `normalizeArabic`) + inter-dits
 (ex. « بسبب » pénalisé à l'étape S) + longueur minimale.
 
-> ⚠️ Les PDF sont **scannés** : le barème/mots-clés est une reconstruction fidèle de
-> l'OCR du corrigé officiel, mais **à vérifier humainement** avant diffusion.
+> ⚠️ Les PDF 2025 du dépôt sont **scannés**. Les `bacPrompt` marqués `official`
+> ont été relus visuellement page par page (2026-08-23). Le reste reste `reconstructed`.
+
+### Provenance des consignes
+
+| Année | État | PDF local | Source externe | Consignes |
+|------|------|-----------|----------------|-----------|
+| **2025** | activée | `BAC2025_SVT_Sujet1.pdf`, `BAC2025_SVT_Sujet2.pdf` | — | Pôles `official` relus sur le scan ; autres `reconstructed` |
+| **2024** | activée | aucun (droit d'auteur) | [eddirasa sujet](https://eddirasa.com/bac-science-2024-se/) · [PDF](https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf) · [dzexams](https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09) | `reconstructed` — PDF distant non extrait ici (SSL sortant KO). Session de remplacement non localisée. |
+| **2023** | **désactivée** | aucun | [dzexams 2023](https://www.dzexams.com/ar/annales/STRDZEowcCtwN0JmT1NwS3p4cEVmdz09) | sujets non extraits au 2026-08-23 |
+
+Aucun PDF 2024/2023 n'est versé dans le dépôt.
 
 ---
 
