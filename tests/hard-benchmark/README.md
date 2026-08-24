@@ -33,6 +33,8 @@ Commande :
 node tests/hard-benchmark/import-copy.mjs
 # ou avec un fichier JSON :
 node tests/hard-benchmark/import-copy.mjs /tmp/copie.json
+# validation sans écriture :
+node tests/hard-benchmark/import-copy.mjs /tmp/copie.json --dry-run
 ```
 
 ### 5 étapes manuelles

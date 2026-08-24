@@ -25,10 +25,14 @@ test("cases.json existe et est un objet JSON valide", () => {
   assert.ok(Array.isArray(data.cases), "cases.json.cases doit être un tableau");
 });
 
-test("cases.json vide passe avec un avertissement (0 copie réelle)", () => {
+test("cases.json peut rester vide — aucune copie n'est inventée", () => {
   const data = loadCases();
-  assert.equal(data.cases.length, 0);
-  console.log("⚠️  0 copie réelle dans cases.json — pipeline prêt mais vide.");
+  assert.ok(Array.isArray(data.cases));
+  if (data.cases.length === 0) {
+    console.log("⚠️  0 copie réelle dans cases.json — pipeline prêt mais vide.");
+  } else {
+    console.log(`✅ ${data.cases.length} copie(s) réelle(s) déjà importée(s).`);
+  }
 });
 
 test("schéma JSON présent et lisible", () => {
@@ -63,6 +67,63 @@ test("import-copy.mjs existe et est exécutable", () => {
   const src = readFileSync(importPath, "utf8");
   assert.ok(src.includes("generateId"), "import-copy.mjs doit exporter generateId");
   assert.ok(src.includes("detectLLM"), "import-copy.mjs doit détecter les marqueurs LLM");
+  assert.ok(src.includes("--dry-run"), "import-copy.mjs doit exposer --dry-run");
+});
+
+test("validateCase / generateId / detectLLM fonctionnent hors cases.json", async () => {
+  const { validateCase, generateId, detectLLM } = await import("./hard-benchmark/import-copy.mjs");
+  const valid = {
+    id: "2025-S1-E1-N-001",
+    year: "2025",
+    sujet: 1,
+    exercise: 1,
+    pole: "N",
+    category: "incomplet",
+    answer: "المشكل العلمي غير مكتمل في هذه النسخة.",
+    humanNote: "forme partielle",
+    source: "centre-X / copie anonymisée",
+    collector: "correcteur-A",
+    annotator: "correcteur-A",
+    date: "2026-08-24"
+  };
+  assert.deepEqual(validateCase(valid), []);
+  assert.ok(validateCase({ ...valid, answer: "ab" }).includes("answer trop courte"));
+  assert.ok(validateCase({ ...valid, pole: "Z" }).includes("pole invalide"));
+  assert.equal(generateId([], "2025", 1, 1, "N"), "2025-S1-E1-N-001");
+  assert.equal(generateId([valid], "2025", 1, 1, "N"), "2025-S1-E1-N-002");
+  assert.ok(detectLLM("En conclusion, le mécanisme est clair.").includes("En conclusion"));
+  assert.equal(detectLLM("نستنتج أن التدرج البروتوني شرط أساسي.").length, 0);
+});
+
+test("dry-run valide une copie sans écrire dans cases.json", async () => {
+  const { execFileSync } = await import("node:child_process");
+  const { writeFileSync, unlinkSync } = await import("node:fs");
+  const tmp = join(__dirname, "hard-benchmark", ".tmp-dry-run.json");
+  const before = loadCases().cases.length;
+  writeFileSync(tmp, JSON.stringify({
+    year: "2025",
+    sujet: 1,
+    exercise: 1,
+    pole: "N",
+    category: "incomplet",
+    answer: "كيف يتدخل ARN في تركيب البروتين؟",
+    humanNote: "ébauche",
+    source: "centre-X / copie anonymisée",
+    collector: "correcteur-A",
+    annotator: "correcteur-A",
+    date: "2026-08-24"
+  }));
+  try {
+    const out = execFileSync(process.execPath, [
+      join(__dirname, "hard-benchmark", "import-copy.mjs"),
+      tmp,
+      "--dry-run"
+    ], { encoding: "utf8" });
+    assert.match(out, /Dry-run/);
+    assert.equal(loadCases().cases.length, before);
+  } finally {
+    try { unlinkSync(tmp); } catch { /* ignore */ }
+  }
 });
 
 test("findPole résout un pôle existant", async () => {

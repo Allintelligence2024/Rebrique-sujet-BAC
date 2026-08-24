@@ -93,9 +93,10 @@ Aucun PDF 2024/2023 n'est versé dans le dépôt.
 ## 🧪 Tests
 
 ```bash
-npm install      # installe jsdom (devDependency)
-npm test         # 11 tests : moteur (6) + intégration UI (5)
-npm run test:hard # tests du pipeline hard-benchmark + intégrité des données
+npm install       # installe jsdom + esbuild (devDependencies)
+npm test          # moteur, banc BAC, intégrité, UI, hard-benchmark
+npm run test:hard # pipeline de copies réelles (cases.json vide = avertissement OK)
+npm run build     # génère dist/boussole-4d-standalone.html
 ```
 
 ---

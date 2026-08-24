@@ -76,8 +76,21 @@ async function prompt(question) {
   return new Promise(resolve => rl.question(question, ans => { rl.close(); resolve(ans); }));
 }
 
+function printHelp() {
+  console.log(`Usage: node tests/hard-benchmark/import-copy.mjs [fichier.json] [--dry-run] [--yes]
+
+Importe une copie d'élève réelle, anonymisée et annotée par un humain.
+N'invente jamais de copie. Refuse un pôle inexistant ou une année désactivée.
+
+Options:
+  --dry-run   Valide le JSON sans écrire dans cases.json
+  --yes       Confirme malgré une alerte de marqueurs LLM
+  --help      Affiche cette aide
+`);
+}
+
 function parseInput() {
-  const args = process.argv.slice(2).filter(a => a !== "--yes" && a !== "--confirm");
+  const args = process.argv.slice(2).filter(a => !a.startsWith("--"));
   if (!args[0]) return null;
   try {
     if (args[0].trim().startsWith("{")) return JSON.parse(args[0]);
@@ -89,7 +102,12 @@ function parseInput() {
 }
 
 async function main() {
+  if (process.argv.includes("--help") || process.argv.includes("-h")) {
+    printHelp();
+    return;
+  }
   const autoYes = process.argv.includes("--yes") || process.argv.includes("--confirm");
+  const dryRun = process.argv.includes("--dry-run");
   let input = parseInput();
   const data = loadCases();
   const caseObj = input ? { ...input } : {};
@@ -138,6 +156,14 @@ async function main() {
     } else if (!autoYes) {
       console.warn("⚠️  Import non-interactif : copie ajoutée malgré l'alerte (passez --yes pour le taire).");
     }
+  }
+
+  if (dryRun) {
+    console.log(`🔎 Dry-run : copie valide, non écrite (${caseObj.id}).`);
+    console.log(`   Pôle: ${caseObj.year}/S${caseObj.sujet}/E${caseObj.exercise}/${caseObj.pole}`);
+    console.log(`   Catégorie: ${caseObj.category}`);
+    console.log(`   Source: ${caseObj.source}`);
+    return;
   }
 
   data.cases.push(caseObj);
