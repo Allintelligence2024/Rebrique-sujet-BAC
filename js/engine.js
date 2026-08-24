@@ -231,6 +231,10 @@ function inferTaskSignals(rule = {}, poleType = "") {
   const explanationVerbRequested = promptHasToken("اشرح", "وضح", "بين");
   const openInstruction = docDriven && (openVerbCount === 1 || promptHasText("باستغلال", "اعتمادا", "انطلاقا"));
   const requiresOpenExplanation = explanationVerbRequested && openInstruction && !requiresCommentary && !requiresDiscussion;
+  const requiresTechniqueWhy = promptHasText("علل استعمال", "علل استخدام", "لماذا تستعمل") || (promptHasToken("علل") && promptHasText("تقنيه", "تقنية", "نظير", "وسم"));
+  const requiresExtraInfo = promptHasText("معلومه اضافيه", "المعلومة الإضافية", "ما تضيفه", "المعلومه الجديده");
+  const requiresGraphBuild = promptHasText("انجز منحنى", "أنجز منحنى", "ارسم منحنى", "انشئ منحنى", "أنشئ منحنى");
+  const requiresTranslation = promptHasText("ترجم الى مخطط", "ترجم إلى مخطط");
 
   return {
     usesPreciserVerb,
@@ -264,6 +268,10 @@ function inferTaskSignals(rule = {}, poleType = "") {
     requiresDiscussion,
     requiresOpenDiscussion: requiresDiscussion && openInstruction,
     requiresOpenExplanation,
+    requiresTechniqueWhy,
+    requiresExtraInfo,
+    requiresGraphBuild,
+    requiresTranslation,
     requiresValidation: promptHasText("صادق على", "تحقق من صحة", "تأكد من صحة", "ناقش مدى صحة") || promptHasToken("اثبت", "أثبت", "برهن"),
     requiresOpenReasoning: promptHasToken("اشرح", "وضح", "بين", "استدل", "ناقش", "برهن", "اثبت", "أثبت", "علق", "استخرج", "فسر") || requiresRelation || requiresMechanismPrecision,
     allowsCausalTerms: !(poleType === "S" || promptHasToken("تحليل", "حلل", "استغلال") || promptHasText("بالارقام", "بالأرقام"))
@@ -331,6 +339,18 @@ function deriveTaskProfile(signals, poleType) {
   }
   if (signals.requiresOpenExplanation) {
     return buildTaskProfile("analysis-explanation", "تحليل ثم تفسير", "في هذا النوع لا يكفي الشرح المباشر؛ يجب أولاً استغلال الوثيقة أو السند ثم تفسير النتائج والربط بينها.", { mode: "open" });
+  }
+  if (signals.requiresTechniqueWhy) {
+    return buildTaskProfile("technique-why", "تعليل تقنية", "علّل استعمال التقنية أو النظير: لماذا تسمح بقياس أو إثبات المطلوب.", { mode: "closed" });
+  }
+  if (signals.requiresExtraInfo) {
+    return buildTaskProfile("extra-info", "معلومة إضافية", "حدّد ما تضيفه الوثيقة الجديدة دون إعادة الوثيقة الأولى.", { mode: "closed" });
+  }
+  if (signals.requiresGraphBuild) {
+    return buildTaskProfile("graph-build", "إنجاز منحنى", "المنحنى يحتاج محورين بصيغة بدلالة، وعنواناً وسلّماً.", { mode: "closed" });
+  }
+  if (signals.requiresTranslation) {
+    return buildTaskProfile("translation", "ترجمة إلى مخطط", "انقل معطيات السند إلى أسهم أو تسلسل دون درس إضافي.", { mode: "closed" });
   }
   if (signals.requiresJustification || signals.requiresImportance) {
     return buildTaskProfile(signals.requiresImportance ? "importance" : "justification", signals.requiresImportance ? "تحديد أهمية" : "تعليل / تبرير", signals.requiresImportance ? "المطلوب بيان الأهمية أو الفائدة أو الدور العلمي صراحة لا مجرد تسمية العنصر." : "التبرير العلمي يحتاج حججاً من السند ومكتسبات قبلية مع رابطة سببية صريحة.", { mode: signals.openInstruction ? "open" : "closed" });
@@ -531,6 +551,34 @@ function evaluateMethodology(text, normText, poleType, structure, hits, req, rul
     return { score: total ? passed / total : 0, strengths, missing, summary: resolvedTaskProfile.summary, taskType: resolvedTaskProfile.id, taskLabel: resolvedTaskProfile.label, taskMode: resolvedTaskProfile.mode };
   }
 
+  if (resolvedTaskProfile.id === "extra-info") {
+    check(hits > 0 || usesComparison || usesConclusion, "ظهرت المعلومة الجديدة", "حدّد ما تضيفه الوثيقة الثانية ولم يكن في الأولى.");
+    check(hasDocumentIntro || usesObservationVerb || hasEvidenceRegister, "أحلت على السند", "اربط المعلومة الإضافية بالوثيقة التي جاءت منها.");
+    check(structure.wordCount >= 5, "الجواب ليس مبتوراً", "المعلومة الإضافية قصيرة أو عامة جداً.");
+    return { score: total ? passed / total : 0, strengths, missing, summary: resolvedTaskProfile.summary, taskType: resolvedTaskProfile.id, taskLabel: resolvedTaskProfile.label, taskMode: resolvedTaskProfile.mode };
+  }
+
+  if (resolvedTaskProfile.id === "graph-build") {
+    check(matchConcept(normText, ["بدلاله", "بدلالة"]) || hasDocumentIntro, "ذُكرت المحاور أو صيغة بدلالة", "المنحنى يحتاج محورين بصيغة: تغيرات … بدلالة …");
+    check(matchConcept(normText, ["عنوان", "سلم", "وحده", "وحدة"]) || structure.wordCount >= 8, "ذُكر العنوان أو السلم", "أضف عنواناً يعبّر عن العلاقة وسلّماً ووحدات.");
+    check(!usesCausal || structure.wordCount >= 10, "لم يتحول الرسم إلى تفسير", "إنجاز المنحنى وصف إحداثيات، لا تفسير سببي.");
+    return { score: total ? passed / total : 0, strengths, missing, summary: resolvedTaskProfile.summary, taskType: resolvedTaskProfile.id, taskLabel: resolvedTaskProfile.label, taskMode: resolvedTaskProfile.mode };
+  }
+
+  if (resolvedTaskProfile.id === "translation") {
+    check(/→|->|=>|⟶/.test(text) || matchConcept(normText, ["ثم", "يليها"]), "نُقلت المعلومة إلى أسهم أو تسلسل", "الترجمة إلى مخطط تحتاج أسهماً أو «ثم».");
+    check(hits > 0, "العناصر العلمية حاضرة", "المخطط يجب أن يحمل نفس عناصر السند لا درساً جديداً.");
+    check(structure.wordCount <= 40 || hasListMarkers, "المخطط موجز", "لا تحوّل المخطط إلى فقرة درس إضافية.");
+    return { score: total ? passed / total : 0, strengths, missing, summary: resolvedTaskProfile.summary, taskType: resolvedTaskProfile.id, taskLabel: resolvedTaskProfile.label, taskMode: resolvedTaskProfile.mode };
+  }
+
+  if (resolvedTaskProfile.id === "technique-why") {
+    check(hasRole || usesCausal || hasKnowledgeRegister, "ظهر تعليل استعمال التقنية", "علّل لماذا هذه التقنية/النظير: لأنها تسمح بـ …");
+    check(hits > 0 || hasEvidenceRegister, "رُبطت التقنية بالنتيجة", "اربط التقنية بما تقيسه أو ما تثبته.");
+    check(structure.wordCount >= 6, "التعليل كافٍ", "تعليل التقنية قصير جداً.");
+    return { score: total ? passed / total : 0, strengths, missing, summary: resolvedTaskProfile.summary, taskType: resolvedTaskProfile.id, taskLabel: resolvedTaskProfile.label, taskMode: resolvedTaskProfile.mode };
+  }
+
   if (resolvedTaskProfile.id === "analysis-explanation") {
     check(hasDocumentIntro || hasEvidenceRegister, "بدأت باستغلال الوثيقة أو السند", "عند وضح/بين/اشرح في تعليمة مفتوحة، لا تبدأ بالتفسير مباشرة؛ ابدأ بتقديم السند أو الوثيقة.");
     check(usesObservationVerb || usesComparison || hits > 0, "مررت أولاً عبر الملاحظة أو التحليل", "الجواب قفز إلى الشرح دون المرور بتحليل أولي للمعطيات أو الملاحظات.");
@@ -676,9 +724,11 @@ export function evaluateDocument(text, rule = {}) {
   if (Array.isArray(doc.values) && doc.values.length) {
     total += 1;
     const norm = normalizeArabic(text);
-    const hasValue = doc.values.some(v => norm.includes(normalizeArabic(String(v)))) || /[0-9٠-٩]/.test(text);
+    const cited = doc.values.some(v => norm.includes(normalizeArabic(String(v))));
+    const anyDigit = /[0-9٠-٩]/.test(text);
+    const hasValue = doc.strictValues ? cited : (cited || anyDigit);
     if (hasValue) passed += 1;
-    else gaps.push("لا توجد قيمة أو اتجاه رقمي مستخرج من السند");
+    else gaps.push(doc.strictValues ? "القيم المذكورة ليست قيم السند المطلوبة" : "لا توجد قيمة أو اتجاه رقمي مستخرج من السند");
   }
 
   (doc.domains || []).forEach(domain => {
@@ -696,9 +746,33 @@ export function evaluateDocument(text, rule = {}) {
     else gaps.push("لم تُذكر محاور المنحنى أو صيغة «بدلالة»");
   }
 
+  (doc.relations || []).forEach(rel => {
+    total += 1;
+    const both = matchConcept(text, rel.a) && matchConcept(text, rel.b);
+    const typed = rel.type === "inverse"
+      ? matchConcept(text, ["عكسي", "تناسب عكسي", "بينما", "في حين"])
+      : rel.type === "sync"
+        ? matchConcept(text, ["تزامن", "معا", "في نفس", "تطابق"])
+        : matchConcept(text, ["بينما", "في حين", "مقابل", "بالمقابل", "كلما"]);
+    if (both && typed) passed += 1;
+    else gaps.push(`العلاقة المقارنة ناقصة (${rel.type || "parallel"}): ${rel.a} / ${rel.b}`);
+  });
+
+  (doc.cells || []).forEach(cell => {
+    const tokens = Array.isArray(cell) ? cell : [cell.row, cell.col, cell.expect].filter(Boolean);
+    total += 1;
+    if (tokens.filter(tok => matchConcept(text, tok)).length >= Math.min(2, tokens.length)) passed += 1;
+    else gaps.push(`خانة الجدول غير مقروءة: ${tokens[0]}`);
+  });
+
   if (/يرتفع المنحني|ينخفض المنحني|ينزل المنحني|المنحني يرتفع|المنحني ينخفض/.test(normalizeArabic(text))) {
     total += 1;
     gaps.push("صف تغيّر الظاهرة لا حركة المنحنى");
+  }
+
+  if (/هذا يدل/.test(normalizeArabic(text)) && !/مما يدل/.test(normalizeArabic(text))) {
+    total += 1;
+    gaps.push("«هذا يدل» في قراءة السند تقترب من التفسير؛ اترك كلما… ثم نستنتج");
   }
 
   return { applicable: total > 0, score: total ? passed / total : 1, gaps };
@@ -753,6 +827,80 @@ export function evaluateArtifact(text, rule = {}) {
   return { applicable: total > 0, score: total ? passed / total : 1, gaps };
 }
 
+export function evaluateHypotheses(text, rule = {}) {
+  const spec = rule.hypotheses;
+  if (!spec) return { applicable: false, score: 1, gaps: [], count: 0, distinct: true };
+  const min = spec.min || 2;
+  const norm = normalizeArabic(text);
+  const numbered = /فرضيه\s*1|الفرضيه\s*1|اولا/.test(norm) && /فرضيه\s*2|الفرضيه\s*2|ثانيا/.test(norm);
+  const causalBits = (text || "").split(/[.\n؛;]/).filter(s => matchConcept(s, ["يعود", "يتنافس", "يثبط", "يفرز", "نفترض", "بسبب"]));
+  const count = numbered ? 2 : Math.max((norm.match(/فرضيه/g) || []).length, causalBits.length);
+  const parts = (text || "").split(/فرضيه\s*2|الفرضيه\s*2|ثانيا|2\s*:/i);
+  let distinct = true;
+  if (parts.length >= 2) {
+    const t1 = new Set(extractInformativeTokens(parts[0]));
+    const t2 = new Set(extractInformativeTokens(parts[1]));
+    const inter = [...t1].filter(tok => t2.has(tok)).length;
+    const union = new Set([...t1, ...t2]).size;
+    distinct = union ? (inter / union) < 0.75 : false;
+  }
+  const gaps = [];
+  if (count < min) gaps.push(`المطلوب ${min} فرضيتان مميزتان، لا فرضية واحدة.`);
+  if (spec.distinct !== false && parts.length >= 2 && !distinct) gaps.push("الفرضيتان متطابقتان تقريباً؛ غيّر الآلية المقترحة في كل واحدة.");
+  if (matchConcept(norm, ["ربما", "لعل"])) gaps.push("تجنّب ربما/لعل في الفرضية (كتفي 2023).");
+  const score = gaps.length ? Math.max(0, 1 - 0.4 * gaps.length) : 1;
+  return { applicable: true, score, gaps, count, distinct };
+}
+
+export function evaluateClosingCover(text, relatedProblem) {
+  if (!relatedProblem) return { applicable: false, score: 1, overlap: 0 };
+  const answer = new Set(extractInformativeTokens(text));
+  const problem = extractInformativeTokens(relatedProblem).slice(0, 8);
+  if (!problem.length) return { applicable: false, score: 1, overlap: 0 };
+  const hit = problem.filter(tok => answer.has(tok)).length;
+  const ratio = hit / Math.min(4, problem.length);
+  return { applicable: true, score: Math.min(1, ratio), overlap: ratio };
+}
+
+export function evaluateTechnique(text, rule = {}) {
+  const spec = rule.technique;
+  if (!spec) return { applicable: false, score: 1, gaps: [] };
+  const names = spec.names || [];
+  const roles = spec.role || [];
+  const gaps = [];
+  let passed = 0;
+  let total = 0;
+  if (names.length) {
+    total += 1;
+    if (names.some(n => matchConcept(text, n))) passed += 1;
+    else gaps.push(`التقنية غير مذكورة: ${names[0]}`);
+  }
+  if (roles.length) {
+    total += 1;
+    if (roles.some(r => matchConcept(text, r))) passed += 1;
+    else gaps.push("لم يُعلَّل دور التقنية أو ما تسمح بقياسه");
+  }
+  return { applicable: total > 0, score: total ? passed / total : 1, gaps };
+}
+
+export function evaluateAnalysisRubric(text, rule = {}, poleType = "") {
+  const doc = rule.document;
+  const analysisLike = poleType === "S" || /حلل|تحليل|استغل/.test(normalizeArabic(rule.prompt || ""));
+  if (!analysisLike && !doc) return { applicable: false, steps: [], display: "" };
+  const intro = matchConcept(text, ["يمثل", "تتمثل", "الوثيقه", "الوثيقة", "المنحني", "المنحنى", "الجدول", "الشكل"]) || matchConcept(text, "بدلالة");
+  const domains = matchConcept(text, ["تزايد", "تناقص", "ثبات", "ينخفض", "يرتفع", "منخفض", "مرتفع", "انعدام", "قيمة قصوى", "قيمة دنيا"]);
+  const values = /[0-9٠-٩]/.test(text) || (doc?.values || []).some(v => matchConcept(text, String(v)));
+  const conclusion = matchConcept(text, ["نستنتج", "استنتاج", "مما يدل", "ومنه"]);
+  const steps = [
+    { id: "intro", label: "التقديم", weight: 0.25, passed: intro },
+    { id: "domains", label: "المجالات", weight: 0.25, passed: domains },
+    { id: "values", label: "القيم", weight: 0.25, passed: values },
+    { id: "conclusion", label: "الاستنتاج", weight: 0.25, passed: conclusion }
+  ];
+  const display = steps.map(s => `${s.label} ${s.passed ? s.weight.toFixed(2) : "0.00"}/${s.weight.toFixed(2)}`).join(" — ");
+  return { applicable: true, steps, display, score: steps.filter(s => s.passed).length / steps.length };
+}
+
 function buildProfessorVerdict(fraction, methodologyScore, overlapRatio) {
   if (fraction >= 0.9) return "جواب قريب جداً من تصحيح الأستاذ.";
   if (fraction >= 0.75) return methodologyScore < 0.55
@@ -793,7 +941,11 @@ export function evaluateText(text, rule = {}, poleType = "") {
       science: { errors: [], score: 1 },
       document: { applicable: false, score: 1, gaps: [] },
       artifact: { applicable: false, score: 1, gaps: [] },
-      coach: { tips: [], flags: [], script: null }
+      coach: { tips: [], flags: [], script: null },
+      rubric: { applicable: false, steps: [], display: "" },
+      hypotheses: { applicable: false, score: 1, gaps: [] },
+      closing: { applicable: false, score: 1, overlap: 0 },
+      technique: { applicable: false, score: 1, gaps: [] }
     };
   }
 
@@ -821,6 +973,10 @@ export function evaluateText(text, rule = {}, poleType = "") {
   const science = evaluateScience(text, rule);
   const documentEval = evaluateDocument(text, rule);
   const artifact = evaluateArtifact(text, rule);
+  const hypotheses = evaluateHypotheses(text, rule);
+  const closing = evaluateClosingCover(text, rule.relatedProblem);
+  const technique = evaluateTechnique(text, rule);
+  const rubric = evaluateAnalysisRubric(text, rule, poleType);
   const richnessScore = Math.min(1, ((structure.informativeWords >= 5 ? 1 : structure.informativeWords / 5) + (structure.hasConnectors ? 1 : Math.min(1, structure.connectorHits / 2))) / 2);
   const weights = getPoleWeights(poleType, taskProfile);
   const toleratesShortAnswer = !!taskProfile.toleratesShortAnswer;
@@ -849,6 +1005,10 @@ export function evaluateText(text, rule = {}, poleType = "") {
 
   if (documentEval.applicable) fraction *= (0.6 + 0.4 * documentEval.score);
   if (artifact.applicable) fraction *= (0.75 + 0.25 * artifact.score);
+  if (hypotheses.applicable) fraction *= (0.7 + 0.3 * hypotheses.score);
+  if (technique.applicable) fraction *= (0.8 + 0.2 * technique.score);
+  if (closing.applicable && taskProfile.id === "scientific-text" && closing.score < 0.5) fraction *= 0.85;
+  if (!signals.allowsCausalTerms && /هذا يدل/.test(norm) && !/مما يدل/.test(norm)) fraction *= 0.85;
   if (science.errors.length) {
     fraction = Math.min(fraction * science.score, 0.45);
   }
@@ -866,7 +1026,13 @@ export function evaluateText(text, rule = {}, poleType = "") {
 
   if (structure.isKeywordDump && !toleratesShortAnswer) fraction = 0;
   if (forbiddenFound.length > 0) fraction = Math.min(fraction, 0.3);
-  const allowPerfect = science.errors.length === 0 && (!documentEval.applicable || documentEval.score >= 0.99) && (!artifact.applicable || artifact.score >= 0.99) && !thinContent && !coach.flags.includes("maybe-word");
+  const allowPerfect = science.errors.length === 0
+    && (!documentEval.applicable || documentEval.score >= 0.99)
+    && (!artifact.applicable || artifact.score >= 0.99)
+    && (!hypotheses.applicable || hypotheses.score >= 0.99)
+    && (!technique.applicable || technique.score >= 0.99)
+    && (!(closing.applicable && taskProfile.id === "scientific-text") || closing.score >= 0.5)
+    && !thinContent && !coach.flags.includes("maybe-word");
   if (allowPerfect && (!structure.isKeywordDump || toleratesShortAnswer) && forbiddenFound.length === 0 && hits >= req && methodology.score >= perfectMethodologyThreshold && (toleratesShortAnswer || overlap.ratio >= perfectOverlapThreshold) && lengthRatio >= perfectLengthThreshold) {
     fraction = 1;
   }
@@ -893,7 +1059,11 @@ export function evaluateText(text, rule = {}, poleType = "") {
     science,
     document: documentEval,
     artifact,
-    coach
+    coach,
+    rubric,
+    hypotheses,
+    closing,
+    technique
   };
 }
 

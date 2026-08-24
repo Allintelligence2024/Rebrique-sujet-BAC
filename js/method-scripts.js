@@ -159,6 +159,22 @@ export const METHOD_SCRIPTS = {
   synthesis: {
     title: "تركيب / خلاصة",
     steps: ["اجمع النتائج", "أجِب عن المشكل المطروح في N"]
+  },
+  "extra-info": {
+    title: "معلومة إضافية",
+    steps: ["ما لم يكن في الوثيقة الأولى", "صرّح بالإضافة دون إعادة السند السابق"]
+  },
+  "graph-build": {
+    title: "إنجاز منحنى",
+    steps: ["محوران بصيغة بدلالة", "عنوان + سلم + وحدات"]
+  },
+  translation: {
+    title: "ترجمة إلى مخطط",
+    steps: ["أسهم أو «ثم»", "نفس عناصر السند فقط"]
+  },
+  "technique-why": {
+    title: "تعليل تقنية",
+    steps: ["سمّ التقنية", "لماذا تسمح بالقياس أو الإثبات"]
   }
 };
 
@@ -197,6 +213,10 @@ export function evaluateMethodCoach({ text = "", norm = "", poleType = "", taskI
       tips.push("حلّل المنحنى بمجالات (تزايد / تناقص / ثبات) واذكر القيم الحدية وصيغة «بدلالة».");
       flags.push("curve-domains");
     }
+    if (hasAny(resolvedNorm, ["كلما"])) flags.push("surface-relation");
+    if (hasAny(resolvedNorm, ["تزايد سريع", "تزايد تدريجي", "تزايد بطيء", "تناقص حاد", "تناقص بطيء", "حتى تنعدم"])) {
+      flags.push("intensity-vocab");
+    }
   }
 
   if (taskId === "hypothesis" || (poleType === "N" && hasAny(normalizeArabic(text), ["فرضية", "فرضيه"]))) {
@@ -233,6 +253,17 @@ export function evaluateMethodCoach({ text = "", norm = "", poleType = "", taskI
   if (taskId === "explanation" && wordCount > 0 && !hasAny(resolvedNorm, ["بسبب", "يعود", "نتيجه", "نتيجة", "مما يؤدي", "لذلك", "لان", "لأن"])) {
     tips.push("التفسير يبدأ من الملاحظة ثم السلسلة: يعود ذلك إلى → آلية → نتيجة.");
     flags.push("no-causal");
+  }
+
+  if (taskId === "explanation" || taskId === "analysis-explanation") {
+    if (hasAny(resolvedNorm, ["نوعي", "مكمل", "موقع فعال"]) && !hasAny(resolvedNorm, ["يعود", "مما يؤدي", "يرتبط", "يثبط", "ينشط"])) {
+      tips.push("المصطلح النوعي وحده لا يكفي؛ اربطه بموقع الارتباط أو التكامل البنيوي.");
+      flags.push("specificity-without-fit");
+    }
+    if (wordCount > 8 && !hasAny(resolvedNorm, ["موقع", "مستقبل", "انزيم", "قناه", "قناة", "رامزه", "كودون", "رسول"])) {
+      tips.push("انزل إلى المستوى الجزيئي: موقع، مستقبل، إنزيم… لا تبقَ عند الظاهرة العامة.");
+      flags.push("shallow-level");
+    }
   }
 
   if (taskId === "commentary" && hasAny(resolvedNorm, ["نلاحظ", "يبين"]) && !hasAny(resolvedNorm, ["بسبب", "يعود", "راجع", "لان", "لأن"])) {

@@ -590,25 +590,42 @@ function modelBox(pole) {
 function formatEvalFeedback(res, score, points) {
   let html = `النتيجة: <b>${score.toFixed(2)} / ${fmtPts(points)}</b> (${Math.round(res.fraction * 100)}%)`;
   if (res.verdict) html += `<br>${res.verdict}`;
+  if (res.rubric?.applicable && res.rubric.display) {
+    html += `<br><span class="small">ميزان التحليل: ${res.rubric.display}</span>`;
+    const skipped = (res.rubric.steps || []).filter(s => !s.passed).map(s => s.label);
+    if (skipped.length) html += `<br>⏭️ خطوات ناقصة: <b>${skipped.join("، ")}</b>`;
+  }
   if (res.missing?.length) html += `<br>🔎 مفاهيم مفتاحية ناقصة: <b>${res.missing.join("، ")}</b>`;
   if (res.forbiddenFound?.length) html += `<br>⛔ كلمة يجب تجنّبها هنا: <b>${res.forbiddenFound.join("، ")}</b>`;
   if (res.science?.errors?.length) html += `<br>🧪 خطأ علمي: <b>${res.science.errors.map(e => e.message).join(" — ")}</b>`;
   if (res.document?.gaps?.length) html += `<br>📄 قراءة السند: <b>${res.document.gaps.join(" — ")}</b>`;
   if (res.artifact?.gaps?.length) html += `<br>✏️ مخطط/معادلة: <b>${res.artifact.gaps.join(" — ")}</b>`;
+  if (res.hypotheses?.gaps?.length) html += `<br>🔬 الفرضيات: <b>${res.hypotheses.gaps.join(" — ")}</b>`;
+  if (res.technique?.gaps?.length) html += `<br>🧫 التقنية: <b>${res.technique.gaps.join(" — ")}</b>`;
+  if (res.closing?.applicable && res.taskProfile?.id === "scientific-text" && res.closing.score < 0.5) html += `<br>🎯 الخاتمة لا تجيب عن المشكل المطروح في القطب N.`;
   if (res.methodology?.missing?.length) html += `<br>🧭 المنهجية: ${res.methodology.missing[0]}`;
   if (res.coach?.tips?.length) html += `<br>📘 من دليل المنهجية: ${res.coach.tips.slice(0, 2).join(" ")}`;
   else if (res.methodology?.score < 0.9 && res.coach?.script?.steps?.length) {
     html += `<br>📘 ${res.coach.script.title}: ${res.coach.script.steps.join(" ← ")}`;
   }
+  const pack = BROUILLON_MODE_DATA.sentenceModels.find(s => {
+    const id = res.taskProfile?.id;
+    if (id === "analysis") return s.title.includes("تقديم");
+    if (id === "explanation") return s.title.includes("تفسير");
+    return false;
+  });
+  if (pack && res.fraction < 0.9) html += `<br>✍️ بدّل: <i>${pack.items[0]}</i>`;
   if (res.empty) html = `لم تُدخل أي إجابة بعد.`;
   return html;
 }
 
-function poleMethodHint(poleType) {
+function poleMethodHint(poleType, pole) {
   const fallback = { N: "problem", S: "analysis", E: "explanation", W: "scientific-text" };
   const script = METHOD_SCRIPTS[fallback[poleType]] || METHOD_SCRIPTS.synthesis;
-  if (!script) return "";
-  return `<div class="method-script"><strong>${script.title}</strong> — ${script.steps.join(" ← ")}</div>`;
+  const verb = detectVerb(pole?.bacPrompt || pole?.prompt || "");
+  const trap = verb?.warning ? `<div class="atlas-trap">${verb.warning}</div>` : "";
+  if (!script) return trap;
+  return `<div class="method-script"><strong>${script.title}</strong> — ${script.steps.join(" ← ")}${trap}</div>`;
 }
 
 function textHTML(ex) {
@@ -621,7 +638,7 @@ function textHTML(ex) {
           ${provenanceBadge(pole)}
           <h3 class="mt-0">${pole.prompt}</h3>
           <p class="small text-muted">${pole.bacPrompt || ""}</p>
-          ${poleMethodHint(p)}
+          ${poleMethodHint(p, pole)}
           ${pole.minLength >= 100
             ? `<textarea class="field" id="fld-${p}" rows="6" placeholder="${pole.placeholder || ""}"></textarea>`
             : `<input class="field" id="fld-${p}" type="text" placeholder="${pole.placeholder || ""}">`}
@@ -653,6 +670,9 @@ function checkText(exNum, p) {
   const input = $("#fld-" + p);
   const text = input ? input.value : "";
   const rule = { ...(pole.rule || {}), prompt: pole.bacPrompt || pole.prompt, modelAnswer: pole.modelAnswer, minLength: pole.minLength };
+  if (p === "W" || /نص علمي|فقرة علمية/.test(pole.bacPrompt || pole.prompt || "")) {
+    rule.relatedProblem = ex.poles.N?.modelAnswer || ex.poles.N?.bacPrompt || "";
+  }
   const res = evaluateText(text, rule, p);
 
   const st = store.exercise(store.state.sujetId, exNum);
@@ -681,8 +701,8 @@ function pipelineHTML(ex) {
       <span class="badge badge-emerald" style="margin-bottom:.6rem">${POLE.N.title} (${fmtPts(ex.poles.N.points)})</span>
       <h3 class="mt-0">${ex.poles.N.prompt}</h3>
       <div class="grid grid-2">
-        <input class="field" id="pipeline-var-indep" type="text" placeholder="المتغير المستقل...">
-        <input class="field" id="pipeline-var-dep" type="text" placeholder="المتغير التابع...">
+        <input class="field" id="pipeline-var-indep" type="text" placeholder="${ex.poles.N.rule?.hypotheses ? "الفرضية 1: يعود السبب إلى…" : "المتغير المستقل..."}">
+        <input class="field" id="pipeline-var-dep" type="text" placeholder="${ex.poles.N.rule?.hypotheses ? "الفرضية 2 (آلية مختلفة)" : "المتغير التابع..."}">
       </div>
       ${micButton("pipeline-var-indep")}
       <div class="feedback hidden" id="fb-N"></div>

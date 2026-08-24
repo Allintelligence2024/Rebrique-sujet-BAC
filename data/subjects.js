@@ -100,7 +100,7 @@ export const APP_CONFIG = {
                   placeholder: "الـARN الرسول ينقل المعلومة، الـARN الناقل يحمل الأحماض الأمينية...",
                   minLength: 120,
                   modelAnswer: "ينقل ARN الرسول المعلومة الوراثية، وينقل ARN الناقل الأحماض الأمينية إلى الريبوزوم حيث يضمن ARN الريبوزومي الترجمة. تكسر مادة RIP الرابطة أدنين–ريبوز فتتوقف الاستطالة ويتوقف تكاثر الخلايا السرطانية.",
-                  rule: { prompt: "اشرح دور أنواع ARN وأثر RIP", keywords: ["الرسول", "الناقل", "الريبوزوم", "الادنين", "السكر", "العرض"], minHits: 3, forbidden: [] }
+                  rule: { prompt: "اشرح دور أنواع ARN وأثر RIP", keywords: ["الرسول", "الناقل", "الريبوزوم", "الادنين", "السكر", "العرض"], minHits: 3, forbidden: [], wrongConcepts: ["SOD", "RUBISCO"] }
                 },
                 W: {
                   points: 1,
@@ -139,7 +139,7 @@ export const APP_CONFIG = {
                   placeholder: "حلّل الشكل (أ): قارن بالتوازي النطبيعي والطافر...",
                   minLength: 90,
                   modelAnswer: "تمثل الوثيقة نسبة نمو النمط الطبيعي والطافر بدلالة تركيز HCO3⁻. نلاحظ نموا مرتفعا عند الطبيعي في التركيز المنخفض بينما ينخفض نمو الطافر، ومنه نستنتج أن النمط الطبيعي يستغل التراكيز المنخفضة بكفاءة أعلى.",
-                  rule: { prompt: "حلل نتائج الشكل أ من الوثيقة 1", keywords: ["نمو", "طبيعي", "طافر", "التركيز", "نسبه"], minHits: 3, forbidden: ["بسبب"], document: { comparisons: [["طبيعي", "طافر"]], trends: [{ about: "طبيعي", expect: ["مرتفع", "نمو"] }, { about: "طافر", expect: ["ينخفض", "منخفض"] }], values: ["منخفض", "مرتفع", "نسبه"] } }
+                  rule: { prompt: "حلل نتائج الشكل أ من الوثيقة 1", keywords: ["نمو", "طبيعي", "طافر", "التركيز", "نسبه"], minHits: 3, forbidden: ["بسبب"], document: { kind: "curve", axes: ["نمو", "تركيز"], comparisons: [["طبيعي", "طافر"]], trends: [{ about: "طبيعي", expect: ["مرتفع", "نمو"] }, { about: "طافر", expect: ["ينخفض", "منخفض"] }], domains: [{ about: "طبيعي", expect: ["مرتفع", "منخفض"] }, { about: "طافر", expect: ["ينخفض", "منخفض"] }], relations: [{ type: "parallel", a: "طبيعي", b: "طافر" }], values: ["منخفض", "مرتفع", "نسبه"], strictValues: true } }
                 },
                 E: {
                   points: 2.5,
@@ -177,7 +177,7 @@ export const APP_CONFIG = {
                   ...OFFICIAL(4, "Relecture visuelle page 4. Verbe officiel : اقترح فرضيتين. Seule consigne chiffrée du الجزء الأول."),
                   minLength: 30,
                   modelAnswer: "الفرضية 1: يتنافس Mtb مع Ado على المستقبل A1R. الفرضية 2: يثبط Mtb إفراز Ado نفسه.",
-                  rule: { prompt: "اقترح فرضيتين حول تأثير Mtb", keywords: ["فرضيه", "ادينوزين", "مستقبل"], minHits: 1, forbidden: [] }
+                  rule: { prompt: "اقترح فرضيتين حول تأثير Mtb", keywords: ["فرضيه", "ادينوزين", "مستقبل"], minHits: 1, forbidden: [], hypotheses: { min: 2, distinct: true } }
                 },
                 S: {
                   points: 2.0,
@@ -186,7 +186,7 @@ export const APP_CONFIG = {
                   ...RECON("Page 4 donne le tableau et la courbe mais la seule consigne écrite est « اقترح فرضيتين ». L'analyse chiffrée est une étape pédagogique, pas une question officielle autonome."),
                   minLength: 60,
                   modelAnswer: "نلاحظ انخفاض النشاط العصبي بارتفاع Ado عند المجموعة 1 أكثر من المجموعة 2، وانخفاض شدة الارتباط بارتفاع Mtb.",
-                  rule: { prompt: "حلل الوثيقة 1 بالأرقام", keywords: ["نشاط", "ارتباط", "تركيز"], minHits: 2, forbidden: ["بسبب"] }
+                  rule: { prompt: "حلل الوثيقة 1 بالأرقام", keywords: ["نشاط", "ارتباط", "تركيز"], minHits: 2, forbidden: ["بسبب"], document: { kind: "curve", axes: ["نشاط", "ارتباط"], comparisons: [["Ado", "Mtb"]], trends: [{ about: "نشاط", expect: ["انخفاض", "Ado"] }, { about: "ارتباط", expect: ["انخفاض", "Mtb"] }], values: ["نشاط", "ارتباط"], strictValues: true } }
                 },
                 E: {
                   points: 4.0,
@@ -204,7 +204,7 @@ export const APP_CONFIG = {
                   ...OFFICIAL(5, "Relecture visuelle page 5. Verbe officiel : وضّح في مخطط. Consigne du الجزء الثالث. Consigne « قدّم نصيحتين » non mappée (un pôle = une consigne)."),
                   minLength: 0,
                   modelAnswer: "Ado → A1R → Gi/Go → انخفاض Ca²⁺ → انخفاض NE → نعاس. في وجود Mtb ينعكس المسار فترتفع اليقظة.",
-                  rule: { prompt: "وضح في مخطط مسار Ado و Mtb", keywords: ["مخطط", "نعاس", "يقظه"], minHits: 1, forbidden: [], schema: { arrows: true, ordered: ["Ado", "A1R", "نعاس"] } }
+                  rule: { prompt: "وضح في مخطط مسار Ado و Mtb", keywords: ["مخطط", "نعاس", "يقظه"], minHits: 1, forbidden: [], schema: { arrows: true, title: "Ado", ordered: ["Ado", "A1R", "نعاس"] } }
                 }
               },
               blocksBank: [
@@ -307,7 +307,7 @@ export const APP_CONFIG = {
                   placeholder: "قارن بالتوازي: نشاط SOD، تراكيز ROS، تلف الخلايا...",
                   minLength: 90,
                   modelAnswer: "نلاحظ عند السليم نشاط SOD مرتفعا وROS وتلفا منخفضين، بينما عند المصاب ينخفض النشاط وترتفع ROS ونسبة التلف. ومنه نستنتج ارتباط التلف بانخفاض نشاط SOD.",
-                  rule: { prompt: "حلل الشكل أ من الوثيقة 1", keywords: ["نشاط", "تراكيز", "تلف", "الخلايا", "سليم"], minHits: 3, forbidden: ["بسبب"], document: { comparisons: [["سليم", "مصاب"]], trends: [{ about: "سليم", expect: ["مرتفع", "نشاط"] }, { about: "مصاب", expect: ["ينخفض", "تلف", "ترتفع"] }], values: ["نشاط", "تراكيز"] } }
+                  rule: { prompt: "حلل الشكل أ من الوثيقة 1", keywords: ["نشاط", "تراكيز", "تلف", "الخلايا", "سليم"], minHits: 3, forbidden: ["بسبب"], document: { kind: "curve", axes: ["نشاط", "تلف"], comparisons: [["سليم", "مصاب"]], trends: [{ about: "سليم", expect: ["مرتفع", "نشاط"] }, { about: "مصاب", expect: ["ينخفض", "تلف", "ترتفع"] }], domains: [{ about: "سليم", expect: ["مرتفع", "نشاط"] }, { about: "مصاب", expect: ["ينخفض", "تلف"] }], relations: [{ type: "inverse", a: "نشاط", b: "تلف" }], values: ["نشاط", "تلف"], strictValues: true } }
                 },
                 E: {
                   points: 2.5,
@@ -356,7 +356,7 @@ export const APP_CONFIG = {
                   placeholder: "حلّل العمليتين وقارن بالتوازي...",
                   minLength: 90,
                   modelAnswer: "نلاحظ ارتفاع الهيموغلوبين والبيليروبين عند نقل الزمرة A إلى O مقارنة بالعكس، مما يدل على انحلال أقوى.",
-                  rule: { prompt: "حلل الشكل أ حول انحلال الدم", keywords: ["انحلال", "هيموغلوبين", "بيليروبين", "زمري"], minHits: 3, forbidden: ["بسبب"] }
+                  rule: { prompt: "حلل الشكل أ حول انحلال الدم", keywords: ["انحلال", "هيموغلوبين", "بيليروبين", "زمري"], minHits: 3, forbidden: ["بسبب"], document: { kind: "table", axes: ["انحلال", "زمره"], comparisons: [["هيموغلوبين", "بيليروبين"]], cells: [["A", "انحلال"], ["O", "هيموغلوبين"]], values: ["هيموغلوبين", "بيليروبين"], strictValues: true } }
                 },
                 E: {
                   points: 2.5,
