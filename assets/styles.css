@@ -386,6 +386,16 @@ summary.model-summary:hover {
 }
 
 /* --- Feedback ------------------------------------------------------ */
+.method-script {
+  font-size: .78rem;
+  line-height: 1.55;
+  color: var(--muted, #94a3b8);
+  background: rgba(99, 102, 241, .07);
+  border: 1px solid var(--line);
+  border-radius: .7rem;
+  padding: .55rem .75rem;
+  margin: .45rem 0 .7rem;
+}
 .feedback { padding: .85rem 1rem; border-radius: .9rem; font-size: .85rem; }
 .feedback.good { background: rgba(16,185,129,.12); border: 1px solid var(--emerald); color: var(--emerald-soft); }
 .feedback.mid  { background: rgba(245,158,11,.12); border: 1px solid var(--amber); color: var(--amber-soft); }

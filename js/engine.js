@@ -9,6 +9,9 @@
 
 import { normalizeArabic, stripArabicClitics } from "../data/subjects.js";
 import { store } from "./store.js";
+import { METHOD_SCRIPTS, evaluateMethodCoach } from "./method-scripts.js";
+
+export { METHOD_SCRIPTS };
 
 /* ---------- Lexique méthodologique & outils de profilage ---------- */
 const CONNECTORS = [
@@ -127,7 +130,11 @@ const CONCEPT_ALIASES = {
   "مضاده": ["مضاد", "جسم مضاد"],
   "بلعمه": ["البلعمة", "phagocytose"],
   "sod": ["سوبر اكسيد"],
-  "rubisco": ["روبيسكو"]
+  "rubisco": ["روبيسكو"],
+  "رامزه": ["كودون", "شفرة"],
+  "كودون": ["رامزة"],
+  "لاذات": ["غير ذات"],
+  "كمون": ["جهد عمل"]
 };
 
 function aliasesFor(term) {
@@ -386,10 +393,10 @@ function evaluateMethodology(text, normText, poleType, structure, hits, req, rul
   };
 
   if (resolvedTaskProfile.id === "scientific-text") {
-    check(hasOpening || structure.wordCount >= 12, "هناك مدخل أو تمهيد مقبول", "النص العلمي يحتاج مدخلاً قصيراً يهيئ للمشكل قبل العرض.");
+    check(hasOpening || structure.wordCount >= 12, "هناك مدخل أو تمهيد مقبول", "مقدمة النص تطرح المشكل بـ ؟ دون الإجابة عنه.");
     check(!resolvedSignals.requiresQuestion || rawHasQuestion || structure.wordCount >= 15, "المشكل أو الفكرة المحورية واضحان", "في النص العلمي الأفضل إبراز الإشكالية أو السؤال المحوري بوضوح.");
     check(structure.connectorHits >= 2 && structure.wordCount >= 12, "العرض مترابط وغني بالروابط", "العرض ضعيف أو مفكك؛ النص العلمي يحتاج عرضاً مترابطاً لا أفكاراً مبعثرة.");
-    check(usesConclusion || (hasParagraphBreak && structure.wordCount >= 16), "الخاتمة أو الحوصلة النهائية حاضرة", "الخاتمة غائبة: اجمع النتيجة في سطر نهائي واضح.");
+    check(usesConclusion || (hasParagraphBreak && structure.wordCount >= 16), "الخاتمة أو الحوصلة النهائية حاضرة", "الخاتمة تجيب بإيجاز عن المشكل المطروح في المقدمة.");
     return { score: total ? passed / total : 0, strengths, missing, summary: resolvedTaskProfile.summary, taskType: resolvedTaskProfile.id, taskLabel: resolvedTaskProfile.label, taskMode: resolvedTaskProfile.mode };
   }
 
@@ -481,7 +488,7 @@ function evaluateMethodology(text, normText, poleType, structure, hits, req, rul
   }
 
   if (resolvedTaskProfile.id === "hypothesis") {
-    check((usesHypothesisRegister && !matchConcept(normText, ["ربما"])) || rawHasQuestion || usesCausal, "هناك محاولة واضحة لصياغة فرضية", "يجب أن تصاغ الفرضية كاقتراح تفسيري معقول، لا كإجابة مبهمة أو محفوظة فقط.");
+    check((usesHypothesisRegister && !matchConcept(normText, ["ربما"])) || rawHasQuestion || usesCausal, "هناك محاولة واضحة لصياغة فرضية", "صغ الفرضية بـ «يعود السبب إلى…» دون «ربما» (كتفي 2023)، لا كإجابة مبهمة.");
     check(usesCausal || usesMechanism, "الفرضية ذات طابع تفسيري", "الفرضية يجب أن تحمل تفسيراً أولياً للنتيجة أو المشكل، لا مجرد إعادة صياغة السؤال.");
     check(structure.wordCount >= 6, "الفرضية مفهومة ومكتملة", "الفرضية قصيرة جداً أو غير مكتملة.");
     return { score: total ? passed / total : 0, strengths, missing, summary: resolvedTaskProfile.summary, taskType: resolvedTaskProfile.id, taskLabel: resolvedTaskProfile.label, taskMode: resolvedTaskProfile.mode };
@@ -553,12 +560,12 @@ function evaluateMethodology(text, normText, poleType, structure, hits, req, rul
   }
 
   if (poleType === "S") {
-    check(!resolvedSignals.requiresDocumentIntro || hasDocumentIntro, "بدأت الجواب بتقديم ما تمثله الوثيقة أو السند", "في التحليل المنهجي يجب أولاً تعريف الوثيقة أو ما تمثله.");
+    check(!resolvedSignals.requiresDocumentIntro || hasDocumentIntro, "بدأت الجواب بتقديم ما تمثله الوثيقة أو السند", "ابدأ بـ: تمثل الوثيقة منحنى/جدولاً لتغيرات … بدلالة …");
     check(!resolvedSignals.requiresObservationVerb || usesObservationVerb, "استُعملت أفعال الملاحظة والتحليل", "التحليل يجب أن يستعمل لغة الملاحظة: نلاحظ، نسجل، يبين، يوضح...");
-    check(!resolvedSignals.requiresComparison || usesComparison || countMarkerHits(normText, meta.secondary) > 0, "الجواب يتضمن مقارنة أو اتجاهاً أو قيمة", "المقارنة أو الاتجاهات الوثائقية غير كافية: اذكر تزايد/تناقص/قيم/مقارنة بالتوازي.");
+    check(!resolvedSignals.requiresComparison || usesComparison || countMarkerHits(normText, meta.secondary) > 0, "الجواب يتضمن مقارنة أو اتجاهاً أو قيمة", "صف المجالات (تزايد/تناقص/ثبات) والقيم أو المقارنة بالتوازي.");
     check(usesConclusion, "الاستنتاج الصريح حاضر", "أنهِ التحليل باستنتاج صريح: مما يدل / نستنتج أن...");
     if (!resolvedSignals.allowsCausalTerms) {
-      check(!usesCausal, "حافظت على التحليل دون القفز إلى التفسير", "قفزت إلى التفسير السببي داخل التحليل، وهذا خطأ منهجي في البكالوريا.");
+      check(!usesCausal, "حافظت على التحليل دون القفز إلى التفسير", "التفسير السببي (لأن / يعود إلى) يُؤجَّل إلى قطب الربط؛ التحليل يصف ثم يستنتج فقط.");
     }
     return { score: total ? passed / total : 0, strengths, missing, summary: resolvedTaskProfile.summary || meta.summary, taskType: resolvedTaskProfile.id, taskLabel: resolvedTaskProfile.label, taskMode: resolvedTaskProfile.mode };
   }
@@ -674,6 +681,26 @@ export function evaluateDocument(text, rule = {}) {
     else gaps.push("لا توجد قيمة أو اتجاه رقمي مستخرج من السند");
   }
 
+  (doc.domains || []).forEach(domain => {
+    total += 1;
+    const aboutOk = matchConcept(text, domain.about);
+    const expectOk = (domain.expect || []).some(item => matchConcept(text, item));
+    if (aboutOk && expectOk) passed += 1;
+    else gaps.push(`مجال المنحنى غير موصوف: ${Array.isArray(domain.about) ? domain.about[0] : domain.about}`);
+  });
+
+  if (Array.isArray(doc.axes) && doc.axes.length) {
+    total += 1;
+    const axisHits = doc.axes.filter(axis => matchConcept(text, axis)).length;
+    if (axisHits >= Math.min(2, doc.axes.length) || matchConcept(text, "بدلالة")) passed += 1;
+    else gaps.push("لم تُذكر محاور المنحنى أو صيغة «بدلالة»");
+  }
+
+  if (/يرتفع المنحني|ينخفض المنحني|ينزل المنحني|المنحني يرتفع|المنحني ينخفض/.test(normalizeArabic(text))) {
+    total += 1;
+    gaps.push("صف تغيّر الظاهرة لا حركة المنحنى");
+  }
+
   return { applicable: total > 0, score: total ? passed / total : 1, gaps };
 }
 
@@ -707,6 +734,12 @@ export function evaluateArtifact(text, rule = {}) {
     total += 1;
     if (/→|->|=>|⟶/.test(text) || matchConcept(text, ["ثم", "يليها"])) passed += 1;
     else gaps.push("المخطط يفتقد الأسهم أو التسلسل الصريح");
+  }
+
+  if (schema?.title) {
+    total += 1;
+    if (matchConcept(text, ["عنوان"]) || matchConcept(text, schema.title)) passed += 1;
+    else gaps.push("المخطط يفتقد العنوان");
   }
 
   if (equation?.tokens?.length) {
@@ -759,7 +792,8 @@ export function evaluateText(text, rule = {}, poleType = "") {
       taskProfile: null,
       science: { errors: [], score: 1 },
       document: { applicable: false, score: 1, gaps: [] },
-      artifact: { applicable: false, score: 1, gaps: [] }
+      artifact: { applicable: false, score: 1, gaps: [] },
+      coach: { tips: [], flags: [], script: null }
     };
   }
 
@@ -819,9 +853,20 @@ export function evaluateText(text, rule = {}, poleType = "") {
     fraction = Math.min(fraction * science.score, 0.45);
   }
 
+  const coach = evaluateMethodCoach({
+    text,
+    norm,
+    poleType,
+    taskId: taskProfile.id,
+    wordCount: structure.wordCount
+  });
+  if (coach.flags.includes("maybe-word") && fraction > 0) {
+    fraction = Math.min(fraction, fraction * 0.75);
+  }
+
   if (structure.isKeywordDump && !toleratesShortAnswer) fraction = 0;
   if (forbiddenFound.length > 0) fraction = Math.min(fraction, 0.3);
-  const allowPerfect = science.errors.length === 0 && (!documentEval.applicable || documentEval.score >= 0.99) && (!artifact.applicable || artifact.score >= 0.99) && !thinContent;
+  const allowPerfect = science.errors.length === 0 && (!documentEval.applicable || documentEval.score >= 0.99) && (!artifact.applicable || artifact.score >= 0.99) && !thinContent && !coach.flags.includes("maybe-word");
   if (allowPerfect && (!structure.isKeywordDump || toleratesShortAnswer) && forbiddenFound.length === 0 && hits >= req && methodology.score >= perfectMethodologyThreshold && (toleratesShortAnswer || overlap.ratio >= perfectOverlapThreshold) && lengthRatio >= perfectLengthThreshold) {
     fraction = 1;
   }
@@ -847,7 +892,8 @@ export function evaluateText(text, rule = {}, poleType = "") {
     taskProfile,
     science,
     document: documentEval,
-    artifact
+    artifact,
+    coach
   };
 }
 

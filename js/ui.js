@@ -6,7 +6,7 @@
 import { APP_CONFIG, normalizeArabic } from "../data/subjects.js";
 import { BROUILLON_MODE_DATA } from "../data/brouillon.js";
 import { store, helpers } from "./store.js";
-import { timers, evaluateText, evaluatePipeline, scoreFromFraction, scoreBac, soundEngine } from "./engine.js";
+import { timers, evaluateText, evaluatePipeline, scoreFromFraction, scoreBac, soundEngine, METHOD_SCRIPTS } from "./engine.js";
 
 const POLE = {
   N: { title: "القطب الشمال", cls: "emerald" },
@@ -596,8 +596,19 @@ function formatEvalFeedback(res, score, points) {
   if (res.document?.gaps?.length) html += `<br>📄 قراءة السند: <b>${res.document.gaps.join(" — ")}</b>`;
   if (res.artifact?.gaps?.length) html += `<br>✏️ مخطط/معادلة: <b>${res.artifact.gaps.join(" — ")}</b>`;
   if (res.methodology?.missing?.length) html += `<br>🧭 المنهجية: ${res.methodology.missing[0]}`;
+  if (res.coach?.tips?.length) html += `<br>📘 من دليل المنهجية: ${res.coach.tips.slice(0, 2).join(" ")}`;
+  else if (res.methodology?.score < 0.9 && res.coach?.script?.steps?.length) {
+    html += `<br>📘 ${res.coach.script.title}: ${res.coach.script.steps.join(" ← ")}`;
+  }
   if (res.empty) html = `لم تُدخل أي إجابة بعد.`;
   return html;
+}
+
+function poleMethodHint(poleType) {
+  const fallback = { N: "problem", S: "analysis", E: "explanation", W: "scientific-text" };
+  const script = METHOD_SCRIPTS[fallback[poleType]] || METHOD_SCRIPTS.synthesis;
+  if (!script) return "";
+  return `<div class="method-script"><strong>${script.title}</strong> — ${script.steps.join(" ← ")}</div>`;
 }
 
 function textHTML(ex) {
@@ -610,6 +621,7 @@ function textHTML(ex) {
           ${provenanceBadge(pole)}
           <h3 class="mt-0">${pole.prompt}</h3>
           <p class="small text-muted">${pole.bacPrompt || ""}</p>
+          ${poleMethodHint(p)}
           ${pole.minLength >= 100
             ? `<textarea class="field" id="fld-${p}" rows="6" placeholder="${pole.placeholder || ""}"></textarea>`
             : `<input class="field" id="fld-${p}" type="text" placeholder="${pole.placeholder || ""}">`}
