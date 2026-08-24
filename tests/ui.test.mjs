@@ -56,7 +56,13 @@ test("les données portent désormais des consignes BAC explicites sur chaque p�
         for (const pole of ["N", "S", "E", "W"]) {
           assert.equal(typeof ex.poles[pole].bacPrompt, "string", `${year.id}/S${sujet.id}/E${ex.number}/${pole} doit avoir bacPrompt`);
           assert.ok(ex.poles[pole].bacPrompt.trim().length > 8, `${year.id}/S${sujet.id}/E${ex.number}/${pole} bacPrompt trop court`);
-          assert.equal(ex.poles[pole].bacPromptSource, "reconstructed", `${year.id}/S${sujet.id}/E${ex.number}/${pole} doit être marqué reconstructed tant qu'il n'est pas vérifié PDF`);
+          const src = ex.poles[pole].bacPromptSource;
+          assert.ok(src === "reconstructed" || src === "official", `${year.id}/S${sujet.id}/E${ex.number}/${pole} source inconnue: ${src}`);
+          if (src === "official") {
+            assert.equal(typeof ex.poles[pole].bacPromptPage, "number");
+            assert.match(ex.poles[pole].bacPromptVerifiedAt, /^\d{4}-\d{2}-\d{2}$/);
+            assert.ok(ex.poles[pole].bacPromptNotes.length > 5);
+          }
         }
       }
     }

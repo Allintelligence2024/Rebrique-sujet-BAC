@@ -72,8 +72,11 @@ test("aucun bacPrompt officiel ne contient de sous-partie ou reconstructed", () 
       for (const ex of sujet.exercises) {
         for (const [poleLetter, pole] of Object.entries(ex.poles)) {
           if (pole.bacPromptSource === "official" && pole.bacPrompt) {
+            const notes = pole.bacPromptNotes || "";
             assert.ok(!pole.bacPrompt.includes("reconstructed"), `bacPrompt officiel contient 'reconstructed' pour ${year.id}/S${sujet.id}/E${ex.number}/${poleLetter}`);
             assert.ok(!pole.bacPrompt.includes("ليس سؤالاً رسمياً مستقلاً"), `bacPrompt officiel contient une sous-partie pour ${year.id}/S${sujet.id}/E${ex.number}/${poleLetter}`);
+            assert.ok(!/— الخاتمة/.test(pole.bacPrompt), `suffixe pédagogique interdit dans bacPrompt officiel ${year.id}/S${sujet.id}/E${ex.number}/${poleLetter}`);
+            assert.ok(!/reconstructed|sous-partie|ليس سؤالاً رسمياً مستقلاً/.test(notes), `notes officielles contaminées pour ${year.id}/S${sujet.id}/E${ex.number}/${poleLetter}`);
           }
         }
       }
@@ -94,6 +97,17 @@ test("un même bacPrompt certifié officiel ne peut pas être partagé par deux 
             officialPrompts.set(pole.bacPrompt, poleLetter);
           }
         }
+      }
+    }
+  }
+});
+
+test("la somme des points N/S/E/W égale ex.max pour chaque exercice", () => {
+  for (const year of APP_CONFIG.years) {
+    for (const sujet of year.sujets || []) {
+      for (const ex of sujet.exercises || []) {
+        const sum = ["N", "S", "E", "W"].reduce((a, p) => a + (ex.poles[p]?.points || 0), 0);
+        assert.ok(Math.abs(sum - ex.max) < 1e-6, `somme pôles ${sum} ≠ max ${ex.max} pour ${year.id}/S${sujet.id}/E${ex.number}`);
       }
     }
   }
