@@ -6,7 +6,7 @@
 import { APP_CONFIG, normalizeArabic } from "../data/subjects.js";
 import { BROUILLON_MODE_DATA } from "../data/brouillon.js";
 import { store, helpers } from "./store.js";
-import { timers, evaluateText, evaluatePipeline, scoreFromFraction, soundEngine } from "./engine.js";
+import { timers, evaluateText, evaluatePipeline, scoreFromFraction, scoreBac, soundEngine } from "./engine.js";
 
 const POLE = {
   N: { title: "القطب الشمال", cls: "emerald" },
@@ -568,13 +568,36 @@ function renderStepnav(ex) {
 
 function renderExercise(ex) {
   const body = $("#ex-content");
-  if (ex.ui === "pipeline") { body.innerHTML = pipelineHTML(ex); bindPipeline(ex); }
-  else { body.innerHTML = textHTML(ex); bindText(ex); }
+  const pending = ex.desc && /non relue|بانتظار PDF|في انتظار/i.test(ex.desc + ex.label)
+    ? `<div class="feedback mid mb-2">هذا التمرين بانتظار إعادة قراءة المصدر الخارجي — لا يُقدَّم كتصحيح وزاري.</div>`
+    : "";
+  if (ex.ui === "pipeline") { body.innerHTML = pending + pipelineHTML(ex); bindPipeline(ex); }
+  else { body.innerHTML = pending + textHTML(ex); bindText(ex); }
+}
+
+function provenanceBadge(pole) {
+  if (pole.bacPromptSource === "official") {
+    return `<span class="badge badge-emerald">رسمي · ص ${pole.bacPromptPage || "؟"}</span>`;
+  }
+  return `<span class="badge">معاد بناؤه — ليس تصحيحاً وزارياً</span>`;
 }
 
 function modelBox(pole) {
   if (!pole.modelAnswer) return "";
   return `<details class="model-box"><summary class="model-summary">الإجابة النموذجية</summary><div class="model-body"><pre class="model-text">${pole.modelAnswer}</pre></div></details>`;
+}
+
+function formatEvalFeedback(res, score, points) {
+  let html = `النتيجة: <b>${score.toFixed(2)} / ${fmtPts(points)}</b> (${Math.round(res.fraction * 100)}%)`;
+  if (res.verdict) html += `<br>${res.verdict}`;
+  if (res.missing?.length) html += `<br>🔎 مفاهيم مفتاحية ناقصة: <b>${res.missing.join("، ")}</b>`;
+  if (res.forbiddenFound?.length) html += `<br>⛔ كلمة يجب تجنّبها هنا: <b>${res.forbiddenFound.join("، ")}</b>`;
+  if (res.science?.errors?.length) html += `<br>🧪 خطأ علمي: <b>${res.science.errors.map(e => e.message).join(" — ")}</b>`;
+  if (res.document?.gaps?.length) html += `<br>📄 قراءة السند: <b>${res.document.gaps.join(" — ")}</b>`;
+  if (res.artifact?.gaps?.length) html += `<br>✏️ مخطط/معادلة: <b>${res.artifact.gaps.join(" — ")}</b>`;
+  if (res.methodology?.missing?.length) html += `<br>🧭 المنهجية: ${res.methodology.missing[0]}`;
+  if (res.empty) html = `لم تُدخل أي إجابة بعد.`;
+  return html;
 }
 
 function textHTML(ex) {
@@ -584,6 +607,7 @@ function textHTML(ex) {
       <div id="panel-${i + 1}" class="${i === 0 ? "" : "hidden"}">
         <div class="card">
           <span class="badge badge-${POLE[p].cls}" style="margin-bottom:.6rem">${POLE[p].title} (${fmtPts(pole.points)})</span>
+          ${provenanceBadge(pole)}
           <h3 class="mt-0">${pole.prompt}</h3>
           <p class="small text-muted">${pole.bacPrompt || ""}</p>
           ${pole.minLength >= 100
@@ -621,7 +645,7 @@ function checkText(exNum, p) {
 
   const st = store.exercise(store.state.sujetId, exNum);
   st.text[p] = text;
-  st.scores[p] = scoreFromFraction(pole.points, res.fraction);
+  st.scores[p] = scoreBac(pole.points, res.fraction);
   if (!st.answeredAny && text.trim()) st.answeredAny = true;
   store.save();
 
@@ -630,11 +654,7 @@ function checkText(exNum, p) {
   fb.classList.remove("hidden");
   const grade = res.fraction >= 0.75 ? "good" : res.fraction >= 0.45 ? "mid" : "bad";
   fb.className = `feedback ${grade} mt-2`;
-  let html = `النتيجة: <b>${st.scores[p].toFixed(2)} / ${fmtPts(pole.points)}</b> (${Math.round(res.fraction * 100)}%)`;
-  if (res.missing?.length) html += `<br>🔎 مفاهيم مفتاحية ناقصة: <b>${res.missing.join("، ")}</b>`;
-  if (res.forbiddenFound?.length) html += `<br>⛔ كلمة يجب تجنّبها هنا: <b>${res.forbiddenFound.join("، ")}</b>`;
-  if (res.empty) html = `لم تُدخل أي إجابة بعد.`;
-  fb.innerHTML = html + modelBox(pole);
+  fb.innerHTML = formatEvalFeedback(res, st.scores[p], pole.points) + modelBox(pole);
   if (!res.empty) goToSuccessStep(exNum);
 }
 
@@ -779,17 +799,17 @@ function checkPipelinePole(exNum, p) {
       if (f) { st.fields[id] = f.value; joined += f.value + " "; }
     });
     const text = joined.trim();
-    const score = text ? scoreFromFraction(ex.poles[p].points, Math.min(1, Math.max(0.5, text.length / (ex.poles[p].minLength || 40)))) : 0;
+    const rule = { ...(ex.poles[p].rule || {}), prompt: ex.poles[p].bacPrompt || ex.poles[p].prompt, modelAnswer: ex.poles[p].modelAnswer, minLength: ex.poles[p].minLength };
+    const res = evaluateText(text, rule, p);
+    const score = text ? scoreBac(ex.poles[p].points, res.fraction) : 0;
     st.scores[p] = score;
     if (!st.answeredAny && text) st.answeredAny = true;
-    fb.className = `feedback ${text ? "good" : "bad"} mt-2`;
-    fb.innerHTML = `نقاط القطب ${p}: <b>${score.toFixed(2)} / ${fmtPts(ex.poles[p].points)}</b>` +
-      (text ? " — أُخذت الإجابات بعين الاعتبار." : " — أدخل نصاً في أحد الحقول أولاً.") +
-      modelBox(ex.poles[p]);
+    fb.className = `feedback ${res.fraction >= 0.75 ? "good" : text ? "mid" : "bad"} mt-2`;
+    fb.innerHTML = formatEvalFeedback(res, score, ex.poles[p].points) + modelBox(ex.poles[p]);
   } else {
     const res = evaluatePipeline(ex.blocksBank, st.pipeline);
     const max = fmtPts(ex.poles[p].points);
-    st.scores[p] = Math.round(res.fraction * ex.poles[p].points * 100) / 100;
+    st.scores[p] = scoreBac(ex.poles[p].points, res.fraction);
     if (!st.answeredAny) st.answeredAny = true;
     fb.className = `feedback ${res.fraction >= 0.75 ? "good" : res.fraction >= 0.4 ? "mid" : "bad"} mt-2`;
     fb.innerHTML = `المخطط: <b>${st.scores[p].toFixed(2)} / ${max}</b> (${res.correct}/${res.total} عنصر صحيح)` +

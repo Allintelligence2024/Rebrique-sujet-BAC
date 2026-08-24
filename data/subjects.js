@@ -139,7 +139,7 @@ export const APP_CONFIG = {
                   placeholder: "حلّل الشكل (أ): قارن بالتوازي النطبيعي والطافر...",
                   minLength: 90,
                   modelAnswer: "تمثل الوثيقة نسبة نمو النمط الطبيعي والطافر بدلالة تركيز HCO3⁻. نلاحظ نموا مرتفعا عند الطبيعي في التركيز المنخفض بينما ينخفض نمو الطافر، ومنه نستنتج أن النمط الطبيعي يستغل التراكيز المنخفضة بكفاءة أعلى.",
-                  rule: { prompt: "حلل نتائج الشكل أ من الوثيقة 1", keywords: ["نمو", "طبيعي", "طافر", "التركيز", "نسبه"], minHits: 3, forbidden: ["بسبب"] }
+                  rule: { prompt: "حلل نتائج الشكل أ من الوثيقة 1", keywords: ["نمو", "طبيعي", "طافر", "التركيز", "نسبه"], minHits: 3, forbidden: ["بسبب"], document: { comparisons: [["طبيعي", "طافر"]], trends: [{ about: "طبيعي", expect: ["مرتفع", "نمو"] }, { about: "طافر", expect: ["ينخفض", "منخفض"] }], values: ["منخفض", "مرتفع", "نسبه"] } }
                 },
                 E: {
                   points: 2.5,
@@ -149,7 +149,7 @@ export const APP_CONFIG = {
                   placeholder: "يتشرب CO₂ من الوسط، أنزيم RUBISCO يثبّته على RuBP...",
                   minLength: 110,
                   modelAnswer: "يعود ذلك إلى تجميع HCO3⁻ في البيرينويد وتحويله إلى CO₂ بواسطة CA ثم تثبيته بأنزيم RUBISCO على RudIP مما يسمح بتحويل الطاقة الضوئية رغم انخفاض CO₂ الخارجي.",
-                  rule: { prompt: "اشرح آلية تحويل الطاقة عند النمط الطبيعي", keywords: ["الانزيم", "تثبيت", "البيرينويد", "التيلاكوئيد", "الضوئيه"], minHits: 3, forbidden: [] }
+                  rule: { prompt: "اشرح آلية تحويل الطاقة عند النمط الطبيعي", keywords: ["الانزيم", "تثبيت", "البيرينويد", "التيلاكوئيد", "الضوئيه"], minHits: 3, forbidden: [], wrongConcepts: ["SOD", "اميلاد", "هيموغلوبين"], causalOrder: ["البيرينويد", "تثبيت", "الضوئيه"] }
                 },
                 W: {
                   points: 1,
@@ -204,7 +204,7 @@ export const APP_CONFIG = {
                   ...OFFICIAL(5, "Relecture visuelle page 5. Verbe officiel : وضّح في مخطط. Consigne du الجزء الثالث. Consigne « قدّم نصيحتين » non mappée (un pôle = une consigne)."),
                   minLength: 0,
                   modelAnswer: "Ado → A1R → Gi/Go → انخفاض Ca²⁺ → انخفاض NE → نعاس. في وجود Mtb ينعكس المسار فترتفع اليقظة.",
-                  rule: { prompt: "وضح في مخطط مسار Ado و Mtb", keywords: ["مخطط", "نعاس", "يقظه"], minHits: 1, forbidden: [] }
+                  rule: { prompt: "وضح في مخطط مسار Ado و Mtb", keywords: ["مخطط", "نعاس", "يقظه"], minHits: 1, forbidden: [], schema: { arrows: true, ordered: ["Ado", "A1R", "نعاس"] } }
                 }
               },
               blocksBank: [
@@ -268,7 +268,7 @@ export const APP_CONFIG = {
                   placeholder: "الخطوة 1/الخطوة 2، أنزيم، ATP، البيروفيك...",
                   minLength: 120,
                   modelAnswer: "خلال التحلل السكري يُفسفر الغلوكوز ثم يُشق إلى جزيئتي حمض بيروفيك مع إنتاج صافٍ من ATP. يثبط 2-DG الإنزيم المنشط للخطوة 1 فيتوقف التحويل وتتوقف الخلايا السرطانية عن التكاثر.",
-                  rule: { prompt: "اشرح تفاعلات التحلل السكري وأثر 2-DG", keywords: ["الخطوه", "انزيم", "فوسفات", "ثنائي", "الطاقه"], minHits: 3, forbidden: [] }
+                  rule: { prompt: "اشرح تفاعلات التحلل السكري وأثر 2-DG", keywords: ["الخطوه", "انزيم", "فوسفات", "ثنائي", "الطاقه"], minHits: 3, forbidden: [], equation: { tokens: ["ATP", "ADP", "جلوكوز", "بيروفيك"], minTokens: 2 }, wrongConcepts: ["SOD", "RUBISCO"] }
                 },
                 W: {
                   points: 1,
@@ -307,7 +307,7 @@ export const APP_CONFIG = {
                   placeholder: "قارن بالتوازي: نشاط SOD، تراكيز ROS، تلف الخلايا...",
                   minLength: 90,
                   modelAnswer: "نلاحظ عند السليم نشاط SOD مرتفعا وROS وتلفا منخفضين، بينما عند المصاب ينخفض النشاط وترتفع ROS ونسبة التلف. ومنه نستنتج ارتباط التلف بانخفاض نشاط SOD.",
-                  rule: { prompt: "حلل الشكل أ من الوثيقة 1", keywords: ["نشاط", "تراكيز", "تلف", "الخلايا", "سليم"], minHits: 3, forbidden: ["بسبب"] }
+                  rule: { prompt: "حلل الشكل أ من الوثيقة 1", keywords: ["نشاط", "تراكيز", "تلف", "الخلايا", "سليم"], minHits: 3, forbidden: ["بسبب"], document: { comparisons: [["سليم", "مصاب"]], trends: [{ about: "سليم", expect: ["مرتفع", "نشاط"] }, { about: "مصاب", expect: ["ينخفض", "تلف", "ترتفع"] }], values: ["نشاط", "تراكيز"] } }
                 },
                 E: {
                   points: 2.5,
@@ -317,7 +317,7 @@ export const APP_CONFIG = {
                   placeholder: "الموقع الفعّال، النحاس، الزنك، طفرة/خلل...",
                   minLength: 110,
                   modelAnswer: "يعود الخلل إلى تغير بقايا الموقع الفعال فلا تُثبَّت شوارد النحاس/الزنك فيفقد الإنزيم قدرته على تحويل O₂⁻.",
-                  rule: { prompt: "بين سبب الخلل في وظيفة SOD", keywords: ["الموقع", "الفعال", "النحاس", "الزنك", "خلل"], minHits: 3, forbidden: [] }
+                  rule: { prompt: "بين سبب الخلل في وظيفة SOD", keywords: ["الموقع", "الفعال", "النحاس", "الزنك", "خلل"], minHits: 3, forbidden: [], wrongConcepts: ["RUBISCO", "روبيسكو", "هيموغلوبين"], causalOrder: ["الموقع", "النحاس"] }
                 },
                 W: {
                   points: 1,
@@ -587,7 +587,8 @@ export const APP_CONFIG = {
                     modelAnswer: "يركب ATP فقط بوجود ADP و Pi وتدرج بروتوني.",
                     keywords: ["ADP", "Pi", ["تدرج بروتوني", "التدرج البروتوني"], "ATP", "كريه"],
                     minHits: 4,
-                    forbidden: ["بسبب"]
+                    forbidden: ["بسبب"],
+                    document: { comparisons: [], values: ["ADP", "Pi"], trends: [{ about: "ATP", expect: ["ADP", "Pi", "تدرج"] }] }
                   }
                 },
                 E: {

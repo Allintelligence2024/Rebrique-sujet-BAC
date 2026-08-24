@@ -110,13 +110,39 @@ function computeReferenceOverlap(text, rule = {}) {
   };
 }
 
+const CONCEPT_ALIASES = {
+  "تركيب": ["اصطناع", "تخليق"],
+  "اصطناع": ["تركيب", "تخليق"],
+  "بروتين": ["بروتينات", "عديدات الببتيد"],
+  "رسول": ["مرنا", "mrna", "arnm"],
+  "ناقل": ["ارنت", "arnt", "trna"],
+  "ريبوزوم": ["ريبوزومي", "ريبوزومات"],
+  "طبيعي": ["الشاهد", "سليم"],
+  "طافر": ["طفرة", "الطافر"],
+  "نمو": ["تكاثر"],
+  "انزيم": ["إنزيم", "انزيمات"],
+  "تدرج": ["تدرج بروتوني", "التدرج البروتوني"],
+  "كريه": ["كرية", "الكرية المذنبة"],
+  "مستضد": ["مولد الضد", "antigene"],
+  "مضاده": ["مضاد", "جسم مضاد"],
+  "بلعمه": ["البلعمة", "phagocytose"],
+  "sod": ["سوبر اكسيد"],
+  "rubisco": ["روبيسكو"]
+};
+
+function aliasesFor(term) {
+  const key = normalizeArabic(term);
+  const extra = CONCEPT_ALIASES[key] || CONCEPT_ALIASES[key.replace(/^ال/, "")] || [];
+  return [term, ...extra];
+}
+
 /* ---------- Vérification d'un concept sémantique ---------- */
 export function matchConcept(text, conceptDef) {
   if (!text) return false;
   const normText = normalizeArabic(text);
   if (!normText) return false;
 
-  const synonyms = Array.isArray(conceptDef) ? conceptDef : [conceptDef];
+  const synonyms = (Array.isArray(conceptDef) ? conceptDef : [conceptDef]).flatMap(aliasesFor);
   const words = normText.split(/\s+/).filter(Boolean);
   const strippedWords = words.map(stripArabicClitics).map(stemArabicToken);
 
@@ -574,6 +600,126 @@ function getPoleWeights(poleType, taskProfile = null) {
   }
 }
 
+export function evaluateScience(text, rule = {}) {
+  const errors = [];
+  (rule.wrongConcepts || []).forEach(concept => {
+    if (matchConcept(text, concept)) {
+      errors.push({
+        type: "wrong-concept",
+        label: Array.isArray(concept) ? concept[0] : concept,
+        message: `مفهوم علمي غير مناسب هنا: ${Array.isArray(concept) ? concept[0] : concept}`
+      });
+    }
+  });
+
+  const order = rule.causalOrder || [];
+  if (order.length >= 2) {
+    const norm = normalizeArabic(text);
+    const positions = order.map(concept => {
+      const syns = (Array.isArray(concept) ? concept : [concept]).flatMap(aliasesFor).map(normalizeArabic);
+      let idx = -1;
+      syns.forEach(s => {
+        const at = s ? norm.indexOf(s) : -1;
+        if (at >= 0 && (idx < 0 || at < idx)) idx = at;
+      });
+      return idx;
+    });
+    const known = positions.filter(p => p >= 0);
+    const causal = matchConcept(norm, ["مما يؤدي", "يعود", "بسبب", "لذلك", "فتتوقف", "فيمنع"]);
+    if (causal && known.length >= 2) {
+      const firstKnown = positions.findIndex(p => p >= 0);
+      const lastKnown = positions.length - 1 - [...positions].reverse().findIndex(p => p >= 0);
+      if (firstKnown >= 0 && lastKnown > firstKnown && positions[firstKnown] > positions[lastKnown]) {
+        errors.push({
+          type: "inverted-causal",
+          label: "سلسلة سببية مقلوبة",
+          message: "الاتجاه السببي مقلوب بالنسبة للآلية المطلوبة."
+        });
+      }
+    }
+  }
+  return {
+    errors,
+    score: errors.length ? Math.max(0, 1 - 0.5 * errors.length) : 1
+  };
+}
+
+export function evaluateDocument(text, rule = {}) {
+  const doc = rule.document;
+  if (!doc) return { applicable: false, score: 1, gaps: [] };
+  const gaps = [];
+  let passed = 0;
+  let total = 0;
+
+  (doc.comparisons || []).forEach(pair => {
+    const [a, b] = pair;
+    total += 1;
+    if (matchConcept(text, a) && matchConcept(text, b)) passed += 1;
+    else gaps.push(`المقارنة الوثائقية ناقصة: ${a} / ${b}`);
+  });
+
+  (doc.trends || []).forEach(trend => {
+    total += 1;
+    const aboutOk = matchConcept(text, trend.about);
+    const expectOk = (trend.expect || []).some(item => matchConcept(text, item));
+    if (aboutOk && expectOk) passed += 1;
+    else gaps.push(`اتجاه الوثيقة غير مقروء: ${Array.isArray(trend.about) ? trend.about[0] : trend.about}`);
+  });
+
+  if (Array.isArray(doc.values) && doc.values.length) {
+    total += 1;
+    const norm = normalizeArabic(text);
+    const hasValue = doc.values.some(v => norm.includes(normalizeArabic(String(v)))) || /[0-9٠-٩]/.test(text);
+    if (hasValue) passed += 1;
+    else gaps.push("لا توجد قيمة أو اتجاه رقمي مستخرج من السند");
+  }
+
+  return { applicable: total > 0, score: total ? passed / total : 1, gaps };
+}
+
+export function evaluateArtifact(text, rule = {}) {
+  const gaps = [];
+  let passed = 0;
+  let total = 0;
+  const schema = rule.schema;
+  const equation = rule.equation;
+
+  if (schema?.ordered?.length) {
+    total += 1;
+    const norm = normalizeArabic(text);
+    const idxs = schema.ordered.map(step => {
+      const syns = (Array.isArray(step) ? step : [step]).flatMap(aliasesFor).map(normalizeArabic);
+      let at = -1;
+      syns.forEach(s => {
+        const i = s ? norm.indexOf(s) : -1;
+        if (i >= 0 && (at < 0 || i < at)) at = i;
+      });
+      return at;
+    });
+    const found = idxs.filter(i => i >= 0);
+    const ordered = found.length >= Math.min(3, schema.ordered.length) &&
+      found.every((v, i, arr) => i === 0 || v >= arr[i - 1]);
+    if (ordered) passed += 1;
+    else gaps.push("ترتيب المخطط أو السلسلة غير مطابق");
+  }
+
+  if (schema?.arrows) {
+    total += 1;
+    if (/→|->|=>|⟶/.test(text) || matchConcept(text, ["ثم", "يليها"])) passed += 1;
+    else gaps.push("المخطط يفتقد الأسهم أو التسلسل الصريح");
+  }
+
+  if (equation?.tokens?.length) {
+    total += 1;
+    const hits = equation.tokens.filter(tok => matchConcept(text, tok)).length;
+    const need = equation.minTokens || Math.min(2, equation.tokens.length);
+    if (hits >= need) passed += 1;
+    else gaps.push("المعادلة الكيميائية ناقصة أو غير مكتملة");
+  }
+
+  return { applicable: total > 0, score: total ? passed / total : 1, gaps };
+}
+
 function buildProfessorVerdict(fraction, methodologyScore, overlapRatio) {
   if (fraction >= 0.9) return "جواب قريب جداً من تصحيح الأستاذ.";
   if (fraction >= 0.75) return methodologyScore < 0.55
@@ -610,7 +756,10 @@ export function evaluateText(text, rule = {}, poleType = "") {
       overlap: { ratio: 0, matchedTokens: [], missingTokens: [], referenceTokens: [], answerTokens: [] },
       richnessScore: 0,
       verdict: "",
-      taskProfile: null
+      taskProfile: null,
+      science: { errors: [], score: 1 },
+      document: { applicable: false, score: 1, gaps: [] },
+      artifact: { applicable: false, score: 1, gaps: [] }
     };
   }
 
@@ -635,6 +784,9 @@ export function evaluateText(text, rule = {}, poleType = "") {
   const contentRatio = req ? Math.min(1, hits / req) : (hits > 0 ? 1 : 0);
   const overlap = computeReferenceOverlap(text, rule);
   const methodology = evaluateMethodology(text, norm, poleType, structure, hits, req, rule, taskProfile, signals);
+  const science = evaluateScience(text, rule);
+  const documentEval = evaluateDocument(text, rule);
+  const artifact = evaluateArtifact(text, rule);
   const richnessScore = Math.min(1, ((structure.informativeWords >= 5 ? 1 : structure.informativeWords / 5) + (structure.hasConnectors ? 1 : Math.min(1, structure.connectorHits / 2))) / 2);
   const weights = getPoleWeights(poleType, taskProfile);
   const toleratesShortAnswer = !!taskProfile.toleratesShortAnswer;
@@ -658,9 +810,19 @@ export function evaluateText(text, rule = {}, poleType = "") {
     fraction = Math.min(1, fraction);
   }
 
+  const thinContent = !toleratesShortAnswer && keywords.length >= 4 && hits <= 2 && overlap.ratio < 0.45;
+  if (thinContent && fraction > 0) fraction = Math.min(fraction, 0.72);
+
+  if (documentEval.applicable) fraction *= (0.6 + 0.4 * documentEval.score);
+  if (artifact.applicable) fraction *= (0.75 + 0.25 * artifact.score);
+  if (science.errors.length) {
+    fraction = Math.min(fraction * science.score, 0.45);
+  }
+
   if (structure.isKeywordDump && !toleratesShortAnswer) fraction = 0;
   if (forbiddenFound.length > 0) fraction = Math.min(fraction, 0.3);
-  if ((!structure.isKeywordDump || toleratesShortAnswer) && forbiddenFound.length === 0 && hits >= req && methodology.score >= perfectMethodologyThreshold && (toleratesShortAnswer || overlap.ratio >= perfectOverlapThreshold) && lengthRatio >= perfectLengthThreshold) {
+  const allowPerfect = science.errors.length === 0 && (!documentEval.applicable || documentEval.score >= 0.99) && (!artifact.applicable || artifact.score >= 0.99) && !thinContent;
+  if (allowPerfect && (!structure.isKeywordDump || toleratesShortAnswer) && forbiddenFound.length === 0 && hits >= req && methodology.score >= perfectMethodologyThreshold && (toleratesShortAnswer || overlap.ratio >= perfectOverlapThreshold) && lengthRatio >= perfectLengthThreshold) {
     fraction = 1;
   }
 
@@ -682,12 +844,22 @@ export function evaluateText(text, rule = {}, poleType = "") {
     structure,
     lengthRatio,
     verdict: buildProfessorVerdict(fraction, methodology.score, overlap.ratio),
-    taskProfile
+    taskProfile,
+    science,
+    document: documentEval,
+    artifact
   };
 }
 
-export function scoreFromFraction(points, fraction) {
-  return Math.round(points * fraction * 100) / 100;
+export function scoreFromFraction(points, fraction, options = {}) {
+  const raw = Number(points) * Number(fraction);
+  const step = options.step ?? 0.01;
+  if (step === 0.25) return Math.round(raw * 4) / 4;
+  return Math.round(raw * 100) / 100;
+}
+
+export function scoreBac(points, fraction) {
+  return scoreFromFraction(points, fraction, { step: 0.25 });
 }
 
 /* ---------- Évaluation du pipeline (exercice 3) ---------- */

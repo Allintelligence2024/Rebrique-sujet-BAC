@@ -5,7 +5,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { APP_CONFIG, normalizeArabic, stripArabicClitics } from "../data/subjects.js";
-import { evaluateText, evaluatePipeline, scoreFromFraction, matchConcept } from "../js/engine.js";
+import { evaluateText, evaluatePipeline, scoreFromFraction, scoreBac, matchConcept } from "../js/engine.js";
 
 const ex1 = APP_CONFIG.years[0].sujets[0].exercises[0];
 const ex3 = APP_CONFIG.years[0].sujets[0].exercises.find(e => e.ui === "pipeline");
@@ -238,4 +238,58 @@ test("BAC 2024 — évaluation exercice 3 (Pipeline Immunité خلطية / خل�
   const res = evaluatePipeline(ex3_2024.blocksBank, perfect);
   assert.equal(res.correct, 8);
   assert.equal(res.fraction, 1);
+});
+
+test("correcteur — phrase fluide avec mauvais enzyme est plafonnée", () => {
+  const poleE = APP_CONFIG.years[0].sujets[0].exercises[1].poles.E;
+  const fluentWrong = "يعود انخفاض النمو إلى نشاط أنزيم SOD في البيرينويد والتيلاكوئيد مما يمنع تثبيت الطاقة الضوئية.";
+  const res = evaluateText(fluentWrong, poleE.rule, "E");
+  assert.ok(res.science.errors.some(e => e.type === "wrong-concept"));
+  assert.ok(res.fraction <= 0.45);
+});
+
+test("correcteur — lecture de document exige la comparaison الطبيعي/الطافر", () => {
+  const poleS = APP_CONFIG.years[0].sujets[0].exercises[1].poles.S;
+  const noCompare = "نلاحظ نموا مرتفعا في التركيز المنخفض ومنه نستنتج كفاءة الاستغلال.";
+  const res = evaluateText(noCompare, poleS.rule, "S");
+  assert.ok(res.document.applicable);
+  assert.ok(res.document.gaps.length > 0);
+  assert.ok(res.fraction < 1);
+});
+
+test("correcteur — المخطط بدون أسهم لا ينال العلامة الكاملة", () => {
+  const rule = {
+    prompt: "وضح في مخطط مسار Ado",
+    keywords: ["Ado", "نعاس"],
+    minHits: 1,
+    schema: { arrows: true, ordered: ["Ado", "A1R", "نعاس"] }
+  };
+  const res = evaluateText("Ado على A1R يسبب نعاس", rule, "W");
+  assert.ok(res.artifact.applicable);
+  assert.ok(res.artifact.gaps.length > 0);
+});
+
+test("correcteur — السلسلة السببية المقلوبة تُرصد", () => {
+  const rule = {
+    prompt: "فسر الآلية",
+    keywords: ["موقع", "نحاس"],
+    minHits: 1,
+    causalOrder: ["موقع", "نحاس"],
+    modelAnswer: "يتغير الموقع ثم يفقد النحاس."
+  };
+  const res = evaluateText("بسبب فقدان النحاس يتغير الموقع الفعال", rule, "E");
+  assert.ok(res.science.errors.some(e => e.type === "inverted-causal"));
+  assert.ok(res.fraction <= 0.45);
+});
+
+test("barème BAC — scoreBac arrondit au quart de point", () => {
+  assert.equal(scoreBac(4, 1), 4);
+  assert.equal(scoreBac(4, 0.5), 2);
+  assert.equal(scoreBac(1, 0.8), 0.75);
+  assert.equal(scoreBac(1.5, 1), 1.5);
+  assert.equal(scoreFromFraction(1, 0.8), 0.8);
+});
+
+test("matchConcept reconnaît un synonyme pédagogique (اصطناع ≈ تركيب)", () => {
+  assert.equal(matchConcept("يتم اصطناع البروتين في الهيولى", "تركيب"), true);
 });
