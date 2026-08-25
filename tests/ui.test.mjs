@@ -40,11 +40,11 @@ function click(sel) {
   e.dispatchEvent(new dom.window.MouseEvent("click", { bubbles: true }));
 }
 
-test("le hub affiche les années (2025 et 2024 actives, 2023 désactivée)", () => {
+test("le hub affiche les années (2025, 2024 et 2023 actives)", () => {
   assert.equal($$("#year-grid .year-card").length, 3);
   assert.equal($('#year-grid [data-year="2025"]').disabled, false);
   assert.equal($('#year-grid [data-year="2024"]').disabled, false);
-  assert.equal($('#year-grid [data-year="2023"]').disabled, true);
+  assert.equal($('#year-grid [data-year="2023"]').disabled, false);
 });
 
 test("les données portent désormais des consignes BAC explicites sur chaque pôle", async () => {

@@ -77,7 +77,7 @@ test("1. Hub : test des boutons d'accueil, adkar, atlas, sons et années", () =>
   // Years verification
   assert.equal($('#year-grid [data-year="2025"]').disabled, false);
   assert.equal($('#year-grid [data-year="2024"]').disabled, false);
-  assert.equal($('#year-grid [data-year="2023"]').disabled, true);
+  assert.equal($('#year-grid [data-year="2023"]').disabled, false);
 });
 
 test("2. Guide : respiration, adkar intégrés et navigation", () => {

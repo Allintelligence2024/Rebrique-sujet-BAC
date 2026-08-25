@@ -214,32 +214,6 @@ test("évaluation pipeline — arrangement parfait = 100%", () => {
   assert.equal(res.fraction, 1);
 });
 
-test("BAC 2024 — évaluation exercice 1 (Indolmycine / تنشيط الأحماض الأمينية)", () => {
-  const y2024 = APP_CONFIG.years.find(y => y.id === "2024");
-  assert.ok(y2024);
-  assert.equal(y2024.enabled, true);
-  assert.equal(y2024.sujets.length, 2);
-
-  const ex1_2024 = y2024.sujets[0].exercises[0];
-  const poleN = ex1_2024.poles.N;
-  const res = evaluateText("ما هو المشكل العلمي الدقيق حول كيفية تاثير المضاد الحيوي اندولمايسين في تثبيط تنشيط الاحماض الامينية وتركيب البروتين لدى البكتيريا", poleN.rule, "N");
-  assert.ok(res.fraction >= 0.75);
-  assert.equal(scoreFromFraction(poleN.points, res.fraction), 1);
-  assert.ok(poleN.modelAnswer.includes("إندولمايسين"));
-});
-
-test("BAC 2024 — évaluation exercice 3 (Pipeline Immunité خلطية / خلوية)", () => {
-  const y2024 = APP_CONFIG.years.find(y => y.id === "2024");
-  const ex3_2024 = y2024.sujets[0].exercises[2];
-  assert.equal(ex3_2024.ui, "pipeline");
-  assert.equal(ex3_2024.blocksBank.length, 8);
-
-  const perfect = { stream1: ["b1","b2","b3","b4"], stream2: ["b5","b6","b7","b8"] };
-  const res = evaluatePipeline(ex3_2024.blocksBank, perfect);
-  assert.equal(res.correct, 8);
-  assert.equal(res.fraction, 1);
-});
-
 test("correcteur — phrase fluide avec mauvais enzyme est plafonnée", () => {
   const poleE = APP_CONFIG.years[0].sujets[0].exercises[1].poles.E;
   const fluentWrong = "يعود انخفاض النمو إلى نشاط أنزيم SOD في البيرينويد والتيلاكوئيد مما يمنع تثبيت الطاقة الضوئية.";

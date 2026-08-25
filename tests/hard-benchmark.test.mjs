@@ -139,9 +139,9 @@ test("findPole retourne null pour un pôle inexistant", async () => {
   assert.equal(result, null);
 });
 
-test("findPole retourne null pour une année désactivée", async () => {
+test("findPole retourne null pour une année inexistante", async () => {
   const { findPole } = await import("./hard-benchmark/_find-pole.mjs");
-  const result = findPole("2023", 1, 1, "N");
+  const result = findPole("1999", 1, 1, "N");
   assert.equal(result, null);
 });
 

@@ -71,6 +71,32 @@ Le contenu a été reconstitué à partir du sujet officiel **et de son corrigé
 | **2** | ت2 (7ن) | أنزيم **SOD** و**التصلب الجانبي الضموري (ALS)** |
 | **2** | ت3 (8ن) | **زمر الدم ABO** و**التسامح المناعي** (نقل بين الزمرتين A / O) |
 
+### Contenu BAC 2023 (شعبة علوم تجريبية)
+
+Consignes relues sur la couche texte du PDF dzexams (inversée, reconstituée mot à mot) :
+
+| Sujet | Exercice | Thème |
+|------|----------|-------|
+| **1** | ت1 (5ن) | **البروتينات الغشائية في المشبك** وذيفان **الكزاز** (Clostridium tetani) |
+| **1** | ت2 (7ن) | دواء **ML901** وتثبيط **تركيب البروتين** لدى طفيلي **الملاريا** |
+| **1** | ت3 (8ن) | **سرطان الثدي**، الأستراديول، أنزيم الأروماتاز ومادة **الكيرسيتين** |
+| **2** | ت1 (5ن) | **البنية الفراغية للبروتين** (QCM) ودور **التتابع النوكليوتيدي** والطفرات |
+| **2** | ت2 (7ن) | الخلايا التائية السامة **LTc** وبروتين **البيرفورين** |
+| **2** | ت3 (8ن) | مبيد **DCMU** و**المرحلة الكيميائية الضوئية** (PSII) |
+
+### Contenu BAC 2024 (شعبة علوم تجريبية)
+
+Thèmes relus sur la couche texte du PDF eddirasa (bruitée : OCR + traduction parasite) ; wording `reconstructed` :
+
+| Sujet | Exercice | Thème |
+|------|----------|-------|
+| **1** | ت1 (5ن) | **فيروس VIH** والخلايا **LT4** + دواء **Zalcitabine** |
+| **1** | ت2 (7ن) | **الصرع** وتوازن التنبيه/التثبيط (**Glutamate / GABA**, الجين Scn1a) |
+| **1** | ت3 (8ن) | بروتين **P53** والبنزوبيرين وسرطان الرئة |
+| **2** | ت1 (5ن) | **الترجمة** وتأثير **Tetracycline / Oxazolidinone** |
+| **2** | ت2 (7ن) | **RUBISCO** وتثبيت **CO₂** عند الفاصولياء (CA1P) |
+| **2** | ت3 (8ن) | **المناعة** ضد الدفتيريا والمكورات العنقودية (بروتين SPA) |
+
 Le **barème 4D** adapte les points officiels à la méthode (N/S/E/W), et l'évaluation
 compare les réponses à des **mots-clés normalisés** (via `normalizeArabic`) + inter-dits
 (ex. « بسبب » pénalisé à l'étape S) + longueur minimale.
@@ -83,8 +109,8 @@ compare les réponses à des **mots-clés normalisés** (via `normalizeArabic`) 
 | Année | État | PDF local | Source externe | Consignes |
 |------|------|-----------|----------------|-----------|
 | **2025** | activée | `BAC2025_SVT_Sujet1.pdf`, `BAC2025_SVT_Sujet2.pdf` | — | Pôles `official` relus sur le scan ; autres `reconstructed` |
-| **2024** | activée | aucun (droit d'auteur) | [eddirasa sujet](https://eddirasa.com/bac-science-2024-se/) · [PDF](https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf) · [dzexams](https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09) | `reconstructed` — PDF distant non extrait ici (SSL sortant KO). Session de remplacement non localisée. |
-| **2023** | **désactivée** | aucun | [dzexams 2023](https://www.dzexams.com/ar/annales/STRDZEowcCtwN0JmT1NwS3p4cEVmdz09) | sujets non extraits au 2026-08-23 |
+| **2024** | activée | aucun (droit d'auteur) | [eddirasa sujet](https://eddirasa.com/bac-science-2024-se/) · [PDF](https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf) · [dzexams](https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09) | `reconstructed` — couche texte distante bruitée (OCR + traduction parasite), non certifiable `official` ici. Session de remplacement non localisée. |
+| **2023** | **activée** | aucun (droit d'auteur) | [dzexams 2023](https://www.dzexams.com/ar/annales/STRDZEowcCtwN0JmT1NwS3p4cEVmdz09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf) | Consignes `official` relues sur la couche texte du PDF (inversée, reconstituée mot à mot, 2026-08-25) ; pôles sans question autonome en `reconstructed` |
 
 Aucun PDF 2024/2023 n'est versé dans le dépôt.
 

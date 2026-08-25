@@ -4,8 +4,9 @@
    2025 : consignes confrontées au PDF scanné du dépôt
           (rendu visuel page par page, 2026-08-23).
    2024 : exercices reconstruits à partir du banc de tests du
-          dépôt — PDF officiel non relu ici (SSL sortant KO).
-   2023 : année désactivée, sujets non extraits.
+          dépôt — PDF officiel non relu ici (texte distant bruité).
+   2023 : consignes lues sur le PDF dzexams (couche texte inversée,
+          reconstituée mot à mot, 2026-08-25).
    ============================================================ */
 
 /** Normalisation du texte arabe : variantes, tatweel, ponctuation. */
@@ -32,10 +33,10 @@ export function stripArabicClitics(word) {
   return t.replace(/^[كبفول]/, "");
 }
 
-const OFFICIAL = (page, notes) => ({
+const OFFICIAL = (page, notes, verifiedAt = "2026-08-23") => ({
   bacPromptSource: "official",
   bacPromptPage: page,
-  bacPromptVerifiedAt: "2026-08-23",
+  bacPromptVerifiedAt: verifiedAt,
   bacPromptNotes: notes
 });
 
@@ -49,7 +50,7 @@ export const APP_CONFIG = {
   appSubtitle: "مخبر التفوق والهدوء | منصة حل امتحانات بكالوريا علوم الطبيعة والحياة",
   globalExamMinutes: 270,
   strategyMinutes: 25,
-  note: "المحتوى 2025 مُراجع على PDF المستودع. 2024 مُعاد بناؤه ولم يُعاد استخراج نصه من PDF وزاري في هذه الجلسة.",
+  note: "المحتوى 2025 مُراجع على PDF المستودع. 2024 مُعاد بناؤه ولم يُعاد استخراج نصه من PDF وزاري في هذه الجلسة. 2023 مُستخرج من PDF dzexams (نص معكوس مُعاد بناؤه).",
   years: [
     {
       id: "2025",
@@ -396,150 +397,155 @@ export const APP_CONFIG = {
           pdf: null,
           pdfAvailable: false,
           pdfExternalUrl: "https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf",
-          pdfNote: "PDF non redistribué dans le dépôt ; source: https://eddirasa.com/bac-science-2024-se/ (consulté 2026-08-23). Miroir dzexams: https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09. Session de remplacement non localisée. Texte des questions : reconstructed (PDF distant non extrait dans cette session, SSL sortant en échec).",
+          pdfNote: "PDF non redistribué dans le dépôt ; source: https://eddirasa.com/bac-science-2024-se/ (consulté 2026-08-25). Miroir dzexams: https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09. Session de remplacement non localisée. Thèmes relus sur la couche texte (bruitée : OCR + traduction parasite) ; wording reconstructed, non certifiable official.",
           title: "الموضوع الأول",
           exercises: [
             {
               number: 1,
               ui: "text",
-              label: "إندولمايسين وتنشيط الأحماض الأمينية",
+              label: "فيروس VIH والخلايا LT4",
               max: 5,
-              desc: "تأثير المضاد الحيوي إندولمايسين في تثبيط تنشيط الأحماض الأمينية وتركيب البروتين لدى البكتيريا",
+              desc: "مراحل تطور فيروس VIH داخل الخلايا التائية LT4 وتأثير دواء Zalcitabine المثبط لإحدى مراحل التطور على فقدان المناعة المكتسبة",
               poles: {
                 N: {
                   points: 1,
-                  prompt: "تأطير المشكل العلمي حول تأثير إندولمايسين على تنشيط الأحماض الأمينية",
-                  bacPrompt: "حدد المشكل العلمي الدقيق حول كيفية تأثير المضاد الحيوي إندولمايسين في تثبيط تنشيط الأحماض الأمينية وتركيب البروتين لدى البكتيريا.",
-                  ...RECON("Wording repris du banc de tests du dépôt (BAC 2024 / S1 / E1). Non relu sur le PDF ministériel dans cette session."),
-                  placeholder: "صغ المشكل بعلامة ؟",
+                  prompt: "تأطير الإشكالية: كيف يتطور فيروس VIH داخل الخلايا LT4 وما أثر تثبيط إحدى مراحله؟",
+                  bacPrompt: "كيف يتطور فيروس VIH داخل الخلايا LT4 مسببا فقدان المناعة المكتسبة، وما أثر تثبيط إحدى مراحل هذا التطور بدواء Zalcitabine؟",
+                  ...RECON("Thème lu sur la couche texte bruitée (2026-08-25). Pas de question autonome de cadrage ; reformulation pédagogique du préambule."),
+                  placeholder: "صياغة المشكل العلمي...",
                   minLength: 40,
-                  modelAnswer: "المشكل العلمي: كيف يؤثر المضاد الحيوي إندولمايسين في تثبيط تنشيط الأحماض الأمينية وتركيب البروتين لدى البكتيريا؟",
-                  rule: {
-                    prompt: "حدد المشكل العلمي حول تأثير إندولمايسين",
-                    modelAnswer: "كيف يؤثر المضاد الحيوي إندولمايسين في تثبيط تنشيط الأحماض الأمينية وتركيب البروتين لدى البكتيريا؟",
-                    keywords: [["اندولمايسين", "إندولمايسين"], ["احماض", "الأحماض"], "امينيه", "بروتين", "تنشيط"],
-                    minHits: 2,
-                    forbidden: []
-                  }
+                  modelAnswer: "المشكل العلمي: كيف يتطور فيروس VIH داخل الخلايا التائية LT4 مسببا فقدان المناعة المكتسبة، وما أثر تثبيط إحدى مراحل تطوره بدواء Zalcitabine على تكاثره؟",
+                  rule: { prompt: "حدد المشكل العلمي حول تطور VIH في LT4", keywords: ["فيروس", "LT4", "مناعه", "تطور"], minHits: 2, forbidden: [] }
                 },
                 S: {
                   points: 1,
-                  prompt: "استخراج معطيات السند المتعلقة بمرحلة التنشيط",
-                  bacPrompt: "استخرج من الوثيقة مراحل تنشيط الأحماض الأمينية والعناصر المتدخلة.",
-                  ...RECON("Reconstruction pédagogique 2024 — non certifiée PDF."),
-                  placeholder: "ARNt، إنزيم، حمض أميني...",
+                  prompt: "استخراج مراحل تطور الفيروس من الوثيقة",
+                  bacPrompt: "استخرج من الوثيقة المراحل المختلفة لتطور فيروس VIH داخل الخلايا LT4.",
+                  ...RECON("Reconstruction pédagogique 2024 — thème (VIH/LT4/Zalcitabine) lu sur la couche texte bruitée."),
+                  placeholder: "التصاق، نسخ عكسي، إدماج، تبرعم...",
                   minLength: 40,
-                  modelAnswer: "تمثل الوثيقة مرحلة التنشيط حيث يرتبط كل حمض أميني بـ ARNt الموافق بوساطة إنزيم نوعي.",
-                  rule: { prompt: "استخرج مراحل تنشيط الأحماض الأمينية", keywords: ["ARNt", "انزيم", "حمض", "امينيه"], minHits: 2, forbidden: ["بسبب"] }
+                  modelAnswer: "تمثل الوثيقة رسما تخطيطيا لمراحل تطور فيروس VIH داخل الخلية LT4: الالتصاق بالخلية، النسخ العكسي للـ ARN الفيروسي، إدماج الـ ADN في مورثة الخلية، التعبير وتشكل فيروسات جديدة ثم تبرعمها خارج الخلية.",
+                  rule: { prompt: "استخرج مراحل تطور فيروس VIH", keywords: ["التصاق", "نسخ", "عكسي", "ادماج", "تبرعم"], minHits: 2, forbidden: ["بسبب"] }
                 },
                 E: {
                   points: 2,
-                  prompt: "تفسير آلية تثبيط الموقع الفعال بالإندولمايسين",
-                  bacPrompt: "فسّر كيف يمنع إندولمايسين تشكل aminoacyl-ARNt.",
-                  ...RECON("Reconstruction pédagogique 2024 — non certifiée PDF."),
-                  placeholder: "الموقع الفعال، تثبيط، ترجمة...",
-                  minLength: 110,
-                  modelAnswer: "يعود ذلك إلى ارتباط إندولمايسين بالموقع الفعال للإنزيم المنشط مما يمنع تشكل aminoacyl-ARNt فتتوقف الترجمة.",
-                  rule: { prompt: "فسر آلية تأثير إندولمايسين", keywords: ["موقع", "فعال", "اندولمايسين", "ترجمه"], minHits: 2, forbidden: [] }
+                  prompt: "النص العلمي: مراحل تطور الفيروس وتأثير Zalcitabine",
+                  bacPrompt: "بيّن في نص علمي مراحل تطور فيروس VIH في الخلايا LT4 وتأثير دواء Zalcitabine على ذلك.",
+                  ...RECON("Verbe officiel lu (بيّن في نص علمي) sur la couche texte bruitée ; wording reconstruit mot à mot."),
+                  placeholder: "مقدمة، عرض، خاتمة...",
+                  minLength: 120,
+                  modelAnswer: "يلتصق فيروس VIH بمستقبلات الخلية التائية LT4 ثم يحقن محتواه، فيُنسخ ARNه عكسيا إلى ADN يتكامل في مورثة الخلية، فتُعبَّر المورثة وتُنتج فيروسات جديدة تبرعم خارجا. يثبط دواء Zalcitabine مرحلة النسخ العكسي (المرحلة 2) فيمنع تشكل الـ ADN الفيروسي، فيتوقف تكاثر الفيروس ويحد من فقدان المناعة المكتسبة.",
+                  rule: { prompt: "بين مراحل تطور VIH وتأثير Zalcitabine", keywords: ["LT4", "نسخ", "عكسي", "Zalcitabine", "تكاثر"], minHits: 3, forbidden: [] }
                 },
                 W: {
                   points: 1,
-                  prompt: "نص علمي حول أهمية مرحلة التنشيط",
-                  bacPrompt: "اكتب نصا علميا منظما حول أهمية مرحلة التنشيط في سلامة التعبير المورثي.",
-                  ...RECON("Wording aligné sur le banc de tests (BAC 2024 / S1 / E1 / W). Non relu PDF."),
-                  placeholder: "مقدمة، عرض، خاتمة...",
-                  minLength: 80,
-                  modelAnswer: "تمثل مرحلة التنشيط خطوة نوعية أساسية في سلامة التعبير المورثي، إذ تسمح بربط كل حمض أميني بـ ARNt الموافق له بوساطة إنزيم نوعي. وأي تثبيط للموقع الفعال كما يحدث بالإندولمايسين يمنع تشكل aminoacyl-ARNt ويشل الترجمة، مما يؤدي إلى غياب البروتينات وموت الخلية.",
-                  rule: {
-                    prompt: "اكتب نصا علميا حول أهمية مرحلة التنشيط",
-                    modelAnswer: "مقدمة: تعد مرحلة التنشيط خطوة نوعية. عرض: يرتبط الحمض الأميني بـ ARNt. خاتمة: التثبيط يوقف الترجمة.",
-                    keywords: ["تنشيط", "ARNt", "حمض", "توافق", "انزيم", "ترجمه", "اندولمايسين"],
-                    minHits: 5,
-                    minLength: 70,
-                    forbidden: []
-                  }
+                  prompt: "الخاتمة: أثر تثبيط النسخ العكسي على المناعة",
+                  bacPrompt: "ما أثر تثبيط النسخ العكسي بدواء Zalcitabine على فقدان المناعة المكتسبة؟",
+                  ...RECON("La clôture est incluse dans le texte scientifique officiel (pôle E). Pas une question BAC autonome."),
+                  placeholder: "في الختام...",
+                  minLength: 40,
+                  modelAnswer: "في الختام، بتثبيط النسخ العكسي يحد دواء Zalcitabine من تكاثر الفيروس داخل LT4 فيحمي الخلايا التائية من التلف ويحد من فقدان المناعة المكتسبة.",
+                  rule: { prompt: "اكتب خاتمة حول أثر Zalcitabine", keywords: ["نسخ", "تكاثر", "مناعه"], minHits: 2, forbidden: [] }
                 }
               }
             },
             {
               number: 2,
               ui: "text",
-              label: "تمرين 2 — في انتظار إعادة قراءة PDF 2024",
+              label: "الصرع وتوازن التنبيه والتثبيط",
               max: 7,
-              desc: "Exercice 2 du sujet 1 (2024) : consigne officielle non relue dans cette session.",
+              desc: "فقدان التوازن بين التنبيه (Glutamate) والتثبيط (GABA) على مستوى مشابك القشرة المخية عند المصابين بالصرع، ودور طفرة الجين Scn1a",
               poles: {
-                N: { points: 1, prompt: "تأطير المطلوب للتمرين 2 (بانتظار PDF).", bacPrompt: "حدد المطلوب الرسمي للتمرين 2 بعد إعادة قراءة المصدر الخارجي.", ...RECON("2024 S1 E2 : consigne officielle non relue."), placeholder: "...", minLength: 30, modelAnswer: "يُستكمل بعد استخراج نص السؤال.", rule: { prompt: "حدد المطلوب", keywords: ["مطلوب"], minHits: 1, forbidden: [] } },
-                S: { points: 2.5, prompt: "استغلال سندات التمرين 2 (بانتظار PDF).", bacPrompt: "حلّل سندات التمرين 2 بعد توفير النص الرسمي.", ...RECON("2024 S1 E2 non relu."), placeholder: "...", minLength: 40, modelAnswer: "يُستكمل بعد استخراج النص.", rule: { prompt: "حلل السند", keywords: ["سند"], minHits: 1, forbidden: ["بسبب"] } },
-                E: { points: 2.5, prompt: "تفسير آلية التمرين 2 (بانتظار PDF).", bacPrompt: "فسّر آلية التمرين 2 بعد توفير النص الرسمي.", ...RECON("2024 S1 E2 non relu."), placeholder: "...", minLength: 40, modelAnswer: "يُستكمل بعد استخراج النص.", rule: { prompt: "فسر الآلية", keywords: ["اليه"], minHits: 1, forbidden: [] } },
-                W: { points: 1, prompt: "خلاصة التمرين 2 (بانتظار PDF).", bacPrompt: "استخلص جواب التمرين 2 بعد توفير النص الرسمي.", ...RECON("2024 S1 E2 non relu."), placeholder: "...", minLength: 30, modelAnswer: "يُستكمل بعد استخراج النص.", rule: { prompt: "استخلص الجواب", keywords: ["خلاصه"], minHits: 1, forbidden: [] } }
+                N: {
+                  points: 1,
+                  prompt: "تأطير الإشكالية: أصل اختلال توازن التنبيه والتثبيط في الصرع",
+                  bacPrompt: "ما أصل اختلال التوازن بين التنبيه والتثبيط في اضطرابات الصرع، وما دور طفرة الجين Scn1a في ذلك؟",
+                  ...RECON("Thème (Excitation/Inhibition, Glutamate/GABA, Scn1a) lu sur la couche texte bruitée ; pas de question autonome de cadrage."),
+                  placeholder: "صياغة المشكل العلمي...",
+                  minLength: 40,
+                  modelAnswer: "المشكل العلمي: ما أصل اختلال التوازن بين التنبيه والتثبيط على مستوى مشابك القشرة المخية في حالة الصرع، وما دور طفرة الجين Scn1a؟",
+                  rule: { prompt: "حدد المشكل العلمي حول الصرع", keywords: ["توازن", "تنبيه", "تثبيط", "صرع"], minHits: 2, forbidden: [] }
+                },
+                S: {
+                  points: 2.5,
+                  prompt: "تحليل تواتر كمونات العمل في الشكل (أ) من الوثيقة 1",
+                  bacPrompt: "حلّل النتائج الممثلة في الشكل (أ) من الوثيقة 1.",
+                  ...RECON("Verbe officiel lu (حلّل) sur la couche texte bruitée ; wording reconstruit."),
+                  placeholder: "تواتر كمونات العمل، مصاب/طبيعي...",
+                  minLength: 90,
+                  modelAnswer: "تمثل الوثيقة تواتر كمونات العمل في وحدة الزمن على مستوى أغشية الخلايا العصبية قبل المشبكية. نلاحظ ارتفاع تواتر كمونات العمل لدى المصابين بالصرع، بينما يبقى منخفضا لدى الأفراد الطبيعيين، ومنه نستنتج فرط النشاط العصبي لدى المصابين.",
+                  rule: { prompt: "حلل تواتر كمونات العمل في الشكل أ", keywords: ["تواتر", "كمون", "مصاب", "طبيعي"], minHits: 2, forbidden: ["بسبب"], document: { kind: "curve", axes: ["تواتر", "كمون"], comparisons: [["مصاب", "طبيعي"]], trends: [{ about: "مصاب", expect: ["ارتفاع", "مرتفع"] }], relations: [{ type: "inverse", a: "مصاب", b: "طبيعي" }], values: [], strictValues: false } }
+                },
+                E: {
+                  points: 2.5,
+                  prompt: "بيان فقدان التوازن بين التنبيه والتثبيط في حالة الصرع",
+                  bacPrompt: "بيّن فقدان التوازن بين التنبيه والتثبيط على مستوى مشابك القشرة المخية في حالة الصرع انطلاقا من نتائج الشكل (ب) من الوثيقة 1.",
+                  ...RECON("Verbe officiel lu (بيّن) sur la couche texte bruitée ; wording reconstruit."),
+                  placeholder: "Glutamate، GABA، تنبيه، تثبيط...",
+                  minLength: 110,
+                  modelAnswer: "يفقد التوازن بين التنبيه والتثبيط لأن كمية Glutamate المفرزة من العصبون (G) المنبّه ترتفع بينما تنخفض كمية GABA المفرزة من العصبون (A) المثبّط، فيغلب الاستثارة على التثبيط في مشابك القشرة المخية وتظهر نوبة الصرع. وتعود هذه العلامة المرضية إلى طفرة الجين Scn1a المشفّر لقناة الصوديوم.",
+                  rule: { prompt: "بين فقدان التوازن بين التنبيه والتثبيط", keywords: ["غلوتامات", "GABA", "تنبيه", "تثبيط", "توازن"], minHits: 3, forbidden: [] }
+                },
+                W: {
+                  points: 1,
+                  prompt: "الخلاصة: دور طفرة Scn1a في الصرع",
+                  bacPrompt: "ما دور طفرة الجين Scn1a في ظهور اضطرابات الصرع؟",
+                  ...RECON("La clôture est incluse dans l'explication officielle (pôle E). Pas une question BAC autonome."),
+                  placeholder: "في الختام...",
+                  minLength: 40,
+                  modelAnswer: "في الختام، تؤدي طفرة الجين Scn1a المشفّر لقناة الصوديوم إلى خلل في نقل الإشارة العصبية فتختل وظيفة العصبونات المثبطة ويسود التنبيه فتظهر نوبات الصرع.",
+                  rule: { prompt: "اكتب خلاصة حول دور طفرة Scn1a", keywords: ["طفره", "Scn1a", "قناه", "صرع"], minHits: 2, forbidden: [] }
+                }
               }
             },
             {
               number: 3,
-              ui: "pipeline",
-              label: "المناعة الخلطية والخلوية",
+              ui: "text",
+              label: "بروتين P53 والبنزوبيرين",
               max: 8,
-              desc: "مساران متوازيان للاستجابة المناعية: خلطية (أجسام مضادة) وخلوية (LT)",
+              desc: "أثر طفرة الجين P53 الناتجة عن التعرض للبنزوبيرين (BZP) في فقدان وظيفة البروتين الكابحة للأورام ونشأة سرطان الرئة",
               poles: {
                 N: {
                   points: 0.5,
-                  prompt: "تأطير مساري الاستجابة المناعية ضد المستضد الفيروسي",
-                  bacPrompt: "حدد عناصر الدراسة في الاستجابة المناعية الخلطية والخلوية.",
-                  ...RECON("Reconstruction 2024 pour le pipeline d'immunité du banc de tests. Non certifiée PDF."),
+                  prompt: "تأطير الإشكالية: علاقة طفرة P53 بسرطان الرئة",
+                  bacPrompt: "كيف تؤدي طفرة الجين P53 الناتجة عن التعرض للبنزوبيرين إلى نشأة سرطان الرئة؟",
+                  ...RECON("Thème (P53, Benzopyrène, cancer du poumon) lu sur la couche texte bruitée ; pas de question autonome de cadrage."),
+                  placeholder: "صياغة المشكل العلمي...",
                   minLength: 30,
-                  modelAnswer: "المتغير المستقل: نوع المستضد / المتغير التابع: شدة الاستجابة الخلطية أو الخلوية.",
-                  rule: { prompt: "حدد عناصر الدراسة المناعية", keywords: ["مستضد", "مناعه"], minHits: 1, forbidden: [] }
+                  modelAnswer: "المشكل العلمي: كيف تؤدي طفرة الجين P53 الناتجة عن التعرض للبنزوبيرين إلى فقدان وظيفة البروتين الكابحة للأورام ونشأة سرطان الرئة؟",
+                  rule: { prompt: "حدد المشكل العلمي حول P53 والبنزوبيرين", keywords: ["P53", "طفره", "بنزوبيرين", "سرطان"], minHits: 2, forbidden: [] }
                 },
                 S: {
-                  points: 2.0,
-                  prompt: "استغلال سندات تشكل المعقدات المناعية",
-                  bacPrompt: "استخرج من الوثيقة شروط تشكل المعقدات المناعية.",
-                  ...RECON("Reconstruction 2024 — non certifiée PDF."),
+                  points: 2,
+                  prompt: "استغلال الوثائق: تتابع الجين P53 السليم والسرطاني وعلاقة البنزوبيرين بالإصابة",
+                  bacPrompt: "استغل الوثائق: مقارنة تتابع الجين P53 السليم والسرطاني (Anagène) وتغير تركيز البنزوبيرين بدلالة نسبة احتمال الإصابة بسرطان الرئة.",
+                  ...RECON("Reconstruction pédagogique 2024 — thème lu sur la couche texte bruitée."),
+                  placeholder: "تتابع، طفرة، تركيز، نسبة إصابة...",
                   minLength: 60,
-                  modelAnswer: "نلاحظ تشكل أقواس ترسيب عند تلاقي الجسم المضاد والمستضد النوعي.",
-                  rule: { prompt: "استخرج شروط تشكل المعقدات", keywords: ["معقد", "جسم", "مضاد"], minHits: 2, forbidden: ["بسبب"] }
+                  modelAnswer: "تمثل الوثائق مقارنة تتابع الجين P53 السليم والسرطاني وتغير نسبة احتمال الإصابة بسرطان الرئة بدلالة عدد السجائر وتركيز البنزوبيرين. نلاحظ ظهور طفرة نقطية في التتابع السرطاني وارتفاع نسبة احتمال الإصابة بارتفاع تركيز البنزوبيرين، ومنه نستنتج علاقة البنزوبيرين بطفرة P53 ونشأة السرطان.",
+                  rule: { prompt: "استغل الوثائق حول P53 والبنزوبيرين", keywords: ["تتابع", "طفره", "بنزوبيرين", "اصابه"], minHits: 2, forbidden: ["بسبب"], document: { kind: "table", axes: ["تتابع", "تركيز"], comparisons: [["سليم", "سرطاني"]], cells: [["P53", "طفره"]], values: [], strictValues: false } }
                 },
                 E: {
-                  points: 4.0,
-                  prompt: "تفسير كيفية تشكل المعقدات المناعية وتعطيل الفيروس",
-                  bacPrompt: "بين كيفية تشكل المعقدات المناعية ودور القطعة Fc في تسهيل البلعمة.",
-                  ...RECON("Wording aligné sur le banc de tests (BAC 2024 / S1 / E3 / E). Non relu PDF."),
-                  minLength: 80,
-                  modelAnswer: "ترتبط الأجسام المضادة نوعياً بمحددات المستضد الفيروسي عبر مواقعها المتغيرة فتتشكل معقدات مناعية تعطل تثبته على الخلايا، كما تسهل البلعمة بارتباط القطعة Fc بمستقبلات البالعات الكبيرة. ثم يوجه المعقد نحو البالعات بالانسونين.",
-                  rule: {
-                    prompt: "فسّر آلية تشكل المعقدات المناعية ودور القطعة Fc",
-                    modelAnswer: "ترتبط الأجسام المضادة نوعياً بمحددات المستضد الفيروسي عبر مواقعها المتغيرة فتتشكل معقدات مناعية تعطل تثبته على الخلايا، كما تسهل البلعمة بارتباط القطعة Fc بمستقبلات البالعات الكبيرة. ثم يوجه المعقد نحو البالعات بالانسونين.",
-                    keywords: ["يوجه", "انسونين", "اجسام", "مضاده", "مستضد", "معقد", "بلعمه"],
-                    minHits: 7,
-                    forbidden: []
-                  }
+                  points: 4,
+                  prompt: "تفسير أثر طفرة P53 على وظيفته الكابحة للورم",
+                  bacPrompt: "فسّر كيف تفقد بروتينة P53 وظيفتها الكابحة للأورام عند حدوث طفرة ناتجة عن البنزوبيرين.",
+                  ...RECON("Reconstruction pédagogique 2024 — thème lu sur la couche texte bruitée."),
+                  placeholder: "الموقع الفعال، تتابع، وظيفة كابحة...",
+                  minLength: 110,
+                  modelAnswer: "يعود فقدان الوظيفة الكابحة للأورام إلى طفرة نقطية في الجين P53 (استبدال نوكليوتيد) تغيّر حمضا أمينيا في البروتين، فيتغير تتابع الأحماض الأمينية وتفقد البروتينة قدرتها على تثبيط الانقسامات الشاذة، فتتكاثر الخلايا السرطانية ويتكون ورم الرئة تحت تأثير البنزوبيرين.",
+                  rule: { prompt: "فسر أثر طفرة P53 على وظيفته الكابحة", keywords: ["طفره", "P53", "بروتين", "انقسام", "ورم"], minHits: 3, forbidden: [] }
                 },
                 W: {
                   points: 1.5,
-                  prompt: "مخطط مقارن للمسار الخلطي والمسار الخلوي",
-                  bacPrompt: "أنجز مخططا مقارنا للمسار الخلطي والمسار الخلوي.",
-                  ...RECON("Reconstruction 2024 — non certifiée PDF."),
-                  minLength: 0,
-                  modelAnswer: "خلطي: LB → بلازمية → جسم مضاد. خلوي: LT → سامة → قتل الخلية المصابة.",
-                  rule: { prompt: "انجز مخطط المسارين المناعيين", keywords: ["خلطي", "خلوي"], minHits: 1, forbidden: [] }
+                  prompt: "الخلاصة: مسار البنزوبيرين نحو الورم",
+                  bacPrompt: "لخّص المسار الذي يربط البنزوبيرين بطفرة P53 ونشأة ورم الرئة.",
+                  ...RECON("La clôture est incluse dans l'explication (pôle E). Pas une question BAC autonome."),
+                  placeholder: "بنزوبيرين → طفرة → فقدان الوظيفة → ورم...",
+                  minLength: 40,
+                  modelAnswer: "في الختام، يحدث البنزوبيرين طفرة في الجين P53 فتفقد البروتينة وظيفتها الكابحة للأورام، فتتكاثر الخلايا دون رقابة ويتكون ورم الرئة.",
+                  rule: { prompt: "لخص مسار البنزوبيرين نحو الورم", keywords: ["بنزوبيرين", "طفره", "ورم"], minHits: 2, forbidden: [] }
                 }
-              },
-              blocksBank: [
-                { id: "b1", text: "تعرف LB على المستضد النوعي", stream: 1, slot: 0 },
-                { id: "b2", text: "تكاثر وتمايز إلى بلازميات", stream: 1, slot: 1 },
-                { id: "b3", text: "إفراز أجسام مضادة نوعية", stream: 1, slot: 2 },
-                { id: "b4", text: "تشكل معقدات مناعية وتعطيل الفيروس", stream: 1, slot: 3 },
-                { id: "b5", text: "تعرف LT على الخلية المصابة", stream: 2, slot: 0 },
-                { id: "b6", text: "تفعيل LT السامة", stream: 2, slot: 1 },
-                { id: "b7", text: "إفراز البرفورين والغرانيزيم", stream: 2, slot: 2 },
-                { id: "b8", text: "قتل الخلية المصابة بالفيروس", stream: 2, slot: 3 }
-              ],
-              streams: [
-                { id: 1, title: "المسار 1: الاستجابة الخلطية", theme: "rose",
-                  slots: ["تعرف LB", "التمايز", "الأجسام المضادة", "المعقد المناعي"] },
-                { id: 2, title: "المسار 2: الاستجابة الخلوية", theme: "emerald",
-                  slots: ["تعرف LT", "التفعيل", "وسائط سامة", "قتل الخلية"] }
-              ]
+              }
             }
           ]
         },
@@ -548,68 +554,153 @@ export const APP_CONFIG = {
           pdf: null,
           pdfAvailable: false,
           pdfExternalUrl: "https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf",
-          pdfNote: "PDF non redistribué dans le dépôt ; source: https://eddirasa.com/bac-science-2024-se/ (consulté 2026-08-23). Même fichier session normale (sujets 1 et 2). Texte reconstructed.",
+          pdfNote: "PDF non redistribué dans le dépôt ; même fichier que le sujet 1 (session normale, sujets 1 et 2). Thèmes relus sur la couche texte bruitée (2026-08-25) ; wording reconstructed.",
           title: "الموضوع الثاني",
           exercises: [
             {
               number: 1,
               ui: "text",
-              label: "تركيب ATP في الميتوكوندريا",
+              label: "الترجمة وتأثير المضادات الحيوية",
               max: 5,
-              desc: "التدرج البروتوني وعمل الكرية المذنبة في تركيب ATP داخل الميتوكوندريا",
+              desc: "ترجمة المعلومة الوراثية المحمولة على ARNm إلى متتالية أحماض أمينية في الهيولى، وتأثير مركبي Tetracycline وOxazolidinone المثبطين لهذه المرحلة",
               poles: {
                 N: {
                   points: 1,
-                  prompt: "تأطير المشكل العلمي حول تركيب ATP داخل الميتوكوندريا",
-                  bacPrompt: "حدد المشكل العلمي: كيف يتم تركيب ATP داخل الميتوكوندريا بفضل التدرج البروتوني وعمل الكرية المذنبة؟",
-                  ...RECON("Wording repris du banc de tests (BAC 2024 / S2 / E1 / N). Non relu PDF."),
-                  placeholder: "صغ المشكل بعلامة ؟",
+                  prompt: "تأطير الإشكالية: كيف تُترجم معلومة ARNm وما أثر تثبيطها؟",
+                  bacPrompt: "كيف تُترجم المعلومة الوراثية المحمولة على ARNm إلى متتالية أحماض أمينية في الهيولى، وما أثر تثبيط هذه المرحلة بمركبات كيميائية؟",
+                  ...RECON("Thème (traduction, Tetracycline, Oxazolidinone) lu sur la couche texte bruitée ; pas de question autonome de cadrage."),
+                  placeholder: "صياغة المشكل العلمي...",
                   minLength: 40,
-                  modelAnswer: "كيف يتم تركيب ATP داخل الميتوكوندريا بفضل التدرج البروتوني وعمل الكرية المذنبة، وما أثر تثبيط هذه الآلية على الحصيلة الطاقوية؟",
-                  rule: {
-                    prompt: "حدد المشكل العلمي حول تركيب ATP",
-                    modelAnswer: "كيف يتم تركيب ATP داخل الميتوكوندريا بفضل التدرج البروتوني؟",
-                    keywords: ["ATP", "ميتوكوندريا", "تدرج", "بروتوني", "كريه"],
-                    minHits: 3,
-                    forbidden: []
-                  }
+                  modelAnswer: "المشكل العلمي: كيف تُترجم المعلومة الوراثية المحمولة على ARNm إلى متتالية أحماض أمينية في الهيولى، وما أثر تثبيط الترجمة بمركبات كيميائية مختلفة؟",
+                  rule: { prompt: "حدد المشكل العلمي حول الترجمة", keywords: ["ترجمه", "ARNm", "احماض", "هيولي"], minHits: 2, forbidden: [] }
                 },
                 S: {
                   points: 1,
-                  prompt: "استخراج شروط تركيب ATP من الوثيقة",
-                  bacPrompt: "استخرج شروط تركيب ATP انطلاقاً من معطيات التجربة.",
-                  ...RECON("Wording repris du banc de tests (BAC 2024 / S2 / E1 / S). Non relu PDF."),
-                  placeholder: "ADP، Pi، تدرج بروتوني...",
-                  minLength: 40,
-                  modelAnswer: "تمثل الوثيقة شروط تركيب ATP، حيث نلاحظ أنه يركب فقط عند توفر ADP وPi ووجود تدرج بروتوني بين الفراغ بين الغشائين والحشوة، ومنه نستنتج أن التدرج البروتوني شرط أساسي يحرك الكرية المذنبة.",
-                  rule: {
-                    prompt: "حلل نتائج الوثيقة المتعلقة بشروط تركيب ATP",
-                    modelAnswer: "يركب ATP فقط بوجود ADP و Pi وتدرج بروتوني.",
-                    keywords: ["ADP", "Pi", ["تدرج بروتوني", "التدرج البروتوني"], "ATP", "كريه"],
-                    minHits: 4,
-                    forbidden: ["بسبب"],
-                    document: { comparisons: [], values: ["ADP", "Pi"], trends: [{ about: "ATP", expect: ["ADP", "Pi", "تدرج"] }] }
-                  }
+                  prompt: "ذكر العناصر المتدخلة في حدوث الترجمة",
+                  bacPrompt: "اذكر العناصر المتدخلة في حدوث هذه المرحلة (الترجمة).",
+                  ...RECON("Verbe officiel lu (اذكر) sur la couche texte bruitée ; wording reconstruit."),
+                  placeholder: "ARNm، ريبوزوم، ARNt...",
+                  minLength: 30,
+                  modelAnswer: "العناصر المتدخلة في الترجمة: ARNm، الريبوزوم، ARNt، الأحماض الأمينية المنشطة، الأنزيمات المنشطة وطاقة ATP.",
+                  rule: { prompt: "اذكر العناصر المتدخلة في الترجمة", keywords: ["ARNm", "ريبوزوم", "ARNt", "احماض"], minHits: 2, forbidden: [] }
                 },
                 E: {
                   points: 2,
-                  prompt: "تفسير دور التدرج البروتوني والكرية المذنبة",
-                  bacPrompt: "فسّر كيف يحرك التدرج البروتوني الكرية المذنبة لتركيب ATP.",
-                  ...RECON("Reconstruction 2024 — non certifiée PDF."),
-                  placeholder: "تدفق H+، كرية مذنبة، فسفرة...",
-                  minLength: 110,
-                  modelAnswer: "يعود تركيب ATP إلى عودة البروتونات عبر الكرية المذنبة مما يوفر طاقة ربط Pi على ADP.",
-                  rule: { prompt: "فسر آلية الكرية المذنبة", keywords: ["كريه", "تدرج", "ATP"], minHits: 2, forbidden: [] }
+                  prompt: "النص العلمي: خطوات الترجمة وتأثير المركبين",
+                  bacPrompt: "اشرح في نص علمي خطوات الترجمة وتأثير كل من Oxazolidinone وTetracycline باستغلال الوثيقة ومعلوماتك (النص العلمي مهيكل بمقدمة وعرض وخاتمة).",
+                  ...RECON("Verbe officiel lu (اشرح في نص علمي) sur la couche texte bruitée ; wording reconstruit."),
+                  placeholder: "مقدمة، عرض، خاتمة...",
+                  minLength: 120,
+                  modelAnswer: "تبدأ الترجمة بارتباط الريبوزوم بالـ ARNm ثم تنقل أحماض أمينية منشطة محمولة على ARNt وفق الرامزات فتتشكل روابط بيبتيدية وتستطيل السلسلة. يثبط مركب Tetracycline تثبيت ARNt على الريبوزوم فيتوقف البدء أو الاستطالة، بينما يمنع مركب Oxazolidinone تشكل المركب البدئي للترجمة، فيتوقف تركيب البروتين.",
+                  rule: { prompt: "اشرح خطوات الترجمة وتأثير المركبين", keywords: ["ريبوزوم", "ARNt", "ترجمه", "Tetracycline", "Oxazolidinone"], minHits: 3, forbidden: [] }
                 },
                 W: {
                   points: 1,
-                  prompt: "خلاصة حول الحصيلة الطاقوية",
-                  bacPrompt: "استخلص أثر تثبيط التدرج البروتوني على الحصيلة الطاقوية.",
-                  ...RECON("Reconstruction 2024 — non certifiée PDF."),
+                  prompt: "الخاتمة: أثر تثبيط الترجمة على تركيب البروتين",
+                  bacPrompt: "ما أثر تثبيط الترجمة بمركبين كيميائيين على تركيب البروتين؟",
+                  ...RECON("La clôture est incluse dans le texte scientifique officiel (pôle E). Pas une question BAC autonome."),
                   placeholder: "في الختام...",
                   minLength: 40,
-                  modelAnswer: "في الختام، بدون تدرج بروتوني تتوقف الكرية المذنبة فتنهار الحصيلة الطاقوية.",
-                  rule: { prompt: "استخلص أثر التثبيط على الحصيلة", keywords: ["حصيله", "ATP", "تثبيط"], minHits: 2, forbidden: [] }
+                  modelAnswer: "في الختام، بتثبيط الترجمة بمركب Tetracycline أو Oxazolidinone يتوقف تركيب البروتين في الخلية.",
+                  rule: { prompt: "اكتب خاتمة حول أثر تثبيط الترجمة", keywords: ["ترجمه", "تثبيط", "بروتين"], minHits: 2, forbidden: [] }
+                }
+              }
+            },
+            {
+              number: 2,
+              ui: "text",
+              label: "RUBISCO وتثبيت CO2 عند الفاصولياء",
+              max: 7,
+              desc: "تثبيت جزيئة CO2 على الريبولوز ثنائي الفوسفات بأنزيم RUBISCO وأثر عامل الظلام على تفاعلات التثبيت عند أوراق نبات الفاصولياء Phaseolus",
+              poles: {
+                N: {
+                  points: 1,
+                  prompt: "تأطير الإشكالية: أثر الظلام على تثبيت CO2",
+                  bacPrompt: "كيف يؤثر عامل الظلام على تفاعلات تثبيت جزيئة CO2 بأنزيم RUBISCO عند أوراق نبات الفاصولياء؟",
+                  ...RECON("Thème (RUBISCO, CO2, RuBP, Phaseolus, CA1P) lu sur la couche texte bruitée ; pas de question autonome de cadrage."),
+                  placeholder: "صياغة المشكل العلمي...",
+                  minLength: 40,
+                  modelAnswer: "المشكل العلمي: كيف يؤثر عامل الظلام على تفاعلات تثبيت جزيئة CO2 على الريبولوز ثنائي الفوسفات بأنزيم RUBISCO عند أوراق نبات الفاصولياء؟",
+                  rule: { prompt: "حدد المشكل العلمي حول تثبيت CO2", keywords: ["RUBISCO", "تثبيت", "CO2", "ظلام"], minHits: 2, forbidden: [] }
+                },
+                S: {
+                  points: 2.5,
+                  prompt: "تحليل نتائج تثبيت CO2 ونشاط RUBISCO",
+                  bacPrompt: "حلّل نتائج الوثيقة المتعلقة بنشاط أنزيم RUBISCO وتكوين CA1P وتثبيت CO2 عند أوراق الفاصولياء.",
+                  ...RECON("Reconstruction pédagogique 2024 — thème lu sur la couche texte bruitée."),
+                  placeholder: "نشاط RUBISCO، CA1P، تثبيت CO2...",
+                  minLength: 90,
+                  modelAnswer: "تمثل الوثيقة نشاط أنزيم RUBISCO ونسبة تكوين CA1P وتثبيت CO2 بدلالة الزمن. نلاحظ ارتفاع نشاط RUBISCO في الضوء مع ارتفاع تثبيت CO2، بينما ينخفض النشاط في الظلام مع تكون CA1P المثبط، ومنه نستنتج أن الظلام يثبط نشاط RUBISCO عبر CA1P.",
+                  rule: { prompt: "حلل نتائج نشاط RUBISCO وتكوين CA1P", keywords: ["RUBISCO", "CA1P", "تثبيت", "ضوء"], minHits: 2, forbidden: ["بسبب"], document: { kind: "curve", axes: ["نشاط", "زمن"], comparisons: [["ضوء", "ظلام"]], trends: [{ about: "ضوء", expect: ["ارتفاع", "مرتفع"] }], relations: [{ type: "inverse", a: "ظلام", b: "نشاط" }], values: [], strictValues: false } }
+                },
+                E: {
+                  points: 2.5,
+                  prompt: "شرح أثر الظلام على نشاط RUBISCO عبر CA1P",
+                  bacPrompt: "اشرح آلية تأثير عامل الظلام على تفاعلات تثبيت CO2 بأنزيم RUBISCO عند أوراق الفاصولياء.",
+                  ...RECON("Reconstruction pédagogique 2024 — thème lu sur la couche texte bruitée."),
+                  placeholder: "CA1P، الموقع الفعال، تثبيط...",
+                  minLength: 110,
+                  modelAnswer: "في الظلام يتراكم مثبط CA1P الذي يتثبت على الموقع الفعال لأنزيم RUBISCO فيمنع تثبيت CO2 على الريبولوز ثنائي الفوسفات، فلا يتشكل المركب السداسي ولا حمض الفوسفوغليسيريك، فتتوقف تفاعلات تثبيت CO2 في أوراق الفاصولياء.",
+                  rule: { prompt: "اشرح أثر الظلام على نشاط RUBISCO", keywords: ["RUBISCO", "CA1P", "تثبيت", "ظلام", "موقع"], minHits: 3, forbidden: [] }
+                },
+                W: {
+                  points: 1,
+                  prompt: "الخلاصة: أهمية الضوء لتثبيت CO2",
+                  bacPrompt: "ما أهمية الضوء في الحفاظ على نشاط RUBISCO وتثبيت CO2؟",
+                  ...RECON("La clôture est incluse dans l'explication (pôle E). Pas une question BAC autonome."),
+                  placeholder: "في الختام...",
+                  minLength: 40,
+                  modelAnswer: "في الختام، يحافظ الضوء على نشاط أنزيم RUBISCO بمنع تراكم مثبط CA1P، فيستمر تثبيت CO2 وإنتاج المادة العضوية عند النبات.",
+                  rule: { prompt: "اكتب خلاصة حول أهمية الضوء لتثبيت CO2", keywords: ["ضوء", "RUBISCO", "تثبيت"], minHits: 2, forbidden: [] }
+                }
+              }
+            },
+            {
+              number: 3,
+              ui: "text",
+              label: "المناعة ضد البكتيريا الممرضة",
+              max: 8,
+              desc: "الاستجابة المناعية ضد Corynebacterium diphtheriae وStaphylococcus aureus ودور بروتين SPA في تحديد أفضل سيرورة للقضاء على البكتيريا",
+              poles: {
+                N: {
+                  points: 0.5,
+                  prompt: "تأطير الإشكالية: آلية القضاء على البكتيريا الممرضة",
+                  bacPrompt: "كيف تقضي المناعة على البكتيريا الممرضة (Corynebacterium وStaphylococcus aureus)، وما دور بروتين SPA في ذلك؟",
+                  ...RECON("Thème (diphtérie, S. aureus, SPA) lu sur la couche texte bruitée ; pas de question autonome de cadrage."),
+                  placeholder: "صياغة المشكل العلمي...",
+                  minLength: 30,
+                  modelAnswer: "المشكل العلمي: كيف تقضي المناعة على البكتيريا الممرضة Corynebacterium وStaphylococcus aureus، وما دور بروتين SPA في تحديد أفضل سيرورة للقضاء عليها؟",
+                  rule: { prompt: "حدد المشكل العلمي حول المناعة ضد البكتيريا", keywords: ["مناعه", "بكتيريا", "مستضد", "ممرضه"], minHits: 2, forbidden: [] }
+                },
+                S: {
+                  points: 2,
+                  prompt: "استغلال الوثائق: نسبة الروابط الميكروبية ضد الممرضين",
+                  bacPrompt: "استغل الوثائق: نسبة الارتباط بالمستضدات (AgCd) و(AgSa) والبروتينات المناعية ضد Corynebacterium وStaphylococcus aureus.",
+                  ...RECON("Reconstruction pédagogique 2024 — thème lu sur la couche texte bruitée."),
+                  placeholder: "أجسام مضادة، مستضد، نسبة ارتباط...",
+                  minLength: 60,
+                  modelAnswer: "تمثل الوثائق نسبة ارتباط الأجسام المضادة بمستضدات البكتيريا Corynebacterium (AgCd) وStaphylococcus aureus (AgSa). نلاحظ ارتباطا نوعيا مرتفعا للأجسام المضادة بمستضدها الموافق، ومنه نستنتج خصوصية الاستجابة المناعية الخلطية ضد كل بكتيريا.",
+                  rule: { prompt: "استغل الوثائق حول المناعة ضد البكتيريا", keywords: ["مستضد", "اجسام", "مضاده", "ارتباط"], minHits: 2, forbidden: ["بسبب"], document: { kind: "table", axes: ["ارتباط", "مستضد"], comparisons: [["AgCd", "AgSa"]], cells: [["مستضد", "ارتباط"]], values: [], strictValues: false } }
+                },
+                E: {
+                  points: 4,
+                  prompt: "تفسير دور بروتين SPA في الإفلات المناعي",
+                  bacPrompt: "فسّر كيف يحدد بروتين SPA أفضل سيرورة للقضاء على Staphylococcus aureus معتمدا على الوثيقة ومعلوماتك.",
+                  ...RECON("Reconstruction pédagogique 2024 — thème lu sur la couche texte bruitée."),
+                  placeholder: "SPA، جسم مضاد، بلعمة...",
+                  minLength: 110,
+                  modelAnswer: "يرتبط بروتين SPA الموجود على جدار Staphylococcus aureus بالقطعة Fc للأجسام المضادة فيمنع تثبيتها عبر مواقعها المتغيرة على المستضد ويعطل البلعمة، فتستفيد البكتيريا من الإفلات المناعي. وللقضاء عليها تُستعمل سيرورة تحييد SPA لاستعادة التعرف النوعي وتسهيل البلعمة.",
+                  rule: { prompt: "فسر دور بروتين SPA في الإفلات المناعي", keywords: ["SPA", "جسم", "مضاد", "بلعمه", "مستضد"], minHits: 3, forbidden: [] }
+                },
+                W: {
+                  points: 1.5,
+                  prompt: "الخلاصة: أفضل سيرورة للقضاء على البكتيريا",
+                  bacPrompt: "ما أفضل سيرورة للقضاء على Staphylococcus aureus معتمدا على معطيات الوثيقة؟",
+                  ...RECON("La clôture est incluse dans l'explication (pôle E). Pas une question BAC autonome."),
+                  placeholder: "في الختام...",
+                  minLength: 40,
+                  modelAnswer: "في الختام، تقضي أفضل سيرورة على Staphylococcus aureus بتحييد بروتين SPA لاستعادة التعرف النوعي بالأجسام المضادة وتسهيل البلعمة.",
+                  rule: { prompt: "اكتب خلاصة حول القضاء على S. aureus", keywords: ["SPA", "بلعمه", "بكتيريا"], minHits: 2, forbidden: [] }
                 }
               }
             }
@@ -620,11 +711,326 @@ export const APP_CONFIG = {
     {
       id: "2023",
       label: "بكالوريا الجزائر دورة 2023",
-      badge: "تدريب منهجي",
+      badge: "دورة رسمية",
       theme: "amber",
-      enabled: false,
-      loadingNote: "Sujets 2023 non extraits au 2026-08-23 — page dzexams localisée (https://www.dzexams.com/ar/annales/STRDZEowcCtwN0JmT1NwS3p4cEVmdz09) mais PDF distant inaccessible (SSL sortant en échec) ; aucun texte de question relu. Session de remplacement non localisée.",
-      sujets: []
+      enabled: true,
+      sujets: [
+        {
+          id: 1,
+          pdf: null,
+          pdfAvailable: false,
+          pdfExternalUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf",
+          pdfNote: "PDF non redistribué dans le dépôt ; source : https://www.dzexams.com/ar/annales/STRDZEowcCtwN0JmT1NwS3p4cEVmdz09 (consulté 2026-08-25). La couche texte du PDF est inversée (miroir mot à mot) ; les consignes ont été reconstituées mot à mot à partir de cette couche. Session de remplacement non localisée.",
+          title: "الموضوع الأول",
+          exercises: [
+            {
+              number: 1,
+              ui: "text",
+              label: "البروتينات الغشائية في المشبك وذيفان الكزاز",
+              max: 5,
+              desc: "دور البروتينات الغشائية (مستقبلات وقنوات) للخلية بعد المشبكية في النقل المشبكي، وأثر ذيفان بكتيريا الكزاز (Clostridium tetani) المثبط للإفراز",
+              poles: {
+                N: {
+                  points: 1,
+                  prompt: "تأطير الإشكالية: كيف تعمل البروتينات الغشائية في المشبك وما أثر ذيفان الكزاز عليها؟",
+                  bacPrompt: "كيف تتدخل مختلف البروتينات الغشائية في عمل المشبك، وما أثر ذيفان الكزاز على هذا العمل؟",
+                  ...RECON("Pas de question officielle autonome de type « حدد المشكل ». Reformulation pédagogique du préambule page 1."),
+                  placeholder: "صياغة المشكل العلمي...",
+                  minLength: 30,
+                  modelAnswer: "المشكل العلمي: كيف تتدخل مختلف البروتينات الغشائية للخلية بعد المشبكية في عمل المشبك، وما أثر تثبيط إفراز GABA بذيفان الكزاز على النقل العصبي؟",
+                  rule: { prompt: "حدد المشكل العلمي حول البروتينات الغشائية في المشبك", keywords: ["مشبك", "بروتين", "غشائي", "كزاز"], minHits: 2, forbidden: [] }
+                },
+                S: {
+                  points: 1,
+                  prompt: "تسمية التسجيلين والبروتين الغشائي المسؤول عن كل تسجيل",
+                  bacPrompt: "سمّ التسجيلين المتوقع الحصول عليهما في جهاز راسم الاهتزاز المهبطي (أ) و(ب)، وكذلك البروتين الغشائي للخلية بعد المشبكية المسؤول عن كل تسجيل.",
+                  ...OFFICIAL(1, "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : سمّ. Question 1 du التمرين الأول (Sujet 1).", "2026-08-25"),
+                  placeholder: "تسجيل تنبيهي/تثبيطي، مستقبل غشائي...",
+                  minLength: 30,
+                  modelAnswer: "التسجيل (أ) جهد بعد مشبكي تنبيهي PPSE والتسجيل (ب) جهد بعد مشبكي تثبيطي PPSI. البروتين الغشائي المسؤول: مستقبل غشائي للمبلغ العصبي (مستقبل الأستيل كولين المنبّه ومستقبل GABA المثبط).",
+                  rule: { prompt: "سم التسجيلين والبروتين الغشائي المسؤول", keywords: ["مشبكي", "مستقبل", "تسجيل", "غشائي"], minHits: 2, forbidden: [] }
+                },
+                E: {
+                  points: 2,
+                  prompt: "النص العلمي: دور البروتينات الغشائية في عمل المشبك وأثر ذيفان الكزاز",
+                  bacPrompt: "بيّن في نص علمي دور مختلف البروتينات الغشائية في عمل المشبك وتأثير ذيفان الكزاز على ذلك انطلاقا من معطيات الوثيقة ومعلوماتك (النص العلمي مهيكل بمقدمة وعرض وخاتمة).",
+                  ...OFFICIAL(1, "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : بيّن. Question 2 (texte scientifique structuré) du التمرين الأول.", "2026-08-25"),
+                  placeholder: "مقدمة، عرض، خاتمة...",
+                  minLength: 120,
+                  modelAnswer: "ترتبط المبالغ العصبية بمستقبلات غشائية نوعية على الغشاء بعد المشبكي فتتفتح قنوات شاردية نوعية: يرتبط GABA بمستقبله المثبط فيدخل Cl⁻ ويتولد جهد تثبيطي، بينما يرتبط الأستيل كولين بمستقبله المنبّه فيدخل Na⁺ ويتولد جهد تنبيهي، ويُدمج المحصّل على مستوى العصبون. يمنع ذيفان الكزاز تحرير GABA فيغيب التثبيط وتسيطر المكونات التنبيهية فيحدث تقلص عضلي عنيف.",
+                  rule: { prompt: "بين دور البروتينات الغشائية وأثر ذيفان الكزاز", keywords: ["مستقبل", "غشائي", "تثبيط", "تنبيه", "تحرير"], minHits: 3, forbidden: [] }
+                },
+                W: {
+                  points: 1,
+                  prompt: "الخاتمة: أثر ذيفان الكزاز على النقل العصبي",
+                  bacPrompt: "ما أثر تثبيط إفراز GABA بذيفان الكزاز على عمل المشبك والنقل العصبي؟",
+                  ...RECON("La clôture est incluse dans le texte scientifique officiel (pôle E). Ce pôle isole pédagogiquement la clôture, ce n'est pas une question BAC autonome."),
+                  placeholder: "في الختام...",
+                  minLength: 40,
+                  modelAnswer: "في الختام، بتثبيط تحرير GABA يختل توازن المشبك فتهيمن المكونات التنبيهية ويحدث تقلص عضلي عنيف.",
+                  rule: { prompt: "اكتب خاتمة حول أثر ذيفان الكزاز", keywords: ["تثبيط", "مشبك", "تقلص"], minHits: 2, forbidden: [] }
+                }
+              }
+            },
+            {
+              number: 2,
+              ui: "text",
+              label: "دواء ML901 والملاريا",
+              max: 7,
+              desc: "تثبيط تركيب البروتين لدى طفيلي البلاسموديوم المسبب للملاريا بدواء ML901، دون التأثير على خلايا الإنسان",
+              poles: {
+                N: {
+                  points: 1,
+                  prompt: "تأطير الإشكالية: كيف يستغل دواء ML901 تثبيط تركيب البروتين لعلاج الملاريا؟",
+                  bacPrompt: "كيف يستغل دواء ML901 تثبيط تركيب البروتين لعلاج الملاريا دون الإضرار بخلايا الإنسان؟",
+                  ...RECON("Pas de question officielle autonome de type « حدد المشكل ». Reformulation pédagogique du préambule."),
+                  placeholder: "صياغة المشكل العلمي...",
+                  minLength: 30,
+                  modelAnswer: "المشكل العلمي: كيف يثبط دواء ML901 تركيب البروتين لدى طفيلي البلاسموديوم دون التأثير على خلايا الإنسان؟",
+                  rule: { prompt: "حدد المشكل العلمي حول دواء ML901", keywords: ["ML901", "بروتين", "طفيلي", "تركيب"], minHits: 2, forbidden: [] }
+                },
+                S: {
+                  points: 2.5,
+                  prompt: "مقارنة النتائج التجريبية للشكل (أ) من الوثيقة 1",
+                  bacPrompt: "قارن بين النتائج التجريبية الموضحة في الشكل (أ) من الوثيقة 1.",
+                  ...OFFICIAL(2, "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : قارن. Question 1 du الجزء الأول. Consigne « حلّل منحنى الشكل (ب) من الوثيقة 1 » (question 2 du même الجزء) non mappée (un pôle = une consigne).", "2026-08-25"),
+                  placeholder: "قارن بالتوازي: في غياب العلاج وفي وجوده...",
+                  minLength: 90,
+                  modelAnswer: "تمثل الوثيقة تغير معدل الطفيليات في الدم بدلالة الزمن. نلاحظ في غياب العلاج ارتفاعا متواصلا لمعدل الطفيليات حتى اليوم السابع، بينما ينخفض هذا المعدل مع استعمال ML901 حتى الانعدام. ومنه نستنتج أن دواء ML901 يثبط تكاثر الطفيلي المسبب للملاريا.",
+                  rule: { prompt: "قارن بين النتائج التجريبية للشكل أ", keywords: ["علاج", "طفيلي", "معدل", "زمن"], minHits: 2, forbidden: ["بسبب"], document: { kind: "curve", axes: ["معدل", "زمن"], comparisons: [["علاج", "غياب"]], trends: [{ about: "علاج", expect: ["انخفاض", "ينخفض"] }, { about: "غياب", expect: ["ارتفاع", "يرتفع"] }], relations: [{ type: "inverse", a: "علاج", b: "معدل" }], values: [], strictValues: false } }
+                },
+                E: {
+                  points: 2.5,
+                  prompt: "تبرير أهمية استعمال دواء ML901",
+                  bacPrompt: "برّر أهمية استعمال دواء ML901 انطلاقا من معلوماتك ونتائج الوثيقتين 2 و3.",
+                  ...OFFICIAL(2, "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : برّر. Question du الجزء الثاني.", "2026-08-25"),
+                  placeholder: "الموقع الفعال، Tyr-ARNt، تثبيط الترجمة...",
+                  minLength: 110,
+                  modelAnswer: "يستعمل ML901 لعلاج الملاريا لأن الطفيلي لا يستطيع إنتاج بروتيناته بدون الحمض الأميني تيروزين المنشط، إذ يرتبط ML901 بالموقع الفعال لأنزيم تنشيط التيروزين في مكان AMP فيمنع تشكل معقد Tyr-ARNt فتتوقف الترجمة ويموت الطفيلي، بينما لا يتأثر الإنسان لأن أنزيمه لا يثبت الدواء.",
+                  rule: { prompt: "برر أهمية استعمال ML901", keywords: ["ML901", "تيروزين", "ARNt", "تنشيط", "ترجمه"], minHits: 3, forbidden: [] }
+                },
+                W: {
+                  points: 1,
+                  prompt: "الخلاصة: انتقائية دواء ML901",
+                  bacPrompt: "ما أهمية انتقائية دواء ML901 في التمييز بين خلايا الطفيلي وخلايا الإنسان؟",
+                  ...RECON("La clôture est incluse dans le justificatif officiel (pôle E). Pas une question BAC autonome."),
+                  placeholder: "في الختام...",
+                  minLength: 40,
+                  modelAnswer: "في الختام، تكمن أهمية ML901 في انتقائيته: يثبط تنشيط التيروزين عند الطفيلي فقط فيتوقف تركيبه البروتيني دون المساس بخلايا الإنسان.",
+                  rule: { prompt: "اكتب خلاصة حول انتقائية ML901", keywords: ["انتقائي", "انسان", "طفيلي"], minHits: 2, forbidden: [] }
+                }
+              }
+            },
+            {
+              number: 3,
+              ui: "text",
+              label: "سرطان الثدي ومادة الكيرسيتين",
+              max: 8,
+              desc: "تكاثر خلايا سرطان الثدي بدفع من الأستراديول ودور أنزيم الأروماتاز، واستغلال مادة الكيرسيتين (Quercetin) لإيجاد حلول علاجية",
+              poles: {
+                N: {
+                  points: 0.5,
+                  prompt: "اقتراح فرضيتين للحد من تطور سرطان الثدي",
+                  bacPrompt: "اقترح فرضيتين للحد من تطور سرطان الثدي باستغلال معلوماتك ونتائج شكلي الوثيقة 1.",
+                  ...OFFICIAL(3, "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : اقترح فرضيتين. Question unique du الجزء الأول.", "2026-08-25"),
+                  placeholder: "فرضية 1، فرضية 2...",
+                  minLength: 30,
+                  modelAnswer: "الفرضية 1: مادة تثبط عمل أنزيم الأروماتاز فتمنع تركيب الأستراديول ولا تتكاثر الخلايا السرطانية. الفرضية 2: مادة تثبت على مستقبلات الأستراديول فتمنع تحفيز تكاثر الخلايا السرطانية.",
+                  rule: { prompt: "اقترح فرضيتين للحد من سرطان الثدي", keywords: ["فرضيه", "استراديول", "تكاثر"], minHits: 1, forbidden: [], hypotheses: { min: 2, distinct: true } }
+                },
+                S: {
+                  points: 2.0,
+                  prompt: "استغلال الوثيقة 1: تكاثر الخلايا بدلالة الأستراديول ودور البروتينات",
+                  bacPrompt: "استغل شكلي الوثيقة 1: تكاثر الخلايا السرطانية بدلالة تراكيز الأستراديول، ودور مستقبل الأستراديول وأنزيم الأروماتاز في هذا التكاثر.",
+                  ...RECON("La page 3 décrit les figures (أ) et (ب) mais la seule consigne écrite est « اقترح فرضيتين ». L'exploitation chiffrée est une étape pédagogique, pas une question officielle autonome."),
+                  placeholder: "قارن بالتوازي: قبل/بعد حقن الأستراديول...",
+                  minLength: 60,
+                  modelAnswer: "تمثل الوثيقة تكاثر الخلايا السرطانية بدلالة الزمن. نلاحظ ارتفاع تكاثر الخلايا بسرعة بعد حقن الأستراديول مقارنة بما قبله، ويمثل الشكل (ب) كيف يحوّل أنزيم الأروماتاز الأندروجينات إلى أستراديول الذي يثبت على مستقبله الغشائي ويحفز التكاثر.",
+                  rule: { prompt: "استغل الوثيقة 1 حول تكاثر الخلايا", keywords: ["تكاثر", "استراديول", "خليه", "اروماتاز"], minHits: 2, forbidden: ["بسبب"], document: { kind: "curve", axes: ["تكاثر", "زمن"], comparisons: [["قبل", "بعد"]], trends: [{ about: "بعد", expect: ["ارتفاع", "يرتفع"] }], values: [], strictValues: false } }
+                },
+                E: {
+                  points: 4.0,
+                  prompt: "مناقشة صحة الفرضيتين وتقديم نصيحة",
+                  bacPrompt: "ناقش صحة الفرضيتين المقترحتين اعتمادا على معلوماتك ونتائج الوثيقتين 2 و3، ثم قدّم نصيحة للوقاية من سرطان الثدي.",
+                  ...OFFICIAL(4, "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : ناقش. Question du الجزء الثاني (la نصيحة finale est incluse dans la même consigne).", "2026-08-25"),
+                  placeholder: "الموقع الفعال للأروماتاز، مستقبل الأستراديول...",
+                  minLength: 110,
+                  modelAnswer: "تثبت مادة الكيرسيتين على الموقع الفعال لأنزيم الأروماتاز فتثبط نشاطه وتمنع تركيب الأستراديول، كما تثبت على مستقبل الأستراديول فتمنع تشكل معقد أستراديول-مستقبل؛ ومنه تتراجع وتيرة تكاثر الخلايا السرطانية ونمو الورم، فتتأكد الفرضيتان معا. النصيحة: تناول الخضروات الغنية بالكيرسيتين للوقاية من سرطان الثدي.",
+                  rule: { prompt: "ناقش صحة الفرضيتين باستغلال الوثيقتين 2 و3", keywords: ["اروماتاز", "كيرسيتين", "مستقبل", "استراديول", "فرضيه"], minHits: 3, forbidden: [] }
+                },
+                W: {
+                  points: 1.5,
+                  prompt: "المخطط: تطور الورم في غياب ووجود الكيرسيتين",
+                  bacPrompt: "لخّص في مخطط بيانات ما توصلت إليه في هذه الدراسة حول تطور الورم السرطاني في غياب ووجود مادة الكيرسيتين معتمدا على معلوماتك ومكتسباتك.",
+                  ...OFFICIAL(4, "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : لخّص في مخطط. Question du الجزء الثالث.", "2026-08-25"),
+                  placeholder: "أستراديول → تكاثر → ورم؛ وفي وجود الكيرسيتين...",
+                  minLength: 0,
+                  modelAnswer: "عنوان المخطط: تطور الورم السرطاني. أستراديول → مستقبله → تكاثر الخلايا السرطانية → نمو الورم، وفي وجود الكيرسيتين يتوقف التكاثر ويتراجع الورم.",
+                  rule: { prompt: "لخص في مخطط تطور الورم", keywords: ["مخطط", "ورم", "كيرسيتين"], minHits: 1, forbidden: [], schema: { arrows: true, title: "تطور الورم", ordered: ["استراديول", "تكاثر", "كيرسيتين"] } }
+                }
+              }
+            }
+          ]
+        },
+        {
+          id: 2,
+          pdf: null,
+          pdfAvailable: false,
+          pdfExternalUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf",
+          pdfNote: "PDF non redistribué dans le dépôt ; même fichier que le sujet 1 (session normale, sujets 1 et 2 réunis). Couche texte inversée reconstituée mot à mot (2026-08-25).",
+          title: "الموضوع الثاني",
+          exercises: [
+            {
+              number: 1,
+              ui: "text",
+              label: "البنية الفراغية للبروتين والطفرات",
+              max: 5,
+              desc: "الروابط المسؤولة عن استقرار البنية الفراغية للبروتين، ودور التتابع النوكليوتيدي للمورثة في الحفاظ على وظيفة البروتين وأثر الطفرات",
+              poles: {
+                N: {
+                  points: 1,
+                  prompt: "تأطير الإشكالية: كيف تضمن المورثة استقرار بنية البروتين ووظيفته؟",
+                  bacPrompt: "كيف يضمن التتابع النوكليوتيدي في المورثة استقرار البنية الفراغية للبروتين ووظيفته، وكيف تؤثر الطفرات في ذلك؟",
+                  ...RECON("Pas de question officielle autonome de type « حدد المشكل ». Reformulation pédagogique du préambule."),
+                  placeholder: "صياغة المشكل العلمي...",
+                  minLength: 30,
+                  modelAnswer: "المشكل العلمي: كيف يضمن التتابع النوكليوتيدي في المورثة استقرار البنية الفراغية للبروتين ووظيفته، وكيف يؤثر تغيره (الطفرة) في فقدان التخصص الوظيفي؟",
+                  rule: { prompt: "حدد المشكل العلمي حول بنية البروتين", keywords: ["نوكليوتيد", "بروتين", "طفره", "بنيه"], minHits: 2, forbidden: [] }
+                },
+                S: {
+                  points: 1,
+                  prompt: "اختيار العبارات الصحيحة حول البنية الفراغية للبروتين",
+                  bacPrompt: "اختر العبارة الصحيحة من العبارات المقترحة لإكمال الجمل التالية: أ- الروابط التكافئية التي تساهم في استقرار البنية الفراغية للبروتينات هي… ب- تتوقف البنية الفراغية وبالتالي التخصص الوظيفي للبروتينات على… ت- إن ترتيب الأحماض الأمينية في السلسلة البيبتيدية يفرضه ترتيب… في… ث- أصل الطفرة الوراثية هو تغير على مستوى…",
+                  ...OFFICIAL(5, "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : اختر العبارة الصحيحة. Question 1 (QCM à 4 items : جسور ثنائية الكبريت، الروابط بين أحماض أمينية، ARNm، ADN).", "2026-08-25"),
+                  placeholder: "أ- جسور ثنائية الكبريت، ب- …، ت- ARNm، ث- ADN...",
+                  minLength: 30,
+                  modelAnswer: "أ- جسور ثنائية الكبريت فقط. ب- الروابط التي تنشأ بين أحماض أمينية محددة وموضعة بشكل دقيق في السلسلة البيبتيدية. ت- ترتيب الترميزات في ARNm. ث- تغير على مستوى ADN.",
+                  rule: { prompt: "اختر العبارة الصحيحة حول بنية البروتين", keywords: ["كبريت", "ARNm", "ADN", "امينيه"], minHits: 2, forbidden: [] }
+                },
+                E: {
+                  points: 2,
+                  prompt: "النص العلمي: دور مكونات المورثة وأثر الطفرات",
+                  bacPrompt: "أبرز في نص علمي دور بعض مكونات المورثة في الحفاظ على التتابع النوكليوتيدي وفي وظيفة البروتين وكيف تؤثر الطفرات في فقدان التخصص الوظيفي (النص العلمي مهيكل بمقدمة وعرض وخاتمة).",
+                  ...OFFICIAL(5, "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : أبرز. Question 2 (texte scientifique structuré).", "2026-08-25"),
+                  placeholder: "مقدمة، عرض، خاتمة...",
+                  minLength: 120,
+                  modelAnswer: "يتحدد التتابع النوكليوتيدي للـ ARNm بالنسخ انطلاقا من إحدى سلسلتي ADN بتدخل أنزيم ARNp، وكل رامزة (ثلاثية نوكليوتيدات) ترمز لحمض أميني محدد تُربط أثناء الترجمة وفق ترتيب الترميزات فتتشكل السلسلة البيبتيدية وتنطوي إلى بنية فراغية محددة تحدد وظيفتها. أي تغير (طفرة) في تتابع النوكليوتيدات يغيّر نوع أو عدد الأحماض الأمينية فيفقد البروتين بنيته الفراغية وتخصصه الوظيفي.",
+                  rule: { prompt: "اكتب نصا علميا حول مكونات المورثة والطفرات", keywords: ["تتابع", "نوكليوتيد", "بروتين", "طفره", "تخصص"], minHits: 3, forbidden: [] }
+                },
+                W: {
+                  points: 1,
+                  prompt: "الخاتمة: أثر الطفرة على وظيفة البروتين",
+                  bacPrompt: "ما أثر تغير التتابع النوكليوتيدي على البنية الفراغية والتخصص الوظيفي للبروتين؟",
+                  ...RECON("La clôture est incluse dans le texte scientifique officiel (pôle E). Pas une question BAC autonome."),
+                  placeholder: "في الختام...",
+                  minLength: 40,
+                  modelAnswer: "في الختام، أي طفرة في التتابع النوكليوتيدي قد تغير البنية الفراغية للبروتين فيفقد تخصصه الوظيفي.",
+                  rule: { prompt: "اكتب خاتمة حول أثر الطفرة", keywords: ["طفره", "وظيفه", "بروتين"], minHits: 2, forbidden: [] }
+                }
+              }
+            },
+            {
+              number: 2,
+              ui: "text",
+              label: "الخلايا التائية السامة والبيرفورين",
+              max: 7,
+              desc: "إقصاء الخلايا المصابة ببروتين البيرفورين الذي تفرزه الخلايا التائية السامة (LTc)، وآلية حماية هذه الخلايا لنفسها من تأثيره",
+              poles: {
+                N: {
+                  points: 1,
+                  prompt: "تأطير الإشكالية: كيف تحمي الخلايا LTc نفسها من البيرفورين؟",
+                  bacPrompt: "كيف تحمي الخلايا التائية السامة (LTc) نفسها من تأثير بروتين البيرفورين الذي تفرزه لإقصاء الخلايا المصابة؟",
+                  ...RECON("Pas de question officielle autonome de type « حدد المشكل ». Reformulation pédagogique du préambule."),
+                  placeholder: "صياغة المشكل العلمي...",
+                  minLength: 30,
+                  modelAnswer: "المشكل العلمي: كيف تحمي الخلايا التائية السامة (LTc) نفسها من تأثير البيرفورين الذي تفرزه، بينما تتأثر به الخلايا المصابة؟",
+                  rule: { prompt: "حدد المشكل العلمي حول حماية LTc", keywords: ["لمفاويه", "بيرفورين", "مصابه", "خليه"], minHits: 2, forbidden: [] }
+                },
+                S: {
+                  points: 2.5,
+                  prompt: "تحليل مقارن للبنية الجزيئية لغشاء LTc والخلايا المصابة",
+                  bacPrompt: "قدّم تحليلا مقارنا للبنية الجزيئية لغشاء الـ LTc والخلايا المصابة الممثلة في الشكل (أ) من الوثيقة 1.",
+                  ...OFFICIAL(6, "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : قدّم تحليلا مقارنا. Question 1 du الجزء الأول. Consigne « برّر الاختلاف بين بنية غشاء LTc والخلايا المصابة » (question 2) non mappée (un pôle = une consigne).", "2026-08-25"),
+                  placeholder: "قارن: الكوليسترول، البيرفورين، الغشاء...",
+                  minLength: 90,
+                  modelAnswer: "تمثل الوثيقة البنية الجزيئية لغشاء LTc وغشاء الخلية المصابة. يتشابه الغشاءان في كونهما طبقة ثنائية فوسفوليبيدية تحتوي كوليسترول، بينما يختلفان في نسبة الكوليسترول (أعلى عند LTc) وفي وجود قنوات البيرفورين المتشكلة فقط على غشاء الخلية المصابة. ومنه نستنتج أن غشاء LTc يتميز عن غشاء الخلية المصابة بنسبة الكوليسترول وغياب قنوات البيرفورين.",
+                  rule: { prompt: "حلل البنية الجزيئية لغشائي LTc والمصابة", keywords: ["غشاء", "كوليسترول", "بيرفورين", "لمفاويه"], minHits: 2, forbidden: ["بسبب"], document: { kind: "curve", axes: ["بنيه", "غشاء"], comparisons: [["LTc", "مصابه"]], trends: [{ about: "LTc", expect: ["كوليسترول", "اعلي"] }], relations: [{ type: "parallel", a: "LTc", b: "مصابه" }], values: [], strictValues: false } }
+                },
+                E: {
+                  points: 2.5,
+                  prompt: "شرح آلية حماية الخلايا LTc لنفسها من البيرفورين",
+                  bacPrompt: "اشرح الآلية التي تحمي بها الخلايا (LTc) نفسها من تأثير البيرفورين انطلاقا من النتائج المبينة في أشكال الوثيقة 2.",
+                  ...OFFICIAL(6, "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : اشرح. Question du الجزء الثاني.", "2026-08-25"),
+                  placeholder: "الكوليسترول، السيولة الغشائية، تثبيت البيرفورين...",
+                  minLength: 110,
+                  modelAnswer: "تعود حماية الخلايا LTc لنفسها إلى ارتفاع نسبة الكوليسترول والفينغومييلين (SM) في غشائها مما يخفض سيولته الغشائية، فيتعذر تثبيت البيرفورين وتشكل القنوات، فلا تتسرب إنزيمات الغرانزيم إلى داخل LTc؛ عكس غشاء الخلية المصابة الأفقر في الكوليسترول الذي يسمح بتثبيت البيرفورين وتشكل القنوات فتُخرَّب الخلية.",
+                  rule: { prompt: "اشرح آلية حماية LTc من البيرفورين", keywords: ["غشاء", "بيرفورين", "كوليسترول", "حمايه", "تثبيت"], minHits: 3, forbidden: [] }
+                },
+                W: {
+                  points: 1,
+                  prompt: "الخلاصة: حماية الذات أثناء الإقصاء المناعي",
+                  bacPrompt: "ما الميزة البنيوية التي تحمي الخلايا LTc أثناء إقصائها للخلايا المصابة؟",
+                  ...RECON("La clôture est incluse dans l'explication officielle (pôle E). Pas une question BAC autonome."),
+                  placeholder: "في الختام...",
+                  minLength: 40,
+                  modelAnswer: "في الختام، يحمي ارتفاع الكوليسترول والفينغومييلين غشاء LTc من تشكل قنوات البيرفورين فتنجو الخلية المناعية أثناء تخريبها للخلايا المصابة.",
+                  rule: { prompt: "اكتب خلاصة حول حماية LTc", keywords: ["حمايه", "لمفاويه", "بيرفورين"], minHits: 2, forbidden: [] }
+                }
+              }
+            },
+            {
+              number: 3,
+              ui: "text",
+              label: "مبيد DCMU والمرحلة الكيميائية الضوئية",
+              max: 8,
+              desc: "آلية تأثير مبيد DCMU على المرحلة الكيميائية الضوئية (النظام الضوئي الثاني PSII) وتحويل الطاقة الضوئية عند النباتات",
+              poles: {
+                N: {
+                  points: 0.5,
+                  prompt: "اقتراح فرضيتين حول آلية تأثير DCMU",
+                  bacPrompt: "اقترح فرضيتين حول آلية تأثير DCMU على المرحلة الكيميائية الضوئية مستغلا معلوماتك ونتائج أشكال الوثيقة 1.",
+                  ...OFFICIAL(7, "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : اقترح فرضيتين. Question unique du الجزء الأول.", "2026-08-25"),
+                  placeholder: "فرضية 1، فرضية 2...",
+                  minLength: 30,
+                  modelAnswer: "الفرضية 1: يثبط DCMU أكسدة الماء (النظام الضوئي الثاني) فيتوقف تحرر الإلكترونات. الفرضية 2: يمنع DCMU انتقال الإلكترونات نحو الناقل الأول T1 فتتوقف السلسلة التركيبية الضوئية.",
+                  rule: { prompt: "اقترح فرضيتين حول تأثير DCMU", keywords: ["فرضيه", "DCMU", "ضوء"], minHits: 1, forbidden: [], hypotheses: { min: 2, distinct: true } }
+                },
+                S: {
+                  points: 2.0,
+                  prompt: "استغلال الوثيقة 1: تحرر O2 واختزال DCPIP في الضوء والظلام",
+                  bacPrompt: "استغل أشكال الوثيقة 1: نسبة الأكسجين المطروح واختزال DCPIP بدلالة الزمن في وجود الضوء وفي الظلام وبدلالة تراكيز DCMU.",
+                  ...RECON("La page 7 décrit les figures (أ/ب/ج) mais la seule consigne écrite est « اقترح فرضيتين ». L'exploitation chiffrée est une étape pédagogique, pas une question officielle autonome."),
+                  placeholder: "في الضوء/في الظلام، DCPIP، O₂...",
+                  minLength: 60,
+                  modelAnswer: "تمثل الوثيقة نسبة الأكسجين المطروح واختزال DCPIP بدلالة الزمن. نلاحظ في الضوء ارتفاعا في تحرر O2 واختزال DCPIP، بينما لا يحدث أي تحرر في الظلام، كما ينخفض تحرر O2 بارتفاع تركيز DCMU حتى الانعدام. ومنه نستنتج أن الضوء ضروري لأكسدة الماء وأن DCMU يثبط المرحلة الكيميائية الضوئية.",
+                  rule: { prompt: "استغل الوثيقة 1 حول تأثير DCMU", keywords: ["اكسجين", "DCPIP", "ضوء", "ظلام"], minHits: 2, forbidden: ["بسبب"], document: { kind: "curve", axes: ["اكسجين", "زمن"], comparisons: [["ضوء", "ظلام"]], trends: [{ about: "ضوء", expect: ["ارتفاع", "يرتفع"] }], relations: [{ type: "inverse", a: "DCMU", b: "اكسجين" }], values: [], strictValues: false } }
+                },
+                E: {
+                  points: 4.0,
+                  prompt: "مناقشة صحة إحدى الفرضيتين",
+                  bacPrompt: "ناقش صحة إحدى الفرضيتين المقترحتين مستغلا معلوماتك والنتائج الممثلة في أشكال الوثيقة 2.",
+                  ...OFFICIAL(9, "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : ناقش. Question 1 du الجزء الثاني. Consigne « قدّم نصيحة للمزارعين » (question 2 du même الجزء) non mappée (un pôle = une consigne).", "2026-08-25"),
+                  placeholder: "PSII، الناقل T1، انتقال الإلكترونات...",
+                  minLength: 110,
+                  modelAnswer: "تتأكد الفرضية الثانية: عند غياب DCMU يواصل PSII امتصاص الفوتونات الضوئية وأكسدة الماء فيحرر إلكترونين يختزلان الناقل T1، أما في وجود DCMU فيثبت المبيد على جزء من PSII مانعا انتقال الإلكترونات نحو T1 فتتوقف أكسدة الماء وخض البروتونات نحو جوف التيلاكوئيد. النصيحة: ترشيد استعمال المبيدات أو استبدالها بمبيدات بيولوجية.",
+                  rule: { prompt: "ناقش صحة الفرضية حول تأثير DCMU", keywords: ["DCMU", "PSII", "الكترون", "ناقل", "اكسده"], minHits: 3, forbidden: [] }
+                },
+                W: {
+                  points: 1.5,
+                  prompt: "رسم تخطيطي وظيفي لتحويل الطاقة الضوئية",
+                  bacPrompt: "حوّل في رسم تخطيطي وظيفي آليات تحويل الطاقة الضوئية خلال المرحلة الكيميائية الضوئية معتمدا على البيانات ومعلوماتك في غياب المبيد ووجوده (DCMU).",
+                  ...OFFICIAL(11, "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : حوّل في رسم تخطيطي. Question du الجزء الثالث.", "2026-08-25"),
+                  placeholder: "ضوء → PSII → إلكترونات → T1 → H⁺...",
+                  minLength: 0,
+                  modelAnswer: "عنوان المخطط: تحويل الطاقة الضوئية. في غياب DCMU: ضوء → PSII → أكسدة الماء → إلكترونات → الناقل T1 → خض H⁺ إلى جوف التيلاكوئيد. في وجود DCMU: يثبت المبيد على PSII فيتوقف انتقال الإلكترونات إلى T1 وتتوقف أكسدة الماء.",
+                  rule: { prompt: "حول في رسم تخطيطي آليات تحويل الطاقة", keywords: ["ضوء", "PSII", "DCMU"], minHits: 1, forbidden: [], schema: { arrows: true, title: "تحويل الطاقة", ordered: ["ضوء", "PSII", "الكترون"] } }
+                }
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 };
+
