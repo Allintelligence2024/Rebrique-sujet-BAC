@@ -22,25 +22,25 @@ function assertBetween(value, min, max, label) {
 
 const BENCHMARK_CASES = [
   {
-    label: "BAC 2024 / Sujet 2 / Ex1 / N — حدد المشكل العلمي",
-    poleType: "N",
-    expectedTask: "problem",
-    pole: getPole("2024", 2, 1, "N"),
+    label: "BAC 2024 / Sujet 2 / Ex1 / E — اشرح خطوات الترجمة",
+    poleType: "E",
+    expectedTask: "explanation",
+    pole: getPole("2024", 2, 1, "E"),
     variants: {
       excellent: {
-        answer: "تأطير المشكل العلمي: كيف يتم تركيب ATP داخل الميتوكوندريا بفضل التدرج البروتوني وعمل الكرية المذنبة، وما أثر تثبيط هذه الآلية على الحصيلة الطاقوية؟",
+        answer: getPole("2024", 2, 1, "E").modelAnswer,
         fraction: [0.95, 1],
         methodology: [0.9, 1],
         scoreRatio: [0.95, 1]
       },
       acceptable: {
-        answer: "كيف يتم تركيب ATP داخل الميتوكوندريا؟",
-        fraction: [0.7, 0.85],
-        methodology: [0.6, 0.7],
-        scoreRatio: [0.7, 0.85]
+        answer: "يرتبط الريبوزوم بالـ ARNm ثم تنقل الأحماض الأمينية فيتوقف التركيب بمركب Tetracycline.",
+        fraction: [0.75, 0.9],
+        methodology: [0.9, 1],
+        scoreRatio: [0.75, 0.9]
       },
       falseAnswer: {
-        answer: "النشاط الخلوي",
+        answer: "البروتين مفيد.",
         fraction: [0, 0.05],
         methodology: [0, 0.1],
         scoreRatio: [0, 0.05]
@@ -48,33 +48,59 @@ const BENCHMARK_CASES = [
     }
   },
   {
-    label: "BAC 2024 / Sujet 2 / Ex1 / S — استخرج شروط تركيب ATP",
+    label: "BAC 2024 / Sujet 2 / Ex2 / S — حلّل نشاط RUBISCO",
     poleType: "S",
     expectedTask: "analysis",
-    pole: getPole("2024", 2, 1, "S"),
+    pole: getPole("2024", 2, 2, "S"),
     variants: {
       excellent: {
-        answer: "تمثل الوثيقة شروط تركيب ATP، حيث نلاحظ أنه يركب فقط عند توفر ADP وPi ووجود تدرج بروتوني بين الفراغ بين الغشائين والحشوة، ومنه نستنتج أن التدرج البروتوني شرط أساسي يحرك الكرية المذنبة.",
+        answer: getPole("2024", 2, 2, "S").modelAnswer,
         fraction: [0.95, 1],
-        methodology: [0.95, 1],
+        methodology: [0.9, 1],
         scoreRatio: [0.95, 1]
       },
       acceptable: {
-        answer: "تمثل الوثيقة شروط تركيب ATP، حيث نلاحظ وجود ADP وPi فقط.",
-        fraction: [0.7, 0.8],
-        methodology: [0.75, 0.85],
-        scoreRatio: [0.7, 0.8]
+        answer: "تمثل الوثيقة نشاط RUBISCO بدلالة الزمن، نلاحظ ارتفاعا في الضوء.",
+        fraction: [0.65, 0.8],
+        methodology: [0.7, 0.9],
+        scoreRatio: [0.65, 0.8]
       },
       falseAnswer: {
-        answer: "ATP يحتاج طاقة فقط.",
+        answer: "النبات أخضر.",
         fraction: [0, 0.05],
-        methodology: [0.35, 0.45],
+        methodology: [0.3, 0.5],
         scoreRatio: [0, 0.05]
       }
     }
   },
   {
-    label: "BAC 2024 / Sujet 1 / Ex3 / E — بين كيفية تشكل المعقدات المناعية",
+    label: "BAC 2024 / Sujet 1 / Ex1 / W — الخاتمة العلمية (VIH)",
+    poleType: "W",
+    expectedTask: "scientific-text",
+    pole: getPole("2024", 1, 1, "W"),
+    variants: {
+      excellent: {
+        answer: getPole("2024", 1, 1, "W").modelAnswer,
+        fraction: [0.95, 1],
+        methodology: [0.9, 1],
+        scoreRatio: [0.95, 1]
+      },
+      acceptable: {
+        answer: "في الختام يثبط Zalcitabine التكاثر.",
+        fraction: [0.5, 0.7],
+        methodology: [0.4, 0.6],
+        scoreRatio: [0.5, 0.7]
+      },
+      falseAnswer: {
+        answer: "الخلية صغيرة.",
+        fraction: [0, 0.05],
+        methodology: [0.15, 0.35],
+        scoreRatio: [0, 0.05]
+      }
+    }
+  },
+  {
+    label: "BAC 2024 / Sujet 1 / Ex3 / E — فسّر أثر طفرة P53",
     poleType: "E",
     expectedTask: "explanation",
     pole: getPole("2024", 1, 3, "E"),
@@ -82,45 +108,19 @@ const BENCHMARK_CASES = [
       excellent: {
         answer: getPole("2024", 1, 3, "E").modelAnswer,
         fraction: [0.95, 1],
-        methodology: [0.95, 1],
+        methodology: [0.6, 0.8],
         scoreRatio: [0.95, 1]
       },
       acceptable: {
-        answer: "ترتبط الأجسام المضادة نوعياً بمحددات المستضد الفيروسي عبر مواقعها المتغيرة فتتشكل معقدات مناعية تعطل تثبته على الخلايا، كما تسهل البلعمة بارتباط القطعة Fc بمستقبلات البالعات الكبيرة.",
-        fraction: [0.85, 0.93],
-        methodology: [0.95, 1],
-        scoreRatio: [0.85, 0.93]
+        answer: "تؤدي طفرة P53 إلى فقدان وظيفة البروتين الكابحة للأورام فتتكاثر الخلايا السرطانية.",
+        fraction: [0.65, 0.8],
+        methodology: [0.25, 0.45],
+        scoreRatio: [0.65, 0.8]
       },
       falseAnswer: {
-        answer: "يتم شل الفيروس لأن الجسم المضاد يمنعه من الحركة فقط.",
-        fraction: [0.3, 0.45],
-        methodology: [0.3, 0.4],
-        scoreRatio: [0.3, 0.45]
-      }
-    }
-  },
-  {
-    label: "BAC 2024 / Sujet 1 / Ex1 / W — نص علمي حول أهمية مرحلة التنشيط",
-    poleType: "W",
-    expectedTask: "scientific-text",
-    pole: getPole("2024", 1, 1, "W"),
-    variants: {
-      excellent: {
-        answer: "تمثل مرحلة التنشيط خطوة نوعية أساسية في سلامة التعبير المورثي، إذ تسمح بربط كل حمض أميني بـ ARNt الموافق له بوساطة إنزيم نوعي. وأي تثبيط للموقع الفعال كما يحدث بالإندولمايسين يمنع تشكل aminoacyl-ARNt ويشل الترجمة، مما يؤدي إلى غياب البروتينات وموت الخلية.",
-        fraction: [0.95, 1],
-        methodology: [0.7, 0.8],
-        scoreRatio: [0.95, 1]
-      },
-      acceptable: {
-        answer: "مرحلة التنشيط ضرورية لأنها تضمن التوافق بين الحمض الأميني وARNt، وتعطيلها يوقف تركيب البروتين.",
-        fraction: [0.8, 0.86],
-        methodology: [0.7, 0.8],
-        scoreRatio: [0.8, 0.86]
-      },
-      falseAnswer: {
-        answer: "تركيب البروتين يتم في الخلية.",
+        answer: "السرطان خطير.",
         fraction: [0, 0.05],
-        methodology: [0.2, 0.3],
+        methodology: [0, 0.1],
         scoreRatio: [0, 0.05]
       }
     }

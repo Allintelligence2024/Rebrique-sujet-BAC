@@ -63,10 +63,9 @@ test("الخاتمة تغطي المشكل N", () => {
   assert.ok(cover.score >= 0.5);
 });
 
-test("2024 S2 E1 S — le banc existant n'est pas cassé par la grille 2025", () => {
-  const p = pole("2024", 2, 1, "S");
-  const excellent = "تمثل الوثيقة شروط تركيب ATP، حيث نلاحظ أنه يركب فقط عند توفر ADP وPi ووجود تدرج بروتوني بين الفراغ بين الغشائين والحشوة، ومنه نستنتج أن التدرج البروتوني شرط أساسي يحرك الكرية المذنبة.";
-  const res = evaluateText(excellent, p.rule, "S");
+test("2024 S2 E2 S — la grille d'analyse n'est pas cassée par le contenu 2024 rebâti", () => {
+  const p = pole("2024", 2, 2, "S");
+  const res = evaluateText(p.modelAnswer, p.rule, "S");
   assert.ok(res.fraction >= 0.95);
   assert.ok(res.methodology.score >= 0.95);
 });
