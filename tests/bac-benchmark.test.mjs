@@ -4,11 +4,11 @@ import { APP_CONFIG } from "../data/subjects.js";
 import { evaluateText, scoreFromFraction } from "../js/engine.js";
 
 function getPole(yearId, sujetId, exNumber, poleKey) {
-  const year = APP_CONFIG.years.find(y => y.id === yearId);
+  const year = APP_CONFIG.years.find((y) => y.id === yearId);
   assert.ok(year, `Année introuvable: ${yearId}`);
-  const sujet = year.sujets.find(s => s.id === sujetId);
+  const sujet = year.sujets.find((s) => s.id === sujetId);
   assert.ok(sujet, `Sujet introuvable: ${yearId}/${sujetId}`);
-  const exercise = sujet.exercises.find(e => e.number === exNumber);
+  const exercise = sujet.exercises.find((e) => e.number === exNumber);
   assert.ok(exercise, `Exercice introuvable: ${yearId}/${sujetId}/ex${exNumber}`);
   const pole = exercise.poles[poleKey];
   assert.ok(pole, `Pôle introuvable: ${yearId}/${sujetId}/ex${exNumber}/${poleKey}`);
@@ -135,17 +135,43 @@ for (const benchmarkCase of BENCHMARK_CASES) {
     for (const variantName of order) {
       const variant = benchmarkCase.variants[variantName];
       const evaluation = evaluateText(variant.answer, benchmarkCase.pole.rule, benchmarkCase.poleType);
-      const normalizedScore = scoreFromFraction(benchmarkCase.pole.points, evaluation.fraction) / benchmarkCase.pole.points;
+      const normalizedScore =
+        scoreFromFraction(benchmarkCase.pole.points, evaluation.fraction) / benchmarkCase.pole.points;
 
-      assert.equal(evaluation.taskProfile?.id, benchmarkCase.expectedTask, `${benchmarkCase.label} → tâche détectée incorrecte pour ${variantName}`);
-      assertBetween(evaluation.fraction, variant.fraction[0], variant.fraction[1], `${benchmarkCase.label} → fraction ${variantName}`);
-      assertBetween(evaluation.methodology.score, variant.methodology[0], variant.methodology[1], `${benchmarkCase.label} → méthodologie ${variantName}`);
-      assertBetween(normalizedScore, variant.scoreRatio[0], variant.scoreRatio[1], `${benchmarkCase.label} → score normalisé ${variantName}`);
+      assert.equal(
+        evaluation.taskProfile?.id,
+        benchmarkCase.expectedTask,
+        `${benchmarkCase.label} → tâche détectée incorrecte pour ${variantName}`
+      );
+      assertBetween(
+        evaluation.fraction,
+        variant.fraction[0],
+        variant.fraction[1],
+        `${benchmarkCase.label} → fraction ${variantName}`
+      );
+      assertBetween(
+        evaluation.methodology.score,
+        variant.methodology[0],
+        variant.methodology[1],
+        `${benchmarkCase.label} → méthodologie ${variantName}`
+      );
+      assertBetween(
+        normalizedScore,
+        variant.scoreRatio[0],
+        variant.scoreRatio[1],
+        `${benchmarkCase.label} → score normalisé ${variantName}`
+      );
 
       results[variantName] = evaluation;
     }
 
-    assert.ok(results.excellent.fraction > results.acceptable.fraction, `${benchmarkCase.label} → excellente réponse non supérieure à l'acceptable`);
-    assert.ok(results.acceptable.fraction > results.falseAnswer.fraction, `${benchmarkCase.label} → réponse acceptable non supérieure à la fausse`);
+    assert.ok(
+      results.excellent.fraction > results.acceptable.fraction,
+      `${benchmarkCase.label} → excellente réponse non supérieure à l'acceptable`
+    );
+    assert.ok(
+      results.acceptable.fraction > results.falseAnswer.fraction,
+      `${benchmarkCase.label} → réponse acceptable non supérieure à la fausse`
+    );
   });
 }

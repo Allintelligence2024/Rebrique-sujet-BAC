@@ -3,6 +3,8 @@
 **مادة علوم الطبيعة والحياة** — منصة الحل الميكانيكي المنظم لامتحانات البكالوريا وفق نظام «الأقطاب 4D»
 (N = تأطير المسألة، S = استغلال السندات، E = الربط والتفسير، W = التركيب والمصادقة).
 
+> ⚠️ **Positionnement honnête : outil d'entraînement méthodologique.** Les scores sont des estimations automatiques fondées sur des règles ; ils ne sont ni une correction ministérielle ni une note attribuée par un professeur. Les consignes marquées `reconstructed` ne sont pas des énoncés officiels. Le moteur n'a actuellement **aucune copie réelle doublement annotée** dans son benchmark : ne pas en déduire une fiabilité de notation.
+
 > ✅ **Version intégrée à la racine.** L'ancien site monolithique est conservé dans
 > [`_v1_backup/`](_v1_backup) au cas où.
 
@@ -11,6 +13,7 @@
 ## ✨ Ce que propose l'application
 
 Parcours en 5 étapes pensé pour la **gestion du stress** et la **méthode** :
+
 1. **Hub** — choix de la session (année → sujet).
 2. **Sérénité** — respiration « box breathing » + micro-conseils méthodologiques.
 3. **Stratégie** — consultation des PDF officiels des 2 sujets + **calculatrice de choix** (25 min).
@@ -62,40 +65,40 @@ python3 -m http.server 8080     # ou : npm start
 Le contenu a été reconstitué à partir du sujet officiel **et de son corrigé modèle**
 (« الإجابة النموذجية ») :
 
-| Sujet | Exercice | Thème |
-|------|----------|-------|
-| **1** | ت1 (5ن) | دور الـ **ARN** في **تركيب البروتين** + تأثير مادة تُفكّك الرابطة أدنين–ريبوز |
-| **1** | ت2 (7ن) | **الطحالب الخضراء**، بنية الصانعات، استغلال **CO₂** وأنزيم **RUBISCO** |
-| **1** | ت3 (8ن) | **الأدينوزين، الكافيين والنشاط العصبي** (المخطط التحصيلي ذو المسارين) |
-| **2** | ت1 (5ن) | **التحلل السكري** وتحويل طاقة الجلوكوز (ATP) + أثر دواء |
-| **2** | ت2 (7ن) | أنزيم **SOD** و**التصلب الجانبي الضموري (ALS)** |
-| **2** | ت3 (8ن) | **زمر الدم ABO** و**التسامح المناعي** (نقل بين الزمرتين A / O) |
+| Sujet | Exercice | Thème                                                                         |
+| ----- | -------- | ----------------------------------------------------------------------------- |
+| **1** | ت1 (5ن)  | دور الـ **ARN** في **تركيب البروتين** + تأثير مادة تُفكّك الرابطة أدنين–ريبوز |
+| **1** | ت2 (7ن)  | **الطحالب الخضراء**، بنية الصانعات، استغلال **CO₂** وأنزيم **RUBISCO**        |
+| **1** | ت3 (8ن)  | **الأدينوزين، الكافيين والنشاط العصبي** (المخطط التحصيلي ذو المسارين)         |
+| **2** | ت1 (5ن)  | **التحلل السكري** وتحويل طاقة الجلوكوز (ATP) + أثر دواء                       |
+| **2** | ت2 (7ن)  | أنزيم **SOD** و**التصلب الجانبي الضموري (ALS)**                               |
+| **2** | ت3 (8ن)  | **زمر الدم ABO** و**التسامح المناعي** (نقل بين الزمرتين A / O)                |
 
 ### Contenu BAC 2023 (شعبة علوم تجريبية)
 
 Consignes relues sur la couche texte du PDF dzexams (inversée, reconstituée mot à mot) :
 
-| Sujet | Exercice | Thème |
-|------|----------|-------|
-| **1** | ت1 (5ن) | **البروتينات الغشائية في المشبك** وذيفان **الكزاز** (Clostridium tetani) |
-| **1** | ت2 (7ن) | دواء **ML901** وتثبيط **تركيب البروتين** لدى طفيلي **الملاريا** |
-| **1** | ت3 (8ن) | **سرطان الثدي**، الأستراديول، أنزيم الأروماتاز ومادة **الكيرسيتين** |
-| **2** | ت1 (5ن) | **البنية الفراغية للبروتين** (QCM) ودور **التتابع النوكليوتيدي** والطفرات |
-| **2** | ت2 (7ن) | الخلايا التائية السامة **LTc** وبروتين **البيرفورين** |
-| **2** | ت3 (8ن) | مبيد **DCMU** و**المرحلة الكيميائية الضوئية** (PSII) |
+| Sujet | Exercice | Thème                                                                     |
+| ----- | -------- | ------------------------------------------------------------------------- |
+| **1** | ت1 (5ن)  | **البروتينات الغشائية في المشبك** وذيفان **الكزاز** (Clostridium tetani)  |
+| **1** | ت2 (7ن)  | دواء **ML901** وتثبيط **تركيب البروتين** لدى طفيلي **الملاريا**           |
+| **1** | ت3 (8ن)  | **سرطان الثدي**، الأستراديول، أنزيم الأروماتاز ومادة **الكيرسيتين**       |
+| **2** | ت1 (5ن)  | **البنية الفراغية للبروتين** (QCM) ودور **التتابع النوكليوتيدي** والطفرات |
+| **2** | ت2 (7ن)  | الخلايا التائية السامة **LTc** وبروتين **البيرفورين**                     |
+| **2** | ت3 (8ن)  | مبيد **DCMU** و**المرحلة الكيميائية الضوئية** (PSII)                      |
 
 ### Contenu BAC 2024 (شعبة علوم تجريبية)
 
 Thèmes relus sur la couche texte du PDF eddirasa (bruitée : OCR + traduction parasite) ; wording `reconstructed` :
 
-| Sujet | Exercice | Thème |
-|------|----------|-------|
-| **1** | ت1 (5ن) | **فيروس VIH** والخلايا **LT4** + دواء **Zalcitabine** |
-| **1** | ت2 (7ن) | **الصرع** وتوازن التنبيه/التثبيط (**Glutamate / GABA**, الجين Scn1a) |
-| **1** | ت3 (8ن) | بروتين **P53** والبنزوبيرين وسرطان الرئة |
-| **2** | ت1 (5ن) | **الترجمة** وتأثير **Tetracycline / Oxazolidinone** |
-| **2** | ت2 (7ن) | **RUBISCO** وتثبيت **CO₂** عند الفاصولياء (CA1P) |
-| **2** | ت3 (8ن) | **المناعة** ضد الدفتيريا والمكورات العنقودية (بروتين SPA) |
+| Sujet | Exercice | Thème                                                                |
+| ----- | -------- | -------------------------------------------------------------------- |
+| **1** | ت1 (5ن)  | **فيروس VIH** والخلايا **LT4** + دواء **Zalcitabine**                |
+| **1** | ت2 (7ن)  | **الصرع** وتوازن التنبيه/التثبيط (**Glutamate / GABA**, الجين Scn1a) |
+| **1** | ت3 (8ن)  | بروتين **P53** والبنزوبيرين وسرطان الرئة                             |
+| **2** | ت1 (5ن)  | **الترجمة** وتأثير **Tetracycline / Oxazolidinone**                  |
+| **2** | ت2 (7ن)  | **RUBISCO** وتثبيت **CO₂** عند الفاصولياء (CA1P)                     |
+| **2** | ت3 (8ن)  | **المناعة** ضد الدفتيريا والمكورات العنقودية (بروتين SPA)            |
 
 Le **barème 4D** adapte les points officiels à la méthode (N/S/E/W), et l'évaluation
 compare les réponses à des **mots-clés normalisés** (via `normalizeArabic`) + inter-dits
@@ -106,11 +109,11 @@ compare les réponses à des **mots-clés normalisés** (via `normalizeArabic`) 
 
 ### Provenance des consignes
 
-| Année | État | PDF local | Source externe | Consignes |
-|------|------|-----------|----------------|-----------|
-| **2025** | activée | `BAC2025_SVT_Sujet1.pdf`, `BAC2025_SVT_Sujet2.pdf` | — | Pôles `official` relus sur le scan ; autres `reconstructed` |
-| **2024** | activée | aucun (droit d'auteur) | [eddirasa sujet](https://eddirasa.com/bac-science-2024-se/) · [PDF](https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf) · [dzexams](https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09) | `reconstructed` — couche texte distante bruitée (OCR + traduction parasite), non certifiable `official` ici. Session de remplacement non localisée. |
-| **2023** | **activée** | aucun (droit d'auteur) | [dzexams 2023](https://www.dzexams.com/ar/annales/STRDZEowcCtwN0JmT1NwS3p4cEVmdz09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf) | Consignes `official` relues sur la couche texte du PDF (inversée, reconstituée mot à mot, 2026-08-25) ; pôles sans question autonome en `reconstructed` |
+| Année    | État        | PDF local                                          | Source externe                                                                                                                                                                                                                 | Consignes                                                                                                                                               |
+| -------- | ----------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **2025** | activée     | `BAC2025_SVT_Sujet1.pdf`, `BAC2025_SVT_Sujet2.pdf` | —                                                                                                                                                                                                                              | Pôles `official` relus sur le scan ; autres `reconstructed`                                                                                             |
+| **2024** | activée     | aucun (droit d'auteur)                             | [eddirasa sujet](https://eddirasa.com/bac-science-2024-se/) · [PDF](https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf) · [dzexams](https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09) | `reconstructed` — couche texte distante bruitée (OCR + traduction parasite), non certifiable `official` ici. Session de remplacement non localisée.     |
+| **2023** | **activée** | aucun (droit d'auteur)                             | [dzexams 2023](https://www.dzexams.com/ar/annales/STRDZEowcCtwN0JmT1NwS3p4cEVmdz09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf)                             | Consignes `official` relues sur la couche texte du PDF (inversée, reconstituée mot à mot, 2026-08-25) ; pôles sans question autonome en `reconstructed` |
 
 Aucun PDF 2024/2023 n'est versé dans le dépôt.
 
@@ -121,8 +124,9 @@ Aucun PDF 2024/2023 n'est versé dans le dépôt.
 ```bash
 npm install       # installe jsdom + esbuild (devDependencies)
 npm test          # moteur, banc BAC, intégrité, UI, hard-benchmark
-npm run test:hard # pipeline de copies réelles (cases.json vide = avertissement OK)
-npm run build     # génère dist/boussole-4d-standalone.html
+npm run test:hard   # intégrité du pipeline de copies réelles
+npm run calibration # métriques moteur ↔ double correction humaine
+npm run build       # génère dist/boussole-4d-standalone.html
 ```
 
 ---
@@ -145,9 +149,8 @@ Le script accepte soit un fichier JSON en argument, soit un mode interactif.
 1. **Scan** — scanner le sujet officiel et les copies d'élèves anonymisées.
 2. **Anonymisation** — retirer nom/prénom/établissement/date de naissance.
 3. **Transcription** — transcrire la réponse de l'élève mot pour mot.
-4. **Annotation** — un correcteur humain attribue la catégorie et une note.
-5. **Import** — lancer le script ci-dessus ; il valide, génère l'ID, détecte
-   les marqueurs LLM et écrit dans `cases.json`.
+4. **Double annotation indépendante** — deux correcteurs humains distincts attribuent chacun une note et une justification, sans voir l'avis de l'autre ; un troisième arbitre les écarts importants.
+5. **Import** — lancer le script ci-dessus ; il refuse une annotation unique ou deux identifiants identiques, valide, génère l'ID, détecte les marqueurs LLM et écrit dans `cases.json`.
 
 ### Garde-fous
 

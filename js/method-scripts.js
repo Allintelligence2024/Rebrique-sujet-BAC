@@ -38,12 +38,7 @@ export const METHOD_SCRIPTS = {
   },
   comparison: {
     title: "مقارنة",
-    steps: [
-      "حدّد طرفي المقارنة",
-      "أوجه الشبه",
-      "أوجه الاختلاف بعبارات: بينما / في حين",
-      "خلاصة قصيرة"
-    ]
+    steps: ["حدّد طرفي المقارنة", "أوجه الشبه", "أوجه الاختلاف بعبارات: بينما / في حين", "خلاصة قصيرة"]
   },
   explanation: {
     title: "تفسير / استدلال",
@@ -55,11 +50,7 @@ export const METHOD_SCRIPTS = {
   },
   "analysis-explanation": {
     title: "تحليل ثم تفسير",
-    steps: [
-      "قدّم السند ولاحظ",
-      "ثم فسّر بسلسلة سببية",
-      "اختم بربط النتيجة بالسؤال"
-    ]
+    steps: ["قدّم السند ولاحظ", "ثم فسّر بسلسلة سببية", "اختم بربط النتيجة بالسؤال"]
   },
   hypothesis: {
     title: "فرضية علمية",
@@ -71,11 +62,7 @@ export const METHOD_SCRIPTS = {
   },
   problem: {
     title: "طرح مشكل علمي",
-    steps: [
-      "حدّد الظاهرة والمتغيرات",
-      "صغ سؤالاً واضحاً بعلامة ؟",
-      "لا تُجِب عن المشكل في هذه المرحلة"
-    ]
+    steps: ["حدّد الظاهرة والمتغيرات", "صغ سؤالاً واضحاً بعلامة ؟", "لا تُجِب عن المشكل في هذه المرحلة"]
   },
   "scientific-text": {
     title: "نص علمي",
@@ -87,42 +74,23 @@ export const METHOD_SCRIPTS = {
   },
   justification: {
     title: "تعليل / تبرير",
-    steps: [
-      "حجة من السند",
-      "مكتسب قبلي",
-      "رابطة سببية: لأن / بما أن / يعود إلى"
-    ]
+    steps: ["حجة من السند", "مكتسب قبلي", "رابطة سببية: لأن / بما أن / يعود إلى"]
   },
   critique: {
     title: "نقد علمي",
-    steps: [
-      "الإيجابيات أو الفوائد",
-      "الحدود أو السلبيات",
-      "موقف معلل: لذلك / من الأفضل"
-    ]
+    steps: ["الإيجابيات أو الفوائد", "الحدود أو السلبيات", "موقف معلل: لذلك / من الأفضل"]
   },
   validation: {
     title: "مصادقة / تحقق",
-    steps: [
-      "استغل معطيات السند",
-      "اربط بالآلية",
-      "حكم صريح: الفرضية صحيحة / مرفوضة"
-    ]
+    steps: ["استغل معطيات السند", "اربط بالآلية", "حكم صريح: الفرضية صحيحة / مرفوضة"]
   },
   discussion: {
     title: "مناقشة علمية",
-    steps: [
-      "فكّك المعطيات",
-      "حجج أو تفسير",
-      "حكم أو خلاصة نهائية"
-    ]
+    steps: ["فكّك المعطيات", "حجج أو تفسير", "حكم أو خلاصة نهائية"]
   },
   relation: {
     title: "تحديد علاقة",
-    steps: [
-      "صيغة صريحة: كلما… / علاقة طردية أو عكسية",
-      "اربط بطرفي العلاقة أو بالقيم"
-    ]
+    steps: ["صيغة صريحة: كلما… / علاقة طردية أو عكسية", "اربط بطرفي العلاقة أو بالقيم"]
   },
   naming: {
     title: "تسمية / تعرّف",
@@ -190,16 +158,24 @@ export function scriptFor(taskId, poleType) {
 }
 
 function hasAny(norm, terms) {
-  return terms.some(term => norm.includes(normalizeArabic(term)));
+  return terms.some((term) => norm.includes(normalizeArabic(term)));
 }
 
-export function evaluateMethodCoach({ text = "", norm = "", poleType = "", taskId = "", wordCount = 0 } = {}) {
+export function evaluateMethodCoach({
+  text = "",
+  norm = "",
+  poleType = "",
+  taskId = "",
+  wordCount = 0
+} = {}) {
   const resolvedNorm = norm || normalizeArabic(text);
   const tips = [];
   const flags = [];
   const script = scriptFor(taskId, poleType);
 
-  const analysisLike = taskId === "analysis" || (poleType === "S" && !["commentary", "discussion", "extraction"].includes(taskId));
+  const analysisLike =
+    taskId === "analysis" ||
+    (poleType === "S" && !["commentary", "discussion", "extraction"].includes(taskId));
   if (analysisLike) {
     if (/يرتفع المنحني|ينخفض المنحني|ينزل المنحني|المنحني يرتفع|المنحني ينخفض/.test(resolvedNorm)) {
       tips.push("صف تغيّر الظاهرة لا حركة المنحنى: قل «تزايد عدد…» لا «يرتفع المنحنى».");
@@ -209,12 +185,24 @@ export function evaluateMethodCoach({ text = "", norm = "", poleType = "", taskI
       tips.push("«هذا يدل» في التحليل تقترب من التفسير؛ اترك الدلالة السطحية (كلما…) ثم استنتج فقط.");
       flags.push("early-interpretation");
     }
-    if (hasAny(resolvedNorm, ["منحنى", "منحني"]) && !hasAny(resolvedNorm, ["تزايد", "تناقص", "ثبات", "انعدام", "قيمة قصوى", "قيمة دنيا", "بدلالة"])) {
+    if (
+      hasAny(resolvedNorm, ["منحنى", "منحني"]) &&
+      !hasAny(resolvedNorm, ["تزايد", "تناقص", "ثبات", "انعدام", "قيمة قصوى", "قيمة دنيا", "بدلالة"])
+    ) {
       tips.push("حلّل المنحنى بمجالات (تزايد / تناقص / ثبات) واذكر القيم الحدية وصيغة «بدلالة».");
       flags.push("curve-domains");
     }
     if (hasAny(resolvedNorm, ["كلما"])) flags.push("surface-relation");
-    if (hasAny(resolvedNorm, ["تزايد سريع", "تزايد تدريجي", "تزايد بطيء", "تناقص حاد", "تناقص بطيء", "حتى تنعدم"])) {
+    if (
+      hasAny(resolvedNorm, [
+        "تزايد سريع",
+        "تزايد تدريجي",
+        "تزايد بطيء",
+        "تناقص حاد",
+        "تناقص بطيء",
+        "حتى تنعدم"
+      ])
+    ) {
       flags.push("intensity-vocab");
     }
   }
@@ -250,23 +238,37 @@ export function evaluateMethodCoach({ text = "", norm = "", poleType = "", taskI
     }
   }
 
-  if (taskId === "explanation" && wordCount > 0 && !hasAny(resolvedNorm, ["بسبب", "يعود", "نتيجه", "نتيجة", "مما يؤدي", "لذلك", "لان", "لأن"])) {
+  if (
+    taskId === "explanation" &&
+    wordCount > 0 &&
+    !hasAny(resolvedNorm, ["بسبب", "يعود", "نتيجه", "نتيجة", "مما يؤدي", "لذلك", "لان", "لأن"])
+  ) {
     tips.push("التفسير يبدأ من الملاحظة ثم السلسلة: يعود ذلك إلى → آلية → نتيجة.");
     flags.push("no-causal");
   }
 
   if (taskId === "explanation" || taskId === "analysis-explanation") {
-    if (hasAny(resolvedNorm, ["نوعي", "مكمل", "موقع فعال"]) && !hasAny(resolvedNorm, ["يعود", "مما يؤدي", "يرتبط", "يثبط", "ينشط"])) {
+    if (
+      hasAny(resolvedNorm, ["نوعي", "مكمل", "موقع فعال"]) &&
+      !hasAny(resolvedNorm, ["يعود", "مما يؤدي", "يرتبط", "يثبط", "ينشط"])
+    ) {
       tips.push("المصطلح النوعي وحده لا يكفي؛ اربطه بموقع الارتباط أو التكامل البنيوي.");
       flags.push("specificity-without-fit");
     }
-    if (wordCount > 8 && !hasAny(resolvedNorm, ["موقع", "مستقبل", "انزيم", "قناه", "قناة", "رامزه", "كودون", "رسول"])) {
+    if (
+      wordCount > 8 &&
+      !hasAny(resolvedNorm, ["موقع", "مستقبل", "انزيم", "قناه", "قناة", "رامزه", "كودون", "رسول"])
+    ) {
       tips.push("انزل إلى المستوى الجزيئي: موقع، مستقبل، إنزيم… لا تبقَ عند الظاهرة العامة.");
       flags.push("shallow-level");
     }
   }
 
-  if (taskId === "commentary" && hasAny(resolvedNorm, ["نلاحظ", "يبين"]) && !hasAny(resolvedNorm, ["بسبب", "يعود", "راجع", "لان", "لأن"])) {
+  if (
+    taskId === "commentary" &&
+    hasAny(resolvedNorm, ["نلاحظ", "يبين"]) &&
+    !hasAny(resolvedNorm, ["بسبب", "يعود", "راجع", "لان", "لأن"])
+  ) {
     tips.push("التعليق يجمع الملاحظة والشرح بمكتسباتك ثم الاستنتاج المرتبط بالهدف.");
     flags.push("commentary-no-explain");
   }

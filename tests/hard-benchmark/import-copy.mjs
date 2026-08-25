@@ -30,18 +30,27 @@ export function saveCases(data) {
 export function generateId(cases, year, sujet, exercise, pole) {
   const prefix = `${year}-S${sujet}-E${exercise}-${pole}`;
   const existing = cases
-    .filter(c => c.id.startsWith(prefix + "-"))
-    .map(c => parseInt(c.id.split("-").pop(), 10))
-    .filter(n => !Number.isNaN(n));
+    .filter((c) => c.id.startsWith(prefix + "-"))
+    .map((c) => parseInt(c.id.split("-").pop(), 10))
+    .filter((n) => !Number.isNaN(n));
   const next = existing.length > 0 ? Math.max(...existing) + 1 : 1;
   return `${prefix}-${String(next).padStart(3, "0")}`;
 }
 
 const LLM_MARKERS = [
-  "En ce qui concerne", "Il est important de noter", "Tout d'abord",
-  "D'une part", "D'autre part", "En conclusion", "Par ailleurs",
-  "Il convient de", "Il faut souligner", "En effet",
-  "In conclusion", "Furthermore", "Moreover"
+  "En ce qui concerne",
+  "Il est important de noter",
+  "Tout d'abord",
+  "D'une part",
+  "D'autre part",
+  "En conclusion",
+  "Par ailleurs",
+  "Il convient de",
+  "Il faut souligner",
+  "En effet",
+  "In conclusion",
+  "Furthermore",
+  "Moreover"
 ];
 
 export function detectLLM(text) {
@@ -50,7 +59,8 @@ export function detectLLM(text) {
   for (const marker of LLM_MARKERS) {
     if (raw.includes(marker)) hits.push(marker);
   }
-  if (raw.includes("—") && /[أ-ي]/.test(raw)) hits.push("em-dash « — » en contexte français/arabe académique");
+  if (raw.includes("—") && /[أ-ي]/.test(raw))
+    hits.push("em-dash « — » en contexte français/arabe académique");
   return hits;
 }
 
@@ -62,25 +72,44 @@ export function validateCase(caseObj) {
   if (typeof caseObj.exercise !== "number") errors.push("exercise invalide");
   if (!["N", "S", "E", "W"].includes(caseObj.pole)) errors.push("pole invalide");
   if (!caseObj.category || typeof caseObj.category !== "string") errors.push("category manquante");
-  if (!caseObj.answer || typeof caseObj.answer !== "string" || caseObj.answer.length < 5) errors.push("answer trop courte");
-  if (caseObj.humanNote === undefined) errors.push("humanNote manquante");
+  if (!caseObj.answer || typeof caseObj.answer !== "string" || caseObj.answer.length < 5)
+    errors.push("answer trop courte");
   if (!caseObj.source || typeof caseObj.source !== "string") errors.push("source manquante");
   if (!caseObj.collector || typeof caseObj.collector !== "string") errors.push("collector manquant");
-  if (!caseObj.annotator || typeof caseObj.annotator !== "string") errors.push("annotator manquant");
+  if (!Array.isArray(caseObj.annotations) || caseObj.annotations.length < 2) {
+    errors.push("deux annotations humaines indépendantes sont requises");
+  } else {
+    const annotators = new Set();
+    caseObj.annotations.forEach((annotation, index) => {
+      if (!annotation || typeof annotation.annotator !== "string" || !annotation.annotator.trim())
+        errors.push(`annotator ${index + 1} invalide`);
+      if (!annotation || typeof annotation.score !== "number" || annotation.score < 0)
+        errors.push(`score annotateur ${index + 1} invalide`);
+      if (!annotation || typeof annotation.note !== "string" || !annotation.note.trim())
+        errors.push(`note annotateur ${index + 1} invalide`);
+      if (annotation?.annotator) annotators.add(annotation.annotator.trim());
+    });
+    if (annotators.size < 2) errors.push("les deux annotations doivent venir de correcteurs distincts");
+  }
   if (!caseObj.date || !/^\d{4}-\d{2}-\d{2}$/.test(caseObj.date)) errors.push("date invalide (YYYY-MM-DD)");
   return errors;
 }
 
 async function prompt(question) {
   const rl = createInterface({ input: process.stdin, output: process.stdout });
-  return new Promise(resolve => rl.question(question, ans => { rl.close(); resolve(ans); }));
+  return new Promise((resolve) =>
+    rl.question(question, (ans) => {
+      rl.close();
+      resolve(ans);
+    })
+  );
 }
 
 function printHelp() {
   console.log(`Usage: node tests/hard-benchmark/import-copy.mjs [fichier.json] [--dry-run] [--yes]
 
-Importe une copie d'élève réelle, anonymisée et annotée par un humain.
-N'invente jamais de copie. Refuse un pôle inexistant ou une année désactivée.
+Importe une copie d'élève réelle, anonymisée et annotée indépendamment par deux correcteurs humains.
+N'invente jamais de copie. Refuse un pôle inexistant, une année désactivée ou une annotation unique.
 
 Options:
   --dry-run   Valide le JSON sans écrire dans cases.json
@@ -90,7 +119,7 @@ Options:
 }
 
 function parseInput() {
-  const args = process.argv.slice(2).filter(a => !a.startsWith("--"));
+  const args = process.argv.slice(2).filter((a) => !a.startsWith("--"));
   if (!args[0]) return null;
   try {
     if (args[0].trim().startsWith("{")) return JSON.parse(args[0]);
@@ -120,10 +149,20 @@ async function main() {
     caseObj.pole = (await prompt("Pôle (N/S/E/W): ")).toUpperCase();
     caseObj.category = await prompt("Catégorie (ex: bonne-forme-fond-faux, confusion-concepts): ");
     caseObj.answer = await prompt("Réponse transcrite: ");
-    caseObj.humanNote = await prompt("Note du correcteur: ");
     caseObj.source = await prompt("Source (fichier/établissement): ");
     caseObj.collector = await prompt("Collecteur: ");
-    caseObj.annotator = await prompt("Annotateur: ");
+    caseObj.annotations = [
+      {
+        annotator: await prompt("Correcteur 1 (identifiant pseudonymisé): "),
+        score: Number(await prompt("Note du correcteur 1: ")),
+        note: await prompt("Justification du correcteur 1: ")
+      },
+      {
+        annotator: await prompt("Correcteur 2 (identifiant pseudonymisé): "),
+        score: Number(await prompt("Note du correcteur 2: ")),
+        note: await prompt("Justification du correcteur 2: ")
+      }
+    ];
     caseObj.date = await prompt("Date (YYYY-MM-DD): ");
   }
 
@@ -132,11 +171,18 @@ async function main() {
 
   const poleInfo = findPole(caseObj.year, caseObj.sujet, caseObj.exercise, caseObj.pole);
   if (!poleInfo) {
-    console.error("❌ Pôle introuvable dans data/subjects.js pour", caseObj.year, caseObj.sujet, caseObj.exercise, caseObj.pole);
+    console.error(
+      "❌ Pôle introuvable dans data/subjects.js pour",
+      caseObj.year,
+      caseObj.sujet,
+      caseObj.exercise,
+      caseObj.pole
+    );
     process.exit(1);
   }
 
-  caseObj.id = caseObj.id || generateId(data.cases, caseObj.year, caseObj.sujet, caseObj.exercise, caseObj.pole);
+  caseObj.id =
+    caseObj.id || generateId(data.cases, caseObj.year, caseObj.sujet, caseObj.exercise, caseObj.pole);
 
   const errors = validateCase(caseObj);
   if (errors.length) {
@@ -187,5 +233,8 @@ async function main() {
 
 const isMain = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
 if (isMain) {
-  main().catch(e => { console.error(e); process.exit(1); });
+  main().catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
 }

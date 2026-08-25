@@ -1,9 +1,16 @@
-# Hard Benchmark — Pipeline de collecte de copies réelles
+# Hard Benchmark — validation sur copies réelles à double correction
 
-Aucune copie n'est inventée ici. `cases.json` reste vide tant qu'un
-correcteur humain n'a pas importé une transcription anonymisée.
+`cases.json` est volontairement vide : **ne jamais inventer une copie d'élève**.
+Le moteur de notation n'est pas considéré comme fiable tant qu'il n'existe pas un
+corpus de copies réelles, anonymisées, et évaluées indépendamment par deux
+correcteurs humains distincts.
 
-## Format `cases.json`
+## Règle de validation
+
+Chaque copie doit contenir **deux annotations indépendantes**. Une annotation
+porte une note chiffrée pour le pôle et une justification. Si les deux notes
+s'écartent matériellement, ajoutez une `adjudication` par un troisième
+correcteur avant de l'utiliser pour calibrer le moteur.
 
 ```json
 {
@@ -13,40 +20,66 @@ correcteur humain n'a pas importé une transcription anonymisée.
   "exercise": 1,
   "pole": "N",
   "category": "bonne-forme-fond-faux",
-  "answer": "...",
-  "humanNote": "...",
+  "answer": "... transcription fidèle, fautes comprises ...",
   "source": "centre-X / copie anonymisée",
-  "collector": "...",
-  "annotator": "...",
-  "date": "2026-08-23"
+  "collector": "collecteur-01",
+  "annotations": [
+    { "annotator": "correcteur-01", "score": 0.5, "note": "notion ARN présente, problème mal formulé" },
+    { "annotator": "correcteur-02", "score": 0.5, "note": "réponse partielle, formulation insuffisante" }
+  ],
+  "date": "2026-08-25"
 }
 ```
 
-Catégories utiles : `excellent`, `incomplet`, `hors-sujet`, `methode-fausse`,
-`bonne-forme-fond-faux`, `confusion-concepts`.
+Les identifiants des correcteurs et des collecteurs doivent être pseudonymisés.
+Ne stockez jamais nom, prénom, établissement, numéro de candidat, date de
+naissance, signature, scan non anonymisé ou toute autre donnée personnelle.
 
-## Pipeline de collecte
+## Collecte obligatoire
 
-Commande :
+1. Obtenir l'autorisation de collecte et anonymiser la copie avant toute saisie.
+2. Transcrire mot pour mot, y compris les erreurs utiles à l'évaluation.
+3. Faire noter séparément la réponse par **deux correcteurs** sans leur montrer
+   l'autre annotation ni le score du moteur.
+4. En cas de désaccord important, faire arbitrer par un troisième correcteur et
+   renseigner `adjudication`.
+5. Importer uniquement le JSON anonymisé et exécuter les tests.
+
+## Import
 
 ```bash
-node tests/hard-benchmark/import-copy.mjs
-# ou avec un fichier JSON :
-node tests/hard-benchmark/import-copy.mjs /tmp/copie.json
-# validation sans écriture :
 node tests/hard-benchmark/import-copy.mjs /tmp/copie.json --dry-run
+node tests/hard-benchmark/import-copy.mjs /tmp/copie.json
+npm run test:hard
 ```
 
-### 5 étapes manuelles
+L'import refuse les copies avec une annotation unique ou avec deux annotations
+portant le même identifiant de correcteur. Il vérifie aussi que le pôle existe
+réellement dans `data/subjects.js`.
 
-1. **Scan** — scanner le sujet officiel et les copies d'élèves.
-2. **Anonymisation** — retirer nom, prénom, établissement, date de naissance.
-3. **Transcription** — recopier la réponse mot pour mot (fautes comprises).
-4. **Annotation** — un correcteur humain pose la catégorie et la note.
-5. **Import** — lancer le script ; il valide le schéma, vérifie que le pôle
-   existe dans `data/subjects.js`, génère un `id` `YYYY-SX-EY-P-NNN`,
-   alerte en cas de marqueurs LLM, écrit dans `cases.json` trié, puis lance
-   `npm run test:hard`.
+## Métriques et révision des règles
 
-Le script **n'invente jamais** de copie. Il refuse un pôle inexistant.
-Il prévient (sans bloquer en mode fichier) si la réponse ressemble à du texte généré.
+```bash
+npm run calibration
+```
+
+Le rapport affiche la couverture par pôle, l'erreur absolue moyenne entre le
+moteur et la référence humaine, le biais de sur/sous-évaluation et l'écart
+moyen entre les deux correcteurs. Avec zéro copie, il affiche explicitement
+`non calibré` : aucune métrique ne doit être inventée.
+
+Toute évolution de règle après copies réelles suit
+[`RULE_REVIEW.md`](RULE_REVIEW.md) et doit commencer par un test de régression
+sur la copie anonymisée concernée.
+
+## Seuil avant toute promesse de « correcteur »
+
+Ne présentez pas les scores comme une correction BAC avant d'avoir, au minimum :
+
+- 15 copies réelles par pôle actif, couvrant réponses fortes, faibles, fausses
+  et hors sujet ;
+- deux annotations indépendantes par copie ;
+- des mesures publiées d'écart score moteur / score humain, de sur- et
+  sous-évaluation, et de désaccord entre correcteurs.
+
+Avant ces mesures, le produit reste un **outil de feedback méthodologique**.

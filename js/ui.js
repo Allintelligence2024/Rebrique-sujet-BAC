@@ -6,26 +6,64 @@
 import { APP_CONFIG, normalizeArabic } from "../data/subjects.js";
 import { BROUILLON_MODE_DATA } from "../data/brouillon.js";
 import { store, helpers } from "./store.js";
-import { timers, evaluateText, evaluatePipeline, scoreFromFraction, scoreBac, soundEngine, METHOD_SCRIPTS } from "./engine.js";
+import {
+  timers,
+  evaluateText,
+  evaluatePipeline,
+  scoreFromFraction,
+  scoreBac,
+  soundEngine,
+  METHOD_SCRIPTS
+} from "./engine.js";
+import { createSpeechEngine } from "./services/speech-recognition.js";
+import { createAtlas } from "./ui/atlas.js";
+import { node, replaceContent } from "./ui/dom.js";
 
 const POLE = {
   N: { title: "القطب الشمال", cls: "emerald" },
   S: { title: "القطب الجنوب", cls: "blue" },
-  E: { title: "القطب الشرق",  cls: "amber" },
-  W: { title: "القطب الغرب",  cls: "purple" }
+  E: { title: "القطب الشرق", cls: "amber" },
+  W: { title: "القطب الغرب", cls: "purple" }
 };
 const POLE_ORDER = ["N", "S", "E", "W"];
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
-const el = (html) => { const t = document.createElement("template"); t.innerHTML = html.trim(); return t.content.firstElementChild; };
+const el = (html) => {
+  const t = document.createElement("template");
+  t.innerHTML = html.trim();
+  return t.content.firstElementChild;
+};
 
-function yearObj(id) { return APP_CONFIG.years.find(y => y.id === id); }
-function sujetObj() { return yearObj(store.state.yearId)?.sujets.find(s => s.id === store.state.sujetId); }
-function exDef(num)  { return sujetObj()?.exercises.find(e => e.number === num); }
+// Any value that can originate from localStorage or user input must cross this
+// boundary before being interpolated in HTML. Prefer .textContent/.value elsewhere.
+function escapeHTML(value = "") {
+  return String(value).replace(
+    /[&<>'"]/g,
+    (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[char]
+  );
+}
+
+function debounce(fn, wait = 350) {
+  let timer = null;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), wait);
+  };
+}
+
+function yearObj(id) {
+  return APP_CONFIG.years.find((y) => y.id === id);
+}
+function sujetObj() {
+  return yearObj(store.state.yearId)?.sujets.find((s) => s.id === store.state.sujetId);
+}
+function exDef(num) {
+  return sujetObj()?.exercises.find((e) => e.number === num);
+}
 
 function showScreen(id) {
-  $$(".screen").forEach(s => s.classList.add("hidden"));
+  $$(".screen").forEach((s) => s.classList.add("hidden"));
   const target = $("#" + id);
   if (target) target.classList.remove("hidden");
   store.setActiveScreen(id);
@@ -35,41 +73,39 @@ function showScreen(id) {
 function toast(msg, type = "info", ms = 3500) {
   const zone = $("#toast-zone");
   if (!zone) return;
-  const t = el(`<div class="toast ${type}"><span>${iconFor(type)}</span><div>${msg}</div></div>`);
+  const t = node("div", { className: `toast ${type}` });
+  t.append(node("span", { text: iconFor(type) }), node("div", { text: msg }));
   zone.appendChild(t);
-  setTimeout(() => { t.style.opacity = "0"; t.style.transform = "translateY(8px)"; setTimeout(() => t.remove(), 250); }, ms);
+  setTimeout(() => {
+    t.style.opacity = "0";
+    t.style.transform = "translateY(8px)";
+    setTimeout(() => t.remove(), 250);
+  }, ms);
 }
 function iconFor(type) {
   const map = { success: "✅", warn: "⚠️", error: "⛔", info: "💡" };
   return map[type] || "ℹ️";
 }
 
+// The scorer is a training heuristic. It must never be presented as a ministry
+// correction or a substitute for a human BAC marker.
+function trainingLimitHTML(compact = false) {
+  const detail = compact
+    ? "النقاط تقدير تدريبي آلي وليست علامة بكالوريا رسمية."
+    : "هذه منصة تدريب: التنقيط تقدير آلي مبني على قواعد ومفاهيم مفتاحية، وليس تصحيحاً وزارياً ولا بديلاً عن الأستاذ. بعض التعليمات معاد بناؤها؛ راجع شارة المصدر في كل قطب.";
+  return `<div class="feedback mid ${compact ? "small" : "mb-2"}" role="note"><b>⚠️ حدود التقييم</b> — ${detail}</div>`;
+}
+
+const openAtlas = createAtlas({ $, $$, openDrawer, normalizeArabic, bacVerbs: BROUILLON_MODE_DATA.bacVerbs });
+
 /* ---------- Voice / dictée ---------- */
-export const voiceEngine = {
-  listening: false,
-  target: null,
-  start(input) {
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) {
-      toast("الإملاء الصوتي غير متاح في هذا المتصفح.", "warn");
-      return false;
-    }
-    this.target = input;
-    this.listening = true;
-    toast("بدأ الإملاء الصوتي…", "info");
-    return true;
-  },
-  stop() {
-    this.listening = false;
-    this.target = null;
-  }
-};
+export const voiceEngine = createSpeechEngine(toast);
 
 function micButton(fieldId) {
   return `<button type="button" class="btn-mic" data-mic="${fieldId}">🎤 إملاء</button>`;
 }
 function bindMics(root = document) {
-  $$("[data-mic]", root).forEach(btn => {
+  $$("[data-mic]", root).forEach((btn) => {
     btn.addEventListener("click", () => {
       const input = $("#" + btn.dataset.mic);
       voiceEngine.start(input);
@@ -79,8 +115,16 @@ function bindMics(root = document) {
 
 /* ---------- Adkar ---------- */
 const ADKAR = [
-  { title: "دعاء بداية الامتحان", ar: "اللهم لا سهل إلا ما جعلته سهلا وأنت تجعل الحزن إذا شئت سهلا.", note: "يُستحب عند الشروع." },
-  { title: "سورة طه", ar: "رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي وَاحْلُلْ عُقْدَةً مِنْ لِسَانِي يَفْقَهُوا قَوْلِي.", note: "سورة طه — دعاء موسى عليه السلام." },
+  {
+    title: "دعاء بداية الامتحان",
+    ar: "اللهم لا سهل إلا ما جعلته سهلا وأنت تجعل الحزن إذا شئت سهلا.",
+    note: "يُستحب عند الشروع."
+  },
+  {
+    title: "سورة طه",
+    ar: "رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي وَاحْلُلْ عُقْدَةً مِنْ لِسَانِي يَفْقَهُوا قَوْلِي.",
+    note: "سورة طه — دعاء موسى عليه السلام."
+  },
   { title: "الاستعاذة", ar: "أعوذ بالله من الشيطان الرجيم.", note: "قبل القراءة والتركيز." },
   { title: "التوكل", ar: "حسبي الله ونعم الوكيل.", note: "عند القلق." },
   { title: "طلب العلم", ar: "ربِّ زدني علما.", note: "أثناء المراجعة." },
@@ -91,82 +135,12 @@ function adkarHTML() {
   return `<div class="adkar-section">
     <strong class="text-emerald">أدعية وأذكار الامتحان</strong>
     <div class="adkar-grid">
-      ${ADKAR.map(a => `<div class="adkar-card"><div class="adkar-title">${a.title}</div><div class="adkar-arabic">${a.ar}</div><div class="adkar-note">${a.note}</div></div>`).join("")}
+      ${ADKAR.map((a) => `<div class="adkar-card"><div class="adkar-title">${a.title}</div><div class="adkar-arabic">${a.ar}</div><div class="adkar-note">${a.note}</div></div>`).join("")}
     </div>
   </div>`;
 }
 function openAdkar() {
   openModal("أدعية وأذكار الامتحان", adkarHTML());
-}
-
-/* ---------- Atlas ---------- */
-const ATLAS = {
-  techniques: [
-    ["التصوير الإشعاعي الذاتي", "تتبع مسار الجزيئات بعد وسمها بنظير مشع.", "emerald"],
-    ["الرحلان الشاردي", "فصل الجزيئات المشحونة حسب الشحنة الصافية.", "indigo"],
-    ["الانتشار المناعي (أوكتارلوني)", "إثبات نوعية الأجسام المضادة بظهور أقواس الترسيب.", "amber"],
-    ["Patch-Clamp", "عزل قطعة غشائية ودراسة التيارات الشاردية.", "purple"]
-  ],
-  verbs: BROUILLON_MODE_DATA.bacVerbs.map(v => ({
-    title: v.verb, body: `${v.expected} — ${v.quickPlan}`, trap: v.trap, pole: v.pole
-  })),
-  hypotheses: [
-    { title: "فرضية تفسيرية", body: "نفترض أن … مما يؤدي إلى …", trap: "لا تستعمل ربما/لعل." },
-    { title: "مصادقة فرضية", body: "تتأكد صحة الفرضية لأن الوثيقة تُظهر …", trap: "لا تصادق دون سند." }
-  ],
-  flashcards: [
-    { q: "ما أفعال القطب S؟", a: "استخرج، صف، حلّل، قارن — ملاحظة ثم استنتاج دون بسبب." },
-    { q: "متى نكتب نصا علميا؟", a: "عند طلب تحرير نص: مقدمة + عرض + خاتمة تجيب عن المشكل." },
-    { q: "ما الفرق بين حدد وفسّر؟", a: "حدد = تعيين دقيق. فسّر = سبب + آلية + نتيجة." }
-  ]
-};
-
-function renderAtlasBody(cat = "techniques", query = "") {
-  const q = normalizeArabic(query);
-  if (cat === "flashcards") {
-    const cards = ATLAS.flashcards.filter(c => !q || normalizeArabic(c.q + c.a).includes(q));
-    return `<div class="flashcard-grid">${cards.map(c => `<div class="flashcard"><div class="flashcard-q">${c.q}<span>↺</span></div><div class="flashcard-a">${c.a}</div></div>`).join("")}</div>`;
-  }
-  if (cat === "verbs") {
-    const items = ATLAS.verbs.filter(v => !q || normalizeArabic(v.title + v.body).includes(q));
-    return items.map(v => `<div class="atlas-card"><strong>${v.title}</strong><p class="small">${v.body}</p><div class="atlas-trap">${v.trap}</div></div>`).join("");
-  }
-  if (cat === "hypotheses") {
-    return ATLAS.hypotheses.map(h => `<div class="atlas-card"><strong>${h.title}</strong><p class="small">${h.body}</p><div class="atlas-trap">${h.trap}</div></div>`).join("");
-  }
-  return ATLAS.techniques
-    .filter(i => !q || normalizeArabic(i[0] + i[1]).includes(q))
-    .map(i => `<div class="atlas-card"><strong class="text-${i[2]}">${i[0]}</strong><p class="small text-muted mt-1">${i[1]}</p></div>`).join("");
-}
-
-function openAtlas() {
-  const body = `<div class="atlas-header">
-      <input class="field" id="atlas-search-input" type="search" placeholder="بحث في الأطلس…">
-      <div class="atlas-tabs">
-        <button class="atlas-tab-btn active" data-cat="techniques">تقنيات</button>
-        <button class="atlas-tab-btn" data-cat="verbs">أفعال</button>
-        <button class="atlas-tab-btn" data-cat="hypotheses">فرضيات</button>
-        <button class="atlas-tab-btn" data-cat="flashcards">بطاقات</button>
-      </div>
-    </div>
-    <div id="atlas-body">${renderAtlasBody("techniques")}</div>`;
-  openDrawer("left", "🔬 أطلس التقنيات التجريبية والمخبرية", body);
-  let cat = "techniques";
-  const refresh = () => {
-    const q = $("#atlas-search-input")?.value || "";
-    $("#atlas-body").innerHTML = renderAtlasBody(cat, q);
-    bindAtlasCards();
-  };
-  $("#atlas-search-input")?.addEventListener("input", refresh);
-  $$(".atlas-tab-btn").forEach(btn => btn.addEventListener("click", () => {
-    cat = btn.dataset.cat;
-    $$(".atlas-tab-btn").forEach(b => b.classList.toggle("active", b === btn));
-    refresh();
-  }));
-  bindAtlasCards();
-}
-function bindAtlasCards() {
-  $$(".flashcard").forEach(card => card.addEventListener("click", () => card.classList.toggle("revealed")));
 }
 
 function cycleSound(btn) {
@@ -201,43 +175,52 @@ export function renderHub() {
         <h2 class="mt-0">اختر دورة البكالوريا لبدء جلسة التدريب المنظم</h2>
         <p class="text-muted small">ستمر أولاً بمحطة التهدئة البصرية قبل تصفح وحساب نقاط الموضوعين</p>
       </div>
+      ${trainingLimitHTML()}
 
       <div class="grid grid-cards" id="year-grid"></div>
-      <footer class="screen-foot">منصة الحل الميكانيكي المنظم لامتحانات بكالوريا علوم الطبيعة والحياة.</footer>
+      <footer class="screen-foot">منصة تدريب منهجي لامتحانات بكالوريا علوم الطبيعة والحياة.</footer>
     </div>`;
 
   const grid = $("#year-grid");
-  years.forEach(y => {
+  years.forEach((y) => {
     const disabled = !y.enabled;
-    const note = disabled ? (y.loadingNote || "لم تُرفق وثائق PDF لهذه الدورة بعد — قريباً.") : "جلسة شاملة وفق نظام الأقطاب 4D الهادئ.";
-    const card = el(`
-      <div class="card year-card ${disabled ? "dim" : ""}" title="${escapeAttr(note)}">
-        <div class="stack">
-          <div class="flex spread">
-            <span class="badge badge-${y.theme}">${y.badge}</span>
-            <span class="mono bold" style="font-size:1.6rem">${y.id}</span>
-          </div>
-          <div>
-            <h3 class="mt-0 mb-1">${y.label}</h3>
-            <p class="small text-muted mt-0">${note}</p>
-          </div>
-        </div>
-        <button class="btn btn-block ${y.theme === "emerald" ? "btn-emerald" : y.theme === "indigo" ? "btn-indigo" : "btn-amber"}" ${disabled ? "disabled" : ""} data-year="${y.id}">
-          ${disabled ? "غير متاح بعد" : "دخول الدورة (ساس التهدئة والبوصلة)"}
-        </button>
-      </div>`);
+    const note = disabled
+      ? y.loadingNote || "لم تُرفق وثائق PDF لهذه الدورة بعد — قريباً."
+      : "جلسة شاملة وفق نظام الأقطاب 4D الهادئ.";
+    const card = node("div", {
+      className: `card year-card ${disabled ? "dim" : ""}`,
+      attrs: { title: note }
+    });
+    const stack = node("div", { className: "stack" });
+    const header = node("div", { className: "flex spread" });
+    header.append(
+      node("span", { className: `badge badge-${y.theme}`, text: y.badge }),
+      node("span", { className: "mono bold", text: y.id, attrs: { style: "font-size:1.6rem" } })
+    );
+    const copy = node("div");
+    copy.append(
+      node("h3", { className: "mt-0 mb-1", text: y.label }),
+      node("p", { className: "small text-muted mt-0", text: note })
+    );
+    stack.append(header, copy);
+    const buttonTheme =
+      y.theme === "emerald" ? "btn-emerald" : y.theme === "indigo" ? "btn-indigo" : "btn-amber";
+    const button = node("button", {
+      className: `btn btn-block ${buttonTheme}`,
+      text: disabled ? "غير متاح بعد" : "دخول الدورة (ساس التهدئة والبوصلة)",
+      attrs: disabled ? { disabled: "" } : {},
+      dataset: { year: y.id }
+    });
+    card.append(stack, button);
     grid.appendChild(card);
   });
 
-  $$("#year-grid [data-year]:not([disabled])").forEach(btn =>
-    btn.addEventListener("click", () => startSession(btn.dataset.year)));
+  $$("#year-grid [data-year]:not([disabled])").forEach((btn) =>
+    btn.addEventListener("click", () => startSession(btn.dataset.year))
+  );
   $("#btn-atlas").addEventListener("click", openAtlas);
   $("#btn-hub-adkar").addEventListener("click", openAdkar);
   $("#btn-hub-sound").addEventListener("click", () => cycleSound($("#btn-hub-sound")));
-}
-
-function escapeAttr(s) {
-  return String(s || "").replace(/"/g, "&quot;");
 }
 
 function goHome() {
@@ -363,9 +346,13 @@ function renderStrategy(sujetNum) {
   calculateStrategicScores();
 
   $("#strategy-exit").addEventListener("click", goHome);
-  $$("#view-strategy [data-preview]").forEach(b => b.addEventListener("click", () => setPdfPreview(+b.dataset.preview)));
-  $$("#view-strategy .calc-input").forEach(i => i.addEventListener("input", calculateStrategicScores));
-  $$("#view-strategy [data-confirm]").forEach(b => b.addEventListener("click", () => confirmChoice(+b.dataset.confirm)));
+  $$("#view-strategy [data-preview]").forEach((b) =>
+    b.addEventListener("click", () => setPdfPreview(+b.dataset.preview))
+  );
+  $$("#view-strategy .calc-input").forEach((i) => i.addEventListener("input", calculateStrategicScores));
+  $$("#view-strategy [data-confirm]").forEach((b) =>
+    b.addEventListener("click", () => confirmChoice(+b.dataset.confirm))
+  );
 }
 
 function calcCard(n, theme) {
@@ -392,10 +379,10 @@ function calcCard(n, theme) {
 
 function setPdfPreview(n) {
   const y = yearObj(store.state.yearId);
-  const s = y.sujets.find(suj => suj.id === n) || y.sujets[0];
+  const s = y.sujets.find((suj) => suj.id === n) || y.sujets[0];
   const box = $("#pdf-preview-container");
   if (box && s) box.innerHTML = pdfFallbackHTML(s);
-  $$("#view-strategy [data-preview]").forEach(b => {
+  $$("#view-strategy [data-preview]").forEach((b) => {
     const active = +b.dataset.preview === n;
     const color = active ? (n === 1 ? "btn-indigo" : "btn-purple") : "btn-ghost";
     b.className = `btn btn-sm ${color}`;
@@ -419,9 +406,16 @@ function calculateStrategicScores() {
   if ($("#s1-total")) $("#s1-total").textContent = `${s1.toFixed(2)} / 20.00`;
   if ($("#s2-total")) $("#s2-total").textContent = `${s2.toFixed(2)} / 20.00`;
   let rec, gain;
-  if (s1 > s2)      { rec = `ترجيح الموضوع الأول بفارق +${(s1 - s2).toFixed(2)} نقاط، لتميّز رصيد المسعى العلمي (ت3: 8ن).`; gain = ((s1 / 20) * 100).toFixed(1) + "%"; }
-  else if (s2 > s1) { rec = `ترجيح الموضوع الثاني بفارق +${(s2 - s1).toFixed(2)} نقاط، لتميّز رصيد المسعى العلمي (ت3: 8ن).`; gain = ((s2 / 20) * 100).toFixed(1) + "%"; }
-  else              { rec = "الموضوعان متكافئان تماماً — رجّح موضوع التمرين الثالث الأكثر ضماناً."; gain = ((s1 / 20) * 100).toFixed(1) + "%"; }
+  if (s1 > s2) {
+    rec = `ترجيح الموضوع الأول بفارق +${(s1 - s2).toFixed(2)} نقاط، لتميّز رصيد المسعى العلمي (ت3: 8ن).`;
+    gain = ((s1 / 20) * 100).toFixed(1) + "%";
+  } else if (s2 > s1) {
+    rec = `ترجيح الموضوع الثاني بفارق +${(s2 - s1).toFixed(2)} نقاط، لتميّز رصيد المسعى العلمي (ت3: 8ن).`;
+    gain = ((s2 / 20) * 100).toFixed(1) + "%";
+  } else {
+    rec = "الموضوعان متكافئان تماماً — رجّح موضوع التمرين الثالث الأكثر ضماناً.";
+    gain = ((s1 / 20) * 100).toFixed(1) + "%";
+  }
   if ($("#recommendation-text")) $("#recommendation-text").textContent = rec;
   if ($("#recommendation-gain")) $("#recommendation-gain").textContent = gain;
 }
@@ -451,28 +445,40 @@ function renderOnboarding() {
         </div>
       </header>
       <div class="grid grid-cards">
-        ${s.exercises.map(e => `
+        ${s.exercises
+          .map(
+            (e) => `
           <div class="card stack">
             <div class="flex spread"><strong class="text-emerald">${e.number}. ${e.label} (${e.max} نقاط)</strong><span class="badge">${timeFor(e.max)}</span></div>
             <p class="small text-muted mt-0">${e.desc}</p>
-          </div>`).join("")}
+          </div>`
+          )
+          .join("")}
       </div>
       <div class="stack mt-3">
         <h3 class="small text-muted mb-1">اختر التمرين الذي ستبدأ بحله الآن:</h3>
         <div class="grid grid-cards">
-          ${s.exercises.map(e => `
+          ${s.exercises
+            .map(
+              (e) => `
             <button class="card btn-ghost" style="text-align:right" data-ex="${e.number}">
               <div class="flex spread"><span class="badge">ت${e.number} (${e.max}ن)</span><span>←</span></div>
               <strong class="block mt-1">${e.label}</strong>
               <p class="small text-muted mt-1">كلمات مفتاحية، مقارنة بالتوازي، مصادقة ومخطط.</p>
-            </button>`).join("")}
+            </button>`
+            )
+            .join("")}
         </div>
       </div>
     </div>`;
   $("#onb-home").addEventListener("click", goHome);
-  $$("#view-onboarding [data-ex]").forEach(b => b.addEventListener("click", () => enterExercise(+b.dataset.ex)));
+  $$("#view-onboarding [data-ex]").forEach((b) =>
+    b.addEventListener("click", () => enterExercise(+b.dataset.ex))
+  );
 }
-function timeFor(points) { return points >= 8 ? "1س 45د" : points >= 5 ? "45 دقيقة" : "1س 15د"; }
+function timeFor(points) {
+  return points >= 8 ? "1س 45د" : points >= 5 ? "45 دقيقة" : "1س 15د";
+}
 
 /* ===================== 5) WORKSPACE ===================== */
 function enterExercise(exNum) {
@@ -498,7 +504,8 @@ function renderWorkspace() {
           <button class="btn-adkar" id="ws-adkar">🕌 أذكار</button>
           <button class="btn btn-ghost btn-sm" id="ws-brouillon">📝 مسودة</button>
           <button class="btn btn-ghost btn-sm" id="ws-atlas">🔬 أطلس</button>
-          <div class="pill"><span class="text-dim">العلامة:</span><span class="mono" id="live-score">0.00</span><span class="text-dim" id="live-max">/ ${ex.max.toFixed(2)}</span></div>
+          <button class="btn btn-ghost btn-sm" id="ws-review" aria-pressed="${store.state.reviewMode}">${store.state.reviewMode ? "📖 وضع المراجعة" : "🔢 وضع التدريب"}</button>
+          <div class="pill"><span class="text-dim">${store.state.reviewMode ? "المراجعة:" : "العلامة:"}</span><span class="mono" id="live-score">${store.state.reviewMode ? "—" : "0.00"}</span><span class="text-dim" id="live-max">${store.state.reviewMode ? "بدون تنقيط" : `/ ${ex.max.toFixed(2)}`}</span></div>
           <button class="btn btn-ghost btn-sm" id="ws-onb">دليل المعالجة</button>
           <button class="btn btn-purple btn-sm" id="ws-report">📊 التقرير</button>
           <button class="btn btn-rose btn-sm" id="ws-reset" title="إعادة تعيين كل الجلسة">↺ تصفير</button>
@@ -507,6 +514,7 @@ function renderWorkspace() {
       </header>
 
       <div class="progress mb-2" id="progress"><span></span></div>
+      ${trainingLimitHTML(true)}
       <div class="card mb-2" id="boussole-scratch-card">
         <strong>ورقة المسودة السريعة</strong>
         <p class="small text-muted mt-0">افتح المسودة الكاملة من زر «مسودة» لتفكيك N/S/E/W.</p>
@@ -515,10 +523,14 @@ function renderWorkspace() {
       <div class="grid" style="grid-template-columns:minmax(230px,18rem) 1fr;align-items:start">
         <aside class="card stack">
           <span class="small bold text-muted">تمارين الموضوع المختار:</span>
-          <div class="stack">${s.exercises.map(e => `
+          <div class="stack">${s.exercises
+            .map(
+              (e) => `
             <button class="btn btn-ghost" data-switch="${e.number}" style="justify-content:space-between">
               <span>ت${e.number}: ${e.label} (${e.max}ن)</span><span id="lock-${e.number}">🔒</span>
-            </button>`).join("")}</div>
+            </button>`
+            )
+            .join("")}</div>
           <div class="card center stack">
             <div class="flex spread small"><span class="bold text-muted">بوصلة ت${ex.number}</span><span class="text-emerald" id="pole-text">القطب: الشمال</span></div>
             <div class="compass">
@@ -545,11 +557,26 @@ function renderWorkspace() {
   $("#ws-adkar").addEventListener("click", openAdkar);
   $("#ws-brouillon").addEventListener("click", openBrouillon);
   $("#ws-atlas").addEventListener("click", openAtlas);
-  $("#ws-onb").addEventListener("click", () => { renderOnboarding(); showScreen("view-onboarding"); });
+  $("#ws-review").addEventListener("click", () => {
+    store.setReviewMode(!store.state.reviewMode);
+    renderWorkspace();
+    toast(
+      store.state.reviewMode
+        ? "وضع المراجعة: feedback فقط دون نقاط."
+        : "وضع التدريب: تظهر نقاط الأقطاب الرسمية فقط.",
+      "info"
+    );
+  });
+  $("#ws-onb").addEventListener("click", () => {
+    renderOnboarding();
+    showScreen("view-onboarding");
+  });
   $("#ws-pdf").addEventListener("click", openPdfDrawer);
   $("#ws-report").addEventListener("click", showReport);
   $("#ws-reset").addEventListener("click", confirmReset);
-  $$("#view-workspace [data-switch]").forEach(b => b.addEventListener("click", () => attemptSwitch(+b.dataset.switch)));
+  $$("#view-workspace [data-switch]").forEach((b) =>
+    b.addEventListener("click", () => attemptSwitch(+b.dataset.switch))
+  );
 
   renderStepnav(ex);
   renderExercise(ex);
@@ -558,57 +585,100 @@ function renderWorkspace() {
 }
 
 function renderStepnav(ex) {
-  $("#stepnav").innerHTML = POLE_ORDER.map((p, i) => `
+  $("#stepnav").innerHTML = POLE_ORDER.map(
+    (p, i) => `
     <button data-step="${i + 1}">
       <span class="pole">${p}</span>
       <span>${short(ex.poles[p].prompt)} (${fmtPts(ex.poles[p].points)})</span>
-    </button>`).join("");
-  $$("#stepnav [data-step]").forEach(b => b.addEventListener("click", () => goToStep(+b.dataset.step)));
+    </button>`
+  ).join("");
+  $$("#stepnav [data-step]").forEach((b) => b.addEventListener("click", () => goToStep(+b.dataset.step)));
 }
 
 function renderExercise(ex) {
   const body = $("#ex-content");
-  const pending = ex.desc && /non relue|بانتظار PDF|في انتظار/i.test(ex.desc + ex.label)
-    ? `<div class="feedback mid mb-2">هذا التمرين بانتظار إعادة قراءة المصدر الخارجي — لا يُقدَّم كتصحيح وزاري.</div>`
-    : "";
-  if (ex.ui === "pipeline") { body.innerHTML = pending + pipelineHTML(ex); bindPipeline(ex); }
-  else { body.innerHTML = pending + textHTML(ex); bindText(ex); }
+  const pending =
+    ex.desc && /non relue|بانتظار PDF|في انتظار/i.test(ex.desc + ex.label)
+      ? `<div class="feedback mid mb-2">هذا التمرين بانتظار إعادة قراءة المصدر الخارجي — لا يُقدَّم كتصحيح وزاري.</div>`
+      : "";
+  if (ex.ui === "pipeline") {
+    body.innerHTML = pending + pipelineHTML(ex);
+    bindPipeline(ex);
+  } else {
+    body.innerHTML = pending + textHTML(ex);
+    bindText(ex);
+  }
+}
+
+function confidenceForPole(pole) {
+  if (pole.bacPromptSource === "official") return { level: "high", label: "ثقة مرتفعة" };
+  if (store.state.yearId === "2024") return { level: "low", label: "ثقة منخفضة" };
+  return { level: "medium", label: "ثقة متوسطة" };
 }
 
 function provenanceBadge(pole) {
+  const confidence = confidenceForPole(pole);
   if (pole.bacPromptSource === "official") {
-    return `<span class="badge badge-emerald">رسمي · ص ${pole.bacPromptPage || "؟"}</span>`;
+    return `<span class="badge badge-emerald">رسمي · ص ${pole.bacPromptPage || "؟"} · ${confidence.label}</span>`;
   }
-  return `<span class="badge">معاد بناؤه — ليس تصحيحاً وزارياً</span>`;
+  return `<span class="badge">معاد بناؤه · ${confidence.label} · لا توجد نقطة رقمية</span>`;
+}
+
+function canScorePole(pole) {
+  return !store.state.reviewMode && pole.bacPromptSource === "official";
 }
 
 function modelBox(pole) {
   if (!pole.modelAnswer) return "";
-  return `<details class="model-box"><summary class="model-summary">الإجابة النموذجية</summary><div class="model-body"><pre class="model-text">${pole.modelAnswer}</pre></div></details>`;
+  return `<details class="model-box"><summary class="model-summary">إجابة نموذجية للتدريب</summary><div class="model-body"><pre class="model-text">${pole.modelAnswer}</pre></div></details>`;
+}
+
+function setFeedback(container, res, score, points, pole, showScore = true) {
+  // formatEvalFeedback is legacy presentation text. Render it as text, never as executable HTML.
+  const feedback = formatEvalFeedback(res, score, points)
+    .replace(/<br>/g, "\n")
+    .replace(/<[^>]*>/g, "");
+  const text = showScore
+    ? feedback
+    : `مراجعة منهجية فقط — لا توجد نقطة رقمية لهذا القطب.\n${feedback.replace(/^.*?\n/, "")}`;
+  const fragments = [node("span", { text })];
+  if (pole?.modelAnswer) {
+    const details = node("details", { className: "model-box" });
+    details.append(
+      node("summary", { className: "model-summary", text: "إجابة نموذجية للتدريب" }),
+      node("div", { className: "model-body" })
+    );
+    details.lastElementChild.append(node("pre", { className: "model-text", text: pole.modelAnswer }));
+    fragments.push(details);
+  }
+  replaceContent(container, fragments);
 }
 
 function formatEvalFeedback(res, score, points) {
-  let html = `النتيجة: <b>${score.toFixed(2)} / ${fmtPts(points)}</b> (${Math.round(res.fraction * 100)}%)`;
+  let html = `التقدير التدريبي: <b>${score.toFixed(2)} / ${fmtPts(points)}</b> (${Math.round(res.fraction * 100)}%)`;
   if (res.verdict) html += `<br>${res.verdict}`;
   if (res.rubric?.applicable && res.rubric.display) {
     html += `<br><span class="small">ميزان التحليل: ${res.rubric.display}</span>`;
-    const skipped = (res.rubric.steps || []).filter(s => !s.passed).map(s => s.label);
+    const skipped = (res.rubric.steps || []).filter((s) => !s.passed).map((s) => s.label);
     if (skipped.length) html += `<br>⏭️ خطوات ناقصة: <b>${skipped.join("، ")}</b>`;
   }
   if (res.missing?.length) html += `<br>🔎 مفاهيم مفتاحية ناقصة: <b>${res.missing.join("، ")}</b>`;
-  if (res.forbiddenFound?.length) html += `<br>⛔ كلمة يجب تجنّبها هنا: <b>${res.forbiddenFound.join("، ")}</b>`;
-  if (res.science?.errors?.length) html += `<br>🧪 خطأ علمي: <b>${res.science.errors.map(e => e.message).join(" — ")}</b>`;
+  if (res.forbiddenFound?.length)
+    html += `<br>⛔ كلمة يجب تجنّبها هنا: <b>${res.forbiddenFound.join("، ")}</b>`;
+  if (res.science?.errors?.length)
+    html += `<br>🧪 خطأ علمي: <b>${res.science.errors.map((e) => e.message).join(" — ")}</b>`;
   if (res.document?.gaps?.length) html += `<br>📄 قراءة السند: <b>${res.document.gaps.join(" — ")}</b>`;
   if (res.artifact?.gaps?.length) html += `<br>✏️ مخطط/معادلة: <b>${res.artifact.gaps.join(" — ")}</b>`;
   if (res.hypotheses?.gaps?.length) html += `<br>🔬 الفرضيات: <b>${res.hypotheses.gaps.join(" — ")}</b>`;
   if (res.technique?.gaps?.length) html += `<br>🧫 التقنية: <b>${res.technique.gaps.join(" — ")}</b>`;
-  if (res.closing?.applicable && res.taskProfile?.id === "scientific-text" && res.closing.score < 0.5) html += `<br>🎯 الخاتمة لا تجيب عن المشكل المطروح في القطب N.`;
+  if (res.closing?.applicable && res.taskProfile?.id === "scientific-text" && res.closing.score < 0.5)
+    html += `<br>🎯 الخاتمة لا تجيب عن المشكل المطروح في القطب N.`;
   if (res.methodology?.missing?.length) html += `<br>🧭 المنهجية: ${res.methodology.missing[0]}`;
   if (res.coach?.tips?.length) html += `<br>📘 من دليل المنهجية: ${res.coach.tips.slice(0, 2).join(" ")}`;
   else if (res.methodology?.score < 0.9 && res.coach?.script?.steps?.length) {
     html += `<br>📘 ${res.coach.script.title}: ${res.coach.script.steps.join(" ← ")}`;
   }
-  const pack = BROUILLON_MODE_DATA.sentenceModels.find(s => {
+  const pack = BROUILLON_MODE_DATA.sentenceModels.find((s) => {
     const id = res.taskProfile?.id;
     if (id === "analysis") return s.title.includes("تقديم");
     if (id === "explanation") return s.title.includes("تفسير");
@@ -639,9 +709,11 @@ function textHTML(ex) {
           <h3 class="mt-0">${pole.prompt}</h3>
           <p class="small text-muted">${pole.bacPrompt || ""}</p>
           ${poleMethodHint(p, pole)}
-          ${pole.minLength >= 100
-            ? `<textarea class="field" id="fld-${p}" rows="6" placeholder="${pole.placeholder || ""}"></textarea>`
-            : `<input class="field" id="fld-${p}" type="text" placeholder="${pole.placeholder || ""}">`}
+          ${
+            pole.minLength >= 100
+              ? `<textarea class="field" id="fld-${p}" rows="6" placeholder="${pole.placeholder || ""}"></textarea>`
+              : `<input class="field" id="fld-${p}" type="text" placeholder="${pole.placeholder || ""}">`
+          }
           ${micButton("fld-" + p)}
           <div class="feedback hidden" id="fb-${p}"></div>
           <div class="flex mt-2" style="justify-content:space-between">
@@ -654,12 +726,23 @@ function textHTML(ex) {
 }
 
 function bindText(ex) {
-  $$("#ex-content [data-check]").forEach(b => b.addEventListener("click", () => checkText(ex.number, b.dataset.check)));
-  $$("#ex-content [data-goto]").forEach(b => b.addEventListener("click", () => goToStep(+b.dataset.goto + 1)));
-  const st = store.exercise(store.state.sujetId, ex.number);
-  POLE_ORDER.forEach(p => {
+  $$("#ex-content [data-check]").forEach((b) =>
+    b.addEventListener("click", () => checkText(ex.number, b.dataset.check))
+  );
+  $$("#ex-content [data-goto]").forEach((b) =>
+    b.addEventListener("click", () => goToStep(+b.dataset.goto + 1))
+  );
+  const st = store.exercise(store.state.yearId, store.state.sujetId, ex.number);
+  POLE_ORDER.forEach((p) => {
     const input = $("#fld-" + p);
-    if (input && st.text[p]) input.value = st.text[p];
+    if (!input) return;
+    if (st.text[p]) input.value = st.text[p];
+    const saveDraft = debounce(() => {
+      st.text[p] = input.value;
+      if (input.value.trim()) st.answeredAny = true;
+      store.save();
+    });
+    input.addEventListener("input", saveDraft);
   });
   bindMics($("#ex-content"));
 }
@@ -669,15 +752,21 @@ function checkText(exNum, p) {
   const pole = ex.poles[p];
   const input = $("#fld-" + p);
   const text = input ? input.value : "";
-  const rule = { ...(pole.rule || {}), prompt: pole.bacPrompt || pole.prompt, modelAnswer: pole.modelAnswer, minLength: pole.minLength };
+  const rule = {
+    ...(pole.rule || {}),
+    prompt: pole.bacPrompt || pole.prompt,
+    modelAnswer: pole.modelAnswer,
+    minLength: pole.minLength
+  };
   if (p === "W" || /نص علمي|فقرة علمية/.test(pole.bacPrompt || pole.prompt || "")) {
     rule.relatedProblem = ex.poles.N?.modelAnswer || ex.poles.N?.bacPrompt || "";
   }
   const res = evaluateText(text, rule, p);
 
-  const st = store.exercise(store.state.sujetId, exNum);
+  const st = store.exercise(store.state.yearId, store.state.sujetId, exNum);
   st.text[p] = text;
-  st.scores[p] = scoreBac(pole.points, res.fraction);
+  const scoreAllowed = canScorePole(pole);
+  st.scores[p] = scoreAllowed ? scoreBac(pole.points, res.fraction) : 0;
   if (!st.answeredAny && text.trim()) st.answeredAny = true;
   store.save();
 
@@ -686,7 +775,7 @@ function checkText(exNum, p) {
   fb.classList.remove("hidden");
   const grade = res.fraction >= 0.75 ? "good" : res.fraction >= 0.45 ? "mid" : "bad";
   fb.className = `feedback ${grade} mt-2`;
-  fb.innerHTML = formatEvalFeedback(res, st.scores[p], pole.points) + modelBox(pole);
+  setFeedback(fb, res, st.scores[p], pole.points, pole, scoreAllowed);
   if (!res.empty) goToSuccessStep(exNum);
 }
 
@@ -741,13 +830,17 @@ function pipelineHTML(ex) {
       <span class="lbl">📦 بنك العناصر البيوكيميائية:</span>
       <div class="bank" id="blocks-bank"></div>
       <div class="grid grid-2 mt-2">
-        ${ex.streams.map(str => `
+        ${ex.streams
+          .map(
+            (str) => `
           <div class="card" style="background:var(--bg);border-color:${str.theme === "rose" ? "var(--rose)" : "var(--emerald)"}">
             <strong style="color:${str.theme === "rose" ? "#fb7185" : "var(--emerald-soft)"}">${str.title}</strong>
             <div class="pipeline mt-1" data-stream="${str.id}">
               ${str.slots.map((sl, i) => `<div class="slot" data-slot="${i}">${i + 1}. ${sl}</div>`).join("")}
             </div>
-          </div>`).join("")}
+          </div>`
+          )
+          .join("")}
       </div>
       <div class="feedback hidden mt-2" id="fb-W"></div>
       <button class="btn btn-emerald mt-2" data-polo-check="W">مصادقة المخطط التحصيلي</button>
@@ -755,43 +848,67 @@ function pipelineHTML(ex) {
 }
 
 function bindPipeline(ex) {
-  $$("#ex-content [data-polo-check]").forEach(b => b.addEventListener("click", () => checkPipelinePole(ex.number, b.dataset.poloCheck)));
+  $$("#ex-content [data-polo-check]").forEach((b) =>
+    b.addEventListener("click", () => checkPipelinePole(ex.number, b.dataset.poloCheck))
+  );
   const bank = $("#blocks-bank");
-  bank.innerHTML = "";
-  ex.blocksBank.forEach(blk => {
-    const chip = el(`<button class="chip" data-block="${blk.id}">${blk.text}</button>`);
-    bank.appendChild(chip);
-  });
-  $$("#blocks-bank [data-block]").forEach(c => c.addEventListener("click", () => placeBlock(ex, c.dataset.block)));
-  $$("#ex-content .slot").forEach(sl => sl.addEventListener("click", () => {
-    const stream = +sl.closest("[data-stream]").dataset.stream;
-    clearBlock(ex, stream, +sl.dataset.slot);
-  }));
-  const st = store.exercise(store.state.sujetId, ex.number);
+  replaceContent(
+    bank,
+    ex.blocksBank.map((blk) =>
+      node("button", { className: "chip", text: blk.text, dataset: { block: blk.id } })
+    )
+  );
+  $$("#blocks-bank [data-block]").forEach((c) =>
+    c.addEventListener("click", () => placeBlock(ex, c.dataset.block))
+  );
+  $$("#ex-content .slot").forEach((sl) =>
+    sl.addEventListener("click", () => {
+      const stream = +sl.closest("[data-stream]").dataset.stream;
+      clearBlock(ex, stream, +sl.dataset.slot);
+    })
+  );
+  const st = store.exercise(store.state.yearId, store.state.sujetId, ex.number);
   renderPipeline(ex, st.pipeline);
   Object.entries(st.fields || {}).forEach(([id, val]) => {
     const f = $("#" + id);
     if (f) f.value = val;
   });
+  $$("#ex-content input.field, #ex-content textarea.field").forEach((field) => {
+    const saveDraft = debounce(() => {
+      st.fields[field.id] = field.value;
+      if (field.value.trim()) st.answeredAny = true;
+      store.save();
+    });
+    field.addEventListener("input", saveDraft);
+  });
   bindMics($("#ex-content"));
 }
 
 function placeBlock(ex, blockId) {
-  const st = store.exercise(store.state.sujetId, ex.number);
+  const st = store.exercise(store.state.yearId, store.state.sujetId, ex.number);
   for (const key of ["stream1", "stream2"]) {
     const arr = st.pipeline[key];
     for (let i = 0; i < arr.length; i++) {
-      if (!arr[i]) { arr[i] = blockId; renderPipeline(ex, st.pipeline); store.save(); return; }
+      if (!arr[i]) {
+        arr[i] = blockId;
+        renderPipeline(ex, st.pipeline);
+        store.save();
+        return;
+      }
     }
   }
 }
 function clearBlock(ex, stream, index) {
-  const st = store.exercise(store.state.sujetId, ex.number);
+  const st = store.exercise(store.state.yearId, store.state.sujetId, ex.number);
   const key = stream === 1 ? "stream1" : "stream2";
-  if (st.pipeline[key][index]) { st.pipeline[key][index] = null; renderPipeline(ex, st.pipeline); store.save(); }
+  if (st.pipeline[key][index]) {
+    st.pipeline[key][index] = null;
+    renderPipeline(ex, st.pipeline);
+    store.save();
+  }
 }
 function renderPipeline(ex, arrangement) {
-  $$("#blocks-bank [data-block]").forEach(c => {
+  $$("#blocks-bank [data-block]").forEach((c) => {
     const used = Object.values(arrangement).flat().includes(c.dataset.block);
     c.classList.toggle("used", used);
   });
@@ -802,12 +919,12 @@ function renderPipeline(ex, arrangement) {
     $$(`[data-stream="${str.id}"] .slot`).forEach((slotEl, i) => {
       const id = arr[i];
       if (id) {
-        const blk = ex.blocksBank.find(b => b.id === id);
+        const blk = ex.blocksBank.find((b) => b.id === id);
         slotEl.classList.add("filled");
-        slotEl.innerHTML = `<span>${blk.text}</span><span>🗑️</span>`;
+        replaceContent(slotEl, [node("span", { text: blk?.text || "" }), node("span", { text: "🗑️" })]);
       } else {
         slotEl.classList.remove("filled");
-        slotEl.innerHTML = `${i + 1}. ${str.slots[i]}`;
+        slotEl.textContent = `${i + 1}. ${str.slots[i]}`;
       }
     });
   }
@@ -815,7 +932,7 @@ function renderPipeline(ex, arrangement) {
 
 function checkPipelinePole(exNum, p) {
   const ex = exDef(exNum);
-  const st = store.exercise(store.state.sujetId, exNum);
+  const st = store.exercise(store.state.yearId, store.state.sujetId, exNum);
   const fb = $("#fb-" + p);
   fb.classList.remove("hidden");
   if (p === "N" || p === "S" || p === "E") {
@@ -826,26 +943,38 @@ function checkPipelinePole(exNum, p) {
     };
     const ids = FIELDS[p] || [];
     let joined = "";
-    ids.forEach(id => {
+    ids.forEach((id) => {
       const f = $("#" + id);
-      if (f) { st.fields[id] = f.value; joined += f.value + " "; }
+      if (f) {
+        st.fields[id] = f.value;
+        joined += f.value + " ";
+      }
     });
     const text = joined.trim();
-    const rule = { ...(ex.poles[p].rule || {}), prompt: ex.poles[p].bacPrompt || ex.poles[p].prompt, modelAnswer: ex.poles[p].modelAnswer, minLength: ex.poles[p].minLength };
+    const rule = {
+      ...(ex.poles[p].rule || {}),
+      prompt: ex.poles[p].bacPrompt || ex.poles[p].prompt,
+      modelAnswer: ex.poles[p].modelAnswer,
+      minLength: ex.poles[p].minLength
+    };
     const res = evaluateText(text, rule, p);
-    const score = text ? scoreBac(ex.poles[p].points, res.fraction) : 0;
+    const scoreAllowed = canScorePole(ex.poles[p]);
+    const score = scoreAllowed && text ? scoreBac(ex.poles[p].points, res.fraction) : 0;
     st.scores[p] = score;
     if (!st.answeredAny && text) st.answeredAny = true;
     fb.className = `feedback ${res.fraction >= 0.75 ? "good" : text ? "mid" : "bad"} mt-2`;
-    fb.innerHTML = formatEvalFeedback(res, score, ex.poles[p].points) + modelBox(ex.poles[p]);
+    setFeedback(fb, res, score, ex.poles[p].points, ex.poles[p], scoreAllowed);
   } else {
     const res = evaluatePipeline(ex.blocksBank, st.pipeline);
+    const scoreAllowed = canScorePole(ex.poles[p]);
     const max = fmtPts(ex.poles[p].points);
-    st.scores[p] = scoreBac(ex.poles[p].points, res.fraction);
+    st.scores[p] = scoreAllowed ? scoreBac(ex.poles[p].points, res.fraction) : 0;
     if (!st.answeredAny) st.answeredAny = true;
     fb.className = `feedback ${res.fraction >= 0.75 ? "good" : res.fraction >= 0.4 ? "mid" : "bad"} mt-2`;
-    fb.innerHTML = `المخطط: <b>${st.scores[p].toFixed(2)} / ${max}</b> (${res.correct}/${res.total} عنصر صحيح)` +
-      (res.wrongSlots.length ? `<br>⚠️ عناصر في غير موضعها: ${res.wrongSlots.length}` : "");
+    fb.textContent = scoreAllowed
+      ? `المخطط: ${st.scores[p].toFixed(2)} / ${max} (${res.correct}/${res.total} عنصر صحيح)` +
+        (res.wrongSlots.length ? `\n⚠️ عناصر في غير موضعها: ${res.wrongSlots.length}` : "")
+      : `مراجعة منهجية فقط — لا توجد نقطة رقمية لهذا القطب.\nالمخطط: ${res.correct}/${res.total} عنصر صحيح`;
   }
   store.save();
   updateLiveScore();
@@ -870,21 +999,32 @@ function goToStep(n) {
 function updateLiveScore() {
   const ex = exDef(store.state.activeExercise);
   if (!ex) return;
-  const st = store.exercise(store.state.sujetId, ex.number);
-  const sum = st.scores.N + st.scores.S + st.scores.E + st.scores.W;
-  if ($("#live-score")) $("#live-score").textContent = sum.toFixed(2);
-  if ($("#live-max")) $("#live-max").textContent = `/ ${ex.max.toFixed(2)}`;
-  sujetObj()?.exercises.forEach(e => {
+  const st = store.exercise(store.state.yearId, store.state.sujetId, ex.number);
+  const officialPoles = POLE_ORDER.filter((pole) => ex.poles[pole].bacPromptSource === "official");
+  const sum = officialPoles.reduce((total, pole) => total + st.scores[pole], 0);
+  const officialMax = officialPoles.reduce((total, pole) => total + ex.poles[pole].points, 0);
+  if ($("#live-score")) $("#live-score").textContent = store.state.reviewMode ? "—" : sum.toFixed(2);
+  if ($("#live-max"))
+    $("#live-max").textContent = store.state.reviewMode
+      ? "بدون تنقيط"
+      : `/ ${officialMax.toFixed(2)} رسمي فقط`;
+  sujetObj()?.exercises.forEach((e) => {
     const lock = $("#lock-" + e.number);
-    if (lock) lock.textContent = store.exercise(store.state.sujetId, e.number).answeredAny ? "🔓" : "🔒";
+    if (lock)
+      lock.textContent = store.exercise(store.state.yearId, store.state.sujetId, e.number).answeredAny
+        ? "🔓"
+        : "🔒";
   });
 }
 
 function attemptSwitch(target) {
   const cur = store.state.activeExercise;
   if (target === cur) return;
-  if (!store.exercise(store.state.sujetId, cur).answeredAny) {
-    toast(`يجب الإجابة على سؤال واحد على الأقل في التمرين ${cur} لفكّ القفل قبل الانتقال لتمرين آخر!`, "warn");
+  if (!store.exercise(store.state.yearId, store.state.sujetId, cur).answeredAny) {
+    toast(
+      `يجب الإجابة على سؤال واحد على الأقل في التمرين ${cur} لفكّ القفل قبل الانتقال لتمرين آخر!`,
+      "warn"
+    );
     return;
   }
   store.setActiveExercise(target);
@@ -896,7 +1036,7 @@ function attemptSwitch(target) {
 function detectVerb(text) {
   const n = normalizeArabic(text || "");
   for (const route of BROUILLON_MODE_DATA.verbRouting) {
-    if (route.patterns.some(p => n.includes(normalizeArabic(p)))) return route;
+    if (route.patterns.some((p) => n.includes(normalizeArabic(p)))) return route;
   }
   return BROUILLON_MODE_DATA.verbRouting[0];
 }
@@ -912,8 +1052,11 @@ function brouillonPreflight(st, pole) {
   if (pole === "S" && s && !hasCompare) msgs.push("tu n’as pas mis de comparaison");
   if (pole === "E" && e && !s.trim()) msgs.push("tu as expliqué sans observer");
   if ((pole === "W" || pole === "full") && w && n) {
-    const nTokens = normalizeArabic(n).split(" ").filter(t => t.length > 3).slice(0, 4);
-    const hit = nTokens.some(t => normalizeArabic(w).includes(t));
+    const nTokens = normalizeArabic(n)
+      .split(" ")
+      .filter((t) => t.length > 3)
+      .slice(0, 4);
+    const hit = nTokens.some((t) => normalizeArabic(w).includes(t));
     if (!hit) msgs.push("ta conclusion ne répond pas au problème");
   }
   return msgs;
@@ -926,14 +1069,16 @@ function buildDrafts(st) {
     st.scratch.S ? `وتبين المعطيات أن ${st.scratch.S}` : "",
     st.scratch.E,
     st.scratch.W
-  ].filter(Boolean).join("\n");
+  ]
+    .filter(Boolean)
+    .join("\n");
   return { current, full };
 }
 
 function openBrouillon() {
   const ex = exDef(store.state.activeExercise);
   const pole = ex.poles[activePole];
-  const st = store.exercise(store.state.sujetId, ex.number);
+  const st = store.exercise(store.state.yearId, store.state.sujetId, ex.number);
   const verb = detectVerb(pole.prompt) || detectVerb(pole.bacPrompt);
   const recommended = activePole || verb.recommendedPole;
   const drafts = buildDrafts(st);
@@ -948,18 +1093,20 @@ function openBrouillon() {
         <p class="small"><b>consigne reconstruite</b> : ${pole.prompt}</p>
       </div>
       <div class="brouillon-mini-grid">
-        ${POLE_ORDER.map(p => `
+        ${POLE_ORDER.map(
+          (p) => `
           <div>
             <label class="lbl">${p}</label>
-            <textarea class="field brouillon-area" id="scratch-${p}">${st.scratch[p] || ""}</textarea>
-          </div>`).join("")}
+            <textarea class="field brouillon-area" id="scratch-${p}">${escapeHTML(st.scratch[p])}</textarea>
+          </div>`
+        ).join("")}
       </div>
       <label class="lbl">حر</label>
-      <textarea class="field" id="scratch-free">${st.scratch.free || ""}</textarea>
+      <textarea class="field" id="scratch-free">${escapeHTML(st.scratch.free)}</textarea>
       <label class="lbl">مسودة القطب الحالي</label>
-      <textarea class="field" id="brouillon-draft-current">${drafts.current}</textarea>
+      <textarea class="field" id="brouillon-draft-current">${escapeHTML(drafts.current)}</textarea>
       <label class="lbl">المسودة الكاملة</label>
-      <textarea class="field" id="brouillon-draft-full">${drafts.full}</textarea>
+      <textarea class="field" id="brouillon-draft-full">${escapeHTML(drafts.full)}</textarea>
       <div id="brouillon-preflight-current" class="feedback mid">${preC.join(" — ")}</div>
       <div id="brouillon-preflight-full" class="feedback mid">${preF.join(" — ")}</div>
       <div class="flex">
@@ -970,16 +1117,20 @@ function openBrouillon() {
   openDrawer("left", "📝 وضع البوصلة — المسودة", body);
 
   const persist = () => {
-    POLE_ORDER.forEach(p => { st.scratch[p] = $("#scratch-" + p)?.value || ""; });
+    POLE_ORDER.forEach((p) => {
+      st.scratch[p] = $("#scratch-" + p)?.value || "";
+    });
     st.scratch.free = $("#scratch-free")?.value || "";
     const d = buildDrafts(st);
     if ($("#brouillon-draft-current")) $("#brouillon-draft-current").value = d.current;
     if ($("#brouillon-draft-full")) $("#brouillon-draft-full").value = d.full;
-    if ($("#brouillon-preflight-current")) $("#brouillon-preflight-current").textContent = brouillonPreflight(st, activePole).join(" — ");
-    if ($("#brouillon-preflight-full")) $("#brouillon-preflight-full").textContent = brouillonPreflight(st, "full").join(" — ");
+    if ($("#brouillon-preflight-current"))
+      $("#brouillon-preflight-current").textContent = brouillonPreflight(st, activePole).join(" — ");
+    if ($("#brouillon-preflight-full"))
+      $("#brouillon-preflight-full").textContent = brouillonPreflight(st, "full").join(" — ");
     store.save();
   };
-  ["N", "S", "E", "W", "free"].forEach(k => {
+  ["N", "S", "E", "W", "free"].forEach((k) => {
     const node = $("#scratch-" + k);
     if (node) node.addEventListener("input", persist);
   });
@@ -1004,40 +1155,62 @@ function openBrouillon() {
 function computeReport() {
   const y = yearObj(store.state.yearId);
   const s = sujetObj();
-  const rows = s.exercises.map(e => {
-    const st = store.exercise(store.state.sujetId, e.number);
-    const tot = st.scores.N + st.scores.S + st.scores.E + st.scores.W;
+  const rows = s.exercises.map((e) => {
+    const st = store.exercise(store.state.yearId, store.state.sujetId, e.number);
+    const officialPoles = POLE_ORDER.filter((pole) => e.poles[pole].bacPromptSource === "official");
+    const tot = officialPoles.reduce((total, pole) => total + st.scores[pole], 0);
+    const officialMax = officialPoles.reduce((total, pole) => total + e.poles[pole].points, 0);
     return {
-      exercise: `ت${e.number}`, label: e.label, max: e.max,
-      N: st.scores.N, S: st.scores.S, E: st.scores.E, W: st.scores.W,
-      total: Math.round(tot * 100) / 100, filled: st.answeredAny
+      exercise: `ت${e.number}`,
+      label: e.label,
+      max: officialMax,
+      N: st.scores.N,
+      S: st.scores.S,
+      E: st.scores.E,
+      W: st.scores.W,
+      total: Math.round(tot * 100) / 100,
+      filled: st.answeredAny
     };
   });
   const grand = rows.reduce((a, r) => a + r.total, 0);
   const grandMax = rows.reduce((a, r) => a + r.max, 0);
   return {
-    title: APP_CONFIG.appTitle, year: y.id, sujet: s.id, sujetTitle: s.title,
-    generatedAt: new Date().toISOString(), globalRemaining: store.state.globalRemaining,
-    rows, grand: Math.round(grand * 100) / 100, grandMax,
+    title: APP_CONFIG.appTitle,
+    year: y.id,
+    sujet: s.id,
+    sujetTitle: s.title,
+    generatedAt: new Date().toISOString(),
+    globalRemaining: store.state.globalRemaining,
+    rows,
+    grand: Math.round(grand * 100) / 100,
+    grandMax,
     percent: grandMax ? Math.round((grand / grandMax) * 100) : 0
   };
 }
 
 function showReport() {
   const rep = computeReport();
-  const body = `
-    <div class="card" style="background:var(--bg)">
-      <div class="flex spread"><strong>النتيجة الإجمالية</strong>
+  const summary = store.state.reviewMode
+    ? `<div class="card" style="background:var(--bg)"><strong>وضع المراجعة</strong><p class="small text-muted mt-1">لا يعرض هذا الوضع نقاطاً أو نسبة؛ راجع feedback المنهجي لكل قطب.</p></div>`
+    : `<div class="card" style="background:var(--bg)">
+      <div class="flex spread"><strong>الحصيلة التدريبية الرسمية فقط</strong>
         <span class="mono text-emerald" style="font-size:1.4rem">${rep.grand.toFixed(2)} / ${rep.grandMax.toFixed(2)}</span></div>
       <div class="progress mt-1"><span style="width:${rep.percent}%"></span></div>
-      <p class="small text-muted mt-1">النسبة: ${rep.percent}%</p>
-    </div>
+      <p class="small text-muted mt-1">النسبة الرسمية المتاحة فقط: ${rep.percent}%</p>
+    </div>`;
+  const body = `
+    ${trainingLimitHTML()}
+    ${summary}
     <div class="stack mt-2">
-      ${rep.rows.map(r => `
+      ${rep.rows
+        .map(
+          (r) => `
         <div class="flex spread" style="border-bottom:1px solid var(--line);padding-bottom:.4rem">
           <span class="bold">${r.exercise}: ${r.label} ${r.filled ? "" : "(غير مكتمل)"}</span>
-          <span class="mono ${r.total >= r.max * 0.7 ? "text-emerald" : "text-amber"}">${r.total.toFixed(2)} / ${r.max.toFixed(2)}</span>
-        </div>`).join("")}
+          ${store.state.reviewMode ? `<span class="text-muted">feedback فقط</span>` : `<span class="mono ${r.total >= r.max * 0.7 ? "text-emerald" : "text-amber"}">${r.total.toFixed(2)} / ${r.max.toFixed(2)} رسمي فقط</span>`}
+        </div>`
+        )
+        .join("")}
     </div>
     <div class="flex mt-2">
       <button class="btn btn-emerald btn-sm" id="dl-csv">⬇️ تنزيل CSV</button>
@@ -1045,8 +1218,12 @@ function showReport() {
       <button class="btn btn-indigo btn-sm" id="btn-print-exam">🖨️ طباعة</button>
     </div>`;
   openModal(`📊 تقرير النتائج — ${rep.rows.length} تمارين`, body);
-  $("#dl-csv")?.addEventListener("click", () => download(`boussole4d_${rep.year}_sujet${rep.sujet}.csv`, toCSV(rep)));
-  $("#dl-json")?.addEventListener("click", () => download(`boussole4d_${rep.year}_sujet${rep.sujet}.json`, JSON.stringify(rep, null, 2)));
+  $("#dl-csv")?.addEventListener("click", () =>
+    download(`boussole4d_${rep.year}_sujet${rep.sujet}.csv`, toCSV(rep))
+  );
+  $("#dl-json")?.addEventListener("click", () =>
+    download(`boussole4d_${rep.year}_sujet${rep.sujet}.json`, JSON.stringify(rep, null, 2))
+  );
   $("#btn-print-exam")?.addEventListener("click", printExam);
 }
 
@@ -1054,15 +1231,19 @@ function printExam() {
   const w = window.open("", "_blank");
   if (!w) return;
   w.document.open();
-  w.document.write(`<html><head><title>نسخة الامتحان</title></head><body>${$("#ex-content")?.innerHTML || ""}</body></html>`);
+  w.document.write(
+    `<html><head><title>نسخة الامتحان</title></head><body>${$("#ex-content")?.innerHTML || ""}</body></html>`
+  );
   w.document.close();
 }
 
 function toCSV(rep) {
   const head = ["التمرين", "المسمى", "العلامة القصوى", "N", "S", "E", "W", "المجموع"];
   const lines = [head.join(",")];
-  rep.rows.forEach(r => {
-    lines.push([`ت${r.exercise.replace(/ت/, "")}`, `"${r.label}"`, r.max, r.N, r.S, r.E, r.W, r.total].join(","));
+  rep.rows.forEach((r) => {
+    lines.push(
+      [`ت${r.exercise.replace(/ت/, "")}`, `"${r.label}"`, r.max, r.N, r.S, r.E, r.W, r.total].join(",")
+    );
   });
   lines.push([`الإجمالي`, "", rep.grandMax, "", "", "", "", rep.grand].join(","));
   return "\ufeff" + lines.join("\n");
@@ -1075,7 +1256,10 @@ function download(name, content, type = "text/plain") {
   a.download = name;
   document.body.appendChild(a);
   a.click();
-  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 100);
+  setTimeout(() => {
+    URL.revokeObjectURL(a.href);
+    a.remove();
+  }, 100);
 }
 
 function confirmReset() {
@@ -1107,10 +1291,30 @@ function showPanic() {
 }
 
 let modal = null;
+let lastFocusedElement = null;
+function trapDialogFocus(event, container) {
+  if (event.key === "Escape") return closeModal();
+  if (event.key !== "Tab") return;
+  const focusable = $$(
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    container
+  ).filter((item) => !item.disabled);
+  if (!focusable.length) return event.preventDefault();
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+}
 function openModal(title, body, extra = "") {
   closeModal();
+  lastFocusedElement = document.activeElement;
   modal = el(`<div class="overlay" data-close="overlay">
-    <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="${escapeHTML(title)}" tabindex="-1">
       <div class="modal-head">
         <strong class="text-amber">${title}</strong>
         <button class="btn btn-ghost btn-sm" data-close="btn">✕</button>
@@ -1120,26 +1324,51 @@ function openModal(title, body, extra = "") {
       <div class="flex" style="justify-content:flex-end"><button class="btn btn-emerald" data-close="ok">فهمت التلميح، سأواصل الحل</button></div>
     </div></div>`);
   document.body.appendChild(modal);
-  $$("[data-close]", modal).forEach(b => b.addEventListener("click", closeModal));
+  $$("[data-close]", modal).forEach((b) => b.addEventListener("click", closeModal));
+  modal.addEventListener("keydown", (event) => trapDialogFocus(event, modal));
+  $("[data-close='btn']", modal)?.focus();
 }
-function closeModal() { if (modal) modal.remove(); modal = null; }
+function closeModal() {
+  if (modal) modal.remove();
+  modal = null;
+  lastFocusedElement?.focus?.();
+  lastFocusedElement = null;
+}
 
 function openPdfDrawer() {
   const s = sujetObj();
-  openDrawer("right", `📄 وثيقة الموضوع ${s.id === 1 ? "الأول" : "الثاني"} المختار فقط (PDF)`, pdfFallbackHTML(s));
+  openDrawer(
+    "right",
+    `📄 وثيقة الموضوع ${s.id === 1 ? "الأول" : "الثاني"} المختار فقط (PDF)`,
+    pdfFallbackHTML(s)
+  );
 }
 
 function openDrawer(side, title, body) {
   closeModal();
-  $$(".drawer").forEach(d => d.remove());
-  const d = el(`<div class="drawer ${side} open" role="dialog" aria-modal="true">
+  lastFocusedElement = document.activeElement;
+  $$(".drawer").forEach((d) => d.remove());
+  const d =
+    el(`<div class="drawer ${side} open" role="dialog" aria-modal="true" aria-label="${escapeHTML(title)}" tabindex="-1">
     <div class="drawer-head"><strong>${title}</strong><button class="btn btn-ghost btn-sm" data-close>✕</button></div>
     <div class="drawer-body">${body}</div></div>`);
   document.body.appendChild(d);
-  $$("[data-close]", d).forEach(b => b.addEventListener("click", () => d.remove()));
+  const closeDrawer = () => {
+    d.remove();
+    lastFocusedElement?.focus?.();
+    lastFocusedElement = null;
+  };
+  $$("[data-close]", d).forEach((b) => b.addEventListener("click", closeDrawer));
+  d.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") return closeDrawer();
+    if (event.key === "Tab") trapDialogFocus(event, d);
+  });
+  $("[data-close]", d)?.focus();
 }
 
-function fmtPts(n) { return `${(+n).toFixed(2)}ن`; }
+function fmtPts(n) {
+  return `${(+n).toFixed(2)}ن`;
+}
 function short(text, n = 7) {
   const words = String(text || "").split(" ");
   return words.length <= n ? text : words.slice(0, n).join(" ") + "…";
@@ -1153,7 +1382,8 @@ export function init() {
     bar = document.createElement("div");
     bar.id = "global-timer-bar";
     bar.className = "hidden";
-    bar.style.cssText = "position:sticky;top:0;z-index:40;display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.5rem 1.5rem;background:rgba(2,6,23,.9);border-bottom:1px solid var(--line);font-size:.8rem";
+    bar.style.cssText =
+      "position:sticky;top:0;z-index:40;display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.5rem 1.5rem;background:rgba(2,6,23,.9);border-bottom:1px solid var(--line);font-size:.8rem";
     bar.innerHTML = `<span class="text-emerald bold" style="display:flex;align-items:center;gap:.5rem"><span style="width:.5rem;height:.5rem;border-radius:50%;background:var(--emerald);animation:pulse 1.5s infinite"> </span> نمط التركيز والهدوء 4D</span>
       <span class="mono bold" style="color:#fb7185">⏳ <span id="global-timer">04:30:00</span></span>`;
     document.body.prepend(bar);
@@ -1172,7 +1402,12 @@ export function init() {
     document.body.appendChild(toastZone);
   }
 
-  if (store.state.sessionActive && store.state.activeScreen === "view-workspace" && sujetObj() && exDef(store.state.activeExercise)) {
+  if (
+    store.state.sessionActive &&
+    store.state.activeScreen === "view-workspace" &&
+    sujetObj() &&
+    exDef(store.state.activeExercise)
+  ) {
     timers.startGlobal();
     renderWorkspace();
     showScreen("view-workspace");

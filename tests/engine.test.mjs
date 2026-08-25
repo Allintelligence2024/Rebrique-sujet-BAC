@@ -8,7 +8,7 @@ import { APP_CONFIG, normalizeArabic, stripArabicClitics } from "../data/subject
 import { evaluateText, evaluatePipeline, scoreFromFraction, scoreBac, matchConcept } from "../js/engine.js";
 
 const ex1 = APP_CONFIG.years[0].sujets[0].exercises[0];
-const ex3 = APP_CONFIG.years[0].sujets[0].exercises.find(e => e.ui === "pipeline");
+const ex3 = APP_CONFIG.years[0].sujets[0].exercises.find((e) => e.ui === "pipeline");
 
 test("normalizeArabic harmonise les variantes de lettres, tatweel et ponctuation", () => {
   // أ/ا interchangeables
@@ -47,7 +47,10 @@ test("évaluation texte — réponse riche = score plein", () => {
 test("évaluation texte — texte de remplissage sans concept biologique = zéro point", () => {
   const poleN = ex1.poles.N;
   // 100 caractères de texte sans rapport avec la biologie
-  const res = evaluateText("هذا نص عشوائي طويل جدا لا يحتوي على اي فكرة علمية او منهجية مفيدة للحل ابدا بتاتا", poleN.rule);
+  const res = evaluateText(
+    "هذا نص عشوائي طويل جدا لا يحتوي على اي فكرة علمية او منهجية مفيدة للحل ابدا بتاتا",
+    poleN.rule
+  );
   assert.equal(res.hits, 0);
   assert.equal(res.fraction, 0);
   assert.equal(scoreFromFraction(poleN.points, res.fraction), 0);
@@ -56,7 +59,10 @@ test("évaluation texte — texte de remplissage sans concept biologique = zéro
 test("évaluation texte — mot interdit plafonne la note", () => {
   // Pôle S de l'exercice 2 du sujet 1 : interdit "بسبب"
   const poleS = APP_CONFIG.years[0].sujets[0].exercises[1].poles.S;
-  const res = evaluateText("نلاحظ نمو وتطور النمط الطبيعي بتركيز متزايد مقارنة بالطافر بسبب الحرارة", poleS.rule);
+  const res = evaluateText(
+    "نلاحظ نمو وتطور النمط الطبيعي بتركيز متزايد مقارنة بالطافر بسبب الحرارة",
+    poleS.rule
+  );
   assert.ok(res.fraction <= 0.3);
   assert.ok(res.forbiddenFound.includes("بسبب"));
 });
@@ -73,7 +79,11 @@ test("évaluation texte — liste de mots-clés sans phrase structurée = zéro 
 test("évaluation texte — paraphrase avec synonymes et connecteurs = score plein", () => {
   const poleN = ex1.poles.N;
   // Formulation différente avec synonymes (ARN / اصطناع / خلايا / مما يؤدي)
-  const res = evaluateText("يقوم الـ ARN باصطناع البروتين في الهيولى مما يؤدي إلى استمرار نشاط الخلية", poleN.rule, "N");
+  const res = evaluateText(
+    "يقوم الـ ARN باصطناع البروتين في الهيولى مما يؤدي إلى استمرار نشاط الخلية",
+    poleN.rule,
+    "N"
+  );
   assert.equal(res.isKeywordDump, false);
   assert.ok(res.fraction >= 0.75);
   assert.equal(scoreFromFraction(poleN.points, res.fraction), 1);
@@ -137,11 +147,16 @@ test("évaluation texte — حدد العلاقة devient une vraie relation et 
 test("évaluation texte — استخرج المفتوحة exige un vrai passage par le document", () => {
   const rule = {
     prompt: "استخرج من الوثيقة شروط تركيب ATP انطلاقاً من معطيات التجربة",
-    modelAnswer: "تمثل الوثيقة شروط تركيب ATP، حيث يركب فقط بوجود ADP و Pi وتدرج بروتوني، ومنه نستنتج أن التدرج البروتوني شرط أساسي.",
+    modelAnswer:
+      "تمثل الوثيقة شروط تركيب ATP، حيث يركب فقط بوجود ADP و Pi وتدرج بروتوني، ومنه نستنتج أن التدرج البروتوني شرط أساسي.",
     keywords: ["ADP", "Pi", ["تدرج بروتوني", "التدرج البروتوني"], "ATP"],
     minHits: 2
   };
-  const res = evaluateText("تمثل الوثيقة شروط التركيب، حيث نلاحظ أن ATP لا يركب إلا بوجود ADP و Pi وتدرج بروتوني، ومنه نستنتج أن التدرج البروتوني شرط أساسي.", rule, "S");
+  const res = evaluateText(
+    "تمثل الوثيقة شروط التركيب، حيث نلاحظ أن ATP لا يركب إلا بوجود ADP و Pi وتدرج بروتوني، ومنه نستنتج أن التدرج البروتوني شرط أساسي.",
+    rule,
+    "S"
+  );
   assert.equal(res.taskProfile?.id, "extraction");
   assert.ok(res.methodology.score >= 0.75);
 });
@@ -149,11 +164,16 @@ test("évaluation texte — استخرج المفتوحة exige un vrai passage 
 test("évaluation texte — علق المفتوحة exige observation, explication et conclusion", () => {
   const rule = {
     prompt: "علق على نتائج الوثيقة المتعلقة بنشاط الإنزيم",
-    modelAnswer: "تمثل الوثيقة تغير نشاط الإنزيم بدلالة تركيز الركيزة؛ نلاحظ تزايد النشاط ثم ثباته، وهذا راجع إلى تشبع المواقع الفعالة، ومنه نستنتج أن السرعة ترتبط بتركيز الركيزة إلى غاية التشبع.",
+    modelAnswer:
+      "تمثل الوثيقة تغير نشاط الإنزيم بدلالة تركيز الركيزة؛ نلاحظ تزايد النشاط ثم ثباته، وهذا راجع إلى تشبع المواقع الفعالة، ومنه نستنتج أن السرعة ترتبط بتركيز الركيزة إلى غاية التشبع.",
     keywords: ["نشاط الإنزيم", "تركيز الركيزة", "تشبع"],
     minHits: 2
   };
-  const res = evaluateText("تمثل الوثيقة تغير نشاط الإنزيم بدلالة تركيز الركيزة، حيث نلاحظ تزايد النشاط ثم ثباته، وهذا راجع إلى تشبع المواقع الفعالة، ومنه نستنتج أن السرعة ترتبط بتركيز الركيزة إلى غاية التشبع.", rule, "S");
+  const res = evaluateText(
+    "تمثل الوثيقة تغير نشاط الإنزيم بدلالة تركيز الركيزة، حيث نلاحظ تزايد النشاط ثم ثباته، وهذا راجع إلى تشبع المواقع الفعالة، ومنه نستنتج أن السرعة ترتبط بتركيز الركيزة إلى غاية التشبع.",
+    rule,
+    "S"
+  );
   assert.equal(res.taskProfile?.id, "commentary");
   assert.ok(res.methodology.score >= 0.75);
 });
@@ -161,11 +181,16 @@ test("évaluation texte — علق المفتوحة exige observation, explicati
 test("évaluation texte — وضح المفتوحة تتطلب تحليلا قبل التفسير", () => {
   const rule = {
     prompt: "باستغلال الوثيقة وضح آلية تأثير الدواء على نشاط الإنزيم",
-    modelAnswer: "تمثل الوثيقة تغير نشاط الإنزيم في وجود وغياب الدواء، حيث نلاحظ انخفاض النشاط في وجوده، وهذا راجع إلى ارتباط الدواء بالموقع الفعال ومنع تشكل المعقد إنزيم-ركيزة، ومنه نستنتج أن الدواء مثبط تنافسي.",
+    modelAnswer:
+      "تمثل الوثيقة تغير نشاط الإنزيم في وجود وغياب الدواء، حيث نلاحظ انخفاض النشاط في وجوده، وهذا راجع إلى ارتباط الدواء بالموقع الفعال ومنع تشكل المعقد إنزيم-ركيزة، ومنه نستنتج أن الدواء مثبط تنافسي.",
     keywords: ["الدواء", "نشاط الإنزيم", "الموقع الفعال", "مثبط تنافسي"],
     minHits: 2
   };
-  const res = evaluateText("تمثل الوثيقة تغير نشاط الإنزيم في وجود وغياب الدواء، حيث نلاحظ انخفاض النشاط في وجوده، وهذا راجع إلى ارتباط الدواء بالموقع الفعال ومنع تشكل المعقد إنزيم-ركيزة، ومنه نستنتج أن الدواء مثبط تنافسي.", rule, "E");
+  const res = evaluateText(
+    "تمثل الوثيقة تغير نشاط الإنزيم في وجود وغياب الدواء، حيث نلاحظ انخفاض النشاط في وجوده، وهذا راجع إلى ارتباط الدواء بالموقع الفعال ومنع تشكل المعقد إنزيم-ركيزة، ومنه نستنتج أن الدواء مثبط تنافسي.",
+    rule,
+    "E"
+  );
   assert.equal(res.taskProfile?.id, "analysis-explanation");
   assert.ok(res.methodology.score >= 0.8);
 });
@@ -173,7 +198,8 @@ test("évaluation texte — وضح المفتوحة تتطلب تحليلا قب
 test("évaluation texte — وضح المفتوحة تعاقب القفز المباشر إلى السبب", () => {
   const rule = {
     prompt: "باستغلال الوثيقة وضح آلية تأثير الدواء على نشاط الإنزيم",
-    modelAnswer: "تمثل الوثيقة تغير نشاط الإنزيم في وجود وغياب الدواء، حيث نلاحظ انخفاض النشاط في وجوده، وهذا راجع إلى ارتباط الدواء بالموقع الفعال ومنع تشكل المعقد إنزيم-ركيزة، ومنه نستنتج أن الدواء مثبط تنافسي.",
+    modelAnswer:
+      "تمثل الوثيقة تغير نشاط الإنزيم في وجود وغياب الدواء، حيث نلاحظ انخفاض النشاط في وجوده، وهذا راجع إلى ارتباط الدواء بالموقع الفعال ومنع تشكل المعقد إنزيم-ركيزة، ومنه نستنتج أن الدواء مثبط تنافسي.",
     keywords: ["الدواء", "نشاط الإنزيم", "الموقع الفعال", "مثبط تنافسي"],
     minHits: 2
   };
@@ -185,7 +211,8 @@ test("évaluation texte — وضح المفتوحة تعاقب القفز الم
 test("évaluation texte — وضح المفتوحة غير المكتملة لا تنال 100%", () => {
   const rule = {
     prompt: "باستغلال الوثيقة وضح آلية تأثير الدواء على نشاط الإنزيم",
-    modelAnswer: "تمثل الوثيقة تغير نشاط الإنزيم في وجود وغياب الدواء، حيث نلاحظ انخفاض النشاط في وجوده، وهذا راجع إلى ارتباط الدواء بالموقع الفعال ومنع تشكل المعقد إنزيم-ركيزة، ومنه نستنتج أن الدواء مثبط تنافسي.",
+    modelAnswer:
+      "تمثل الوثيقة تغير نشاط الإنزيم في وجود وغياب الدواء، حيث نلاحظ انخفاض النشاط في وجوده، وهذا راجع إلى ارتباط الدواء بالموقع الفعال ومنع تشكل المعقد إنزيم-ركيزة، ومنه نستنتج أن الدواء مثبط تنافسي.",
     keywords: ["الدواء", "نشاط الإنزيم", "الموقع الفعال", "مثبط تنافسي"],
     minHits: 2
   };
@@ -198,17 +225,26 @@ test("évaluation texte — وضح المفتوحة غير المكتملة لا
 test("évaluation texte — analyse pure reste distincte de analyse plus تفسير", () => {
   const rule = {
     prompt: "حلل نتائج الوثيقة 1",
-    modelAnswer: "تمثل الوثيقة تغير عدد الخلايا بدلالة الزمن، حيث نلاحظ تزايداً تدريجياً ثم ثباتاً، ومنه نستنتج أن النمو يرتفع ثم يستقر.",
+    modelAnswer:
+      "تمثل الوثيقة تغير عدد الخلايا بدلالة الزمن، حيث نلاحظ تزايداً تدريجياً ثم ثباتاً، ومنه نستنتج أن النمو يرتفع ثم يستقر.",
     keywords: ["عدد الخلايا", "الزمن", "تزايد", "ثبات"],
     minHits: 2
   };
-  const pure = evaluateText("تمثل الوثيقة تغير عدد الخلايا بدلالة الزمن، حيث نلاحظ تزايداً تدريجياً ثم ثباتاً، ومنه نستنتج أن النمو يرتفع ثم يستقر.", rule, "S");
-  const contaminated = evaluateText("تمثل الوثيقة تغير عدد الخلايا بدلالة الزمن، حيث نلاحظ تزايداً تدريجياً ثم ثباتاً بسبب تنشيط الإنزيم، ومنه نستنتج أن النمو يرتفع ثم يستقر.", rule, "S");
+  const pure = evaluateText(
+    "تمثل الوثيقة تغير عدد الخلايا بدلالة الزمن، حيث نلاحظ تزايداً تدريجياً ثم ثباتاً، ومنه نستنتج أن النمو يرتفع ثم يستقر.",
+    rule,
+    "S"
+  );
+  const contaminated = evaluateText(
+    "تمثل الوثيقة تغير عدد الخلايا بدلالة الزمن، حيث نلاحظ تزايداً تدريجياً ثم ثباتاً بسبب تنشيط الإنزيم، ومنه نستنتج أن النمو يرتفع ثم يستقر.",
+    rule,
+    "S"
+  );
   assert.ok(pure.methodology.score > contaminated.methodology.score);
 });
 
 test("évaluation pipeline — arrangement parfait = 100%", () => {
-  const perfect = { stream1: ["b1","b2","b3","b4"], stream2: ["b5","b6","b7","b8"] };
+  const perfect = { stream1: ["b1", "b2", "b3", "b4"], stream2: ["b5", "b6", "b7", "b8"] };
   const res = evaluatePipeline(ex3.blocksBank, perfect);
   assert.equal(res.correct, 8);
   assert.equal(res.fraction, 1);
@@ -216,9 +252,10 @@ test("évaluation pipeline — arrangement parfait = 100%", () => {
 
 test("correcteur — phrase fluide avec mauvais enzyme est plafonnée", () => {
   const poleE = APP_CONFIG.years[0].sujets[0].exercises[1].poles.E;
-  const fluentWrong = "يعود انخفاض النمو إلى نشاط أنزيم SOD في البيرينويد والتيلاكوئيد مما يمنع تثبيت الطاقة الضوئية.";
+  const fluentWrong =
+    "يعود انخفاض النمو إلى نشاط أنزيم SOD في البيرينويد والتيلاكوئيد مما يمنع تثبيت الطاقة الضوئية.";
   const res = evaluateText(fluentWrong, poleE.rule, "E");
-  assert.ok(res.science.errors.some(e => e.type === "wrong-concept"));
+  assert.ok(res.science.errors.some((e) => e.type === "wrong-concept"));
   assert.ok(res.fraction <= 0.45);
 });
 
@@ -252,7 +289,7 @@ test("correcteur — السلسلة السببية المقلوبة تُرصد",
     modelAnswer: "يتغير الموقع ثم يفقد النحاس."
   };
   const res = evaluateText("بسبب فقدان النحاس يتغير الموقع الفعال", rule, "E");
-  assert.ok(res.science.errors.some(e => e.type === "inverted-causal"));
+  assert.ok(res.science.errors.some((e) => e.type === "inverted-causal"));
   assert.ok(res.fraction <= 0.45);
 });
 
