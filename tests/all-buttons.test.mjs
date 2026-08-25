@@ -35,7 +35,9 @@ init();
 after(() => {
   timers.stopAll();
   soundEngine.stop();
-  try { dom.window.close(); } catch (e) {}
+  try {
+    dom.window.close();
+  } catch (e) {}
 });
 
 const $ = (s, root = globalThis.document) => root.querySelector(s);
@@ -100,14 +102,14 @@ test("2. Guide : respiration, adkar intégrés et navigation", () => {
 test("3. Stratégie : calculatrice, onglets sujets, confirmation", () => {
   // Preview sujet 2
   click('#view-strategy [data-preview="2"]');
-  assert.ok($('#strategy-pdf').src.includes("BAC2025_SVT_Sujet2.pdf"));
+  assert.ok($("#strategy-pdf").src.includes("BAC2025_SVT_Sujet2.pdf"));
 
   // Preview sujet 1
   click('#view-strategy [data-preview="1"]');
-  assert.ok($('#strategy-pdf').src.includes("BAC2025_SVT_Sujet1.pdf"));
+  assert.ok($("#strategy-pdf").src.includes("BAC2025_SVT_Sujet1.pdf"));
 
   // Calc inputs
-  const input = $$('#view-strategy .calc-input')[0];
+  const input = $$("#view-strategy .calc-input")[0];
   if (input) {
     input.value = "5";
     input.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
@@ -119,7 +121,7 @@ test("3. Stratégie : calculatrice, onglets sujets, confirmation", () => {
 });
 
 test("4. Onboarding : choix de l'exercice et accès workspace", () => {
-  assert.ok($$('#view-onboarding [data-ex]').length, 3);
+  assert.ok($$("#view-onboarding [data-ex]").length, 3);
   click('#view-onboarding [data-ex="1"]');
   assert.ok(!$("#view-workspace").classList.contains("hidden"));
 });
@@ -221,7 +223,8 @@ test("7. Workspace : transition vers l'exercice 3 (Pipeline) et résolution comp
   assert.ok(!$("#fb-E").classList.contains("hidden"));
 
   // Pôle W : arrangement des blocs
-  for (const id of ["b1","b2","b3","b4","b5","b6","b7","b8"]) click(`#blocks-bank [data-block="${id}"]`);
+  for (const id of ["b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8"])
+    click(`#blocks-bank [data-block="${id}"]`);
   click('#ex-content [data-polo-check="W"]');
   assert.ok(!$("#fb-W").classList.contains("hidden"));
 });

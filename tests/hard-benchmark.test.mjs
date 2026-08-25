@@ -10,13 +10,19 @@ const CASES_PATH = join(__dirname, "hard-benchmark", "cases.json");
 const SCHEMA_PATH = join(__dirname, "hard-benchmark", "schema.json");
 
 function loadCases() {
-  try { return JSON.parse(readFileSync(CASES_PATH, "utf8")); }
-  catch { return { cases: [] }; }
+  try {
+    return JSON.parse(readFileSync(CASES_PATH, "utf8"));
+  } catch {
+    return { cases: [] };
+  }
 }
 
 function loadSchema() {
-  try { return JSON.parse(readFileSync(SCHEMA_PATH, "utf8")); }
-  catch { return null; }
+  try {
+    return JSON.parse(readFileSync(SCHEMA_PATH, "utf8"));
+  } catch {
+    return null;
+  }
 }
 
 test("cases.json existe et est un objet JSON valide", () => {
@@ -51,14 +57,16 @@ test("validation manuelle d'une casse valide", () => {
     pole: "N",
     category: "test",
     answer: "réponse suffisamment longue pour passer validation",
-    humanNote: "note",
     source: "test",
     collector: "test",
-    annotator: "test",
+    annotations: [
+      { annotator: "correcteur-1", score: 1, note: "note 1" },
+      { annotator: "correcteur-2", score: 1, note: "note 2" }
+    ],
     date: "2025-08-23"
   };
   const required = schema.properties.cases.items.required;
-  const missing = required.filter(f => !(f in valid));
+  const missing = required.filter((f) => !(f in valid));
   assert.equal(missing.length, 0, `champs requis manquants: ${missing.join(", ")}`);
 });
 
@@ -80,19 +88,39 @@ test("validateCase / generateId / detectLLM fonctionnent hors cases.json", async
     pole: "N",
     category: "incomplet",
     answer: "المشكل العلمي غير مكتمل في هذه النسخة.",
-    humanNote: "forme partielle",
     source: "centre-X / copie anonymisée",
-    collector: "correcteur-A",
-    annotator: "correcteur-A",
+    collector: "collecteur-A",
+    annotations: [
+      { annotator: "correcteur-A", score: 0.5, note: "forme partielle" },
+      { annotator: "correcteur-B", score: 0.5, note: "forme partielle" }
+    ],
     date: "2026-08-24"
   };
   assert.deepEqual(validateCase(valid), []);
   assert.ok(validateCase({ ...valid, answer: "ab" }).includes("answer trop courte"));
   assert.ok(validateCase({ ...valid, pole: "Z" }).includes("pole invalide"));
+  assert.ok(
+    validateCase({ ...valid, annotations: [valid.annotations[0]] }).includes(
+      "deux annotations humaines indépendantes sont requises"
+    )
+  );
+  assert.ok(
+    validateCase({
+      ...valid,
+      annotations: [valid.annotations[0], { ...valid.annotations[0], note: "avis répété" }]
+    }).includes("les deux annotations doivent venir de correcteurs distincts")
+  );
   assert.equal(generateId([], "2025", 1, 1, "N"), "2025-S1-E1-N-001");
   assert.equal(generateId([valid], "2025", 1, 1, "N"), "2025-S1-E1-N-002");
   assert.ok(detectLLM("En conclusion, le mécanisme est clair.").includes("En conclusion"));
   assert.equal(detectLLM("نستنتج أن التدرج البروتوني شرط أساسي.").length, 0);
+});
+
+test("chaque copie importée possède deux annotations humaines distinctes", async () => {
+  const { validateCase } = await import("./hard-benchmark/import-copy.mjs");
+  for (const caseObj of loadCases().cases) {
+    assert.deepEqual(validateCase(caseObj), [], `copie invalide: ${caseObj.id}`);
+  }
 });
 
 test("dry-run valide une copie sans écrire dans cases.json", async () => {
@@ -100,29 +128,38 @@ test("dry-run valide une copie sans écrire dans cases.json", async () => {
   const { writeFileSync, unlinkSync } = await import("node:fs");
   const tmp = join(__dirname, "hard-benchmark", ".tmp-dry-run.json");
   const before = loadCases().cases.length;
-  writeFileSync(tmp, JSON.stringify({
-    year: "2025",
-    sujet: 1,
-    exercise: 1,
-    pole: "N",
-    category: "incomplet",
-    answer: "كيف يتدخل ARN في تركيب البروتين؟",
-    humanNote: "ébauche",
-    source: "centre-X / copie anonymisée",
-    collector: "correcteur-A",
-    annotator: "correcteur-A",
-    date: "2026-08-24"
-  }));
+  writeFileSync(
+    tmp,
+    JSON.stringify({
+      year: "2025",
+      sujet: 1,
+      exercise: 1,
+      pole: "N",
+      category: "incomplet",
+      answer: "كيف يتدخل ARN في تركيب البروتين؟",
+      source: "centre-X / copie anonymisée",
+      collector: "collecteur-A",
+      annotations: [
+        { annotator: "correcteur-A", score: 0.25, note: "ébauche" },
+        { annotator: "correcteur-B", score: 0.25, note: "ébauche" }
+      ],
+      date: "2026-08-24"
+    })
+  );
   try {
-    const out = execFileSync(process.execPath, [
-      join(__dirname, "hard-benchmark", "import-copy.mjs"),
-      tmp,
-      "--dry-run"
-    ], { encoding: "utf8" });
+    const out = execFileSync(
+      process.execPath,
+      [join(__dirname, "hard-benchmark", "import-copy.mjs"), tmp, "--dry-run"],
+      { encoding: "utf8" }
+    );
     assert.match(out, /Dry-run/);
     assert.equal(loadCases().cases.length, before);
   } finally {
-    try { unlinkSync(tmp); } catch { /* ignore */ }
+    try {
+      unlinkSync(tmp);
+    } catch {
+      /* ignore */
+    }
   }
 });
 
@@ -145,6 +182,14 @@ test("findPole retourne null pour une année inexistante", async () => {
   assert.equal(result, null);
 });
 
+test("rapport de calibration : l'absence de copies reste explicitement non calibrée", async () => {
+  const { buildCalibrationReport } = await import("./hard-benchmark/calibration-report.mjs");
+  const report = buildCalibrationReport(loadCases().cases);
+  assert.equal(report.calibrated, loadCases().cases.length > 0);
+  assert.ok(report.activePoles > 0);
+  if (!report.calibrated) assert.equal(report.meanAbsoluteError, null);
+});
+
 test("rapport de couverture : copies réelles par pôle APP_CONFIG", () => {
   const data = loadCases();
   const counts = new Map();
@@ -164,10 +209,12 @@ test("rapport de couverture : copies réelles par pôle APP_CONFIG", () => {
     if (counts.has(key)) counts.set(key, counts.get(key) + 1);
   }
   const empty = [...counts.entries()].filter(([, n]) => n === 0).map(([k]) => k);
-  console.log(`📊 Couverture hard-benchmark : ${data.cases.length} copie(s) réelle(s) / ${counts.size} pôle(s).`);
+  console.log(
+    `📊 Couverture hard-benchmark : ${data.cases.length} copie(s) réelle(s) / ${counts.size} pôle(s).`
+  );
   if (empty.length) {
     console.log(`⚠️  Pôles sans aucune copie réelle (${empty.length}) :`);
-    empty.forEach(k => console.log(`   - ${k}`));
+    empty.forEach((k) => console.log(`   - ${k}`));
   }
   assert.ok(counts.size > 0, "APP_CONFIG doit exposer au moins un pôle");
 });

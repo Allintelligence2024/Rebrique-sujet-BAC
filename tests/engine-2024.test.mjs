@@ -11,7 +11,7 @@ import assert from "node:assert/strict";
 import { APP_CONFIG } from "../data/subjects.js";
 import { evaluateText, scoreFromFraction } from "../js/engine.js";
 
-const y2024 = APP_CONFIG.years.find(y => y.id === "2024");
+const y2024 = APP_CONFIG.years.find((y) => y.id === "2024");
 const sujet1 = y2024.sujets[0];
 const sujet2 = y2024.sujets[1];
 
@@ -29,7 +29,12 @@ test("BAC 2024 — structure : 2 sujets × 3 exercices texte (aucun pipeline syn
 test("BAC 2024 — S1 E1 E (VIH) : le نص علمي évalue la réponse modèle à 100%", () => {
   const poleE = sujet1.exercises[0].poles.E;
   // Même règle d'évaluation que l'application (le prompt = consigne BAC).
-  const rule = { ...poleE.rule, prompt: poleE.bacPrompt, modelAnswer: poleE.modelAnswer, minLength: poleE.minLength };
+  const rule = {
+    ...poleE.rule,
+    prompt: poleE.bacPrompt,
+    modelAnswer: poleE.modelAnswer,
+    minLength: poleE.minLength
+  };
   const res = evaluateText(poleE.modelAnswer, rule, "E");
   assert.equal(res.taskProfile.id, "scientific-text");
   assert.ok(res.fraction >= 0.95, `fraction=${res.fraction}`);

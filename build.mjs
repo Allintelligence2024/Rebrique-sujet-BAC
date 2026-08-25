@@ -14,7 +14,9 @@ import * as esbuild from "esbuild";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-function read(p) { return readFileSync(join(__dirname, p), "utf8"); }
+function read(p) {
+  return readFileSync(join(__dirname, p), "utf8");
+}
 
 // 1. Bundle JS complet via esbuild (résolution propre des dépendances ESM)
 const jsResult = esbuild.buildSync({
@@ -36,9 +38,10 @@ let out = html.replace(
 );
 
 // 3. Retire les liens d'icônes/manifest pour garder un fichier 100% autonome
-out = out.replace(/<link rel="icon"[^>]*>\s*/, "")
-         .replace(/<link rel="apple-touch-icon"[^>]*>\s*/, "")
-         .replace(/<link rel="manifest"[^>]*>\s*/, "");
+out = out
+  .replace(/<link rel="icon"[^>]*>\s*/, "")
+  .replace(/<link rel="apple-touch-icon"[^>]*>\s*/, "")
+  .replace(/<link rel="manifest"[^>]*>\s*/, "");
 
 // 4. Retire l'enregistrement du service worker (inutile en file://)
 out = out.replace(/<script>\s*if \("serviceWorker"[\s\S]*?<\/script>\s*/, "");

@@ -5,13 +5,23 @@
   "type": "module",
   "description": "بوصلة كنز المنهجية 4D — المنصة التفاعلية الهادئة لبكالوريا الجزائر (v2 modulaire)",
   "scripts": {
-    "start": "python3 -m http.server 8080",
+    "start": "node server.mjs",
     "test": "node --test tests/*.test.mjs",
     "test:hard": "node --test tests/hard-benchmark.test.mjs",
-    "build": "node build.mjs"
+    "build": "npm run pwa:version && node build.mjs",
+    "lint": "eslint js data tests scripts build.mjs server.mjs playwright.config.mjs",
+    "format:check": "prettier --check \"{js,data,tests,scripts}/**/*.{js,mjs,json,md}\" \"*.{js,mjs,json}\" \".github/workflows/*.yml\"",
+    "typecheck": "tsc -p tsconfig.services.json",
+    "calibration": "node tests/hard-benchmark/calibration-report.mjs",
+    "pwa:version": "node scripts/generate-pwa-version.mjs",
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "esbuild": "^0.25.0",
-    "jsdom": "^24.0.0"
+    "eslint": "^9.39.5",
+    "jsdom": "^24.0.0",
+    "prettier": "^3.9.6",
+    "typescript": "^5.9.3"
   }
 }

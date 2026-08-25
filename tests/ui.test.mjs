@@ -29,7 +29,9 @@ init();
 after(async () => {
   const { timers } = await import("../js/engine.js");
   timers.stopAll();
-  try { dom.window.close(); } catch (e) {}
+  try {
+    dom.window.close();
+  } catch (e) {}
 });
 
 const $ = (s) => globalThis.document.querySelector(s);
@@ -49,15 +51,25 @@ test("le hub affiche les années (2025, 2024 et 2023 actives)", () => {
 
 test("les données portent désormais des consignes BAC explicites sur chaque pôle", async () => {
   const { APP_CONFIG } = await import("../data/subjects.js");
-  const enabledYears = APP_CONFIG.years.filter(y => y.enabled);
+  const enabledYears = APP_CONFIG.years.filter((y) => y.enabled);
   for (const year of enabledYears) {
     for (const sujet of year.sujets) {
       for (const ex of sujet.exercises) {
         for (const pole of ["N", "S", "E", "W"]) {
-          assert.equal(typeof ex.poles[pole].bacPrompt, "string", `${year.id}/S${sujet.id}/E${ex.number}/${pole} doit avoir bacPrompt`);
-          assert.ok(ex.poles[pole].bacPrompt.trim().length > 8, `${year.id}/S${sujet.id}/E${ex.number}/${pole} bacPrompt trop court`);
+          assert.equal(
+            typeof ex.poles[pole].bacPrompt,
+            "string",
+            `${year.id}/S${sujet.id}/E${ex.number}/${pole} doit avoir bacPrompt`
+          );
+          assert.ok(
+            ex.poles[pole].bacPrompt.trim().length > 8,
+            `${year.id}/S${sujet.id}/E${ex.number}/${pole} bacPrompt trop court`
+          );
           const src = ex.poles[pole].bacPromptSource;
-          assert.ok(src === "reconstructed" || src === "official", `${year.id}/S${sujet.id}/E${ex.number}/${pole} source inconnue: ${src}`);
+          assert.ok(
+            src === "reconstructed" || src === "official",
+            `${year.id}/S${sujet.id}/E${ex.number}/${pole} source inconnue: ${src}`
+          );
           if (src === "official") {
             assert.equal(typeof ex.poles[pole].bacPromptPage, "number");
             assert.match(ex.poles[pole].bacPromptVerifiedAt, /^\d{4}-\d{2}-\d{2}$/);
@@ -152,7 +164,8 @@ test("la copie finale du brouillon génère un texte rédigé puis peut l'inject
   $("#scratch-N").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
   $("#scratch-S").value = "نلاحظ وجود ARN رسول وناقل وريبوزومي في الهيولى مع تكامل أدوارها.";
   $("#scratch-S").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
-  $("#scratch-E").value = "يفسر ذلك بأن ARNm يحمل المعلومة وARNt ينقل الأحماض الأمينية وARNr يضمن الترجمة داخل الريبوزوم.";
+  $("#scratch-E").value =
+    "يفسر ذلك بأن ARNm يحمل المعلومة وARNt ينقل الأحماض الأمينية وARNr يضمن الترجمة داخل الريبوزوم.";
   $("#scratch-E").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
   $("#scratch-W").value = "في الختام يؤدي تعطل هذه العناصر إلى توقف تركيب البروتين.";
   $("#scratch-W").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
@@ -211,21 +224,22 @@ test("le pipeline parfait est noté 1.50 / 1.50 (pôle W)", () => {
   $("#fld-N").value = "البيرينويد يرفع كفاءة استغلال CO2 عند الطحالب الطبيعية";
   click('#ex-content [data-check="N"]');
   click('#view-workspace [data-switch="3"]');
-  for (const id of ["b1","b2","b3","b4","b5","b6","b7","b8"]) click(`#blocks-bank [data-block="${id}"]`);
+  for (const id of ["b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8"])
+    click(`#blocks-bank [data-block="${id}"]`);
   click('#ex-content [data-polo-check="W"]');
   const fb = $("#fb-W").textContent.trim();
   assert.match(fb, /1\.50 \/ 1\.50ن/);
   assert.match(fb, /8\/8/);
 });
 
-test("l'évaluation texte (exercice 1, pôle N) renvoie un feedback et l'accordéon de corrigé officiel", () => {
+test("l'évaluation texte renvoie un feedback d'entraînement et l'accordéon de réponse modèle", () => {
   click('#view-workspace [data-switch="1"]');
   $("#fld-N").value = "الأدينوزين يثبط اليقظة عبر الارتباط بالمستقبلات الغشائية";
   click('#ex-content [data-check="N"]');
-  assert.match($("#fb-N").textContent.trim(), /النتيجة/);
+  assert.match($("#fb-N").textContent.trim(), /مراجعة منهجية فقط/);
   const modelBox = $("#fb-N details.model-box");
-  assert.ok(modelBox, "L'accordéon de corrigé officiel doit être présent");
-  assert.match(modelBox.textContent, /الإجابة النموذجية/);
+  assert.ok(modelBox, "L'accordéon de réponse modèle doit être présent");
+  assert.match(modelBox.textContent, /إجابة نموذجية للتدريب/);
 });
 
 test("le rapport de résultats s'ouvre avec les boutons d'export et le bouton d'impression PDF", () => {
@@ -264,10 +278,37 @@ test("rechargement : restauration exacte de l'écran et de la session", async ()
   assert.equal(store.state.activeStep, 3);
 });
 
+test("l'autosave debounced conserve une réponse sans confirmation", async () => {
+  const { store } = await import("../js/store.js");
+  const field = $("#fld-N");
+  field.value = "brouillon sauvegardé automatiquement";
+  field.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  assert.equal(store.exercise("2025", 1, 2).text.N, "brouillon sauvegardé automatiquement");
+});
+
+test("la dictée vocale instancie Web Speech et insère la transcription", async () => {
+  class FakeRecognition {
+    start() {
+      this.onresult({ resultIndex: 0, results: [[{ transcript: "نص مملى" }]] });
+      this.onend();
+    }
+    abort() {}
+  }
+  window.SpeechRecognition = FakeRecognition;
+  const { voiceEngine } = await import("../js/ui.js");
+  const field = $("#fld-N");
+  field.value = "";
+  assert.equal(voiceEngine.start(field), true);
+  assert.equal(field.value, "نص مملى");
+  assert.equal(voiceEngine.listening, false);
+  delete window.SpeechRecognition;
+});
+
 test("les boutons d'إملاء صوتي (dictée vocale) sont bien présents sur les champs", () => {
   const micBtns = $$(".btn-mic");
   assert.ok(micBtns.length > 0);
-  // Clic sur le bouton de dictée ne doit pas planter (gestion gracieuse de jsdom sans Web Speech API)
+  // Clic sans Web Speech API : avertissement gracieux, sans crash.
   micBtns[0].dispatchEvent(new dom.window.MouseEvent("click", { bubbles: true }));
   assert.ok($("#toast-zone").children.length > 0);
 });
