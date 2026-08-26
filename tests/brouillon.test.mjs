@@ -69,8 +69,12 @@ test("brouillonPreflight signale l'absence de comparaison en S", () => {
 });
 
 test("brouillonPreflight signale une explication sans observation en E", () => {
+  const ctrl = createBrouillonController({
+    ...baseDeps,
+    hasObservationBeforeExplanation: () => false
+  });
   const st = { scratch: { S: "", E: "explication directe", W: "", N: "" } };
-  const msgs = controller.brouillonPreflight(st, "E");
+  const msgs = ctrl.brouillonPreflight(st, "E");
   assert.ok(msgs.some((m) => m.includes("observer")));
 });
 
