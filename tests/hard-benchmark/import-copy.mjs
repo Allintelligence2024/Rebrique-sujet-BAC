@@ -6,6 +6,7 @@ import { findPole } from "./_find-pole.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CASES_PATH = join(__dirname, "cases.json");
+const AUDIT_MANIFEST_PATH = join(__dirname, "audit-manifest.json");
 const REPO_ROOT = join(__dirname, "../..");
 
 export function loadCases() {
@@ -13,6 +14,14 @@ export function loadCases() {
     return JSON.parse(readFileSync(CASES_PATH, "utf8"));
   } catch {
     return { cases: [] };
+  }
+}
+
+export function loadAuditManifest() {
+  try {
+    return JSON.parse(readFileSync(AUDIT_MANIFEST_PATH, "utf8"));
+  } catch {
+    return { version: 1, records: [] };
   }
 }
 
@@ -71,7 +80,9 @@ export function validateCase(caseObj) {
   if (typeof caseObj.sujet !== "number") errors.push("sujet invalide");
   if (typeof caseObj.exercise !== "number") errors.push("exercise invalide");
   if (!["N", "S", "E", "W"].includes(caseObj.pole)) errors.push("pole invalide");
-  if (!caseObj.category || typeof caseObj.category !== "string") errors.push("category manquante");
+  if (!["strong", "weak", "scientifically-wrong", "off-topic"].includes(caseObj.category))
+    errors.push("category invalide (strong, weak, scientifically-wrong, off-topic)");
+  if (!caseObj.auditId || !/^AUD-[A-Z0-9-]{8,}$/.test(caseObj.auditId)) errors.push("auditId invalide");
   if (!caseObj.answer || typeof caseObj.answer !== "string" || caseObj.answer.length < 5)
     errors.push("answer trop courte");
   if (!caseObj.source || typeof caseObj.source !== "string") errors.push("source manquante");
@@ -87,11 +98,42 @@ export function validateCase(caseObj) {
         errors.push(`score annotateur ${index + 1} invalide`);
       if (!annotation || typeof annotation.note !== "string" || !annotation.note.trim())
         errors.push(`note annotateur ${index + 1} invalide`);
+      if (!annotation?.completedAt || Number.isNaN(Date.parse(annotation.completedAt)))
+        errors.push(`horodatage annotateur ${index + 1} invalide`);
+      if (annotation?.blindedToPeer !== true || annotation?.blindedToEngine !== true)
+        errors.push(`aveugle annotateur ${index + 1} non garanti`);
       if (annotation?.annotator) annotators.add(annotation.annotator.trim());
     });
     if (annotators.size < 2) errors.push("les deux annotations doivent venir de correcteurs distincts");
   }
   if (!caseObj.date || !/^\d{4}-\d{2}-\d{2}$/.test(caseObj.date)) errors.push("date invalide (YYYY-MM-DD)");
+  return errors;
+}
+
+export function validateAuditRecord(caseObj, manifest = loadAuditManifest()) {
+  const record = manifest.records?.find((item) => item.auditId === caseObj.auditId);
+  if (!record) return ["auditId absent du manifeste d'audit"];
+  const errors = [];
+  const sha256 = /^[a-f0-9]{64}$/;
+  if (!record.consentRef || record.consentRef.length < 8) errors.push("consentRef d'audit invalide");
+  if (!sha256.test(record.copySha256 || "")) errors.push("empreinte de copie invalide");
+  if (!sha256.test(record.transcriptionSha256 || "")) errors.push("empreinte de transcription invalide");
+  if (!Array.isArray(record.annotationForms) || record.annotationForms.length !== 2) {
+    errors.push("deux formulaires d'annotation audités sont requis");
+  } else {
+    record.annotationForms.forEach((form, index) => {
+      if (!form.annotator || !sha256.test(form.sha256 || "") || Number.isNaN(Date.parse(form.completedAt)))
+        errors.push(`formulaire d'annotation ${index + 1} invalide`);
+    });
+  }
+  if (!record.verifiedBy || Number.isNaN(Date.parse(record.verifiedAt)))
+    errors.push("vérification indépendante incomplète");
+  const caseAnnotators = new Set(caseObj.annotations?.map((item) => item.annotator));
+  const formAnnotators = new Set(record.annotationForms?.map((item) => item.annotator));
+  if ([...caseAnnotators].some((annotator) => !formAnnotators.has(annotator)))
+    errors.push("les correcteurs du cas ne correspondent pas au manifeste");
+  if (caseAnnotators.has(record.verifiedBy) || record.verifiedBy === caseObj.collector)
+    errors.push("le vérificateur doit être distinct du collecteur et des correcteurs");
   return errors;
 }
 
@@ -137,6 +179,8 @@ async function main() {
   }
   const autoYes = process.argv.includes("--yes") || process.argv.includes("--confirm");
   const dryRun = process.argv.includes("--dry-run");
+  const auditPath = process.argv.find((arg) => arg.startsWith("--audit-manifest="))?.split("=")[1];
+  const auditManifest = auditPath ? JSON.parse(readFileSync(auditPath, "utf8")) : loadAuditManifest();
   let input = parseInput();
   const data = loadCases();
   const caseObj = input ? { ...input } : {};
@@ -184,7 +228,7 @@ async function main() {
   caseObj.id =
     caseObj.id || generateId(data.cases, caseObj.year, caseObj.sujet, caseObj.exercise, caseObj.pole);
 
-  const errors = validateCase(caseObj);
+  const errors = [...validateCase(caseObj), ...validateAuditRecord(caseObj, auditManifest)];
   if (errors.length) {
     console.error("❌ Validation échouée:", errors.join(", "));
     process.exit(1);

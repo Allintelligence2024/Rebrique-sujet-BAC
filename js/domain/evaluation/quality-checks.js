@@ -32,7 +32,16 @@ export function evaluateScience(text, rule = {}) {
       return idx;
     });
     const known = positions.filter((p) => p >= 0);
-    const causal = matchConcept(norm, ["مما يؤدي", "يعود", "بسبب", "لذلك", "فتتوقف", "فيمنع", "تؤدي", "يؤدي"]);
+    const causal = matchConcept(norm, [
+      "مما يؤدي",
+      "يعود",
+      "بسبب",
+      "لذلك",
+      "فتتوقف",
+      "فيمنع",
+      "تؤدي",
+      "يؤدي"
+    ]);
     if (causal && known.length >= 2) {
       const firstKnown = positions.findIndex((p) => p >= 0);
       const lastKnown = positions.length - 1 - [...positions].reverse().findIndex((p) => p >= 0);
@@ -209,7 +218,8 @@ export function evaluateHypotheses(text, rule = {}) {
   if (count < min) gaps.push(`المطلوب ${min} فرضيتان مميزتان، لا فرضية واحدة.`);
   if (spec.distinct !== false && parts.length >= 2 && !distinct)
     gaps.push("الفرضيتان متطابقتان تقريباً؛ غيّر الآلية المقترحة في كل واحدة.");
-  if (matchConcept(norm, ["ربما", "لعل", "احتمال"])) gaps.push("تجنّب ربما/لعل/احتمال في الفرضية (كتفي 2023).");
+  if (matchConcept(norm, ["ربما", "لعل", "احتمال"]))
+    gaps.push("تجنّب ربما/لعل/احتمال في الفرضية (كتفي 2023).");
   const score = gaps.length ? Math.max(0, 1 - 0.4 * gaps.length) : 1;
   return { applicable: true, score, gaps, count, distinct };
 }
@@ -279,7 +289,8 @@ export function evaluateAnalysisRubric(text, rule = {}, poleType = "") {
 }
 
 export function buildProfessorVerdict(fraction, methodologyScore, overlapRatio) {
-  if (fraction >= 0.9) return "الجواب يطابق بدرجة عالية شبكة التقييم الآلية والكلمات المفتاحية (تقدير تدريبي تلقائي).";
+  if (fraction >= 0.9)
+    return "الجواب يطابق بدرجة عالية شبكة التقييم الآلية والكلمات المفتاحية (تقدير تدريبي تلقائي).";
   if (fraction >= 0.75)
     return methodologyScore < 0.55
       ? "المفاهيم العلمية حاضرة، لكن الهيكلة المنهجية يحسن تدقيقها."

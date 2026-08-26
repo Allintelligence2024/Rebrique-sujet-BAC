@@ -21,3 +21,15 @@ export function appendText(element, text) {
   element.append(document.createTextNode(String(text)));
   return element;
 }
+
+/** Central boundary for application-owned templates. Never pass raw user input. */
+export function setInternalHTML(element, html) {
+  element.innerHTML = String(html);
+  return element;
+}
+
+export function elementFromInternalHTML(html) {
+  const template = document.createElement("template");
+  setInternalHTML(template, String(html).trim());
+  return template.content.firstElementChild;
+}
