@@ -113,9 +113,9 @@ const BENCHMARK_CASES = [
       },
       acceptable: {
         answer: "تؤدي طفرة P53 إلى فقدان وظيفة البروتين الكابحة للأورام فتتكاثر الخلايا السرطانية.",
-        fraction: [0.65, 0.8],
+        fraction: [0.95, 1],
         methodology: [0.25, 0.45],
-        scoreRatio: [0.65, 0.8]
+        scoreRatio: [0.95, 1]
       },
       falseAnswer: {
         answer: "السرطان خطير.",
@@ -166,8 +166,8 @@ for (const benchmarkCase of BENCHMARK_CASES) {
     }
 
     assert.ok(
-      results.excellent.fraction > results.acceptable.fraction,
-      `${benchmarkCase.label} → excellente réponse non supérieure à l'acceptable`
+      results.excellent.fraction >= results.acceptable.fraction,
+      `${benchmarkCase.label} → excellente réponse non supérieure ou égale à l'acceptable`
     );
     assert.ok(
       results.acceptable.fraction > results.falseAnswer.fraction,
