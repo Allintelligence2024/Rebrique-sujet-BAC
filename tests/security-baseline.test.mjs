@@ -7,7 +7,8 @@ import { fileURLToPath } from "node:url";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const ui =
   readFileSync(join(root, "js", "ui.js"), "utf8") +
-  readFileSync(join(root, "js", "ui", "screens", "workspace.js"), "utf8");
+  readFileSync(join(root, "js", "ui", "screens", "workspace.js"), "utf8") +
+  readFileSync(join(root, "js", "ui", "workspace", "brouillon.js"), "utf8");
 const dialogs = readFileSync(join(root, "js", "ui", "dialogs.js"), "utf8");
 const server = readFileSync(join(root, "server.mjs"), "utf8");
 

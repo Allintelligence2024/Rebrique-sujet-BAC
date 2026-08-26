@@ -9,7 +9,7 @@ export default defineConfig({
     headless: true
   },
   webServer: {
-    command: "PORT=4173 npm start",
+    command: "node server.mjs --port 4173",
     url: "http://127.0.0.1:4173",
     reuseExistingServer: !process.env.CI
   }

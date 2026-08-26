@@ -2,6 +2,7 @@ import { BROUILLON_MODE_DATA } from "../../../data/brouillon.js";
 import { node, replaceContent, setInternalHTML } from "../dom.js";
 import { renderStepNavigation } from "../navigation.js";
 import { createReportController } from "../workspace/report-controller.js";
+import { createBrouillonController } from "../workspace/brouillon.js";
 import { mayScorePole, poleConfidence } from "../workspace/feedback.js";
 import { firstEmptyPipelineSlot, PIPELINE_FIELDS } from "../workspace/pipeline-exercise.js";
 import { textEvaluationRule } from "../workspace/text-exercise.js";
@@ -57,6 +58,20 @@ export function createWorkspaceController(deps) {
     trainingLimitHTML,
     yearObj,
     sujetObj
+  });
+
+  const brouillonController = createBrouillonController({
+    $,
+    store,
+    openDrawer,
+    openModal,
+    escapeHTML,
+    normalizeArabic,
+    composeDrafts,
+    hasObservationBeforeExplanation,
+    POLE_ORDER,
+    exDef,
+    detectVerb
   });
 
   function enterExercise(exNum) {
@@ -141,8 +156,8 @@ export function createWorkspaceController(deps) {
     $("#ws-panic").addEventListener("click", showPanic);
     $("#ws-sound").addEventListener("click", () => cycleSound($("#ws-sound")));
     $("#ws-adkar").addEventListener("click", openAdkar);
-    $("#ws-brouillon").addEventListener("click", openBrouillon);
-    $("#boussole-open-scratch").addEventListener("click", openBrouillon);
+    $("#ws-brouillon").addEventListener("click", () => brouillonController.openBrouillon());
+    $("#boussole-open-scratch").addEventListener("click", () => brouillonController.openBrouillon());
     $("#ws-atlas").addEventListener("click", openAtlas);
     $("#ws-review").addEventListener("click", () => {
       store.setReviewMode(!store.state.reviewMode);
@@ -276,6 +291,14 @@ export function createWorkspaceController(deps) {
     html += `<br><span class="secondary-score">المؤشر التدريبي الثانوي: <b>${score.toFixed(2)} / ${fmtPts(points)}</b> (${Math.round(res.fraction * 100)}%)</span>`;
     if (res.empty) html = `لم تُدخل أي إجابة بعد.`;
     return html;
+  }
+
+  function detectVerb(text) {
+    const n = normalizeArabic(text || "");
+    for (const route of BROUILLON_MODE_DATA.verbRouting) {
+      if (route.patterns.some((p) => n.includes(normalizeArabic(p)))) return route;
+    }
+    return BROUILLON_MODE_DATA.verbRouting[0];
   }
 
   function poleMethodHint(poleType, pole) {
@@ -611,117 +634,6 @@ export function createWorkspaceController(deps) {
     store.setActiveExercise(target);
     renderWorkspace();
     showScreen("view-workspace");
-  }
-
-  /* ---------- Brouillon ---------- */
-  function detectVerb(text) {
-    const n = normalizeArabic(text || "");
-    for (const route of BROUILLON_MODE_DATA.verbRouting) {
-      if (route.patterns.some((p) => n.includes(normalizeArabic(p)))) return route;
-    }
-    return BROUILLON_MODE_DATA.verbRouting[0];
-  }
-
-  function brouillonPreflight(st, pole) {
-    const s = st.scratch.S || "";
-    const e = st.scratch.E || "";
-    const w = st.scratch.W || "";
-    const n = st.scratch.N || "";
-    const sNorm = normalizeArabic(s);
-    const hasCompare = /بينما|في حين|مقابل|مقارن|بالتوازي|اكثر|اقل/.test(sNorm);
-    const msgs = [];
-    if (pole === "S" && s && !hasCompare) msgs.push("tu n’as pas mis de comparaison");
-    if (pole === "E" && !hasObservationBeforeExplanation(st.scratch))
-      msgs.push("tu as expliqué sans observer");
-    if ((pole === "W" || pole === "full") && w && n) {
-      const nTokens = normalizeArabic(n)
-        .split(" ")
-        .filter((t) => t.length > 3)
-        .slice(0, 4);
-      const hit = nTokens.some((t) => normalizeArabic(w).includes(t));
-      if (!hit) msgs.push("ta conclusion ne répond pas au problème");
-    }
-    return msgs;
-  }
-
-  function buildDrafts(st) {
-    return composeDrafts(st.scratch, activePole);
-  }
-
-  function openBrouillon() {
-    const ex = exDef(store.state.activeExercise);
-    const pole = ex.poles[activePole];
-    const st = store.exercise(store.state.yearId, store.state.sujetId, ex.number);
-    const verb = detectVerb(pole.prompt) || detectVerb(pole.bacPrompt);
-    const recommended = activePole || verb.recommendedPole;
-    const drafts = buildDrafts(st);
-    const preC = brouillonPreflight(st, activePole);
-    const preF = brouillonPreflight(st, "full");
-    const body = `
-    <div class="brouillon-shell stack">
-      <div class="brouillon-context-card card recommended">
-        <strong>ورقة N/S/E/W</strong>
-        <p class="small">الفعل المكتشف: ${verb.canonical} — البلوك الأنسب: ${recommended}</p>
-        <p class="small"><b>consigne brute BAC</b> : ${pole.bacPrompt || pole.prompt}</p>
-        <p class="small"><b>consigne reconstruite</b> : ${pole.prompt}</p>
-      </div>
-      <div class="brouillon-mini-grid">
-        ${POLE_ORDER.map(
-          (p) => `
-          <div>
-            <label class="lbl">${p}</label>
-            <textarea class="field brouillon-area" id="scratch-${p}">${escapeHTML(st.scratch[p])}</textarea>
-          </div>`
-        ).join("")}
-      </div>
-      <label class="lbl">حر</label>
-      <textarea class="field" id="scratch-free">${escapeHTML(st.scratch.free)}</textarea>
-      <label class="lbl">مسودة القطب الحالي</label>
-      <textarea class="field" id="brouillon-draft-current">${escapeHTML(drafts.current)}</textarea>
-      <label class="lbl">المسودة الكاملة</label>
-      <textarea class="field" id="brouillon-draft-full">${escapeHTML(drafts.full)}</textarea>
-      <div id="brouillon-preflight-current" class="feedback mid">${preC.join(" — ")}</div>
-      <div id="brouillon-preflight-full" class="feedback mid">${preF.join(" — ")}</div>
-      <div class="flex">
-        <button class="btn btn-emerald btn-sm" id="brouillon-insert-current">إدراج الحالي</button>
-        <button class="btn btn-ghost btn-sm" id="brouillon-insert-full">إدراج الكامل</button>
-      </div>
-    </div>`;
-    openDrawer("left", "📝 وضع البوصلة — المسودة", body);
-
-    const persist = () => {
-      POLE_ORDER.forEach((p) => {
-        st.scratch[p] = $("#scratch-" + p)?.value || "";
-      });
-      st.scratch.free = $("#scratch-free")?.value || "";
-      const d = buildDrafts(st);
-      if ($("#brouillon-draft-current")) $("#brouillon-draft-current").value = d.current;
-      if ($("#brouillon-draft-full")) $("#brouillon-draft-full").value = d.full;
-      if ($("#brouillon-preflight-current"))
-        $("#brouillon-preflight-current").textContent = brouillonPreflight(st, activePole).join(" — ");
-      if ($("#brouillon-preflight-full"))
-        $("#brouillon-preflight-full").textContent = brouillonPreflight(st, "full").join(" — ");
-      store.save();
-    };
-    ["N", "S", "E", "W", "free"].forEach((k) => {
-      const node = $("#scratch-" + k);
-      if (node) node.addEventListener("input", persist);
-    });
-
-    const insert = (which) => {
-      persist();
-      const warns = brouillonPreflight(st, which === "full" ? "full" : activePole);
-      if (warns.length) openModal("Contrôle brouillon", warns.join(" — "));
-      const target = $("#fld-" + activePole);
-      if (target) {
-        const d = buildDrafts(st);
-        target.value = which === "full" ? d.full : d.current;
-        st.text[activePole] = target.value;
-        store.save();
-      }
-    };
-    $("#brouillon-insert-current")?.addEventListener("click", () => insert("current"));
-    $("#brouillon-insert-full")?.addEventListener("click", () => insert("full"));
   }
 
   function confirmReset() {
