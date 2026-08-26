@@ -1095,13 +1095,13 @@ export function getPoleWeights(poleType, taskProfile = null) {
 
   switch (poleType) {
     case "S":
-      return { content: 0.55, methodology: 0.30, richness: 0.15 };
+      return { content: 0.55, methodology: 0.3, richness: 0.15 };
     case "E":
-      return { content: 0.60, methodology: 0.30, richness: 0.10 };
+      return { content: 0.6, methodology: 0.3, richness: 0.1 };
     case "W":
-      return { content: 0.55, methodology: 0.30, richness: 0.15 };
+      return { content: 0.55, methodology: 0.3, richness: 0.15 };
     case "N":
-      return { content: 0.60, methodology: 0.25, richness: 0.15 };
+      return { content: 0.6, methodology: 0.25, richness: 0.15 };
     default:
       return { content: 0.65, methodology: 0.2, richness: 0.15 };
   }

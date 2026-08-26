@@ -2,6 +2,8 @@
    STORE — état applicatif, persistance et migrations validées
    ============================================================ */
 
+import { reportDiagnostic } from "./services/diagnostics.js";
+
 const KEY = "boussole4d.v3";
 const LEGACY_KEY = "boussole4d.v2";
 export const CURRENT_SCHEMA_VERSION = 2;
@@ -133,7 +135,9 @@ export function validateState(candidate) {
 function backupMalformed(raw) {
   try {
     localStorage.setItem(`${KEY}.corrupt-${Date.now()}`, raw);
-  } catch (e) {}
+  } catch (error) {
+    reportDiagnostic("store.backup-malformed", error);
+  }
 }
 
 export const store = {
@@ -149,7 +153,8 @@ export const store = {
           this.state = validateState(migrateState(JSON.parse(raw)));
           // Persist migration/normalization immediately so it runs once.
           this.save();
-        } catch (e) {
+        } catch (error) {
+          reportDiagnostic("store.load-invalid-state", error);
           backupMalformed(raw);
         }
       } else {
@@ -160,7 +165,8 @@ export const store = {
           localStorage.removeItem(LEGACY_KEY);
         }
       }
-    } catch (e) {
+    } catch (error) {
+      reportDiagnostic("store.load-unavailable", error);
       /* Storage unavailable: retain a safe default state. */
     }
     this.loaded = true;
@@ -172,13 +178,17 @@ export const store = {
     try {
       this.state.schemaVersion = CURRENT_SCHEMA_VERSION;
       localStorage.setItem(KEY, JSON.stringify(this.state));
-    } catch (e) {}
+    } catch (error) {
+      reportDiagnostic("store.save", error);
+    }
   },
 
   reset() {
     try {
       localStorage.removeItem(KEY);
-    } catch (e) {}
+    } catch (error) {
+      reportDiagnostic("store.reset", error);
+    }
     this.state = defaultState();
     this.save();
   },

@@ -8,6 +8,28 @@ import { APP_CONFIG } from "../data/subjects.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CASES_PATH = join(__dirname, "hard-benchmark", "cases.json");
 const SCHEMA_PATH = join(__dirname, "hard-benchmark", "schema.json");
+const AUDIT_ID = "AUD-TEST-0001";
+const stamp = "2026-08-24T10:00:00.000Z";
+const annotation = (annotator, score, note) => ({
+  annotator,
+  score,
+  note,
+  completedAt: stamp,
+  blindedToPeer: true,
+  blindedToEngine: true
+});
+const auditRecord = {
+  auditId: AUDIT_ID,
+  consentRef: "CONSENT-TEST",
+  copySha256: "a".repeat(64),
+  transcriptionSha256: "b".repeat(64),
+  annotationForms: [
+    { annotator: "correcteur-A", sha256: "c".repeat(64), completedAt: stamp },
+    { annotator: "correcteur-B", sha256: "d".repeat(64), completedAt: stamp }
+  ],
+  verifiedBy: "auditeur-C",
+  verifiedAt: stamp
+};
 
 function loadCases() {
   try {
@@ -55,14 +77,12 @@ test("validation manuelle d'une casse valide", () => {
     sujet: 1,
     exercise: 1,
     pole: "N",
-    category: "test",
+    category: "weak",
+    auditId: AUDIT_ID,
     answer: "réponse suffisamment longue pour passer validation",
     source: "test",
     collector: "test",
-    annotations: [
-      { annotator: "correcteur-1", score: 1, note: "note 1" },
-      { annotator: "correcteur-2", score: 1, note: "note 2" }
-    ],
+    annotations: [annotation("correcteur-A", 1, "note 1"), annotation("correcteur-B", 1, "note 2")],
     date: "2025-08-23"
   };
   const required = schema.properties.cases.items.required;
@@ -86,13 +106,14 @@ test("validateCase / generateId / detectLLM fonctionnent hors cases.json", async
     sujet: 1,
     exercise: 1,
     pole: "N",
-    category: "incomplet",
+    category: "weak",
+    auditId: AUDIT_ID,
     answer: "المشكل العلمي غير مكتمل في هذه النسخة.",
     source: "centre-X / copie anonymisée",
     collector: "collecteur-A",
     annotations: [
-      { annotator: "correcteur-A", score: 0.5, note: "forme partielle" },
-      { annotator: "correcteur-B", score: 0.5, note: "forme partielle" }
+      annotation("correcteur-A", 0.5, "forme partielle"),
+      annotation("correcteur-B", 0.5, "forme partielle")
     ],
     date: "2026-08-24"
   };
@@ -116,17 +137,57 @@ test("validateCase / generateId / detectLLM fonctionnent hors cases.json", async
   assert.equal(detectLLM("نستنتج أن التدرج البروتوني شرط أساسي.").length, 0);
 });
 
-test("chaque copie importée possède deux annotations humaines distinctes", async () => {
-  const { validateCase } = await import("./hard-benchmark/import-copy.mjs");
+test("chaque copie importée possède deux annotations indépendantes et un audit vérifiable", async () => {
+  const { validateCase, validateAuditRecord, loadAuditManifest } =
+    await import("./hard-benchmark/import-copy.mjs");
+  const manifest = loadAuditManifest();
   for (const caseObj of loadCases().cases) {
     assert.deepEqual(validateCase(caseObj), [], `copie invalide: ${caseObj.id}`);
+    assert.deepEqual(validateAuditRecord(caseObj, manifest), [], `audit invalide: ${caseObj.id}`);
   }
+});
+
+test("un pseudonyme double ne suffit pas sans manifeste d'audit", async () => {
+  const { validateAuditRecord } = await import("./hard-benchmark/import-copy.mjs");
+  const fake = {
+    auditId: "AUD-ABSENT-0001",
+    collector: "collecteur-A",
+    annotations: [annotation("correcteur-A", 1, "a"), annotation("correcteur-B", 1, "b")]
+  };
+  assert.deepEqual(validateAuditRecord(fake, { version: 1, records: [] }), [
+    "auditId absent du manifeste d'audit"
+  ]);
+});
+
+test("l'audit rejette les empreintes invalides, les correcteurs incohérents et un vérificateur impliqué", async () => {
+  const { validateAuditRecord } = await import("./hard-benchmark/import-copy.mjs");
+  const fake = {
+    auditId: AUDIT_ID,
+    collector: "collecteur-A",
+    annotations: [annotation("correcteur-A", 1, "a"), annotation("correcteur-B", 1, "b")]
+  };
+  const broken = {
+    ...auditRecord,
+    copySha256: "invalide",
+    annotationForms: [
+      auditRecord.annotationForms[0],
+      { ...auditRecord.annotationForms[1], annotator: "correcteur-X", completedAt: "jamais" }
+    ],
+    verifiedBy: "collecteur-A"
+  };
+  const errors = validateAuditRecord(fake, { version: 1, records: [broken] });
+  assert.ok(errors.includes("empreinte de copie invalide"));
+  assert.ok(errors.includes("formulaire d'annotation 2 invalide"));
+  assert.ok(errors.includes("les correcteurs du cas ne correspondent pas au manifeste"));
+  assert.ok(errors.includes("le vérificateur doit être distinct du collecteur et des correcteurs"));
 });
 
 test("dry-run valide une copie sans écrire dans cases.json", async () => {
   const { execFileSync } = await import("node:child_process");
   const { writeFileSync, unlinkSync } = await import("node:fs");
   const tmp = join(__dirname, "hard-benchmark", ".tmp-dry-run.json");
+  const auditTmp = join(__dirname, "hard-benchmark", ".tmp-audit.json");
+  writeFileSync(auditTmp, JSON.stringify({ version: 1, records: [auditRecord] }));
   const before = loadCases().cases.length;
   writeFileSync(
     tmp,
@@ -135,21 +196,24 @@ test("dry-run valide une copie sans écrire dans cases.json", async () => {
       sujet: 1,
       exercise: 1,
       pole: "N",
-      category: "incomplet",
+      category: "weak",
+      auditId: AUDIT_ID,
       answer: "كيف يتدخل ARN في تركيب البروتين؟",
       source: "centre-X / copie anonymisée",
       collector: "collecteur-A",
-      annotations: [
-        { annotator: "correcteur-A", score: 0.25, note: "ébauche" },
-        { annotator: "correcteur-B", score: 0.25, note: "ébauche" }
-      ],
+      annotations: [annotation("correcteur-A", 0.25, "ébauche"), annotation("correcteur-B", 0.25, "ébauche")],
       date: "2026-08-24"
     })
   );
   try {
     const out = execFileSync(
       process.execPath,
-      [join(__dirname, "hard-benchmark", "import-copy.mjs"), tmp, "--dry-run"],
+      [
+        join(__dirname, "hard-benchmark", "import-copy.mjs"),
+        tmp,
+        "--dry-run",
+        `--audit-manifest=${auditTmp}`
+      ],
       { encoding: "utf8" }
     );
     assert.match(out, /Dry-run/);
@@ -157,6 +221,7 @@ test("dry-run valide une copie sans écrire dans cases.json", async () => {
   } finally {
     try {
       unlinkSync(tmp);
+      unlinkSync(auditTmp);
     } catch {
       /* ignore */
     }
@@ -187,7 +252,51 @@ test("rapport de calibration : l'absence de copies reste explicitement non calib
   const report = buildCalibrationReport(loadCases().cases);
   assert.equal(report.calibrated, loadCases().cases.length > 0);
   assert.ok(report.activePoles > 0);
-  if (!report.calibrated) assert.equal(report.meanAbsoluteError, null);
+  if (!report.calibrated) {
+    assert.equal(report.meanAbsoluteError, null);
+    assert.equal(report.scorePromotionAllowed, false);
+    assert.equal(report.falsePositives, 0);
+    assert.equal(report.falseNegatives, 0);
+  }
+});
+
+test("rapport de calibration : catégories, erreurs binaires et porte de promotion", async () => {
+  const { buildCalibrationReport } = await import("./hard-benchmark/calibration-report.mjs");
+  const categories = ["strong", "weak", "scientifically-wrong", "off-topic"];
+  const synthetic = [];
+  let index = 0;
+  for (const year of APP_CONFIG.years.filter((item) => item.enabled)) {
+    for (const sujet of year.sujets) {
+      for (const exercise of sujet.exercises) {
+        for (const pole of ["N", "S", "E", "W"]) {
+          const max = exercise.poles[pole].points;
+          for (let n = 0; n < 15; n += 1) {
+            synthetic.push({
+              id: `SYNTHETIC-${index++}`,
+              year: String(year.id),
+              sujet: sujet.id,
+              exercise: exercise.number,
+              pole,
+              category: categories[n % categories.length],
+              answer: "réponse synthétique réservée au test du rapport",
+              annotations: [annotation("correcteur-A", max, "test"), annotation("correcteur-B", max, "test")]
+            });
+          }
+        }
+      }
+    }
+  }
+  const report = buildCalibrationReport(synthetic);
+  assert.equal(report.scorePromotionAllowed, true);
+  assert.ok(Object.values(report.categoryCoverage).every((count) => count > 0));
+  assert.ok(
+    Object.values(report.categoryCoverageByPole).every((counts) =>
+      Object.values(counts).every((count) => count > 0)
+    )
+  );
+  assert.equal(report.falsePositives, report.rows.filter((row) => row.enginePass && !row.humanPass).length);
+  assert.equal(report.falseNegatives, report.rows.filter((row) => !row.enginePass && row.humanPass).length);
+  assert.equal(buildCalibrationReport(synthetic.slice(1)).scorePromotionAllowed, false);
 });
 
 test("rapport de couverture : copies réelles par pôle APP_CONFIG", () => {

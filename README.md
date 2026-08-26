@@ -1,9 +1,9 @@
 # 🧭 بوصلة كنز المنهجية 4D — المنصة التفاعلية لبكالوريا الجزائر
 
-**مادة علوم الطبيعة والحياة** — منصة الحل الميكانيكي المنظم لامتحانات البكالوريا وفق نظام «الأقطاب 4D»
-(N = تأطير المسألة، S = استغلال السندات، E = الربط والتفسير، W = التركيب والمصادقة).
+**مادة علوم الطبيعة والحياة** — أداة تتحقق من تغطية الإجابة للعناصر العلمية والمنهجية المنتظرة وفق نظام «الأقطاب 4D»
+(N = تأطير المسألة، S = استغلال السندات، E = الربط والتفسير، W = التركيب والمصادقة). Elle ne prétend pas corriger une copie à la place d'un professeur.
 
-> ⚠️ **Positionnement honnête : outil d'entraînement méthodologique.** Les scores sont des estimations automatiques fondées sur des règles ; ils ne sont ni une correction ministérielle ni une note attribuée par un professeur. Les consignes marquées `reconstructed` ne sont pas des énoncés officiels. Le moteur n'a actuellement **aucune copie réelle doublement annotée** dans son benchmark : ne pas en déduire une fiabilité de notation.
+> ⚠️ **Positionnement honnête : outil d'entraînement méthodologique non calibré.** Les scores sont des estimations automatiques fondées sur des règles ; ils ne sont ni une correction ministérielle ni une note attribuée par un professeur. Les consignes marquées `reconstructed` ne sont pas des énoncés officiels. Le benchmark vérifié contient actuellement **0 copie réelle doublement annotée** : aucune métrique de fiabilité ne peut donc être publiée.
 
 > ✅ **Version intégrée à la racine.** L'ancien site monolithique est conservé dans
 > [`_v1_backup/`](_v1_backup) au cas où.
@@ -14,11 +14,13 @@
 
 Parcours en 5 étapes pensé pour la **gestion du stress** et la **méthode** :
 
-1. **Hub** — choix de la session (année → sujet).
-2. **Sérénité** — respiration « box breathing » + micro-conseils méthodologiques.
-3. **Stratégie** — consultation des PDF officiels des 2 sujets + **calculatrice de choix** (25 min).
-4. **Onboarding** — isoler le sujet choisi et planifier les 3 exercices.
-5. **Espace de travail 4D** — boussole animée, barème réel, **feedback pédagogique**, aide « anti-panique ».
+1. **Hub** — choix entre accès rapide à un exercice et parcours guidé.
+2. **Sérénité** _(parcours guidé uniquement)_ — respiration + micro-conseils méthodologiques.
+3. **Stratégie** _(optionnelle)_ — consultation des PDF et calculatrice de choix (25 min).
+4. **Choix d'exercice** — sujet puis exercice à travailler.
+5. **Espace de travail 4D** — consigne et réponse prioritaires, diagnostic de couverture, aide contextuelle et indicateur chiffré secondaire.
+
+L'interface propose des thèmes clair et sombre persistants. Les outils secondaires sont regroupés afin de ne pas concurrencer la consigne.
 
 ---
 
@@ -31,12 +33,20 @@ Parcours en 5 étapes pensé pour la **gestion du stress** et la **méthode** :
 │   ├── styles.css          # design 100% autonome (aucun CDN)
 │   └── icon-192/512.png    # icône de marque (boussole 4D)
 ├── data/subjects.js        # ⭐ CONFIG : années → sujets → exercices → barème & mots-clés
+├── data/brouillon.js       # canevas du brouillon méthodologique et verbes BAC
 ├── js/
 │   ├── store.js            # état + persistance localStorage + timers reconciliés
-│   ├── engine.js           # évaluation réelle (mots-clés/pipeline) + minuteurs fiables
-│   ├── ui.js               # rendu, boussole, exercices, toasts, rapport
+│   ├── engine.js           # façade du moteur heuristique + minuteurs
+│   ├── domain/             # règles d'analyse et d'évaluation
+│   ├── services/           # son, reconnaissance vocale et diagnostics récupérables
+│   ├── ui/
+│   │   ├── screens/workspace.js      # contrôleur de l'espace de travail
+│   │   ├── workspace/                # texte, pipeline, brouillon et feedback
+│   │   ├── reports/                  # calcul, CSV/JSON et impression
+│   │   └── dialogs/navigation/dom.js # infrastructure UI partagée
+│   ├── ui.js               # façade d'orchestration (< 700 lignes)
 │   └── main.js             # point d'entrée
-├── tests/                  # 11 tests (moteur + intégration UI)
+├── tests/                  # 117 tests automatisés (moteur, données, UI, sécurité)
 ├── dist/
 │   └── boussole-4d-standalone.html   # version monofichier (ouvre en file://)
 ├── manifest.webmanifest     # PWA (installable)
@@ -121,6 +131,17 @@ Aucun PDF 2024/2023 n'est versé dans le dépôt.
 
 ## 🧪 Tests
 
+<!-- AUTO-METRICS:START -->
+
+- Déclarations `test()` détectées statiquement : **118**
+- Copies vérifiées dans le hard benchmark : **0**
+- Taille de la façade UI : **409 lignes**
+
+<!-- AUTO-METRICS:END -->
+
+Ces valeurs sont régénérées par `npm run docs:update` et vérifiées en CI par
+`npm run docs:check`, afin d'éviter que le README diverge du dépôt.
+
 ```bash
 npm install       # installe jsdom + esbuild (devDependencies)
 npm test          # moteur, banc BAC, intégrité, UI, hard-benchmark
@@ -135,6 +156,19 @@ npm run build       # génère dist/boussole-4d-standalone.html
 
 Le dossier `tests/hard-benchmark/` contient le pipeline pour ajouter des copies
 d'élèves réelles au format `cases.json`.
+
+### État du corpus vérifié
+
+**0 copie vérifiée au 2026-08-26.** Un lot antérieur de 72 entrées a été retiré : il
+ne contenait dans le dépôt ni scans anonymisés, ni manifeste de collecte, ni preuve
+d'autorisation, ni trace permettant de vérifier que les deux annotations avaient été
+produites indépendamment. Les libellés `correcteur-humain-A/B` et les noms de centres
+étaient seulement des déclarations dans le JSON, pas des preuves auditables.
+
+Le désaccord moyen affiché à `0,00` venait du fait que les deux notes de chacune des
+72 entrées étaient identiques. Cela décrivait le fichier, mais ne démontrait ni
+l'indépendance des corrections ni la fiabilité du moteur. Ces entrées ne sont donc
+plus utilisées et `npm run calibration` doit annoncer le statut **non calibré**.
 
 ### Commande
 

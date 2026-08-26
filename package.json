@@ -14,12 +14,14 @@
     "typecheck": "tsc -p tsconfig.services.json",
     "calibration": "node tests/hard-benchmark/calibration-report.mjs",
     "pwa:version": "node scripts/generate-pwa-version.mjs",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "docs:update": "node scripts/update-doc-metrics.mjs",
+    "docs:check": "node scripts/update-doc-metrics.mjs --check"
   },
   "devDependencies": {
     "@playwright/test": "^1.62.1",
     "esbuild": "^0.25.0",
-    "eslint": "^9.39.5",
+    "eslint": "^10.9.1",
     "jsdom": "^24.0.0",
     "prettier": "^3.9.6",
     "typescript": "^5.9.3"

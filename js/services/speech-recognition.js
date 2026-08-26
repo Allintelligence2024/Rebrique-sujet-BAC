@@ -1,3 +1,5 @@
+import { reportDiagnostic } from "./diagnostics.js";
+
 /* Browser speech recognition adapter. The UI supplies its notification channel. */
 /**
  * @param {(message: string, type?: string) => void} notify
@@ -36,7 +38,10 @@ export function createSpeechEngine(notify = () => {}) {
           new this.target.ownerDocument.defaultView.Event("input", { bubbles: true })
         );
       };
-      recognition.onerror = () => notify("تعذر الإملاء الصوتي. تحقق من إذن الميكروفون.", "warn");
+      recognition.onerror = (/** @type {unknown} */ error) => {
+        reportDiagnostic("speech.recognition", error);
+        notify("تعذر الإملاء الصوتي. تحقق من إذن الميكروفون.", "warn");
+      };
       recognition.onend = () => {
         if (this.recognition === recognition) this.stop(false);
       };
@@ -47,7 +52,8 @@ export function createSpeechEngine(notify = () => {}) {
         recognition.start();
         notify("بدأ الإملاء الصوتي…", "info");
         return true;
-      } catch {
+      } catch (error) {
+        reportDiagnostic("speech.start", error);
         this.stop();
         notify("تعذر بدء الإملاء الصوتي.", "warn");
         return false;
@@ -62,7 +68,9 @@ export function createSpeechEngine(notify = () => {}) {
       if (abort && recognition) {
         try {
           recognition.abort();
-        } catch (e) {}
+        } catch (error) {
+          reportDiagnostic("speech.abort", error);
+        }
       }
     }
   };

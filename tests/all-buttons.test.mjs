@@ -80,6 +80,19 @@ test("1. Hub : test des boutons d'accueil, adkar, atlas, sons et années", () =>
   assert.equal($('#year-grid [data-year="2025"]').disabled, false);
   assert.equal($('#year-grid [data-year="2024"]').disabled, false);
   assert.equal($('#year-grid [data-year="2023"]').disabled, false);
+
+  // Theme clair persistant
+  click("[data-theme-toggle]");
+  assert.equal(document.documentElement.dataset.theme, "light");
+  assert.equal(localStorage.getItem("boussole4d.theme"), "light");
+
+  // Accès rapide : aucun passage par guide/stratégie/onboarding
+  click('#year-grid [data-quick-year="2025"]');
+  assert.ok($("[data-quick-start]"));
+  click('[data-quick-start="2025:1:1"]');
+  assert.ok(!$("#view-workspace").classList.contains("hidden"));
+  assert.equal(store.state.reviewMode, true);
+  click("#ws-home");
 });
 
 test("2. Guide : respiration, adkar intégrés et navigation", () => {

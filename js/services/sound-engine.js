@@ -1,3 +1,5 @@
+import { reportDiagnostic } from "./diagnostics.js";
+
 /** @type {{ ctx: any, currentMode: string, gainNode: any, nodes: any[], volume: number, [key: string]: any }} */
 export const soundEngine = {
   ctx: null,
@@ -25,10 +27,14 @@ export const soundEngine = {
     this.nodes.forEach((n) => {
       try {
         n.stop();
-      } catch (e) {}
+      } catch (error) {
+        reportDiagnostic("sound.stop-node", error);
+      }
       try {
         n.disconnect();
-      } catch (e) {}
+      } catch (error) {
+        reportDiagnostic("sound.disconnect-node", error);
+      }
     });
     this.nodes = [];
     this.currentMode = "off";
@@ -49,7 +55,7 @@ export const soundEngine = {
     }
 
     if (this.ctx.state === "suspended") {
-      this.ctx.resume().catch(() => {});
+      this.ctx.resume().catch((/** @type {unknown} */ error) => reportDiagnostic("sound.resume", error));
     }
     this.stop();
 
@@ -67,7 +73,8 @@ export const soundEngine = {
       } else if (mode === "binaural") {
         this._playBinaural();
       }
-    } catch (e) {
+    } catch (error) {
+      reportDiagnostic("sound.play", error, { mode });
       // Graceful fallback for non-standard audio environments
     }
 
