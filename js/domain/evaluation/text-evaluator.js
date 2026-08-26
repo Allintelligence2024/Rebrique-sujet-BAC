@@ -168,7 +168,11 @@ export function evaluateText(text, rule = {}, poleType = "") {
   }
 
   if (structure.isKeywordDump && !toleratesShortAnswer) fraction = 0;
-  if (forbiddenFound.length > 0) fraction = Math.min(fraction, 0.3);
+  if (forbiddenFound.length > 0) {
+    // Instead of destroying score down to 0.30, apply a moderate 15% penalty on methodology/form
+    // while keeping the scientific content score intact.
+    fraction = Math.min(fraction, fraction * 0.85);
+  }
   const allowPerfect =
     science.errors.length === 0 &&
     (!documentEval.applicable || documentEval.score >= 0.99) &&
@@ -183,9 +187,9 @@ export function evaluateText(text, rule = {}, poleType = "") {
     (!structure.isKeywordDump || toleratesShortAnswer) &&
     forbiddenFound.length === 0 &&
     hits >= req &&
-    methodology.score >= perfectMethodologyThreshold &&
-    (toleratesShortAnswer || overlap.ratio >= perfectOverlapThreshold) &&
-    lengthRatio >= perfectLengthThreshold
+    (poleType === "E" || methodology.score >= perfectMethodologyThreshold) &&
+    (toleratesShortAnswer || poleType === "E" || overlap.ratio >= perfectOverlapThreshold) &&
+    (poleType === "E" || lengthRatio >= perfectLengthThreshold)
   ) {
     fraction = 1;
   }
