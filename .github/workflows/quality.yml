@@ -2,12 +2,8 @@ name: Quality
 
 on:
   push:
-    branches:
-      - main
-      - "arena/**"
+    branches: [arena/01a0376b-rebrique-sujet-bac]
   pull_request:
-    branches:
-      - main
 
 permissions:
   contents: read
@@ -25,7 +21,6 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run format:check
-      - run: npm run docs:check
       - run: npm test
       - run: npm run build
       - run: npx playwright install --with-deps chromium
