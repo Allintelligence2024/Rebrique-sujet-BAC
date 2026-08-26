@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL(".", import.meta.url));
 const host = process.env.HOST || "0.0.0.0";
-const port = Number(process.env.PORT || 8080);
+const port = Number(process.env.PORT || process.argv[process.argv.indexOf("--port") + 1] || 8080);
 const types = {
   ".html": "text/html; charset=utf-8",
   ".js": "text/javascript; charset=utf-8",
