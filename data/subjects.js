@@ -13,16 +13,24 @@
 export function normalizeArabic(text) {
   if (!text) return "";
   return String(text)
-    .replace(/[إأآا]/g, "ا")
+    .replace(/[إأآاٱ]/g, "ا")
     .replace(/[ىيی]/g, "ي")
     .replace(/ک/g, "ك")
+    .replace(/ؤ/g, "و")
+    .replace(/ئ/g, "ي")
     .replace(/ة/g, "ه")
     .replace(/[ًٌٍَُِّْ]/g, "")
     .replace(/\u0640/g, "")
+    .replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660))
+    .replace(/٫/g, ".")
+    .replace(/[\u00A0\u200B\u200C\u200D\uFEFF]/g, " ")
     .replace(/[؟?!.,،؛:«»"“”‘’()[\]{}]/g, " ")
     .replace(/\s+/g, " ")
     .toLowerCase()
     .trim();
+  // NOTE délibérée : le hamza isolé ء n'est PAS supprimé — le retirer fusionnerait
+  // ماء (eau) avec ما (particule) et créerait des faux positifs. Ne pas "compléter"
+  // cette normalisation sans un cas d'échec réel documenté.
 }
 
 /** Retire les préfixes / clitiques arabes les plus fréquents. */

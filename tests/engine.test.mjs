@@ -28,6 +28,26 @@ test("normalizeArabic harmonise les variantes de lettres, tatweel et ponctuation
   assert.equal(normalizeArabic("کمون"), normalizeArabic("كمون"));
 });
 
+test("normalizeArabic tolère les variantes de saisie réelles (hamza, chiffres, espaces spéciaux)", () => {
+  // Hamza sur support : les élèves omettent souvent le support correct
+  assert.equal(normalizeArabic("مسؤول"), normalizeArabic("مسوول"));
+  assert.equal(normalizeArabic("رئيسي"), normalizeArabic("رييسي"));
+  assert.equal(normalizeArabic("جزيئة"), normalizeArabic("جزييه"));
+  // Alef wasla ٱ (copie depuis certains PDF/sites)
+  assert.equal(normalizeArabic("ٱلبروتين"), normalizeArabic("البروتين"));
+  // Chiffres arabes-orientaux → occidentaux (claviers mobiles arabes)
+  assert.equal(normalizeArabic("٦٠"), "60");
+  assert.equal(normalizeArabic("القيمة ٢٥"), normalizeArabic("القيمة 25"));
+  // Séparateur décimal arabe ٫ : converge vers la même forme que le point occidental
+  // (la ponctuation étant ensuite neutralisée en espace, comme pour "0.5")
+  assert.equal(normalizeArabic("0٫5"), normalizeArabic("0.5"));
+  // Espaces insécables / invisibles (copier-coller, claviers mobiles)
+  assert.equal(normalizeArabic("البروتين\u00A0الغشائي"), normalizeArabic("البروتين الغشائي"));
+  assert.equal(normalizeArabic("البروتين\u200Bالغشائي"), normalizeArabic("البروتين الغشائي"));
+  // GARDE-FOU : le hamza isolé ء est conservé — ماء (eau) ≠ ما (particule)
+  assert.notEqual(normalizeArabic("ماء"), normalizeArabic("ما"));
+});
+
 test("stripArabicClitics nettoie les préfixes arabes", () => {
   assert.equal(stripArabicClitics("كالبروتين"), "بروتين");
   assert.equal(stripArabicClitics("بالاحماض"), "احماض");
