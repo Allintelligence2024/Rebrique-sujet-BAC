@@ -133,7 +133,7 @@ Aucun PDF 2024/2023 n'est versé dans le dépôt.
 
 <!-- AUTO-METRICS:START -->
 
-- Déclarations `test()` détectées statiquement : **119**
+- Déclarations `test()` détectées statiquement : **122**
 - Copies vérifiées dans le hard benchmark : **0**
 - Taille de la façade UI : **409 lignes**
 

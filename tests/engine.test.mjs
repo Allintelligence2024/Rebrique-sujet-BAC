@@ -65,6 +65,20 @@ test("stripArabicClitics nettoie les préfixes arabes", () => {
   assert.equal(stripArabicClitics("الادينوزين"), "ادينوزين");
 });
 
+test("alias sourcés du programme : pluriels brisés et synonymes du manuel scolaire", () => {
+  // Chaque alias est rattaché à un keyword réellement présent dans data/subjects.js
+  // (règle RULE_REVIEW.md : pas d'alias sans ancrage dans les données).
+  assert.equal(matchConcept("تتواجد المشابك في النخاع الشوكي", "مشبك"), true); // 2023/S1/E1
+  assert.equal(matchConcept("تلعب الاغشية دورا في النقل", "غشاء"), true); // 2023/S2/E2
+  assert.equal(matchConcept("تنقل النواقل الالكترونات", "ناقل"), true); // 2023/S2/E3
+  assert.equal(matchConcept("يتم الاستنساخ العكسي داخل الخلية", "نسخ"), true); // 2024/S1/E1
+  assert.equal(matchConcept("التخطيط الكهربائي للعضلة", "تسجيل"), true); // 2023/S1/E1
+  // GARDE-FOUS : les alias ne créent pas de ponts entre concepts distincts
+  assert.equal(matchConcept("التخطيط الكهربائي", "نسخ"), false);
+  assert.equal(matchConcept("المشابك المثبطة", "غشاء"), false);
+  assert.equal(matchConcept("الاستنساخ العكسي", "تسجيل"), false);
+});
+
 test("matchConcept valide les synonymes et les formes préfixées", () => {
   const concept = ["حمض", "احماض"];
   assert.equal(matchConcept("تتكون الخلية من احماض امينية", concept), true);
