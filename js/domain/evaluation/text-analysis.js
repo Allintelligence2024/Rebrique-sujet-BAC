@@ -192,6 +192,9 @@ function stemArabicToken(token) {
   if (t.length >= 6 && /(كما|هما|يات)$/.test(t)) t = t.slice(0, -3);
   else if (t.length >= 5 && /(كم|كن|نا|ها|هم|هن|ات|ون|ين|ان)$/.test(t)) t = t.slice(0, -2);
   if (t.length >= 5 && /(ه|ي)$/.test(t)) t = t.slice(0, -1);
+  // Hamza final : استرخاء/استرخائها convergent. Seuil ≥5 délibéré — ماء (eau)
+  // ne doit jamais devenir ما (particule).
+  if (t.length >= 5 && /ء$/.test(t)) t = t.slice(0, -1);
   return t.trim();
 }
 
@@ -251,7 +254,7 @@ const CONCEPT_ALIASES = {
     "بنية فراغية"
   ],
   رسول: ["مرنا", "mrna", "arnm", "arn رسول"],
-  ناقل: ["ارنت", "arnt", "trna", "arn ناقل"],
+  ناقل: ["ارنت", "arnt", "trna", "arn ناقل", "نواقل"],
   ريبوزوم: ["ريبوزومي", "ريبوزومات", "تحت وحدة"],
   طبيعي: ["الشاهد", "سليم"],
   طافر: ["طفرة", "الطافر"],
@@ -267,6 +270,14 @@ const CONCEPT_ALIASES = {
   rubisco: ["روبيسكو", "ريبولوز"],
   رامزه: ["كودون", "شفرة"],
   كودون: ["رامزة"],
+  // Pluriels brisés (non atteignables par stemming suffixal) — chaque entrée est
+  // rattachée à un keyword réellement présent dans data/subjects.js :
+  مشبك: ["مشابك", "مشبكي"], // 2023/S1/E1 (N,S,W)
+  غشاء: ["اغشية", "غشائي"], // 2023/S2/E2 (S)
+  // نسخ : manuel scolaire dit aussi الاستنساخ (2024/S1/E1 : النسخ العكسي)
+  نسخ: ["استنساخ"],
+  // تسجيل : les élèves écrivent souvent تخطيط (كهربائي) — 2023/S1/E1 (S)
+  تسجيل: ["تخطيط"],
   لاذات: ["غير ذات", "اللاذات", "عنصر غريب"],
   كمون: ["جهد عمل", "كمون عمل", "كمون راحة", "زوال استقطاب"],
   طفره: ["طفرة جينية", "طفرة نقطية", "استبدال", "حذف", "إدراج", "طافرة", "تبدل جيني", "تغير نوكليوتيدي"],

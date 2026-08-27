@@ -84,3 +84,24 @@ test("les mots-clés n'utilisent pas la forme ى (normalizeArabic mappe ى→ي)
   }
   assert.deepEqual(problems, [], problems.join("\n"));
 });
+
+test("aucun champ de matching ne contient de caractères arabes non standard (ی ک پ چ گ ژ — résidus OCR persans)", () => {
+  // Régression : des keywords contenaient le yeh persan ی (U+06CC), invisible à l'œil
+  // mais différent du ي arabe (U+064A) → aucun élève ne pouvait matcher ces mots-clés.
+  const suspect = /[یکپچگژےہ]/;
+  const problems = [];
+  for (const { tag, pole } of iterPoles()) {
+    const rule = pole.rule || {};
+    const fields = {
+      keywords: Array.isArray(rule.keywords) ? rule.keywords.flat() : [],
+      wrongConcepts: Array.isArray(rule.wrongConcepts) ? rule.wrongConcepts.flat() : [],
+      modelAnswer: [pole.modelAnswer].filter(Boolean)
+    };
+    for (const [field, values] of Object.entries(fields)) {
+      for (const v of values) {
+        if (suspect.test(String(v))) problems.push(`${tag} (${field}) : "${v}"`);
+      }
+    }
+  }
+  assert.deepEqual(problems, [], problems.join("\n"));
+});

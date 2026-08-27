@@ -173,7 +173,7 @@ Aucun PDF 2022/2024/2023 n'est versé dans le dépôt.
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **142** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **146** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0**
 - Taille de la façade UI (js/ui.js) : **408 lignes**
 
