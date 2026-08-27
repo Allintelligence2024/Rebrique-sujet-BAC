@@ -2,7 +2,7 @@ name: Quality
 
 on:
   push:
-    branches: [arena/01a0376b-rebrique-sujet-bac]
+    branches: [arena/01a04067-rebrique-sujet-bac]
   pull_request:
 
 permissions:
@@ -20,6 +20,7 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run typecheck
+      - run: npm run docs:check
       - run: npm run format:check
       - run: npm test
       - run: npm run build

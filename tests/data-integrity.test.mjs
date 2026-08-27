@@ -165,3 +165,22 @@ test("toute année enabled=true a au moins un sujet, chaque sujet un exercice, c
     }
   }
 });
+
+test("les chaînes de données interpolées dans le HTML ne contiennent aucun caractère cassant le balisage", () => {
+  // workspace.js / strategy.js / brouillon.js interpolent les chaînes de
+  // données (labels, prompts, consignes BAC, placeholders, notes PDF,
+  // réponses modèles) dans des templates HTML. Le contenu est du texte
+  // officiel de confiance (pas une saisie utilisateur), mais il doit
+  // rester neutre côté balisage : aucun <, >, &, backtick ni guillemet
+  // double ASCII (placeholders injectés dans des attributs placeholder="…").
+  const offenders = [];
+  const walk = (obj, path) => {
+    if (typeof obj === "string") {
+      if (/[<>&`"]/.test(obj)) offenders.push(`${path} :: ${obj.slice(0, 60)}`);
+    } else if (obj && typeof obj === "object") {
+      for (const [k, v] of Object.entries(obj)) walk(v, `${path}.${k}`);
+    }
+  };
+  for (const year of APP_CONFIG.years) walk(year, year.id);
+  assert.deepEqual(offenders, [], "caractères HTML-dangereux dans les données :\n" + offenders.join("\n"));
+});
