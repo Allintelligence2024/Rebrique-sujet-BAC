@@ -21,6 +21,11 @@ test("normalizeArabic harmonise les variantes de lettres, tatweel et ponctuation
   assert.equal(normalizeArabic("البروتــــــين"), "البروتين");
   // Ponctuation arabe et occidentale nettoyée
   assert.equal(normalizeArabic("هل الأدينوزين يثبط، أم ينشط؟"), "هل الادينوزين يثبط ام ينشط");
+  // Yeh persan ی (U+06CC) → ي arabe (résidu OCR fréquent dans les sujets scannés)
+  assert.equal(normalizeArabic("الخلایا"), normalizeArabic("الخلايا"));
+  assert.equal(normalizeArabic("الهیولي"), normalizeArabic("الهيولي"));
+  // Kaf persan ک (U+06A9) → ك arabe
+  assert.equal(normalizeArabic("کمون"), normalizeArabic("كمون"));
 });
 
 test("stripArabicClitics nettoie les préfixes arabes", () => {
