@@ -48,6 +48,17 @@ test("normalizeArabic tolère les variantes de saisie réelles (hamza, chiffres,
   assert.notEqual(normalizeArabic("ماء"), normalizeArabic("ما"));
 });
 
+test("le stemming tolère les suffixes possessifs réels (matchConcept)", () => {
+  // Un élève écrit naturellement le mot fléchi ; le concept est encodé à la forme nue.
+  assert.equal(matchConcept("يتم تركيبها في الريبوزوم", "تركيب"), true);
+  assert.equal(matchConcept("اذكر مكوناته الاساسية", "مكونات"), true);
+  assert.equal(matchConcept("يؤمن استرخائها", "استرخاء"), true);
+  assert.equal(matchConcept("تحمل بروتيناتها الغشائية", "بروتينات"), true);
+  // GARDE-FOUS anti-faux-positifs : mots courts jamais tronqués abusivement
+  assert.equal(matchConcept("شرب ماء", "ما الدور"), false);
+  assert.equal(matchConcept("بناء الجزيئة", "بنات"), false);
+});
+
 test("stripArabicClitics nettoie les préfixes arabes", () => {
   assert.equal(stripArabicClitics("كالبروتين"), "بروتين");
   assert.equal(stripArabicClitics("بالاحماض"), "احماض");

@@ -192,6 +192,9 @@ function stemArabicToken(token) {
   if (t.length >= 6 && /(كما|هما|يات)$/.test(t)) t = t.slice(0, -3);
   else if (t.length >= 5 && /(كم|كن|نا|ها|هم|هن|ات|ون|ين|ان)$/.test(t)) t = t.slice(0, -2);
   if (t.length >= 5 && /(ه|ي)$/.test(t)) t = t.slice(0, -1);
+  // Hamza final : استرخاء/استرخائها convergent. Seuil ≥5 délibéré — ماء (eau)
+  // ne doit jamais devenir ما (particule).
+  if (t.length >= 5 && /ء$/.test(t)) t = t.slice(0, -1);
   return t.trim();
 }
 
