@@ -95,6 +95,17 @@ test("1. Hub : test des boutons d'accueil, adkar, atlas, sons et années", () =>
   click("#ws-home");
 });
 
+test("1b. Archive 2013–2020 : le bouton ouvre le catalogue sans lancer d'entraînement", () => {
+  click("#btn-archive");
+  assert.ok($(".modal"));
+  const links = $$('.modal a[href*="dzexams.com/ar/annales/"]');
+  assert.equal(links.length, 19, "l'archive doit exposer exactement 19 liens annales");
+  assert.ok($(".modal").textContent.includes("بدون تقييم 4D"));
+  assert.ok($(".modal").textContent.includes("شعبة تقني رياضي"));
+  click('[data-close="ok"]');
+  assert.equal($(".modal"), null);
+});
+
 test("2. Guide : respiration, adkar intégrés et navigation", () => {
   click('#year-grid [data-year="2024"]');
   assert.ok(!$("#view-guide").classList.contains("hidden"));

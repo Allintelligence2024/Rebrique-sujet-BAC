@@ -1,4 +1,5 @@
 import { node, setInternalHTML } from "../dom.js";
+import { ARCHIVE, archiveByStream } from "../../../data/archive.js";
 
 export function createHubScreen(deps) {
   const {
@@ -57,6 +58,17 @@ export function createHubScreen(deps) {
       </section>
 
       <div class="grid grid-cards" id="year-grid"></div>
+      <section class="card archive-card mb-2 mt-2" aria-labelledby="archive-title">
+        <div class="flex spread" style="flex-wrap:wrap;gap:1rem">
+          <div>
+            <h2 id="archive-title" class="mt-0 mb-1">📚 أرشيف موضوعات 2013–2020</h2>
+            <p class="small text-muted mt-0">
+              موضوعات رسمية مع التصحيح النموذجي (فتح خارجي). للاستشارة فقط — بدون تقييم 4D بعد.
+            </p>
+          </div>
+          <button class="btn btn-indigo" id="btn-archive">فتح الأرشيف</button>
+        </div>
+      </section>
       <footer class="screen-foot">منصة تدريب منهجي لامتحانات بكالوريا علوم الطبيعة والحياة.</footer>
     </div>`
     );
@@ -111,6 +123,7 @@ export function createHubScreen(deps) {
     );
     $("#btn-demo").addEventListener("click", openDemo);
     $("#btn-atlas").addEventListener("click", openAtlas);
+    $("#btn-archive").addEventListener("click", openArchive);
     $("#btn-hub-adkar").addEventListener("click", openAdkar);
     $("#btn-hub-sound").addEventListener("click", () => cycleSound($("#btn-hub-sound")));
     $$("[data-theme-toggle]").forEach((button) => button.addEventListener("click", toggleTheme));
@@ -132,6 +145,37 @@ export function createHubScreen(deps) {
       `<p class="feedback mid">هذا مثال مصطنع ومعلن للشرح فقط؛ ليس نتيجة طالب حقيقي ولا دليلاً على الدقة.</p>
        <div class="grid grid-2">${panel("قبل: عبارة عامة", demo.before)}${panel("بعد: ملاحظة ثم تفسير", demo.after)}</div>
        <section class="mt-2"><h3>ما لا يضمنه المحرك</h3>${list(demo.limits, "")}</section>`
+    );
+  }
+
+  function openArchive() {
+    const groups = archiveByStream();
+    const section = (stream) => {
+      const { label, indexUrl, entries } = groups[stream];
+      const cards = entries
+        .map((e) => {
+          const session = ARCHIVE.sessions[e.session] || e.session;
+          return `<div class="card stack" style="padding:.75rem 1rem">
+            <span class="bold">${e.year} — ${session}</span>
+            <a class="btn btn-ghost btn-sm" href="${e.url}" target="_blank" rel="noopener noreferrer">
+              📄 الموضوع والتصحيح النموذجي (dzexams)
+            </a>
+            ${e.pdfUrl ? `<a class="btn btn-ghost btn-sm" href="${e.pdfUrl}" target="_blank" rel="noopener noreferrer">⬇️ PDF مباشر</a>` : ""}
+            <small class="text-muted">${e.viewer === "ok" ? "المعاينة متاحة" : "معاينة محجوبة — رابط التحميل متاح"}</small>
+          </div>`;
+        })
+        .join("");
+      return `<section class="stack">
+        <h3 class="mt-2 mb-1">${label} <small class="text-muted">(فهرس: <a href="${indexUrl}" target="_blank" rel="noopener noreferrer">dzexams</a>)</small></h3>
+        <div class="grid grid-2">${cards || '<p class="text-muted">لا توجد مخططات.</p>'}</div>
+      </section>`;
+    };
+    openModal(
+      "📚 أرشيف موضوعات 2013–2020 (بدون تقييم 4D)",
+      `<p class="text-muted small">تحققتُ من المصدر بتاريخ ${ARCHIVE.verifiedAt} — dzexams.com. كل رابط يفتح الموضوعين 1 و2 مع التصحيح النموذجي في نفس الصفحة. هذا ركن استشارة فقط: لا يطبّق المحرك تقييمه على هذه المواضيع ولا يمنح مؤشرات تغطية.</p>
+       ${section("se")}
+       ${section("m")}
+       <p class="small text-muted mt-2"><strong>⚠️ شعبة تقني رياضي:</strong> لا تتوفر في dzexams أقسام "علوم الطبيعة والحياة" لهذه الشعبة (تحقق في ${ARCHIVE.verifiedAt}) — لم يُضف أي رابط وهمي. يلزم مصدر بديل يتم التحقق منه قبل أي إضافة.</p>`
     );
   }
 
