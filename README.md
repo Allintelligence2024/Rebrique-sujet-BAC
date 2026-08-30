@@ -33,7 +33,8 @@ L'interface propose des thèmes clair et sombre persistants. Les outils secondai
 │   ├── styles.css                    # design 100% autonome (aucun CDN)
 │   └── icon-192.png / icon-512.png   # icônes de marque (boussole 4D)
 ├── data/
-│   ├── subjects.js                   # ⭐ CONFIG : 4 années (2022–2025) → 8 sujets → 24 exercices (barème & mots-clés)
+│   ├── subjects.js                   # ⭐ CONFIG : 12 années (2025–2022 + archive 2020–2013) → 24 sujets → 72 exercices
+│   ├── subjects-archive.js           # archive 2013–2020 (toutes consignes reconstructed)
 │   └── brouillon.js                  # canevas du brouillon méthodologique et verbes BAC
 ├── js/
 │   ├── main.js                       # point d'entrée
@@ -52,11 +53,12 @@ L'interface propose des thèmes clair et sombre persistants. Les outils secondai
 │       ├── workspace/          # texte, pipeline, brouillon, feedback, rapport
 │       └── reports/            # calcul du rapport, exports CSV/JSON et impression
 ├── tests/                            # tests automatisés (moteur, données, UI, sécurité) — `npm test`
-│   ├── *.test.mjs                    # 19 fichiers, exécutés par `node --test` (compte dans le bloc « Tests »)
+│   ├── *.test.mjs                    # 20 fichiers, exécutés par `node --test` (compte dans le bloc « Tests »)
 │   ├── e2e/                          # Playwright (mode hors-ligne PWA) — `npm run test:e2e`
 │   └── hard-benchmark/               # pipeline de copies réelles (corpus : 0 copie)
 ├── scripts/
 │   ├── generate-pwa-version.mjs      # génère js/app-version.js (appelé par `npm run build`)
+│   ├── generate-archive-years.mjs    # régénère data/subjects-archive.js (2013–2020)
 │   └── update-doc-metrics.mjs        # régénère / vérifie les métriques du README
 ├── docs/                             # protocoles (accessibilité, handoff)
 ├── server.mjs                        # serveur statique avec CSP — `npm start`
@@ -87,11 +89,13 @@ python3 -m http.server 8080     # ou : npm start
 
 ---
 
-## 📄 Contenu réel — BAC 2022, 2023, 2024 et 2025 (شعبة علوم تجريبية)
+## 📄 Contenu réel — BAC 2013 à 2025 (شعبة علوم تجريبية)
 
-**4 années, 8 sujets, 24 exercices**, entièrement déclarés dans `data/subjects.js`
-(`APP_CONFIG.years`). Le hub affiche les quatre années activées ; les écrans de choix
+**12 années, 24 sujets, 72 exercices**, déclarés dans `data/subjects.js`
+(`APP_CONFIG.years`, archive importée depuis `data/subjects-archive.js`).
+Le hub affiche les douze années activées ; les écrans de choix
 (parcours guidé et accès rapide) sont générés à partir de cette même donnée.
+**2021 est volontairement absente.** L'archive 2013–2020 n'est pas un énoncé ministériel.
 
 ### Contenu BAC 2025 (شعبة علوم تجريبية)
 
@@ -165,7 +169,25 @@ compare les réponses à des **mots-clés normalisés** (via `normalizeArabic`) 
 | **2023** | **activée** | aucun (droit d'auteur)                             | [dzexams 2023](https://www.dzexams.com/ar/annales/STRDZEowcCtwN0JmT1NwS3p4cEVmdz09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf)                             | Consignes `official` relues sur la couche texte du PDF (inversée, reconstituée mot à mot, 2026-08-25) ; pôles sans question autonome en `reconstructed` |
 | **2022** | **activée** | aucun (droit d'auteur)                             | [dzexams 2022](https://www.dzexams.com/ar/annales/eVlXSFRFOEJaN2ozSlE3NytzWkRHQT09) · [PDF ONEC](https://www.dzexams.com/uploads/sujets/officiels/bac/2022/dzexams-bac-sciences-2311208.pdf) · [corrigé eddirasa](https://eddirasa.com/correction-bac-science-2022-se/) | Consignes `official` relues sur la couche texte du PDF ONEC (inversée, reconstituée mot à mot, 2026-08-27) ; corrigé officiel croisé sur 2 sources concordantes ; pôles sans question autonome en `reconstructed` |
 
-Aucun PDF 2022/2024/2023 n'est versé dans le dépôt.
+### Archive BAC 2013–2020 (reconstruite, non ministérielle)
+
+Toutes les consignes de `data/subjects-archive.js` sont `reconstructed`.
+**2018** et **2020 sujet 1** : thèmes relus sur la couche texte dzexams (OCR bruité / inversé, 2026-08-30).
+**2013–2017, 2019, 2020 sujet 2** : thèmes pédagogiques du programme 3AS, **non certifiables** comme énoncés officiels.
+PDF non redistribués ; liens dzexams uniquement. Confiance UI : **basse** (comme 2024).
+
+| Année    | État        | PDF local                                          | Source externe                                                                                                                                                                                                                 | Consignes                                                                                                                                               |
+| -------- | ----------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **2020** | activée     | aucun (droit d'auteur)                             | [dzexams 2020](https://www.dzexams.com/ar/annales/SUFqL0VzRjNzdmd6ek1EekpsOTFMdz09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2020/dzexams-bac-sciences-2356016.pdf) · [eddirasa](https://eddirasa.com/wp-content/uploads/2020/09/eddirasa.com-bac-se-science-2020.pdf) | `reconstructed` — S1 relue OCR ; S2 incomplet, thèmes pédagogiques |
+| **2019** | activée     | aucun (droit d'auteur)                             | [dzexams 2019](https://www.dzexams.com/ar/annales/OHlmRldmdmdDVUNVRHBadTE5em0vdz09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-3051478.pdf) | `reconstructed` — PDF visionneuse protégé ; thèmes pédagogiques |
+| **2018** | activée     | aucun (droit d'auteur)                             | [dzexams 2018](https://www.dzexams.com/ar/annales/RGZmd0lTRW0xNmZTRUFjR0F5QzMwZz09) | `reconstructed` — thèmes relus OCR inversé |
+| **2017** | activée     | aucun (droit d'auteur)                             | [dzexams 2017](https://www.dzexams.com/ar/annales/dFRNWk1JWkt2aC8vdFZtZVNMWGRwZz09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2017/dzexams-bac-sciences-2581269.pdf) | `reconstructed` — thèmes pédagogiques |
+| **2016** | activée     | aucun (droit d'auteur)                             | [dzexams 2016](https://www.dzexams.com/ar/annales/M09NK2ZYVHFzQXg3KzZHazBaTk5IUT09) | `reconstructed` — thèmes pédagogiques |
+| **2015** | activée     | aucun (droit d'auteur)                             | [dzexams 2015](https://www.dzexams.com/ar/annales/aTlRWGREbDN3Qit2cVdRaHNmK0FYQT09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2015/dzexams-bac-sciences-5906014.pdf) | `reconstructed` — thèmes pédagogiques |
+| **2014** | activée     | aucun (droit d'auteur)                             | [dzexams 2014](https://www.dzexams.com/ar/annales/SzdNaHlPbThvaEhSSUJjWDRsdUljdz09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-4380238.pdf) | `reconstructed` — thèmes pédagogiques |
+| **2013** | activée     | aucun (droit d'auteur)                             | [dzexams 2013](https://www.dzexams.com/ar/annales/bjdJbVBZMHFKeUZTcExKSEw4REVNQT09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-4463279.pdf) | `reconstructed` — thèmes pédagogiques |
+
+Aucun PDF 2013–2024 n'est versé dans le dépôt.
 
 ---
 
@@ -173,7 +195,7 @@ Aucun PDF 2022/2024/2023 n'est versé dans le dépôt.
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **146** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **150** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0**
 - Taille de la façade UI (js/ui.js) : **408 lignes**
 
@@ -249,7 +271,9 @@ Le script accepte soit un fichier JSON en argument, soit un mode interactif.
 
 ## 🔧 Ajouter une année / un sujet
 
-Ouvrir `data/subjects.js`, ajouter une entrée dans `years[]`, et (pour un exercice) déclarer
+Pour 2013–2020 : éditer `data/subjects-archive.js` (ou le générateur
+`scripts/generate-archive-years.mjs`) puis réimporter. Pour 2022–2025 : ouvrir
+`data/subjects.js`, ajouter une entrée dans `years[]`, et (pour un exercice) déclarer
 la règle d'évaluation :
 
 ```js

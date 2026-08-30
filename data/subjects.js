@@ -12,7 +12,12 @@
           2026-08-27) ; corrigé officiel (الإجابة النموذجية)
           joint au même PDF (pp. 11-21), croisé avec eddirasa
           (textes concordants).
+   2013-2020 : archive reconstruite (voir data/subjects-archive.js).
+          Aucune consigne n'est marquée official. 2018 et 2020/S1
+          relus sur couche texte dzexams (OCR, 2026-08-30).
    ============================================================ */
+
+import { ARCHIVE_YEARS } from "./subjects-archive.js";
 
 /** Normalisation du texte arabe : variantes, tatweel, ponctuation. */
 export function normalizeArabic(text) {
@@ -64,7 +69,7 @@ export const APP_CONFIG = {
   appSubtitle: "مخبر التفوق والهدوء | منصة تدريب منهجي لبكالوريا علوم الطبيعة والحياة",
   globalExamMinutes: 270,
   strategyMinutes: 25,
-  note: "المحتوى 2025 مُراجع على PDF المستودع. 2024 مُعاد بناؤه ولم يُعاد استخراج نصه من PDF وزاري في هذه الجلسة. 2023 مُستخرج من PDF dzexams (نص معكوس مُعاد بناؤه).",
+  note: "المحتوى 2025 مُراجع على PDF المستودع. 2024 مُعاد بناؤه. 2023 و2022 مستخرجان من PDF dzexams. أرشيف 2013-2020 مُعاد بناؤه وغير مصادق كإنشاء وزاري.",
   years: [
     {
       id: "2025",
@@ -2444,6 +2449,7 @@ export const APP_CONFIG = {
           ]
         }
       ]
-    }
+    },
+    ...ARCHIVE_YEARS
   ]
 };
