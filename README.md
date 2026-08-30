@@ -34,6 +34,7 @@ L'interface propose des thèmes clair et sombre persistants. Les outils secondai
 │   └── icon-192.png / icon-512.png   # icônes de marque (boussole 4D)
 ├── data/
 │   ├── subjects.js                   # ⭐ CONFIG : 4 années (2022–2025) → 8 sujets → 24 exercices (barème & mots-clés)
+│   ├── archive.js                    # 📚 archive 2013–2020 : liens externes vérifiés (sujets + التصحيح), PAS de 4D
 │   └── brouillon.js                  # canevas du brouillon méthodologique et verbes BAC
 ├── js/
 │   ├── main.js                       # point d'entrée
@@ -169,11 +170,53 @@ Aucun PDF 2022/2024/2023 n'est versé dans le dépôt.
 
 ---
 
+## 📚 Archive 2013–2020 (consultation, pas d'entraînement 4D)
+
+Ajoutée le **2026-08-30** : un catalogue de **19 entrées** pointant vers les pages
+annales dzexams qui contiennent le sujet officiel (**الموضوعان 1 و 2**) et le
+**تصحيح النموذجي** dans leur viewer (certaines entrées incluent aussi le lien
+PDF direct observé sur la page).
+
+| Filière | Sessions principales | Sessions exceptionnelles | Total |
+| ------- | -------------------- | ------------------------ | ----- |
+| شعبة علوم تجريبية (`se`) | 2013–2020 (8) | 2016, 2017 (2) | 10 |
+| شعبة رياضيات (`m`) | 2013–2020 (8) | 2017 (1) | 9 |
+| شعبة تقني رياضي | **absente de la source** | — | 0 |
+
+Statut honnête :
+
+- **Ce n'est pas du training 4D.** Aucun barème, mot-clé ou réponse modèle :
+  le moteur d'évaluation ne s'applique pas à ces années. Chaque lien est
+  étiqueté « consultation » dans l'interface.
+- **Provenance par entrée** (`data/archive.js`) : `page: "consulted"` = page
+  annales ouverte et pièces jointes sujet/correction lues le 2026-08-30 ;
+  `page: "index"` = URL prise dans l'index de la section dzexams le même jour,
+  page annales **non relue** ici. Aucune entrée ne prétend être relue si elle
+  ne l'a pas été.
+- **Session exceptionnelle (الدورة الاستثنائية)** : la source n'en référence
+  que pour 2016 (se+m) et 2017 (se+m). Pour les autres années, la session
+  exceptionnelle n'est pas cataloguée faute de source vérifiée — elle n'est
+  pas inventée.
+- **شعبة تقني رياضي** : dzexams ne propose aucune catégorie SVT pour cette
+  filière (page racine `/ar/bac/sciences-naturelles` vérifiée le 2026-08-30 :
+  uniquement `se` et `m`). Aucun lien n'a été fabriqué ; un ajout nécessite
+  une autre source vérifiable.
+- **Aucun PDF versé** (droit d'auteur) : les liens sont externes, comme pour
+  2022/2023/2024.
+
+Plan de modélisation : l'archive est la **première étape**. La modélisation 4D
+complète se fait ensuite année par année, au standard de 2022 (consignes
+relues sur le PDF, corrigé officiel croisé, relecture humaine), en commençant
+par **2020** — puis l'année migrera du catalogue d'archive vers le parcours
+d'entraînement (`APP_CONFIG.years`).
+
+---
+
 ## 🧪 Tests
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **146** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **153** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0**
 - Taille de la façade UI (js/ui.js) : **408 lignes**
 
