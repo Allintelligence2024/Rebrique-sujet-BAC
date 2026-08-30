@@ -161,7 +161,7 @@ export function createHubScreen(deps) {
               📄 الموضوع والتصحيح النموذجي (dzexams)
             </a>
             ${e.pdfUrl ? `<a class="btn btn-ghost btn-sm" href="${e.pdfUrl}" target="_blank" rel="noopener noreferrer">⬇️ PDF مباشر</a>` : ""}
-            <small class="text-muted">${e.page === "consulted" ? "تمت معاينة الصفحة" : "مدرج من فهرس القسم"}</small>
+            <small class="text-muted">${e.viewer === "ok" ? "المعاينة متاحة" : "معاينة محجوبة — رابط التحميل متاح"}</small>
           </div>`;
         })
         .join("");

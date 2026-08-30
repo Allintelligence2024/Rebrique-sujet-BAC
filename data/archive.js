@@ -4,16 +4,22 @@
    Rôle : catalogue de consultation, PAS d'entraînement 4D.
    Chaque entrée pointe vers la page annales dzexams qui contient
    le sujet officiel (الموضوعان 1 و 2) et le تصحيح النموذجي dans
-   son viewer, ou vers le lien de téléchargement direct observé.
+   son viewer, + le lien PDF direct quand il a été observé.
 
-   Honnêteté des vérifications (2026-08-30) :
-   - `page: "consulted"`  -> la page annales a été ouverte ; le
-     titre, l'en-tête (session), les pièces jointes sujet/correction
-     et/ou le lien de téléchargement ont été lus.
-   - `page: "index"`      -> l'URL provient de l'index officiel de la
-     section dzexams (consultée le jour même) ; la page annales n'a
-     PAS été relue ici. Le contenu est annoncé « sujet + تصحيح »
-     par dzexams (badge « حل ✅ »).
+   Vérification (2026-08-30) : les 19 pages annales cataloguées ont
+   été ouvertes le même jour. Métrique de contrôle par entrée :
+   - `attachments: true` -> le viewer expose les pièces jointes
+     « sujet » et « …-correction » ;
+   - `viewer: "ok"`      -> le viewer en ligne s'affiche (pages
+     visibles, texte lisible) ;
+   - `viewer: "blocked"` -> le viewer en ligne affiche « 0 pages »
+     (PDF chiffré côté PDF.js) MAIS le lien de téléchargement direct
+     « تحميل » est présent sur la page ;
+   - `pdfUrl`            -> lien PDF direct observé sur la page.
+
+   Aucune entrée n'a été cataloguée sans ouverture de sa page.
+   Fait important : pour les pages « blocked », le contenu ne peut
+   pas être certifié « relu » — seul l'accès au fichier est confirmé.
 
    Absence revendiquée : dzexams ne propose AUCUNE catégorie
    « علوم الطبيعة والحياة » pour la شعبة تقني رياضي (page racine
@@ -56,26 +62,33 @@ export const ARCHIVE = {
       session: "main",
       url: `${ANNALES}/SUFqL0VzRjNzdmd6ek1EekpsOTFMdz09`,
       page: "consulted",
+      attachments: true,
+      viewer: "ok",
       notes:
-        "Page consultée (2026-08-30). Pièces jointes : sciences-se-bac2020 + sciences-se-bac2020-correction ; 19 pages ; sujet : sismicité et structure de la Terre, Ibuprofène/Cox-1-Cox-2, immunothérapie du cancer du sein (HER2). Une seule entrée sur la source pour 2020."
+        "Page ouverte (2026-08-30) : 19 pages ; pièces jointes sciences-se-bac2020 + sciences-se-bac2020-correction ; sujet : sismicité et structure de la Terre, Ibuprofène/Cox-1-Cox-2, immunothérapie du cancer du sein (HER2). Une seule entrée sur la source pour 2020."
     },
     {
       year: "2019",
       stream: "se",
       session: "main",
       url: `${ANNALES}/OHlmRldmdmdDVUNVRHBadTE5em0vdz09`,
-      page: "index",
+      page: "consulted",
+      attachments: true,
+      viewer: "ok",
       notes:
-        "URL extraite de l'index de la section شعبة علوم تجريبية (consultée le 2026-08-30) ; page annales non relue ici ; dzexams annonce sujet + تصحيح (badge « حل ✅ »)."
+        "Page ouverte (2026-08-30) : 19 pages ; pièces jointes sciences-se-bac2019 + sciences-se-bac2019-correction ; sujet : péridotite/dorsale océanique, enzyme glucose oxydase (Rastop/Anagène), immunité."
     },
     {
       year: "2018",
       stream: "se",
       session: "main",
       url: `${ANNALES}/RGZmd0lTRW0xNmZTRUFjR0F5QzMwZz09`,
-      page: "index",
+      pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2018/dzexams-bac-sciences-3509975.pdf",
+      page: "consulted",
+      attachments: false,
+      viewer: "blocked",
       notes:
-        "URL extraite de l'index de la section شعبة علوم تجريبية (consultée le 2026-08-30) ; page annales non relue ici ; dzexams annonce sujet + تصحيح (badge « حل ✅ »)."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer en ligne « 0 pages » (PDF chiffré) mais lien de téléchargement direct présent. Contenu du PDF non relu."
     },
     {
       year: "2017",
@@ -83,8 +96,10 @@ export const ARCHIVE = {
       session: "exceptional",
       url: `${ANNALES}/TmZOSDV6eSt0UGxySFM1RFlTR3M4dz09`,
       page: "consulted",
+      attachments: true,
+      viewer: "ok",
       notes:
-        "Page consultée (2026-08-30). En-tête : « الدورة الاستثنائية 2017 ». Pièces jointes : bac2017_2-sciences-se + bac2017_2-sciences-se-correction ; 18 pages."
+        "Page ouverte (2026-08-30). En-tête : « الدورة الاستثنائية 2017 ». Pièces jointes bac2017_2-sciences-se + bac2017_2-sciences-se-correction ; 18 pages."
     },
     {
       year: "2017",
@@ -92,8 +107,10 @@ export const ARCHIVE = {
       session: "main",
       url: `${ANNALES}/dFRNWk1JWkt2aC8vdFZtZVNMWGRwZz09`,
       page: "consulted",
+      attachments: true,
+      viewer: "ok",
       notes:
-        "Page consultée (2026-08-30). En-tête : « دورة 2017 ». Pièces jointes : sciences-se-bac2017 + sciences-se-bac2017-correction ; 16 pages."
+        "Page ouverte (2026-08-30). En-tête : « دورة 2017 ». Pièces jointes sciences-se-bac2017 + sciences-se-bac2017-correction ; 16 pages."
     },
     {
       year: "2016",
@@ -102,8 +119,10 @@ export const ARCHIVE = {
       url: `${ANNALES}/M09NK2ZYVHFzQXg3KzZHazBaTk5IUT09`,
       pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2016-2/dzexams-bac-sciences-3814840.pdf",
       page: "consulted",
+      attachments: false,
+      viewer: "blocked",
       notes:
-        "Page consultée (2026-08-30). Viewer en ligne vide (0 page) mais lien de téléchargement direct présent : chemin /2016-2/ (session 2). Contenu du PDF non relu."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent (chemin /2016-2/ = session 2). Contenu du PDF non relu."
     },
     {
       year: "2016",
@@ -111,17 +130,22 @@ export const ARCHIVE = {
       session: "main",
       url: `${ANNALES}/MWliZ2dVaHJFejVUMjdiV3VZS2oxdz09`,
       page: "consulted",
+      attachments: true,
+      viewer: "ok",
       notes:
-        "Page consultée (2026-08-30). En-tête : « دورة 2016 ». Pièces jointes : sciences-se-bac2016 + sciences-se-bac2016-correction ; 21 pages ; sujet : gène et ARN (Anagène), immunité (LT, IL2/CMH), ATP."
+        "Page ouverte (2026-08-30). En-tête : « دورة 2016 ». Pièces jointes sciences-se-bac2016 + sciences-se-bac2016-correction ; 21 pages ; sujet : gène et ARN (Anagène), immunité (LT, IL2/CMH), ATP."
     },
     {
       year: "2015",
       stream: "se",
       session: "main",
       url: `${ANNALES}/aTlRWGREbDN3Qit2cVdRaHNmK0FYQT09`,
-      page: "index",
+      pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2015/dzexams-bac-sciences-5906014.pdf",
+      page: "consulted",
+      attachments: false,
+      viewer: "ok",
       notes:
-        "URL extraite de l'index de la section شعبة علوم تجريبية (consultée le 2026-08-30) ; page annales non relue ici ; dzexams annonce sujet + تصحيح (badge « حل ✅ »)."
+        "Page ouverte (2026-08-30) : 20 pages dans le viewer (lien « تحميل » présent) ; pas de pièces jointes labellisées sur cette page ; en-tête de session non lisible dans le texte extrait."
     },
     {
       year: "2014",
@@ -130,8 +154,10 @@ export const ARCHIVE = {
       url: `${ANNALES}/SzdNaHlPbThvaEhSSUJjWDRsdUljdz09`,
       pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-4380238.pdf",
       page: "consulted",
+      attachments: false,
+      viewer: "blocked",
       notes:
-        "Page consultée (2026-08-30). Lien de téléchargement direct présent ; 22 pages au total dans le viewer (sujet + تصحيح attendus). Couche texte du PDF non relue."
+        "Page ouverte (2026-08-30) : 22 pages déclarées ; viewer « 0 pages » (PDF chiffré) mais lien de téléchargement direct présent ; pas de pièces jointes labellisées. Contenu du PDF non relu."
     },
     {
       year: "2013",
@@ -139,8 +165,10 @@ export const ARCHIVE = {
       session: "main",
       url: `${ANNALES}/bjdJbVBZMHFKeUZTcExKSEw4REVNQT09`,
       page: "consulted",
+      attachments: true,
+      viewer: "ok",
       notes:
-        "Page consultée (2026-08-30). Pièces jointes : sciences-se-bac2013 + sciences-se-bac2013-correction + pages scannées BAC2013_Page_004..020 ; 17 pages."
+        "Page ouverte (2026-08-30) : pièces jointes sciences-se-bac2013 + sciences-se-bac2013-correction + pages scannées BAC2013_Page_004..020 ; 17 pages."
     },
 
     /* ---------------- شعبة رياضيات ---------------- */
@@ -149,27 +177,35 @@ export const ARCHIVE = {
       stream: "m",
       session: "main",
       url: `${ANNALES}/dlFvUnNHKzlTdm5xZHJHMm4vL2hYZz09`,
-      page: "index",
+      page: "consulted",
+      attachments: true,
+      viewer: "ok",
       notes:
-        "URL extraite de l'index de la section شعبة رياضيات (consultée le 2026-08-30) ; page annales non relue ici ; dzexams annonce sujet + تصحيح (badge « حل ✅ »)."
+        "Page ouverte (2026-08-30) : 10 pages ; pièces jointes sciences-m-bac2020 + sciences-m-bac2020-correction ; sujet : structure des protéines/électrophorèse, cancer de la peau (Ras/p53), CMH et rejet de greffe."
     },
     {
       year: "2019",
       stream: "m",
       session: "main",
       url: `${ANNALES}/b2w2cDdSYTdOK05FMjNEMnNGeUlsdz09`,
-      page: "index",
+      pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-2280992.pdf",
+      page: "consulted",
+      attachments: false,
+      viewer: "blocked",
       notes:
-        "URL extraite de l'index de la section شعبة رياضيات (consultée le 2026-08-30) ; page annales non relue ici ; dzexams annonce sujet + تصحيح (badge « حل ✅ »)."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF non relu."
     },
     {
       year: "2018",
       stream: "m",
       session: "main",
       url: `${ANNALES}/aDMxL2FtWlZwZ3NmeThCMG5WNk50UT09`,
-      page: "index",
+      pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2018/dzexams-bac-sciences-1967487.pdf",
+      page: "consulted",
+      attachments: false,
+      viewer: "blocked",
       notes:
-        "URL extraite de l'index de la section شعبة رياضيات (consultée le 2026-08-30) ; page annales non relue ici ; dzexams annonce sujet + تصحيح (badge « حل ✅ »)."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF non relu."
     },
     {
       year: "2017",
@@ -177,8 +213,10 @@ export const ARCHIVE = {
       session: "exceptional",
       url: `${ANNALES}/eU1zMTNYMTJTLzROeWhLTkxaajRWZz09`,
       page: "consulted",
+      attachments: true,
+      viewer: "ok",
       notes:
-        "Page consultée (2026-08-30). En-tête : « الدورة الاستثنائية 2017 » ; شعبة رياضيات. Pièces jointes : bac2017_2-sciences-m + bac2017_2-sciences-m-correction ; 11 pages ; sujet : immunité/lyse, traduction, immunoglobulines, structures protéiques (Rastop)."
+        "Page ouverte (2026-08-30). En-tête : « الدورة الاستثنائية 2017 », شعبة رياضيات. Pièces jointes bac2017_2-sciences-m + bac2017_2-sciences-m-correction ; 11 pages ; sujet : immunité/lyse, traduction, immunoglobulines, structures protéiques (Rastop)."
     },
     {
       year: "2017",
@@ -187,44 +225,57 @@ export const ARCHIVE = {
       url: `${ANNALES}/bEdWa2IycjEzcUY1S3FmUnpxdzhrQT09`,
       pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2017/dzexams-bac-sciences-2275712.pdf",
       page: "consulted",
+      attachments: false,
+      viewer: "blocked",
       notes:
-        "Page consultée (2026-08-30). Viewer en ligne vide (0 page) mais lien de téléchargement direct présent (chemin /2017/, session 1). Contenu du PDF non relu."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent (chemin /2017/, session 1). Contenu du PDF non relu."
     },
     {
       year: "2016",
       stream: "m",
       session: "main",
       url: `${ANNALES}/TW9GY3FMeVdkeFBBNGIwMmppdi9xQT09`,
-      page: "index",
+      page: "consulted",
+      attachments: true,
+      viewer: "ok",
       notes:
-        "URL extraite de l'index de la section شعبة رياضيات (consultée le 2026-08-30) ; page annales non relue ici ; dzexams annonce sujet + تصحيح (badge « حل ✅ »)."
+        "Page ouverte (2026-08-30) : 11 pages ; pièces jointes sciences-m-bac2016 + sciences-m-bac2016-correction ; sujet : traduction/Anagène, immunité humorale, membrane cellulaire/CMH."
     },
     {
       year: "2015",
       stream: "m",
       session: "main",
       url: `${ANNALES}/QjZpdDhZUjhQOXhSMzZvQnFvVlFjQT09`,
-      page: "index",
+      pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2015/dzexams-bac-sciences-2723927.pdf",
+      page: "consulted",
+      attachments: false,
+      viewer: "blocked",
       notes:
-        "URL extraite de l'index de la section شعبة رياضيات (consultée le 2026-08-30) ; page annales non relue ici ; dzexams annonce sujet + تصحيح (badge « حل ✅ »)."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF non relu."
     },
     {
       year: "2014",
       stream: "m",
       session: "main",
       url: `${ANNALES}/MXlQMjVhL2ZLK25mcEpTWnI5N3JtQT09`,
-      page: "index",
+      pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-2369148.pdf",
+      page: "consulted",
+      attachments: false,
+      viewer: "blocked",
       notes:
-        "URL extraite de l'index de la section شعبة رياضيات (consultée le 2026-08-30) ; page annales non relue ici ; dzexams annonce sujet + تصحيح (badge « حل ✅ »)."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF non relu."
     },
     {
       year: "2013",
       stream: "m",
       session: "main",
       url: `${ANNALES}/UmdYdlc3em1RWmJQWEJCbW52Vm12dz09`,
-      page: "index",
+      pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-2770867.pdf",
+      page: "consulted",
+      attachments: false,
+      viewer: "blocked",
       notes:
-        "URL extraite de l'index de la section شعبة رياضيات (consultée le 2026-08-30) ; page annales non relue ici ; dzexams annonce sujet + تصحيح (badge « حل ✅ »)."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF non relu."
     }
   ]
 };

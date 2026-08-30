@@ -144,13 +144,13 @@ reconstituée mot à mot, 2026-08-27) ; corrigé officiel (الإجابة الن
 même PDF (pp. 11-21) et croisé avec une seconde source ([eddirasa](https://eddirasa.com/correction-bac-science-2022-se/))
 — textes concordants :
 
-| Sujet | Exercice | Thème                                                                   |
-| ----- | -------- | ----------------------------------------------------------------------- |
-| **1** | ت1 (5ن)  | **الغشاء الهیولي** : تحديد الذات والتعرف على اللادوات (CMH, ABO, BCR, TCR)   |
-| **1** | ت2 (7ن)  | **مناطق التشابك** في النخاع الشوكي : **الغلوتامات** و**GABA** (الاسترخاء)      |
-| **1** | ت3 (8ن)  | المضاد الحيوي **الجینتامسین** و**انحلال البشرة الفقاعية** (الترجمة)            |
-| **2** | ت1 (5ن)  | **السّيانور** (منع ATP) و**كمون الراحة** للليف العصبي                        |
-| **2** | ت2 (7ن)  | **α-amanitine** (ARN بوليميراز) ودواء **ATAC** ضد الأورام السرطانية           |
+| Sujet | Exercice | Thème                                                                       |
+| ----- | -------- | --------------------------------------------------------------------------- |
+| **1** | ت1 (5ن)  | **الغشاء الهیولي** : تحديد الذات والتعرف على اللادوات (CMH, ABO, BCR, TCR)  |
+| **1** | ت2 (7ن)  | **مناطق التشابك** في النخاع الشوكي : **الغلوتامات** و**GABA** (الاسترخاء)   |
+| **1** | ت3 (8ن)  | المضاد الحيوي **الجینتامسین** و**انحلال البشرة الفقاعية** (الترجمة)         |
+| **2** | ت1 (5ن)  | **السّيانور** (منع ATP) و**كمون الراحة** للليف العصبي                       |
+| **2** | ت2 (7ن)  | **α-amanitine** (ARN بوليميراز) ودواء **ATAC** ضد الأورام السرطانية         |
 | **2** | ت3 (8ن)  | **غاز الميثان (CH₄)** في الأبقار والمكمل الغذائي **(3-NOP)** (أنزيم M/CoEM) |
 
 Le **barème 4D** adapte les points officiels à la méthode (N/S/E/W), et l'évaluation
@@ -159,11 +159,11 @@ compare les réponses à des **mots-clés normalisés** (via `normalizeArabic`) 
 
 ### Provenance des consignes
 
-| Année    | État        | PDF local                                          | Source externe                                                                                                                                                                                                                 | Consignes                                                                                                                                               |
-| -------- | ----------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **2025** | activée     | `BAC2025_SVT_Sujet1.pdf`, `BAC2025_SVT_Sujet2.pdf` | —                                                                                                                                                                                                                              | Pôles `official` relus sur le scan ; autres `reconstructed`                                                                                             |
-| **2024** | activée     | aucun (droit d'auteur)                             | [eddirasa sujet](https://eddirasa.com/bac-science-2024-se/) · [PDF](https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf) · [dzexams](https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09) | `reconstructed` — couche texte distante bruitée (OCR + traduction parasite), non certifiable `official` ici. Session de remplacement non localisée.     |
-| **2023** | **activée** | aucun (droit d'auteur)                             | [dzexams 2023](https://www.dzexams.com/ar/annales/STRDZEowcCtwN0JmT1NwS3p4cEVmdz09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf)                             | Consignes `official` relues sur la couche texte du PDF (inversée, reconstituée mot à mot, 2026-08-25) ; pôles sans question autonome en `reconstructed` |
+| Année    | État        | PDF local                                          | Source externe                                                                                                                                                                                                                                                          | Consignes                                                                                                                                                                                                         |
+| -------- | ----------- | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **2025** | activée     | `BAC2025_SVT_Sujet1.pdf`, `BAC2025_SVT_Sujet2.pdf` | —                                                                                                                                                                                                                                                                       | Pôles `official` relus sur le scan ; autres `reconstructed`                                                                                                                                                       |
+| **2024** | activée     | aucun (droit d'auteur)                             | [eddirasa sujet](https://eddirasa.com/bac-science-2024-se/) · [PDF](https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf) · [dzexams](https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09)                                          | `reconstructed` — couche texte distante bruitée (OCR + traduction parasite), non certifiable `official` ici. Session de remplacement non localisée.                                                               |
+| **2023** | **activée** | aucun (droit d'auteur)                             | [dzexams 2023](https://www.dzexams.com/ar/annales/STRDZEowcCtwN0JmT1NwS3p4cEVmdz09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf)                                                                      | Consignes `official` relues sur la couche texte du PDF (inversée, reconstituée mot à mot, 2026-08-25) ; pôles sans question autonome en `reconstructed`                                                           |
 | **2022** | **activée** | aucun (droit d'auteur)                             | [dzexams 2022](https://www.dzexams.com/ar/annales/eVlXSFRFOEJaN2ozSlE3NytzWkRHQT09) · [PDF ONEC](https://www.dzexams.com/uploads/sujets/officiels/bac/2022/dzexams-bac-sciences-2311208.pdf) · [corrigé eddirasa](https://eddirasa.com/correction-bac-science-2022-se/) | Consignes `official` relues sur la couche texte du PDF ONEC (inversée, reconstituée mot à mot, 2026-08-27) ; corrigé officiel croisé sur 2 sources concordantes ; pôles sans question autonome en `reconstructed` |
 
 Aucun PDF 2022/2024/2023 n'est versé dans le dépôt.
@@ -177,22 +177,25 @@ annales dzexams qui contiennent le sujet officiel (**الموضوعان 1 و 2**
 **تصحيح النموذجي** dans leur viewer (certaines entrées incluent aussi le lien
 PDF direct observé sur la page).
 
-| Filière | Sessions principales | Sessions exceptionnelles | Total |
-| ------- | -------------------- | ------------------------ | ----- |
-| شعبة علوم تجريبية (`se`) | 2013–2020 (8) | 2016, 2017 (2) | 10 |
-| شعبة رياضيات (`m`) | 2013–2020 (8) | 2017 (1) | 9 |
-| شعبة تقني رياضي | **absente de la source** | — | 0 |
+| Filière                  | Sessions principales     | Sessions exceptionnelles | Total |
+| ------------------------ | ------------------------ | ------------------------ | ----- |
+| شعبة علوم تجريبية (`se`) | 2013–2020 (8)            | 2016, 2017 (2)           | 10    |
+| شعبة رياضيات (`m`)       | 2013–2020 (8)            | 2017 (1)                 | 9     |
+| شعبة تقني رياضي          | **absente de la source** | —                        | 0     |
 
 Statut honnête :
 
 - **Ce n'est pas du training 4D.** Aucun barème, mot-clé ou réponse modèle :
   le moteur d'évaluation ne s'applique pas à ces années. Chaque lien est
   étiqueté « consultation » dans l'interface.
-- **Provenance par entrée** (`data/archive.js`) : `page: "consulted"` = page
-  annales ouverte et pièces jointes sujet/correction lues le 2026-08-30 ;
-  `page: "index"` = URL prise dans l'index de la section dzexams le même jour,
-  page annales **non relue** ici. Aucune entrée ne prétend être relue si elle
-  ne l'a pas été.
+- **Les 19 pages annales ont été ouvertes le 2026-08-30** (aucune entrée
+  « depuis l'index »). Métriques par entrée dans `data/archive.js` :
+  `viewer: "ok"` (viewer en ligne lisible) vs `viewer: "blocked"` (viewer
+  « 0 pages », PDF chiffré côté PDF.js — seul le lien de téléchargement
+  direct est conforme) ; `attachments: true` quand les pièces jointes
+  « sujet » + « …-correction » sont exposées ; `pdfUrl` = lien PDF direct
+  observé (10 entrées). Une entrée « blocked » n'est **pas** présentée
+  comme contenu relu.
 - **Session exceptionnelle (الدورة الاستثنائية)** : la source n'en référence
   que pour 2016 (se+m) et 2017 (se+m). Pour les autres années, la session
   exceptionnelle n'est pas cataloguée faute de source vérifiée — elle n'est

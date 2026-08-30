@@ -49,11 +49,13 @@ test("les URLs annales sont https, dzexams et uniques", () => {
   }
 });
 
-test("sessions et filières contrôlées, valeurs de page contrôlées", () => {
+test("toutes les entrées sont vérifiées (page ouverte) avec métriques de contrôle", () => {
   for (const e of ARCHIVE.entries) {
+    assert.equal(e.page, "consulted", `entrée non consultée: ${e.year}/${e.stream}/${e.session}`);
     assert.ok(["se", "m"].includes(e.stream), `filière inconnue: ${e.stream}`);
     assert.ok(["main", "exceptional"].includes(e.session), `session inconnue: ${e.session}`);
-    assert.ok(["consulted", "index"].includes(e.page), `valeur page inconnue: ${e.page}`);
+    assert.ok(["ok", "blocked"].includes(e.viewer), `viewer inconnu: ${e.viewer}`);
+    assert.equal(typeof e.attachments, "boolean", `attachments non booléen: ${e.year}`);
   }
 });
 
