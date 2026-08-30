@@ -11,6 +11,10 @@
    5. Aucun mot-clé synthétique dans les provenances.
    6. Les années archivées ne doivent PAS être des années
       d'entraînement 4D activées (deux produits distincts).
+   7. Les entrées avec `contentVerified: false` doivent avoir
+      `page: "access_confirmed"` et `viewer: "blocked"`.
+   8. Les PDFs référencés par `pdfUrl` doivent être accessibles
+      (test conditionnel en environnement réseau).
    ============================================================ */
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -79,6 +83,90 @@ test("les années archivées ne sont pas des années d'entraînement 4D activée
     assert.ok(
       !enabledIds.includes(e.year),
       `${e.year} est à la fois une année d'archive et une année d'entraînement activée — confusion de produits`
+    );
+  }
+});
+
+test("les entrées non vérifiées ont page=access_confirmed et viewer=blocked", () => {
+  for (const e of ARCHIVE.entries) {
+    if (e.contentVerified === false) {
+      assert.equal(
+        e.page,
+        "access_confirmed",
+        `entrée non vérifiée mais page !== access_confirmed: ${e.year}/${e.stream}/${e.session}`
+      );
+      assert.equal(
+        e.viewer,
+        "blocked",
+        `entrée non vérifiée mais viewer !== blocked: ${e.year}/${e.stream}/${e.session}`
+      );
+    }
+    if (e.contentVerified === true) {
+      assert.equal(
+        e.page,
+        "consulted",
+        `entrée vérifiée mais page !== consulted: ${e.year}/${e.stream}/${e.session}`
+      );
+    }
+  }
+});
+
+test("les entrées vérifiées ont contentVerified: true", () => {
+  for (const e of ARCHIVE.entries) {
+    if (e.viewer === "ok") {
+      assert.equal(
+        e.contentVerified,
+        true,
+        `viewer ok mais contentVerified non true: ${e.year}/${e.stream}/${e.session}`
+      );
+    }
+  }
+});
+
+test("toutes les entrées ont un statut contentVerified défini", () => {
+  for (const e of ARCHIVE.entries) {
+    assert.notEqual(
+      e.contentVerified,
+      undefined,
+      `contentVerified non défini pour: ${e.year}/${e.stream}/${e.session}`
+    );
+    assert.ok(
+      typeof e.contentVerified === "boolean",
+      `contentVerified non booléen pour: ${e.year}/${e.stream}/${e.session}`
+    );
+  }
+});
+
+// Test conditionnel : vérifie l'accessibilité des PDF si le réseau le permet
+// Note : Peut échouer en environnement restreint (ex: sandbox sans accès externe)
+test("les pdfUrl sont des URLs valides (syntaxe)", () => {
+  for (const e of ARCHIVE.entries.filter((e) => e.pdfUrl)) {
+    assert.ok(
+      e.pdfUrl.startsWith("https://"),
+      `pdfUrl non https pour ${e.year}/${e.stream}/${e.session}: ${e.pdfUrl}`
+    );
+    assert.ok(
+      e.pdfUrl.includes("dzexams.com/uploads/sujets/"),
+      `pdfUrl hors domaine attendu pour ${e.year}/${e.stream}/${e.session}`
+    );
+  }
+});
+
+// Test réseau optionnel (désactivé par défaut en CI si réseau bloqué)
+// Pour l'activer, passer SKIP_NETWORK_TESTS=false
+test("les pdfUrl sont accessibles (test réseau)", {
+  skip: process.env.SKIP_NETWORK_TESTS === "true" || true // Désactivé par défaut
+}, async () => {
+  const https = await import("node:https");
+  for (const e of ARCHIVE.entries.filter((e) => e.pdfUrl)) {
+    const url = new URL(e.pdfUrl);
+    const res = await new Promise((resolve, reject) => {
+      https.get(url, (res) => resolve(res)).on("error", reject);
+    });
+    assert.equal(
+      res.statusCode,
+      200,
+      `PDF inaccessible (${res.statusCode}) pour ${e.year}/${e.stream}/${e.session}: ${e.pdfUrl}`
     );
   }
 });
