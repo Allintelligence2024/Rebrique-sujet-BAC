@@ -33,8 +33,8 @@ L'interface propose des thèmes clair et sombre persistants. Les outils secondai
 │   ├── styles.css                    # design 100% autonome (aucun CDN)
 │   └── icon-192.png / icon-512.png   # icônes de marque (boussole 4D)
 ├── data/
-│   ├── subjects.js                   # ⭐ CONFIG : 4 années (2022–2025) → 8 sujets → 24 exercices (barème & mots-clés)
-│   ├── archive.js                    # 📚 archive 2013–2020 : liens externes vérifiés (sujets + التصحيح), PAS de 4D
+│   ├── subjects.js                   # ⭐ CONFIG : 4 années 4D (2022–2025, شعبة علوم تجريبية)
+│   ├── archive.js                    # 2013–2020 : liens officiels vérifiés (sujet + تصحيح), pas de 4D
 │   └── brouillon.js                  # canevas du brouillon méthodologique et verbes BAC
 ├── js/
 │   ├── main.js                       # point d'entrée
@@ -170,12 +170,12 @@ Aucun PDF 2022/2024/2023 n'est versé dans le dépôt.
 
 ---
 
-## 📚 Archive 2013–2020 (consultation, pas d'entraînement 4D)
+## 📚 Sujets 2013–2020 (même grille que 2022–2025, pas d'entraînement 4D)
 
-Ajoutée le **2026-08-30** : un catalogue de **19 entrées** pointant vers les pages
-annales dzexams qui contiennent le sujet officiel (**الموضوعان 1 و 2**) et le
-**تصحيح النموذجي** dans leur viewer (certaines entrées incluent aussi le lien
-PDF direct observé sur la page).
+Les années **2013–2020** apparaissent dans **la même grille** que 2022–2025
+sur le hub. Un **petit bouton en coin** (« تغيير الشعبة ») bascule entre
+شعبة علوم تجريبية et شعبة رياضيات : les sujets de l'autre filière
+remplacent alors la grille.
 
 | Filière                  | Sessions principales     | Sessions exceptionnelles | Total |
 | ------------------------ | ------------------------ | ------------------------ | ----- |
@@ -185,33 +185,23 @@ PDF direct observé sur la page).
 
 Statut honnête :
 
-- **Ce n'est pas du training 4D.** Aucun barème, mot-clé ou réponse modèle :
-  le moteur d'évaluation ne s'applique pas à ces années. Chaque lien est
-  étiqueté « consultation » dans l'interface.
-- **Les 19 pages annales ont été ouvertes le 2026-08-30** (aucune entrée
-  « depuis l'index »). Métriques par entrée dans `data/archive.js` :
-  `viewer: "ok"` (viewer en ligne lisible) vs `viewer: "blocked"` (viewer
-  « 0 pages », PDF chiffré côté PDF.js — seul le lien de téléchargement
-  direct est conforme) ; `attachments: true` quand les pièces jointes
-  « sujet » + « …-correction » sont exposées ; `pdfUrl` = lien PDF direct
-  observé (10 entrées). Une entrée « blocked » n'est **pas** présentée
-  comme contenu relu.
-- **Session exceptionnelle (الدورة الاستثنائية)** : la source n'en référence
-  que pour 2016 (se+m) et 2017 (se+m). Pour les autres années, la session
-  exceptionnelle n'est pas cataloguée faute de source vérifiée — elle n'est
-  pas inventée.
-- **شعبة تقني رياضي** : dzexams ne propose aucune catégorie SVT pour cette
-  filière (page racine `/ar/bac/sciences-naturelles` vérifiée le 2026-08-30 :
-  uniquement `se` et `m`). Aucun lien n'a été fabriqué ; un ajout nécessite
-  une autre source vérifiable.
-- **Aucun PDF versé** (droit d'auteur) : les liens sont externes, comme pour
-  2022/2023/2024.
+- **2022–2025 (علوم تجريبية)** : entraînement 4D (`data/subjects.js`).
+- **2013–2020** : consultation — sujet officiel + تصحيح النموذجي via
+  dzexams. Aucun barème, mot-clé ou réponse modèle : le moteur ne s'applique
+  pas. Les cartes portent le badge « موضوع رسمي ».
+- **Les 19 pages annales ont été ouvertes** (2026-08-30). Les 9 PDF au
+  viewer bloqué ont été validés via le lien direct (HTTP 200, en-tête `%PDF`)
+  le 2026-08-31. Toutes les entrées ont `contentVerified: true`.
+- **Session exceptionnelle** : sur dzexams, 2016 et 2017 pour `se` ; 2017
+  seulement pour `m`. **2016 Maths exceptionnelle n'existe pas** sur l'index
+  `/ar/bac/sciences-naturelles/m` (une seule ligne 2016) — le trou est
+  documenté dans `ARCHIVE.gaps`, aucun lien n'a été inventé.
+- **شعبة تقني رياضي** : dzexams n'a pas de catégorie SVT pour cette filière
+  (page racine vérifiée le 2026-08-30). Aucun lien fabriqué.
+- **Aucun PDF 2013–2020 versé** (droit d'auteur).
 
-Plan de modélisation : l'archive est la **première étape**. La modélisation 4D
-complète se fait ensuite année par année, au standard de 2022 (consignes
-relues sur le PDF, corrigé officiel croisé, relecture humaine), en commençant
-par **2020** — puis l'année migrera du catalogue d'archive vers le parcours
-d'entraînement (`APP_CONFIG.years`).
+Plan 4D : encoder ensuite année par année au standard 2022, en commençant
+par **2020** — l'année passera alors de la consultation à `APP_CONFIG.years`.
 
 ---
 
@@ -219,7 +209,7 @@ d'entraînement (`APP_CONFIG.years`).
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **153** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **160** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0**
 - Taille de la façade UI (js/ui.js) : **408 lignes**
 

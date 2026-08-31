@@ -95,15 +95,30 @@ test("1. Hub : test des boutons d'accueil, adkar, atlas, sons et années", () =>
   click("#ws-home");
 });
 
-test("1b. Archive 2013–2020 : le bouton ouvre le catalogue sans lancer d'entraînement", () => {
-  click("#btn-archive");
-  assert.ok($(".modal"));
-  const links = $$('.modal a[href*="dzexams.com/ar/annales/"]');
-  assert.equal(links.length, 19, "l'archive doit exposer exactement 19 liens annales");
-  assert.ok($(".modal").textContent.includes("بدون تقييم 4D"));
-  assert.ok($(".modal").textContent.includes("شعبة تقني رياضي"));
-  click('[data-close="ok"]');
-  assert.equal($(".modal"), null);
+test("1b. Les années 2013–2020 sont dans la même grille, sans lancer d'entraînement", () => {
+  assert.equal($$("#year-grid .year-card").length, 12);
+  const consult = $('#year-grid [data-hub-year="2013"]');
+  assert.ok(consult);
+  assert.equal(consult.dataset.kind, "consult");
+  assert.equal(consult.querySelector("[data-year]"), null);
+  const links = $$('#year-grid [data-kind="consult"] a[href*="dzexams.com/ar/annales/"]');
+  assert.equal(links.length, 10, "filière SE : 8 sessions principales + 2 exceptionnelles");
+  assert.ok(!$(".modal"));
+  assert.ok(!$("#view-hub").classList.contains("hidden"));
+});
+
+test("1c. Le bouton filière affiche les sujets Maths dans la même grille", () => {
+  click("#btn-stream-fab");
+  assert.match($("#stream-fab-label").textContent, /رياضيات/);
+  assert.equal($$("#year-grid [data-year]").length, 0, "pas d'entraînement 4D Maths encodé");
+  assert.equal($$("#year-grid .year-card").length, 8);
+  assert.ok($('#year-grid [data-hub-year="2020"]'));
+  assert.ok($('#year-grid [data-hub-year="2013"]'));
+  const links = $$('#year-grid [data-kind="consult"] a[href*="dzexams.com/ar/annales/"]');
+  assert.equal(links.length, 9, "filière Maths : 8 principales + 2017 exceptionnelle");
+  click("#btn-stream-fab");
+  assert.match($("#stream-fab-label").textContent, /علوم تجريبية/);
+  assert.ok($('#year-grid [data-year="2025"]'));
 });
 
 test("2. Guide : respiration, adkar intégrés et navigation", () => {

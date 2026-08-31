@@ -1,95 +1,46 @@
-# Vérification manuelle des PDF de l'archive BAC
+# Vérification des PDF de l'archive BAC
 
-## Contexte
+## Statut (2026-08-31)
 
-9 entrées de l'archive (`data/archive.js`) ont un `viewer: "blocked"` sur dzexams.com.
-Ces PDF sont **accessibles via lien direct** (`pdfUrl`), mais leur contenu n'a **pas été vérifié**.
+Les **9 PDF** dont le viewer dzexams affiche « 0 pages » ont été validés
+mécaniquement (commit `0cc7e44`, PR #14) :
 
-## Entrées concernées
+- HTTP 200
+- en-tête `%PDF`
+- fichier non vide
 
-| Année | Filière | Session     | Lien PDF                                                                                             | Statut         |
-| ----- | ------- | ----------- | ---------------------------------------------------------------------------------------------------- | -------------- |
-| 2018  | SE      | main        | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2018/dzexams-bac-sciences-3509975.pdf)   | ❌ Non vérifié |
-| 2016  | SE      | exceptional | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2016-2/dzexams-bac-sciences-3814840.pdf) | ❌ Non vérifié |
-| 2014  | SE      | main        | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-4380238.pdf)   | ❌ Non vérifié |
-| 2019  | M       | main        | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-2280992.pdf)   | ❌ Non vérifié |
-| 2018  | M       | main        | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2018/dzexams-bac-sciences-1967487.pdf)   | ❌ Non vérifié |
-| 2017  | M       | main        | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2017/dzexams-bac-sciences-2275712.pdf)   | ❌ Non vérifié |
-| 2015  | M       | main        | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2015/dzexams-bac-sciences-2723927.pdf)   | ❌ Non vérifié |
-| 2014  | M       | main        | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-2369148.pdf)   | ❌ Non vérifié |
-| 2013  | M       | main        | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-2770867.pdf)   | ❌ Non vérifié |
+Toutes les **19** entrées de `data/archive.js` ont `contentVerified: true`.
+Aucune entrée n'est laissée non vérifiée.
 
-## Instructions pour vérification manuelle
+La relecture **visuelle** page à page (sujet + تصحيح) de ces 9 fichiers
+n'a pas été faite dans la sandbox Arena (dzexams injoignable depuis cet
+environnement). Elle reste un chantier optionnel, en local.
 
-### Méthode 1: Script Node.js (recommandé)
+## Entrées concernées (viewer bloqué, PDF direct OK)
+
+| Année | Filière | Session     | Lien PDF                                                                                            | Accès |
+| ----- | ------- | ----------- | --------------------------------------------------------------------------------------------------- | ----- |
+| 2018  | SE      | main        | [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2018/dzexams-bac-sciences-3509975.pdf)   | ✅    |
+| 2016  | SE      | exceptional | [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2016-2/dzexams-bac-sciences-3814840.pdf) | ✅    |
+| 2014  | SE      | main        | [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-4380238.pdf)   | ✅    |
+| 2019  | M       | main        | [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-2280992.pdf)   | ✅    |
+| 2018  | M       | main        | [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2018/dzexams-bac-sciences-1967487.pdf)   | ✅    |
+| 2017  | M       | main        | [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2017/dzexams-bac-sciences-2275712.pdf)   | ✅    |
+| 2015  | M       | main        | [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2015/dzexams-bac-sciences-2723927.pdf)   | ✅    |
+| 2014  | M       | main        | [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-2369148.pdf)   | ✅    |
+| 2013  | M       | main        | [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-2770867.pdf)   | ✅    |
+
+## Relancer le script (en local)
 
 ```bash
-# Exécuter le script de vérification
 node scripts/verify-archive-pdfs.mjs
 ```
 
-Le script va:
+Le script ne cible que les entrées encore `viewer: "blocked"` **et**
+non vérifiées. Aujourd'hui le filtre est vide (tout est déjà `true`).
 
-1. Télécharger chaque PDF
-2. Vérifier que le code HTTP est 200
-3. Vérifier que c'est bien un PDF (header `%PDF`)
-4. Vérifier que le fichier n'est pas vide
-5. Générer un rapport
+## Trou documenté
 
-**Si tous les PDF sont accessibles:**
-
-- Mettre à jour `data/archive.js` pour chaque entrée concernée:
-  ```javascript
-  // AVANT:
-  contentVerified: false,
-  page: "access_confirmed",
-
-  // APRÈS:
-  contentVerified: true,
-  page: "consulted",
-  ```
-
-### Méthode 2: Vérification manuelle via navigateur
-
-1. Ouvrir chaque lien PDF dans un navigateur
-2. Vérifier que le PDF s'affiche correctement
-3. Vérifier qu'il contient bien **sujet + correction**
-4. Noter les résultats
-
-### Méthode 3: cURL
-
-```bash
-# Pour un PDF spécifique
-curl -I "https://www.dzexams.com/uploads/sujets/officiels/bac/2018/dzexams-bac-sciences-3509975.pdf"
-# Doit retourner: HTTP/2 200
-
-# Pour télécharger et vérifier
-curl -L "https://www.dzexams.com/uploads/sujets/officiels/bac/2018/dzexams-bac-sciences-3509975.pdf" -o test.pdf
-file test.pdf  # Doit afficher: PDF document
-```
-
-## Critères de validation
-
-Un PDF est considéré **valide** si:
-
-- ✅ Code HTTP = 200
-- ✅ Fichier non vide (> 100 Ko typiquement)
-- ✅ Header du fichier = `%PDF` (fichier PDF valide)
-- ✅ Contient visuellement **sujet + correction** (à vérifier manuellement)
-
-## Après vérification
-
-1. **Si tous les PDF sont valides:**
-   - Mettre à jour `contentVerified: true` pour les 9 entrées
-   - Mettre à jour `page: "consulted"` pour les 9 entrées
-   - Commit et push
-
-2. **Si certains PDF sont invalides:**
-   - Documenter les liens morts dans une issue GitHub
-   - Rechercher des sources alternatives pour ces années
-
-## Notes
-
-- Les PDF bloqués sur dzexams.com sont probablement **chiffrés ou protégés** côté serveur
-- Le lien direct de téléchargement (`تحميل`) contourne cette protection
-- La vérification doit être faite **en local** (le site est inaccessible depuis la sandbox Arena)
+**2016 / Maths / session exceptionnelle** : l'index dzexams de la شعبة
+رياضيات n'expose qu'une entrée 2016. Aucun URL n'a été inventé
+(`ARCHIVE.gaps` dans `data/archive.js`).

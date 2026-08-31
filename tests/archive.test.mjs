@@ -22,6 +22,16 @@ import { ARCHIVE } from "../data/archive.js";
 
 const BAD_KEYWORDS = ["synthetic", "généré", "LLM", "GPT", "Claude", "Gemini", "chatbot", "fabriqué"];
 
+test("la session exceptionnelle 2016 Maths n'est pas inventée", () => {
+  assert.equal(
+    ARCHIVE.entries.some((e) => e.year === "2016" && e.stream === "m" && e.session === "exceptional"),
+    false
+  );
+  const gap = ARCHIVE.gaps.find((g) => g.year === "2016" && g.stream === "m" && g.session === "exceptional");
+  assert.ok(gap, "le trou 2016/m/exceptional doit rester documenté");
+  assert.ok(gap.reason.length > 20);
+});
+
 test("chaque année 2013–2020 a une session principale pour se et m", () => {
   for (let y = 2013; y <= 2020; y++) {
     const year = String(y);

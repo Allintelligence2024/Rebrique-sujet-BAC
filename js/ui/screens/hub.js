@@ -1,5 +1,50 @@
 import { node, setInternalHTML } from "../dom.js";
-import { ARCHIVE, archiveByStream } from "../../../data/archive.js";
+import { ARCHIVE, catalogYearsForStream } from "../../../data/archive.js";
+
+const STREAM_KEY = "boussole4d.stream";
+const STREAMS = {
+  se: { id: "se", label: "علوم تجريبية" },
+  m: { id: "m", label: "رياضيات" }
+};
+
+function readStream() {
+  try {
+    const value = localStorage.getItem(STREAM_KEY);
+    if (value === "se" || value === "m") return value;
+  } catch {
+    /* storage unavailable */
+  }
+  return "se";
+}
+
+function writeStream(id) {
+  try {
+    localStorage.setItem(STREAM_KEY, id);
+  } catch {
+    /* storage unavailable */
+  }
+}
+
+function trainingYearsForStream(appConfig, streamId) {
+  if (streamId !== "se") return [];
+  return appConfig.years.filter((year) => year.enabled);
+}
+
+function buildHubCatalog(appConfig, streamId) {
+  const training = trainingYearsForStream(appConfig, streamId).map((year) => ({
+    id: year.id,
+    kind: "training",
+    year
+  }));
+  const consult = catalogYearsForStream(streamId)
+    .filter((group) => !training.some((item) => item.id === group.year))
+    .map((group) => ({
+      id: group.year,
+      kind: "consult",
+      entries: group.entries
+    }));
+  return [...training, ...consult].sort((a, b) => (a.id < b.id ? 1 : -1));
+}
 
 export function createHubScreen(deps) {
   const {
@@ -23,7 +68,10 @@ export function createHubScreen(deps) {
   } = deps;
 
   function renderHub() {
-    const years = APP_CONFIG.years;
+    const streamId = readStream();
+    const stream = STREAMS[streamId];
+    const other = STREAMS[streamId === "se" ? "m" : "se"];
+    const catalog = buildHubCatalog(APP_CONFIG, streamId);
     setInternalHTML(
       $("#view-hub"),
       `
@@ -57,63 +105,32 @@ export function createHubScreen(deps) {
         </div>
       </section>
 
+      <div class="flex spread mb-1 hub-stream-bar">
+        <p class="small text-muted mt-0 mb-1" id="hub-stream-caption"></p>
+      </div>
       <div class="grid grid-cards" id="year-grid"></div>
-      <section class="card archive-card mb-2 mt-2" aria-labelledby="archive-title">
-        <div class="flex spread" style="flex-wrap:wrap;gap:1rem">
-          <div>
-            <h2 id="archive-title" class="mt-0 mb-1">📚 أرشيف موضوعات 2013–2020</h2>
-            <p class="small text-muted mt-0">
-              موضوعات رسمية مع التصحيح النموذجي (فتح خارجي). للاستشارة فقط — بدون تقييم 4D بعد.
-            </p>
-          </div>
-          <button class="btn btn-indigo" id="btn-archive">فتح الأرشيف</button>
-        </div>
-      </section>
+      <button type="button" class="stream-fab" id="btn-stream-fab">
+        <span class="stream-fab-kicker">تغيير الشعبة</span>
+        <strong id="stream-fab-label"></strong>
+      </button>
       <footer class="screen-foot">منصة تدريب منهجي لامتحانات بكالوريا علوم الطبيعة والحياة.</footer>
     </div>`
     );
 
+    const caption = $("#hub-stream-caption");
+    caption.textContent =
+      streamId === "se"
+        ? `الشعبة المعروضة: ${stream.label} — 2022–2025 تدريب 4D، 2013–2020 موضوع رسمي + تصحيح.`
+        : `الشعبة المعروضة: ${stream.label} — موضوعات رسمية 2013–2020. تدريب 4D (2022–2025) متاح لشعبة علوم تجريبية.`;
+
+    const fab = $("#btn-stream-fab");
+    fab.setAttribute("aria-label", `الشعبة الحالية: ${stream.label}. اضغط للانتقال إلى شعبة ${other.label}`);
+    $("#stream-fab-label").textContent = stream.label;
+
     const grid = $("#year-grid");
-    years.forEach((y) => {
-      const disabled = !y.enabled;
-      const note = disabled
-        ? y.loadingNote || "لم تُرفق وثائق PDF لهذه الدورة بعد — قريباً."
-        : "جلسة شاملة وفق نظام الأقطاب 4D الهادئ.";
-      const card = node("div", {
-        className: `card year-card ${disabled ? "dim" : ""}`,
-        attrs: { title: note }
-      });
-      const stack = node("div", { className: "stack" });
-      const header = node("div", { className: "flex spread" });
-      header.append(
-        node("span", { className: `badge badge-${y.theme}`, text: y.badge }),
-        node("span", { className: "mono bold", text: y.id, attrs: { style: "font-size:1.6rem" } })
-      );
-      const copy = node("div");
-      copy.append(
-        node("h3", { className: "mt-0 mb-1", text: y.label }),
-        node("p", { className: "small text-muted mt-0", text: note })
-      );
-      stack.append(header, copy);
-      const buttonTheme =
-        y.theme === "emerald" ? "btn-emerald" : y.theme === "indigo" ? "btn-indigo" : "btn-amber";
-      const button = node("button", {
-        className: `btn btn-block ${buttonTheme}`,
-        text: disabled ? "غير متاح بعد" : "دخول الدورة (ساس التهدئة والبوصلة)",
-        attrs: disabled ? { disabled: "" } : {},
-        dataset: { year: y.id }
-      });
-      const quickButton = node("button", {
-        className: "btn btn-block btn-ghost",
-        text: disabled ? "غير متاح" : "⚡ دخول سريع إلى تمرين",
-        attrs: disabled ? { disabled: "" } : {},
-        dataset: { quickYear: y.id }
-      });
-      const actions = node("div", { className: "stack" });
-      actions.append(button, quickButton);
-      card.append(stack, actions);
-      grid.appendChild(card);
-    });
+    for (const item of catalog) {
+      grid.appendChild(item.kind === "training" ? trainingCard(item.year) : consultCard(item));
+    }
 
     $$("#year-grid [data-year]:not([disabled])").forEach((btn) =>
       btn.addEventListener("click", () => startSession(btn.dataset.year))
@@ -123,11 +140,111 @@ export function createHubScreen(deps) {
     );
     $("#btn-demo").addEventListener("click", openDemo);
     $("#btn-atlas").addEventListener("click", openAtlas);
-    $("#btn-archive").addEventListener("click", openArchive);
     $("#btn-hub-adkar").addEventListener("click", openAdkar);
     $("#btn-hub-sound").addEventListener("click", () => cycleSound($("#btn-hub-sound")));
     $$("[data-theme-toggle]").forEach((button) => button.addEventListener("click", toggleTheme));
+    fab.addEventListener("click", cycleStream);
     applyTheme(document.documentElement.dataset.theme);
+  }
+
+  function cycleStream() {
+    writeStream(readStream() === "se" ? "m" : "se");
+    renderHub();
+  }
+
+  function trainingCard(y) {
+    const disabled = !y.enabled;
+    const note = disabled
+      ? y.loadingNote || "لم تُرفق وثائق PDF لهذه الدورة بعد — قريباً."
+      : "جلسة شاملة وفق نظام الأقطاب 4D الهادئ.";
+    const card = node("div", {
+      className: `card year-card ${disabled ? "dim" : ""}`,
+      attrs: { title: note },
+      dataset: { hubYear: y.id, kind: "training" }
+    });
+    const stack = node("div", { className: "stack" });
+    const header = node("div", { className: "flex spread" });
+    header.append(
+      node("span", { className: `badge badge-${y.theme}`, text: y.badge }),
+      node("span", { className: "mono bold", text: y.id, attrs: { style: "font-size:1.6rem" } })
+    );
+    const copy = node("div");
+    copy.append(
+      node("h3", { className: "mt-0 mb-1", text: y.label }),
+      node("p", { className: "small text-muted mt-0", text: note })
+    );
+    stack.append(header, copy);
+    const buttonTheme =
+      y.theme === "emerald" ? "btn-emerald" : y.theme === "indigo" ? "btn-indigo" : "btn-amber";
+    const button = node("button", {
+      className: `btn btn-block ${buttonTheme}`,
+      text: disabled ? "غير متاح بعد" : "دخول الدورة (ساس التهدئة والبوصلة)",
+      attrs: disabled ? { disabled: "" } : {},
+      dataset: { year: y.id }
+    });
+    const quickButton = node("button", {
+      className: "btn btn-block btn-ghost",
+      text: disabled ? "غير متاح" : "⚡ دخول سريع إلى تمرين",
+      attrs: disabled ? { disabled: "" } : {},
+      dataset: { quickYear: y.id }
+    });
+    const actions = node("div", { className: "stack" });
+    actions.append(button, quickButton);
+    card.append(stack, actions);
+    return card;
+  }
+
+  function consultCard(item) {
+    const card = node("div", {
+      className: "card year-card",
+      dataset: { hubYear: item.id, kind: "consult" }
+    });
+    const stack = node("div", { className: "stack" });
+    const header = node("div", { className: "flex spread" });
+    header.append(
+      node("span", { className: "badge badge-indigo", text: "موضوع رسمي" }),
+      node("span", { className: "mono bold", text: item.id, attrs: { style: "font-size:1.6rem" } })
+    );
+    const copy = node("div");
+    copy.append(
+      node("h3", { className: "mt-0 mb-1", text: `بكالوريا الجزائر دورة ${item.id}` }),
+      node("p", {
+        className: "small text-muted mt-0",
+        text: "الموضوعان والتصحيح النموذجي — للاستشارة (بدون تقييم 4D)."
+      })
+    );
+    stack.append(header, copy);
+    const actions = node("div", { className: "stack" });
+    for (const entry of item.entries) {
+      const session = ARCHIVE.sessions[entry.session] || entry.session;
+      const label = item.entries.length > 1 ? `📄 ${session}` : "📄 الموضوع والتصحيح النموذجي";
+      actions.append(
+        node("a", {
+          className: "btn btn-block btn-indigo",
+          text: label,
+          attrs: {
+            href: entry.url,
+            target: "_blank",
+            rel: "noopener noreferrer"
+          }
+        })
+      );
+      if (entry.pdfUrl) {
+        actions.append(
+          node("a", {
+            className: "btn btn-block btn-ghost btn-sm",
+            text: "⬇️ PDF مباشر",
+            attrs: {
+              href: entry.pdfUrl,
+              target: "_blank",
+              rel: "noopener noreferrer"
+            }
+          })
+        );
+      }
+    }
+    card.append(stack, actions);
+    return card;
   }
 
   function openDemo() {
@@ -145,37 +262,6 @@ export function createHubScreen(deps) {
       `<p class="feedback mid">هذا مثال مصطنع ومعلن للشرح فقط؛ ليس نتيجة طالب حقيقي ولا دليلاً على الدقة.</p>
        <div class="grid grid-2">${panel("قبل: عبارة عامة", demo.before)}${panel("بعد: ملاحظة ثم تفسير", demo.after)}</div>
        <section class="mt-2"><h3>ما لا يضمنه المحرك</h3>${list(demo.limits, "")}</section>`
-    );
-  }
-
-  function openArchive() {
-    const groups = archiveByStream();
-    const section = (stream) => {
-      const { label, indexUrl, entries } = groups[stream];
-      const cards = entries
-        .map((e) => {
-          const session = ARCHIVE.sessions[e.session] || e.session;
-          return `<div class="card stack" style="padding:.75rem 1rem">
-            <span class="bold">${e.year} — ${session}</span>
-            <a class="btn btn-ghost btn-sm" href="${e.url}" target="_blank" rel="noopener noreferrer">
-              📄 الموضوع والتصحيح النموذجي (dzexams)
-            </a>
-            ${e.pdfUrl ? `<a class="btn btn-ghost btn-sm" href="${e.pdfUrl}" target="_blank" rel="noopener noreferrer">⬇️ PDF مباشر</a>` : ""}
-            <small class="text-muted">${e.viewer === "ok" ? "المعاينة متاحة" : "معاينة محجوبة — رابط التحميل متاح"}</small>
-          </div>`;
-        })
-        .join("");
-      return `<section class="stack">
-        <h3 class="mt-2 mb-1">${label} <small class="text-muted">(فهرس: <a href="${indexUrl}" target="_blank" rel="noopener noreferrer">dzexams</a>)</small></h3>
-        <div class="grid grid-2">${cards || '<p class="text-muted">لا توجد مخططات.</p>'}</div>
-      </section>`;
-    };
-    openModal(
-      "📚 أرشيف موضوعات 2013–2020 (بدون تقييم 4D)",
-      `<p class="text-muted small">تحققتُ من المصدر بتاريخ ${ARCHIVE.verifiedAt} — dzexams.com. كل رابط يفتح الموضوعين 1 و2 مع التصحيح النموذجي في نفس الصفحة. هذا ركن استشارة فقط: لا يطبّق المحرك تقييمه على هذه المواضيع ولا يمنح مؤشرات تغطية.</p>
-       ${section("se")}
-       ${section("m")}
-       <p class="small text-muted mt-2"><strong>⚠️ شعبة تقني رياضي:</strong> لا تتوفر في dzexams أقسام "علوم الطبيعة والحياة" لهذه الشعبة (تحقق في ${ARCHIVE.verifiedAt}) — لم يُضف أي رابط وهمي. يلزم مصدر بديل يتم التحقق منه قبل أي إضافة.</p>`
     );
   }
 
