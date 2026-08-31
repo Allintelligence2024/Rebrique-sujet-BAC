@@ -95,29 +95,39 @@ test("1. Hub : test des boutons d'accueil, adkar, atlas, sons et années", () =>
   click("#ws-home");
 });
 
-test("1b. Les années 2013–2021 sont dans la même grille, sans lancer d'entraînement", () => {
-  assert.equal($$("#year-grid .year-card").length, 13);
+test("1b. Les années 2013–2021 et 2026 sont dans la même grille, sans lancer d'entraînement", () => {
+  assert.equal($$("#year-grid .year-card").length, 14);
   const consult = $('#year-grid [data-hub-year="2013"]');
   assert.ok(consult);
   assert.equal(consult.dataset.kind, "consult");
   assert.equal(consult.querySelector("[data-year]"), null);
   assert.equal($('#year-grid [data-hub-year="2021"]').dataset.kind, "consult");
+  assert.equal($('#year-grid [data-hub-year="2026"]').dataset.kind, "consult");
   const links = $$('#year-grid [data-kind="consult"] a[href*="dzexams.com/ar/annales/"]');
-  assert.equal(links.length, 11, "filière SE : 9 sessions principales + 2 exceptionnelles");
+  assert.equal(links.length, 12, "filière SE : 10 sessions principales + 2 exceptionnelles");
   assert.ok(!$(".modal"));
   assert.ok(!$("#view-hub").classList.contains("hidden"));
 });
 
-test("1c. Le bouton filière affiche les sujets Maths dans la même grille", () => {
+test("1c. Le bouton filière affiche Maths puis le trou تقني رياضي", () => {
   click("#btn-stream-fab");
   assert.match($("#stream-fab-label").textContent, /رياضيات/);
   assert.equal($$("#year-grid [data-year]").length, 0, "pas d'entraînement 4D Maths encodé");
-  assert.equal($$("#year-grid .year-card").length, 9);
+  assert.equal($$("#year-grid .year-card").length, 14);
+  assert.ok($('#year-grid [data-hub-year="2026"]'));
+  assert.ok($('#year-grid [data-hub-year="2022"]'));
   assert.ok($('#year-grid [data-hub-year="2021"]'));
-  assert.ok($('#year-grid [data-hub-year="2020"]'));
   assert.ok($('#year-grid [data-hub-year="2013"]'));
   const links = $$('#year-grid [data-kind="consult"] a[href*="dzexams.com/ar/annales/"]');
-  assert.equal(links.length, 10, "filière Maths : 9 principales + 2017 exceptionnelle");
+  assert.equal(links.length, 15, "filière Maths : 14 principales + 2017 exceptionnelle");
+  click("#btn-stream-fab");
+  assert.match($("#stream-fab-label").textContent, /تقني رياضي/);
+  assert.equal($$('#year-grid [data-kind="gap"]').length, 1);
+  assert.equal(
+    $$('#year-grid a[href*="dzexams.com/ar/annales/"]').length,
+    0,
+    "aucun annales inventé pour TM"
+  );
   click("#btn-stream-fab");
   assert.match($("#stream-fab-label").textContent, /علوم تجريبية/);
   assert.ok($('#year-grid [data-year="2025"]'));

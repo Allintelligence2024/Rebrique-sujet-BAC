@@ -116,15 +116,42 @@ test("aucun mot-clé synthétique dans les provenances", () => {
   assert.deepEqual(hits, [], `mot-clé interdit détecté: ${hits.join(", ")}`);
 });
 
-test("les années archivées ne sont pas des années d'entraînement 4D activées", async () => {
+test("une année 4D SE n'a pas d'entrée d'archive SE (pas de confusion de produits)", async () => {
   const { APP_CONFIG } = await import("../data/subjects.js");
   const enabledIds = APP_CONFIG.years.filter((y) => y.enabled).map((y) => y.id);
-  for (const e of ARCHIVE.entries) {
+  for (const e of ARCHIVE.entries.filter((entry) => entry.stream === "se")) {
     assert.ok(
       !enabledIds.includes(e.year),
-      `${e.year} est à la fois une année d'archive et une année d'entraînement activée — confusion de produits`
+      `${e.year}/se est à la fois archive et entraînement 4D activé — confusion de produits`
     );
   }
+});
+
+test("Maths 2022–2026 et SE 2026 sont cataloguées, sans 4D Maths", async () => {
+  for (const year of ["2022", "2023", "2024", "2025", "2026"]) {
+    const maths = ARCHIVE.entries.find((e) => e.year === year && e.stream === "m" && e.session === "main");
+    assert.ok(maths, `Maths ${year} manquante`);
+    assert.ok(maths.url.includes("/ar/annales/"));
+    assert.ok(maths.pdfUrl);
+  }
+  const se2026 = ARCHIVE.entries.find((e) => e.year === "2026" && e.stream === "se");
+  assert.ok(se2026);
+  assert.equal(se2026.viewer, "ok");
+  const { APP_CONFIG } = await import("../data/subjects.js");
+  assert.equal(
+    APP_CONFIG.years.some((y) => y.id === "2026" && y.enabled),
+    false,
+    "2026 ne doit pas être une année 4D activée"
+  );
+});
+
+test("la filière تقني رياضي n'a aucune entrée inventée", () => {
+  assert.equal(ARCHIVE.entries.filter((e) => e.stream === "tm").length, 0);
+  assert.ok(ARCHIVE.streams.tm);
+  const gap = ARCHIVE.gaps.find((g) => g.stream === "tm");
+  assert.ok(gap, "le trou TM doit rester documenté");
+  assert.ok(gap.reason.length > 40);
+  assert.deepEqual(ARCHIVE.streamOrder, ["se", "m", "tm"]);
 });
 
 test("les entrées non vérifiées ont page=access_confirmed et viewer=blocked", () => {

@@ -1,5 +1,5 @@
 /* ============================================================
-   ARCHIVE — Sujets BAC SVT 2013–2021 (liens externes vérifiés)
+   ARCHIVE — Sujets BAC SVT (liens externes vérifiés)
    ------------------------------------------------------------
    Rôle : catalogue de consultation, PAS d'entraînement 4D.
    Chaque entrée pointe vers la page annales dzexams qui contient
@@ -8,9 +8,10 @@
 
     Vérification (2026-08-31) : les 19 pages 2013–2020 ont été ouvertes
    et leurs 9 PDF au viewer « 0 pages » validés mécaniquement
-   (HTTP 200, en-tête %PDF). Le 2026-08-31, 2021 SE et 2021 Maths ont
-   été ajoutées : Maths viewer lisible (12 pages, pièces jointes) ;
-   SE viewer bloqué, lien PDF observé, octets non récupérés (TLS sandbox).
+   (HTTP 200, en-tête %PDF). 2021 SE/Maths, Maths 2022–2026 et SE 2026
+   ont été ajoutées le même jour. Index racine : uniquement se (21) et
+   m (20) — pas de catégorie تقني رياضي. /ar/bac/sciences-naturelles/tm
+   redirige vers /ar/bac ; aucun URL inventé.
 
    Métrique de contrôle par entrée :
    - page: "consulted"        -> page ouverte, viewer fonctionnel,
@@ -32,8 +33,9 @@
 
    Absence revendiquée : dzexams ne propose AUCUNE catégorie
    « علوم الطبيعة والحياة » pour la شعبة تقني رياضي (page racine
-   /ar/bac/sciences-naturelles : uniquement se et m, vérifié le
-   2026-08-30). Aucun lien n'a donc été inventé pour cette شعبة.
+   /ar/bac/sciences-naturelles : uniquement se et m, revérifié le
+   2026-08-31). La filière n'a pas d'épreuve SVT au BAC national.
+   Aucun lien n'a donc été inventé. Le hub l'affiche comme trou.
 
    La session exceptionnelle (« الدورة الاستثنائية ») n'existe sur
    dzexams que pour 2016 (se) et 2017 (se et m). 2016 Maths n'a
@@ -44,7 +46,8 @@ const ANNALES = "https://www.dzexams.com/ar/annales";
 
 export const ARCHIVE = {
   verifiedAt: "2026-08-31",
-  years: "2013-2021",
+  years: "2013-2026",
+  streamOrder: ["se", "m", "tm"],
   sourceLabel: "dzexams.com — sujets officiels + تصحيح النموذجي (viewer / PDF)",
   sourceRoot: "https://www.dzexams.com/ar/bac/sciences-naturelles",
   /* Sessions absentes de la source — ne pas inventer de lien. */
@@ -55,6 +58,13 @@ export const ARCHIVE = {
       session: "exceptional",
       reason:
         "Index dzexams /ar/bac/sciences-naturelles/m : une seule ligne 2016 (session principale). 2017 y figure deux fois. Constat 2026-08-31 — aucun URL fabriqué."
+    },
+    {
+      year: "all",
+      stream: "tm",
+      session: "main",
+      reason:
+        "Index /ar/bac/sciences-naturelles (2026-08-31) : uniquement se (21 fichiers) et m (20). /ar/bac/sciences-naturelles/tm n'existe pas (redirige vers /ar/bac). La شعبة تقني رياضي n'a pas d'épreuve SVT au BAC national. Aucun URL d'annales inventé."
     }
   ],
   streams: {
@@ -67,6 +77,11 @@ export const ARCHIVE = {
       id: "m",
       label: "شعبة رياضيات",
       indexUrl: "https://www.dzexams.com/ar/bac/sciences-naturelles/m"
+    },
+    tm: {
+      id: "tm",
+      label: "شعبة تقني رياضي",
+      indexUrl: "https://www.dzexams.com/ar/bac/sciences-naturelles"
     }
   },
   sessions: {
@@ -75,6 +90,20 @@ export const ARCHIVE = {
   },
   entries: [
     /* ---------------- شعبة علوم تجريبية ---------------- */
+    {
+      year: "2026",
+      stream: "se",
+      session: "main",
+      url: `${ANNALES}/L0tWNjNjZ1pNQ1RmU3JUOUFUbFpTdz09`,
+      pdfUrl:
+        "https://www.dzexams.com/uploads/sujets/officiels/bac/2026/dzexams-bac-sciences-naturelles-2667863.pdf",
+      page: "consulted",
+      contentVerified: true,
+      attachments: false,
+      viewer: "ok",
+      notes:
+        "Page ouverte (2026-08-31) : titre BAC 2026 filière SE ; viewer 23 pages (corrigé inversé lisible : albumine/Edema, SIRT1/P53A, RSV). Lien تحميل observé. 4D non encodé : énoncé mot à mot non recopié."
+    },
     {
       year: "2021",
       stream: "se",
@@ -215,6 +244,75 @@ export const ARCHIVE = {
     },
 
     /* ---------------- شعبة رياضيات ---------------- */
+    {
+      year: "2026",
+      stream: "m",
+      session: "main",
+      url: `${ANNALES}/bHJKeCsxNEVvOVNCYm5jODBpVktjQT09`,
+      pdfUrl:
+        "https://www.dzexams.com/uploads/sujets/officiels/bac/2026/dzexams-bac-sciences-naturelles-1343688.pdf",
+      page: "access_confirmed",
+      contentVerified: false,
+      attachments: false,
+      viewer: "blocked",
+      notes:
+        "Page ouverte (2026-08-31) : titre BAC 2026 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). 4D non encodé."
+    },
+    {
+      year: "2025",
+      stream: "m",
+      session: "main",
+      url: `${ANNALES}/VUc5WWNPWjNiTHUwQko3cTVmNnNnZz09`,
+      pdfUrl:
+        "https://www.dzexams.com/uploads/sujets/officiels/bac/2025/dzexams-bac-sciences-naturelles-1554243.pdf",
+      page: "access_confirmed",
+      contentVerified: false,
+      attachments: false,
+      viewer: "blocked",
+      notes:
+        "Page ouverte (2026-08-31) : titre BAC 2025 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). 4D non encodé."
+    },
+    {
+      year: "2024",
+      stream: "m",
+      session: "main",
+      url: `${ANNALES}/Y200ZkJ4b092OS9JZ0w3ck4zemNJZz09`,
+      pdfUrl:
+        "https://www.dzexams.com/uploads/sujets/officiels/bac/2024/dzexams-bac-sciences-naturelles-1482576.pdf",
+      page: "access_confirmed",
+      contentVerified: false,
+      attachments: false,
+      viewer: "blocked",
+      notes:
+        "Page ouverte (2026-08-31) : titre BAC 2024 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). 4D non encodé."
+    },
+    {
+      year: "2023",
+      stream: "m",
+      session: "main",
+      url: `${ANNALES}/RHdQRjNWUTg5b1VwaGVlKzIxT01EUT09`,
+      pdfUrl:
+        "https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1077342.pdf",
+      page: "access_confirmed",
+      contentVerified: false,
+      attachments: false,
+      viewer: "blocked",
+      notes:
+        "Page ouverte (2026-08-31) : titre BAC 2023 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). 4D non encodé."
+    },
+    {
+      year: "2022",
+      stream: "m",
+      session: "main",
+      url: `${ANNALES}/bFpLK2JlVmpzUzMzYTFTSnpjcDZGZz09`,
+      pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2022/dzexams-bac-sciences-1777391.pdf",
+      page: "access_confirmed",
+      contentVerified: false,
+      attachments: false,
+      viewer: "blocked",
+      notes:
+        "Page ouverte (2026-08-31) : titre BAC 2022 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). 4D non encodé."
+    },
     {
       year: "2021",
       stream: "m",

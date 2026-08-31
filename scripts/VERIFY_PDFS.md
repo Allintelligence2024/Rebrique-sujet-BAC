@@ -51,10 +51,15 @@ node scripts/verify-archive-pdfs.mjs
 ```
 
 Le script ne cible que les entrées encore `viewer: "blocked"` **et**
-non vérifiées. 2021 SE est dans ce filtre (`contentVerified: false`).
+non vérifiées : 2021 SE + Maths 2022–2026 (`contentVerified: false`).
 
-## Trou documenté
+## Maths 2022–2026 et SE 2026 (consultation, pas de 4D)
 
-**2016 / Maths / session exceptionnelle** : l'index dzexams de la شعبة
-رياضيات n'expose qu'une entrée 2016. Aucun URL n'a été inventé
-(`ARCHIVE.gaps` dans `data/archive.js`).
+Pages ouvertes le 2026-08-31. Viewer Maths bloqué ; `pdfUrl` observé.
+SE 2026 : viewer 23 pages (corrigé inversé).
+
+## Trous documentés
+
+**2016 / Maths / session exceptionnelle** : une seule ligne 2016 sur l'index.
+**تقني رياضي** : pas de catégorie SVT (index racine = se + m seulement).
+Aucun URL inventé (`ARCHIVE.gaps`).

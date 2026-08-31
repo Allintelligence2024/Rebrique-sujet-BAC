@@ -2,19 +2,26 @@ import { node, setInternalHTML } from "../dom.js";
 import { ARCHIVE, catalogYearsForStream } from "../../../data/archive.js";
 
 const STREAM_KEY = "boussole4d.stream";
+const STREAM_ORDER = ["se", "m", "tm"];
 const STREAMS = {
   se: { id: "se", label: "علوم تجريبية" },
-  m: { id: "m", label: "رياضيات" }
+  m: { id: "m", label: "رياضيات" },
+  tm: { id: "tm", label: "تقني رياضي" }
 };
 
 function readStream() {
   try {
     const value = localStorage.getItem(STREAM_KEY);
-    if (value === "se" || value === "m") return value;
+    if (STREAMS[value]) return value;
   } catch {
     /* storage unavailable */
   }
   return "se";
+}
+
+function nextStreamId(id) {
+  const index = STREAM_ORDER.indexOf(id);
+  return STREAM_ORDER[(index + 1) % STREAM_ORDER.length];
 }
 
 function writeStream(id) {
@@ -70,7 +77,7 @@ export function createHubScreen(deps) {
   function renderHub() {
     const streamId = readStream();
     const stream = STREAMS[streamId];
-    const other = STREAMS[streamId === "se" ? "m" : "se"];
+    const other = STREAMS[nextStreamId(streamId)];
     const catalog = buildHubCatalog(APP_CONFIG, streamId);
     setInternalHTML(
       $("#view-hub"),
@@ -120,16 +127,22 @@ export function createHubScreen(deps) {
     const caption = $("#hub-stream-caption");
     caption.textContent =
       streamId === "se"
-        ? `الشعبة المعروضة: ${stream.label} — 2022–2025 تدريب 4D، 2013–2021 موضوع رسمي + تصحيح.`
-        : `الشعبة المعروضة: ${stream.label} — موضوعات رسمية 2013–2021. تدريب 4D (2022–2025) متاح لشعبة علوم تجريبية.`;
+        ? `الشعبة المعروضة: ${stream.label} — 2022–2025 تدريب 4D، 2013–2021 و 2026 موضوع رسمي + تصحيح.`
+        : streamId === "m"
+          ? `الشعبة المعروضة: ${stream.label} — موضوعات رسمية 2013–2026. تدريب 4D (2022–2025) متاح لشعبة علوم تجريبية.`
+          : `الشعبة المعروضة: ${stream.label} — لا يوجد اختبار علوم الطبيعة والحياة لهذه الشعبة على المصدر الرسمي (dzexams يعرض se و m فقط).`;
 
     const fab = $("#btn-stream-fab");
     fab.setAttribute("aria-label", `الشعبة الحالية: ${stream.label}. اضغط للانتقال إلى شعبة ${other.label}`);
     $("#stream-fab-label").textContent = stream.label;
 
     const grid = $("#year-grid");
-    for (const item of catalog) {
-      grid.appendChild(item.kind === "training" ? trainingCard(item.year) : consultCard(item));
+    if (catalog.length === 0) {
+      grid.appendChild(gapCard(stream));
+    } else {
+      for (const item of catalog) {
+        grid.appendChild(item.kind === "training" ? trainingCard(item.year) : consultCard(item));
+      }
     }
 
     $$("#year-grid [data-year]:not([disabled])").forEach((btn) =>
@@ -148,8 +161,44 @@ export function createHubScreen(deps) {
   }
 
   function cycleStream() {
-    writeStream(readStream() === "se" ? "m" : "se");
+    writeStream(nextStreamId(readStream()));
     renderHub();
+  }
+
+  function gapCard(stream) {
+    const card = node("div", {
+      className: "card year-card dim",
+      dataset: { hubYear: "none", kind: "gap", stream: stream.id }
+    });
+    const stack = node("div", { className: "stack" });
+    const header = node("div", { className: "flex spread" });
+    header.append(
+      node("span", { className: "badge badge-indigo", text: "غير متوفر" }),
+      node("span", { className: "mono bold", text: "—", attrs: { style: "font-size:1.6rem" } })
+    );
+    const copy = node("div");
+    copy.append(
+      node("h3", { className: "mt-0 mb-1", text: `شعبة ${stream.label}` }),
+      node("p", {
+        className: "small text-muted mt-0",
+        text: "لا يوجد موضوع علوم الطبيعة والحياة لهذه الشعبة على dzexams (المصدر يعرض فقط علوم تجريبية ورياضيات). لم يُختلق أي رابط."
+      })
+    );
+    stack.append(header, copy);
+    const actions = node("div", { className: "stack" });
+    actions.append(
+      node("a", {
+        className: "btn btn-block btn-ghost",
+        text: "📂 فهرس علوم الطبيعة والحياة",
+        attrs: {
+          href: ARCHIVE.sourceRoot,
+          target: "_blank",
+          rel: "noopener noreferrer"
+        }
+      })
+    );
+    card.append(stack, actions);
+    return card;
   }
 
   function trainingCard(y) {

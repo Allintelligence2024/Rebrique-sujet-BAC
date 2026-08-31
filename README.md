@@ -34,7 +34,7 @@ L'interface propose des thèmes clair et sombre persistants. Les outils secondai
 │   └── icon-192.png / icon-512.png   # icônes de marque (boussole 4D)
 ├── data/
 │   ├── subjects.js                   # ⭐ CONFIG : 4 années 4D (2022–2025, شعبة علوم تجريبية)
-│   ├── archive.js                    # 2013–2021 : liens officiels vérifiés (sujet + تصحيح), pas de 4D
+│   ├── archive.js                    # 2013–2026 : liens officiels vérifiés (sujet + تصحيح), pas de 4D
 │   └── brouillon.js                  # canevas du brouillon méthodologique et verbes BAC
 ├── js/
 │   ├── main.js                       # point d'entrée
@@ -172,42 +172,31 @@ Aucun PDF 2022/2024/2023 n'est versé dans le dépôt.
 
 ---
 
-## 📚 Sujets 2013–2021 (même grille que 2022–2025, pas d'entraînement 4D)
+## 📚 Sujets officiels (même grille, pas d'entraînement 4D hors SE 2022–2025)
 
-Les années **2013–2021** apparaissent dans **la même grille** que 2022–2025
-sur le hub. Un **petit bouton en coin** (« تغيير الشعبة ») bascule entre
-شعبة علوم تجريبية et شعبة رياضيات : les sujets de l'autre filière
-remplacent alors la grille.
+Le bouton coin **تغيير الشعبة** cycle **علوم تجريبية → رياضيات → تقني رياضي**.
+Les sujets de la filière choisie remplacent la grille.
 
-| Filière                  | Sessions principales     | Sessions exceptionnelles | Total |
-| ------------------------ | ------------------------ | ------------------------ | ----- |
-| شعبة علوم تجريبية (`se`) | 2013–2021 (9)            | 2016, 2017 (2)           | 11    |
-| شعبة رياضيات (`m`)       | 2013–2021 (9)            | 2017 (1)                 | 10    |
-| شعبة تقني رياضي          | **absente de la source** | —                        | 0     |
+| Filière                  | Sessions principales        | Sessions exceptionnelles | Total |
+| ------------------------ | --------------------------- | ------------------------ | ----- |
+| شعبة علوم تجريبية (`se`) | 2013–2021 + 2026 (10)       | 2016, 2017 (2)           | 12    |
+| شعبة رياضيات (`m`)       | 2013–2026 (14)              | 2017 (1)                 | 15    |
+| شعبة تقني رياضي (`tm`)   | **absente de la source**    | —                        | 0     |
 
 Statut honnête :
 
 - **2022–2025 (علوم تجريبية)** : entraînement 4D (`data/subjects.js`).
-- **2013–2021** : consultation — sujet officiel + تصحيح النموذجي via
-  dzexams. Aucun barème, mot-clé ou réponse modèle : le moteur ne s'applique
-  pas. Les cartes portent le badge « موضوع رسمي ».
-- **Les 19 pages 2013–2020 ont été ouvertes** (2026-08-30). Les 9 PDF au
-  viewer bloqué ont été validés via le lien direct (HTTP 200, en-tête `%PDF`)
-  le 2026-08-31. **2021 SE** : viewer bloqué, PDF observé,
-  `contentVerified: false` (octets non récupérés). **2021 Maths** : viewer
-  lisible (12 pages, pièces jointes).
-- **4D 2021 SE / 2020 SE** : non encodé — pas de couche texte mot à mot du
-  sujet SE ni du corrigé officiel dans cette session.
-- **Session exceptionnelle** : sur dzexams, 2016 et 2017 pour `se` ; 2017
-  seulement pour `m`. **2016 Maths exceptionnelle n'existe pas** sur l'index
-  `/ar/bac/sciences-naturelles/m` (une seule ligne 2016) — le trou est
-  documenté dans `ARCHIVE.gaps`, aucun lien n'a été inventé.
-- **شعبة تقني رياضي** : dzexams n'a pas de catégorie SVT pour cette filière
-  (page racine vérifiée le 2026-08-30). Aucun lien fabriqué.
-- **Aucun PDF 2013–2020 versé** (droit d'auteur).
-
-Plan 4D : encoder ensuite année par année au standard 2022, en commençant
-par **2020** — l'année passera alors de la consultation à `APP_CONFIG.years`.
+- **Consultation** : sujet officiel + تصحيح النموذجي via dzexams. Aucun
+  barème, mot-clé ou réponse modèle : le moteur ne s'applique pas.
+- **Maths 2022–2026** : pages ouvertes (2026-08-31), viewer bloqué, `pdfUrl`
+  observé, `contentVerified: false`. Pas de 4D Maths.
+- **SE 2026** : viewer lisible (23 pages, corrigé inversé). 4D non encodé.
+- **شعبة تقني رياضي** : pas d'épreuve SVT au BAC ; l'index dzexams n'a que
+  `se` et `m` (revérifié 2026-08-31). Le hub affiche le trou, **aucun lien
+  inventé**. Les filières Lettres / Langues / Gestion n'ont pas non plus
+  d'épreuve SVT — elles ne sont pas ajoutées.
+- **2016 Maths exceptionnelle** : absente de l'index — `ARCHIVE.gaps`.
+- **Aucun PDF d'archive versé** (droit d'auteur).
 
 ---
 
@@ -215,7 +204,7 @@ par **2020** — l'année passera alors de la consultation à `APP_CONFIG.years`
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **161** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **163** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0**
 - Taille de la façade UI (js/ui.js) : **408 lignes**
 
