@@ -54,7 +54,8 @@ test("le hub affiche les années (2025, 2024, 2023 et 2022 actives)", () => {
   assert.ok($('#year-grid [data-hub-year="2026"]'));
   assert.equal($('#year-grid [data-hub-year="2013"]').dataset.kind, "consult");
   assert.equal($('#year-grid [data-hub-year="2021"]').dataset.kind, "consult");
-  assert.equal($('#year-grid [data-hub-year="2026"]').dataset.kind, "consult");
+  assert.equal($('#year-grid [data-hub-year="2026"]').dataset.kind, "training");
+  assert.equal($('#year-grid [data-year="2026"]').disabled, false);
   assert.ok($("#btn-stream-fab"));
 });
 

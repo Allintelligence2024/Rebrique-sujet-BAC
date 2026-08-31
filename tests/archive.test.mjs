@@ -127,21 +127,27 @@ test("une année 4D SE n'a pas d'entrée d'archive SE (pas de confusion de produ
   }
 });
 
-test("Maths 2022–2026 et SE 2026 sont cataloguées, sans 4D Maths", async () => {
+test("Maths 2022–2026 restent en consultation ; SE 2026 et Maths 2021 sont du 4D", async () => {
   for (const year of ["2022", "2023", "2024", "2025", "2026"]) {
     const maths = ARCHIVE.entries.find((e) => e.year === year && e.stream === "m" && e.session === "main");
     assert.ok(maths, `Maths ${year} manquante`);
     assert.ok(maths.url.includes("/ar/annales/"));
     assert.ok(maths.pdfUrl);
   }
-  const se2026 = ARCHIVE.entries.find((e) => e.year === "2026" && e.stream === "se");
-  assert.ok(se2026);
-  assert.equal(se2026.viewer, "ok");
-  const { APP_CONFIG } = await import("../data/subjects.js");
   assert.equal(
-    APP_CONFIG.years.some((y) => y.id === "2026" && y.enabled),
+    ARCHIVE.entries.some((e) => e.year === "2026" && e.stream === "se"),
     false,
-    "2026 ne doit pas être une année 4D activée"
+    "SE 2026 ne doit plus être une carte d'archive (entraînement 4D)"
+  );
+  const { APP_CONFIG } = await import("../data/subjects.js");
+  const se2026 = APP_CONFIG.years.find((y) => y.id === "2026");
+  assert.ok(se2026 && se2026.enabled && (se2026.stream || "se") === "se");
+  const maths2021 = APP_CONFIG.years.find((y) => y.id === "2021-m");
+  assert.ok(maths2021 && maths2021.enabled && maths2021.stream === "m");
+  assert.equal(
+    APP_CONFIG.years.some((y) => y.stream === "m" && ["2022", "2023", "2024", "2025", "2026"].includes(y.calendarYear)),
+    false,
+    "Maths 2022–2026 ne doivent pas être du 4D tant que l'énoncé n'est pas lisible"
   );
 });
 

@@ -33,12 +33,12 @@ visuelle qui n'a pas eu lieu.**
 | 2014  | M       | main        | [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-2369148.pdf)   | ✅              | non                        |
 | 2013  | M       | main        | [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-2770867.pdf)   | ✅              | non                        |
 
-## 2021 ajouté en consultation (pas de 4D)
+## 2021
 
-| Année | Filière | Viewer sandbox | PDF observé                                                                                                                   | 4D                                  |
-| ----- | ------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-| 2021  | SE      | 0 pages        | [lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2021/dzexams-bac-sciences-2728849.pdf) (`contentVerified: false`) | non — pas de couche texte           |
-| 2021  | M       | 12 pages, OK   | pièces jointes visibles ; pas de `pdfUrl` inventé                                                                             | non — filière Maths hors APP_CONFIG |
+| Année | Filière | Viewer sandbox | PDF observé | 4D |
+| ----- | ------- | -------------- | ----------- | --- |
+| 2021  | SE      | 0 pages        | [lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2021/dzexams-bac-sciences-2728849.pdf) (`contentVerified: false`) | non — pas de couche texte |
+| 2021  | M       | 12 pages, OK   | pièces jointes visibles ; pas de `pdfUrl` inventé | **oui** — `data/year-2021-m.js` (id `2021-m`) |
 
 2020 SE : lien PDF
 [observé](https://www.dzexams.com/uploads/sujets/officiels/bac/2020/dzexams-bac-sciences-2356016.pdf)
@@ -53,10 +53,10 @@ node scripts/verify-archive-pdfs.mjs
 Le script ne cible que les entrées encore `viewer: "blocked"` **et**
 non vérifiées : 2021 SE + Maths 2022–2026 (`contentVerified: false`).
 
-## Maths 2022–2026 et SE 2026 (consultation, pas de 4D)
+## Maths 2022–2026 (consultation, pas de 4D) et SE 2026 (4D)
 
 Pages ouvertes le 2026-08-31. Viewer Maths bloqué ; `pdfUrl` observé.
-SE 2026 : viewer 23 pages (corrigé inversé).
+SE 2026 : énoncé + corrigé officiels eddirasa encodés dans `data/year-2026-se.js`.
 
 ## Trous documentés
 

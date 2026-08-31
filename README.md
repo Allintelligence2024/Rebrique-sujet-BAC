@@ -33,8 +33,10 @@ L'interface propose des thèmes clair et sombre persistants. Les outils secondai
 │   ├── styles.css                    # design 100% autonome (aucun CDN)
 │   └── icon-192.png / icon-512.png   # icônes de marque (boussole 4D)
 ├── data/
-│   ├── subjects.js                   # ⭐ CONFIG : 4 années 4D (2022–2025, شعبة علوم تجريبية)
-│   ├── archive.js                    # 2013–2026 : liens officiels vérifiés (sujet + تصحيح), pas de 4D
+│   ├── subjects.js                   # ⭐ CONFIG : 2022–2026 SE + 2021 Maths (4D)
+│   ├── year-2026-se.js               # BAC 2026 علوم تجريبية (énoncé + corrigé eddirasa)
+│   ├── year-2021-m.js                # BAC 2021 رياضيات (énoncé + corrigé dzexams)
+│   ├── archive.js                    # consultation (hors cartes 4D affichées)
 │   └── brouillon.js                  # canevas du brouillon méthodologique et verbes BAC
 ├── js/
 │   ├── main.js                       # point d'entrée
@@ -88,11 +90,10 @@ python3 -m http.server 8080     # ou : npm start
 
 ---
 
-## 📄 Contenu réel — BAC 2022, 2023, 2024 et 2025 (شعبة علوم تجريبية)
+## 📄 Contenu réel — entraînement 4D
 
-**4 années, 8 sujets, 24 exercices**, entièrement déclarés dans `data/subjects.js`
-(`APP_CONFIG.years`). Le hub affiche les quatre années activées ; les écrans de choix
-(parcours guidé et accès rapide) sont générés à partir de cette même donnée.
+**6 années** dans `APP_CONFIG.years` : 2022–2026 علوم تجريبية + 2021 رياضيات.
+Le hub SE affiche 2022–2026 en 4D ; le hub Maths affiche 2021 en 4D.
 
 ### Contenu BAC 2025 (شعبة علوم تجريبية)
 
@@ -167,30 +168,60 @@ compare les réponses à des **mots-clés normalisés** (via `normalizeArabic`) 
 | **2024** | activée     | aucun (droit d'auteur)                             | [eddirasa sujet](https://eddirasa.com/bac-science-2024-se/) · [PDF eddirasa](https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf) · [dzexams](https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09) · [PDF dzexams](https://www.dzexams.com/uploads/sujets/officiels/bac/2024/dzexams-bac-sciences-naturelles-1751784.pdf) | Mixte : 8 pôles `official` recopiés mot à mot sur photos des pages 2, 6, 7, 10 (2026-08-31) ; le reste `reconstructed`. Viewer dzexams bloqué dans la sandbox. Session de remplacement non localisée. |
 | **2023** | **activée** | aucun (droit d'auteur)                             | [dzexams 2023](https://www.dzexams.com/ar/annales/STRDZEowcCtwN0JmT1NwS3p4cEVmdz09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf)                                                                      | Consignes `official` relues sur la couche texte du PDF (inversée, reconstituée mot à mot, 2026-08-25) ; pôles sans question autonome en `reconstructed`                                                           |
 | **2022** | **activée** | aucun (droit d'auteur)                             | [dzexams 2022](https://www.dzexams.com/ar/annales/eVlXSFRFOEJaN2ozSlE3NytzWkRHQT09) · [PDF ONEC](https://www.dzexams.com/uploads/sujets/officiels/bac/2022/dzexams-bac-sciences-2311208.pdf) · [corrigé eddirasa](https://eddirasa.com/correction-bac-science-2022-se/) | Consignes `official` relues sur la couche texte du PDF ONEC (inversée, reconstituée mot à mot, 2026-08-27) ; corrigé officiel croisé sur 2 sources concordantes ; pôles sans question autonome en `reconstructed` |
+| **2026 SE** | **activée** | aucun (droit d'auteur) | [énoncé eddirasa](https://eddirasa.com/uploads/2026/08/bac-science-2026-se.pdf) · [corrigé](https://eddirasa.com/uploads/2026/08/correction-bac-science-2026-se.pdf) | `official` / `reconstructed` depuis OCR du PDF officiel (2026-08-31) |
+| **2021 Maths** | **activée** | aucun (droit d'auteur) | [dzexams 2021 m](https://www.dzexams.com/ar/annales/T2tYS3FTcFRwWCtCbXV2QmFyRTcydz09) | `official` / `reconstructed` depuis viewer 12 pages (couche inversée, 2026-08-31) |
 
-Aucun PDF 2022/2024/2023 n'est versé dans le dépôt.
+Aucun PDF 2022/2024/2023/2026/2021 n'est versé dans le dépôt.
+
+### Contenu BAC 2026 (شعبة علوم تجريبية)
+
+Énoncé + corrigé officiels [eddirasa](https://eddirasa.com/uploads/2026/08/bac-science-2026-se.pdf)
+· [corrigé](https://eddirasa.com/uploads/2026/08/correction-bac-science-2026-se.pdf)
+(OCR, 2026-08-31). 2 sujets × 3 exercices (5+7+8). Fichier : `data/year-2026-se.js`.
+
+| Sujet | Exercice | Thème |
+| ----- | -------- | ----- |
+| **1** | ت1 (5ن) | **الألبومين**، الجذور الهيدروكسيل (OH•) و**Edema** |
+| **1** | ت2 (7ن) | **SIRT1 / P53A / NAD+** ومركب **RSV** |
+| **1** | ت3 (8ن) | مبيد **Atrazine** ومقاومة الزنجبيل الأرقطي (GST) |
+| **2** | ت1 (5ن) | غشاء **التيلاكوئيد** ومبيد **Oxyfluorfen** |
+| **2** | ت2 (7ن) | **AVC** وقناة **ASIC1a** (PcTx1) |
+| **2** | ت3 (8ن) | **ألزهايمر**، Anti-Aβ و**ATV-Aβ** (TfR) |
+
+### Contenu BAC 2021 (شعبة رياضيات)
+
+Énoncé + corrigé dzexams (viewer 12 pages, couche inversée reconstituée,
+2026-08-31). Format Maths : 2 sujets × 2 exercices (8+12). id `2021-m`.
+Fichier : `data/year-2021-m.js`.
+
+| Sujet | Exercice | Thème |
+| ----- | -------- | ----- |
+| **1** | ت1 (8ن) | **CMH** والتوافق النسيجي في زرع الكلية |
+| **1** | ت2 (12ن) | **الماكروليد** ومقاومة البكتيريا (**Mex.R**) |
+| **2** | ت1 (8ن) | عناصر **تركيب البروتين** (ARN بوليميراز / ريبوزوم) |
+| **2** | ت2 (12ن) | **الهيموغلوبين** والبنيتان **R** و **T** |
 
 ---
 
-## 📚 Sujets officiels (même grille, pas d'entraînement 4D hors SE 2022–2025)
+## 📚 Sujets officiels (consultation, hors cartes 4D)
 
 Le bouton coin **تغيير الشعبة** cycle **علوم تجريبية → رياضيات → تقني رياضي**.
 Les sujets de la filière choisie remplacent la grille.
 
-| Filière                  | Sessions principales        | Sessions exceptionnelles | Total |
-| ------------------------ | --------------------------- | ------------------------ | ----- |
-| شعبة علوم تجريبية (`se`) | 2013–2021 + 2026 (10)       | 2016, 2017 (2)           | 12    |
-| شعبة رياضيات (`m`)       | 2013–2026 (14)              | 2017 (1)                 | 15    |
-| شعبة تقني رياضي (`tm`)   | **absente de la source**    | —                        | 0     |
+| Filière | Entraînement 4D | Consultation (sujet + تصحيح) |
+| ------------------------ | --------------- | -------------------------------- |
+| شعبة علوم تجريبية (`se`) | 2022–2026 | 2013–2021 (+ 2016/2017 exceptionnelles) |
+| شعبة رياضيات (`m`) | 2021 | 2013–2020 et 2022–2026 (+ 2017 exceptionnelle) |
+| شعبة تقني رياضي (`tm`) | — | **absente de la source** (trou affiché, 0 lien) |
 
 Statut honnête :
 
-- **2022–2025 (علوم تجريبية)** : entraînement 4D (`data/subjects.js`).
+- **2022–2026 SE** et **2021 Maths** : entraînement 4D (`data/subjects.js` + modules année).
 - **Consultation** : sujet officiel + تصحيح النموذجي via dzexams. Aucun
   barème, mot-clé ou réponse modèle : le moteur ne s'applique pas.
 - **Maths 2022–2026** : pages ouvertes (2026-08-31), viewer bloqué, `pdfUrl`
-  observé, `contentVerified: false`. Pas de 4D Maths.
-- **SE 2026** : viewer lisible (23 pages, corrigé inversé). 4D non encodé.
+  observé, `contentVerified: false`. Pas de 4D (PDF illisible ici).
+- **SE 2021 et 2020** : pas de 4D — couche texte / corrigé mot à mot absents.
 - **شعبة تقني رياضي** : pas d'épreuve SVT au BAC ; l'index dzexams n'a que
   `se` et `m` (revérifié 2026-08-31). Le hub affiche le trou, **aucun lien
   inventé**. Les filières Lettres / Langues / Gestion n'ont pas non plus

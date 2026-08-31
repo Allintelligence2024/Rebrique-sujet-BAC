@@ -6,12 +6,14 @@
    le sujet officiel (الموضوعان 1 و 2) et le تصحيح النموذجي dans
    son viewer, + le lien PDF direct quand il a été observé.
 
-    Vérification (2026-08-31) : les 19 pages 2013–2020 ont été ouvertes
+   Vérification (2026-08-31) : les 19 pages 2013–2020 ont été ouvertes
    et leurs 9 PDF au viewer « 0 pages » validés mécaniquement
-   (HTTP 200, en-tête %PDF). 2021 SE/Maths, Maths 2022–2026 et SE 2026
-   ont été ajoutées le même jour. Index racine : uniquement se (21) et
-   m (20) — pas de catégorie تقني رياضي. /ar/bac/sciences-naturelles/tm
-   redirige vers /ar/bac ; aucun URL inventé.
+   (HTTP 200, en-tête %PDF). 2021 SE et Maths 2022–2026 restent en
+   consultation. SE 2026 est encodée en entraînement 4D
+   (data/year-2026-se.js) et n'est plus une carte d'archive. Maths 2021
+   reste cataloguée ici mais le hub l'affiche en 4D (id 2021-m).
+   Index racine : uniquement se et m — pas de catégorie تقني رياضي.
+   /ar/bac/sciences-naturelles/tm redirige vers /ar/bac ; aucun URL inventé.
 
    Métrique de contrôle par entrée :
    - page: "consulted"        -> page ouverte, viewer fonctionnel,
@@ -90,20 +92,6 @@ export const ARCHIVE = {
   },
   entries: [
     /* ---------------- شعبة علوم تجريبية ---------------- */
-    {
-      year: "2026",
-      stream: "se",
-      session: "main",
-      url: `${ANNALES}/L0tWNjNjZ1pNQ1RmU3JUOUFUbFpTdz09`,
-      pdfUrl:
-        "https://www.dzexams.com/uploads/sujets/officiels/bac/2026/dzexams-bac-sciences-naturelles-2667863.pdf",
-      page: "consulted",
-      contentVerified: true,
-      attachments: false,
-      viewer: "ok",
-      notes:
-        "Page ouverte (2026-08-31) : titre BAC 2026 filière SE ; viewer 23 pages (corrigé inversé lisible : albumine/Edema, SIRT1/P53A, RSV). Lien تحميل observé. 4D non encodé : énoncé mot à mot non recopié."
-    },
     {
       year: "2021",
       stream: "se",
@@ -323,7 +311,7 @@ export const ARCHIVE = {
       attachments: true,
       viewer: "ok",
       notes:
-        "Page ouverte (2026-08-31) : 12 pages ; pièces jointes sciences-m-bac2021 + sciences-m-bac2021-correction ; couche texte inversée lisible. Sujet 1 : CMH et greffe rénale ; Macrolide / résistance bactérienne (Mex.R). 4D non encodé (filière Maths hors APP_CONFIG)."
+        "Page ouverte (2026-08-31) : 12 pages ; pièces jointes sciences-m-bac2021 + sciences-m-bac2021-correction ; couche texte inversée lisible. Sujet 1 : CMH et greffe rénale ; Macrolide / Mex.R. Encodé 4D sous l id 2021-m (hub Maths : carte entraînement, pas consultation)."
     },
     {
       year: "2020",

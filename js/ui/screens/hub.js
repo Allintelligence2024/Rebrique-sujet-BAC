@@ -33,13 +33,18 @@ function writeStream(id) {
 }
 
 function trainingYearsForStream(appConfig, streamId) {
-  if (streamId !== "se") return [];
-  return appConfig.years.filter((year) => year.enabled);
+  return appConfig.years.filter(
+    (year) => year.enabled && (year.stream || "se") === streamId
+  );
+}
+
+function yearCardId(year) {
+  return year.calendarYear || year.id;
 }
 
 function buildHubCatalog(appConfig, streamId) {
   const training = trainingYearsForStream(appConfig, streamId).map((year) => ({
-    id: year.id,
+    id: yearCardId(year),
     kind: "training",
     year
   }));
@@ -127,9 +132,9 @@ export function createHubScreen(deps) {
     const caption = $("#hub-stream-caption");
     caption.textContent =
       streamId === "se"
-        ? `الشعبة المعروضة: ${stream.label} — 2022–2025 تدريب 4D، 2013–2021 و 2026 موضوع رسمي + تصحيح.`
+        ? `الشعبة المعروضة: ${stream.label} — 2022–2026 تدريب 4D، 2013–2021 موضوع رسمي + تصحيح.`
         : streamId === "m"
-          ? `الشعبة المعروضة: ${stream.label} — موضوعات رسمية 2013–2026. تدريب 4D (2022–2025) متاح لشعبة علوم تجريبية.`
+          ? `الشعبة المعروضة: ${stream.label} — 2021 تدريب 4D، 2013–2020 و 2022–2026 موضوع رسمي + تصحيح.`
           : `الشعبة المعروضة: ${stream.label} — لا يوجد اختبار علوم الطبيعة والحياة لهذه الشعبة على المصدر الرسمي (dzexams يعرض se و m فقط).`;
 
     const fab = $("#btn-stream-fab");
@@ -206,16 +211,17 @@ export function createHubScreen(deps) {
     const note = disabled
       ? y.loadingNote || "لم تُرفق وثائق PDF لهذه الدورة بعد — قريباً."
       : "جلسة شاملة وفق نظام الأقطاب 4D الهادئ.";
+    const cardId = yearCardId(y);
     const card = node("div", {
       className: `card year-card ${disabled ? "dim" : ""}`,
       attrs: { title: note },
-      dataset: { hubYear: y.id, kind: "training" }
+      dataset: { hubYear: cardId, kind: "training" }
     });
     const stack = node("div", { className: "stack" });
     const header = node("div", { className: "flex spread" });
     header.append(
       node("span", { className: `badge badge-${y.theme}`, text: y.badge }),
-      node("span", { className: "mono bold", text: y.id, attrs: { style: "font-size:1.6rem" } })
+      node("span", { className: "mono bold", text: cardId, attrs: { style: "font-size:1.6rem" } })
     );
     const copy = node("div");
     copy.append(

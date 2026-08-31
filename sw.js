@@ -46,6 +46,9 @@ const ASSETS = [
   "./js/ui/reports/report.js",
   "./js/ui/reports/exports.js",
   "./data/subjects.js",
+  "./data/year-2026-se.js",
+  "./data/year-2021-m.js",
+  "./data/archive.js",
   "./data/brouillon.js",
   "./BAC2025_SVT_Sujet1.pdf",
   "./BAC2025_SVT_Sujet2.pdf"
