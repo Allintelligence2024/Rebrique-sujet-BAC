@@ -50,16 +50,22 @@ test("la session exceptionnelle 2016 Maths n'est pas inventée", () => {
   assert.ok(gap.reason.length > 20);
 });
 
-test("chaque année 2013–2021 a une session principale pour se et m", () => {
+test("chaque année 2013–2021 a une session principale pour se et m, sauf 2020 SE (4D)", () => {
   for (let y = 2013; y <= 2021; y++) {
     const year = String(y);
     for (const stream of ["se", "m"]) {
+      if (year === "2020" && stream === "se") continue;
       assert.ok(
         ARCHIVE.entries.some((e) => e.year === year && e.stream === stream && e.session === "main"),
         `session principale manquante pour ${year}/${stream}`
       );
     }
   }
+  assert.equal(
+    ARCHIVE.entries.some((e) => e.year === "2020" && e.stream === "se"),
+    false,
+    "SE 2020 ne doit plus être une carte d'archive (entraînement 4D)"
+  );
 });
 
 test("les URLs annales sont https, dzexams et uniques", () => {
@@ -127,7 +133,7 @@ test("une année 4D SE n'a pas d'entrée d'archive SE (pas de confusion de produ
   }
 });
 
-test("Maths 2022–2026 restent en consultation ; SE 2026 et Maths 2021 sont du 4D", async () => {
+test("Maths 2021–2026 et SE 2020/2026 sont du 4D ; Maths reste cataloguée (confusion SE-only)", async () => {
   for (const year of ["2022", "2023", "2024", "2025", "2026"]) {
     const maths = ARCHIVE.entries.find((e) => e.year === year && e.stream === "m" && e.session === "main");
     assert.ok(maths, `Maths ${year} manquante`);
@@ -142,13 +148,12 @@ test("Maths 2022–2026 restent en consultation ; SE 2026 et Maths 2021 sont du 
   const { APP_CONFIG } = await import("../data/subjects.js");
   const se2026 = APP_CONFIG.years.find((y) => y.id === "2026");
   assert.ok(se2026 && se2026.enabled && (se2026.stream || "se") === "se");
-  const maths2021 = APP_CONFIG.years.find((y) => y.id === "2021-m");
-  assert.ok(maths2021 && maths2021.enabled && maths2021.stream === "m");
-  assert.equal(
-    APP_CONFIG.years.some((y) => y.stream === "m" && ["2022", "2023", "2024", "2025", "2026"].includes(y.calendarYear)),
-    false,
-    "Maths 2022–2026 ne doivent pas être du 4D tant que l'énoncé n'est pas lisible"
-  );
+  const se2020 = APP_CONFIG.years.find((y) => y.id === "2020");
+  assert.ok(se2020 && se2020.enabled && (se2020.stream || "se") === "se");
+  for (const year of ["2021", "2022", "2023", "2024", "2025", "2026"]) {
+    const maths = APP_CONFIG.years.find((y) => y.id === `${year}-m`);
+    assert.ok(maths && maths.enabled && maths.stream === "m" && maths.calendarYear === year, `Maths ${year} 4D manquant`);
+  }
 });
 
 test("la filière تقني رياضي n'a aucune entrée inventée", () => {

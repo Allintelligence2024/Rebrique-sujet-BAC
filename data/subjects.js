@@ -13,11 +13,19 @@
           joint au même PDF (pp. 11-21), croisé avec eddirasa
           (textes concordants).
    2026 SE : énoncé + corrigé officiels eddirasa (OCR, 2026-08-31).
+   2020 SE : énoncé + corrigé officiels eddirasa (OCR RTL, 2026-08-31).
    2021 Maths : énoncé + corrigé dzexams (couche inversée, 2026-08-31).
+   2022–2026 Maths : énoncé + corrigé officiels eddirasa (2026-08-31).
    ============================================================ */
 
 import { YEAR_2026_SE } from "./year-2026-se.js";
+import { YEAR_2020_SE } from "./year-2020-se.js";
 import { YEAR_2021_M } from "./year-2021-m.js";
+import { YEAR_2022_M } from "./year-2022-m.js";
+import { YEAR_2023_M } from "./year-2023-m.js";
+import { YEAR_2024_M } from "./year-2024-m.js";
+import { YEAR_2025_M } from "./year-2025-m.js";
+import { YEAR_2026_M } from "./year-2026-m.js";
 
 /** Normalisation du texte arabe : variantes, tatweel, ponctuation. */
 export function normalizeArabic(text) {
@@ -69,7 +77,7 @@ export const APP_CONFIG = {
   appSubtitle: "مخبر التفوق والهدوء | منصة تدريب منهجي لبكالوريا علوم الطبيعة والحياة",
   globalExamMinutes: 270,
   strategyMinutes: 25,
-  note: "المحتوى 2025 مُراجع على PDF المستودع. 2024: صفحات 2 و6 و7 و10 مُراجعة على صور الموضوع الرسمي؛ الباقي مُعاد بناؤه. 2023 و2022 من PDF dzexams. 2026 علوم تجريبية و2021 رياضيات مرمّزان 4D من الموضوع والتصحيح الرسميين.",
+  note: "المحتوى 2025 مُراجع على PDF المستودع. 2024: صفحات 2 و6 و7 و10 مُراجعة على صور الموضوع الرسمي؛ الباقي مُعاد بناؤه. 2023 و2022 من PDF dzexams. 2026 و2020 علوم تجريبية و2021–2026 رياضيات مرمّزة 4D من الموضوع والتصحيح الرسميين.",
   years: [
     {
       id: "2025",
@@ -2479,6 +2487,12 @@ export const APP_CONFIG = {
       ]
     },
     YEAR_2026_SE,
-    YEAR_2021_M
+    YEAR_2020_SE,
+    YEAR_2021_M,
+    YEAR_2022_M,
+    YEAR_2023_M,
+    YEAR_2024_M,
+    YEAR_2025_M,
+    YEAR_2026_M
   ]
 };

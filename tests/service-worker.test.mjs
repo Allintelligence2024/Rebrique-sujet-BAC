@@ -41,7 +41,13 @@ test("le precache contient tous les modules locaux importés par l'application",
     "./js/ui/reports/exports.js",
     "./data/subjects.js",
     "./data/year-2026-se.js",
+    "./data/year-2020-se.js",
     "./data/year-2021-m.js",
+    "./data/year-2022-m.js",
+    "./data/year-2023-m.js",
+    "./data/year-2024-m.js",
+    "./data/year-2025-m.js",
+    "./data/year-2026-m.js",
     "./data/archive.js",
     "./data/brouillon.js"
   ]) {

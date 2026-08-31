@@ -9,8 +9,8 @@ mécaniquement (commit `0cc7e44`, PR #14) :
 - en-tête `%PDF`
 - fichier non vide
 
-Toutes les **19** entrées 2013–2020 de `data/archive.js` ont
-`contentVerified: true`.
+Les **18** entrées d'archive restantes 2013–2020 (2020 SE retirée,
+désormais 4D) ont `contentVerified: true`.
 
 La relecture **visuelle** page à page (sujet + تصحيح) de ces 9 fichiers
 n'a **pas** été faite dans la sandbox Arena : `curl` / `wget` /
@@ -40,9 +40,8 @@ visuelle qui n'a pas eu lieu.**
 | 2021  | SE      | 0 pages        | [lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2021/dzexams-bac-sciences-2728849.pdf) (`contentVerified: false`) | non — pas de couche texte |
 | 2021  | M       | 12 pages, OK   | pièces jointes visibles ; pas de `pdfUrl` inventé | **oui** — `data/year-2021-m.js` (id `2021-m`) |
 
-2020 SE : lien PDF
-[observé](https://www.dzexams.com/uploads/sujets/officiels/bac/2020/dzexams-bac-sciences-2356016.pdf)
-le 2026-08-31 (viewer alors à 0 pages). 4D non encodé.
+2020 SE : énoncé + corrigé officiels eddirasa encodés dans `data/year-2020-se.js`
+(id `2020`). Miroir dzexams catalogué historiquement ; plus de carte d'archive SE.
 
 ## Relancer le script (en local)
 
@@ -51,12 +50,16 @@ node scripts/verify-archive-pdfs.mjs
 ```
 
 Le script ne cible que les entrées encore `viewer: "blocked"` **et**
-non vérifiées : 2021 SE + Maths 2022–2026 (`contentVerified: false`).
+non vérifiées : 2021 SE + Maths 2022–2026 (`contentVerified: false` côté
+octets dzexams). La relecture visuelle des 9 PDF dzexams « 0 pages »
+n'a toujours pas eu lieu dans la sandbox.
 
-## Maths 2022–2026 (consultation, pas de 4D) et SE 2026 (4D)
+## Maths 2022–2026 (4D eddirasa) et SE 2020/2026 (4D)
 
-Pages ouvertes le 2026-08-31. Viewer Maths bloqué ; `pdfUrl` observé.
-SE 2026 : énoncé + corrigé officiels eddirasa encodés dans `data/year-2026-se.js`.
+Pages dzexams ouvertes le 2026-08-31. Viewer Maths bloqué ; `pdfUrl` observé.
+4D Maths 2022–2026 : énoncé + corrigé officiels eddirasa
+(`data/year-2022-m.js` … `data/year-2026-m.js`).
+SE 2026 : `data/year-2026-se.js`. SE 2020 : `data/year-2020-se.js`.
 
 ## Trous documentés
 

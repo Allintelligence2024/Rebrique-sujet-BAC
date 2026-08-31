@@ -8,10 +8,11 @@
 
    Vérification (2026-08-31) : les 19 pages 2013–2020 ont été ouvertes
    et leurs 9 PDF au viewer « 0 pages » validés mécaniquement
-   (HTTP 200, en-tête %PDF). 2021 SE et Maths 2022–2026 restent en
-   consultation. SE 2026 est encodée en entraînement 4D
-   (data/year-2026-se.js) et n'est plus une carte d'archive. Maths 2021
-   reste cataloguée ici mais le hub l'affiche en 4D (id 2021-m).
+   (HTTP 200, en-tête %PDF). 2021 SE reste en consultation. SE 2020 et
+   SE 2026 sont encodées en entraînement 4D (data/year-2020-se.js,
+   data/year-2026-se.js) et ne sont plus des cartes d'archive. Maths
+   2021–2026 restent cataloguées ici mais le hub les affiche en 4D
+   (id 2021-m … 2026-m).
    Index racine : uniquement se et m — pas de catégorie تقني رياضي.
    /ar/bac/sciences-naturelles/tm redirige vers /ar/bac ; aucun URL inventé.
 
@@ -105,19 +106,7 @@ export const ARCHIVE = {
       notes:
         "Page ouverte (2026-08-31) : titre BAC 2021 filière SE confirmé ; viewer en ligne 0 pages (PDF chiffré) ; lien تحميل observé. Octets PDF non récupérés depuis la sandbox (TLS). 4D non encodé : pas de couche texte lisible ni corrigé mot à mot."
     },
-    {
-      year: "2020",
-      stream: "se",
-      session: "main",
-      url: `${ANNALES}/SUFqL0VzRjNzdmd6ek1EekpsOTFMdz09`,
-      pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2020/dzexams-bac-sciences-2356016.pdf",
-      page: "consulted",
-      contentVerified: true,
-      attachments: true,
-      viewer: "ok",
-      notes:
-        "Page ouverte (2026-08-30) : 19 pages ; pièces jointes sciences-se-bac2020 + sciences-se-bac2020-correction ; sujet : sismicité et structure de la Terre, Ibuprofène/Cox-1-Cox-2, immunothérapie du cancer du sein (HER2). Une seule entrée sur la source pour 2020."
-    },
+
     {
       year: "2019",
       stream: "se",
@@ -244,7 +233,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-31) : titre BAC 2026 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). 4D non encodé."
+        "Page ouverte (2026-08-31) : titre BAC 2026 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2026-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation)."
     },
     {
       year: "2025",
@@ -258,7 +247,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-31) : titre BAC 2025 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). 4D non encodé."
+        "Page ouverte (2026-08-31) : titre BAC 2025 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2025-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation)."
     },
     {
       year: "2024",
@@ -272,7 +261,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-31) : titre BAC 2024 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). 4D non encodé."
+        "Page ouverte (2026-08-31) : titre BAC 2024 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2024-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation)."
     },
     {
       year: "2023",
@@ -286,7 +275,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-31) : titre BAC 2023 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). 4D non encodé."
+        "Page ouverte (2026-08-31) : titre BAC 2023 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2023-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation)."
     },
     {
       year: "2022",
