@@ -22,6 +22,24 @@ import { ARCHIVE } from "../data/archive.js";
 
 const BAD_KEYWORDS = ["synthetic", "généré", "LLM", "GPT", "Claude", "Gemini", "chatbot", "fabriqué"];
 
+test("2021 SE est cataloguée en consultation, sans 4D et sans faux contentVerified", async () => {
+  const se = ARCHIVE.entries.find((e) => e.year === "2021" && e.stream === "se");
+  const maths = ARCHIVE.entries.find((e) => e.year === "2021" && e.stream === "m");
+  assert.ok(se && maths, "2021 se et m doivent exister");
+  assert.equal(se.viewer, "blocked");
+  assert.equal(se.contentVerified, false);
+  assert.equal(se.page, "access_confirmed");
+  assert.ok(se.pdfUrl.includes("2021/dzexams-bac-sciences-2728849.pdf"));
+  assert.equal(maths.viewer, "ok");
+  assert.equal(maths.contentVerified, true);
+  const { APP_CONFIG } = await import("../data/subjects.js");
+  assert.equal(
+    APP_CONFIG.years.some((y) => y.id === "2021" && y.enabled),
+    false,
+    "2021 ne doit pas être une année 4D activée"
+  );
+});
+
 test("la session exceptionnelle 2016 Maths n'est pas inventée", () => {
   assert.equal(
     ARCHIVE.entries.some((e) => e.year === "2016" && e.stream === "m" && e.session === "exceptional"),
@@ -32,8 +50,8 @@ test("la session exceptionnelle 2016 Maths n'est pas inventée", () => {
   assert.ok(gap.reason.length > 20);
 });
 
-test("chaque année 2013–2020 a une session principale pour se et m", () => {
-  for (let y = 2013; y <= 2020; y++) {
+test("chaque année 2013–2021 a une session principale pour se et m", () => {
+  for (let y = 2013; y <= 2021; y++) {
     const year = String(y);
     for (const stream of ["se", "m"]) {
       assert.ok(

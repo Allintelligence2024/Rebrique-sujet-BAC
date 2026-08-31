@@ -95,14 +95,15 @@ test("1. Hub : test des boutons d'accueil, adkar, atlas, sons et années", () =>
   click("#ws-home");
 });
 
-test("1b. Les années 2013–2020 sont dans la même grille, sans lancer d'entraînement", () => {
-  assert.equal($$("#year-grid .year-card").length, 12);
+test("1b. Les années 2013–2021 sont dans la même grille, sans lancer d'entraînement", () => {
+  assert.equal($$("#year-grid .year-card").length, 13);
   const consult = $('#year-grid [data-hub-year="2013"]');
   assert.ok(consult);
   assert.equal(consult.dataset.kind, "consult");
   assert.equal(consult.querySelector("[data-year]"), null);
+  assert.equal($('#year-grid [data-hub-year="2021"]').dataset.kind, "consult");
   const links = $$('#year-grid [data-kind="consult"] a[href*="dzexams.com/ar/annales/"]');
-  assert.equal(links.length, 10, "filière SE : 8 sessions principales + 2 exceptionnelles");
+  assert.equal(links.length, 11, "filière SE : 9 sessions principales + 2 exceptionnelles");
   assert.ok(!$(".modal"));
   assert.ok(!$("#view-hub").classList.contains("hidden"));
 });
@@ -111,11 +112,12 @@ test("1c. Le bouton filière affiche les sujets Maths dans la même grille", () 
   click("#btn-stream-fab");
   assert.match($("#stream-fab-label").textContent, /رياضيات/);
   assert.equal($$("#year-grid [data-year]").length, 0, "pas d'entraînement 4D Maths encodé");
-  assert.equal($$("#year-grid .year-card").length, 8);
+  assert.equal($$("#year-grid .year-card").length, 9);
+  assert.ok($('#year-grid [data-hub-year="2021"]'));
   assert.ok($('#year-grid [data-hub-year="2020"]'));
   assert.ok($('#year-grid [data-hub-year="2013"]'));
   const links = $$('#year-grid [data-kind="consult"] a[href*="dzexams.com/ar/annales/"]');
-  assert.equal(links.length, 9, "filière Maths : 8 principales + 2017 exceptionnelle");
+  assert.equal(links.length, 10, "filière Maths : 9 principales + 2017 exceptionnelle");
   click("#btn-stream-fab");
   assert.match($("#stream-fab-label").textContent, /علوم تجريبية/);
   assert.ok($('#year-grid [data-year="2025"]'));

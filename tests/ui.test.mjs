@@ -43,14 +43,16 @@ function click(sel) {
 }
 
 test("le hub affiche les années (2025, 2024, 2023 et 2022 actives)", () => {
-  assert.equal($$("#year-grid .year-card").length, 12);
+  assert.equal($$("#year-grid .year-card").length, 13);
   assert.equal($('#year-grid [data-year="2025"]').disabled, false);
   assert.equal($('#year-grid [data-year="2024"]').disabled, false);
   assert.equal($('#year-grid [data-year="2023"]').disabled, false);
   assert.equal($('#year-grid [data-year="2022"]').disabled, false);
   assert.ok($('#year-grid [data-hub-year="2013"]'));
   assert.ok($('#year-grid [data-hub-year="2020"]'));
+  assert.ok($('#year-grid [data-hub-year="2021"]'));
   assert.equal($('#year-grid [data-hub-year="2013"]').dataset.kind, "consult");
+  assert.equal($('#year-grid [data-hub-year="2021"]').dataset.kind, "consult");
   assert.ok($("#btn-stream-fab"));
 });
 

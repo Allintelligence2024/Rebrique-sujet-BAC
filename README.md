@@ -34,7 +34,7 @@ L'interface propose des thèmes clair et sombre persistants. Les outils secondai
 │   └── icon-192.png / icon-512.png   # icônes de marque (boussole 4D)
 ├── data/
 │   ├── subjects.js                   # ⭐ CONFIG : 4 années 4D (2022–2025, شعبة علوم تجريبية)
-│   ├── archive.js                    # 2013–2020 : liens officiels vérifiés (sujet + تصحيح), pas de 4D
+│   ├── archive.js                    # 2013–2021 : liens officiels vérifiés (sujet + تصحيح), pas de 4D
 │   └── brouillon.js                  # canevas du brouillon méthodologique et verbes BAC
 ├── js/
 │   ├── main.js                       # point d'entrée
@@ -113,7 +113,9 @@ Le contenu a été reconstitué à partir du sujet officiel **et de son corrigé
 
 ### Contenu BAC 2024 (شعبة علوم تجريبية)
 
-Thèmes relus sur la couche texte du PDF eddirasa (bruitée : OCR + traduction parasite) ; wording `reconstructed` :
+Pages 2, 6, 7 et 10 relues sur photos du sujet officiel (2026-08-31) :
+pôles concernés en `official`. Le reste (pages 1, 3–5, 8–9 et cadrages N/W)
+reste `reconstructed` :
 
 | Sujet | Exercice | Thème                                                                |
 | ----- | -------- | -------------------------------------------------------------------- |
@@ -162,7 +164,7 @@ compare les réponses à des **mots-clés normalisés** (via `normalizeArabic`) 
 | Année    | État        | PDF local                                          | Source externe                                                                                                                                                                                                                                                          | Consignes                                                                                                                                                                                                         |
 | -------- | ----------- | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **2025** | activée     | `BAC2025_SVT_Sujet1.pdf`, `BAC2025_SVT_Sujet2.pdf` | —                                                                                                                                                                                                                                                                       | Pôles `official` relus sur le scan ; autres `reconstructed`                                                                                                                                                       |
-| **2024** | activée     | aucun (droit d'auteur)                             | [eddirasa sujet](https://eddirasa.com/bac-science-2024-se/) · [PDF](https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf) · [dzexams](https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09)                                          | `reconstructed` — couche texte distante bruitée (OCR + traduction parasite), non certifiable `official` ici. Session de remplacement non localisée.                                                               |
+| **2024** | activée     | aucun (droit d'auteur)                             | [eddirasa sujet](https://eddirasa.com/bac-science-2024-se/) · [PDF eddirasa](https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf) · [dzexams](https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09) · [PDF dzexams](https://www.dzexams.com/uploads/sujets/officiels/bac/2024/dzexams-bac-sciences-naturelles-1751784.pdf) | Mixte : 8 pôles `official` recopiés mot à mot sur photos des pages 2, 6, 7, 10 (2026-08-31) ; le reste `reconstructed`. Viewer dzexams bloqué dans la sandbox. Session de remplacement non localisée. |
 | **2023** | **activée** | aucun (droit d'auteur)                             | [dzexams 2023](https://www.dzexams.com/ar/annales/STRDZEowcCtwN0JmT1NwS3p4cEVmdz09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf)                                                                      | Consignes `official` relues sur la couche texte du PDF (inversée, reconstituée mot à mot, 2026-08-25) ; pôles sans question autonome en `reconstructed`                                                           |
 | **2022** | **activée** | aucun (droit d'auteur)                             | [dzexams 2022](https://www.dzexams.com/ar/annales/eVlXSFRFOEJaN2ozSlE3NytzWkRHQT09) · [PDF ONEC](https://www.dzexams.com/uploads/sujets/officiels/bac/2022/dzexams-bac-sciences-2311208.pdf) · [corrigé eddirasa](https://eddirasa.com/correction-bac-science-2022-se/) | Consignes `official` relues sur la couche texte du PDF ONEC (inversée, reconstituée mot à mot, 2026-08-27) ; corrigé officiel croisé sur 2 sources concordantes ; pôles sans question autonome en `reconstructed` |
 
@@ -170,28 +172,32 @@ Aucun PDF 2022/2024/2023 n'est versé dans le dépôt.
 
 ---
 
-## 📚 Sujets 2013–2020 (même grille que 2022–2025, pas d'entraînement 4D)
+## 📚 Sujets 2013–2021 (même grille que 2022–2025, pas d'entraînement 4D)
 
-Les années **2013–2020** apparaissent dans **la même grille** que 2022–2025
+Les années **2013–2021** apparaissent dans **la même grille** que 2022–2025
 sur le hub. Un **petit bouton en coin** (« تغيير الشعبة ») bascule entre
 شعبة علوم تجريبية et شعبة رياضيات : les sujets de l'autre filière
 remplacent alors la grille.
 
 | Filière                  | Sessions principales     | Sessions exceptionnelles | Total |
 | ------------------------ | ------------------------ | ------------------------ | ----- |
-| شعبة علوم تجريبية (`se`) | 2013–2020 (8)            | 2016, 2017 (2)           | 10    |
-| شعبة رياضيات (`m`)       | 2013–2020 (8)            | 2017 (1)                 | 9     |
+| شعبة علوم تجريبية (`se`) | 2013–2021 (9)            | 2016, 2017 (2)           | 11    |
+| شعبة رياضيات (`m`)       | 2013–2021 (9)            | 2017 (1)                 | 10    |
 | شعبة تقني رياضي          | **absente de la source** | —                        | 0     |
 
 Statut honnête :
 
 - **2022–2025 (علوم تجريبية)** : entraînement 4D (`data/subjects.js`).
-- **2013–2020** : consultation — sujet officiel + تصحيح النموذجي via
+- **2013–2021** : consultation — sujet officiel + تصحيح النموذجي via
   dzexams. Aucun barème, mot-clé ou réponse modèle : le moteur ne s'applique
   pas. Les cartes portent le badge « موضوع رسمي ».
-- **Les 19 pages annales ont été ouvertes** (2026-08-30). Les 9 PDF au
+- **Les 19 pages 2013–2020 ont été ouvertes** (2026-08-30). Les 9 PDF au
   viewer bloqué ont été validés via le lien direct (HTTP 200, en-tête `%PDF`)
-  le 2026-08-31. Toutes les entrées ont `contentVerified: true`.
+  le 2026-08-31. **2021 SE** : viewer bloqué, PDF observé,
+  `contentVerified: false` (octets non récupérés). **2021 Maths** : viewer
+  lisible (12 pages, pièces jointes).
+- **4D 2021 SE / 2020 SE** : non encodé — pas de couche texte mot à mot du
+  sujet SE ni du corrigé officiel dans cette session.
 - **Session exceptionnelle** : sur dzexams, 2016 et 2017 pour `se` ; 2017
   seulement pour `m`. **2016 Maths exceptionnelle n'existe pas** sur l'index
   `/ar/bac/sciences-naturelles/m` (une seule ligne 2016) — le trou est
@@ -209,7 +215,7 @@ par **2020** — l'année passera alors de la consultation à `APP_CONFIG.years`
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **160** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **161** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0**
 - Taille de la façade UI (js/ui.js) : **408 lignes**
 

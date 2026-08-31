@@ -120,8 +120,8 @@ export function createHubScreen(deps) {
     const caption = $("#hub-stream-caption");
     caption.textContent =
       streamId === "se"
-        ? `الشعبة المعروضة: ${stream.label} — 2022–2025 تدريب 4D، 2013–2020 موضوع رسمي + تصحيح.`
-        : `الشعبة المعروضة: ${stream.label} — موضوعات رسمية 2013–2020. تدريب 4D (2022–2025) متاح لشعبة علوم تجريبية.`;
+        ? `الشعبة المعروضة: ${stream.label} — 2022–2025 تدريب 4D، 2013–2021 موضوع رسمي + تصحيح.`
+        : `الشعبة المعروضة: ${stream.label} — موضوعات رسمية 2013–2021. تدريب 4D (2022–2025) متاح لشعبة علوم تجريبية.`;
 
     const fab = $("#btn-stream-fab");
     fab.setAttribute("aria-label", `الشعبة الحالية: ${stream.label}. اضغط للانتقال إلى شعبة ${other.label}`);

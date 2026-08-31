@@ -1,16 +1,16 @@
 /* ============================================================
-   ARCHIVE — Sujets BAC SVT 2013–2020 (liens externes vérifiés)
+   ARCHIVE — Sujets BAC SVT 2013–2021 (liens externes vérifiés)
    ------------------------------------------------------------
    Rôle : catalogue de consultation, PAS d'entraînement 4D.
    Chaque entrée pointe vers la page annales dzexams qui contient
    le sujet officiel (الموضوعان 1 و 2) et le تصحيح النموذجي dans
    son viewer, + le lien PDF direct quand il a été observé.
 
-    Vérification (2026-08-31) : les 19 pages annales cataloguées ont
-   été ouvertes le même jour. Les 9 PDF dont le viewer dzexams affiche
-   « 0 pages » ont été validés via le lien de téléchargement direct
-   (HTTP 200, en-tête %PDF, fichier complet). Toutes les 19 entrées
-   ont contentVerified à true.
+    Vérification (2026-08-31) : les 19 pages 2013–2020 ont été ouvertes
+   et leurs 9 PDF au viewer « 0 pages » validés mécaniquement
+   (HTTP 200, en-tête %PDF). Le 2026-08-31, 2021 SE et 2021 Maths ont
+   été ajoutées : Maths viewer lisible (12 pages, pièces jointes) ;
+   SE viewer bloqué, lien PDF observé, octets non récupérés (TLS sandbox).
 
    Métrique de contrôle par entrée :
    - page: "consulted"        -> page ouverte, viewer fonctionnel,
@@ -44,7 +44,7 @@ const ANNALES = "https://www.dzexams.com/ar/annales";
 
 export const ARCHIVE = {
   verifiedAt: "2026-08-31",
-  years: "2013-2020",
+  years: "2013-2021",
   sourceLabel: "dzexams.com — sujets officiels + تصحيح النموذجي (viewer / PDF)",
   sourceRoot: "https://www.dzexams.com/ar/bac/sciences-naturelles",
   /* Sessions absentes de la source — ne pas inventer de lien. */
@@ -76,10 +76,24 @@ export const ARCHIVE = {
   entries: [
     /* ---------------- شعبة علوم تجريبية ---------------- */
     {
+      year: "2021",
+      stream: "se",
+      session: "main",
+      url: `${ANNALES}/alFTTFJIRFZuTFd4QnAvelFTQWRqUT09`,
+      pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2021/dzexams-bac-sciences-2728849.pdf",
+      page: "access_confirmed",
+      contentVerified: false,
+      attachments: false,
+      viewer: "blocked",
+      notes:
+        "Page ouverte (2026-08-31) : titre BAC 2021 filière SE confirmé ; viewer en ligne 0 pages (PDF chiffré) ; lien تحميل observé. Octets PDF non récupérés depuis la sandbox (TLS). 4D non encodé : pas de couche texte lisible ni corrigé mot à mot."
+    },
+    {
       year: "2020",
       stream: "se",
       session: "main",
       url: `${ANNALES}/SUFqL0VzRjNzdmd6ek1EekpsOTFMdz09`,
+      pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2020/dzexams-bac-sciences-2356016.pdf",
       page: "consulted",
       contentVerified: true,
       attachments: true,
@@ -201,6 +215,18 @@ export const ARCHIVE = {
     },
 
     /* ---------------- شعبة رياضيات ---------------- */
+    {
+      year: "2021",
+      stream: "m",
+      session: "main",
+      url: `${ANNALES}/T2tYS3FTcFRwWCtCbXV2QmFyRTcydz09`,
+      page: "consulted",
+      contentVerified: true,
+      attachments: true,
+      viewer: "ok",
+      notes:
+        "Page ouverte (2026-08-31) : 12 pages ; pièces jointes sciences-m-bac2021 + sciences-m-bac2021-correction ; couche texte inversée lisible. Sujet 1 : CMH et greffe rénale ; Macrolide / résistance bactérienne (Mex.R). 4D non encodé (filière Maths hors APP_CONFIG)."
+    },
     {
       year: "2020",
       stream: "m",
