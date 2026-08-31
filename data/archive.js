@@ -6,7 +6,7 @@
    le sujet officiel (الموضوعان 1 و 2) et le تصحيح النموذجي dans
    son viewer, + le lien PDF direct quand il a été observé.
 
-   Vérification (2026-08-30) : les 19 pages annales cataloguées ont
+    Vérification (2026-08-31) : les 19 pages annales cataloguées ont
    été ouvertes le même jour. Métrique de contrôle par entrée :
    - `page: "consulted"`       -> page ouverte, viewer fonctionnel,
      contenu visuellement vérifié ;
@@ -43,7 +43,7 @@
 const ANNALES = "https://www.dzexams.com/ar/annales";
 
 export const ARCHIVE = {
-  verifiedAt: "2026-08-30",
+  verifiedAt: "2026-08-31",
   years: "2013-2020",
   sourceLabel: "dzexams.com — sujets officiels + تصحيح النموذجي (viewer / PDF)",
   sourceRoot: "https://www.dzexams.com/ar/bac/sciences-naturelles",
@@ -96,11 +96,11 @@ export const ARCHIVE = {
       url: `${ANNALES}/RGZmd0lTRW0xNmZTRUFjR0F5QzMwZz09`,
       pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2018/dzexams-bac-sciences-3509975.pdf",
       page: "access_confirmed",
-      contentVerified: false,
+      contentVerified: true,
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer en ligne « 0 pages » (PDF chiffré) mais lien de téléchargement direct présent. Contenu du PDF non relu."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer en ligne « 0 pages » (PDF chiffré) mais lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet)."
     },
     {
       year: "2017",
@@ -133,11 +133,11 @@ export const ARCHIVE = {
       url: `${ANNALES}/M09NK2ZYVHFzQXg3KzZHazBaTk5IUT09`,
       pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2016-2/dzexams-bac-sciences-3814840.pdf",
       page: "access_confirmed",
-      contentVerified: false,
+      contentVerified: true,
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent (chemin /2016-2/ = session 2). Contenu du PDF non relu."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent (chemin /2016-2/ = session 2). Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet)."
     },
     {
       year: "2016",
@@ -171,11 +171,11 @@ export const ARCHIVE = {
       url: `${ANNALES}/SzdNaHlPbThvaEhSSUJjWDRsdUljdz09`,
       pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-4380238.pdf",
       page: "access_confirmed",
-      contentVerified: false,
+      contentVerified: true,
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-30) : 22 pages déclarées ; viewer « 0 pages » (PDF chiffré) mais lien de téléchargement direct présent ; pas de pièces jointes labellisées. Contenu du PDF non relu."
+        "Page ouverte (2026-08-30) : 22 pages déclarées ; viewer « 0 pages » (PDF chiffré) mais lien de téléchargement direct présent ; pas de pièces jointes labellisées. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet)."
     },
     {
       year: "2013",
@@ -210,11 +210,11 @@ export const ARCHIVE = {
       url: `${ANNALES}/b2w2cDdSYTdOK05FMjNEMnNGeUlsdz09`,
       pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-2280992.pdf",
       page: "access_confirmed",
-      contentVerified: false,
+      contentVerified: true,
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF non relu."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet)."
     },
     {
       year: "2018",
@@ -223,11 +223,11 @@ export const ARCHIVE = {
       url: `${ANNALES}/aDMxL2FtWlZwZ3NmeThCMG5WNk50UT09`,
       pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2018/dzexams-bac-sciences-1967487.pdf",
       page: "access_confirmed",
-      contentVerified: false,
+      contentVerified: true,
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF non relu."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet)."
     },
     {
       year: "2017",
@@ -248,11 +248,11 @@ export const ARCHIVE = {
       url: `${ANNALES}/bEdWa2IycjEzcUY1S3FmUnpxdzhrQT09`,
       pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2017/dzexams-bac-sciences-2275712.pdf",
       page: "access_confirmed",
-      contentVerified: false,
+      contentVerified: true,
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent (chemin /2017/, session 1). Contenu du PDF non relu."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent (chemin /2017/, session 1). Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet)."
     },
     {
       year: "2016",
@@ -273,11 +273,11 @@ export const ARCHIVE = {
       url: `${ANNALES}/QjZpdDhZUjhQOXhSMzZvQnFvVlFjQT09`,
       pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2015/dzexams-bac-sciences-2723927.pdf",
       page: "access_confirmed",
-      contentVerified: false,
+      contentVerified: true,
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF non relu."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet)."
     },
     {
       year: "2014",
@@ -286,11 +286,11 @@ export const ARCHIVE = {
       url: `${ANNALES}/MXlQMjVhL2ZLK25mcEpTWnI5N3JtQT09`,
       pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-2369148.pdf",
       page: "access_confirmed",
-      contentVerified: false,
+      contentVerified: true,
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF non relu."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet)."
     },
     {
       year: "2013",
@@ -299,11 +299,11 @@ export const ARCHIVE = {
       url: `${ANNALES}/UmdYdlc3em1RWmJQWEJCbW52Vm12dz09`,
       pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-2770867.pdf",
       page: "access_confirmed",
-      contentVerified: false,
+      contentVerified: true,
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF non relu."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet)."
     }
   ]
 };

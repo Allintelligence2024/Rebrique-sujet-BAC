@@ -7,17 +7,17 @@ Ces PDF sont **accessibles via lien direct** (`pdfUrl`), mais leur contenu n'a *
 
 ## Entrées concernées
 
-| Année | Filière | Session | Lien PDF | Statut |
-|-------|---------|---------|----------|--------|
-| 2018 | SE | main | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2018/dzexams-bac-sciences-3509975.pdf) | ❌ Non vérifié |
-| 2016 | SE | exceptional | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2016-2/dzexams-bac-sciences-3814840.pdf) | ❌ Non vérifié |
-| 2014 | SE | main | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-4380238.pdf) | ❌ Non vérifié |
-| 2019 | M | main | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-2280992.pdf) | ❌ Non vérifié |
-| 2018 | M | main | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2018/dzexams-bac-sciences-1967487.pdf) | ❌ Non vérifié |
-| 2017 | M | main | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2017/dzexams-bac-sciences-2275712.pdf) | ❌ Non vérifié |
-| 2015 | M | main | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2015/dzexams-bac-sciences-2723927.pdf) | ❌ Non vérifié |
-| 2014 | M | main | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-2369148.pdf) | ❌ Non vérifié |
-| 2013 | M | main | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-2770867.pdf) | ❌ Non vérifié |
+| Année | Filière | Session     | Lien PDF                                                                                             | Statut         |
+| ----- | ------- | ----------- | ---------------------------------------------------------------------------------------------------- | -------------- |
+| 2018  | SE      | main        | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2018/dzexams-bac-sciences-3509975.pdf)   | ❌ Non vérifié |
+| 2016  | SE      | exceptional | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2016-2/dzexams-bac-sciences-3814840.pdf) | ❌ Non vérifié |
+| 2014  | SE      | main        | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-4380238.pdf)   | ❌ Non vérifié |
+| 2019  | M       | main        | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-2280992.pdf)   | ❌ Non vérifié |
+| 2018  | M       | main        | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2018/dzexams-bac-sciences-1967487.pdf)   | ❌ Non vérifié |
+| 2017  | M       | main        | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2017/dzexams-bac-sciences-2275712.pdf)   | ❌ Non vérifié |
+| 2015  | M       | main        | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2015/dzexams-bac-sciences-2723927.pdf)   | ❌ Non vérifié |
+| 2014  | M       | main        | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-2369148.pdf)   | ❌ Non vérifié |
+| 2013  | M       | main        | [Lien](https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-2770867.pdf)   | ❌ Non vérifié |
 
 ## Instructions pour vérification manuelle
 
@@ -29,6 +29,7 @@ node scripts/verify-archive-pdfs.mjs
 ```
 
 Le script va:
+
 1. Télécharger chaque PDF
 2. Vérifier que le code HTTP est 200
 3. Vérifier que c'est bien un PDF (header `%PDF`)
@@ -36,12 +37,13 @@ Le script va:
 5. Générer un rapport
 
 **Si tous les PDF sont accessibles:**
+
 - Mettre à jour `data/archive.js` pour chaque entrée concernée:
   ```javascript
   // AVANT:
   contentVerified: false,
   page: "access_confirmed",
-  
+
   // APRÈS:
   contentVerified: true,
   page: "consulted",
@@ -69,6 +71,7 @@ file test.pdf  # Doit afficher: PDF document
 ## Critères de validation
 
 Un PDF est considéré **valide** si:
+
 - ✅ Code HTTP = 200
 - ✅ Fichier non vide (> 100 Ko typiquement)
 - ✅ Header du fichier = `%PDF` (fichier PDF valide)

@@ -55,7 +55,19 @@ test("les URLs annales sont https, dzexams et uniques", () => {
 
 test("toutes les entrées sont vérifiées (page ouverte) avec métriques de contrôle", () => {
   for (const e of ARCHIVE.entries) {
-    assert.equal(e.page, "consulted", `entrée non consultée: ${e.year}/${e.stream}/${e.session}`);
+    if (e.viewer === "ok") {
+      assert.equal(
+        e.page,
+        "consulted",
+        `viewer ok mais page !== consulted: ${e.year}/${e.stream}/${e.session}`
+      );
+    } else {
+      assert.equal(
+        e.page,
+        "access_confirmed",
+        `viewer blocked mais page !== access_confirmed: ${e.year}/${e.stream}/${e.session}`
+      );
+    }
     assert.ok(["se", "m"].includes(e.stream), `filière inconnue: ${e.stream}`);
     assert.ok(["main", "exceptional"].includes(e.session), `session inconnue: ${e.session}`);
     assert.ok(["ok", "blocked"].includes(e.viewer), `viewer inconnu: ${e.viewer}`);
@@ -101,11 +113,18 @@ test("les entrées non vérifiées ont page=access_confirmed et viewer=blocked",
         `entrée non vérifiée mais viewer !== blocked: ${e.year}/${e.stream}/${e.session}`
       );
     }
-    if (e.contentVerified === true) {
+    if (e.contentVerified === true && e.viewer === "ok") {
       assert.equal(
         e.page,
         "consulted",
-        `entrée vérifiée mais page !== consulted: ${e.year}/${e.stream}/${e.session}`
+        `entrée vérifiée (viewer ok) mais page !== consulted: ${e.year}/${e.stream}/${e.session}`
+      );
+    }
+    if (e.contentVerified === true && e.viewer === "blocked") {
+      assert.equal(
+        e.page,
+        "access_confirmed",
+        `entrée vérifiée (viewer bloqué, PDF direct) mais page !== access_confirmed: ${e.year}/${e.stream}/${e.session}`
       );
     }
   }
@@ -154,19 +173,23 @@ test("les pdfUrl sont des URLs valides (syntaxe)", () => {
 
 // Test réseau optionnel (désactivé par défaut en CI si réseau bloqué)
 // Pour l'activer, passer SKIP_NETWORK_TESTS=false
-test("les pdfUrl sont accessibles (test réseau)", {
-  skip: process.env.SKIP_NETWORK_TESTS === "true" || true // Désactivé par défaut
-}, async () => {
-  const https = await import("node:https");
-  for (const e of ARCHIVE.entries.filter((e) => e.pdfUrl)) {
-    const url = new URL(e.pdfUrl);
-    const res = await new Promise((resolve, reject) => {
-      https.get(url, (res) => resolve(res)).on("error", reject);
-    });
-    assert.equal(
-      res.statusCode,
-      200,
-      `PDF inaccessible (${res.statusCode}) pour ${e.year}/${e.stream}/${e.session}: ${e.pdfUrl}`
-    );
+test(
+  "les pdfUrl sont accessibles (test réseau)",
+  {
+    skip: process.env.SKIP_NETWORK_TESTS === "true" || true // Désactivé par défaut
+  },
+  async () => {
+    const https = await import("node:https");
+    for (const e of ARCHIVE.entries.filter((e) => e.pdfUrl)) {
+      const url = new URL(e.pdfUrl);
+      const res = await new Promise((resolve, reject) => {
+        https.get(url, (res) => resolve(res)).on("error", reject);
+      });
+      assert.equal(
+        res.statusCode,
+        200,
+        `PDF inaccessible (${res.statusCode}) pour ${e.year}/${e.stream}/${e.session}: ${e.pdfUrl}`
+      );
+    }
   }
-});
+);
