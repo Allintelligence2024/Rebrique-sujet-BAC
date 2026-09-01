@@ -8,11 +8,11 @@
 
    Vérification (2026-08-31) : les 19 pages 2013–2020 ont été ouvertes
    et leurs 9 PDF au viewer « 0 pages » validés mécaniquement
-   (HTTP 200, en-tête %PDF). 2021 SE reste en consultation. SE 2020 et
-   SE 2026 sont encodées en entraînement 4D (data/year-2020-se.js,
-   data/year-2026-se.js) et ne sont plus des cartes d'archive. Maths
-   2021–2026 restent cataloguées ici mais le hub les affiche en 4D
-   (id 2021-m … 2026-m).
+   (HTTP 200, en-tête %PDF). 2021 SE reste en consultation. SE 2013–2020
+   et SE 2026 sont encodées en entraînement 4D (data/subjects-archive.js
+   pour 2013–2019, data/year-2020-se.js, data/year-2026-se.js) et ne
+   sont plus des cartes d'archive. Maths 2021–2026 restent cataloguées
+   ici mais le hub les affiche en 4D (id 2021-m … 2026-m).
    Index racine : uniquement se et m — pas de catégorie تقني رياضي.
    /ar/bac/sciences-naturelles/tm redirige vers /ar/bac ; aucun URL inventé.
 
@@ -105,119 +105,6 @@ export const ARCHIVE = {
       viewer: "blocked",
       notes:
         "Page ouverte (2026-08-31) : titre BAC 2021 filière SE confirmé ; viewer en ligne 0 pages (PDF chiffré) ; lien تحميل observé. Octets PDF non récupérés depuis la sandbox (TLS). 4D non encodé : pas de couche texte lisible ni corrigé mot à mot."
-    },
-
-    {
-      year: "2019",
-      stream: "se",
-      session: "main",
-      url: `${ANNALES}/OHlmRldmdmdDVUNVRHBadTE5em0vdz09`,
-      page: "consulted",
-      contentVerified: true,
-      attachments: true,
-      viewer: "ok",
-      notes:
-        "Page ouverte (2026-08-30) : 19 pages ; pièces jointes sciences-se-bac2019 + sciences-se-bac2019-correction ; sujet : péridotite/dorsale océanique, enzyme glucose oxydase (Rastop/Anagène), immunité."
-    },
-    {
-      year: "2018",
-      stream: "se",
-      session: "main",
-      url: `${ANNALES}/RGZmd0lTRW0xNmZTRUFjR0F5QzMwZz09`,
-      pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2018/dzexams-bac-sciences-3509975.pdf",
-      page: "access_confirmed",
-      contentVerified: true,
-      attachments: false,
-      viewer: "blocked",
-      notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer en ligne « 0 pages » (PDF chiffré) mais lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet)."
-    },
-    {
-      year: "2017",
-      stream: "se",
-      session: "exceptional",
-      url: `${ANNALES}/TmZOSDV6eSt0UGxySFM1RFlTR3M4dz09`,
-      page: "consulted",
-      contentVerified: true,
-      attachments: true,
-      viewer: "ok",
-      notes:
-        "Page ouverte (2026-08-30). En-tête : « الدورة الاستثنائية 2017 ». Pièces jointes bac2017_2-sciences-se + bac2017_2-sciences-se-correction ; 18 pages."
-    },
-    {
-      year: "2017",
-      stream: "se",
-      session: "main",
-      url: `${ANNALES}/dFRNWk1JWkt2aC8vdFZtZVNMWGRwZz09`,
-      page: "consulted",
-      contentVerified: true,
-      attachments: true,
-      viewer: "ok",
-      notes:
-        "Page ouverte (2026-08-30). En-tête : « دورة 2017 ». Pièces jointes sciences-se-bac2017 + sciences-se-bac2017-correction ; 16 pages."
-    },
-    {
-      year: "2016",
-      stream: "se",
-      session: "exceptional",
-      url: `${ANNALES}/M09NK2ZYVHFzQXg3KzZHazBaTk5IUT09`,
-      pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2016-2/dzexams-bac-sciences-3814840.pdf",
-      page: "access_confirmed",
-      contentVerified: true,
-      attachments: false,
-      viewer: "blocked",
-      notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien تحميل (chemin /2016-2/ = session 2). PDF dzexams validé mécaniquement. Énoncé eddirasa OCR RTL (2026-09-01) : https://eddirasa.com/wp-content/uploads/2016/06/bac-science-2016-se-2-1.pdf — 2 sujets (Ag Z/thymus ; mito/DNP/cyanure ; ocytocine-vasopressine ; carboxypeptidase ; TTX/TEA ; Rubisco/APG). Corrigé : page HTML seulement, pas d'URL PDF observé. 4D non encodé."
-    },
-    {
-      year: "2016",
-      stream: "se",
-      session: "main",
-      url: `${ANNALES}/MWliZ2dVaHJFejVUMjdiV3VZS2oxdz09`,
-      page: "consulted",
-      contentVerified: true,
-      attachments: true,
-      viewer: "ok",
-      notes:
-        "Page ouverte (2026-08-30). En-tête : « دورة 2016 ». Pièces jointes sciences-se-bac2016 + sciences-se-bac2016-correction ; 21 pages ; sujet : gène et ARN (Anagène), immunité (LT, IL2/CMH), ATP. Miroir eddirasa chunk 1 (2026-09-01) : ATP (FAL/DCCD) ; GABA/Ach ; BZD. Corrigé PDF eddirasa non observé. Pas de 4D (consult)."
-    },
-    {
-      year: "2015",
-      stream: "se",
-      session: "main",
-      url: `${ANNALES}/aTlRWGREbDN3Qit2cVdRaHNmK0FYQT09`,
-      pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2015/dzexams-bac-sciences-5906014.pdf",
-      page: "consulted",
-      contentVerified: true,
-      attachments: false,
-      viewer: "ok",
-      notes:
-        "Page ouverte (2026-08-30) : 20 pages dans le viewer (lien « تحميل » présent) ; pas de pièces jointes labellisées sur cette page ; en-tête de session non lisible dans le texte extrait."
-    },
-    {
-      year: "2014",
-      stream: "se",
-      session: "main",
-      url: `${ANNALES}/SzdNaHlPbThvaEhSSUJjWDRsdUljdz09`,
-      pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-4380238.pdf",
-      page: "access_confirmed",
-      contentVerified: true,
-      attachments: false,
-      viewer: "blocked",
-      notes:
-        "Page ouverte (2026-08-30) : 22 pages déclarées ; viewer « 0 pages » (PDF chiffré) mais lien de téléchargement direct présent ; pas de pièces jointes labellisées. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet)."
-    },
-    {
-      year: "2013",
-      stream: "se",
-      session: "main",
-      url: `${ANNALES}/bjdJbVBZMHFKeUZTcExKSEw4REVNQT09`,
-      page: "consulted",
-      contentVerified: true,
-      attachments: true,
-      viewer: "ok",
-      notes:
-        "Page ouverte (2026-08-30) : pièces jointes sciences-se-bac2013 + sciences-se-bac2013-correction + pages scannées BAC2013_Page_004..020 ; 17 pages."
     },
 
     /* ---------------- شعبة رياضيات ---------------- */

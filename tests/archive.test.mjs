@@ -50,22 +50,25 @@ test("la session exceptionnelle 2016 Maths n'est pas inventée", () => {
   assert.ok(gap.reason.length > 20);
 });
 
-test("chaque année 2013–2021 a une session principale pour se et m, sauf 2020 SE (4D)", () => {
+test("chaque année 2013–2021 a une session principale pour se et m, sauf SE 4D (2013–2020)", () => {
+  const seFourD = new Set(["2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"]);
   for (let y = 2013; y <= 2021; y++) {
     const year = String(y);
     for (const stream of ["se", "m"]) {
-      if (year === "2020" && stream === "se") continue;
+      if (stream === "se" && seFourD.has(year)) continue;
       assert.ok(
         ARCHIVE.entries.some((e) => e.year === year && e.stream === stream && e.session === "main"),
         `session principale manquante pour ${year}/${stream}`
       );
     }
   }
-  assert.equal(
-    ARCHIVE.entries.some((e) => e.year === "2020" && e.stream === "se"),
-    false,
-    "SE 2020 ne doit plus être une carte d'archive (entraînement 4D)"
-  );
+  for (const year of seFourD) {
+    assert.equal(
+      ARCHIVE.entries.some((e) => e.year === year && e.stream === "se"),
+      false,
+      `SE ${year} ne doit plus être une carte d'archive (entraînement 4D)`
+    );
+  }
 });
 
 test("les URLs annales sont https, dzexams et uniques", () => {

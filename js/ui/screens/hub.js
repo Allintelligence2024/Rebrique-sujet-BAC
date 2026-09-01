@@ -130,7 +130,7 @@ export function createHubScreen(deps) {
     const caption = $("#hub-stream-caption");
     caption.textContent =
       streamId === "se"
-        ? `الشعبة المعروضة: ${stream.label} — 2020 و 2022–2026 تدريب 4D، 2013–2019 و 2021 موضوع رسمي + تصحيح.`
+        ? `الشعبة المعروضة: ${stream.label} — 2013–2020 و 2022–2026 تدريب 4D، 2021 موضوع رسمي + تصحيح.`
         : streamId === "m"
           ? `الشعبة المعروضة: ${stream.label} — 2021–2026 تدريب 4D، 2013–2020 موضوع رسمي + تصحيح.`
           : `الشعبة المعروضة: ${stream.label} — لا يوجد اختبار علوم الطبيعة والحياة لهذه الشعبة على المصدر الرسمي (dzexams يعرض se و m فقط).`;

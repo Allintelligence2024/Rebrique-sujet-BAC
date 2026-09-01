@@ -46,6 +46,7 @@ const ASSETS = [
   "./js/ui/reports/report.js",
   "./js/ui/reports/exports.js",
   "./data/subjects.js",
+  "./data/subjects-archive.js",
   "./data/year-2026-se.js",
   "./data/year-2020-se.js",
   "./data/year-2021-m.js",

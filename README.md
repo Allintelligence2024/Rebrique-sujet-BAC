@@ -33,7 +33,8 @@ L'interface propose des thèmes clair et sombre persistants. Les outils secondai
 │   ├── styles.css                    # design 100% autonome (aucun CDN)
 │   └── icon-192.png / icon-512.png   # icônes de marque (boussole 4D)
 ├── data/
-│   ├── subjects.js                   # ⭐ CONFIG : 2020+2022–2026 SE + 2021–2026 Maths (4D)
+│   ├── subjects.js                   # ⭐ CONFIG : 2013–2019+2020+2022–2026 SE + 2021–2026 Maths (4D)
+│   ├── subjects-archive.js           # archive reconstruite 2013–2019 SE (2020 du fichier non branché)
 │   ├── year-2026-se.js               # BAC 2026 علوم تجريبية (énoncé + corrigé eddirasa)
 │   ├── year-2020-se.js               # BAC 2020 علوم تجريبية (énoncé + corrigé eddirasa)
 │   ├── year-2021-m.js                # BAC 2021 رياضيات (énoncé + corrigé dzexams)
@@ -57,11 +58,12 @@ L'interface propose des thèmes clair et sombre persistants. Les outils secondai
 │       ├── workspace/          # texte, pipeline, brouillon, feedback, rapport
 │       └── reports/            # calcul du rapport, exports CSV/JSON et impression
 ├── tests/                            # tests automatisés (moteur, données, UI, sécurité) — `npm test`
-│   ├── *.test.mjs                    # 19 fichiers, exécutés par `node --test` (compte dans le bloc « Tests »)
+│   ├── *.test.mjs                    # 20 fichiers, exécutés par `node --test` (compte dans le bloc « Tests »)
 │   ├── e2e/                          # Playwright (mode hors-ligne PWA) — `npm run test:e2e`
 │   └── hard-benchmark/               # pipeline de copies réelles (corpus : 0 copie)
 ├── scripts/
 │   ├── generate-pwa-version.mjs      # génère js/app-version.js (appelé par `npm run build`)
+│   ├── generate-archive-years.mjs    # régénère data/subjects-archive.js (2013–2020)
 │   └── update-doc-metrics.mjs        # régénère / vérifie les métriques du README
 ├── docs/                             # protocoles (accessibilité, handoff)
 ├── server.mjs                        # serveur statique avec CSP — `npm start`
@@ -94,8 +96,9 @@ python3 -m http.server 8080     # ou : npm start
 
 ## 📄 Contenu réel — entraînement 4D
 
-**12 années** dans `APP_CONFIG.years` : 2020 et 2022–2026 علوم تجريبية + 2021–2026 رياضيات.
-Le hub SE affiche 2020 et 2022–2026 en 4D ; le hub Maths affiche 2021–2026 en 4D.
+**19 années** dans `APP_CONFIG.years` : 2013–2019 et 2020+2022–2026 علوم تجريبية + 2021–2026 رياضيات.
+Le hub SE affiche 2013–2020 et 2022–2026 en 4D ; le hub Maths affiche 2021–2026 en 4D.
+**2021 SE est volontairement absente du 4D.** L'archive 2013–2019 n'est pas un énoncé ministériel.
 
 ### Contenu BAC 2025 (شعبة علوم تجريبية)
 
@@ -179,7 +182,7 @@ compare les réponses à des **mots-clés normalisés** (via `normalizeArabic`) 
 | **2025 Maths** | **activée** | aucun (droit d'auteur) | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2025/06/bac-math-science-2025.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2025/06/correction-bac-math-science-2025.pdf) | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 8+12 / 8+12 |
 | **2026 Maths** | **activée** | aucun (droit d'auteur) | [énoncé eddirasa](https://eddirasa.com/uploads/2026/08/bac-math-sciences-2026.pdf) · [corrigé](https://eddirasa.com/uploads/2026/08/correction-bac-math-sciences-2026.pdf) | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 6+14 / 8+12 |
 
-Aucun PDF 2020/2022/2023/2024/2026/2021 n'est versé dans le dépôt.
+Aucun PDF 2013–2019/2020/2022/2023/2024/2026/2021 n'est versé dans le dépôt.
 
 ### Contenu BAC 2026 (شعبة علوم تجريبية)
 
@@ -245,13 +248,14 @@ Les sujets de la filière choisie remplacent la grille.
 
 | Filière | Entraînement 4D | Consultation (sujet + تصحيح) |
 | ------------------------ | --------------- | -------------------------------- |
-| شعبة علوم تجريبية (`se`) | 2020 و 2022–2026 | 2013–2019 و 2021 (+ 2016/2017 exceptionnelles) |
+| شعبة علوم تجريبية (`se`) | 2013–2020 و 2022–2026 | 2021 |
 | شعبة رياضيات (`m`) | 2021–2026 | 2013–2020 (+ 2017 exceptionnelle) |
 | شعبة تقني رياضي (`tm`) | — | **absente de la source** (trou affiché, 0 lien) |
 
 Statut honnête :
 
-- **2020 et 2022–2026 SE** et **2021–2026 Maths** : entraînement 4D (`data/subjects.js` + modules année).
+- **2013–2019 SE** : entraînement 4D reconstruit (`data/subjects-archive.js`). Toutes consignes `reconstructed`. **2018** : thèmes relus OCR dzexams. **2013–2017, 2019** : thèmes pédagogiques 3AS, **non certifiables** comme énoncés officiels. Confiance UI basse.
+- **2020 et 2022–2026 SE** et **2021–2026 Maths** : entraînement 4D (`data/subjects.js` + modules année). Le 2020 reconstruit de `subjects-archive.js` n'est **pas** branché.
 - **Consultation** : sujet officiel + تصحيح النموذجي via dzexams. Aucun
   barème, mot-clé ou réponse modèle : le moteur ne s'applique pas.
 - **Maths 2022–2026** : viewer dzexams bloqué (`contentVerified: false`) ;
@@ -270,7 +274,7 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **163** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **167** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0**
 - Taille de la façade UI (js/ui.js) : **408 lignes**
 
@@ -346,7 +350,9 @@ Le script accepte soit un fichier JSON en argument, soit un mode interactif.
 
 ## 🔧 Ajouter une année / un sujet
 
-Ouvrir `data/subjects.js`, ajouter une entrée dans `years[]`, et (pour un exercice) déclarer
+Pour 2013–2020 : éditer `data/subjects-archive.js` (ou le générateur
+`scripts/generate-archive-years.mjs`) puis réimporter. Pour 2022–2025 : ouvrir
+`data/subjects.js`, ajouter une entrée dans `years[]`, et (pour un exercice) déclarer
 la règle d'évaluation :
 
 ```js
