@@ -5,12 +5,24 @@ import { ARCHIVE_YEARS } from "../data/subjects-archive.js";
 import { poleConfidence } from "../js/ui/workspace/feedback.js";
 
 const ARCHIVE_IDS = ["2020", "2019", "2018", "2017", "2016", "2015", "2014", "2013"];
+const ENABLED_RECON_SE = ["2019", "2018", "2017", "2016", "2015", "2014", "2013"];
 
-test("l'archive 2013-2020 est branchée dans APP_CONFIG après 2022", () => {
+test("l'archive 2013-2019 SE est branchée dans APP_CONFIG ; 2020 SE reste le module officiel", () => {
   const ids = APP_CONFIG.years.map((y) => y.id);
   assert.deepEqual(ids.slice(0, 4), ["2025", "2024", "2023", "2022"]);
-  assert.deepEqual(ids.slice(4), ARCHIVE_IDS);
-  assert.equal(APP_CONFIG.years.length, 12);
+  assert.equal(APP_CONFIG.years[0].id, "2025");
+  const se2020 = APP_CONFIG.years.find((y) => y.id === "2020");
+  assert.ok(se2020 && se2020.enabled && (se2020.stream || "se") === "se");
+  assert.equal(
+    APP_CONFIG.years.filter((y) => y.id === "2020").length,
+    1,
+    "2020 SE ne doit pas être dupliqué (officiel + reconstruit)"
+  );
+  for (const id of ENABLED_RECON_SE) {
+    const year = APP_CONFIG.years.find((y) => y.id === id);
+    assert.ok(year && year.enabled && (year.stream || "se") === "se", `${id} SE 4D manquant`);
+  }
+  assert.equal(APP_CONFIG.years.some((y) => y.id === "2021" && y.enabled), false);
 });
 
 test("chaque année d'archive est activée avec 2 sujets × 3 exercices 5/7/8", () => {

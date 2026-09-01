@@ -33,8 +33,13 @@ L'interface propose des thèmes clair et sombre persistants. Les outils secondai
 │   ├── styles.css                    # design 100% autonome (aucun CDN)
 │   └── icon-192.png / icon-512.png   # icônes de marque (boussole 4D)
 ├── data/
-│   ├── subjects.js                   # ⭐ CONFIG : 12 années (2025–2022 + archive 2020–2013) → 24 sujets → 72 exercices
-│   ├── subjects-archive.js           # archive 2013–2020 (toutes consignes reconstructed)
+│   ├── subjects.js                   # ⭐ CONFIG : 2013–2019+2020+2022–2026 SE + 2021–2026 Maths (4D)
+│   ├── subjects-archive.js           # archive reconstruite 2013–2019 SE (2020 du fichier non branché)
+│   ├── year-2026-se.js               # BAC 2026 علوم تجريبية (énoncé + corrigé eddirasa)
+│   ├── year-2020-se.js               # BAC 2020 علوم تجريبية (énoncé + corrigé eddirasa)
+│   ├── year-2021-m.js                # BAC 2021 رياضيات (énoncé + corrigé dzexams)
+│   ├── year-2022-m.js … year-2026-m.js  # BAC 2022–2026 رياضيات (énoncé + corrigé eddirasa)
+│   ├── archive.js                    # consultation (hors cartes 4D affichées)
 │   └── brouillon.js                  # canevas du brouillon méthodologique et verbes BAC
 ├── js/
 │   ├── main.js                       # point d'entrée
@@ -89,13 +94,11 @@ python3 -m http.server 8080     # ou : npm start
 
 ---
 
-## 📄 Contenu réel — BAC 2013 à 2025 (شعبة علوم تجريبية)
+## 📄 Contenu réel — entraînement 4D
 
-**12 années, 24 sujets, 72 exercices**, déclarés dans `data/subjects.js`
-(`APP_CONFIG.years`, archive importée depuis `data/subjects-archive.js`).
-Le hub affiche les douze années activées ; les écrans de choix
-(parcours guidé et accès rapide) sont générés à partir de cette même donnée.
-**2021 est volontairement absente.** L'archive 2013–2020 n'est pas un énoncé ministériel.
+**19 années** dans `APP_CONFIG.years` : 2013–2019 et 2020+2022–2026 علوم تجريبية + 2021–2026 رياضيات.
+Le hub SE affiche 2013–2020 et 2022–2026 en 4D ; le hub Maths affiche 2021–2026 en 4D.
+**2021 SE est volontairement absente du 4D.** L'archive 2013–2019 n'est pas un énoncé ministériel.
 
 ### Contenu BAC 2025 (شعبة علوم تجريبية)
 
@@ -116,7 +119,9 @@ Le contenu a été reconstitué à partir du sujet officiel **et de son corrigé
 
 ### Contenu BAC 2024 (شعبة علوم تجريبية)
 
-Thèmes relus sur la couche texte du PDF eddirasa (bruitée : OCR + traduction parasite) ; wording `reconstructed` :
+Pages 2, 6, 7 et 10 relues sur photos du sujet officiel (2026-08-31) :
+pôles concernés en `official`. Le reste (pages 1, 3–5, 8–9 et cadrages N/W)
+reste `reconstructed` :
 
 | Sujet | Exercice | Thème                                                                |
 | ----- | -------- | -------------------------------------------------------------------- |
@@ -147,13 +152,13 @@ reconstituée mot à mot, 2026-08-27) ; corrigé officiel (الإجابة الن
 même PDF (pp. 11-21) et croisé avec une seconde source ([eddirasa](https://eddirasa.com/correction-bac-science-2022-se/))
 — textes concordants :
 
-| Sujet | Exercice | Thème                                                                   |
-| ----- | -------- | ----------------------------------------------------------------------- |
-| **1** | ت1 (5ن)  | **الغشاء الهیولي** : تحديد الذات والتعرف على اللادوات (CMH, ABO, BCR, TCR)   |
-| **1** | ت2 (7ن)  | **مناطق التشابك** في النخاع الشوكي : **الغلوتامات** و**GABA** (الاسترخاء)      |
-| **1** | ت3 (8ن)  | المضاد الحيوي **الجینتامسین** و**انحلال البشرة الفقاعية** (الترجمة)            |
-| **2** | ت1 (5ن)  | **السّيانور** (منع ATP) و**كمون الراحة** للليف العصبي                        |
-| **2** | ت2 (7ن)  | **α-amanitine** (ARN بوليميراز) ودواء **ATAC** ضد الأورام السرطانية           |
+| Sujet | Exercice | Thème                                                                       |
+| ----- | -------- | --------------------------------------------------------------------------- |
+| **1** | ت1 (5ن)  | **الغشاء الهیولي** : تحديد الذات والتعرف على اللادوات (CMH, ABO, BCR, TCR)  |
+| **1** | ت2 (7ن)  | **مناطق التشابك** في النخاع الشوكي : **الغلوتامات** و**GABA** (الاسترخاء)   |
+| **1** | ت3 (8ن)  | المضاد الحيوي **الجینتامسین** و**انحلال البشرة الفقاعية** (الترجمة)         |
+| **2** | ت1 (5ن)  | **السّيانور** (منع ATP) و**كمون الراحة** للليف العصبي                       |
+| **2** | ت2 (7ن)  | **α-amanitine** (ARN بوليميراز) ودواء **ATAC** ضد الأورام السرطانية         |
 | **2** | ت3 (8ن)  | **غاز الميثان (CH₄)** في الأبقار والمكمل الغذائي **(3-NOP)** (أنزيم M/CoEM) |
 
 Le **barème 4D** adapte les points officiels à la méthode (N/S/E/W), et l'évaluation
@@ -162,32 +167,106 @@ compare les réponses à des **mots-clés normalisés** (via `normalizeArabic`) 
 
 ### Provenance des consignes
 
-| Année    | État        | PDF local                                          | Source externe                                                                                                                                                                                                                 | Consignes                                                                                                                                               |
-| -------- | ----------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **2025** | activée     | `BAC2025_SVT_Sujet1.pdf`, `BAC2025_SVT_Sujet2.pdf` | —                                                                                                                                                                                                                              | Pôles `official` relus sur le scan ; autres `reconstructed`                                                                                             |
-| **2024** | activée     | aucun (droit d'auteur)                             | [eddirasa sujet](https://eddirasa.com/bac-science-2024-se/) · [PDF](https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf) · [dzexams](https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09) | `reconstructed` — couche texte distante bruitée (OCR + traduction parasite), non certifiable `official` ici. Session de remplacement non localisée.     |
-| **2023** | **activée** | aucun (droit d'auteur)                             | [dzexams 2023](https://www.dzexams.com/ar/annales/STRDZEowcCtwN0JmT1NwS3p4cEVmdz09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf)                             | Consignes `official` relues sur la couche texte du PDF (inversée, reconstituée mot à mot, 2026-08-25) ; pôles sans question autonome en `reconstructed` |
+| Année    | État        | PDF local                                          | Source externe                                                                                                                                                                                                                                                          | Consignes                                                                                                                                                                                                         |
+| -------- | ----------- | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **2025** | activée     | `BAC2025_SVT_Sujet1.pdf`, `BAC2025_SVT_Sujet2.pdf` | —                                                                                                                                                                                                                                                                       | Pôles `official` relus sur le scan ; autres `reconstructed`                                                                                                                                                       |
+| **2024** | activée     | aucun (droit d'auteur)                             | [eddirasa sujet](https://eddirasa.com/bac-science-2024-se/) · [PDF eddirasa](https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf) · [dzexams](https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09) · [PDF dzexams](https://www.dzexams.com/uploads/sujets/officiels/bac/2024/dzexams-bac-sciences-naturelles-1751784.pdf) | Mixte : 8 pôles `official` recopiés mot à mot sur photos des pages 2, 6, 7, 10 (2026-08-31) ; le reste `reconstructed`. Viewer dzexams bloqué dans la sandbox. Session de remplacement non localisée. |
+| **2023** | **activée** | aucun (droit d'auteur)                             | [dzexams 2023](https://www.dzexams.com/ar/annales/STRDZEowcCtwN0JmT1NwS3p4cEVmdz09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf)                                                                      | Consignes `official` relues sur la couche texte du PDF (inversée, reconstituée mot à mot, 2026-08-25) ; pôles sans question autonome en `reconstructed`                                                           |
 | **2022** | **activée** | aucun (droit d'auteur)                             | [dzexams 2022](https://www.dzexams.com/ar/annales/eVlXSFRFOEJaN2ozSlE3NytzWkRHQT09) · [PDF ONEC](https://www.dzexams.com/uploads/sujets/officiels/bac/2022/dzexams-bac-sciences-2311208.pdf) · [corrigé eddirasa](https://eddirasa.com/correction-bac-science-2022-se/) | Consignes `official` relues sur la couche texte du PDF ONEC (inversée, reconstituée mot à mot, 2026-08-27) ; corrigé officiel croisé sur 2 sources concordantes ; pôles sans question autonome en `reconstructed` |
+| **2026 SE** | **activée** | aucun (droit d'auteur) | [énoncé eddirasa](https://eddirasa.com/uploads/2026/08/bac-science-2026-se.pdf) · [corrigé](https://eddirasa.com/uploads/2026/08/correction-bac-science-2026-se.pdf) | `official` / `reconstructed` depuis OCR du PDF officiel (2026-08-31) |
+| **2020 SE** | **activée** | aucun (droit d'auteur) | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2020/09/eddirasa.com-bac-se-science-2020.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2020/09/eddirasa.com-correction-bac-sc-science-2020.pdf) | `official` / `reconstructed` depuis OCR RTL (2026-08-31) |
+| **2021 Maths** | **activée** | aucun (droit d'auteur) | [dzexams 2021 m](https://www.dzexams.com/ar/annales/T2tYS3FTcFRwWCtCbXV2QmFyRTcydz09) | `official` / `reconstructed` depuis viewer 12 pages (couche inversée, 2026-08-31) |
+| **2022 Maths** | **activée** | aucun (droit d'auteur) | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2022/06/eddirasa.com-bac-math-science-2022.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2022/06/eddirasa.com-correction-bac-math-science-2022.pdf) | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 8+12 / 8+12 |
+| **2023 Maths** | **activée** | aucun (droit d'auteur) | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2023/07/eddirasa.com-bac-sciences-math-2023.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2023/07/eddirasa.com-correction-bac-sciences-math-2023.pdf) | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 8+12 / 7+13 |
+| **2024 Maths** | **activée** | aucun (droit d'auteur) | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2024/06/bac-math-sciences-2024.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2024/05/correction-bac-math-sciences-2024.pdf) | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 7+13 / 7+13 |
+| **2025 Maths** | **activée** | aucun (droit d'auteur) | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2025/06/bac-math-science-2025.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2025/06/correction-bac-math-science-2025.pdf) | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 8+12 / 8+12 |
+| **2026 Maths** | **activée** | aucun (droit d'auteur) | [énoncé eddirasa](https://eddirasa.com/uploads/2026/08/bac-math-sciences-2026.pdf) · [corrigé](https://eddirasa.com/uploads/2026/08/correction-bac-math-sciences-2026.pdf) | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 6+14 / 8+12 |
 
-### Archive BAC 2013–2020 (reconstruite, non ministérielle)
+Aucun PDF 2013–2019/2020/2022/2023/2024/2026/2021 n'est versé dans le dépôt.
 
-Toutes les consignes de `data/subjects-archive.js` sont `reconstructed`.
-**2018** et **2020 sujet 1** : thèmes relus sur la couche texte dzexams (OCR bruité / inversé, 2026-08-30).
-**2013–2017, 2019, 2020 sujet 2** : thèmes pédagogiques du programme 3AS, **non certifiables** comme énoncés officiels.
-PDF non redistribués ; liens dzexams uniquement. Confiance UI : **basse** (comme 2024).
+### Contenu BAC 2026 (شعبة علوم تجريبية)
 
-| Année    | État        | PDF local                                          | Source externe                                                                                                                                                                                                                 | Consignes                                                                                                                                               |
-| -------- | ----------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **2020** | activée     | aucun (droit d'auteur)                             | [dzexams 2020](https://www.dzexams.com/ar/annales/SUFqL0VzRjNzdmd6ek1EekpsOTFMdz09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2020/dzexams-bac-sciences-2356016.pdf) · [eddirasa](https://eddirasa.com/wp-content/uploads/2020/09/eddirasa.com-bac-se-science-2020.pdf) | `reconstructed` — S1 relue OCR ; S2 incomplet, thèmes pédagogiques |
-| **2019** | activée     | aucun (droit d'auteur)                             | [dzexams 2019](https://www.dzexams.com/ar/annales/OHlmRldmdmdDVUNVRHBadTE5em0vdz09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-3051478.pdf) | `reconstructed` — PDF visionneuse protégé ; thèmes pédagogiques |
-| **2018** | activée     | aucun (droit d'auteur)                             | [dzexams 2018](https://www.dzexams.com/ar/annales/RGZmd0lTRW0xNmZTRUFjR0F5QzMwZz09) | `reconstructed` — thèmes relus OCR inversé |
-| **2017** | activée     | aucun (droit d'auteur)                             | [dzexams 2017](https://www.dzexams.com/ar/annales/dFRNWk1JWkt2aC8vdFZtZVNMWGRwZz09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2017/dzexams-bac-sciences-2581269.pdf) | `reconstructed` — thèmes pédagogiques |
-| **2016** | activée     | aucun (droit d'auteur)                             | [dzexams 2016](https://www.dzexams.com/ar/annales/M09NK2ZYVHFzQXg3KzZHazBaTk5IUT09) | `reconstructed` — thèmes pédagogiques |
-| **2015** | activée     | aucun (droit d'auteur)                             | [dzexams 2015](https://www.dzexams.com/ar/annales/aTlRWGREbDN3Qit2cVdRaHNmK0FYQT09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2015/dzexams-bac-sciences-5906014.pdf) | `reconstructed` — thèmes pédagogiques |
-| **2014** | activée     | aucun (droit d'auteur)                             | [dzexams 2014](https://www.dzexams.com/ar/annales/SzdNaHlPbThvaEhSSUJjWDRsdUljdz09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-4380238.pdf) | `reconstructed` — thèmes pédagogiques |
-| **2013** | activée     | aucun (droit d'auteur)                             | [dzexams 2013](https://www.dzexams.com/ar/annales/bjdJbVBZMHFKeUZTcExKSEw4REVNQT09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-4463279.pdf) | `reconstructed` — thèmes pédagogiques |
+Énoncé + corrigé officiels [eddirasa](https://eddirasa.com/uploads/2026/08/bac-science-2026-se.pdf)
+· [corrigé](https://eddirasa.com/uploads/2026/08/correction-bac-science-2026-se.pdf)
+(OCR, 2026-08-31). 2 sujets × 3 exercices (5+7+8). Fichier : `data/year-2026-se.js`.
 
-Aucun PDF 2013–2024 n'est versé dans le dépôt.
+| Sujet | Exercice | Thème |
+| ----- | -------- | ----- |
+| **1** | ت1 (5ن) | **الألبومين**، الجذور الهيدروكسيل (OH•) و**Edema** |
+| **1** | ت2 (7ن) | **SIRT1 / P53A / NAD+** ومركب **RSV** |
+| **1** | ت3 (8ن) | مبيد **Atrazine** ومقاومة الزنجبيل الأرقطي (GST) |
+| **2** | ت1 (5ن) | غشاء **التيلاكوئيد** ومبيد **Oxyfluorfen** |
+| **2** | ت2 (7ن) | **AVC** وقناة **ASIC1a** (PcTx1) |
+| **2** | ت3 (8ن) | **ألزهايمر**، Anti-Aβ و**ATV-Aβ** (TfR) |
+
+### Contenu BAC 2020 (شعبة علوم تجريبية)
+
+Énoncé + corrigé officiels [eddirasa](https://eddirasa.com/wp-content/uploads/2020/09/eddirasa.com-bac-se-science-2020.pdf)
+· [corrigé](https://eddirasa.com/wp-content/uploads/2020/09/eddirasa.com-correction-bac-sc-science-2020.pdf)
+(OCR RTL, 2026-08-31). 2 sujets × 3 exercices (5+7+8). Fichier : `data/year-2020-se.js`.
+
+| Sujet | Exercice | Thème |
+| ----- | -------- | ----- |
+| **1** | ت1 (5ن) | **البنية الداخلية للكرة الأرضية** (Moho / Gutenberg / Lehmann) |
+| **1** | ت2 (7ن) | أنزيما **Cox-1 / Cox-2** ودواء **الإيبوبروفين** |
+| **1** | ت3 (8ن) | بروتين **Her2** والعلاج بـ **التراستوزوماب** |
+| **2** | ت1 (5ن) | انتقاء الببتيد المستضدي و**CMH** |
+| **2** | ت2 (7ن) | مادة **الريسين** وتثبيط تركيب البروتين (ARNr 28s) |
+| **2** | ت3 (8ن) | المشبك المثبط ونضج **GABA** (NKCC1 → KCC2) |
+
+### Contenu BAC 2022–2026 (شعبة رياضيات)
+
+Énoncé + corrigé officiels eddirasa (OCR, 2026-08-31). Format Maths : 2 sujets × 2 exercices. id `YYYY-m`.
+
+| Année | Fichier | Barème | Thèmes |
+| ----- | ------- | ------ | ------ |
+| **2022** | `data/year-2022-m.js` | 8+12 / 8+12 | ريبوزوم (PM 844) ؛ RADT Cov19 ؛ جسم مضاد ؛ هيبسيدين **HAMP** (GCC→ACC Ala→Thr) |
+| **2023** | `data/year-2023-m.js` | 8+12 / 7+13 | إيثانول Asp-Tyr ؛ **PRF1** G→A (UAG) ؛ CPA/LB/LT ؛ هالوفوجينون / ProRS |
+| **2024** | `data/year-2024-m.js` | 7+13 / 7+13 | كورديسبين ؛ DLBCL (β2m / HLA I) ؛ PID ؛ ألبورت **COL4A5** Gly→Glu |
+| **2025** | `data/year-2025-m.js` | 8+12 / 8+12 | مضادان Q/D والريبوزوم ؛ TAP / HLA I ؛ **HLA-DRB1** Arg74Trp ؛ UV-C Spike ACE2 |
+| **2026** | `data/year-2026-m.js` | 6+14 / 8+12 | LTc / CMH I ؛ HCF LDLR/PCSK9 ؛ IL-2 NDNA11 ؛ غيتلمان **SLC12A3** Leu892Pro |
+
+### Contenu BAC 2021 (شعبة رياضيات)
+
+Énoncé + corrigé dzexams (viewer 12 pages, couche inversée reconstituée,
+2026-08-31). Format Maths : 2 sujets × 2 exercices (8+12). id `2021-m`.
+Fichier : `data/year-2021-m.js`.
+
+| Sujet | Exercice | Thème |
+| ----- | -------- | ----- |
+| **1** | ت1 (8ن) | **CMH** والتوافق النسيجي في زرع الكلية |
+| **1** | ت2 (12ن) | **الماكروليد** ومقاومة البكتيريا (**Mex.R**) |
+| **2** | ت1 (8ن) | عناصر **تركيب البروتين** (ARN بوليميراز / ريبوزوم) |
+| **2** | ت2 (12ن) | **الهيموغلوبين** والبنيتان **R** و **T** |
+
+---
+
+## 📚 Sujets officiels (consultation, hors cartes 4D)
+
+Le bouton coin **تغيير الشعبة** cycle **علوم تجريبية → رياضيات → تقني رياضي**.
+Les sujets de la filière choisie remplacent la grille.
+
+| Filière | Entraînement 4D | Consultation (sujet + تصحيح) |
+| ------------------------ | --------------- | -------------------------------- |
+| شعبة علوم تجريبية (`se`) | 2013–2020 و 2022–2026 | 2021 |
+| شعبة رياضيات (`m`) | 2021–2026 | 2013–2020 (+ 2017 exceptionnelle) |
+| شعبة تقني رياضي (`tm`) | — | **absente de la source** (trou affiché, 0 lien) |
+
+Statut honnête :
+
+- **2013–2019 SE** : entraînement 4D reconstruit (`data/subjects-archive.js`). Toutes consignes `reconstructed`. **2018** : thèmes relus OCR dzexams. **2013–2017, 2019** : thèmes pédagogiques 3AS, **non certifiables** comme énoncés officiels. Confiance UI basse.
+- **2020 et 2022–2026 SE** et **2021–2026 Maths** : entraînement 4D (`data/subjects.js` + modules année). Le 2020 reconstruit de `subjects-archive.js` n'est **pas** branché.
+- **Consultation** : sujet officiel + تصحيح النموذجي via dzexams. Aucun
+  barème, mot-clé ou réponse modèle : le moteur ne s'applique pas.
+- **Maths 2022–2026** : viewer dzexams bloqué (`contentVerified: false`) ;
+  4D encodé depuis les PDF officiels eddirasa (même papier ONEC).
+- **SE 2021** : pas de 4D — couche texte / corrigé mot à mot absents sur dzexams.
+- **شعبة تقني رياضي** : pas d'épreuve SVT au BAC ; l'index dzexams n'a que
+  `se` et `m` (revérifié 2026-08-31). Le hub affiche le trou, **aucun lien
+  inventé**. Les filières Lettres / Langues / Gestion n'ont pas non plus
+  d'épreuve SVT — elles ne sont pas ajoutées.
+- **2016 Maths exceptionnelle** : absente de l'index — `ARCHIVE.gaps`.
+- **Aucun PDF d'archive versé** (droit d'auteur).
 
 ---
 
@@ -195,7 +274,7 @@ Aucun PDF 2013–2024 n'est versé dans le dépôt.
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **150** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **167** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0**
 - Taille de la façade UI (js/ui.js) : **408 lignes**
 

@@ -3,8 +3,8 @@
    ------------------------------------------------------------
    2025 : consignes confrontées au PDF scanné du dépôt
           (rendu visuel page par page, 2026-08-23).
-   2024 : exercices reconstruits à partir du banc de tests du
-          dépôt — PDF officiel non relu ici (texte distant bruité).
+   2024 : consignes des pages 2, 6, 7 et 10 relues sur photos du
+          sujet officiel ONEC (2026-08-31) ; le reste reconstructed.
    2023 : consignes lues sur le PDF dzexams (couche texte inversée,
           reconstituée mot à mot, 2026-08-25).
    2022 : consignes relues sur le PDF dzexams officiel (ONEC,
@@ -12,11 +12,23 @@
           2026-08-27) ; corrigé officiel (الإجابة النموذجية)
           joint au même PDF (pp. 11-21), croisé avec eddirasa
           (textes concordants).
-   2013-2020 : archive reconstruite (voir data/subjects-archive.js).
-          Aucune consigne n'est marquée official. 2018 et 2020/S1
-          relus sur couche texte dzexams (OCR, 2026-08-30).
+   2026 SE : énoncé + corrigé officiels eddirasa (OCR, 2026-08-31).
+   2020 SE : énoncé + corrigé officiels eddirasa (OCR RTL, 2026-08-31).
+   2021 Maths : énoncé + corrigé dzexams (couche inversée, 2026-08-31).
+   2022–2026 Maths : énoncé + corrigé officiels eddirasa (2026-08-31).
+   2013-2019 SE : archive reconstruite (data/subjects-archive.js).
+          Aucune consigne n'est marquée official. 2018 relue OCR
+          dzexams. 2020 SE officiel : year-2020-se.js (pas l'archive).
    ============================================================ */
 
+import { YEAR_2026_SE } from "./year-2026-se.js";
+import { YEAR_2020_SE } from "./year-2020-se.js";
+import { YEAR_2021_M } from "./year-2021-m.js";
+import { YEAR_2022_M } from "./year-2022-m.js";
+import { YEAR_2023_M } from "./year-2023-m.js";
+import { YEAR_2024_M } from "./year-2024-m.js";
+import { YEAR_2025_M } from "./year-2025-m.js";
+import { YEAR_2026_M } from "./year-2026-m.js";
 import { ARCHIVE_YEARS } from "./subjects-archive.js";
 
 /** Normalisation du texte arabe : variantes, tatweel, ponctuation. */
@@ -69,7 +81,7 @@ export const APP_CONFIG = {
   appSubtitle: "مخبر التفوق والهدوء | منصة تدريب منهجي لبكالوريا علوم الطبيعة والحياة",
   globalExamMinutes: 270,
   strategyMinutes: 25,
-  note: "المحتوى 2025 مُراجع على PDF المستودع. 2024 مُعاد بناؤه. 2023 و2022 مستخرجان من PDF dzexams. أرشيف 2013-2020 مُعاد بناؤه وغير مصادق كإنشاء وزاري.",
+  note: "المحتوى 2025 مُراجع على PDF المستودع. 2024: صفحات 2 و6 و7 و10 مُراجعة على صور الموضوع الرسمي؛ الباقي مُعاد بناؤه. 2023 و2022 من PDF dzexams. 2026 و2020 علوم تجريبية و2021–2026 رياضيات مرمّزة 4D من الموضوع والتصحيح الرسميين. أرشيف 2013-2019 علوم تجريبية مُعاد بناؤه وغير مصادق كإنشاء وزاري.",
   years: [
     {
       id: "2025",
@@ -732,7 +744,7 @@ export const APP_CONFIG = {
           pdfAvailable: false,
           pdfExternalUrl: "https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf",
           pdfNote:
-            "PDF non redistribué dans le dépôt ; source: https://eddirasa.com/bac-science-2024-se/ (consulté 2026-08-25). Miroir dzexams: https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09. Session de remplacement non localisée. Thèmes relus sur la couche texte (bruitée : OCR + traduction parasite) ; wording reconstructed, non certifiable official.",
+            "PDF non redistribué dans le dépôt ; source: https://eddirasa.com/bac-science-2024-se/ (consulté 2026-08-25). Miroir dzexams: https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09 · PDF: https://www.dzexams.com/uploads/sujets/officiels/bac/2024/dzexams-bac-sciences-naturelles-1751784.pdf. Pages 2, 6, 7 et 10 relues sur photos du sujet officiel (2026-08-31). Viewer dzexams bloqué (0 pages) dans la sandbox. Session de remplacement non localisée.",
           title: "الموضوع الأول",
           exercises: [
             {
@@ -847,8 +859,12 @@ export const APP_CONFIG = {
                 S: {
                   points: 2.5,
                   prompt: "تحليل تواتر كمونات العمل في الشكل (أ) من الوثيقة 1",
-                  bacPrompt: "حلّل النتائج الممثلة في الشكل (أ) من الوثيقة 1.",
-                  ...RECON("Verbe officiel lu (حلّل) sur la couche texte bruitée ; wording reconstruit."),
+                  bacPrompt: "حلّل النتائج الممثّلة في الشكل (أ) من الوثيقة 1.",
+                  ...OFFICIAL(
+                    2,
+                    "Relecture visuelle photo page 2 du sujet officiel 2024 (ONEC). Verbe officiel : حلّل. Question 1 du الجزء الأول (Sujet 1, Ex2).",
+                    "2026-08-31"
+                  ),
                   placeholder: "تواتر كمونات العمل، مصاب/طبيعي...",
                   minLength: 90,
                   modelAnswer:
@@ -874,7 +890,11 @@ export const APP_CONFIG = {
                   prompt: "بيان فقدان التوازن بين التنبيه والتثبيط في حالة الصرع",
                   bacPrompt:
                     "بيّن فقدان التوازن بين التنبيه والتثبيط على مستوى مشابك القشرة المخية في حالة الصرع انطلاقا من نتائج الشكل (ب) من الوثيقة 1.",
-                  ...RECON("Verbe officiel lu (بيّن) sur la couche texte bruitée ; wording reconstruit."),
+                  ...OFFICIAL(
+                    2,
+                    "Relecture visuelle photo page 2 du sujet officiel 2024 (ONEC). Verbe officiel : بيّن. Question 2 du الجزء الأول (Sujet 1, Ex2).",
+                    "2026-08-31"
+                  ),
                   placeholder: "Glutamate، GABA، تنبيه، تثبيط...",
                   minLength: 110,
                   modelAnswer:
@@ -1001,7 +1021,7 @@ export const APP_CONFIG = {
           pdfAvailable: false,
           pdfExternalUrl: "https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf",
           pdfNote:
-            "PDF non redistribué dans le dépôt ; même fichier que le sujet 1 (session normale, sujets 1 et 2). Thèmes relus sur la couche texte bruitée (2026-08-25) ; wording reconstructed.",
+            "PDF non redistribué dans le dépôt ; même fichier que le sujet 1 (session normale, sujets 1 et 2). Pages 6, 7 et 10 relues sur photos du sujet officiel (2026-08-31). Viewer dzexams bloqué dans la sandbox.",
           title: "الموضوع الثاني",
           exercises: [
             {
@@ -1033,8 +1053,12 @@ export const APP_CONFIG = {
                 S: {
                   points: 1,
                   prompt: "ذكر العناصر المتدخلة في حدوث الترجمة",
-                  bacPrompt: "اذكر العناصر المتدخلة في حدوث هذه المرحلة (الترجمة).",
-                  ...RECON("Verbe officiel lu (اذكر) sur la couche texte bruitée ; wording reconstruit."),
+                  bacPrompt: "اذكر العناصر المتدخّلة في حدوث هذه المرحلة.",
+                  ...OFFICIAL(
+                    6,
+                    "Relecture visuelle photo page 6 du sujet officiel 2024 (ONEC). Verbe officiel : اذكر. Question 1 du التمرين الأول (Sujet 2).",
+                    "2026-08-31"
+                  ),
                   placeholder: "ARNm، ريبوزوم، ARNt...",
                   minLength: 30,
                   modelAnswer:
@@ -1050,9 +1074,11 @@ export const APP_CONFIG = {
                   points: 2,
                   prompt: "النص العلمي: خطوات الترجمة وتأثير المركبين",
                   bacPrompt:
-                    "اشرح في نص علمي خطوات الترجمة وتأثير كل من Oxazolidinone وTetracycline باستغلال الوثيقة ومعلوماتك (النص العلمي مهيكل بمقدمة وعرض وخاتمة).",
-                  ...RECON(
-                    "Verbe officiel lu (اشرح في نص علمي) sur la couche texte bruitée ; wording reconstruit."
+                    "اشرح في نص علمي خطوات الترجمة وتأثير كل من Oxazolidinone و Tetracycline عليها باستغلال الوثيقة ومعلوماتك (النص العلمي مهيكل في مقدمة وعرض وخاتمة).",
+                  ...OFFICIAL(
+                    6,
+                    "Relecture visuelle photo page 6 du sujet officiel 2024 (ONEC). Verbe officiel : اشرح. Question 2 du التمرين الأول (Sujet 2).",
+                    "2026-08-31"
                   ),
                   placeholder: "مقدمة، عرض، خاتمة...",
                   minLength: 120,
@@ -1114,9 +1140,12 @@ export const APP_CONFIG = {
                 S: {
                   points: 2.5,
                   prompt: "تحليل نتائج تثبيت CO2 ونشاط RUBISCO",
-                  bacPrompt:
-                    "حلّل نتائج الوثيقة المتعلقة بنشاط أنزيم RUBISCO وتكوين CA1P وتثبيت CO2 عند أوراق الفاصولياء.",
-                  ...RECON("Reconstruction pédagogique 2024 — thème lu sur la couche texte bruitée."),
+                  bacPrompt: "حلّل النتائج الممثّلة في الشكل (أ) من الوثيقة 1.",
+                  ...OFFICIAL(
+                    7,
+                    "Relecture visuelle photo page 7 du sujet officiel 2024 (ONEC). Verbe officiel : حلّل. Question 1 du الجزء الأول (Sujet 2, Ex2).",
+                    "2026-08-31"
+                  ),
                   placeholder: "نشاط RUBISCO، CA1P، تثبيت CO2...",
                   minLength: 90,
                   modelAnswer:
@@ -1141,14 +1170,18 @@ export const APP_CONFIG = {
                   points: 2.5,
                   prompt: "شرح أثر الظلام على نشاط RUBISCO عبر CA1P",
                   bacPrompt:
-                    "اشرح آلية تأثير عامل الظلام على تفاعلات تثبيت CO2 بأنزيم RUBISCO عند أوراق الفاصولياء.",
-                  ...RECON("Reconstruction pédagogique 2024 — thème lu sur la couche texte bruitée."),
+                    "أبرز العلاقة بين كمية (CA1P) في الأوراق ونسبة نشاط الأنزيم (Rubisco) انطلاقا من نتائج الشكل (ب) والمعلومة المستخلصة من الشكل (أ) من الوثيقة 1.",
+                  ...OFFICIAL(
+                    7,
+                    "Relecture visuelle photo page 7 du sujet officiel 2024 (ONEC). Verbe officiel : أبرز. Question 2 du الجزء الأول (Sujet 2, Ex2). Consigne du الجزء الثاني (mécanisme du الظلام) non mappée (un pôle = une consigne).",
+                    "2026-08-31"
+                  ),
                   placeholder: "CA1P، الموقع الفعال، تثبيط...",
                   minLength: 110,
                   modelAnswer:
                     "في الظلام يتراكم مثبط CA1P الذي يتثبت على الموقع الفعال لأنزيم RUBISCO فيمنع تثبيت CO2 على الريبولوز ثنائي الفوسفات، فلا يتشكل المركب السداسي ولا حمض الفوسفوغليسيريك، فتتوقف تفاعلات تثبيت CO2 في أوراق الفاصولياء.",
                   rule: {
-                    prompt: "اشرح أثر الظلام على نشاط RUBISCO",
+                    prompt: "أبرز العلاقة بين كمية CA1P ونشاط Rubisco",
                     keywords: ["RUBISCO", "CA1P", "تثبيت", "ظلام", "موقع"],
                     minHits: 3,
                     forbidden: []
@@ -1227,16 +1260,19 @@ export const APP_CONFIG = {
                 },
                 E: {
                   points: 4,
-                  prompt: "تفسير دور بروتين SPA في الإفلات المناعي",
-                  bacPrompt:
-                    "فسّر كيف يحدد بروتين SPA أفضل سيرورة للقضاء على Staphylococcus aureus معتمدا على الوثيقة ومعلوماتك.",
-                  ...RECON("Reconstruction pédagogique 2024 — thème lu sur la couche texte bruitée."),
+                  prompt: "مناقشة صحة الفرضية حول بروتين SPA والإفلات المناعي",
+                  bacPrompt: "ناقش صحة إحدى الفرضيتين المقترحتين باستغلالك لأشكال الوثيقة 2 ومعلوماتك.",
+                  ...OFFICIAL(
+                    10,
+                    "Relecture visuelle photo page 10 du sujet officiel 2024 (ONEC). Verbe officiel : ناقش. Question 1 du الجزء الثاني (Sujet 2, Ex3). Consigne اقترح حلا للمشكل non mappée (un pôle = une consigne).",
+                    "2026-08-31"
+                  ),
                   placeholder: "SPA، جسم مضاد، بلعمة...",
                   minLength: 110,
                   modelAnswer:
                     "يرتبط بروتين SPA الموجود على جدار Staphylococcus aureus بالقطعة Fc للأجسام المضادة فيمنع تثبيتها عبر مواقعها المتغيرة على المستضد ويعطل البلعمة، فتستفيد البكتيريا من الإفلات المناعي. وللقضاء عليها تُستعمل سيرورة تحييد SPA لاستعادة التعرف النوعي وتسهيل البلعمة.",
                   rule: {
-                    prompt: "فسر دور بروتين SPA في الإفلات المناعي",
+                    prompt: "ناقش صحة الفرضية باستغلال الوثيقة 2",
                     keywords: ["SPA", "جسم", "مضاد", "بلعمه", "مستضد"],
                     minHits: 3,
                     forbidden: []
@@ -1244,20 +1280,24 @@ export const APP_CONFIG = {
                 },
                 W: {
                   points: 1.5,
-                  prompt: "الخلاصة: أفضل سيرورة للقضاء على البكتيريا",
-                  bacPrompt: "ما أفضل سيرورة للقضاء على Staphylococcus aureus معتمدا على معطيات الوثيقة؟",
-                  ...RECON(
-                    "La clôture est incluse dans l'explication (pôle E). Pas une question BAC autonome."
+                  prompt: "مخطط الاستجابة المناعية الخلطية في وجود وغياب البكتيريا",
+                  bacPrompt:
+                    "لخّص في مخطط مراحل الاستجابة المناعية الخلطية في وجود وغياب بكتيريا Staphylococcus aureus اعتمادا على ما سبق ومعلوماتك.",
+                  ...OFFICIAL(
+                    10,
+                    "Relecture visuelle photo page 10 du sujet officiel 2024 (ONEC). Verbe officiel : لخّص في مخطط. Question du الجزء الثالث (Sujet 2, Ex3).",
+                    "2026-08-31"
                   ),
                   placeholder: "في الختام...",
-                  minLength: 40,
+                  minLength: 0,
                   modelAnswer:
-                    "في الختام، تقضي أفضل سيرورة على Staphylococcus aureus بتحييد بروتين SPA لاستعادة التعرف النوعي بالأجسام المضادة وتسهيل البلعمة.",
+                    "عنوان المخطط: الاستجابة المناعية الخلطية. في غياب SPA: مستضد → جسم مضاد → بلعمة. في وجود Staphylococcus aureus و SPA: ارتباط SPA بالقطعة Fc يعطل البلعمة.",
                   rule: {
-                    prompt: "اكتب خلاصة حول القضاء على S. aureus",
-                    keywords: ["SPA", "بلعمه", "بكتيريا"],
-                    minHits: 2,
-                    forbidden: []
+                    prompt: "لخص في مخطط الاستجابة المناعية الخلطية",
+                    keywords: ["مخطط", "SPA", "بلعمه"],
+                    minHits: 1,
+                    forbidden: [],
+                    schema: { arrows: true, title: "استجابة", ordered: ["مستضد", "جسم", "بلعمه"] }
                   }
                 }
               }
@@ -2450,6 +2490,14 @@ export const APP_CONFIG = {
         }
       ]
     },
-    ...ARCHIVE_YEARS
+    YEAR_2026_SE,
+    YEAR_2020_SE,
+    ...ARCHIVE_YEARS.filter((y) => y.id !== "2020").map((y) => ({ ...y, stream: "se" })),
+    YEAR_2021_M,
+    YEAR_2022_M,
+    YEAR_2023_M,
+    YEAR_2024_M,
+    YEAR_2025_M,
+    YEAR_2026_M
   ]
 };
