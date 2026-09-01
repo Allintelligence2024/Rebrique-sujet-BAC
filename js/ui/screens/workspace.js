@@ -259,7 +259,6 @@ export function createWorkspaceController(deps) {
 
   function formatEvalFeedback(res, score, points) {
     let html = `تشخيص تغطية الإجابة`;
-    if (res.verdict) html += `<br>${res.verdict}`;
     if (res.rubric?.applicable && res.rubric.display) {
       html += `<br><span class="small">ميزان التحليل: ${res.rubric.display}</span>`;
       const skipped = (res.rubric.steps || []).filter((s) => !s.passed).map((s) => s.label);

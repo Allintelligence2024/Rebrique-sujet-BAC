@@ -16,8 +16,7 @@ import {
   evaluateHypotheses,
   evaluateClosingCover,
   evaluateTechnique,
-  evaluateAnalysisRubric,
-  buildProfessorVerdict
+  evaluateAnalysisRubric
 } from "./quality-checks.js";
 
 export { METHOD_SCRIPTS };
@@ -211,7 +210,7 @@ export function evaluateText(text, rule = {}, poleType = "") {
     richnessScore,
     structure,
     lengthRatio,
-    verdict: buildProfessorVerdict(fraction, methodology.score, overlap.ratio),
+    verdict: "",
     taskProfile,
     science,
     document: documentEval,

@@ -288,18 +288,4 @@ export function evaluateAnalysisRubric(text, rule = {}, poleType = "") {
   return { applicable: true, steps, display, score: steps.filter((s) => s.passed).length / steps.length };
 }
 
-export function buildProfessorVerdict(fraction, methodologyScore, overlapRatio) {
-  if (fraction >= 0.9)
-    return "الجواب يطابق بدرجة عالية شبكة التقييم الآلية والكلمات المفتاحية (تقدير تدريبي تلقائي).";
-  if (fraction >= 0.75)
-    return methodologyScore < 0.55
-      ? "المفاهيم العلمية حاضرة، لكن الهيكلة المنهجية يحسن تدقيقها."
-      : "جواب تدريبي متماسك ينبغي تدعيمه بالمصطلحات المفتاحية.";
-  if (fraction >= 0.5)
-    return overlapRatio < 0.4
-      ? "استيعاب جزئي للمسألة، مع الحاجة لإبراز المفاهيم الدقيقة."
-      : "الجواب مقبول تدريبياً، لكنه يحتاج صياغة أكثر دقة وموضوعية.";
-  return "الجواب ناقص وفق شبكة التقييم الآلية: راجع الكلمات المفتاحية والهيكلة المنهجية.";
-}
-
 /* ---------- Évaluation d'un champ de texte (pôles N/S/E/W) ---------- */
