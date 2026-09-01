@@ -77,10 +77,12 @@ test("un état stocké invalide est remis à zéro et sauvegardé dans une copie
   assert.equal(localStorage.getItem(backupKey), malformed);
 });
 
-test("la migration v1 ajoute le mode révision désactivé", () => {
+test("la migration v1 force le mode révision (diagnostic sans score)", () => {
+  // Le score chiffré n'est pas calibré (mots-clés générés par IA, 0 copie réelle
+  // annotée). Un état migré ne doit jamais réactiver silencieusement un score.
   const migrated = migrateState({ schemaVersion: 1, progress: {} });
   assert.equal(migrated.schemaVersion, CURRENT_SCHEMA_VERSION);
-  assert.equal(migrated.reviewMode, false);
+  assert.equal(migrated.reviewMode, true);
 });
 
 test("la validation rejette les futures versions et élimine les champs incohérents", () => {

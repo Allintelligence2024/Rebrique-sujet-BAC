@@ -3,10 +3,28 @@
 **مادة علوم الطبيعة والحياة** — أداة تتحقق من تغطية الإجابة للعناصر العلمية والمنهجية المنتظرة وفق نظام «الأقطاب 4D»
 (N = تأطير المسألة، S = استغلال السندات، E = الربط والتفسير، W = التركيب والمصادقة). Elle ne prétend pas corriger une copie à la place d'un professeur.
 
-> ⚠️ **Positionnement honnête : outil d'entraînement méthodologique non calibré.** Les scores sont des estimations automatiques fondées sur des règles ; ils ne sont ni une correction ministérielle ni une note attribuée par un professeur. Les consignes marquées `reconstructed` ne sont pas des énoncés officiels. Le benchmark vérifié contient actuellement **0 copie réelle doublement annotée** : aucune métrique de fiabilité ne peut donc être publiée.
+> ⚠️ **Positionnement honnête : outil d'entraînement méthodologique non calibré.** Les consignes marquées `reconstructed` ne sont pas des énoncés officiels. Le benchmark vérifié contient actuellement **0 copie réelle doublement annotée** : aucune métrique de fiabilité ne peut donc être publiée.
 
-> ✅ **Version intégrée à la racine.** L'ancien site monolithique est conservé dans
-> [`_v1_backup/`](_v1_backup) au cas où.
+> 🔒 **Le score chiffré est désactivé par défaut (`reviewMode`).** L'application
+> affiche un **diagnostic de couverture** (éléments présents / absents), pas une note.
+> Raisons documentées, à ne pas perdre de vue :
+>
+> | Maillon | État réel |
+> | --- | --- |
+> | Grille 4D (N/S/E/W) | **Création personnelle** de l'auteur assistée par IA, à partir de guides BAC. Pas une grille officielle ONEC. |
+> | Listes `keywords` (référence de correction) | **Générées par IA**, non validées par un enseignant de SVT. |
+> | Pondérations d'agrégation | Constantes choisies à la main, sans base empirique. |
+> | Copies réelles doublement annotées | **0** |
+>
+> Un score calculé à partir d'une référence produite par IA ne mesure pas la qualité
+> d'une réponse au BAC : il mesure la ressemblance à cette référence. Réactiver le
+> score (bouton « إظهار المؤشر ») reste possible pour explorer le moteur, mais la
+> valeur affichée n'a **aucune validité pédagogique établie**.
+
+> ⏱️ **Durée d'épreuve (`globalExamMinutes`) : paramètre non sourcé.** La valeur
+> par défaut (270 min) provient de guides, pas d'un document ONEC vérifié. La durée
+> officielle de l'épreuve de SVT a varié selon les sessions (sessions COVID et
+> réformes comprises). À confirmer sur les PDF officiels avant tout usage sérieux.
 
 ---
 
@@ -71,7 +89,6 @@ L'interface propose des thèmes clair et sombre persistants. Les outils secondai
 ├── sw.js                             # service worker (mode hors-ligne)
 ├── manifest.webmanifest              # PWA (installable)
 ├── BAC2025_SVT_Sujet1.pdf / BAC2025_SVT_Sujet2.pdf  # seuls PDF versés dans le dépôt (scans 2025)
-├── _v1_backup/                       # ancien site monolithique conservé
 ├── dist/                             # généré par `npm run build` (ignoré par git)
 │   └── boussole-4d-standalone.html   # version monofichier (ouvre en file://)
 └── package.json                      # npm start / npm test / npm run build

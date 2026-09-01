@@ -231,7 +231,7 @@ test("le mini-contrôle du brouillon signale une conclusion hors problème", () 
   click(".drawer [data-close]");
 });
 
-test("le pipeline parfait est noté 1.50 / 1.50 (pôle W)", () => {
+test("le pipeline parfait est diagnostiqué 8/8 sans note chiffrée (pôle W)", () => {
   click('#stepnav [data-step="1"]');
   $("#fld-N").value = "البيرينويد يرفع كفاءة استغلال CO2 عند الطحالب الطبيعية";
   click('#ex-content [data-check="N"]');
@@ -240,8 +240,11 @@ test("le pipeline parfait est noté 1.50 / 1.50 (pôle W)", () => {
     click(`#blocks-bank [data-block="${id}"]`);
   click('#ex-content [data-polo-check="W"]');
   const fb = $("#fb-W").textContent.trim();
-  assert.match(fb, /1\.50 \/ 1\.50ن/);
+  // Le classement des blocs reste vérifié (8/8) ; en revanche aucun score
+  // chiffré n'est affiché par défaut : reviewMode est actif tant que le
+  // moteur n'est pas calibré sur des copies réelles.
   assert.match(fb, /8\/8/);
+  assert.doesNotMatch(fb, /\d+\.\d{2} \//);
 });
 
 test("l'évaluation texte renvoie un feedback d'entraînement et l'accordéon de réponse modèle", () => {

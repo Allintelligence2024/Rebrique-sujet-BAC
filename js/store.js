@@ -31,7 +31,7 @@ function defaultState() {
     schemaVersion: CURRENT_SCHEMA_VERSION,
     activeScreen: "view-hub",
     sessionActive: false,
-    reviewMode: false,
+    reviewMode: true,
     yearId: "2025",
     sujetId: 1,
     activeExercise: 1,
@@ -95,9 +95,9 @@ export function migrateState(candidate) {
   const version = candidate.schemaVersion;
   if (version === undefined && isRecord(candidate.progress)) {
     // v3 introduced year-keyed progress but did not persist a schema version.
-    return { ...candidate, schemaVersion: CURRENT_SCHEMA_VERSION, reviewMode: false };
+    return { ...candidate, schemaVersion: CURRENT_SCHEMA_VERSION, reviewMode: true };
   }
-  if (version === 1) return { ...candidate, schemaVersion: 2, reviewMode: false };
+  if (version === 1) return { ...candidate, schemaVersion: 2, reviewMode: true };
   if (version === CURRENT_SCHEMA_VERSION) return candidate;
   if (typeof version === "number" && version > CURRENT_SCHEMA_VERSION) {
     throw new Error(`unsupported future schema ${version}`);
