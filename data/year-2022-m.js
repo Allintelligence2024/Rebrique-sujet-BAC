@@ -22,8 +22,7 @@ const RECON = (notes) => ({
   bacPromptNotes: notes
 });
 
-const PDF =
-  "https://eddirasa.com/wp-content/uploads/2022/06/eddirasa.com-bac-math-science-2022.pdf";
+const PDF = "https://eddirasa.com/wp-content/uploads/2022/06/eddirasa.com-bac-math-science-2022.pdf";
 const PDF_NOTE =
   "PDF officiel non redistribué dans le dépôt. Source énoncé: https://eddirasa.com/wp-content/uploads/2022/06/eddirasa.com-bac-math-science-2022.pdf (consulté 2026-08-31). Corrigé: https://eddirasa.com/wp-content/uploads/2022/06/eddirasa.com-correction-bac-math-science-2022.pdf.";
 
@@ -54,7 +53,8 @@ export const YEAR_2022_M = {
             N: {
               points: 1,
               prompt: "تأطير الإشكالية: كيف يتدخل الريبوزوم في ترجمة ARNm؟",
-              bacPrompt: "كيف يضمن الريبوزوم ترجمة المعلومة الوراثية المحمولة على ARNm إلى متتالية أحماض أمينية في الهيولى؟",
+              bacPrompt:
+                "كيف يضمن الريبوزوم ترجمة المعلومة الوراثية المحمولة على ARNm إلى متتالية أحماض أمينية في الهيولى؟",
               ...RECON("Préambule page 1. Pas de question officielle autonome de cadrage."),
               placeholder: "صياغة المشكل العلمي...",
               minLength: 30,
@@ -139,12 +139,14 @@ export const YEAR_2022_M = {
             N: {
               points: 1,
               prompt: "اقتراح فرضيتين توضحان طريقة الكشف عن الإصابة بفيروس كورونا",
-              bacPrompt: "اقترح فرضيتين توضح من خلالهما طريقة الكشف عن الإصابة بفيروس كورونا باستغلالك للوثيقة 1.",
+              bacPrompt:
+                "اقترح فرضيتين توضح من خلالهما طريقة الكشف عن الإصابة بفيروس كورونا باستغلالك للوثيقة 1.",
               ...OFFICIAL(
                 2,
                 "Relecture du PDF eddirasa 2022 Maths (page 2) et du corrigé (page 2). Verbe officiel : اقترح فرضيتين. Question du الجزء الأول."
               ),
-              placeholder: "الفرضية 1: الكشف عن المحددات الغشائية a و b... الفرضية 2: الكشف عن الأجسام المضادة...",
+              placeholder:
+                "الفرضية 1: الكشف عن المحددات الغشائية a و b... الفرضية 2: الكشف عن الأجسام المضادة...",
               minLength: 30,
               modelAnswer:
                 "الفرضية 1: يُكشف عن الإصابة بفيروس كورونا بالبحث عن المحددات المستضدية الغشائية للسلسلتين الفيروسيتين a و b. الفرضية 2: يُكشف عن الإصابة بالبحث عن الأجسام المضادة لفيروس كورونا.",
@@ -211,7 +213,8 @@ export const YEAR_2022_M = {
             W: {
               points: 2,
               prompt: "بيان مساهمة الدراسة في مقاومة جائحة كورونا",
-              bacPrompt: "بيّن كيف تساهم هذه الدراسة في مقاومة جائحة كورونا اعتمادا على ما توصلت إليه ومكتسباتك.",
+              bacPrompt:
+                "بيّن كيف تساهم هذه الدراسة في مقاومة جائحة كورونا اعتمادا على ما توصلت إليه ومكتسباتك.",
               ...OFFICIAL(
                 3,
                 "Relecture du PDF eddirasa 2022 Maths (page 3) et du corrigé (page 4). Verbe officiel : بيّن. Question du الجزء الثالث."

@@ -33,9 +33,7 @@ function writeStream(id) {
 }
 
 function trainingYearsForStream(appConfig, streamId) {
-  return appConfig.years.filter(
-    (year) => year.enabled && (year.stream || "se") === streamId
-  );
+  return appConfig.years.filter((year) => year.enabled && (year.stream || "se") === streamId);
 }
 
 function yearCardId(year) {

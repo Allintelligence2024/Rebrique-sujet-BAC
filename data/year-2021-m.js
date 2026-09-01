@@ -109,9 +109,7 @@ export const YEAR_2021_M = {
               points: 1,
               prompt: "الخاتمة: أهمية تحديد النمط الوراثي لنظام التوافق النسيجي",
               bacPrompt: "ما أهمية اكتشاف النمط الوراثي لنظام التوافق النسيجي عند نقل الأعضاء بين الإخوة؟",
-              ...RECON(
-                "Clôture issue du corrigé officiel (الخاتمة). Pas une question BAC autonome."
-              ),
+              ...RECON("Clôture issue du corrigé officiel (الخاتمة). Pas une question BAC autonome."),
               placeholder: "في الختام...",
               minLength: 40,
               modelAnswer:
@@ -303,9 +301,7 @@ export const YEAR_2021_M = {
               points: 1,
               prompt: "الخاتمة: مقر وناتج النسخ والترجمة",
               bacPrompt: "ما مقر وناتج تدخل ARN بوليميراز والريبوزوم في تركيب البروتين؟",
-              ...RECON(
-                "Clôture issue du corrigé officiel (الخاتمة). Pas une question BAC autonome."
-              ),
+              ...RECON("Clôture issue du corrigé officiel (الخاتمة). Pas une question BAC autonome."),
               placeholder: "في الختام...",
               minLength: 40,
               modelAnswer:
@@ -379,8 +375,7 @@ export const YEAR_2021_M = {
             E: {
               points: 6,
               prompt: "تحليل الشكل (أ) ومناقشة صحة الفرضية من الوثيقة 2",
-              bacPrompt:
-                "حلّل النتائج الموضحة في الشكل (أ) من الوثيقة 2 مبرزا سبب التغير في الـ pH.",
+              bacPrompt: "حلّل النتائج الموضحة في الشكل (أ) من الوثيقة 2 مبرزا سبب التغير في الـ pH.",
               ...OFFICIAL(
                 6,
                 "Relecture du PDF dzexams 2021 Maths. Verbe officiel : حلّل. Question 1 du الجزء الثاني. Consignes فسّر الشكل (ب) و ناقش الفرضية و بيّن خطورة انخفاض pH non mappées."
@@ -400,8 +395,7 @@ export const YEAR_2021_M = {
             W: {
               points: 2,
               prompt: "نص علمي: العلاقة بين بنية البروتين ووظيفته وأثر عوامل الوسط",
-              bacPrompt:
-                "لخّص في نص علمي العلاقة بين بنية البروتين ووظيفته وأثر هذه العلاقة بعوامل الوسط.",
+              bacPrompt: "لخّص في نص علمي العلاقة بين بنية البروتين ووظيفته وأثر هذه العلاقة بعوامل الوسط.",
               ...OFFICIAL(
                 6,
                 "Relecture du PDF dzexams 2021 Maths. Verbe officiel : لخّص في نص علمي. Question du الجزء الثالث."

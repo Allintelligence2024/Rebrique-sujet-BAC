@@ -152,7 +152,10 @@ test("Maths 2021–2026 et SE 2020/2026 sont du 4D ; Maths reste cataloguée (co
   assert.ok(se2020 && se2020.enabled && (se2020.stream || "se") === "se");
   for (const year of ["2021", "2022", "2023", "2024", "2025", "2026"]) {
     const maths = APP_CONFIG.years.find((y) => y.id === `${year}-m`);
-    assert.ok(maths && maths.enabled && maths.stream === "m" && maths.calendarYear === year, `Maths ${year} 4D manquant`);
+    assert.ok(
+      maths && maths.enabled && maths.stream === "m" && maths.calendarYear === year,
+      `Maths ${year} 4D manquant`
+    );
   }
 });
 

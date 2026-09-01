@@ -154,10 +154,9 @@ export const YEAR_2024_M = {
             S: {
               points: 3,
               prompt: "استغلال الوثيقة 1: تغيرات حجم الورم في الوسطين",
-              bacPrompt: "استغل الوثيقة 1: تغيرات حجم الورم السرطاني في الوسط 1 (ورم حديث) والوسط 2 (ورم متقدم).",
-              ...RECON(
-                "Le corrigé analyse d'abord la courbe (250→1250 mm³) avant les hypothèses."
-              ),
+              bacPrompt:
+                "استغل الوثيقة 1: تغيرات حجم الورم السرطاني في الوسط 1 (ورم حديث) والوسط 2 (ورم متقدم).",
+              ...RECON("Le corrigé analyse d'abord la courbe (250→1250 mm³) avant les hypothèses."),
               placeholder: "الوسط 1: تزايد بطيء ثم تناقص إلى 100... الوسط 2: من 250 إلى 1250...",
               minLength: 90,
               modelAnswer:
@@ -259,7 +258,8 @@ export const YEAR_2024_M = {
             S: {
               points: 2,
               prompt: "التعرف على نوع الخلايا المناعية التي يفتقدها النسيج وذكر دورها",
-              bacPrompt: "تعرّف على نوع الخلايا المناعية التي يفتقدها نسيج المولود المصاب (PID) مع ذكر دورها.",
+              bacPrompt:
+                "تعرّف على نوع الخلايا المناعية التي يفتقدها نسيج المولود المصاب (PID) مع ذكر دورها.",
               ...OFFICIAL(
                 4,
                 "Relecture du PDF eddirasa 2024 Maths (page 4) et du corrigé (page 4). Verbe officiel : تعرّف. Question 1 du التمرين الأول (Sujet 2). Consigne جدول المنشأ ومقر اكتساب الكفاءة non mappée."
@@ -342,7 +342,8 @@ export const YEAR_2024_M = {
             S: {
               points: 3,
               prompt: "تحليل نتائج الدم والبول والفحص المجهري لوحدة التصفية",
-              bacPrompt: "حلّل نتائج التحليل في الدم والبول والرسوم التخطيطية للفحوصات المجهرية في الوثيقة 1.",
+              bacPrompt:
+                "حلّل نتائج التحليل في الدم والبول والرسوم التخطيطية للفحوصات المجهرية في الوثيقة 1.",
               ...OFFICIAL(
                 5,
                 "Relecture du corrigé officiel eddirasa 2024 Maths (page 5). Verbe officiel : حلّل. Question du الجزء الأول."

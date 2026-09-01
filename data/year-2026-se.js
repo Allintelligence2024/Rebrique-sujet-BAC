@@ -23,8 +23,7 @@ const RECON = (notes) => ({
   bacPromptNotes: notes
 });
 
-const PDF =
-  "https://eddirasa.com/uploads/2026/08/bac-science-2026-se.pdf";
+const PDF = "https://eddirasa.com/uploads/2026/08/bac-science-2026-se.pdf";
 const PDF_NOTE =
   "PDF officiel non redistribué dans le dépôt. Source énoncé: https://eddirasa.com/uploads/2026/08/bac-science-2026-se.pdf (consulté 2026-08-31). Corrigé: https://eddirasa.com/uploads/2026/08/correction-bac-science-2026-se.pdf. Miroir dzexams: https://www.dzexams.com/ar/annales/L0tWNjNjZ1pNQ1RmU3JUOUFUbFpTdz09.";
 
@@ -188,8 +187,7 @@ export const YEAR_2026_SE = {
             E: {
               points: 2.5,
               prompt: "توضيح وظيفة أنزيم SIRT1 على مستوى الخلايا من الشكل (ب)",
-              bacPrompt:
-                "وضّح وظيفة أنزيم SIRT1 على مستوى الخلايا انطلاقا من نتائج الشكل (ب).",
+              bacPrompt: "وضّح وظيفة أنزيم SIRT1 على مستوى الخلايا انطلاقا من نتائج الشكل (ب).",
               ...OFFICIAL(
                 2,
                 "Relecture du PDF eddirasa 2026 (OCR). Verbe officiel : وضّح. Question du الجزء الأول après الشكل (ب)."
@@ -348,8 +346,7 @@ export const YEAR_2026_SE = {
             N: {
               points: 1,
               prompt: "تأطير الإشكالية: دور مكونات غشاء التيلاكوئيد في تركيب ATP وأثر المبيد",
-              bacPrompt:
-                "كيف تساهم مكونات غشاء التيلاكوئيد في تركيب ATP، وما أثر مبيد Oxyfluorfen على ذلك؟",
+              bacPrompt: "كيف تساهم مكونات غشاء التيلاكوئيد في تركيب ATP، وما أثر مبيد Oxyfluorfen على ذلك؟",
               ...RECON("Préambule page 6. Pas de question officielle autonome de cadrage."),
               placeholder: "صياغة المشكل العلمي...",
               minLength: 40,

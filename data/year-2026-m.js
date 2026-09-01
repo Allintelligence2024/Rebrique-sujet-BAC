@@ -53,8 +53,7 @@ export const YEAR_2026_M = {
             N: {
               points: 1,
               prompt: "تأطير الإشكالية: كيف تقضي LTc على الخلايا السرطانية وكيف تفلت بعضها؟",
-              bacPrompt:
-                "كيف تتدخل الخلية LTc في القضاء على الخلايا السرطانية، وما سبب الإفلات من الرقابة؟",
+              bacPrompt: "كيف تتدخل الخلية LTc في القضاء على الخلايا السرطانية، وما سبب الإفلات من الرقابة؟",
               ...RECON("Préambule page 1. Pas de question officielle autonome de cadrage."),
               placeholder: "صياغة المشكل العلمي...",
               minLength: 30,
@@ -247,8 +246,7 @@ export const YEAR_2026_M = {
               ),
               placeholder: "مراقبة تكاثر الخلايا ذات الكفاءة المناعية LT و LB...",
               minLength: 30,
-              modelAnswer:
-                "تسهر الأنترلوكينات على مراقبة تكاثر الخلايا ذات الكفاءة المناعية LT و LB.",
+              modelAnswer: "تسهر الأنترلوكينات على مراقبة تكاثر الخلايا ذات الكفاءة المناعية LT و LB.",
               rule: {
                 prompt: "اذكر دور الأنترلوكينات",
                 keywords: ["انترلوكين", "تكاثر", "LT"],
@@ -323,16 +321,14 @@ export const YEAR_2026_M = {
             N: {
               points: 1,
               prompt: "اقتراح فرضية توضح سبب الإصابة بمتلازمة غيتلمان",
-              bacPrompt:
-                "اقترح فرضية توضح سبب الإصابة بمتلازمة غيتلمان باستغلال معطيات ونتائج الوثيقة 1.",
+              bacPrompt: "اقترح فرضية توضح سبب الإصابة بمتلازمة غيتلمان باستغلال معطيات ونتائج الوثيقة 1.",
               ...OFFICIAL(
                 5,
                 "Relecture du PDF eddirasa 2026 Maths (page 5) et du corrigé (page 6). Verbe officiel : اقترح فرضية. Question unique du الجزء الأول."
               ),
               placeholder: "الفرضية: يعود السبب إلى خلل في وظيفة الناقل SLC12A3...",
               minLength: 30,
-              modelAnswer:
-                "الفرضية: يعود سبب الإصابة بمتلازمة غيتلمان إلى خلل في وظيفة الناقل SLC12A3.",
+              modelAnswer: "الفرضية: يعود سبب الإصابة بمتلازمة غيتلمان إلى خلل في وظيفة الناقل SLC12A3.",
               rule: {
                 prompt: "اقترح فرضية حول متلازمة غيتلمان",
                 keywords: ["فرضيه", "SLC12A3", "غيتلمان"],
@@ -370,7 +366,8 @@ export const YEAR_2026_M = {
             E: {
               points: 6,
               prompt: "شرح سبب الإصابة مصادقا على صحة الفرضية من الوثيقة 2",
-              bacPrompt: "اشرح سبب الإصابة بمتلازمة غيتلمان، مصادقا على صحة الفرضية باستغلال معطيات الوثيقة 2.",
+              bacPrompt:
+                "اشرح سبب الإصابة بمتلازمة غيتلمان، مصادقا على صحة الفرضية باستغلال معطيات الوثيقة 2.",
               ...OFFICIAL(
                 6,
                 "Relecture du PDF eddirasa 2026 Maths (pages 5-6) et du corrigé (pages 6-7). Verbe officiel : اشرح. Question 1 du الجزء الثاني. Consigne قدّم نصيحة non mappée."

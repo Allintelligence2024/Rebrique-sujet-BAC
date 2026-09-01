@@ -26,8 +26,7 @@ const RECON = (notes) => ({
   bacPromptNotes: notes
 });
 
-const PDF =
-  "https://eddirasa.com/wp-content/uploads/2020/09/eddirasa.com-bac-se-science-2020.pdf";
+const PDF = "https://eddirasa.com/wp-content/uploads/2020/09/eddirasa.com-bac-se-science-2020.pdf";
 const PDF_NOTE =
   "PDF officiel non redistribué dans le dépôt. Source énoncé: https://eddirasa.com/wp-content/uploads/2020/09/eddirasa.com-bac-se-science-2020.pdf (consulté 2026-08-31). Corrigé: https://eddirasa.com/wp-content/uploads/2020/09/eddirasa.com-correction-bac-sc-science-2020.pdf. Miroir dzexams: https://www.dzexams.com/ar/annales/SUFqL0VzRjNzdmd6ek1EekpsOTFMdz09.";
 
@@ -77,8 +76,7 @@ export const YEAR_2020_SE = {
             S: {
               points: 1,
               prompt: "نقل الجدول على ورقة الإجابة وملء أسماء البيانات المرقمة",
-              bacPrompt:
-                "انقل الجدول على ورقة إجابتك ثم املأ الخانات وفق البيانات المرقمة.",
+              bacPrompt: "انقل الجدول على ورقة إجابتك ثم املأ الخانات وفق البيانات المرقمة.",
               ...OFFICIAL(
                 1,
                 "Relecture du PDF eddirasa 2020 (OCR RTL reconstitué page 1) et du corrigé. Verbe officiel : انقل / املأ. Question 1 du التمرين الأول."
@@ -118,9 +116,7 @@ export const YEAR_2020_SE = {
               points: 1,
               prompt: "الخاتمة: نموذج الأغلفة المفصولة بتقطعات",
               bacPrompt: "ما النموذج الذي سمحت الدراسات الزلزالية ببنائه لبنية الكرة الأرضية؟",
-              ...RECON(
-                "Clôture issue du corrigé officiel (الخاتمة). Pas une question BAC autonome."
-              ),
+              ...RECON("Clôture issue du corrigé officiel (الخاتمة). Pas une question BAC autonome."),
               placeholder: "في الختام...",
               minLength: 40,
               modelAnswer:
@@ -144,7 +140,8 @@ export const YEAR_2020_SE = {
             N: {
               points: 1,
               prompt: "تأطير الإشكالية: خصوصية الموقع الفعال لأنزيمي Cox ودور الإيبوبروفين",
-              bacPrompt: "كيف يختلف أنزيما Cox-1 و Cox-2 في الخصوصية، وما دور دواء الإيبوبروفين وآثاره الجانبية؟",
+              bacPrompt:
+                "كيف يختلف أنزيما Cox-1 و Cox-2 في الخصوصية، وما دور دواء الإيبوبروفين وآثاره الجانبية؟",
               ...RECON("Préambule pages 1-2. Pas de question officielle autonome de cadrage."),
               placeholder: "صياغة المشكل العلمي...",
               minLength: 30,
@@ -344,7 +341,8 @@ export const YEAR_2020_SE = {
             N: {
               points: 1,
               prompt: "تأطير الإشكالية: كيف يحدد مصدر الببتيد المستضدي نمط الاستجابة المناعية؟",
-              bacPrompt: "كيف يتوقف انتقاء الببتيد المستضدي على مصدره لدى الخلايا العارضة، فيتحدد نمط الاستجابة المناعية النوعية؟",
+              bacPrompt:
+                "كيف يتوقف انتقاء الببتيد المستضدي على مصدره لدى الخلايا العارضة، فيتحدد نمط الاستجابة المناعية النوعية؟",
               ...RECON("Préambule page 5. Pas de question officielle autonome de cadrage."),
               placeholder: "صياغة المشكل العلمي...",
               minLength: 40,
@@ -425,7 +423,8 @@ export const YEAR_2020_SE = {
             N: {
               points: 1,
               prompt: "تأطير الإشكالية: كيف تثبط مادة الريسين تركيب البروتين في الخلايا السرطانية؟",
-              bacPrompt: "كيف تؤثر مادة الريسين المستخرجة من بذور الخروع على تركيب البروتين وعلاج الأورام السرطانية؟",
+              bacPrompt:
+                "كيف تؤثر مادة الريسين المستخرجة من بذور الخروع على تركيب البروتين وعلاج الأورام السرطانية؟",
               ...RECON("Préambule page 5. Pas de question officielle autonome de cadrage."),
               placeholder: "صياغة المشكل العلمي...",
               minLength: 30,
@@ -493,7 +492,8 @@ export const YEAR_2020_SE = {
             W: {
               points: 1,
               prompt: "الخلاصة: مستوى تأثير الريسين على الترجمة لا النسخ",
-              bacPrompt: "إذا كانت مادة الريسين لا تؤثر على عملية النسخ وتعيق عملية الترجمة، فما مستوى تأثيرها؟",
+              bacPrompt:
+                "إذا كانت مادة الريسين لا تؤثر على عملية النسخ وتعيق عملية الترجمة، فما مستوى تأثيرها؟",
               ...RECON(
                 "Question pédagogique issue du corrigé (المشكل المطروح). Pas une consigne BAC autonome isolée."
               ),

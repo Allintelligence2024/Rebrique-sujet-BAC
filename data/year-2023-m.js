@@ -22,8 +22,7 @@ const RECON = (notes) => ({
   bacPromptNotes: notes
 });
 
-const PDF =
-  "https://eddirasa.com/wp-content/uploads/2023/07/eddirasa.com-bac-sciences-math-2023.pdf";
+const PDF = "https://eddirasa.com/wp-content/uploads/2023/07/eddirasa.com-bac-sciences-math-2023.pdf";
 const PDF_NOTE =
   "PDF officiel non redistribué dans le dépôt. Source énoncé: https://eddirasa.com/wp-content/uploads/2023/07/eddirasa.com-bac-sciences-math-2023.pdf (consulté 2026-08-31). Corrigé: https://eddirasa.com/wp-content/uploads/2023/07/eddirasa.com-correction-bac-sciences-math-2023.pdf.";
 
@@ -250,11 +249,8 @@ export const YEAR_2023_M = {
             N: {
               points: 1,
               prompt: "تأطير الإشكالية: دور البروتينات في أنماط التعاون بين الخلايا المناعية",
-              bacPrompt:
-                "ما دور هذه البروتينات في أنماط التعاون بين الخلايا المناعية لإقصاء اللاذات؟",
-              ...RECON(
-                "Le préambule page 4 pose la question. Pas de consigne autonome حدد المشكل."
-              ),
+              bacPrompt: "ما دور هذه البروتينات في أنماط التعاون بين الخلايا المناعية لإقصاء اللاذات؟",
+              ...RECON("Le préambule page 4 pose la question. Pas de consigne autonome حدد المشكل."),
               placeholder: "صياغة المشكل العلمي...",
               minLength: 30,
               modelAnswer:
@@ -357,9 +353,7 @@ export const YEAR_2023_M = {
               prompt: "استغلال الوثيقة 1: نسبة نمو الطفيلي ونسبة بروتيناته المركبة",
               bacPrompt:
                 "استغل الشكل (أ) والشكل (ب) من الوثيقة 1: نسبة نمو الطفيلي ونسبة بروتيناته المركبة بدلالة تراكيز Halofuginone.",
-              ...RECON(
-                "Le corrigé analyse les courbes avant les hypothèses. Exploitation pédagogique."
-              ),
+              ...RECON("Le corrigé analyse les courbes avant les hypothèses. Exploitation pédagogique."),
               placeholder: "في غياب الدواء تثبت نسبة النمو عند 100%... من 1.5 إلى 5 ت.و تتناقص...",
               minLength: 90,
               modelAnswer:
@@ -392,7 +386,8 @@ export const YEAR_2023_M = {
                 6,
                 "Relecture du PDF eddirasa 2023 Maths (page 6) et du corrigé (pages 5-6). Verbe officiel : بيّن. Question 1 du الجزء الثاني. Consigne قدّم نصيحة non mappée."
               ),
-              placeholder: "الوسط 1 تركيب البروتين... الوسط 2 لا يتركب... الوسط 3 يتركب بأحماض منشطة... يمنع ARNt-Pro...",
+              placeholder:
+                "الوسط 1 تركيب البروتين... الوسط 2 لا يتركب... الوسط 3 يتركب بأحماض منشطة... يمنع ARNt-Pro...",
               minLength: 110,
               modelAnswer:
                 "في الوسط 1 بتوفر عناصر الترجمة وفي غياب الدواء يتم تركيب البروتين. في الوسط 2 بوجود الدواء بتركيز 3 ت.و لا يتم التركيب. في الوسط 3 باستبدال عناصر التنشيط بأحماض أمينية منشطة يتم التركيب رغم وجود الدواء. يثبط الدواء عملية تنشيط الأحماض الأمينية. تبقى نسبة تشكل معقدات ARNt-aa أعظمية 100 بالمئة لكل الأحماض ما عدا البرولين حيث تتناقص حتى تنعدم: يمنع تشكل معقد ARNt-Pro. يتوضع Halofuginone في موقع تثبيت البرولين وARNt على أنزيم ProRS. تتوقف الترجمة فيُثبَّط تركيب بروتين الطفيلي ويتوقف نموه. تتأكد الفرضية 2: يثبط الدواء عملية الترجمة.",
