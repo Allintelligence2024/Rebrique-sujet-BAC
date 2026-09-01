@@ -22,7 +22,10 @@ test("l'archive 2013-2019 SE est branchée dans APP_CONFIG ; 2020 SE reste le mo
     const year = APP_CONFIG.years.find((y) => y.id === id);
     assert.ok(year && year.enabled && (year.stream || "se") === "se", `${id} SE 4D manquant`);
   }
-  assert.equal(APP_CONFIG.years.some((y) => y.id === "2021" && y.enabled), false);
+  assert.equal(
+    APP_CONFIG.years.some((y) => y.id === "2021" && y.enabled),
+    false
+  );
 });
 
 test("chaque année d'archive est activée avec 2 sujets × 3 exercices 5/7/8", () => {

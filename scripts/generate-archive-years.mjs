@@ -24,31 +24,115 @@ function P({
     check(v, k);
   }
   for (const k of keywords.flat()) check(String(k), "keyword");
-  return { points, prompt, bacPrompt, notes, placeholder, minLength, modelAnswer, keywords, minHits, forbidden, extra };
+  return {
+    points,
+    prompt,
+    bacPrompt,
+    notes,
+    placeholder,
+    minLength,
+    modelAnswer,
+    keywords,
+    minHits,
+    forbidden,
+    extra
+  };
 }
 
 function poles5(n, s, e, w) {
   return {
-    N: { ...n, points: 1, minLength: n.minLength ?? 40, minHits: n.minHits ?? 2, forbidden: n.forbidden ?? [] },
-    S: { ...s, points: 1, minLength: s.minLength ?? 40, minHits: s.minHits ?? 2, forbidden: s.forbidden ?? ["بسبب"] },
-    E: { ...e, points: 2, minLength: e.minLength ?? 120, minHits: e.minHits ?? 3, forbidden: e.forbidden ?? [] },
-    W: { ...w, points: 1, minLength: w.minLength ?? 40, minHits: w.minHits ?? 2, forbidden: w.forbidden ?? [] }
+    N: {
+      ...n,
+      points: 1,
+      minLength: n.minLength ?? 40,
+      minHits: n.minHits ?? 2,
+      forbidden: n.forbidden ?? []
+    },
+    S: {
+      ...s,
+      points: 1,
+      minLength: s.minLength ?? 40,
+      minHits: s.minHits ?? 2,
+      forbidden: s.forbidden ?? ["بسبب"]
+    },
+    E: {
+      ...e,
+      points: 2,
+      minLength: e.minLength ?? 120,
+      minHits: e.minHits ?? 3,
+      forbidden: e.forbidden ?? []
+    },
+    W: {
+      ...w,
+      points: 1,
+      minLength: w.minLength ?? 40,
+      minHits: w.minHits ?? 2,
+      forbidden: w.forbidden ?? []
+    }
   };
 }
 function poles7(n, s, e, w) {
   return {
-    N: { ...n, points: 1, minLength: n.minLength ?? 40, minHits: n.minHits ?? 2, forbidden: n.forbidden ?? [] },
-    S: { ...s, points: 2.5, minLength: s.minLength ?? 90, minHits: s.minHits ?? 2, forbidden: s.forbidden ?? ["بسبب"] },
-    E: { ...e, points: 2.5, minLength: e.minLength ?? 110, minHits: e.minHits ?? 3, forbidden: e.forbidden ?? [] },
-    W: { ...w, points: 1, minLength: w.minLength ?? 40, minHits: w.minHits ?? 2, forbidden: w.forbidden ?? [] }
+    N: {
+      ...n,
+      points: 1,
+      minLength: n.minLength ?? 40,
+      minHits: n.minHits ?? 2,
+      forbidden: n.forbidden ?? []
+    },
+    S: {
+      ...s,
+      points: 2.5,
+      minLength: s.minLength ?? 90,
+      minHits: s.minHits ?? 2,
+      forbidden: s.forbidden ?? ["بسبب"]
+    },
+    E: {
+      ...e,
+      points: 2.5,
+      minLength: e.minLength ?? 110,
+      minHits: e.minHits ?? 3,
+      forbidden: e.forbidden ?? []
+    },
+    W: {
+      ...w,
+      points: 1,
+      minLength: w.minLength ?? 40,
+      minHits: w.minHits ?? 2,
+      forbidden: w.forbidden ?? []
+    }
   };
 }
 function poles8(n, s, e, w) {
   return {
-    N: { ...n, points: 0.5, minLength: n.minLength ?? 30, minHits: n.minHits ?? 2, forbidden: n.forbidden ?? [] },
-    S: { ...s, points: 2, minLength: s.minLength ?? 60, minHits: s.minHits ?? 2, forbidden: s.forbidden ?? ["بسبب"] },
-    E: { ...e, points: 4, minLength: e.minLength ?? 110, minHits: e.minHits ?? 3, forbidden: e.forbidden ?? [] },
-    W: { ...w, points: 1.5, minLength: w.minLength ?? 40, minHits: w.minHits ?? 2, forbidden: w.forbidden ?? [] }
+    N: {
+      ...n,
+      points: 0.5,
+      minLength: n.minLength ?? 30,
+      minHits: n.minHits ?? 2,
+      forbidden: n.forbidden ?? []
+    },
+    S: {
+      ...s,
+      points: 2,
+      minLength: s.minLength ?? 60,
+      minHits: s.minHits ?? 2,
+      forbidden: s.forbidden ?? ["بسبب"]
+    },
+    E: {
+      ...e,
+      points: 4,
+      minLength: e.minLength ?? 110,
+      minHits: e.minHits ?? 3,
+      forbidden: e.forbidden ?? []
+    },
+    W: {
+      ...w,
+      points: 1.5,
+      minLength: w.minLength ?? 40,
+      minHits: w.minHits ?? 2,
+      forbidden: w.forbidden ?? []
+    }
   };
 }
 
@@ -381,8 +465,7 @@ pushYear(
           bacPrompt: "اقترح فرضية حول آلية تشكل ATP في الميتوكوندري.",
           notes: NOTE_SEC,
           placeholder: "الفرضية...",
-          modelAnswer:
-            "الفرضية: ينشأ تدرج بروتونات عبر الغشاء الداخلي فتمر H⁺ عبر ATP سنتاز فيتشكل ATP.",
+          modelAnswer: "الفرضية: ينشأ تدرج بروتونات عبر الغشاء الداخلي فتمر H⁺ عبر ATP سنتاز فيتشكل ATP.",
           keywords: ["فرضيه", "ATP", "بروتون"]
         },
         {
@@ -524,7 +607,8 @@ pushYear(
           bacPrompt: "ما الشروط التي تحفظ النشاط الإنزيمي؟",
           notes: NOTE_SEC,
           placeholder: "في الختام...",
-          modelAnswer: "في الختام، يحفظ النشاط عند pH وحرارة قريبين من الوسط الخلوي حتى يبقى الموقع الفعال متكاملا.",
+          modelAnswer:
+            "في الختام، يحفظ النشاط عند pH وحرارة قريبين من الوسط الخلوي حتى يبقى الموقع الفعال متكاملا.",
           keywords: ["نشاط", "موقع", "خلوي"]
         }
       )
@@ -640,8 +724,7 @@ pushYear(
           bacPrompt: "كيف تُحوَّل الطاقة الكيميائية الكامنة في الغلوكوز إلى ATP في وجود O2؟",
           notes: NOTE_SEC,
           placeholder: "صياغة المشكل العلمي...",
-          modelAnswer:
-            "المشكل العلمي: كيف تتكامل التحلل السكري وحلقة كريبس والفسفرة التأكسدية لإنتاج ATP؟",
+          modelAnswer: "المشكل العلمي: كيف تتكامل التحلل السكري وحلقة كريبس والفسفرة التأكسدية لإنتاج ATP؟",
           keywords: ["غلوكوز", "ATP", "تنفس"]
         },
         {
@@ -771,8 +854,7 @@ pushYear(
         },
         {
           prompt: "نص علمي حول دمج الرسائل على العصبون المحرك",
-          bacPrompt:
-            "اكتب نصا علميا تبيّن فيه آلية دمج الرسائل العصبية على مستوى العصبون المحرك.",
+          bacPrompt: "اكتب نصا علميا تبيّن فيه آلية دمج الرسائل العصبية على مستوى العصبون المحرك.",
           notes: NOTE_OCR,
           placeholder: "تجميع فضائي وزماني...",
           modelAnswer:
@@ -939,7 +1021,8 @@ pushYear(
           bacPrompt: "ما أهمية معرفة مؤشرات الزمرة عند نقل الدم؟",
           notes: NOTE_OCR,
           placeholder: "في الختام...",
-          modelAnswer: "في الختام، تحدد المؤشرات الغشائية التوافق عند النقل، فكل مستضد غريب يُرفض بالأجسام المضادة.",
+          modelAnswer:
+            "في الختام، تحدد المؤشرات الغشائية التوافق عند النقل، فكل مستضد غريب يُرفض بالأجسام المضادة.",
           keywords: ["زمره", "مستضد", "نقل"]
         }
       )
@@ -955,13 +1038,13 @@ pushYear(
           bacPrompt: "كيف يرتبط نشاط اللاكتاز بأعراض عدم تحمل اللاكتوز؟",
           notes: NOTE_OCR,
           placeholder: "صياغة المشكل العلمي...",
-          modelAnswer:
-            "المشكل العلمي: كيف يؤثر نقص اللاكتاز على هضم اللاكتوز فتظهر أعراض عدم التحمل؟",
+          modelAnswer: "المشكل العلمي: كيف يؤثر نقص اللاكتاز على هضم اللاكتوز فتظهر أعراض عدم التحمل؟",
           keywords: ["لاكتاز", "لاكتوز", "تحمل"]
         },
         {
           prompt: "تحليل أثر pH والحرارة على السرعة الابتدائية",
-          bacPrompt: "أنشئ منحنى تغير السرعة الابتدائية بدلالة pH الوسط مفسرا تأثيرها، ثم استنتج أثر الحرارة.",
+          bacPrompt:
+            "أنشئ منحنى تغير السرعة الابتدائية بدلالة pH الوسط مفسرا تأثيرها، ثم استنتج أثر الحرارة.",
           notes: NOTE_OCR,
           placeholder: "pH أمثل، حرارة منخفضة أو مرتفعة...",
           modelAnswer:
@@ -1061,9 +1144,30 @@ const REST = [
     theme: "rose",
     extra: "Session normale 2017. PDF dzexams محمي في العارض. Thèmes pédagogiques reconstruits.",
     s1: [
-      ["الشفرة الوراثية والترجمة", 5, "علاقة الرامزة بتتابع الأحماض الأمينية أثناء الترجمة", "رامزه", "ترجمه", "ARNm"],
-      ["البنية الفراغية للبروتين", 7, "الروابط المسؤولة عن ثبات البنية الفراغية وأثر الطفرة", "بنيه", "روابط", "طفره"],
-      ["المرحلة الكيميائية الضوئية", 8, "تحويل الطاقة الضوئية على مستوى التيلاكوئيد وطرح O2", "تيلاكوئيد", "ضوء", "اكسجين"]
+      [
+        "الشفرة الوراثية والترجمة",
+        5,
+        "علاقة الرامزة بتتابع الأحماض الأمينية أثناء الترجمة",
+        "رامزه",
+        "ترجمه",
+        "ARNm"
+      ],
+      [
+        "البنية الفراغية للبروتين",
+        7,
+        "الروابط المسؤولة عن ثبات البنية الفراغية وأثر الطفرة",
+        "بنيه",
+        "روابط",
+        "طفره"
+      ],
+      [
+        "المرحلة الكيميائية الضوئية",
+        8,
+        "تحويل الطاقة الضوئية على مستوى التيلاكوئيد وطرح O2",
+        "تيلاكوئيد",
+        "ضوء",
+        "اكسجين"
+      ]
     ],
     s2: [
       ["الذات واللاذات", 5, "دور CMH والمستضدات الغشائية في تمييز الذات", "CMH", "ذات", "لاذات"],
@@ -1092,7 +1196,14 @@ const REST = [
     extra: "2015 : PDF dzexams دون طبقة نص قابلة للشهادة هنا. Thèmes pédagogiques reconstruits.",
     s1: [
       ["الترجمة في الهيولى", 5, "العناصر المتدخلة في تركيب السلسلة البيبتيدية", "هيولي", "ريبوزوم", "ARNt"],
-      ["الكربوكسي بيبتيداز والموقع الفعال", 7, "علاقة البنية الفراغية للإنزيم بمادة التفاعل", "بيبتيداز", "موقع", "فعال"],
+      [
+        "الكربوكسي بيبتيداز والموقع الفعال",
+        7,
+        "علاقة البنية الفراغية للإنزيم بمادة التفاعل",
+        "بيبتيداز",
+        "موقع",
+        "فعال"
+      ],
       ["الاستجابة ضد VIH", 8, "حدود المراقبة المناعية بعد إصابة LT4", "VIH", "LT4", "مراقبه"]
     ],
     s2: [
