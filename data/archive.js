@@ -167,7 +167,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent (chemin /2016-2/ = session 2). Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet)."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien تحميل (chemin /2016-2/ = session 2). PDF dzexams validé mécaniquement. Énoncé eddirasa OCR RTL (2026-09-01) : https://eddirasa.com/wp-content/uploads/2016/06/bac-science-2016-se-2-1.pdf — 2 sujets (Ag Z/thymus ; mito/DNP/cyanure ; ocytocine-vasopressine ; carboxypeptidase ; TTX/TEA ; Rubisco/APG). Corrigé : page HTML seulement, pas d'URL PDF observé. 4D non encodé."
     },
     {
       year: "2016",
@@ -179,7 +179,7 @@ export const ARCHIVE = {
       attachments: true,
       viewer: "ok",
       notes:
-        "Page ouverte (2026-08-30). En-tête : « دورة 2016 ». Pièces jointes sciences-se-bac2016 + sciences-se-bac2016-correction ; 21 pages ; sujet : gène et ARN (Anagène), immunité (LT, IL2/CMH), ATP."
+        "Page ouverte (2026-08-30). En-tête : « دورة 2016 ». Pièces jointes sciences-se-bac2016 + sciences-se-bac2016-correction ; 21 pages ; sujet : gène et ARN (Anagène), immunité (LT, IL2/CMH), ATP. Miroir eddirasa chunk 1 (2026-09-01) : ATP (FAL/DCCD) ; GABA/Ach ; BZD. Corrigé PDF eddirasa non observé. Pas de 4D (consult)."
     },
     {
       year: "2015",
@@ -288,7 +288,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-31) : titre BAC 2022 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). 4D non encodé."
+        "Page ouverte (2026-08-31) : titre BAC 2022 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2022-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation)."
     },
     {
       year: "2021",
@@ -338,7 +338,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet)."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien تحميل présent. PDF dzexams validé mécaniquement. Corrigé eddirasa OCR RTL (2026-09-01) : https://eddirasa.com/wp-content/uploads/2018/07/eddirasa-com-correction-bac-math-science-2018.pdf (6 p., 7+13/6+14 ; VIH/LT4/IL-2 ; Ac/tétanos ; ribonucléase). Énoncé 2018 M non lu ici. 4D non encodé."
     },
     {
       year: "2017",
