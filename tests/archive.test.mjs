@@ -22,16 +22,50 @@ import { ARCHIVE } from "../data/archive.js";
 
 const BAD_KEYWORDS = ["synthetic", "généré", "LLM", "GPT", "Claude", "Gemini", "chatbot", "fabriqué"];
 
-test("chaque année 2013–2020 a une session principale pour se et m", () => {
-  for (let y = 2013; y <= 2020; y++) {
+test("2021 SE est cataloguée en consultation, sans 4D et sans faux contentVerified", async () => {
+  const se = ARCHIVE.entries.find((e) => e.year === "2021" && e.stream === "se");
+  const maths = ARCHIVE.entries.find((e) => e.year === "2021" && e.stream === "m");
+  assert.ok(se && maths, "2021 se et m doivent exister");
+  assert.equal(se.viewer, "blocked");
+  assert.equal(se.contentVerified, false);
+  assert.equal(se.page, "access_confirmed");
+  assert.ok(se.pdfUrl.includes("2021/dzexams-bac-sciences-2728849.pdf"));
+  assert.equal(maths.viewer, "ok");
+  assert.equal(maths.contentVerified, true);
+  const { APP_CONFIG } = await import("../data/subjects.js");
+  assert.equal(
+    APP_CONFIG.years.some((y) => y.id === "2021" && y.enabled),
+    false,
+    "2021 ne doit pas être une année 4D activée"
+  );
+});
+
+test("la session exceptionnelle 2016 Maths n'est pas inventée", () => {
+  assert.equal(
+    ARCHIVE.entries.some((e) => e.year === "2016" && e.stream === "m" && e.session === "exceptional"),
+    false
+  );
+  const gap = ARCHIVE.gaps.find((g) => g.year === "2016" && g.stream === "m" && g.session === "exceptional");
+  assert.ok(gap, "le trou 2016/m/exceptional doit rester documenté");
+  assert.ok(gap.reason.length > 20);
+});
+
+test("chaque année 2013–2021 a une session principale pour se et m, sauf 2020 SE (4D)", () => {
+  for (let y = 2013; y <= 2021; y++) {
     const year = String(y);
     for (const stream of ["se", "m"]) {
+      if (year === "2020" && stream === "se") continue;
       assert.ok(
         ARCHIVE.entries.some((e) => e.year === year && e.stream === stream && e.session === "main"),
         `session principale manquante pour ${year}/${stream}`
       );
     }
   }
+  assert.equal(
+    ARCHIVE.entries.some((e) => e.year === "2020" && e.stream === "se"),
+    false,
+    "SE 2020 ne doit plus être une carte d'archive (entraînement 4D)"
+  );
 });
 
 test("les URLs annales sont https, dzexams et uniques", () => {
@@ -88,15 +122,50 @@ test("aucun mot-clé synthétique dans les provenances", () => {
   assert.deepEqual(hits, [], `mot-clé interdit détecté: ${hits.join(", ")}`);
 });
 
-test("les années archivées ne sont pas des années d'entraînement 4D activées", async () => {
+test("une année 4D SE n'a pas d'entrée d'archive SE (pas de confusion de produits)", async () => {
   const { APP_CONFIG } = await import("../data/subjects.js");
   const enabledIds = APP_CONFIG.years.filter((y) => y.enabled).map((y) => y.id);
-  for (const e of ARCHIVE.entries) {
+  for (const e of ARCHIVE.entries.filter((entry) => entry.stream === "se")) {
     assert.ok(
       !enabledIds.includes(e.year),
-      `${e.year} est à la fois une année d'archive et une année d'entraînement activée — confusion de produits`
+      `${e.year}/se est à la fois archive et entraînement 4D activé — confusion de produits`
     );
   }
+});
+
+test("Maths 2021–2026 et SE 2020/2026 sont du 4D ; Maths reste cataloguée (confusion SE-only)", async () => {
+  for (const year of ["2022", "2023", "2024", "2025", "2026"]) {
+    const maths = ARCHIVE.entries.find((e) => e.year === year && e.stream === "m" && e.session === "main");
+    assert.ok(maths, `Maths ${year} manquante`);
+    assert.ok(maths.url.includes("/ar/annales/"));
+    assert.ok(maths.pdfUrl);
+  }
+  assert.equal(
+    ARCHIVE.entries.some((e) => e.year === "2026" && e.stream === "se"),
+    false,
+    "SE 2026 ne doit plus être une carte d'archive (entraînement 4D)"
+  );
+  const { APP_CONFIG } = await import("../data/subjects.js");
+  const se2026 = APP_CONFIG.years.find((y) => y.id === "2026");
+  assert.ok(se2026 && se2026.enabled && (se2026.stream || "se") === "se");
+  const se2020 = APP_CONFIG.years.find((y) => y.id === "2020");
+  assert.ok(se2020 && se2020.enabled && (se2020.stream || "se") === "se");
+  for (const year of ["2021", "2022", "2023", "2024", "2025", "2026"]) {
+    const maths = APP_CONFIG.years.find((y) => y.id === `${year}-m`);
+    assert.ok(
+      maths && maths.enabled && maths.stream === "m" && maths.calendarYear === year,
+      `Maths ${year} 4D manquant`
+    );
+  }
+});
+
+test("la filière تقني رياضي n'a aucune entrée inventée", () => {
+  assert.equal(ARCHIVE.entries.filter((e) => e.stream === "tm").length, 0);
+  assert.ok(ARCHIVE.streams.tm);
+  const gap = ARCHIVE.gaps.find((g) => g.stream === "tm");
+  assert.ok(gap, "le trou TM doit rester documenté");
+  assert.ok(gap.reason.length > 40);
+  assert.deepEqual(ARCHIVE.streamOrder, ["se", "m", "tm"]);
 });
 
 test("les entrées non vérifiées ont page=access_confirmed et viewer=blocked", () => {

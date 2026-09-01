@@ -20,3 +20,9 @@ on:
 **Ligne à changer:** `branches: [arena/01a0376b-rebrique-sujet-bac]` → `branches: [main, arena/**]`
 
 **Note:** Cette modification nécessite la permission `workflows` sur le dépôt.
+
+---
+
+**Résolu (2026-08-31)** — `quality.yml` tourne sur `main` et `arena/**`
+depuis `0cc7e44` (PR #14). Quality est verte sur main. L'issue #13 peut
+être fermée (le jeton de session n'a pas le droit `issues: write`).

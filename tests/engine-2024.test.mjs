@@ -1,10 +1,11 @@
 /* ============================================================
    Tests unitaires — contenu BAC 2024 (sujet réel reconstruit)
    ------------------------------------------------------------
-   Le sujet 2024 a été rebâti sur les thèmes réels lus sur la
-   couche texte du PDF eddirasa (VIH, épilepsie, P53, traduction,
-   RUBISCO, immunité). Ces tests remplacent les cas synthétiques
-   (Indolmycine / pipeline) retirés de engine.test.mjs.
+   Le sujet 2024 a été rebâti sur les thèmes réels (VIH, épilepsie,
+   P53, traduction, RUBISCO, immunité). Pages 2, 6, 7 et 10 relues
+   sur photos du sujet officiel (2026-08-31) ; le reste reconstructed.
+   Ces tests remplacent les cas synthétiques (Indolmycine / pipeline)
+   retirés de engine.test.mjs.
    ============================================================ */
 import { test } from "node:test";
 import assert from "node:assert/strict";
