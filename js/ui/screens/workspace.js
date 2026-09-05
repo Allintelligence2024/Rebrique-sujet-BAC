@@ -8,6 +8,7 @@ import { firstEmptyPipelineSlot, PIPELINE_FIELDS } from "../workspace/pipeline-e
 import { textEvaluationRule } from "../workspace/text-exercise.js";
 import { composeDrafts, hasObservationBeforeExplanation } from "../workspace/scratchpad.js";
 import { quickCheckHTML } from "../workspace/quick-check.js";
+import { classifyInstruction } from "../../domain/method/gates.js";
 
 export function createWorkspaceController(deps) {
   const {
@@ -302,6 +303,15 @@ export function createWorkspaceController(deps) {
     return BROUILLON_MODE_DATA.verbRouting[0];
   }
 
+  /** البوابتان قبل الكتابة: verdict ورقة/رأس ثم صورة/فيلم pour cette consigne. */
+  function gateChipHTML(poleType, pole) {
+    const c = classifyInstruction(pole?.bacPrompt || pole?.prompt || "");
+    const gate1 = c.mode === "paper" ? "📄 ورقة" : "🧠 رأس";
+    const gate2 = c.gate2 ? (c.gate2 === "film" ? " · 🎬 فيلم" : " · 📷 صورة") : "";
+    const columns = c.twoColumns ? " · عمودان: [من الوثيقة | من الدرس]" : "";
+    return `<div class="small text-muted gate-chip" data-gate-chip="${poleType}">🚪 القرار قبل الكتابة: <b>${gate1}${gate2}</b> — مسار ${c.pathLabel}${columns}</div>`;
+  }
+
   function poleMethodHint(poleType, pole) {
     const fallback = { N: "problem", S: "analysis", E: "explanation", W: "scientific-text" };
     const script = METHOD_SCRIPTS[fallback[poleType]] || METHOD_SCRIPTS.synthesis;
@@ -321,6 +331,7 @@ export function createWorkspaceController(deps) {
           ${provenanceBadge(pole)}
           <p class="small text-muted mb-1">Objectif méthodologique : ${pole.prompt}</p>
           <h3 class="bac-consigne">${pole.bacPrompt || pole.prompt}</h3>
+          ${gateChipHTML(p, pole)}
           ${poleMethodHint(p, pole)}
           ${quickCheckHTML()}
           ${

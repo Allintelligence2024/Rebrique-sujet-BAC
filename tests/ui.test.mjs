@@ -326,3 +326,19 @@ test("les boutons d'إملاء صوتي (dictée vocale) sont bien présents sur
   micBtns[0].dispatchEvent(new dom.window.MouseEvent("click", { bubbles: true }));
   assert.ok($("#toast-zone").children.length > 0);
 });
+
+test("chaque consigne de pôle affiche le verdict des البوابتان avant la réponse (MIFTAH)", () => {
+  // Exercice 1 (texte) du même sujet : bascule via l'onglet du workspace.
+  click('#view-workspace [data-switch="1"]');
+  const chips = $$("#ex-content .gate-chip");
+  assert.equal(chips.length, 4, "4 puces de décision attendues (une par سنّ)");
+  for (const chip of chips) {
+    assert.match(chip.textContent, /ورقة|رأس/, `verdict بوابة 1 manquant: ${chip.textContent}`);
+  }
+  // Données réelles 2025 S1 E1 : aucune consigne ne cite de سند documentaire,
+  // donc le سنّ N (كيف تتدخل…) est classé رأس (مسار 1 → 4) par la règle de la fiche.
+  const chipN = chips.find((chip) => chip.dataset.gateChip === "N");
+  assert.ok(chipN, "puce du سنّ N manquante");
+  assert.match(chipN.textContent, /رأس/);
+  assert.match(chipN.textContent, /مسار 1 → 4/);
+});
