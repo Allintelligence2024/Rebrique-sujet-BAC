@@ -31,3 +31,19 @@ test("report-controller calcule directement un rapport sans dépendre du contrô
   assert.equal(report.rows.length, sujet.exercises.length);
   assert.equal(report.grand, 0);
 });
+
+/* ---------- quick-check : الفحص الرباعي المعكوس (MIFTAH هـ) ---------- */
+
+const { QUICK_CHECK_ITEMS, quickCheckHTML } = await import("../js/ui/workspace/quick-check.js");
+
+test("le فحص رباعي معكوس liste 4 questions en ordre décroissant 4←3←2←1", () => {
+  assert.deepEqual(
+    QUICK_CHECK_ITEMS.map((item) => item.n),
+    [4, 3, 2, 1]
+  );
+  const html = quickCheckHTML();
+  assert.match(html, /الفحص الرباعي المعكوس/);
+  for (const expected of ["كلمات السؤال", "بمعطى", "وحدته", "نفّذتُه"]) {
+    assert.ok(html.includes(expected), `question manquante: ${expected}`);
+  }
+});

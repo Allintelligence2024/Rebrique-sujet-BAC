@@ -314,3 +314,41 @@ after(async () => {
     uiDom.window.close();
   } catch (e) {}
 });
+
+test("l'écran guide affiche خمسة أخطاء (contenu méthode, sans pourcentages de barème)", () => {
+  const guide = freshGuide();
+  lastGuide = guide;
+  guide.renderGuide({ id: 2025 });
+  const mistakes = uiDom.window.document.querySelector("#mistakes-card");
+  assert.ok(mistakes, "carte خمسة أخطاء manquante");
+  const text = mistakes.textContent;
+  assert.match(text, /إجابة بلا رقم سؤال/);
+  assert.match(text, /شجرة نسب بحكم واحد/);
+  assert.doesNotMatch(text, /نصف النقطة|0,25|0,5 نقطة/);
+});
+
+test("المفتاح+ porte les badges de gradation متوسط/امتياز", () => {
+  const guide = freshGuide();
+  lastGuide = guide;
+  guide.state_unlocked_helper = null;
+  guide.renderGuide({ id: 2025 });
+  // Simuler un store déjà débloqué : re-rendu via un guide fraîchement créé.
+  const unlockedStore = makeGuideStore();
+  unlockedStore.state.drill.unlocked = true;
+  const guide2 = createGuideScreen({
+    $: (s) => uiDom.window.document.querySelector(s),
+    $$: $$sel,
+    adkarHTML: () => "",
+    goHome: () => {},
+    goToStrategy: () => {},
+    store: unlockedStore
+  });
+  lastGuide = guide2;
+  guide2.renderGuide({ id: 2025 });
+  const plus = uiDom.window.document.querySelector("#plus-card");
+  assert.ok(plus, "المفتاح+ devrait être rendu d'emblée quand unlocked=true");
+  const text = plus.textContent;
+  assert.match(text, /مستوى متوسط/);
+  assert.match(text, /مستوى امتياز/);
+  assert.match(text, /🟦 متوسط · صيغة الحساب|🟨 امتياز · صيغة الحساب/);
+});

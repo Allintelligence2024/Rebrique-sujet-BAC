@@ -7,6 +7,7 @@ import { mayScorePole, poleConfidence } from "../workspace/feedback.js";
 import { firstEmptyPipelineSlot, PIPELINE_FIELDS } from "../workspace/pipeline-exercise.js";
 import { textEvaluationRule } from "../workspace/text-exercise.js";
 import { composeDrafts, hasObservationBeforeExplanation } from "../workspace/scratchpad.js";
+import { quickCheckHTML } from "../workspace/quick-check.js";
 
 export function createWorkspaceController(deps) {
   const {
@@ -321,6 +322,7 @@ export function createWorkspaceController(deps) {
           <p class="small text-muted mb-1">Objectif méthodologique : ${pole.prompt}</p>
           <h3 class="bac-consigne">${pole.bacPrompt || pole.prompt}</h3>
           ${poleMethodHint(p, pole)}
+          ${quickCheckHTML()}
           ${
             pole.minLength >= 100
               ? `<textarea class="field" id="fld-${p}" rows="6" placeholder="${pole.placeholder || ""}"></textarea>`
