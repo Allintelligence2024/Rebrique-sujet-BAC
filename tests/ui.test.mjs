@@ -146,11 +146,11 @@ test("le mode brouillon Boussole s'ouvre, expose la fiche N/S/E/W et persiste le
   assert.ok($("#boussole-scratch-card"));
   click("#ws-brouillon");
   assert.ok($(".drawer.open"));
-  assert.match($(".drawer").textContent, /ورقة N\/S\/E\/W/);
+  assert.match($(".drawer").textContent, /ورقة المسودة · اقرأ \/ اجمع \/ اربط \/ اختُم/);
   assert.match($(".drawer").textContent, /الفعل المكتشف/);
   assert.match($(".drawer").textContent, /consigne brute BAC/);
   assert.match($(".drawer").textContent, /consigne reconstruite/);
-  assert.match($(".drawer").textContent, /البلوك الأنسب: N/);
+  assert.match($(".drawer").textContent, /البلوك الأنسب: اقرأ/);
   assert.ok($("#scratch-N"));
   assert.ok($("#scratch-S"));
 

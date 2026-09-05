@@ -1,3 +1,6 @@
+/* Noms d'affichage des pôles (les IDs internes N/S/E/W restent inchangés). */
+const POLE_TOOTH = { N: "اقرأ", S: "اجمع", E: "اربط", W: "اختُم" };
+
 export function createBrouillonController({
   $,
   store,
@@ -51,8 +54,8 @@ export function createBrouillonController({
     const body = `
     <div class="brouillon-shell stack">
       <div class="brouillon-context-card card recommended">
-        <strong>ورقة N/S/E/W</strong>
-        <p class="small">الفعل المكتشف: ${verb.canonical} — البلوك الأنسب: ${recommended}</p>
+        <strong>ورقة المسودة · اقرأ / اجمع / اربط / اختُم</strong>
+        <p class="small">الفعل المكتشف: ${verb.canonical} — البلوك الأنسب: ${POLE_TOOTH[recommended] || recommended}</p>
         <p class="small"><b>consigne brute BAC</b> : ${pole.bacPrompt || pole.prompt}</p>
         <p class="small"><b>consigne reconstruite</b> : ${pole.prompt}</p>
       </div>
@@ -60,14 +63,14 @@ export function createBrouillonController({
         ${POLE_ORDER.map(
           (p) => `
           <div>
-            <label class="lbl">${p}</label>
+            <label class="lbl">${POLE_TOOTH[p] || p}</label>
             <textarea class="field brouillon-area" id="scratch-${p}">${escapeHTML(st.scratch[p])}</textarea>
           </div>`
         ).join("")}
       </div>
       <label class="lbl">حر</label>
       <textarea class="field" id="scratch-free">${escapeHTML(st.scratch.free)}</textarea>
-      <label class="lbl">مسودة القطب الحالي</label>
+      <label class="lbl">مسودة السنّ الحالية</label>
       <textarea class="field" id="brouillon-draft-current">${escapeHTML(drafts.current)}</textarea>
       <label class="lbl">المسودة الكاملة</label>
       <textarea class="field" id="brouillon-draft-full">${escapeHTML(drafts.full)}</textarea>

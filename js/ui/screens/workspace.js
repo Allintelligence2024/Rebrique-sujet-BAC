@@ -117,7 +117,7 @@ export function createWorkspaceController(deps) {
       <div class="card mb-2 compass-guide" id="boussole-scratch-card">
         <strong>🧭 البوصلة = أربع أسئلة عملية، وليست زينة</strong>
         <p class="small text-muted mt-0" id="pole-purpose">N — ما المشكل العلمي الذي يجب أن أؤطّره؟</p>
-        <button class="btn btn-ghost btn-sm" id="boussole-open-scratch">افتح ورقة N/S/E/W</button>
+        <button class="btn btn-ghost btn-sm" id="boussole-open-scratch">افتح ورقة المسودة (اقرأ · اجمع · اربط · اختُم)</button>
       </div>
 
       <div class="grid workspace-layout">
@@ -132,13 +132,13 @@ export function createWorkspaceController(deps) {
             )
             .join("")}</div>
           <div class="card center stack">
-            <div class="flex spread small"><span class="bold text-muted">بوصلة ت${ex.number}</span><span class="text-emerald" id="pole-text">القطب: الشمال</span></div>
+            <div class="flex spread small"><span class="bold text-muted">بوصلة ت${ex.number}</span><span class="text-emerald" id="pole-text">السنّ: اقرأ</span></div>
             <div class="compass">
               <div class="compass-ring"></div>
-              <span class="compass-mark" style="top:4px;inset-inline-start:50%;transform:translateX(50%);color:var(--emerald-soft)">N</span>
-              <span class="compass-mark" style="bottom:4px;inset-inline-start:50%;transform:translateX(50%);color:var(--blue)">S</span>
-              <span class="compass-mark" style="inset-block-start:50%;inset-inline-end:4px;transform:translateY(-50%);color:var(--amber-soft)">E</span>
-              <span class="compass-mark" style="inset-block-start:50%;inset-inline-start:4px;transform:translateY(-50%);color:var(--purple-soft)">W</span>
+              <span class="compass-mark" style="top:4px;inset-inline-start:50%;transform:translateX(50%);color:var(--emerald-soft)">1</span>
+              <span class="compass-mark" style="bottom:4px;inset-inline-start:50%;transform:translateX(50%);color:var(--blue)">2</span>
+              <span class="compass-mark" style="inset-block-start:50%;inset-inline-end:4px;transform:translateY(-50%);color:var(--amber-soft)">3</span>
+              <span class="compass-mark" style="inset-block-start:50%;inset-inline-start:4px;transform:translateY(-50%);color:var(--purple-soft)">4</span>
               <div class="compass-seq" id="compass-needle">
                 <svg viewBox="0 0 100 100"><polygon points="50,12 44,50 56,50" fill="#10b981"/><polygon points="50,88 44,50 56,50" fill="#3b82f6"/></svg>
               </div>
@@ -243,7 +243,7 @@ export function createWorkspaceController(deps) {
       .replace(/<[^>]*>/g, "");
     const text = showScore
       ? feedback
-      : `مراجعة منهجية فقط — لا توجد نقطة رقمية لهذا القطب.\n${feedback.replace(/^.*?\n/, "")}`;
+      : `مراجعة منهجية فقط — لا توجد نقطة رقمية لهذه السنّ.\n${feedback.replace(/^.*?\n/, "")}`;
     const fragments = [node("span", { text })];
     if (pole?.modelAnswer) {
       const details = node("details", { className: "model-box" });
@@ -275,7 +275,7 @@ export function createWorkspaceController(deps) {
     if (res.hypotheses?.gaps?.length) html += `<br>🔬 الفرضيات: <b>${res.hypotheses.gaps.join(" — ")}</b>`;
     if (res.technique?.gaps?.length) html += `<br>🧫 التقنية: <b>${res.technique.gaps.join(" — ")}</b>`;
     if (res.closing?.applicable && res.taskProfile?.id === "scientific-text" && res.closing.score < 0.5)
-      html += `<br>🎯 الخاتمة لا تجيب عن المشكل المطروح في القطب N.`;
+      html += `<br>🎯 الخاتمة لا تجيب عن المشكل المطروح في السنّ اقرأ.`;
     if (res.methodology?.missing?.length) html += `<br>🧭 المنهجية: ${res.methodology.missing[0]}`;
     if (res.coach?.tips?.length) html += `<br>📘 من دليل المنهجية: ${res.coach.tips.slice(0, 2).join(" ")}`;
     else if (res.methodology?.score < 0.9 && res.coach?.script?.steps?.length) {
@@ -316,7 +316,7 @@ export function createWorkspaceController(deps) {
       return `
       <div id="panel-${i + 1}" class="${i === 0 ? "" : "hidden"}">
         <div class="card answer-card">
-          <span class="badge badge-${POLE[p].cls}" style="margin-bottom:.6rem">Étape ${p} · ${POLE[p].title}</span>
+          <span class="badge badge-${POLE[p].cls}" style="margin-bottom:.6rem">${POLE[p].title}</span>
           ${provenanceBadge(pole)}
           <p class="small text-muted mb-1">Objectif méthodologique : ${pole.prompt}</p>
           <h3 class="bac-consigne">${pole.bacPrompt || pole.prompt}</h3>
@@ -403,7 +403,7 @@ export function createWorkspaceController(deps) {
       </div>
       ${micButton("pipeline-var-indep")}
       <div class="feedback hidden" role="status" aria-live="polite" aria-atomic="true" id="fb-N"></div>
-      <button class="btn btn-emerald mt-2" data-polo-check="N">تأكيد القطب N (فكّ القفل)</button>
+      <button class="btn btn-emerald mt-2" data-polo-check="N">تأكيد السنّ اقرأ (فكّ القفل)</button>
     </div>
     <div id="panel-2" class="card hidden">
       <span class="badge badge-indigo" style="margin-bottom:.6rem">${POLE.S.title} (${fmtPts(ex.poles.S.points)})</span>
@@ -430,7 +430,7 @@ export function createWorkspaceController(deps) {
       <label class="lbl mt-2">استدلال الوثيقة 2:</label>
       <textarea class="field" rows="4" id="pipeline-doc2"></textarea>
       <div class="feedback hidden" role="status" aria-live="polite" aria-atomic="true" id="fb-E"></div>
-      <button class="btn btn-emerald mt-2" data-polo-check="E">تأكيد القطب E</button>
+      <button class="btn btn-emerald mt-2" data-polo-check="E">تأكيد السنّ اربط</button>
     </div>
     <div id="panel-4" class="card hidden">
       <span class="badge badge-purple" style="margin-bottom:.6rem">${POLE.W.title} (${fmtPts(ex.poles.W.points)})</span>
@@ -571,7 +571,7 @@ export function createWorkspaceController(deps) {
       fb.textContent = scoreAllowed
         ? `المخطط: ${st.scores[p].toFixed(2)} / ${max} (${res.correct}/${res.total} عنصر صحيح)` +
           (res.wrongSlots.length ? `\n⚠️ عناصر في غير موضعها: ${res.wrongSlots.length}` : "")
-        : `مراجعة منهجية فقط — لا توجد نقطة رقمية لهذا القطب.\nالمخطط: ${res.correct}/${res.total} عنصر صحيح`;
+        : `مراجعة منهجية فقط — لا توجد نقطة رقمية لهذه السنّ.\nالمخطط: ${res.correct}/${res.total} عنصر صحيح`;
     }
     store.save();
     updateLiveScore();
@@ -588,12 +588,12 @@ export function createWorkspaceController(deps) {
     const needle = $("#compass-needle");
     if (needle) needle.style.transform = `rotate(${n === 1 ? 0 : n === 2 ? 180 : n === 3 ? 90 : 270}deg)`;
     const poleText = $("#pole-text");
-    if (poleText) poleText.textContent = `القطب: ${POLE[activePole].title.replace("القطب ", "")}`;
+    if (poleText) poleText.textContent = `السنّ: ${POLE[activePole].short}`;
     const purposes = {
-      N: "N — ما المشكل أو الفرضية التي يجب أن أؤطّرها؟",
-      S: "S — ماذا ألاحظ وأقارن في السندات، دون تفسير متسرّع؟",
-      E: "E — ما الآلية العلمية التي تربط الملاحظات بالنتيجة؟",
-      W: "W — هل تجيب خلاصتي عن المشكل وتغطي النتائج الأساسية؟"
+      N: "اقرأ — ما المشكل أو الفرضية التي يجب أن أؤطّرها؟",
+      S: "اجمع — ماذا ألاحظ وأقارن في السندات، دون تفسير متسرّع؟",
+      E: "اربط — ما الآلية العلمية التي تربط الملاحظات بالنتيجة؟",
+      W: "اختُم — هل تجيب خلاصتي عن المشكل وتغطي النتائج الأساسية؟"
     };
     if ($("#pole-purpose")) $("#pole-purpose").textContent = purposes[activePole];
     $$("#stepnav [data-step]").forEach((b, i) => b.classList.toggle("active", i === n - 1));

@@ -35,10 +35,10 @@ import { createWorkspaceController } from "./ui/screens/workspace.js";
 import { reportDiagnostic } from "./services/diagnostics.js";
 
 const POLE = {
-  N: { title: "القطب الشمال", cls: "emerald" },
-  S: { title: "القطب الجنوب", cls: "blue" },
-  E: { title: "القطب الشرق", cls: "amber" },
-  W: { title: "القطب الغرب", cls: "purple" }
+  N: { title: "السنّ 1 · اقرأ", short: "اقرأ", cls: "emerald" },
+  S: { title: "السنّ 2 · اجمع", short: "اجمع", cls: "blue" },
+  E: { title: "السنّ 3 · اربط", short: "اربط", cls: "amber" },
+  W: { title: "السنّ 4 · اختُم", short: "اختُم", cls: "purple" }
 };
 const POLE_ORDER = ["N", "S", "E", "W"];
 let hubScreen;
