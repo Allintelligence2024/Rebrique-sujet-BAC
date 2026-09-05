@@ -42,7 +42,9 @@ function defaultState() {
     strategyLastTick: null,
     strategyRunning: false,
     // { [yearId]: { [sujetId]: { [exNum]: emptyExercise() } } }
-    progress: {}
+    progress: {},
+    // drill شحذ المفتاح: série de rounds parfaits et déblocage du المفتاح+
+    drill: { streak: 0, best: 0, rounds: 0, unlocked: false }
   };
 }
 
@@ -105,6 +107,16 @@ export function migrateState(candidate) {
   throw new Error(`unsupported schema ${String(version)}`);
 }
 
+function sanitizeDrill(value) {
+  const raw = isRecord(value) ? value : {};
+  return {
+    streak: asFiniteNumber(raw.streak, 0, 0, 999),
+    best: asFiniteNumber(raw.best, 0, 0, 999),
+    rounds: asFiniteNumber(raw.rounds, 0, 0, 100000),
+    unlocked: raw.unlocked === true
+  };
+}
+
 /** Whitelist and normalize persisted values; never shallow-merge untrusted storage. */
 export function validateState(candidate) {
   if (!isRecord(candidate) || candidate.schemaVersion !== CURRENT_SCHEMA_VERSION) {
@@ -129,6 +141,7 @@ export function validateState(candidate) {
   state.strategyLastTick = asFiniteNumber(candidate.strategyLastTick, null, 0);
   state.strategyRunning = candidate.strategyRunning === true;
   state.progress = sanitizeProgress(candidate.progress);
+  state.drill = sanitizeDrill(candidate.drill);
   return state;
 }
 
@@ -248,6 +261,22 @@ export const store = {
   setActiveScreen(screenId) {
     this.state.activeScreen = screenId;
     this.save();
+  },
+
+  /** Jauge du drill شحذ المفتاح : une round parfaite prolonge la série, sinon remise à zéro. */
+  recordDrillRound(perfect) {
+    const drill = this.state.drill;
+    drill.streak = perfect === true ? drill.streak + 1 : 0;
+    drill.best = Math.max(drill.best, drill.streak);
+    drill.rounds += 1;
+    this.save();
+    return { ...drill };
+  },
+
+  unlockDrill() {
+    this.state.drill.unlocked = true;
+    this.save();
+    return { ...this.state.drill };
   }
 };
 

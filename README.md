@@ -15,7 +15,7 @@
 Parcours en 5 étapes pensé pour la **gestion du stress** et la **méthode** :
 
 1. **Hub** — choix entre accès rapide à un exercice et parcours guidé.
-2. **Sérénité** _(parcours guidé uniquement)_ — respiration + micro-conseils méthodologiques.
+2. **Sérénité** _(parcours guidé uniquement)_ — respiration + micro-conseils méthodologiques, **البوابتان** (classifieur ورقة/رأس puis صورة/فيلم pour toute instruction) et **شحذ المفتاح** (drill de 12 instructions, critère de sortie 12/12 ×3 → débloque la carte المفتاح+).
 3. **Stratégie** _(optionnelle)_ — consultation des PDF et calculatrice de choix (25 min).
 4. **Choix d'exercice** — sujet et exercice à travailler (accès rapide : les deux depuis le hub ; parcours guidé : sujet fixé à l'étape Stratégie, puis exercice).
 5. **Espace de travail 4D** — consigne et réponse prioritaires, diagnostic de couverture, aide contextuelle et indicateur chiffré secondaire.
@@ -50,6 +50,7 @@ L'interface propose des thèmes clair et sombre persistants. Les outils secondai
 │   ├── method-scripts.js             # scripts de méthode (conseils contextuels)
 │   ├── application/timers.js         # minuteurs globaux et stratégie
 │   ├── domain/evaluation/            # règles d'analyse et d'évaluation (5 modules)
+│   ├── domain/method/gates.js        # البوابتان (ورقة/رأس · صورة/فيلم) + moteur du drill شحذ المفتاح
 │   ├── services/                     # son, reconnaissance vocale et diagnostics récupérables
 │   └── ui/
 │       ├── dom.js · dialogs.js · navigation.js · accessibility.js  # infrastructure UI partagée
@@ -274,7 +275,7 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **167** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **186** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0**
 - Taille de la façade UI (js/ui.js) : **408 lignes**
 
