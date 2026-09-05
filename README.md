@@ -24,6 +24,32 @@ L'interface propose des thèmes clair et sombre persistants. Les outils secondai
 
 ---
 
+## 🔑 Correspondance fiche MIFTAH ↔ application (cartographie complète)
+
+La fiche élève **MIFTAH v3.1** (recto المفتاح / verso المفتاح+) est intégrée section par section.
+Le contenu méthode vit dans les modules testés ; la vue imprimable (`js/ui/keycard.js`,
+bouton 🖨️ de l'écran guide) est générée à partir des **mêmes sources** (quick-check.js, gates.js).
+
+| Section de la fiche                                                     | Où elle vit dans l'app                                                                                                                                                                | Test                                             |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| الأسنان 1-4 (اقرأ/اجمع/اربط/اختُم)                                      | badges, boussole, tiroir brouillon — IDs internes N/S/E/W inchangés                                                                                                                   | `ui.test.mjs`                                    |
+| البوابتان (ورقة/رأس · صورة/فيلم)                                        | classifieur `js/domain/method/gates.js` : carte interactive (guide), drill, puce « القرار قبل الكتابة » sous chaque consigne du workspace (+ ⚠ معاد بناؤه si consigne non officielle) | `gates-drill.test.mjs`, `ui.test.mjs`            |
+| شحذ المفتاح (12/12 ×3)                                                  | drill de l'écran guide, série persistée → débloque المفتاح+                                                                                                                           | `gates-drill.test.mjs`                           |
+| المفتاح+ (افتح، قالب التركيب، حساب، شجرة النسب، عامّ/خاصّ، جملة النجاة) | carte dédiée de l'écran guide (déverrouillable) + gradation متوسط/امتياز                                                                                                              | `gates-drill.test.mjs`                           |
+| وضع الحفظ (عرّف / اذكر)                                                 | canevas `definition`/`listing` de `js/method-scripts.js`                                                                                                                              | `method-coach.test.mjs`                          |
+| الجمل الثلاث الجاهزة                                                    | `sentenceModels` de `data/brouillon.js`                                                                                                                                               | `brouillon.test.mjs`                             |
+| الفحص الرباعي المعكوس                                                   | `js/ui/workspace/quick-check.js`, dépliable dans chaque pôle du workspace + keycard                                                                                                   | `workspace-modules.test.mjs`, `keycard.test.mjs` |
+| خمسة أخطاء تكلّف أكثر من الجهل                                          | carte de l'écran guide + keycard (reformulés **sans** pourcentages de barème)                                                                                                         | `gates-drill.test.mjs`                           |
+| التصنيف حسب المستوى (متعثر/متوسط/امتياز)                                | badges 🟦/🟨 sur les sections du المفتاح+                                                                                                                                             | `gates-drill.test.mjs`                           |
+| بطاقة imprimable                                                        | vue générée par `js/ui/keycard.js` (impression A4 isolée), pas de fichier statique dupliqué                                                                                           | `keycard.test.mjs`                               |
+
+**Hors périmètre, volontairement :** la colonne « 📝 المصحح » de la fiche (pourcentages, « نصف النقطة
+دائما », « إجابة بلا رقم = 0 »…) : aucune source officielle (`عناصر الإجابة والعلامة المترتبة`) ne
+les étaye — elles ne peuvent pas entrer dans l'app tant qu'un document officiel ne les confirme pas.
+Le disclaimers du hard benchmark (0 copie réelle doublement annotée) reste la limite honnête du projet.
+
+---
+
 ## 🗂️ Architecture (modulaire & data-driven)
 
 ```
@@ -275,7 +301,7 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **190** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **196** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0**
 - Taille de la façade UI (js/ui.js) : **408 lignes**
 

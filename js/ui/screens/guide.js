@@ -9,6 +9,7 @@
    ============================================================ */
 
 import { elementFromInternalHTML, setInternalHTML } from "../dom.js";
+import { keycardHTML } from "../keycard.js";
 import {
   DRILL_ROUND_SECONDS,
   DRILL_ROUND_SIZE,
@@ -108,7 +109,7 @@ function plusCardHTML() {
 }
 
 export function createGuideScreen(deps) {
-  const { $, $$, adkarHTML, goHome, goToStrategy, store } = deps;
+  const { $, $$, adkarHTML, goHome, goToStrategy, store, openModal } = deps;
 
   let drill = null;
   let drillTimer = null;
@@ -317,6 +318,23 @@ export function createGuideScreen(deps) {
     host.append(elementFromInternalHTML(plusCardHTML()));
   }
 
+  /* ---------------- بطاقة المفتاح : vue imprimable ---------------- */
+
+  function openKeycard() {
+    const body = `${keycardHTML()}
+      <div class="flex" style="justify-content:flex-end;margin-top:.6rem">
+        <button class="btn btn-emerald btn-sm" id="keycard-print-btn">🖨️ طباعة (A4)</button>
+      </div>`;
+    const modal = openModal?.("🖨️ بطاقة المفتاح — نسخة الطباعة", body);
+    modal?.querySelector("#keycard-print-btn")?.addEventListener("click", () => {
+      document.body.classList.add("keycard-printing");
+      const cleanup = () => document.body.classList.remove("keycard-printing");
+      window.addEventListener("afterprint", cleanup, { once: true });
+      window.print?.();
+      setTimeout(cleanup, 1000);
+    });
+  }
+
   function renderDrillCard() {
     return `
       <div class="card stack" id="drill-card">
@@ -360,6 +378,9 @@ export function createGuideScreen(deps) {
         ${renderDrillCard()}
         ${store.state.drill.unlocked ? plusCardHTML() : ""}
         ${mistakesCardHTML()}
+        <div class="flex" style="justify-content:center">
+          <button class="btn btn-ghost btn-sm" id="guide-keycard">🖨️ بطاقة المفتاح — طباعة A4</button>
+        </div>
         <div class="flex" style="justify-content:flex-end">
           <button class="btn btn-emerald" id="guide-next">♞ أنا هادئ ومستعد | تصفح PDF وحاسبة الاختيار (25 دقيقة)</button>
         </div>
@@ -378,6 +399,7 @@ export function createGuideScreen(deps) {
     });
     bindGatesCard();
     bindOnce("#drill-start", startDrill);
+    bindOnce("#guide-keycard", openKeycard);
   }
 
   return { renderGuide };

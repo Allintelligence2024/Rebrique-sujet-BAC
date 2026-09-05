@@ -309,7 +309,11 @@ export function createWorkspaceController(deps) {
     const gate1 = c.mode === "paper" ? "📄 ورقة" : "🧠 رأس";
     const gate2 = c.gate2 ? (c.gate2 === "film" ? " · 🎬 فيلم" : " · 📷 صورة") : "";
     const columns = c.twoColumns ? " · عمودان: [من الوثيقة | من الدرس]" : "";
-    return `<div class="small text-muted gate-chip" data-gate-chip="${poleType}">🚪 القرار قبل الكتابة: <b>${gate1}${gate2}</b> — مسار ${c.pathLabel}${columns}</div>`;
+    const reliability =
+      pole?.bacPromptSource === "official"
+        ? ""
+        : ` · <span class="gate-chip-recon">⚠ معاد بناؤه — تأكّد من صيغة السؤال الرسمية</span>`;
+    return `<div class="small text-muted gate-chip" data-gate-chip="${poleType}">🚪 القرار قبل الكتابة: <b>${gate1}${gate2}</b> — مسار ${c.pathLabel}${columns}${reliability}</div>`;
   }
 
   function poleMethodHint(poleType, pole) {

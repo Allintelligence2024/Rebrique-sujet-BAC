@@ -341,4 +341,8 @@ test("chaque consigne de pôle affiche le verdict des البوابتان avant l
   assert.ok(chipN, "puce du سنّ N manquante");
   assert.match(chipN.textContent, /رأس/);
   assert.match(chipN.textContent, /مسار 1 → 4/);
+  // Fiabilité : les consignes reconstruites portent l'avertissement, les officielles non.
+  const chipS = chips.find((chip) => chip.dataset.gateChip === "S");
+  assert.match(chipN.textContent, /معاد بناؤه/, "2025 E1 N est reconstructed → avertissement attendu");
+  assert.doesNotMatch(chipS.textContent, /معاد بناؤه/, "2025 E1 S est official → pas d'avertissement");
 });

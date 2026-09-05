@@ -1484,3 +1484,33 @@ footer.screen-foot {
   background: var(--bg);
   color: var(--ink);
 }
+
+/* --- Impression de la بطاقة المفتاح (vue isolée) ------------------ */
+@media print {
+  body.keycard-printing * {
+    visibility: hidden !important;
+  }
+  body.keycard-printing .keycard-print,
+  body.keycard-printing .keycard-print * {
+    visibility: visible !important;
+  }
+  body.keycard-printing .keycard-print {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0;
+  }
+  body.keycard-printing .modal-head,
+  body.keycard-printing .overlay .btn {
+    display: none !important;
+  }
+  body.keycard-printing .keycard-print h3 {
+    margin-block-start: 0;
+  }
+  body.keycard-printing .keycard-print h4 {
+    margin-block: 0.6rem 0.2rem;
+  }
+  body.keycard-printing .keycard-print ol,
+  body.keycard-printing .keycard-print ul {
+    margin-block: 0.2rem;
+  }
+}

@@ -277,7 +277,7 @@ hubScreen = createHubScreen({
   toggleTheme,
   yearObj
 });
-guideScreen = createGuideScreen({ $, $$, adkarHTML, goHome, goToStrategy, store });
+guideScreen = createGuideScreen({ $, $$, adkarHTML, goHome, goToStrategy, store, openModal });
 onboardingScreen = createOnboardingScreen({
   $,
   $$,
