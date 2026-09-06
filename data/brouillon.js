@@ -2,12 +2,12 @@ export const BROUILLON_MODE_DATA = {
   intro: {
     title: "وضع البوصلة — ورقة brouillon عملية",
     subtitle:
-      "مستخلصة من منهجية البكالوريا: المهمة المفتوحة تُفكَّك إلى N ثم S ثم E ثم W، مع منع القفز من الملاحظة إلى التفسير أو من السؤال إلى الجواب النهائي."
+      "مستخلصة من منهجية البكالوريا: المهمة المفتوحة تُفكَّك إلى أربع سنّ — اقرأ ثم اجمع ثم اربط ثم اختُم (المعرّفات الداخلية N/S/E/W)، مع منع القفز من الملاحظة إلى التفسير أو من السؤال إلى الجواب النهائي."
   },
   universalSheet: [
     {
       id: "N",
-      poleTitle: "N — تأطير المطلوب",
+      poleTitle: "السنّ 1 · اقرأ — تأطير المطلوب",
       badge: "أفهم المطلوب قبل الجواب",
       color: "emerald",
       mission:
@@ -28,7 +28,7 @@ export const BROUILLON_MODE_DATA = {
     },
     {
       id: "S",
-      poleTitle: "S — استغلال السندات",
+      poleTitle: "السنّ 2 · اجمع — استغلال السندات",
       badge: "أقرأ ثم أقارن ثم أستنتج",
       color: "blue",
       mission:
@@ -54,7 +54,7 @@ export const BROUILLON_MODE_DATA = {
     },
     {
       id: "E",
-      poleTitle: "E — تفسير ومصادقة",
+      poleTitle: "السنّ 3 · اربط — تفسير ومصادقة",
       badge: "أشرح لماذا وكيف",
       color: "amber",
       mission:
@@ -75,7 +75,7 @@ export const BROUILLON_MODE_DATA = {
     },
     {
       id: "W",
-      poleTitle: "W — تركيب الجواب النهائي",
+      poleTitle: "السنّ 4 · اختُم — تركيب الجواب النهائي",
       badge: "أغلق المسار بنص أو مخطط",
       color: "purple",
       mission:

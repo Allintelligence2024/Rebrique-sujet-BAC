@@ -81,18 +81,13 @@ test("1. Hub : test des boutons d'accueil, adkar, atlas, sons et années", () =>
   assert.equal($('#year-grid [data-year="2024"]').disabled, false);
   assert.equal($('#year-grid [data-year="2023"]').disabled, false);
 
-  // Theme clair persistant
-  click("[data-theme-toggle]");
-  assert.equal(document.documentElement.dataset.theme, "light");
-  assert.equal(localStorage.getItem("boussole4d.theme"), "light");
-
-  // Accès rapide : aucun passage par guide/stratégie/onboarding
-  click('#year-grid [data-quick-year="2025"]');
-  assert.ok($("[data-quick-start]"));
-  click('[data-quick-start="2025:1:1"]');
-  assert.ok(!$("#view-workspace").classList.contains("hidden"));
-  assert.equal(store.state.reviewMode, true);
-  click("#ws-home");
+  // Une seule action par carte-sujet : démarrer l'examen (pas de double bouton).
+  assert.equal($('#year-grid [data-hub-year="2025"]').querySelectorAll("button").length, 1);
+  assert.equal($("#year-grid [data-quick-year]"), null, "l'accès rapide séparé est supprimé");
+  click('#year-grid [data-year="2025"]');
+  assert.ok(!$("#view-guide").classList.contains("hidden"));
+  click("#guide-exit");
+  assert.ok(!$("#view-hub").classList.contains("hidden"));
 });
 
 test("1b. SE 2013–2020 et 2022–2026 en 4D ; 2021 en consultation", () => {
@@ -174,31 +169,24 @@ test("3. Stratégie : calculatrice, onglets sujets, confirmation", () => {
     input.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
   }
 
-  // Confirm sujet 1
+  // Confirm sujet 1 → entrée directe au workspace (examen, pas de spoiler)
   click('#view-strategy [data-confirm="1"]');
-  assert.ok(!$("#view-onboarding").classList.contains("hidden"));
+  assert.ok(!$("#view-workspace").classList.contains("hidden"));
 });
 
-test("4. Onboarding : choix de l'exercice et accès workspace", () => {
-  assert.ok($$("#view-onboarding [data-ex]").length, 3);
-  click('#view-onboarding [data-ex="1"]');
+test("4. L'écran onboarding (spoiler du contenu) n'existe plus ; verrou examen actif", () => {
+  assert.equal($("#view-onboarding"), null, "view-onboarding supprimé du DOM");
+  assert.equal($("#ws-onb"), null, "le bouton vers le spoiler est retiré du workspace");
+  // Sans réponse dans ت1, le changement d'exercice est refusé (comportement examen).
+  const toastsBefore = $("#toast-zone").children.length;
+  click('#view-workspace [data-switch="2"]');
   assert.ok(!$("#view-workspace").classList.contains("hidden"));
+  assert.ok($("#toast-zone").children.length > toastsBefore, "un avertissement de verrou est affiché");
 });
 
 test("5. Workspace : test de tous les boutons du header et navigation", () => {
   // Panic button
   click("#ws-panic");
-  assert.ok($(".modal"));
-  click('[data-close="ok"]');
-  assert.equal($(".modal"), null);
-
-  // Sound button in workspace
-  click("#ws-sound");
-  assert.notEqual(soundEngine.currentMode, "off");
-  soundEngine.stop();
-
-  // Adkar in workspace
-  click("#ws-adkar");
   assert.ok($(".modal"));
   click('[data-close="ok"]');
   assert.equal($(".modal"), null);
@@ -210,23 +198,11 @@ test("5. Workspace : test de tous les boutons du header et navigation", () => {
   click(".drawer [data-close]");
   assert.equal($(".drawer"), null);
 
-  // Atlas in workspace
-  click("#ws-atlas");
-  assert.ok($(".drawer.open"));
-  click(".drawer [data-close]");
-  assert.equal($(".drawer"), null);
-
   // PDF drawer
   click("#ws-pdf");
   assert.ok($(".drawer.open"));
   click(".drawer [data-close]");
   assert.equal($(".drawer"), null);
-
-  // Onboarding button
-  click("#ws-onb");
-  assert.ok(!$("#view-onboarding").classList.contains("hidden"));
-  click('#view-onboarding [data-ex="1"]');
-  assert.ok(!$("#view-workspace").classList.contains("hidden"));
 });
 
 test("6. Workspace : résolution de l'exercice 1 et corrigé officiel dépliable", () => {
@@ -288,25 +264,11 @@ test("7. Workspace : transition vers l'exercice 3 (Pipeline) et résolution comp
   assert.ok(!$("#fb-W").classList.contains("hidden"));
 });
 
-test("8. Rapport & Impression : test complet des exports CSV, JSON et PDF", () => {
-  click("#ws-report");
-  assert.ok($(".modal"));
-  assert.ok($("#btn-print-exam"));
-  assert.ok($("#dl-csv"));
-  assert.ok($("#dl-json"));
-
-  // Click print
-  click("#btn-print-exam");
-
-  // Close modal
-  click('[data-close="btn"]');
-  assert.equal($(".modal"), null);
-});
-
-test("9. Réinitialisation et retour hub", () => {
-  click("#ws-reset");
-  assert.ok($(".modal"));
-  click("#reset-yes");
-  assert.equal(store.state.sessionActive, false);
+test("8-9. La copie n'expose plus rapport, export ni réinitialisation (épure élève)", () => {
+  assert.equal($("#ws-report"), null, "التقرير retiré de la copie");
+  assert.equal($("#ws-reset"), null, "تصفير retiré de la copie");
+  assert.equal($("#ws-review"), null, "المؤشر retiré de la copie");
+  // Le rapport reste testé au niveau module (report-controller) pour les exports.
+  click("#ws-home");
   assert.ok(!$("#view-hub").classList.contains("hidden"));
 });

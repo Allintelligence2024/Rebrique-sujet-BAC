@@ -1,0 +1,365 @@
+/* ============================================================
+   TRAINING — تدريب المفتاح (قسم التدريب في المركز، مطوية)
+   ------------------------------------------------------------
+   فصل صارم بين منتجين:
+   - مسار الامتحان (تهدئة ← استراتيجية ← تمرين): بسيط وهادئ.
+   - أدوات التدريب (البوابتان، شحذ المفتاح، الأخطاء، البطاقة):
+     هنا فقط، مطوية افتراضياً في المركز — لا تدخل مسار الامتحان.
+   المنطق (gates.js) والواجهة (keycard.js) من مصادر مشتركة مُختبرة.
+   ============================================================ */
+
+import { elementFromInternalHTML, setInternalHTML } from "./dom.js";
+import { keycardHTML } from "./keycard.js";
+import {
+  DRILL_BANK,
+  DRILL_ROUND_SECONDS,
+  DRILL_ROUND_SIZE,
+  DRILL_UNLOCK_STREAK,
+  classifyInstruction,
+  createDrillEngine
+} from "../domain/method/gates.js";
+
+const GATE_EXAMPLES = [
+  "فسّر بالاعتماد على معلوماتك والشكل 3 نتائج التجربة.",
+  "اذكر من الوثيقة 2 العناصر المشتركة بين المنحنيين.",
+  "عدّد خصائص المناعة الاكتسابية.",
+  "علّل النتيجة المسجلة في الوثيقة."
+];
+
+function gatesCardHTML() {
+  return `
+    <div class="card stack" id="gates-card">
+      <h3 class="mt-0">🚪 البوابتان — أقرّر قبل أن أكتب، لا أثناء</h3>
+      <p class="small text-muted mt-0">أدخل تعليمة من موضوع حقيقي (أو اختر مثالاً) وقرّر فوراً: ورقة أم رأس؟ ثم صورة أم فيلم؟</p>
+      <input class="field" id="gate-input" placeholder="مثال: فسّر بالاعتماد على معلوماتك والشكل 3…" autocomplete="off" />
+      <div class="flex" id="gate-examples" style="gap:.4rem;flex-wrap:wrap">
+        ${GATE_EXAMPLES.map((example) => `<button class="btn btn-ghost btn-sm" data-gate-example="${example}">${example}</button>`).join("")}
+      </div>
+      <div id="gate-verdict" class="small">اكتب تعليمة أعلاه ليظهر الحكم فوراً.</div>
+    </div>`;
+}
+
+function mistakesCardHTML() {
+  return `
+    <div class="card stack" id="mistakes-card">
+      <h3 class="mt-0">🧯 خمسة أخطاء تكلّف أكثر من الجهل</h3>
+      <p class="small text-muted mt-0">أخطاء شكلية شائعة تُفقد نقاطاً مكتسبة — راجعها قبل التسليم.</p>
+      <ol class="small" style="margin:0;padding-inline-start:1.4rem">
+        <li><b>إجابة بلا رقم سؤال</b> — الأسهل تفادياً والأغلى عند التصحيح.</li>
+        <li><b>رقم بلا وحدة</b> — المعطى الكمي غير مكتمل بوحدته.</li>
+        <li><b>خاتمة غائبة</b> — كل سؤال «فيلم» ينتظر جملة تجيب حرفياً عن السؤال.</li>
+        <li><b>شجرة نسب بحكم واحد</b> — حدّدا السيادة ثم الموقع، الحكمان معاً.</li>
+        <li><b>تركيب يعيد الأجزاء دون «ومنه»</b> — الجملة الختامية تُكتب في 30 ثانية وتغلق التمرين.</li>
+      </ol>
+    </div>`;
+}
+
+function drillIdleHTML(drill) {
+  const status =
+    drill.unlocked || drill.streak >= DRILL_UNLOCK_STREAK
+      ? `<span class="text-emerald">✅ المفتاح+ مفتوح — حافظ على الطبيعة بجولات دورية.</span>`
+      : `<span>متتالية الجولات الكاملة: <b>${drill.streak}/${DRILL_UNLOCK_STREAK}</b> · أفضل سلسلة: <b>${drill.best}</b> · جولات منجزة: <b>${drill.rounds}</b></span>`;
+  return `
+    <div id="drill-idle" class="stack">
+      <p class="small mt-0">
+        <b>الهدف:</b> ${DRILL_ROUND_SIZE} تعليمة قصيرة، لكل واحدة قراران متتاليان:
+        <b>ورقة / رأس</b> ثم — إن كانت ورقة — <b>صورة / فيلم</b>.
+        شرط الفتح: <b>12/12 ثلاث مرات متتالية</b> قبل أي تحرير كامل.
+      </p>
+      <p class="small">${status}</p>
+      <div><button class="btn btn-emerald" id="drill-start">🔑 ابدأ التدريب (${DRILL_ROUND_SIZE} تعليمة · ${DRILL_ROUND_SECONDS} ثانية)</button></div>
+    </div>`;
+}
+
+function plusCardHTML() {
+  return `
+    <div class="card stack" id="plus-card">
+      <h3 class="mt-0">🧫🧱 المفتاح+ — الأسنان الإضافية (مفتوحة)</h3>
+      <p class="small text-muted mt-0">لا تُستدعى كلها في آن واحد — تعود إليها حسب نوع التمرين.
+      <b>مستوى متوسط:</b> البطاقتان الأوليان + فحص الخاتمة · <b>مستوى امتياز:</b> الصيغتان الخاصتان وجملة النجاة.</p>
+      <div class="stack">
+        <details open><summary><b>🟦 مستوى متوسط · السنّ 0 — افتح (مرة واحدة لكل تمرين)</b></summary>
+          <p class="small">بعد قراءة سياق التمرين مباشرة، اكتب أعلى المسودة:
+          <b>«الهدف العام: ……»</b> في ≤ 5 كلمات (مثال: «آلية عمل الأنسولين»).
+          التركيب النهائي يُبنى على إجابته لهذا السطر بالذات.</p></details>
+        <details><summary><b>🟦 متوسط · البنية المتسلسلة + قالب التركيب</b></summary>
+          <p class="small">افتّح ← جزء I (1 2 3 4) ← جزء II ← جزء III ← تركيب يُجيب عن «افتح».<br>
+          القالب: «من الجزء I نعلم أنّ … ، ومن الجزء II أنّ … ، ومن الجزء III أنّ … ؛
+          <b>ومنه</b> [الإجابة عن سطر الهدف العام]». تركيب بلا «ومنه» يضيّف نصف جودته.</p></details>
+        <details><summary><b>🟨 امتياز · صيغة الحساب</b></summary>
+          <p class="small">السنّ 2: القانون بالحروف أولًا (Chargaff: %A = %T…) ·
+          السنّ 3: التعويض خطوة خطوة · السنّ 4: النتيجة <b>بوحدتها</b>.
+          القانون بالحروف يُكتب ولو خاب الحساب.</p></details>
+        <details><summary><b>🟨 امتياز · صيغة شجرة النسب</b></summary>
+          <p class="small">حدثان حاسمان في السنّ 2: ① أبوان سليمانان ← طفل مصاب (يحسم
+          <b>السيادة</b>) ② بنت مصابة من أب سليم / ابن سليم من أم مصابة (يحسم
+          <b>الموقع</b>) · السنّ 3: لماذا يستبعد كل حدث الفرضية المقابلة ·
+          السنّ 4: الحكمان (متنحٍّ/سائد + جسمي/مرتبط بـ X) ثم الأنماط الوراثية بالترميز.
+          نمط بلا الحكم الثاني نصف الجودة.</p></details>
+        <details><summary><b>🟦 متوسط · فحص الخاتمة — عامّ أم خاصّ؟</b></summary>
+          <p class="small">هل تبقى جملتي صحيحة لو غيّرنا اسم الجزيئة/الكائن؟ نعم ← عامّ،
+          لا ← خاصّ. إن طُلب الهدف العام: العام أولًا والخاص بين قوسين؛ وإن طُلبت
+          الوثيقة بعينها: العكس.</p></details>
+        <details><summary><b>🟨 امتياز · جملة النجاة</b></summary>
+          <p class="small">بدأتَ تصف والفعل يطلب التفسير ← أكمل فوراً بـ
+          <b>«وتفسير ذلك أنّ ……»</b> ثم الآلية، بلا شطب. وبدأتَ تفسّر والفعل يطلب
+          الوصف فقط ← لا حيلة سوى الشطب؛ لهذا تُفحص البوابة <b>قبل</b> الكتابة.</p></details>
+      </div>
+    </div>`;
+}
+
+export function createTrainingController({ $, $$, store, openModal }) {
+  let drill = null;
+  let drillTimer = null;
+  let drillRemaining = DRILL_ROUND_SECONDS;
+
+  function clearDrillTimer() {
+    if (drillTimer) {
+      clearInterval(drillTimer);
+      drillTimer = null;
+    }
+  }
+
+  function bindOnce(id, fn) {
+    const el = $(id);
+    if (el) el.addEventListener("click", fn);
+  }
+
+  /* ---------------- البوابتان ---------------- */
+
+  function renderGateVerdict() {
+    const input = $("#gate-input");
+    const verdict = $("#gate-verdict");
+    if (!input || !verdict) return;
+    const text = input.value || "";
+    if (!text.trim()) {
+      verdict.innerHTML = `اكتب تعليمة أعلاه ليظهر الحكم فوراً.`;
+      return;
+    }
+    const c = classifyInstruction(text);
+    const step1 =
+      c.mode === "paper"
+        ? `<b class="text-emerald">📄 ورقة</b> — سند وثائقي مذكور.`
+        : `<b>🧠 رأس</b> — لا سند مذكور: وضع الحفظ، مسار <span class="path">${c.pathLabel}</span>.`;
+    const twoColumns = c.twoColumns
+      ? `<div class="small">المسودة بعمودين: <b>[من الوثيقة | من الدرس]</b>.</div>`
+      : "";
+    const step2 =
+      c.mode === "paper"
+        ? `<div>البوابة 2: ${
+            c.gate2 === "film"
+              ? `<b class="text-amber">🎬 فيلم</b> — فعل تفسير/استنتاج: آلية + نتيجة.`
+              : `<b class="text-indigo">📷 صورة</b>${c.verbMatched ? "" : " (فعل غير مصنف — افترض استخراجاً)"}: وصف/استخراج دون تعليل.`
+          } المسار: <span class="path">${c.pathLabel}</span>.</div>`
+        : "";
+    verdict.innerHTML = `${step1}${twoColumns}${step2}`;
+  }
+
+  function bindGatesCard() {
+    const input = $("#gate-input");
+    if (input) input.addEventListener("input", renderGateVerdict);
+    $$("#gate-examples [data-gate-example]").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        input.value = chip.dataset.gateExample;
+        renderGateVerdict();
+      });
+    });
+  }
+
+  /* ---------------- شحذ المفتاح : drill ---------------- */
+
+  function renderDrillIdle() {
+    clearDrillTimer();
+    drill = null;
+    const box = $("#drill-zone");
+    if (box) setInternalHTML(box, drillIdleHTML(store.state.drill));
+    bindOnce("#drill-start", startDrill);
+  }
+
+  function startDrill() {
+    clearDrillTimer();
+    drill = createDrillEngine();
+    drill.start();
+    drillRemaining = DRILL_ROUND_SECONDS;
+    drillTimer = setInterval(() => {
+      drillRemaining -= 1;
+      const label = $("#drill-timer");
+      if (label)
+        label.textContent =
+          drillRemaining > 0 ? `⏱ ${drillRemaining} ث` : "⏱ انتهى الوقت المستهدف — أكمل بلا عقوبة";
+      if (drillRemaining <= 0) {
+        clearInterval(drillTimer);
+        drillTimer = null;
+      }
+    }, 1000);
+    renderDrillStep();
+  }
+
+  function renderDrillStep(flash = "") {
+    const state = drill.view();
+    const box = $("#drill-zone");
+    if (!box) return;
+    const item = state.item;
+    const timerLabel =
+      drillRemaining > 0 ? `⏱ ${drillRemaining} ث` : "⏱ انتهى الوقت المستهدف — أكمل بلا عقوبة";
+    const gate2HTML =
+      state.stage === "gate2"
+        ? `<div class="flex" id="drill-gate2" style="gap:.5rem;flex-wrap:wrap">
+             <button class="btn btn-sm" data-choice="image">📷 صورة</button>
+             <button class="btn btn-sm" data-choice="film">🎬 فيلم</button>
+           </div>`
+        : "";
+    const gate1HTML =
+      state.stage === "gate1"
+        ? `<div class="flex" id="drill-gate1" style="gap:.5rem;flex-wrap:wrap">
+             <button class="btn btn-sm" data-choice="paper">📄 ورقة</button>
+             <button class="btn btn-sm" data-choice="head">🧠 رأس</button>
+           </div>`
+        : "";
+    setInternalHTML(
+      box,
+      `
+      <div class="flex spread small">
+        <b>التعليمة ${state.index + 1}/${state.total}</b>
+        <span id="drill-timer">${timerLabel}</span>
+      </div>
+      <p class="mt-0 mb-2" id="drill-instruction"><b>${item.text}</b></p>
+      ${gate1HTML}${gate2HTML}
+      <div id="drill-feedback" class="small">${flash}</div>`
+    );
+    bindDrillStep();
+  }
+
+  function renderDrillFeedback(step) {
+    const feedback = $("#drill-feedback");
+    if (!feedback) return;
+    const expectedLabel =
+      step.expected === "paper"
+        ? "ورقة"
+        : step.expected === "head"
+          ? "رأس"
+          : step.expected === "film"
+            ? "فيلم"
+            : "صورة";
+    feedback.innerHTML = `
+      <div class="${step.ok ? "text-emerald" : "text-rose"}">${step.ok ? "✅ صحيح" : `❌ خطأ — الصواب: ${expectedLabel}`}</div>
+      <div>${step.note || ""}</div>
+      <button class="btn btn-ghost btn-sm" id="drill-next">${drill.view().stage === "done" ? "عرض النتيجة ←" : "التالي ←"}</button>`;
+    bindOnce("#drill-next", () => {
+      const after = drill.next();
+      if (after.stage === "done") renderDrillSummary();
+      else renderDrillStep();
+    });
+    const gate1 = $("#drill-gate1");
+    if (gate1) gate1.querySelectorAll("button").forEach((b) => (b.disabled = true));
+    const gate2 = $("#drill-gate2");
+    if (gate2) gate2.querySelectorAll("button").forEach((b) => (b.disabled = true));
+  }
+
+  function bindDrillStep() {
+    $$("#drill-zone [data-choice]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const choice = button.dataset.choice;
+        if (button.closest("#drill-gate2")) {
+          renderDrillFeedback(drill.answerGate2(choice));
+          return;
+        }
+        const step = drill.answerGate1(choice);
+        if (!step.advance) {
+          renderDrillStep(`<div class="text-emerald">✅ ورقة — الآن البوابة 2: صورة أم فيلم؟</div>`);
+          return;
+        }
+        renderDrillFeedback(step);
+      });
+    });
+  }
+
+  function renderDrillSummary() {
+    clearDrillTimer();
+    const result = drill.result();
+    const after = store.recordDrillRound(result.perfect);
+    let unlockAction = null;
+    if (after.streak >= DRILL_UNLOCK_STREAK && !after.unlocked) {
+      unlockAction = store.unlockDrill();
+    }
+    const box = $("#drill-zone");
+    if (!box) return;
+    const unlockedNow = unlockAction && unlockAction.unlocked;
+    const remainingText =
+      after.unlocked || unlockedNow
+        ? `<span class="text-emerald">المفتاح+ متاح الآن — البطاقة الثانية ظاهرة أسفل القسم.</span>`
+        : after.perfect
+          ? `ممتاز — تبقّى <b>${DRILL_UNLOCK_STREAK - after.streak}</b> جولة كاملة (12/12) لفتح المفتاح+.`
+          : `سلسلة الجولات الكاملة عادت إلى الصفر — الجولة التالية بلا أخطاء هي البداية.`;
+    setInternalHTML(
+      box,
+      `
+      <div class="stack" id="drill-summary">
+        <h3 class="mt-0">نتيجة الجولة: <b class="${result.perfect ? "text-emerald" : "text-amber"}">${result.correct}/${result.total}</b></h3>
+        ${unlockedNow ? `<div class="text-emerald"><b>🔓 فُتح المفتاح+</b> — أُنجز الشرط: 12/12 × ${DRILL_UNLOCK_STREAK} متتالية.</div>` : ""}
+        <p class="small">${remainingText}</p>
+        <p class="small text-muted">متتالية حالية: ${after.streak}/${DRILL_UNLOCK_STREAK} · أفضل سلسلة: ${after.best} · جولات: ${after.rounds}</p>
+        <div><button class="btn btn-ghost btn-sm" id="drill-again">جولة أخرى</button></div>
+      </div>`
+    );
+    if (unlockedNow) injectPlusCard();
+    bindOnce("#drill-again", renderDrillIdle);
+  }
+
+  function injectPlusCard() {
+    const host = $("#training-section");
+    if (!host || $("#plus-card")) return;
+    host.append(elementFromInternalHTML(plusCardHTML()));
+  }
+
+  /* ---------------- بطاقة المفتاح ---------------- */
+
+  function openKeycard() {
+    const body = `${keycardHTML()}
+      <div class="flex" style="justify-content:flex-end;margin-top:.6rem">
+        <button class="btn btn-emerald btn-sm" id="keycard-print-btn">🖨️ طباعة (A4)</button>
+      </div>`;
+    const modal = openModal?.("🖨️ بطاقة المفتاح — نسخة الطباعة", body);
+    modal?.querySelector("#keycard-print-btn")?.addEventListener("click", () => {
+      document.body.classList.add("keycard-printing");
+      const cleanup = () => document.body.classList.remove("keycard-printing");
+      window.addEventListener("afterprint", cleanup, { once: true });
+      window.print?.();
+      setTimeout(cleanup, 1000);
+    });
+  }
+
+  /* ---------------- API du contrôleur ---------------- */
+
+  function html() {
+    return `
+      <details class="card stack" id="training-details">
+        <summary><b>🔑 تدريب المفتاح</b> — البوابتان، شحذ المفتاح، البطاقة القابلة للطباعة <span class="small text-muted">(للتدريب فقط — لا يُفتح يوم الامتحان)</span></summary>
+        <div class="stack" id="training-section" style="margin-top:.6rem">
+          ${gatesCardHTML()}
+          <div class="card stack" id="drill-card">
+            <h3 class="mt-0">🔑 شحذ المفتاح — تدريب القرار (${DRILL_ROUND_SECONDS} ثانية)</h3>
+            <div id="drill-zone">${drillIdleHTML(store.state.drill)}</div>
+          </div>
+          ${mistakesCardHTML()}
+          ${store.state.drill.unlocked ? plusCardHTML() : ""}
+          <div class="flex" style="justify-content:center">
+            <button class="btn btn-ghost btn-sm" id="keycard-open">🖨️ بطاقة المفتاح — طباعة A4</button>
+          </div>
+        </div>
+      </details>`;
+  }
+
+  function mount() {
+    clearDrillTimer();
+    bindGatesCard();
+    bindOnce("#drill-start", startDrill);
+    bindOnce("#keycard-open", openKeycard);
+  }
+
+  function teardown() {
+    clearDrillTimer();
+  }
+
+  return { html, mount, teardown };
+}

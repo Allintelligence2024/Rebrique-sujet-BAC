@@ -103,3 +103,12 @@ test("la validation rejette les futures versions et élimine les champs incohér
 test("exercise exige explicitement yearId", () => {
   assert.throws(() => store.exercise("", 1, 1), /yearId est requis/);
 });
+
+test("un état persisté pointant vers view-onboarding retombe proprement sur le hub", () => {
+  const validated = validateState({
+    schemaVersion: CURRENT_SCHEMA_VERSION,
+    activeScreen: "view-onboarding",
+    progress: {}
+  });
+  assert.equal(validated.activeScreen, "view-hub");
+});

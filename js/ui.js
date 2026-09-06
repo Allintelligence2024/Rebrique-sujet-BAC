@@ -29,21 +29,20 @@ import { node, replaceContent, setInternalHTML } from "./ui/dom.js";
 import { createScreenNavigator } from "./ui/navigation.js";
 import { createGuideScreen } from "./ui/screens/guide.js";
 import { createHubScreen } from "./ui/screens/hub.js";
-import { createOnboardingScreen } from "./ui/screens/onboarding.js";
 import { createStrategyScreen } from "./ui/screens/strategy.js";
+import { createTrainingController } from "./ui/training.js";
 import { createWorkspaceController } from "./ui/screens/workspace.js";
 import { reportDiagnostic } from "./services/diagnostics.js";
 
 const POLE = {
-  N: { title: "القطب الشمال", cls: "emerald" },
-  S: { title: "القطب الجنوب", cls: "blue" },
-  E: { title: "القطب الشرق", cls: "amber" },
-  W: { title: "القطب الغرب", cls: "purple" }
+  N: { title: "السنّ 1 · اقرأ", short: "اقرأ", cls: "emerald" },
+  S: { title: "السنّ 2 · اجمع", short: "اجمع", cls: "blue" },
+  E: { title: "السنّ 3 · اربط", short: "اربط", cls: "amber" },
+  W: { title: "السنّ 4 · اختُم", short: "اختُم", cls: "purple" }
 };
 const POLE_ORDER = ["N", "S", "E", "W"];
 let hubScreen;
 let guideScreen;
-let onboardingScreen;
 let strategyScreen;
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -124,20 +123,6 @@ function applyTheme(theme) {
   } catch (error) {
     reportDiagnostic("theme.save", error, { value });
   }
-  const labels = {
-    dark: "☀️ الوضع الفاتح",
-    light: "◐ تباين قوي",
-    contrast: "🌙 الوضع الداكن"
-  };
-  $$("[data-theme-toggle]").forEach((button) => {
-    button.textContent = labels[value];
-    button.setAttribute("aria-label", `المظهر الحالي: ${value}. ${labels[value]}`);
-  });
-}
-function toggleTheme() {
-  const current = document.documentElement.dataset.theme || "dark";
-  applyTheme(current === "dark" ? "light" : current === "light" ? "contrast" : "dark");
-  toast("تم تغيير مظهر الألوان.", "info");
 }
 
 const openAtlas = createAtlas({ $, $$, openDrawer, normalizeArabic, bacVerbs: BROUILLON_MODE_DATA.bacVerbs });
@@ -232,11 +217,6 @@ function pdfFallbackHTML(subject) {
   return strategyScreen.pdfFallbackHTML(subject);
 }
 
-/* ===================== 4) ONBOARDING ===================== */
-function renderOnboarding() {
-  return onboardingScreen.renderOnboarding();
-}
-
 function timeFor(points) {
   return points >= 8 ? "1س 45د" : points >= 5 ? "45 دقيقة" : "1س 15د";
 }
@@ -273,27 +253,16 @@ hubScreen = createHubScreen({
   startSession,
   store,
   timers,
-  trainingLimitHTML,
-  toggleTheme,
+  training: createTrainingController({ $, $$, store, openModal }),
   yearObj
 });
-guideScreen = createGuideScreen({ $, adkarHTML, goHome, goToStrategy });
-onboardingScreen = createOnboardingScreen({
+guideScreen = createGuideScreen({ $, $$, adkarHTML, goHome, goToStrategy, store, openModal });
+strategyScreen = createStrategyScreen({
   $,
   $$,
   enterExercise,
   goHome,
-  store,
-  sujetObj,
-  yearObj,
-  timeFor
-});
-strategyScreen = createStrategyScreen({
-  $,
-  $$,
-  goHome,
   helpers,
-  renderOnboarding,
   showScreen,
   store,
   timers,
@@ -310,7 +279,6 @@ workspaceController = createWorkspaceController({
   applyTheme,
   bindMics,
   closeModal,
-  cycleSound,
   debounce,
   escapeHTML,
   evaluatePipeline,
@@ -321,13 +289,10 @@ workspaceController = createWorkspaceController({
   micButton,
   node,
   normalizeArabic,
-  openAdkar,
-  openAtlas,
   openDrawer,
   openModal,
   pdfFallbackHTML,
   renderHub,
-  renderOnboarding,
   replaceContent,
   scoreBac,
   short,
@@ -336,8 +301,6 @@ workspaceController = createWorkspaceController({
   store,
   timers,
   toast,
-  trainingLimitHTML,
-  toggleTheme,
   yearObj,
   sujetObj,
   exDef
@@ -364,7 +327,7 @@ export function init() {
       "position:sticky;top:0;z-index:40;display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.5rem 1.5rem;background:rgba(2,6,23,.9);border-bottom:1px solid var(--line);font-size:.8rem";
     const timerLabel = node("span", {
       className: "text-emerald bold",
-      text: "● نمط التركيز والهدوء 4D",
+      text: "● وقت الامتحان",
       attrs: { style: "display:flex;align-items:center;gap:.5rem" }
     });
     const timerValue = node("span", { className: "mono bold", attrs: { style: "color:#fb7185" } });

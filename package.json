@@ -1,9 +1,9 @@
 {
-  "name": "boussole-4d-v2",
+  "name": "miftah-kanz",
   "version": "2.0.0",
   "private": true,
   "type": "module",
-  "description": "بوصلة كنز المنهجية 4D — المنصة التفاعلية الهادئة لبكالوريا الجزائر (v2 modulaire)",
+  "description": "مفتاح الكنز — منهجية الإجابة في بكالوريا علوم الطبيعة والحياة",
   "scripts": {
     "start": "node server.mjs",
     "test": "node --test tests/*.test.mjs",

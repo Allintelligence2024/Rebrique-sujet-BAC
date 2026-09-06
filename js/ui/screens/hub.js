@@ -72,12 +72,12 @@ export function createHubScreen(deps) {
     startSession,
     store,
     timers,
-    trainingLimitHTML,
-    toggleTheme,
+    training,
     yearObj
   } = deps;
 
   function renderHub() {
+    training?.teardown?.();
     const streamId = readStream();
     const stream = STREAMS[streamId];
     const other = STREAMS[nextStreamId(streamId)];
@@ -88,41 +88,26 @@ export function createHubScreen(deps) {
     <div class="app">
       <header class="screen-head">
         <div class="brand">
-          <div class="brand-icon">🧭</div>
+          <div class="brand-icon">🔑</div>
           <div>
             <h1>${APP_CONFIG.appTitle}</h1>
             <p>${APP_CONFIG.appSubtitle}</p>
           </div>
         </div>
         <div class="flex gap-2 hub-tools">
-          <button class="btn btn-ghost btn-sm" data-theme-toggle>☀️ الوضع الفاتح</button>
+          <button class="btn btn-indigo btn-sm" id="btn-stream-fab" aria-live="polite">
+            <span class="stream-fab-kicker">الشعبة:</span> <strong id="stream-fab-label"></strong>
+          </button>
           <button class="btn-sound" id="btn-hub-sound">🔇 صوت</button>
           <button class="btn-adkar" id="btn-hub-adkar">🕌 أدعية وأذكار</button>
-          <button class="btn btn-amber" id="btn-atlas">🔬 أطلس التقنيات</button>
         </div>
       </header>
-
-      <div class="center mb-2">
-        <h2 class="mt-0">تدرّب على تغطية العناصر المنتظرة في إجابتك</h2>
-        <p class="text-muted small">اختر المسار الموجّه، أو ادخل مباشرة إلى تمرين دون المرور بالتهدئة والاستراتيجية.</p>
-      </div>
-      ${trainingLimitHTML()}
-      <section class="card demo-card mb-2" aria-labelledby="demo-title">
-        <div class="flex spread">
-          <div><h2 id="demo-title" class="mt-0 mb-1">تشخيص تجريبي في 60 ثانية</h2>
-          <p class="small text-muted mt-0">مثال توضيحي مكتوب للمنتج، وليس نسخة تلميذ أو شهادة مستخدم.</p></div>
-          <button class="btn btn-emerald" id="btn-demo">ابدأ المثال قبل / بعد</button>
-        </div>
-      </section>
 
       <div class="flex spread mb-1 hub-stream-bar">
         <p class="small text-muted mt-0 mb-1" id="hub-stream-caption"></p>
       </div>
       <div class="grid grid-cards" id="year-grid"></div>
-      <button type="button" class="stream-fab" id="btn-stream-fab">
-        <span class="stream-fab-kicker">تغيير الشعبة</span>
-        <strong id="stream-fab-label"></strong>
-      </button>
+      ${training.html()}
       <footer class="screen-foot">منصة تدريب منهجي لامتحانات بكالوريا علوم الطبيعة والحياة.</footer>
     </div>`
     );
@@ -130,10 +115,10 @@ export function createHubScreen(deps) {
     const caption = $("#hub-stream-caption");
     caption.textContent =
       streamId === "se"
-        ? `الشعبة المعروضة: ${stream.label} — 2013–2020 و 2022–2026 تدريب 4D، 2021 موضوع رسمي + تصحيح.`
+        ? `الشعبة: ${stream.label} — مواضيع 2013–2026.`
         : streamId === "m"
-          ? `الشعبة المعروضة: ${stream.label} — 2021–2026 تدريب 4D، 2013–2020 موضوع رسمي + تصحيح.`
-          : `الشعبة المعروضة: ${stream.label} — لا يوجد اختبار علوم الطبيعة والحياة لهذه الشعبة على المصدر الرسمي (dzexams يعرض se و m فقط).`;
+          ? `الشعبة: ${stream.label} — مواضيع 2021–2026 + رسمية 2013–2020.`
+          : `الشعبة: ${stream.label} — لا موضوع SVT رسمي على المصادر المتاحة.`;
 
     const fab = $("#btn-stream-fab");
     fab.setAttribute("aria-label", `الشعبة الحالية: ${stream.label}. اضغط للانتقال إلى شعبة ${other.label}`);
@@ -151,15 +136,30 @@ export function createHubScreen(deps) {
     $$("#year-grid [data-year]:not([disabled])").forEach((btn) =>
       btn.addEventListener("click", () => startSession(btn.dataset.year))
     );
-    $$("#year-grid [data-quick-year]:not([disabled])").forEach((btn) =>
-      btn.addEventListener("click", () => openQuickAccess(btn.dataset.quickYear))
-    );
-    $("#btn-demo").addEventListener("click", openDemo);
-    $("#btn-atlas").addEventListener("click", openAtlas);
     $("#btn-hub-adkar").addEventListener("click", openAdkar);
     $("#btn-hub-sound").addEventListener("click", () => cycleSound($("#btn-hub-sound")));
-    $$("[data-theme-toggle]").forEach((button) => button.addEventListener("click", toggleTheme));
     fab.addEventListener("click", cycleStream);
+    training.mount();
+    // Démo et أطلس : outils secondaires, dans la section repliée تدريب المفتاح.
+    const trainingSection = $("#training-section");
+    if (trainingSection) {
+      trainingSection.insertAdjacentHTML(
+        "beforeend",
+        `
+        <section class="card" id="demo-card">
+          <div class="flex spread">
+            <div><h3 class="mt-0 mb-1">تشخيص تجريبي في 60 ثانية</h3>
+            <p class="small text-muted mt-0">مثال توضيحي للمنتج — ليس نتيجة تلميذ.</p></div>
+            <button class="btn btn-emerald" id="btn-demo">ابدأ المثال قبل / بعد</button>
+          </div>
+        </section>
+        <div class="flex" style="justify-content:center">
+          <button class="btn btn-ghost btn-sm" id="btn-atlas">🔬 أطلس التقنيات</button>
+        </div>`
+      );
+      $("#btn-demo").addEventListener("click", openDemo);
+      $("#btn-atlas").addEventListener("click", openAtlas);
+    }
     applyTheme(document.documentElement.dataset.theme);
   }
 
@@ -184,7 +184,7 @@ export function createHubScreen(deps) {
       node("h3", { className: "mt-0 mb-1", text: `شعبة ${stream.label}` }),
       node("p", {
         className: "small text-muted mt-0",
-        text: "لا يوجد موضوع علوم الطبيعة والحياة لهذه الشعبة على dzexams (المصدر يعرض فقط علوم تجريبية ورياضيات). لم يُختلق أي رابط."
+        text: "لا يوجد موضوع SVT متاح لهذه الشعبة."
       })
     );
     stack.append(header, copy);
@@ -208,7 +208,7 @@ export function createHubScreen(deps) {
     const disabled = !y.enabled;
     const note = disabled
       ? y.loadingNote || "لم تُرفق وثائق PDF لهذه الدورة بعد — قريباً."
-      : "جلسة شاملة وفق نظام الأقطاب 4D الهادئ.";
+      : "وقت الامتحان الحقيقي ≈ 3س30د.";
     const cardId = yearCardId(y);
     const card = node("div", {
       className: `card year-card ${disabled ? "dim" : ""}`,
@@ -231,18 +231,12 @@ export function createHubScreen(deps) {
       y.theme === "emerald" ? "btn-emerald" : y.theme === "indigo" ? "btn-indigo" : "btn-amber";
     const button = node("button", {
       className: `btn btn-block ${buttonTheme}`,
-      text: disabled ? "غير متاح بعد" : "دخول الدورة (ساس التهدئة والبوصلة)",
+      text: disabled ? "غير متاح بعد" : "▶ ابدأ الموضوع (امتحان كامل)",
       attrs: disabled ? { disabled: "" } : {},
       dataset: { year: y.id }
     });
-    const quickButton = node("button", {
-      className: "btn btn-block btn-ghost",
-      text: disabled ? "غير متاح" : "⚡ دخول سريع إلى تمرين",
-      attrs: disabled ? { disabled: "" } : {},
-      dataset: { quickYear: y.id }
-    });
     const actions = node("div", { className: "stack" });
-    actions.append(button, quickButton);
+    actions.append(button);
     card.append(stack, actions);
     return card;
   }
@@ -263,7 +257,7 @@ export function createHubScreen(deps) {
       node("h3", { className: "mt-0 mb-1", text: `بكالوريا الجزائر دورة ${item.id}` }),
       node("p", {
         className: "small text-muted mt-0",
-        text: "الموضوعان والتصحيح النموذجي — للاستشارة (بدون تقييم 4D)."
+        text: "الموضوعان والتصحيح النموذجي — للاستشارة فقط."
       })
     );
     stack.append(header, copy);
@@ -315,37 +309,6 @@ export function createHubScreen(deps) {
       `<p class="feedback mid">هذا مثال مصطنع ومعلن للشرح فقط؛ ليس نتيجة طالب حقيقي ولا دليلاً على الدقة.</p>
        <div class="grid grid-2">${panel("قبل: عبارة عامة", demo.before)}${panel("بعد: ملاحظة ثم تفسير", demo.after)}</div>
        <section class="mt-2"><h3>ما لا يضمنه المحرك</h3>${list(demo.limits, "")}</section>`
-    );
-  }
-
-  function openQuickAccess(yearId) {
-    const year = yearObj(yearId);
-    const body = `<p class="text-muted">اختر الموضوع والتمرين. ستصل مباشرة إلى مساحة الإجابة.</p>
-    <div class="quick-access-grid">${year.sujets
-      .map(
-        (sujet) =>
-          `<section class="card stack"><strong>${sujet.title}</strong>${sujet.exercises
-            .map(
-              (
-                exercise
-              ) => `<button class="btn btn-ghost quick-exercise" data-quick-start="${year.id}:${sujet.id}:${exercise.number}">
-              <span>ت${exercise.number} — ${exercise.label}</span><small>${exercise.max}ن</small>
-            </button>`
-            )
-            .join("")}</section>`
-      )
-      .join("")}</div>`;
-    openModal("⚡ الدخول السريع", body);
-    $$("[data-quick-start]").forEach((button) =>
-      button.addEventListener("click", () => {
-        const [selectedYear, sujetId, exerciseId] = button.dataset.quickStart.split(":");
-        store.enterSession(selectedYear, Number(sujetId));
-        store.setReviewMode(true);
-        timers.startGlobal();
-        closeModal();
-        enterExercise(Number(exerciseId));
-        $("#global-timer-bar")?.classList.remove("hidden");
-      })
     );
   }
 

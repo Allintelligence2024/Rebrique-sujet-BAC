@@ -130,15 +130,20 @@ test("l'ouverture des أدعية وأذكار الامتحان affiche les invoc
   assert.equal($(".modal"), null);
 });
 
-test("le parcours aboutit au workspace via l'exercice pipeline", () => {
+test("après تثبيت du sujet, entrée directe au workspace (aucun écran qui spoiler)", () => {
   click('#year-grid [data-year="2025"]');
-  // Vérifie la présence des Adkar dans l'écran de guide / sérénité
   assert.ok($(".adkar-section"));
   assert.ok($$(".adkar-card").length >= 6);
   click("#guide-next");
   click('#view-strategy [data-confirm="1"]');
-  click('#view-onboarding [data-ex="3"]');
+  // Vrai examen : plus d'écran intermédiaire — le workspace s'ouvre sur ت1.
   assert.ok(!$("#view-workspace").classList.contains("hidden"));
+  assert.equal($("#view-onboarding"), null, "l'écran onboarding n'existe plus");
+  // Le verrou examen impose une réponse avant de changer d'exercice…
+  $("#fld-N").value = "يلعب ARN دورا مهما في تركيب البروتين";
+  click('#ex-content [data-check="N"]');
+  // …puis le pipeline (ت3) devient accessible via les onglets de la copie.
+  click('#view-workspace [data-switch="3"]');
   assert.equal($$("#blocks-bank [data-block]").length, 8);
 });
 
@@ -146,11 +151,11 @@ test("le mode brouillon Boussole s'ouvre, expose la fiche N/S/E/W et persiste le
   assert.ok($("#boussole-scratch-card"));
   click("#ws-brouillon");
   assert.ok($(".drawer.open"));
-  assert.match($(".drawer").textContent, /ورقة N\/S\/E\/W/);
+  assert.match($(".drawer").textContent, /ورقة المسودة · اقرأ \/ اجمع \/ اربط \/ اختُم/);
   assert.match($(".drawer").textContent, /الفعل المكتشف/);
   assert.match($(".drawer").textContent, /consigne brute BAC/);
   assert.match($(".drawer").textContent, /consigne reconstruite/);
-  assert.match($(".drawer").textContent, /البلوك الأنسب: N/);
+  assert.match($(".drawer").textContent, /البلوك الأنسب: اقرأ/);
   assert.ok($("#scratch-N"));
   assert.ok($("#scratch-S"));
 
@@ -233,7 +238,7 @@ test("le mini-contrôle du brouillon signale une conclusion hors problème", () 
   click(".drawer [data-close]");
 });
 
-test("le pipeline parfait est noté 1.50 / 1.50 (pôle W)", () => {
+test("le pipeline parfait reçoit le verdict ممتاز (sans chiffre en copie)", () => {
   click('#stepnav [data-step="1"]');
   $("#fld-N").value = "البيرينويد يرفع كفاءة استغلال CO2 عند الطحالب الطبيعية";
   click('#ex-content [data-check="N"]');
@@ -242,8 +247,9 @@ test("le pipeline parfait est noté 1.50 / 1.50 (pôle W)", () => {
     click(`#blocks-bank [data-block="${id}"]`);
   click('#ex-content [data-polo-check="W"]');
   const fb = $("#fb-W").textContent.trim();
-  assert.match(fb, /1\.50 \/ 1\.50ن/);
   assert.match(fb, /8\/8/);
+  assert.match(fb, /ممتاز/);
+  assert.doesNotMatch(fb, /1\.50/);
 });
 
 test("l'évaluation texte renvoie un feedback d'entraînement et l'accordéon de réponse modèle", () => {
@@ -256,21 +262,12 @@ test("l'évaluation texte renvoie un feedback d'entraînement et l'accordéon de
   assert.match(modelBox.textContent, /إجابة نموذجية للتدريب/);
 });
 
-test("le rapport de résultats s'ouvre avec les boutons d'export et le bouton d'impression PDF", () => {
-  click("#ws-report");
-  assert.ok($(".modal"));
-  assert.ok($("#dl-csv"));
-  assert.ok($("#dl-json"));
-  assert.ok($("#btn-print-exam"));
+test("التقرير et exports ne sont plus exposés dans la copie (logique testée au niveau module)", () => {
+  assert.equal($("#ws-report"), null);
 });
 
-test("la réinitialisation de session efface l'état et ramène au hub", async () => {
-  click("#ws-reset");
-  assert.ok($(".modal"));
-  click("#reset-yes");
-  const { store } = await import("../js/store.js");
-  assert.equal(store.state.sessionActive, false);
-  assert.ok(!$("#view-hub").classList.contains("hidden"));
+test("تصفير n'est plus exposé dans la copie ; le reset reste couvert au niveau store", () => {
+  assert.equal($("#ws-reset"), null);
 });
 
 test("rechargement : restauration exacte de l'écran et de la session", async () => {
@@ -325,4 +322,52 @@ test("les boutons d'إملاء صوتي (dictée vocale) sont bien présents sur
   // Clic sans Web Speech API : avertissement gracieux, sans crash.
   micBtns[0].dispatchEvent(new dom.window.MouseEvent("click", { bubbles: true }));
   assert.ok($("#toast-zone").children.length > 0);
+});
+
+test("chaque consigne de pôle affiche le verdict des البوابتان avant la réponse (MIFTAH)", () => {
+  // Exercice 1 (texte) du même sujet : bascule via l'onglet du workspace.
+  click('#view-workspace [data-switch="1"]');
+  const chips = $$("#ex-content .gate-chip");
+  assert.equal(chips.length, 4, "4 puces de décision attendues (une par سنّ)");
+  for (const chip of chips) {
+    assert.match(chip.textContent, /ورقة|رأس/, `verdict بوابة 1 manquant: ${chip.textContent}`);
+  }
+  // Données réelles 2025 S1 E1 : aucune consigne ne cite de سند documentaire,
+  // donc le سنّ N (كيف تتدخل…) est classé رأس (مسار 1 → 4) par la règle de la fiche.
+  const chipN = chips.find((chip) => chip.dataset.gateChip === "N");
+  assert.ok(chipN, "puce du سنّ N manquante");
+  assert.match(chipN.textContent, /رأس/);
+  assert.match(chipN.textContent, /مسار 1 → 4/);
+  // Provenance affichée une seule fois (provenanceBadge), jamais dupliquée dans la puce.
+  assert.doesNotMatch(chipN.textContent, /معاد بناؤه/, "la puce ne duplique pas le badge de provenance");
+});
+
+test("أطلس والتشخيص التجريبي vivrent dans la section repliée تدريب المفتاح (hub épuré)", () => {
+  click("[data-hub-year]") && null; // no-op: s'assure seulement qu'on est sur le hub
+  const atlas = $("#btn-atlas");
+  const demo = $("#btn-demo");
+  assert.ok(atlas, "bouton أطلس introuvable");
+  assert.ok(demo, "bouton démo introuvable");
+  assert.ok(atlas.closest("#training-details"), "أطلس doit être dans تدريب المفتاح");
+  assert.ok(demo.closest("#training-details"), "la démo doit être dans تدريب المفتاح");
+  assert.equal($(".hub-tools #btn-atlas"), null, "l'en-tête du hub ne doit plus contenir أطلس");
+});
+
+test("l'en-tête de la copie reste dépouillé : ni son, ni أذكار, ni أطلس, ni spoiler", () => {
+  // Ré-ouvrir une session examen (hub → parcours guidé → stratégie → تثبيت).
+  click("#ws-home");
+  click('#year-grid [data-year="2024"]');
+  click("#guide-next");
+  click('#view-strategy [data-confirm="1"]');
+  assert.ok(!$("#view-workspace").classList.contains("hidden"));
+  // Les outils de calme vivent au hub/guide, pas dans la copie.
+  assert.equal($("#ws-sound"), null, "pas de bouton son pendant la copie");
+  assert.equal($("#ws-adkar"), null, "pas d'أذكار pendant la copie");
+  assert.equal($("#ws-atlas"), null, "pas d'أطلس pendant la copie (déjà dans تدريب المفتاح)");
+  // Le résumé de l'exercice ne s'affiche pas en tête de copie (vrai examen).
+  assert.equal($("#ws-desc"), null, "pas de spoiler du contenu en haut de la copie");
+  // L'essentiel reste : sortie, tlmih (valve anti-stress), مسودة, موضوع PDF.
+  for (const id of ["#ws-home", "#ws-panic", "#ws-brouillon", "#ws-pdf"]) {
+    assert.ok($(id), `outil essentiel manquant: ${id}`);
+  }
 });

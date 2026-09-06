@@ -1,7 +1,7 @@
 import { setInternalHTML } from "../dom.js";
 
 export function createStrategyScreen(deps) {
-  const { $, $$, goHome, helpers, renderOnboarding, showScreen, store, timers, yearObj } = deps;
+  const { $, $$, enterExercise, goHome, helpers, showScreen, store, timers, yearObj } = deps;
 
   function goToStrategy() {
     renderStrategy(1);
@@ -34,8 +34,8 @@ export function createStrategyScreen(deps) {
         <div class="brand">
           <button class="btn btn-rose btn-sm" id="strategy-exit">✕ إلغاء وخروج</button>
           <div class="brand-icon">♞</div>
-          <div><h2>استكشاف الموضوعين PDF وحاسبة الترجيح</h2>
-          <p class="small text-muted">تصفح الوثائق الرسمية للموضوعين 1 و2 ثم قيّم نقاطك قبل التثبيت النهائي</p></div>
+          <div><h2>اختر موضوعك</h2>
+          <p class="small text-muted">تصفّح، قيّم، ثبّت — 25 د.</p></div>
         </div>
         <div class="pill"><span class="text-dim">وقت الاختيار:</span><span class="mono" id="strategy-timer">25:00</span></div>
       </header>
@@ -43,7 +43,7 @@ export function createStrategyScreen(deps) {
       <div class="grid">
         <div class="card card-vign">
           <div class="flex spread" style="padding:.9rem 1rem;border-bottom:1px solid var(--line);margin-bottom:0">
-            <span class="text-indigo bold small">📄 قارئ مواضيع البكالوريا الرسمية (تصفح مباشر):</span>
+            <span class="text-indigo bold small">📄 الموضوعان الرسميان:</span>
             <div class="flex gap-2">
               <button class="btn btn-indigo btn-sm" data-preview="1">الموضوع 01</button>
               <button class="btn btn-purple btn-sm" data-preview="2">الموضوع 02</button>
@@ -148,8 +148,9 @@ export function createStrategyScreen(deps) {
     store.state.sujetId = sujetNum;
     store.save();
     timers.stopStrategy();
-    renderOnboarding();
-    showScreen("view-onboarding");
+    // Vrai examen : après تثبيت, on entre directement dans la copie (ت1) —
+    // aucun écran intermédiaire ne révèle le contenu des exercices.
+    enterExercise(1);
     $("#global-timer-bar")?.classList.remove("hidden");
   }
 

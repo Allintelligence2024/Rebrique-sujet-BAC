@@ -776,47 +776,7 @@ label.lbl {
 .hub-stream-bar {
   align-items: flex-start;
 }
-.stream-fab {
-  position: fixed;
-  bottom: 1.15rem;
-  inset-inline-end: 1.15rem;
-  z-index: 45;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.05rem;
-  min-width: 8.6rem;
-  padding: 0.55rem 0.9rem 0.6rem;
-  border-radius: 1.05rem;
-  border: 1px solid rgba(99, 102, 241, 0.45);
-  background: rgba(15, 23, 42, 0.94);
-  color: var(--ink);
-  box-shadow: var(--shadow);
-  cursor: pointer;
-  font-family: inherit;
-  text-align: start;
-}
-.stream-fab:hover {
-  border-color: var(--indigo);
-  background: rgba(99, 102, 241, 0.16);
-}
-.stream-fab-kicker {
-  font-size: 0.68rem;
-  font-weight: 800;
-  color: var(--muted);
-}
-.stream-fab strong {
-  font-size: 0.9rem;
-  font-weight: 800;
-}
-:root[data-theme="light"] .stream-fab {
-  background: rgba(255, 255, 255, 0.96);
-}
-:root[data-theme="contrast"] .stream-fab {
-  background: #000;
-  border-color: #fff;
-  color: #fff;
-}
+
 .card-vign {
   border-radius: 2rem;
   overflow: hidden;
@@ -1386,13 +1346,6 @@ footer.screen-foot {
   .hub-tools {
     width: 100%;
   }
-  .stream-fab {
-    bottom: 0.85rem;
-    inset-inline-end: 0.85rem;
-  }
-  #view-hub .app {
-    padding-bottom: 5.5rem;
-  }
   .drawer {
     width: min(100%, 28rem);
   }
@@ -1483,4 +1436,95 @@ footer.screen-foot {
   border-inline-start: 4px solid var(--indigo-soft);
   background: var(--bg);
   color: var(--ink);
+}
+
+/* --- Impression de la بطاقة المفتاح (vue isolée) ------------------ */
+@media print {
+  body.keycard-printing * {
+    visibility: hidden !important;
+  }
+  body.keycard-printing .keycard-print,
+  body.keycard-printing .keycard-print * {
+    visibility: visible !important;
+  }
+  body.keycard-printing .keycard-print {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0;
+  }
+  body.keycard-printing .modal-head,
+  body.keycard-printing .overlay .btn {
+    display: none !important;
+  }
+  body.keycard-printing .keycard-print h3 {
+    margin-block-start: 0;
+  }
+  body.keycard-printing .keycard-print h4 {
+    margin-block: 0.6rem 0.2rem;
+  }
+  body.keycard-printing .keycard-print ol,
+  body.keycard-printing .keycard-print ul {
+    margin-block: 0.2rem;
+  }
+}
+
+/* --- Responsive renforcé (téléphones) ----------------------------- */
+@media (max-width: 720px) {
+  .modal {
+    max-width: min(28rem, 94vw);
+    max-height: 86vh;
+    overflow-y: auto;
+  }
+  #pdf-preview-container {
+    height: 44vh;
+  }
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .feedback,
+  .model-text,
+  .mono,
+  .report-table,
+  .gate-chip {
+    overflow-wrap: anywhere;
+  }
+  .stepnav button {
+    padding: 0.5rem 0.6rem;
+  }
+  .screen-head h2 {
+    font-size: 1.05rem;
+  }
+  .quick-access-grid,
+  .brouillon-mini-grid {
+    grid-template-columns: 1fr;
+  }
+  .overlay {
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .app {
+    padding: 0.6rem 0.75rem 1.25rem;
+  }
+  .compass {
+    display: none;
+  }
+  #pdf-preview-container {
+    height: 38vh;
+  }
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+  .brand h1 {
+    font-size: 0.9rem;
+  }
+  footer.screen-foot {
+    font-size: 0.75rem;
+  }
+}
+
+/* Sélecteur de filiale (en-tête du hub) */
+.hub-tools .stream-fab-kicker {
+  opacity: 0.75;
 }

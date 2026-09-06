@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("la démonstration 60 secondes expose avant, après et limites sans preuve inventée", async ({ page }) => {
   await page.goto("/");
+  await page.locator("#training-details summary").click();
   await page.getByRole("button", { name: /ابدأ المثال/ }).click();
   await expect(page.getByRole("heading", { name: /قبل: عبارة عامة/ })).toBeVisible();
   await expect(page.getByRole("heading", { name: /بعد: ملاحظة ثم تفسير/ })).toBeVisible();
