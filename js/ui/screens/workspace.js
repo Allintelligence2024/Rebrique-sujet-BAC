@@ -41,7 +41,6 @@ export function createWorkspaceController(deps) {
     store,
     timers,
     toast,
-    trainingLimitHTML,
     toggleTheme,
     yearObj,
     sujetObj,
@@ -53,7 +52,6 @@ export function createWorkspaceController(deps) {
     POLE_ORDER,
     openModal,
     store,
-    trainingLimitHTML,
     yearObj,
     sujetObj
   });
@@ -101,7 +99,6 @@ export function createWorkspaceController(deps) {
       </div>
 
       <div class="progress mb-2" id="progress"><span></span></div>
-      ${trainingLimitHTML(true)}
       <div class="card mb-2 compass-guide" id="boussole-scratch-card">
         <strong>🧭 البوصلة = أربع أسئلة عملية، وليست زينة</strong>
         <p class="small text-muted mt-0" id="pole-purpose">N — ما المشكل العلمي الذي يجب أن أؤطّره؟</p>

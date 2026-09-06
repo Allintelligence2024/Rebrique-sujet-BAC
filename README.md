@@ -1,6 +1,6 @@
-# 🧭 بوصلة كنز المنهجية 4D — المنصة التفاعلية لبكالوريا الجزائر
+# 🔑 مفتاح الكنز — منهجية الإجابة في بكالوريا الجزائر
 
-**مادة علوم الطبيعة والحياة** — أداة تتحقق من تغطية الإجابة للعناصر العلمية والمنهجية المنتظرة وفق نظام «الأقطاب 4D»
+**مادة علوم الطبيعة والحياة** — أداة تتحقق من تغطية الإجابة للعناصر العلمية والمنهجية المنتظرة وفق أربع سنّ
 (N = اقرأ — تأطير المسألة، S = اجمع — استغلال السندات، E = اربط — الربط والتفسير، W = اختُم — التركيب والمصادقة). Les identifiants internes restent N/S/E/W ; l'interface affiche les noms arabes « الأسنان ». Elle ne prétend pas corriger une copie à la place d'un professeur.
 
 > ⚠️ **Positionnement honnête : outil d'entraînement méthodologique non calibré.** Les scores sont des estimations automatiques fondées sur des règles ; ils ne sont ni une correction ministérielle ni une note attribuée par un professeur. Les consignes marquées `reconstructed` ne sont pas des énoncés officiels. Le benchmark vérifié contient actuellement **0 copie réelle doublement annotée** : aucune métrique de fiabilité ne peut donc être publiée.
@@ -14,7 +14,7 @@
 
 Parcours en 5 étapes pensé pour la **gestion du stress** et la **méthode** :
 
-1. **Hub** — bouton **⚡ جلسة 10 دقائق** (un exercice, chrono réduit, révision sans notes), puis une seule action par carte-sujet : **▶ ابدأ الموضوع (امتحان كامل ≈ 3س30د)**. Sélecteur de filiale **en haut**, aucun texte d'introduction, aucun badge de provenance dans la copie.
+1. **Hub** — bouton **⚡ جلسة 10 دقائق** (un exercice, chrono réduit, révision sans notes), puis une seule action par carte-sujet : **▶ ابدأ الموضوع (امتحان كامل ≈ 3س30د)**. Sélecteur de filiale **en haut**, aucun texte d'introduction, aucun badge de provenance dans la copie, aucun sélecteur de thème (apparence fixe).
 2. **Sérénité** _(parcours guidé uniquement)_ — volontairement dépouillé : respiration, rappel d'une ligne du مفتاح (اقرأ ← اجمع ← اربط ← اختُم), plan de session. **Aucun outil d'entraînement ici** : le flux examen doit rester aussi calme que l'épreuve.
 3. **تدريب المفتاح** _(hub, section repliée)_ — tous les outils d'entraînement : **البوابتان** (classifieur ورقة/رأس puis صورة/فيلم), **شحذ المفتاح** (drill 12 instructions, 12/12 ×3 → المفتاح+), خمسة أخطاء, بطاقة imprimable, **أطلس التقنيات** et **تشخيص تجريبي** (déplacés ici : le hub reste épuré). Repliaction par défaut : visibles seulement si l'élève les cherche.
 4. **Stratégie** _(optionnelle)_ — consultation des PDF et calculatrice de choix (25 min). Après **تثبيت** du sujet : entrée **directe** dans l'espace de travail sur ت1 — aucun écran intermédiaire ne révèle le contenu des exercices (effet vrai examen). Le changement d'exercice se fait depuis les onglets de la copie.
@@ -61,15 +61,15 @@ Le disclaimers du hard benchmark (0 copie réelle doublement annotée) reste la 
 ├── index.html                        # squelette des 5 écrans (remplis par js/)
 ├── assets/
 │   ├── styles.css                    # design 100% autonome (aucun CDN)
-│   └── icon-192.png / icon-512.png   # icônes de marque (boussole 4D)
+│   └── icon-192.png / icon-512.png   # icônes de marque (مفتاح الكنز)
 ├── data/
-│   ├── subjects.js                   # ⭐ CONFIG : 2013–2019+2020+2022–2026 SE + 2021–2026 Maths (4D)
+│   ├── subjects.js                   # ⭐ CONFIG : 2013–2019+2020+2022–2026 SE + 2021–2026 Maths
 │   ├── subjects-archive.js           # archive reconstruite 2013–2019 SE (2020 du fichier non branché)
 │   ├── year-2026-se.js               # BAC 2026 علوم تجريبية (énoncé + corrigé eddirasa)
 │   ├── year-2020-se.js               # BAC 2020 علوم تجريبية (énoncé + corrigé eddirasa)
 │   ├── year-2021-m.js                # BAC 2021 رياضيات (énoncé + corrigé dzexams)
 │   ├── year-2022-m.js … year-2026-m.js  # BAC 2022–2026 رياضيات (énoncé + corrigé eddirasa)
-│   ├── archive.js                    # consultation (hors cartes 4D affichées)
+│   ├── archive.js                    # consultation (hors cartes d'entraînement affichées)
 │   └── brouillon.js                  # canevas du brouillon méthodologique et verbes BAC
 ├── js/
 │   ├── main.js                       # point d'entrée
@@ -125,11 +125,11 @@ python3 -m http.server 8080     # ou : npm start
 
 ---
 
-## 📄 Contenu réel — entraînement 4D
+## 📄 Contenu réel — entraînement
 
 **19 années** dans `APP_CONFIG.years` : 2013–2019 et 2020+2022–2026 علوم تجريبية + 2021–2026 رياضيات.
-Le hub SE affiche 2013–2020 et 2022–2026 en 4D ; le hub Maths affiche 2021–2026 en 4D.
-**2021 SE est volontairement absente du 4D.** L'archive 2013–2019 n'est pas un énoncé ministériel.
+Le hub SE affiche 2013–2020 et 2022–2026 en cartes d'entraînement ; le hub Maths affiche 2021–2026.
+**2021 SE est volontairement absente des cartes d'entraînement.** L'archive 2013–2019 n'est pas un énoncé ministériel.
 
 ### Contenu BAC 2025 (شعبة علوم تجريبية)
 
@@ -192,7 +192,7 @@ même PDF (pp. 11-21) et croisé avec une seconde source ([eddirasa](https://edd
 | **2** | ت2 (7ن)  | **α-amanitine** (ARN بوليميراز) ودواء **ATAC** ضد الأورام السرطانية         |
 | **2** | ت3 (8ن)  | **غاز الميثان (CH₄)** في الأبقار والمكمل الغذائي **(3-NOP)** (أنزيم M/CoEM) |
 
-Le **barème 4D** adapte les points officiels à la méthode (N/S/E/W, affichés aux élèves sous les noms اقرأ · اجمع · اربط · اختُم), et l'évaluation
+Le **barème** adapte les points officiels à la méthode (N/S/E/W, affichés aux élèves sous les noms اقرأ · اجمع · اربط · اختُم), et l'évaluation
 compare les réponses à des **mots-clés normalisés** (via `normalizeArabic`) + inter-dits
 (ex. « بسبب » pénalisé à l'étape S) + longueur minimale.
 
@@ -272,12 +272,12 @@ Fichier : `data/year-2021-m.js`.
 
 ---
 
-## 📚 Sujets officiels (consultation, hors cartes 4D)
+## 📚 Sujets officiels (consultation, hors cartes d'entraînement)
 
 Le bouton coin **تغيير الشعبة** cycle **علوم تجريبية → رياضيات → تقني رياضي**.
 Les sujets de la filière choisie remplacent la grille.
 
-| Filière                  | Entraînement 4D       | Consultation (sujet + تصحيح)                    |
+| Filière                  | Entraînement          | Consultation (sujet + تصحيح)                    |
 | ------------------------ | --------------------- | ----------------------------------------------- |
 | شعبة علوم تجريبية (`se`) | 2013–2020 و 2022–2026 | 2021                                            |
 | شعبة رياضيات (`m`)       | 2021–2026             | 2013–2020 (+ 2017 exceptionnelle)               |
@@ -285,13 +285,13 @@ Les sujets de la filière choisie remplacent la grille.
 
 Statut honnête :
 
-- **2013–2019 SE** : entraînement 4D reconstruit (`data/subjects-archive.js`). Toutes consignes `reconstructed`. **2018** : thèmes relus OCR dzexams. **2013–2017, 2019** : thèmes pédagogiques 3AS, **non certifiables** comme énoncés officiels. Confiance UI basse.
-- **2020 et 2022–2026 SE** et **2021–2026 Maths** : entraînement 4D (`data/subjects.js` + modules année). Le 2020 reconstruit de `subjects-archive.js` n'est **pas** branché.
+- **2013–2019 SE** : entraînement reconstruit (`data/subjects-archive.js`). Toutes consignes `reconstructed`. **2018** : thèmes relus OCR dzexams. **2013–2017, 2019** : thèmes pédagogiques 3AS, **non certifiables** comme énoncés officiels. Confiance UI basse.
+- **2020 et 2022–2026 SE** et **2021–2026 Maths** : entraînement (`data/subjects.js` + modules année). Le 2020 reconstruit de `subjects-archive.js` n'est **pas** branché.
 - **Consultation** : sujet officiel + تصحيح النموذجي via dzexams. Aucun
   barème, mot-clé ou réponse modèle : le moteur ne s'applique pas.
 - **Maths 2022–2026** : viewer dzexams bloqué (`contentVerified: false`) ;
-  4D encodé depuis les PDF officiels eddirasa (même papier ONEC).
-- **SE 2021** : pas de 4D — couche texte / corrigé mot à mot absents sur dzexams.
+  Cartes encodées depuis les PDF officiels eddirasa (même papier ONEC).
+- **SE 2021** : pas de carte d'entraînement — couche texte / corrigé mot à mot absents sur dzexams.
 - **شعبة تقني رياضي** : pas d'épreuve SVT au BAC ; l'index dzexams n'a que
   `se` et `m` (revérifié 2026-08-31). Le hub affiche le trou, **aucun lien
   inventé**. Les filières Lettres / Langues / Gestion n'ont pas non plus
@@ -307,7 +307,7 @@ Statut honnête :
 
 - Tests exécutés par `npm test` : **202** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0**
-- Taille de la façade UI (js/ui.js) : **388 lignes**
+- Taille de la façade UI (js/ui.js) : **387 lignes**
 
 <!-- AUTO-METRICS:END -->
 

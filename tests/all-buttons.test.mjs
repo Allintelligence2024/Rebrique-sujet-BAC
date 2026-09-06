@@ -81,11 +81,6 @@ test("1. Hub : test des boutons d'accueil, adkar, atlas, sons et années", () =>
   assert.equal($('#year-grid [data-year="2024"]').disabled, false);
   assert.equal($('#year-grid [data-year="2023"]').disabled, false);
 
-  // Theme clair persistant
-  click("[data-theme-toggle]");
-  assert.equal(document.documentElement.dataset.theme, "light");
-  assert.equal(localStorage.getItem("boussole4d.theme"), "light");
-
   // Une seule action par carte-sujet : démarrer l'examen (pas de double bouton).
   assert.equal($('#year-grid [data-hub-year="2025"]').querySelectorAll("button").length, 1);
   assert.equal($("#year-grid [data-quick-year]"), null, "l'accès rapide séparé est supprimé");

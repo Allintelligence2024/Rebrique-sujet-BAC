@@ -316,7 +316,6 @@ workspaceController = createWorkspaceController({
   store,
   timers,
   toast,
-  trainingLimitHTML,
   toggleTheme,
   yearObj,
   sujetObj,

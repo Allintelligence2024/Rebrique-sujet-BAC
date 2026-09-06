@@ -100,7 +100,7 @@ export function createHubScreen(deps) {
     <div class="app">
       <header class="screen-head">
         <div class="brand">
-          <div class="brand-icon">🧭</div>
+          <div class="brand-icon">🔑</div>
           <div>
             <h1>${APP_CONFIG.appTitle}</h1>
             <p>${APP_CONFIG.appSubtitle}</p>
@@ -110,7 +110,6 @@ export function createHubScreen(deps) {
           <button class="btn btn-indigo btn-sm" id="btn-stream-fab" aria-live="polite">
             <span class="stream-fab-kicker">الشعبة:</span> <strong id="stream-fab-label"></strong>
           </button>
-          <button class="btn btn-ghost btn-sm" data-theme-toggle>☀️ الوضع الفاتح</button>
           <button class="btn-sound" id="btn-hub-sound">🔇 صوت</button>
           <button class="btn-adkar" id="btn-hub-adkar">🕌 أدعية وأذكار</button>
         </div>
@@ -171,7 +170,6 @@ export function createHubScreen(deps) {
     );
     $("#btn-hub-adkar").addEventListener("click", openAdkar);
     $("#btn-hub-sound").addEventListener("click", () => cycleSound($("#btn-hub-sound")));
-    $$("[data-theme-toggle]").forEach((button) => button.addEventListener("click", toggleTheme));
     fab.addEventListener("click", cycleStream);
     training.mount();
     // Démo et أطلس : outils secondaires, dans la section repliée تدريب المفتاح.
