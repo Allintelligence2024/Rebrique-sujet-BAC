@@ -39,7 +39,6 @@ const ASSETS = [
   "./js/ui/screens/hub.js",
   "./js/ui/screens/guide.js",
   "./js/ui/screens/strategy.js",
-  "./js/ui/screens/onboarding.js",
   "./js/ui/screens/workspace.js",
   "./js/ui/workspace/feedback.js",
   "./js/ui/workspace/text-exercise.js",

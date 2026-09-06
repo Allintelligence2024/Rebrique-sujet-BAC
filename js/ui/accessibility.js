@@ -2,7 +2,6 @@ const SCREEN_NAMES = {
   "view-hub": "الصفحة الرئيسية",
   "view-guide": "دليل الاستعداد",
   "view-strategy": "استراتيجية الموضوع",
-  "view-onboarding": "اختيار التمرين",
   "view-workspace": "مساحة الإجابة"
 };
 

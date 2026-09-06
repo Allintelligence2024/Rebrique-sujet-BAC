@@ -130,15 +130,20 @@ test("l'ouverture des أدعية وأذكار الامتحان affiche les invoc
   assert.equal($(".modal"), null);
 });
 
-test("le parcours aboutit au workspace via l'exercice pipeline", () => {
+test("après تثبيت du sujet, entrée directe au workspace (aucun écran qui spoiler)", () => {
   click('#year-grid [data-year="2025"]');
-  // Vérifie la présence des Adkar dans l'écran de guide / sérénité
   assert.ok($(".adkar-section"));
   assert.ok($$(".adkar-card").length >= 6);
   click("#guide-next");
   click('#view-strategy [data-confirm="1"]');
-  click('#view-onboarding [data-ex="3"]');
+  // Vrai examen : plus d'écran intermédiaire — le workspace s'ouvre sur ت1.
   assert.ok(!$("#view-workspace").classList.contains("hidden"));
+  assert.equal($("#view-onboarding"), null, "l'écran onboarding n'existe plus");
+  // Le verrou examen impose une réponse avant de changer d'exercice…
+  $("#fld-N").value = "يلعب ARN دورا مهما في تركيب البروتين";
+  click('#ex-content [data-check="N"]');
+  // …puis le pipeline (ت3) devient accessible via les onglets de la copie.
+  click('#view-workspace [data-switch="3"]');
   assert.equal($$("#blocks-bank [data-block]").length, 8);
 });
 

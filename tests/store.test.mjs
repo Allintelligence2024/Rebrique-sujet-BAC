@@ -116,3 +116,12 @@ test("startQuickSession prépare une session courte de révision sans notes", ()
   store.startQuickSession("2025", 1, 99999);
   assert.equal(store.state.globalRemaining, 24 * 60 * 60);
 });
+
+test("un état persisté pointant vers view-onboarding retombe proprement sur le hub", () => {
+  const validated = validateState({
+    schemaVersion: CURRENT_SCHEMA_VERSION,
+    activeScreen: "view-onboarding",
+    progress: {}
+  });
+  assert.equal(validated.activeScreen, "view-hub");
+});

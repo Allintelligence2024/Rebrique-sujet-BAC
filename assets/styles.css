@@ -1514,3 +1514,59 @@ footer.screen-foot {
     margin-block: 0.2rem;
   }
 }
+
+/* --- Responsive renforcé (téléphones) ----------------------------- */
+@media (max-width: 720px) {
+  .modal {
+    max-width: min(28rem, 94vw);
+    max-height: 86vh;
+    overflow-y: auto;
+  }
+  #pdf-preview-container {
+    height: 44vh;
+  }
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .feedback,
+  .model-text,
+  .mono,
+  .report-table,
+  .gate-chip {
+    overflow-wrap: anywhere;
+  }
+  .stepnav button {
+    padding: 0.5rem 0.6rem;
+  }
+  .screen-head h2 {
+    font-size: 1.05rem;
+  }
+  .quick-access-grid,
+  .brouillon-mini-grid {
+    grid-template-columns: 1fr;
+  }
+  .overlay {
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .app {
+    padding: 0.6rem 0.75rem 1.25rem;
+  }
+  .compass {
+    display: none;
+  }
+  #pdf-preview-container {
+    height: 38vh;
+  }
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+  .brand h1 {
+    font-size: 0.9rem;
+  }
+  footer.screen-foot {
+    font-size: 0.75rem;
+  }
+}

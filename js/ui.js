@@ -29,7 +29,6 @@ import { node, replaceContent, setInternalHTML } from "./ui/dom.js";
 import { createScreenNavigator } from "./ui/navigation.js";
 import { createGuideScreen } from "./ui/screens/guide.js";
 import { createHubScreen } from "./ui/screens/hub.js";
-import { createOnboardingScreen } from "./ui/screens/onboarding.js";
 import { createStrategyScreen } from "./ui/screens/strategy.js";
 import { createTrainingController } from "./ui/training.js";
 import { createWorkspaceController } from "./ui/screens/workspace.js";
@@ -44,7 +43,6 @@ const POLE = {
 const POLE_ORDER = ["N", "S", "E", "W"];
 let hubScreen;
 let guideScreen;
-let onboardingScreen;
 let strategyScreen;
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -233,11 +231,6 @@ function pdfFallbackHTML(subject) {
   return strategyScreen.pdfFallbackHTML(subject);
 }
 
-/* ===================== 4) ONBOARDING ===================== */
-function renderOnboarding() {
-  return onboardingScreen.renderOnboarding();
-}
-
 function timeFor(points) {
   return points >= 8 ? "1س 45د" : points >= 5 ? "45 دقيقة" : "1س 15د";
 }
@@ -280,22 +273,12 @@ hubScreen = createHubScreen({
   yearObj
 });
 guideScreen = createGuideScreen({ $, $$, adkarHTML, goHome, goToStrategy, store, openModal });
-onboardingScreen = createOnboardingScreen({
+strategyScreen = createStrategyScreen({
   $,
   $$,
   enterExercise,
   goHome,
-  store,
-  sujetObj,
-  yearObj,
-  timeFor
-});
-strategyScreen = createStrategyScreen({
-  $,
-  $$,
-  goHome,
   helpers,
-  renderOnboarding,
   showScreen,
   store,
   timers,
@@ -329,7 +312,6 @@ workspaceController = createWorkspaceController({
   openModal,
   pdfFallbackHTML,
   renderHub,
-  renderOnboarding,
   replaceContent,
   scoreBac,
   short,

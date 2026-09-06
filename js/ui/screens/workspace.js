@@ -37,7 +37,6 @@ export function createWorkspaceController(deps) {
     openModal,
     pdfFallbackHTML,
     renderHub,
-    renderOnboarding,
     scoreBac,
     short,
     showScreen,
@@ -107,7 +106,6 @@ export function createWorkspaceController(deps) {
           <button class="btn-adkar" id="ws-adkar">🕌 أذكار</button>
           <button class="btn btn-ghost btn-sm" id="ws-atlas">🔬 أطلس</button>
           <button class="btn btn-ghost btn-sm" id="ws-review" aria-pressed="${store.state.reviewMode}">${store.state.reviewMode ? "📖 تشخيص فقط" : "🔢 إظهار المؤشر"}</button>
-          <button class="btn btn-ghost btn-sm" id="ws-onb">اختيار تمرين</button>
           <button class="btn btn-purple btn-sm" id="ws-report">📊 التقرير</button>
           <button class="btn btn-rose btn-sm" id="ws-reset" title="إعادة تعيين كل الجلسة">↺ تصفير</button>
           <button class="btn btn-ghost btn-sm" data-theme-toggle>☀️ الوضع الفاتح</button>
@@ -170,10 +168,6 @@ export function createWorkspaceController(deps) {
           : "وضع التدريب: تظهر نقاط الأقطاب الرسمية فقط.",
         "info"
       );
-    });
-    $("#ws-onb").addEventListener("click", () => {
-      renderOnboarding();
-      showScreen("view-onboarding");
     });
     $("#ws-pdf").addEventListener("click", openPdfDrawer);
     $("#ws-report").addEventListener("click", showReport);

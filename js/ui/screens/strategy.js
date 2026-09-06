@@ -1,7 +1,7 @@
 import { setInternalHTML } from "../dom.js";
 
 export function createStrategyScreen(deps) {
-  const { $, $$, goHome, helpers, renderOnboarding, showScreen, store, timers, yearObj } = deps;
+  const { $, $$, enterExercise, goHome, helpers, showScreen, store, timers, yearObj } = deps;
 
   function goToStrategy() {
     renderStrategy(1);
@@ -148,8 +148,9 @@ export function createStrategyScreen(deps) {
     store.state.sujetId = sujetNum;
     store.save();
     timers.stopStrategy();
-    renderOnboarding();
-    showScreen("view-onboarding");
+    // Vrai examen : après تثبيت, on entre directement dans la copie (ت1) —
+    // aucun écran intermédiaire ne révèle le contenu des exercices.
+    enterExercise(1);
     $("#global-timer-bar")?.classList.remove("hidden");
   }
 

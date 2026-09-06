@@ -174,15 +174,19 @@ test("3. Stratégie : calculatrice, onglets sujets, confirmation", () => {
     input.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
   }
 
-  // Confirm sujet 1
+  // Confirm sujet 1 → entrée directe au workspace (examen, pas de spoiler)
   click('#view-strategy [data-confirm="1"]');
-  assert.ok(!$("#view-onboarding").classList.contains("hidden"));
+  assert.ok(!$("#view-workspace").classList.contains("hidden"));
 });
 
-test("4. Onboarding : choix de l'exercice et accès workspace", () => {
-  assert.ok($$("#view-onboarding [data-ex]").length, 3);
-  click('#view-onboarding [data-ex="1"]');
+test("4. L'écran onboarding (spoiler du contenu) n'existe plus ; verrou examen actif", () => {
+  assert.equal($("#view-onboarding"), null, "view-onboarding supprimé du DOM");
+  assert.equal($("#ws-onb"), null, "le bouton vers le spoiler est retiré du workspace");
+  // Sans réponse dans ت1, le changement d'exercice est refusé (comportement examen).
+  const toastsBefore = $("#toast-zone").children.length;
+  click('#view-workspace [data-switch="2"]');
   assert.ok(!$("#view-workspace").classList.contains("hidden"));
+  assert.ok($("#toast-zone").children.length > toastsBefore, "un avertissement de verrou est affiché");
 });
 
 test("5. Workspace : test de tous les boutons du header et navigation", () => {
@@ -221,12 +225,6 @@ test("5. Workspace : test de tous les boutons du header et navigation", () => {
   assert.ok($(".drawer.open"));
   click(".drawer [data-close]");
   assert.equal($(".drawer"), null);
-
-  // Onboarding button
-  click("#ws-onb");
-  assert.ok(!$("#view-onboarding").classList.contains("hidden"));
-  click('#view-onboarding [data-ex="1"]');
-  assert.ok(!$("#view-workspace").classList.contains("hidden"));
 });
 
 test("6. Workspace : résolution de l'exercice 1 et corrigé officiel dépliable", () => {

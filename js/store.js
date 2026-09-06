@@ -8,7 +8,7 @@ const KEY = "boussole4d.v3";
 const LEGACY_KEY = "boussole4d.v2";
 export const CURRENT_SCHEMA_VERSION = 2;
 const POLES = ["N", "S", "E", "W"];
-const SCREENS = new Set(["view-hub", "view-guide", "view-strategy", "view-onboarding", "view-workspace"]);
+const SCREENS = new Set(["view-hub", "view-guide", "view-strategy", "view-workspace"]);
 
 const isRecord = (value) => !!value && typeof value === "object" && !Array.isArray(value);
 const asString = (value) => (typeof value === "string" ? value : "");
