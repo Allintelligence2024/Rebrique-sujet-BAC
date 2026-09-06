@@ -344,7 +344,7 @@ export function init() {
       "position:sticky;top:0;z-index:40;display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.5rem 1.5rem;background:rgba(2,6,23,.9);border-bottom:1px solid var(--line);font-size:.8rem";
     const timerLabel = node("span", {
       className: "text-emerald bold",
-      text: "● نمط التركيز والهدوء 4D",
+      text: "● وقت الامتحان",
       attrs: { style: "display:flex;align-items:center;gap:.5rem" }
     });
     const timerValue = node("span", { className: "mono bold", attrs: { style: "color:#fb7185" } });

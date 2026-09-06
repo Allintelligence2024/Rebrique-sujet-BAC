@@ -238,7 +238,7 @@ test("le mini-contrôle du brouillon signale une conclusion hors problème", () 
   click(".drawer [data-close]");
 });
 
-test("le pipeline parfait est noté 1.50 / 1.50 (pôle W)", () => {
+test("le pipeline parfait reçoit le verdict ممتاز (sans chiffre en copie)", () => {
   click('#stepnav [data-step="1"]');
   $("#fld-N").value = "البيرينويد يرفع كفاءة استغلال CO2 عند الطحالب الطبيعية";
   click('#ex-content [data-check="N"]');
@@ -247,8 +247,9 @@ test("le pipeline parfait est noté 1.50 / 1.50 (pôle W)", () => {
     click(`#blocks-bank [data-block="${id}"]`);
   click('#ex-content [data-polo-check="W"]');
   const fb = $("#fb-W").textContent.trim();
-  assert.match(fb, /1\.50 \/ 1\.50ن/);
   assert.match(fb, /8\/8/);
+  assert.match(fb, /ممتاز/);
+  assert.doesNotMatch(fb, /1\.50/);
 });
 
 test("l'évaluation texte renvoie un feedback d'entraînement et l'accordéon de réponse modèle", () => {
@@ -261,21 +262,12 @@ test("l'évaluation texte renvoie un feedback d'entraînement et l'accordéon de
   assert.match(modelBox.textContent, /إجابة نموذجية للتدريب/);
 });
 
-test("le rapport de résultats s'ouvre avec les boutons d'export et le bouton d'impression PDF", () => {
-  click("#ws-report");
-  assert.ok($(".modal"));
-  assert.ok($("#dl-csv"));
-  assert.ok($("#dl-json"));
-  assert.ok($("#btn-print-exam"));
+test("التقرير et exports ne sont plus exposés dans la copie (logique testée au niveau module)", () => {
+  assert.equal($("#ws-report"), null);
 });
 
-test("la réinitialisation de session efface l'état et ramène au hub", async () => {
-  click("#ws-reset");
-  assert.ok($(".modal"));
-  click("#reset-yes");
-  const { store } = await import("../js/store.js");
-  assert.equal(store.state.sessionActive, false);
-  assert.ok(!$("#view-hub").classList.contains("hidden"));
+test("تصفير n'est plus exposé dans la copie ; le reset reste couvert au niveau store", () => {
+  assert.equal($("#ws-reset"), null);
 });
 
 test("rechargement : restauration exacte de l'écran et de la session", async () => {

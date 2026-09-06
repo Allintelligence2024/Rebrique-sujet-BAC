@@ -269,25 +269,11 @@ test("7. Workspace : transition vers l'exercice 3 (Pipeline) et résolution comp
   assert.ok(!$("#fb-W").classList.contains("hidden"));
 });
 
-test("8. Rapport & Impression : test complet des exports CSV, JSON et PDF", () => {
-  click("#ws-report");
-  assert.ok($(".modal"));
-  assert.ok($("#btn-print-exam"));
-  assert.ok($("#dl-csv"));
-  assert.ok($("#dl-json"));
-
-  // Click print
-  click("#btn-print-exam");
-
-  // Close modal
-  click('[data-close="btn"]');
-  assert.equal($(".modal"), null);
-});
-
-test("9. Réinitialisation et retour hub", () => {
-  click("#ws-reset");
-  assert.ok($(".modal"));
-  click("#reset-yes");
-  assert.equal(store.state.sessionActive, false);
+test("8-9. La copie n'expose plus rapport, export ni réinitialisation (épure élève)", () => {
+  assert.equal($("#ws-report"), null, "التقرير retiré de la copie");
+  assert.equal($("#ws-reset"), null, "تصفير retiré de la copie");
+  assert.equal($("#ws-review"), null, "المؤشر retiré de la copie");
+  // Le rapport reste testé au niveau module (report-controller) pour les exports.
+  click("#ws-home");
   assert.ok(!$("#view-hub").classList.contains("hidden"));
 });

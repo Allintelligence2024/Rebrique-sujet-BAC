@@ -90,7 +90,6 @@ export function createWorkspaceController(deps) {
           <button class="btn btn-rose btn-sm" id="ws-home">الرئيسية</button>
           <div><h2 id="ws-banner">الموضوع ${s.id === 1 ? "الأول" : "الثاني"} | التمرين 0${ex.number}</h2></div>
         </div>
-        <div class="pill score-pill"><span class="text-dim">${store.state.reviewMode ? "التشخيص:" : "المؤشر الثانوي:"}</span><span class="mono" id="live-score">${store.state.reviewMode ? "—" : "0.00"}</span><span class="text-dim" id="live-max">${store.state.reviewMode ? "بدون نقاط" : `/ ${ex.max.toFixed(2)}`}</span></div>
       </header>
 
       <div class="workspace-tools" aria-label="أدوات ثانوية">
@@ -98,10 +97,6 @@ export function createWorkspaceController(deps) {
         <button class="btn btn-ghost btn-sm" id="ws-brouillon">📝 المسودة</button>
         <button class="btn btn-indigo btn-sm" id="ws-pdf">📄 الموضوع</button>
         <details class="more-tools"><summary>أدوات أخرى</summary><div class="flex mt-1">
-          <button class="btn btn-ghost btn-sm" id="ws-review" aria-pressed="${store.state.reviewMode}">${store.state.reviewMode ? "📖 تشخيص فقط" : "🔢 إظهار المؤشر"}</button>
-          <button class="btn btn-purple btn-sm" id="ws-report">📊 التقرير</button>
-          <button class="btn btn-rose btn-sm" id="ws-reset" title="إعادة تعيين كل الجلسة">↺ تصفير</button>
-          <button class="btn btn-ghost btn-sm" data-theme-toggle>☀️ الوضع الفاتح</button>
         </div></details>
       </div>
 
@@ -149,20 +144,7 @@ export function createWorkspaceController(deps) {
     $("#ws-panic").addEventListener("click", showPanic);
     $("#ws-brouillon").addEventListener("click", () => brouillonController.openBrouillon());
     $("#boussole-open-scratch").addEventListener("click", () => brouillonController.openBrouillon());
-    $("#ws-review").addEventListener("click", () => {
-      store.setReviewMode(!store.state.reviewMode);
-      renderWorkspace();
-      toast(
-        store.state.reviewMode
-          ? "وضع المراجعة: feedback فقط دون نقاط."
-          : "وضع التدريب: تظهر نقاط الأقطاب الرسمية فقط.",
-        "info"
-      );
-    });
     $("#ws-pdf").addEventListener("click", openPdfDrawer);
-    $("#ws-report").addEventListener("click", showReport);
-    $("#ws-reset").addEventListener("click", confirmReset);
-    $$("[data-theme-toggle]").forEach((button) => button.addEventListener("click", toggleTheme));
     applyTheme(document.documentElement.dataset.theme);
     $$("#view-workspace [data-switch]").forEach((b) =>
       b.addEventListener("click", () => attemptSwitch(+b.dataset.switch))
@@ -262,7 +244,7 @@ export function createWorkspaceController(deps) {
       return false;
     });
     if (pack && res.fraction < 0.9) html += `<br>✍️ بدّل: <i>${pack.items[0]}</i>`;
-    html += `<br><span class="secondary-score">المؤشر التدريبي الثانوي: <b>${score.toFixed(2)} / ${fmtPts(points)}</b> (${Math.round(res.fraction * 100)}%)</span>`;
+    html += `<br><span class="secondary-score">التقدير: <b>${levelWord(res.fraction)}</b></span>`;
     if (res.empty) html = `لم تُدخل أي إجابة بعد.`;
     return html;
   }
@@ -559,10 +541,9 @@ export function createWorkspaceController(deps) {
       st.scores[p] = scoreAllowed ? scoreBac(ex.poles[p].points, res.fraction) : 0;
       if (!st.answeredAny) st.answeredAny = true;
       fb.className = `feedback ${res.fraction >= 0.75 ? "good" : res.fraction >= 0.4 ? "mid" : "bad"} mt-2`;
-      fb.textContent = scoreAllowed
-        ? `المخطط: ${st.scores[p].toFixed(2)} / ${max} (${res.correct}/${res.total} عنصر صحيح)` +
-          (res.wrongSlots.length ? `\n⚠️ عناصر في غير موضعها: ${res.wrongSlots.length}` : "")
-        : `مراجعة منهجية فقط — لا توجد نقطة رقمية لهذه السنّ.\nالمخطط: ${res.correct}/${res.total} عنصر صحيح`;
+      fb.textContent =
+        `المخطط: ${res.correct}/${res.total} عنصر صحيح — التقدير: ${levelWord(res.correct / Math.max(1, res.total))}` +
+        (res.wrongSlots.length ? `\n⚠️ عناصر في غير موضعها: ${res.wrongSlots.length}` : "");
     }
     store.save();
     updateLiveScore();
@@ -591,23 +572,20 @@ export function createWorkspaceController(deps) {
     return { ex, pole: activePole };
   }
 
+  const LEVEL_WORDS = [
+    [0.85, "ممتاز"],
+    [0.7, "جيد"],
+    [0.5, "متوسط"],
+    [0, "ضعيف"]
+  ];
+  function levelWord(fraction) {
+    const f = Number(fraction) || 0;
+    return LEVEL_WORDS.find(([min]) => f >= min)[1];
+  }
+
   function updateLiveScore() {
-    const ex = exDef(store.state.activeExercise);
-    if (!ex) return;
-    const st = store.exercise(store.state.yearId, store.state.sujetId, ex.number);
-    const officialPoles = POLE_ORDER.filter((pole) => ex.poles[pole].bacPromptSource === "official");
-    const sum = officialPoles.reduce((total, pole) => total + st.scores[pole], 0);
-    const officialMax = officialPoles.reduce((total, pole) => total + ex.poles[pole].points, 0);
-    if ($("#live-score")) $("#live-score").textContent = store.state.reviewMode ? "—" : sum.toFixed(2);
-    if ($("#live-max"))
-      $("#live-max").textContent = store.state.reviewMode ? "بدون تنقيط" : `/ ${officialMax.toFixed(2)}`;
-    sujetObj()?.exercises.forEach((e) => {
-      const lock = $("#lock-" + e.number);
-      if (lock)
-        lock.textContent = store.exercise(store.state.yearId, store.state.sujetId, e.number).answeredAny
-          ? "🔓"
-          : "🔒";
-    });
+    // Le score reste calculé pour le rapport et l'export ; plus d'affichage chiffré en tête de copie.
+    exDef(store.state.activeExercise);
   }
 
   function attemptSwitch(target) {

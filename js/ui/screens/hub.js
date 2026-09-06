@@ -132,9 +132,9 @@ export function createHubScreen(deps) {
     const caption = $("#hub-stream-caption");
     caption.textContent =
       streamId === "se"
-        ? `الشعبة: ${stream.label} — تدريب 4D 2013–2026 + موضوع رسمي 2021.`
+        ? `الشعبة: ${stream.label} — مواضيع 2013–2026.`
         : streamId === "m"
-          ? `الشعبة: ${stream.label} — تدريب 4D 2021–2026 + مواضيع رسمية 2013–2020.`
+          ? `الشعبة: ${stream.label} — مواضيع 2021–2026 + رسمية 2013–2020.`
           : `الشعبة: ${stream.label} — لا موضوع SVT رسمي على المصادر المتاحة.`;
 
     const fab = $("#btn-stream-fab");
@@ -291,7 +291,7 @@ export function createHubScreen(deps) {
       node("h3", { className: "mt-0 mb-1", text: `بكالوريا الجزائر دورة ${item.id}` }),
       node("p", {
         className: "small text-muted mt-0",
-        text: "الموضوعان والتصحيح النموذجي — للاستشارة (بدون تقييم 4D)."
+        text: "الموضوعان والتصحيح النموذجي — للاستشارة فقط."
       })
     );
     stack.append(header, copy);
