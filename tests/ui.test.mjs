@@ -378,3 +378,22 @@ test("un clic sur جلسة 10 دقائق entre au workspace avec un chrono de 10
   assert.equal(liveStore.state.globalRemaining, 600, "chrono fixé à 10:00");
   assert.equal(liveStore.state.sessionActive, true);
 });
+
+test("l'en-tête de la copie reste dépouillé : ni son, ni أذكار, ni أطلس, ni spoiler", () => {
+  // Ré-ouvrir une session examen (hub → parcours guidé → stratégie → تثبيت).
+  click("#ws-home");
+  click('#year-grid [data-year="2024"]');
+  click("#guide-next");
+  click('#view-strategy [data-confirm="1"]');
+  assert.ok(!$("#view-workspace").classList.contains("hidden"));
+  // Les outils de calme vivent au hub/guide, pas dans la copie.
+  assert.equal($("#ws-sound"), null, "pas de bouton son pendant la copie");
+  assert.equal($("#ws-adkar"), null, "pas d'أذكار pendant la copie");
+  assert.equal($("#ws-atlas"), null, "pas d'أطلس pendant la copie (déjà dans تدريب المفتاح)");
+  // Le résumé de l'exercice ne s'affiche pas en tête de copie (vrai examen).
+  assert.equal($("#ws-desc"), null, "pas de spoiler du contenu en haut de la copie");
+  // L'essentiel reste : sortie, tlmih (valve anti-stress), مسودة, موضوع PDF.
+  for (const id of ["#ws-home", "#ws-panic", "#ws-brouillon", "#ws-pdf"]) {
+    assert.ok($(id), `outil essentiel manquant: ${id}`);
+  }
+});

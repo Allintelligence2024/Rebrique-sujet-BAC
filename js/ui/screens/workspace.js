@@ -21,7 +21,6 @@ export function createWorkspaceController(deps) {
     applyTheme,
     bindMics,
     closeModal,
-    cycleSound,
     debounce,
     escapeHTML,
     evaluatePipeline,
@@ -31,8 +30,6 @@ export function createWorkspaceController(deps) {
     helpers,
     micButton,
     normalizeArabic,
-    openAdkar,
-    openAtlas,
     openDrawer,
     openModal,
     pdfFallbackHTML,
@@ -91,8 +88,7 @@ export function createWorkspaceController(deps) {
       <header class="screen-head">
         <div class="brand">
           <button class="btn btn-rose btn-sm" id="ws-home">الرئيسية</button>
-          <div><h2 id="ws-banner">الموضوع ${s.id === 1 ? "الأول" : "الثاني"} | التمرين 0${ex.number}</h2>
-          <p class="small text-muted" id="ws-desc">${ex.desc}</p></div>
+          <div><h2 id="ws-banner">الموضوع ${s.id === 1 ? "الأول" : "الثاني"} | التمرين 0${ex.number}</h2></div>
         </div>
         <div class="pill score-pill"><span class="text-dim">${store.state.reviewMode ? "التشخيص:" : "المؤشر الثانوي:"}</span><span class="mono" id="live-score">${store.state.reviewMode ? "—" : "0.00"}</span><span class="text-dim" id="live-max">${store.state.reviewMode ? "بدون نقاط" : `/ ${ex.max.toFixed(2)}`}</span></div>
       </header>
@@ -102,9 +98,6 @@ export function createWorkspaceController(deps) {
         <button class="btn btn-ghost btn-sm" id="ws-brouillon">📝 المسودة</button>
         <button class="btn btn-indigo btn-sm" id="ws-pdf">📄 الموضوع</button>
         <details class="more-tools"><summary>أدوات أخرى</summary><div class="flex mt-1">
-          <button class="btn-sound" id="ws-sound">🔇 صوت</button>
-          <button class="btn-adkar" id="ws-adkar">🕌 أذكار</button>
-          <button class="btn btn-ghost btn-sm" id="ws-atlas">🔬 أطلس</button>
           <button class="btn btn-ghost btn-sm" id="ws-review" aria-pressed="${store.state.reviewMode}">${store.state.reviewMode ? "📖 تشخيص فقط" : "🔢 إظهار المؤشر"}</button>
           <button class="btn btn-purple btn-sm" id="ws-report">📊 التقرير</button>
           <button class="btn btn-rose btn-sm" id="ws-reset" title="إعادة تعيين كل الجلسة">↺ تصفير</button>
@@ -154,11 +147,8 @@ export function createWorkspaceController(deps) {
 
     $("#ws-home").addEventListener("click", goHome);
     $("#ws-panic").addEventListener("click", showPanic);
-    $("#ws-sound").addEventListener("click", () => cycleSound($("#ws-sound")));
-    $("#ws-adkar").addEventListener("click", openAdkar);
     $("#ws-brouillon").addEventListener("click", () => brouillonController.openBrouillon());
     $("#boussole-open-scratch").addEventListener("click", () => brouillonController.openBrouillon());
-    $("#ws-atlas").addEventListener("click", openAtlas);
     $("#ws-review").addEventListener("click", () => {
       store.setReviewMode(!store.state.reviewMode);
       renderWorkspace();

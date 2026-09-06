@@ -196,27 +196,10 @@ test("5. Workspace : test de tous les boutons du header et navigation", () => {
   click('[data-close="ok"]');
   assert.equal($(".modal"), null);
 
-  // Sound button in workspace
-  click("#ws-sound");
-  assert.notEqual(soundEngine.currentMode, "off");
-  soundEngine.stop();
-
-  // Adkar in workspace
-  click("#ws-adkar");
-  assert.ok($(".modal"));
-  click('[data-close="ok"]');
-  assert.equal($(".modal"), null);
-
   // Boussole brouillon in workspace
   click("#ws-brouillon");
   assert.ok($(".drawer.open"));
   assert.ok($("#scratch-N"));
-  click(".drawer [data-close]");
-  assert.equal($(".drawer"), null);
-
-  // Atlas in workspace
-  click("#ws-atlas");
-  assert.ok($(".drawer.open"));
   click(".drawer [data-close]");
   assert.equal($(".drawer"), null);
 
