@@ -320,9 +320,17 @@ Statut honnête :
 
 Ces valeurs sont régénérées par `npm run docs:update` et contrôlées par
 `npm run docs:check`, afin d'éviter que le README diverge du dépôt.
-**`docs:check` n'est pas encore dans le workflow CI** (`.github/workflows/quality.yml`
-exécute lint, typecheck, format, test, build, e2e) : le lancer avant chaque commit, ou
-ajouter l'étape au workflow — ce qui exige la permission « workflows » côté GitHub App.
+**`docs:check` n'est pas dans le workflow CI** (`.github/workflows/quality.yml` exécute
+lint, typecheck, format, test, build, e2e) : le lancer avant chaque commit. L'ajouter à la
+CI est bloqué côté outillage, vérifié le 2026-09-06 : `git push` d'une modification du
+workflow est refusé — `refusing to allow a GitHub App to create or update workflow
+.github/workflows/quality.yml without 'workflows' permission`. Un humain doit soit accorder
+la permission « workflows » à l'App, soit ajouter lui-même cette étape après
+`- run: npm run format:check`, avec la même indentation que les étapes voisines :
+
+```yaml
+- run: npm run docs:check
+```
 
 ```bash
 npm ci            # installe exactement le lockfile (jamais `npm install` : le lockfile est le contrat)
