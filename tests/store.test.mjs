@@ -103,3 +103,16 @@ test("la validation rejette les futures versions et élimine les champs incohér
 test("exercise exige explicitement yearId", () => {
   assert.throws(() => store.exercise("", 1, 1), /yearId est requis/);
 });
+
+test("startQuickSession prépare une session courte de révision sans notes", () => {
+  store.startQuickSession("2025", 1, 10);
+  assert.equal(store.state.sessionActive, true);
+  assert.equal(store.state.reviewMode, true);
+  assert.equal(store.state.globalRemaining, 600);
+  assert.equal(store.state.sujetId, 1);
+  // bornes : minutes invalides → bornées
+  store.startQuickSession("2025", 1, 0);
+  assert.equal(store.state.globalRemaining, 60);
+  store.startQuickSession("2025", 1, 99999);
+  assert.equal(store.state.globalRemaining, 24 * 60 * 60);
+});

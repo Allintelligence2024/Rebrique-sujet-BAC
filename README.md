@@ -14,7 +14,7 @@
 
 Parcours en 5 étapes pensé pour la **gestion du stress** et la **méthode** :
 
-1. **Hub** — choix entre accès rapide à un exercice et parcours guidé.
+1. **Hub** — bouton **⚡ جلسة 10 دقائق** (un exercice, chrono réduit, révision méthodologique sans notes), accès rapide à un exercice (~12 د), parcours guidé (session complète ≈ 3س30د). Durées estimées affichées sur chaque carte.
 2. **Sérénité** _(parcours guidé uniquement)_ — volontairement dépouillé : respiration, rappel d'une ligne du مفتاح (اقرأ ← اجمع ← اربط ← اختُم), plan de session. **Aucun outil d'entraînement ici** : le flux examen doit rester aussi calme que l'épreuve.
 3. **تدريب المفتاح** _(hub, section repliée)_ — tous les outils d'entraînement : **البوابتان** (classifieur ورقة/رأس puis صورة/فيلم), **شحذ المفتاح** (drill 12 instructions, 12/12 ×3 → المفتاح+), خمسة أخطاء, بطاقة imprimable, **أطلس التقنيات** et **تشخيص تجريبي** (déplacés ici : le hub reste épuré). Repliaction par défaut : visibles seulement si l'élève les cherche.
 4. **Stratégie** _(optionnelle)_ — consultation des PDF et calculatrice de choix (25 min).
@@ -304,7 +304,7 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **198** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **201** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0**
 - Taille de la façade UI (js/ui.js) : **410 lignes**
 

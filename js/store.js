@@ -245,6 +245,16 @@ export const store = {
     this.state.globalLastTick = Date.now();
     this.save();
   },
+
+  /** جلسة سريعة : session courte de révision (sans notes) au lieu de l'examen complet. */
+  startQuickSession(yearId, sujetId, minutes) {
+    this.enterSession(yearId, sujetId);
+    this.setReviewMode(true);
+    const mins = Math.max(1, Math.min(24 * 60, Math.floor(Number(minutes) || 0)));
+    this.state.globalRemaining = mins * 60;
+    this.state.globalLastTick = Date.now();
+    this.save();
+  },
   setReviewMode(enabled) {
     this.state.reviewMode = enabled === true;
     this.save();
