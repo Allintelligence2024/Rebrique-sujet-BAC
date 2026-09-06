@@ -73,20 +73,8 @@ export function createHubScreen(deps) {
     store,
     timers,
     training,
-    toggleTheme,
     yearObj
   } = deps;
-
-  /** Cible de la جلسة سريعة : année activée du flux courant (dernière utilisée sinon première). */
-  function quickSessionTarget(streamId) {
-    const years = trainingYearsForStream(APP_CONFIG, streamId);
-    if (years.length === 0) return null;
-    const year = years.find((item) => item.id === store.state.yearId) || years[0];
-    const sujet = year.sujets.find((item) => item.id === store.state.sujetId) || year.sujets[0];
-    const ex =
-      sujet.exercises.find((item) => item.number === store.state.activeExercise) || sujet.exercises[0];
-    return { year, sujet, ex };
-  }
 
   function renderHub() {
     training?.teardown?.();
@@ -115,10 +103,6 @@ export function createHubScreen(deps) {
         </div>
       </header>
 
-      <section class="card center stack mb-2" id="quick-session-card">
-        <button class="btn btn-emerald" id="btn-quick-session"></button>
-        <p class="small text-muted mt-1 mb-0">سؤال واحد · 10 دقائق · مراجعة منهجية بلا نقاط.</p>
-      </section>
       <div class="flex spread mb-1 hub-stream-bar">
         <p class="small text-muted mt-0 mb-1" id="hub-stream-caption"></p>
       </div>
@@ -139,22 +123,6 @@ export function createHubScreen(deps) {
     const fab = $("#btn-stream-fab");
     fab.setAttribute("aria-label", `الشعبة الحالية: ${stream.label}. اضغط للانتقال إلى شعبة ${other.label}`);
     $("#stream-fab-label").textContent = stream.label;
-
-    const target = quickSessionTarget(streamId);
-    const quickCard = $("#quick-session-card");
-    if (target) {
-      const quickBtn = $("#btn-quick-session");
-      quickBtn.textContent = `⚡ ابدأ جلسة 10 دقائق — ${target.year.id} · ت${target.ex.number}`;
-      quickBtn.addEventListener("click", () => {
-        store.startQuickSession(target.year.id, target.sujet.id, 10);
-        timers.startGlobal();
-        enterExercise(target.ex.number);
-        $("#global-timer-bar")?.classList.remove("hidden");
-      });
-    } else {
-      // Flux sans année active (تقني رياضي) : pas de session rapide à proposer.
-      quickCard.classList.add("hidden");
-    }
 
     const grid = $("#year-grid");
     if (catalog.length === 0) {

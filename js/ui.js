@@ -123,20 +123,6 @@ function applyTheme(theme) {
   } catch (error) {
     reportDiagnostic("theme.save", error, { value });
   }
-  const labels = {
-    dark: "☀️ الوضع الفاتح",
-    light: "◐ تباين قوي",
-    contrast: "🌙 الوضع الداكن"
-  };
-  $$("[data-theme-toggle]").forEach((button) => {
-    button.textContent = labels[value];
-    button.setAttribute("aria-label", `المظهر الحالي: ${value}. ${labels[value]}`);
-  });
-}
-function toggleTheme() {
-  const current = document.documentElement.dataset.theme || "dark";
-  applyTheme(current === "dark" ? "light" : current === "light" ? "contrast" : "dark");
-  toast("تم تغيير مظهر الألوان.", "info");
 }
 
 const openAtlas = createAtlas({ $, $$, openDrawer, normalizeArabic, bacVerbs: BROUILLON_MODE_DATA.bacVerbs });
@@ -268,7 +254,6 @@ hubScreen = createHubScreen({
   store,
   timers,
   training: createTrainingController({ $, $$, store, openModal }),
-  toggleTheme,
   yearObj
 });
 guideScreen = createGuideScreen({ $, $$, adkarHTML, goHome, goToStrategy, store, openModal });
@@ -316,7 +301,6 @@ workspaceController = createWorkspaceController({
   store,
   timers,
   toast,
-  toggleTheme,
   yearObj,
   sujetObj,
   exDef

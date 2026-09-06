@@ -353,24 +353,6 @@ test("أطلس والتشخيص التجريبي vivrent dans la section replié
   assert.equal($(".hub-tools #btn-atlas"), null, "l'en-tête du hub ne doit plus contenir أطلس");
 });
 
-test("le hub propose la جلسة 10 دقائق et affiche les durées estimées", () => {
-  const btn = $("#btn-quick-session");
-  assert.ok(btn, "bouton جلسة سريعة manquant (flux SE par défaut)");
-  assert.match(btn.textContent, /10 دقائق/);
-  const card2025 = $('#year-grid [data-hub-year="2025"]');
-  assert.match(card2025.textContent, /3س30د/, "durée réelle de la session affichée");
-  assert.match(card2025.textContent, /ابدأ الموضوع/, "un seul appel à l'action, orienté examen");
-});
-
-test("un clic sur جلسة 10 دقائق entre au workspace avec un chrono de 10 min sans notes", async () => {
-  const { store: liveStore } = await import("../js/store.js");
-  click("#btn-quick-session");
-  assert.ok(!$("#view-workspace").classList.contains("hidden"));
-  assert.equal(liveStore.state.reviewMode, true, "révision méthodologique : pas de notes");
-  assert.equal(liveStore.state.globalRemaining, 600, "chrono fixé à 10:00");
-  assert.equal(liveStore.state.sessionActive, true);
-});
-
 test("l'en-tête de la copie reste dépouillé : ni son, ni أذكار, ni أطلس, ni spoiler", () => {
   // Ré-ouvrir une session examen (hub → parcours guidé → stratégie → تثبيت).
   click("#ws-home");

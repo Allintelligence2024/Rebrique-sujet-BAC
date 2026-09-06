@@ -41,7 +41,6 @@ export function createWorkspaceController(deps) {
     store,
     timers,
     toast,
-    toggleTheme,
     yearObj,
     sujetObj,
     exDef

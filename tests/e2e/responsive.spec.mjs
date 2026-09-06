@@ -41,10 +41,12 @@ for (const phone of PHONES) {
     await expectNoHorizontalOverflow(page);
   });
 
-  test(`[${phone.name}] جلسة 10 دقائق usable au doigt`, async ({ page }) => {
+  test(`[${phone.name}] parcours carte-sujet → copie utilisable au doigt`, async ({ page }) => {
     await page.setViewportSize({ width: phone.width, height: phone.height });
     await page.goto("/");
-    await page.locator("#btn-quick-session").click();
+    await page.locator('#year-grid [data-year="2025"]').click();
+    await page.locator("#guide-next").click();
+    await page.locator('#view-strategy [data-confirm="1"]').click();
     await expect(page.locator("#view-workspace")).toBeVisible();
     await expectNoHorizontalOverflow(page);
     const field = page.locator("#ex-content textarea, #ex-content input.field").first();
