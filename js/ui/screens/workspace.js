@@ -3,7 +3,7 @@ import { node, replaceContent, setInternalHTML } from "../dom.js";
 import { renderStepNavigation } from "../navigation.js";
 import { createReportController } from "../workspace/report-controller.js";
 import { createBrouillonController } from "../workspace/brouillon.js";
-import { mayScorePole, poleConfidence } from "../workspace/feedback.js";
+import { mayScorePole } from "../workspace/feedback.js";
 import { firstEmptyPipelineSlot, PIPELINE_FIELDS } from "../workspace/pipeline-exercise.js";
 import { textEvaluationRule } from "../workspace/text-exercise.js";
 import { composeDrafts, hasObservationBeforeExplanation } from "../workspace/scratchpad.js";
@@ -201,18 +201,6 @@ export function createWorkspaceController(deps) {
     }
   }
 
-  function confidenceForPole(pole) {
-    return poleConfidence(pole, store.state.yearId);
-  }
-
-  function provenanceBadge(pole) {
-    const confidence = confidenceForPole(pole);
-    if (pole.bacPromptSource === "official") {
-      return `<span class="badge badge-emerald">رسمي · ص ${pole.bacPromptPage || "؟"} · ${confidence.label}</span>`;
-    }
-    return `<span class="badge">معاد بناؤه · ${confidence.label} · لا توجد نقطة رقمية</span>`;
-  }
-
   function canScorePole(pole) {
     return mayScorePole(pole, store.state.reviewMode);
   }
@@ -293,7 +281,6 @@ export function createWorkspaceController(deps) {
     const gate1 = c.mode === "paper" ? "📄 ورقة" : "🧠 رأس";
     const gate2 = c.gate2 ? (c.gate2 === "film" ? " · 🎬 فيلم" : " · 📷 صورة") : "";
     const columns = c.twoColumns ? " · عمودان: [من الوثيقة | من الدرس]" : "";
-    // Provenance déjà affichée par provenanceBadge au-dessus de la consigne — pas de doublon ici.
     return `<div class="small text-muted gate-chip" data-gate-chip="${poleType}">🚪 القرار قبل الكتابة: <b>${gate1}${gate2}</b> — مسار ${c.pathLabel}${columns}</div>`;
   }
 
@@ -313,7 +300,6 @@ export function createWorkspaceController(deps) {
       <div id="panel-${i + 1}" class="${i === 0 ? "" : "hidden"}">
         <div class="card answer-card">
           <span class="badge badge-${POLE[p].cls}" style="margin-bottom:.6rem">${POLE[p].title}</span>
-          ${provenanceBadge(pole)}
           <h3 class="bac-consigne">${pole.bacPrompt || pole.prompt}</h3>
           <details class="pole-help" id="pole-help-${p}">
             <summary class="small">🧭 توجيه هذه السنّ — القرار، الخطوات، الفحص <span class="text-muted">(انقر للعرض)</span></summary>
@@ -614,9 +600,7 @@ export function createWorkspaceController(deps) {
     const officialMax = officialPoles.reduce((total, pole) => total + ex.poles[pole].points, 0);
     if ($("#live-score")) $("#live-score").textContent = store.state.reviewMode ? "—" : sum.toFixed(2);
     if ($("#live-max"))
-      $("#live-max").textContent = store.state.reviewMode
-        ? "بدون تنقيط"
-        : `/ ${officialMax.toFixed(2)} رسمي فقط`;
+      $("#live-max").textContent = store.state.reviewMode ? "بدون تنقيط" : `/ ${officialMax.toFixed(2)}`;
     sujetObj()?.exercises.forEach((e) => {
       const lock = $("#lock-" + e.number);
       if (lock)

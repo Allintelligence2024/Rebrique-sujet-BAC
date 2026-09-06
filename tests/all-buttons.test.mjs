@@ -86,13 +86,13 @@ test("1. Hub : test des boutons d'accueil, adkar, atlas, sons et années", () =>
   assert.equal(document.documentElement.dataset.theme, "light");
   assert.equal(localStorage.getItem("boussole4d.theme"), "light");
 
-  // Accès rapide : aucun passage par guide/stratégie/onboarding
-  click('#year-grid [data-quick-year="2025"]');
-  assert.ok($("[data-quick-start]"));
-  click('[data-quick-start="2025:1:1"]');
-  assert.ok(!$("#view-workspace").classList.contains("hidden"));
-  assert.equal(store.state.reviewMode, true);
-  click("#ws-home");
+  // Une seule action par carte-sujet : démarrer l'examen (pas de double bouton).
+  assert.equal($('#year-grid [data-hub-year="2025"]').querySelectorAll("button").length, 1);
+  assert.equal($("#year-grid [data-quick-year]"), null, "l'accès rapide séparé est supprimé");
+  click('#year-grid [data-year="2025"]');
+  assert.ok(!$("#view-guide").classList.contains("hidden"));
+  click("#guide-exit");
+  assert.ok(!$("#view-hub").classList.contains("hidden"));
 });
 
 test("1b. SE 2013–2020 et 2022–2026 en 4D ; 2021 en consultation", () => {

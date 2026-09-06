@@ -73,7 +73,6 @@ export function createHubScreen(deps) {
     store,
     timers,
     training,
-    trainingLimitHTML,
     toggleTheme,
     yearObj
   } = deps;
@@ -108,29 +107,24 @@ export function createHubScreen(deps) {
           </div>
         </div>
         <div class="flex gap-2 hub-tools">
+          <button class="btn btn-indigo btn-sm" id="btn-stream-fab" aria-live="polite">
+            <span class="stream-fab-kicker">الشعبة:</span> <strong id="stream-fab-label"></strong>
+          </button>
           <button class="btn btn-ghost btn-sm" data-theme-toggle>☀️ الوضع الفاتح</button>
           <button class="btn-sound" id="btn-hub-sound">🔇 صوت</button>
           <button class="btn-adkar" id="btn-hub-adkar">🕌 أدعية وأذكار</button>
         </div>
       </header>
 
-      <div class="center mb-2">
-        <h2 class="mt-0">تدرّب على تغطية العناصر المنتظرة في إجابتك</h2>
-      </div>
       <section class="card center stack mb-2" id="quick-session-card">
         <button class="btn btn-emerald" id="btn-quick-session"></button>
         <p class="small text-muted mt-1 mb-0">سؤال واحد · 10 دقائق · مراجعة منهجية بلا نقاط.</p>
       </section>
-      ${trainingLimitHTML()}
       <div class="flex spread mb-1 hub-stream-bar">
         <p class="small text-muted mt-0 mb-1" id="hub-stream-caption"></p>
       </div>
       <div class="grid grid-cards" id="year-grid"></div>
       ${training.html()}
-      <button type="button" class="stream-fab" id="btn-stream-fab">
-        <span class="stream-fab-kicker">تغيير الشعبة</span>
-        <strong id="stream-fab-label"></strong>
-      </button>
       <footer class="screen-foot">منصة تدريب منهجي لامتحانات بكالوريا علوم الطبيعة والحياة.</footer>
     </div>`
     );
@@ -174,9 +168,6 @@ export function createHubScreen(deps) {
 
     $$("#year-grid [data-year]:not([disabled])").forEach((btn) =>
       btn.addEventListener("click", () => startSession(btn.dataset.year))
-    );
-    $$("#year-grid [data-quick-year]:not([disabled])").forEach((btn) =>
-      btn.addEventListener("click", () => openQuickAccess(btn.dataset.quickYear))
     );
     $("#btn-hub-adkar").addEventListener("click", openAdkar);
     $("#btn-hub-sound").addEventListener("click", () => cycleSound($("#btn-hub-sound")));
@@ -227,7 +218,7 @@ export function createHubScreen(deps) {
       node("h3", { className: "mt-0 mb-1", text: `شعبة ${stream.label}` }),
       node("p", {
         className: "small text-muted mt-0",
-        text: "لا يوجد موضوع علوم الطبيعة والحياة لهذه الشعبة على dzexams (المصدر يعرض فقط علوم تجريبية ورياضيات). لم يُختلق أي رابط."
+        text: "لا يوجد موضوع SVT متاح لهذه الشعبة."
       })
     );
     stack.append(header, copy);
@@ -251,7 +242,7 @@ export function createHubScreen(deps) {
     const disabled = !y.enabled;
     const note = disabled
       ? y.loadingNote || "لم تُرفق وثائق PDF لهذه الدورة بعد — قريباً."
-      : "الدورة كاملة ≈ 3س30د (temps réel du BAC) · تمرين واحد ≈ 12 د via الدخول السريع.";
+      : "وقت الامتحان الحقيقي ≈ 3س30د.";
     const cardId = yearCardId(y);
     const card = node("div", {
       className: `card year-card ${disabled ? "dim" : ""}`,
@@ -274,18 +265,12 @@ export function createHubScreen(deps) {
       y.theme === "emerald" ? "btn-emerald" : y.theme === "indigo" ? "btn-indigo" : "btn-amber";
     const button = node("button", {
       className: `btn btn-block ${buttonTheme}`,
-      text: disabled ? "غير متاح بعد" : "دخول الدورة (ساس التهدئة والبوصلة)",
+      text: disabled ? "غير متاح بعد" : "▶ ابدأ الموضوع (امتحان كامل)",
       attrs: disabled ? { disabled: "" } : {},
       dataset: { year: y.id }
     });
-    const quickButton = node("button", {
-      className: "btn btn-block btn-ghost",
-      text: disabled ? "غير متاح" : "⚡ دخول سريع إلى تمرين",
-      attrs: disabled ? { disabled: "" } : {},
-      dataset: { quickYear: y.id }
-    });
     const actions = node("div", { className: "stack" });
-    actions.append(button, quickButton);
+    actions.append(button);
     card.append(stack, actions);
     return card;
   }
@@ -358,37 +343,6 @@ export function createHubScreen(deps) {
       `<p class="feedback mid">هذا مثال مصطنع ومعلن للشرح فقط؛ ليس نتيجة طالب حقيقي ولا دليلاً على الدقة.</p>
        <div class="grid grid-2">${panel("قبل: عبارة عامة", demo.before)}${panel("بعد: ملاحظة ثم تفسير", demo.after)}</div>
        <section class="mt-2"><h3>ما لا يضمنه المحرك</h3>${list(demo.limits, "")}</section>`
-    );
-  }
-
-  function openQuickAccess(yearId) {
-    const year = yearObj(yearId);
-    const body = `<p class="text-muted">اختر الموضوع والتمرين. ستصل مباشرة إلى مساحة الإجابة.</p>
-    <div class="quick-access-grid">${year.sujets
-      .map(
-        (sujet) =>
-          `<section class="card stack"><strong>${sujet.title}</strong>${sujet.exercises
-            .map(
-              (
-                exercise
-              ) => `<button class="btn btn-ghost quick-exercise" data-quick-start="${year.id}:${sujet.id}:${exercise.number}">
-              <span>ت${exercise.number} — ${exercise.label}</span><small>${exercise.max}ن</small>
-            </button>`
-            )
-            .join("")}</section>`
-      )
-      .join("")}</div>`;
-    openModal("⚡ الدخول السريع", body);
-    $$("[data-quick-start]").forEach((button) =>
-      button.addEventListener("click", () => {
-        const [selectedYear, sujetId, exerciseId] = button.dataset.quickStart.split(":");
-        store.enterSession(selectedYear, Number(sujetId));
-        store.setReviewMode(true);
-        timers.startGlobal();
-        closeModal();
-        enterExercise(Number(exerciseId));
-        $("#global-timer-bar")?.classList.remove("hidden");
-      })
     );
   }
 

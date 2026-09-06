@@ -268,7 +268,6 @@ hubScreen = createHubScreen({
   store,
   timers,
   training: createTrainingController({ $, $$, store, openModal }),
-  trainingLimitHTML,
   toggleTheme,
   yearObj
 });

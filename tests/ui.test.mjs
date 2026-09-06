@@ -366,8 +366,8 @@ test("le hub propose la جلسة 10 دقائق et affiche les durées estimées"
   assert.ok(btn, "bouton جلسة سريعة manquant (flux SE par défaut)");
   assert.match(btn.textContent, /10 دقائق/);
   const card2025 = $('#year-grid [data-hub-year="2025"]');
-  assert.match(card2025.textContent, /12 د/, "durée estimée d'un exercice affichée");
-  assert.match(card2025.textContent, /3س30د/, "durée de la session complète affichée");
+  assert.match(card2025.textContent, /3س30د/, "durée réelle de la session affichée");
+  assert.match(card2025.textContent, /ابدأ الموضوع/, "un seul appel à l'action, orienté examen");
 });
 
 test("un clic sur جلسة 10 دقائق entre au workspace avec un chrono de 10 min sans notes", async () => {

@@ -51,3 +51,48 @@ for (const phone of PHONES) {
     await expect(field).toBeVisible();
   });
 }
+
+test("[phone] tous les états de pages sans débordement (tiroirs, détails, modale)", async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 800 });
+  await page.goto("/");
+  await expect(page.locator("#year-grid")).toBeVisible();
+
+  // Section تدريب المفتاح ouverte + carte البوابتان
+  await page.locator("#training-details summary").click();
+  await expect(page.locator("#gates-card")).toBeVisible();
+  let overflow = await page.evaluate(
+    () => document.documentElement.scrollWidth - document.documentElement.clientWidth
+  );
+  expect(overflow).toBeLessThanOrEqual(1);
+
+  // Parcours complet jusqu'à la copie
+  await page.locator('#year-grid [data-year="2025"]').click();
+  await page.locator("#guide-next").click();
+  await page.locator('#view-strategy [data-confirm="1"]').click();
+  await expect(page.locator("#view-workspace")).toBeVisible();
+
+  // Aide de pôle dépliée (portes + canevas + فحص رباعي)
+  await page.locator(".pole-help summary").first().click();
+  overflow = await page.evaluate(
+    () => document.documentElement.scrollWidth - document.documentElement.clientWidth
+  );
+  expect(overflow).toBeLessThanOrEqual(1);
+
+  // Tiroir المسودة ouvert
+  await page.locator("#ws-brouillon").click();
+  await expect(page.locator(".drawer.open")).toBeVisible();
+  overflow = await page.evaluate(
+    () => document.documentElement.scrollWidth - document.documentElement.clientWidth
+  );
+  expect(overflow).toBeLessThanOrEqual(1);
+  await page.locator(".drawer [data-close]").click();
+
+  // Modale rapport
+  await page.locator(".more-tools summary").click();
+  await page.locator("#ws-report").click();
+  await expect(page.locator(".modal")).toBeVisible();
+  overflow = await page.evaluate(
+    () => document.documentElement.scrollWidth - document.documentElement.clientWidth
+  );
+  expect(overflow).toBeLessThanOrEqual(1);
+});
