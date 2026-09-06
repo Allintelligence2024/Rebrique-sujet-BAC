@@ -89,12 +89,15 @@ test("[phone] tous les états de pages sans débordement (tiroirs, détails, mod
   expect(overflow).toBeLessThanOrEqual(1);
   await page.locator(".drawer [data-close]").click();
 
-  // Modale rapport
-  await page.locator(".more-tools summary").click();
-  await page.locator("#ws-report").click();
+  // Modale التلميح (valve anti-stress). Le rapport a été retiré de la copie
+  // (épure élève — verrouillé par tests/all-buttons.test.mjs), la modale
+  // réellement atteignable pendant la copie est donc celle du تلميح.
+  await page.locator("#ws-panic").click();
   await expect(page.locator(".modal")).toBeVisible();
   overflow = await page.evaluate(
     () => document.documentElement.scrollWidth - document.documentElement.clientWidth
   );
   expect(overflow).toBeLessThanOrEqual(1);
+  await page.locator(".modal [data-close='btn']").click();
+  await expect(page.locator(".modal")).toHaveCount(0);
 });

@@ -248,7 +248,10 @@ test("les pdfUrl sont des URLs valides (syntaxe)", () => {
 test(
   "les pdfUrl sont accessibles (test réseau)",
   {
-    skip: process.env.SKIP_NETWORK_TESTS === "true" || true // Désactivé par défaut
+    // Skippé par défaut ; réellement activable avec SKIP_NETWORK_TESTS=false.
+    // (L'ancien `=== "true" || true` rendait l'activation impossible : le commentaire
+    // ci-dessus mentait, et un test qui ne peut jamais tourner ne teste rien.)
+    skip: process.env.SKIP_NETWORK_TESTS !== "false"
   },
   async () => {
     const https = await import("node:https");

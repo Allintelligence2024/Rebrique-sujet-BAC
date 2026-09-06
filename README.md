@@ -89,8 +89,8 @@ Le disclaimers du hard benchmark (0 copie réelle doublement annotée) reste la 
 │       ├── workspace/          # texte, pipeline, brouillon, feedback, rapport
 │       └── reports/            # calcul du rapport, exports CSV/JSON et impression
 ├── tests/                            # tests automatisés (moteur, données, UI, sécurité) — `npm test`
-│   ├── *.test.mjs                    # 20 fichiers, exécutés par `node --test` (compte dans le bloc « Tests »)
-│   ├── e2e/                          # Playwright (mode hors-ligne PWA) — `npm run test:e2e`
+│   ├── *.test.mjs                    # 23 fichiers, exécutés par `node --test` (compte dans le bloc « Tests »)
+│   ├── e2e/                          # Playwright : mode hors-ligne PWA + responsive mobile (3 viewports) — `npm run test:e2e`
 │   └── hard-benchmark/               # pipeline de copies réelles (corpus : 0 copie)
 ├── scripts/
 │   ├── generate-pwa-version.mjs      # génère js/app-version.js (appelé par `npm run build`)
@@ -213,7 +213,12 @@ compare les réponses à des **mots-clés normalisés** (via `normalizeArabic`) 
 | **2025 Maths** | **activée** | aucun (droit d'auteur)                             | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2025/06/bac-math-science-2025.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2025/06/correction-bac-math-science-2025.pdf)                                                                                                                                                                 | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 8+12 / 8+12                                                                                                                                         |
 | **2026 Maths** | **activée** | aucun (droit d'auteur)                             | [énoncé eddirasa](https://eddirasa.com/uploads/2026/08/bac-math-sciences-2026.pdf) · [corrigé](https://eddirasa.com/uploads/2026/08/correction-bac-math-sciences-2026.pdf)                                                                                                                                                                                     | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 6+14 / 8+12                                                                                                                                         |
 
-Aucun PDF 2013–2019/2020/2022/2023/2024/2026/2021 n'est versé dans le dépôt.
+**PDF versés dans le dépôt : uniquement les deux sujets officiels SVT 2025**
+(`BAC2025_SVT_Sujet1.pdf`, `BAC2025_SVT_Sujet2.pdf`, à la racine). Ils sont servis par
+l'écran stratégie (`data/subjects.js` → `pdf`, `pdfAvailable: true`) et pré-cachés par
+`sw.js` pour le mode hors-ligne. **Aucun PDF des autres années** (2013–2019, 2020, 2021,
+2022, 2023, 2024, 2026) n'est versé (droit d'auteur) : ces années restent en liens externes
+(dzexams / eddirasa) dans `data/archive.js` et le tableau ci-dessus.
 
 ### Contenu BAC 2026 (شعبة علوم تجريبية)
 
@@ -297,7 +302,9 @@ Statut honnête :
   inventé**. Les filières Lettres / Langues / Gestion n'ont pas non plus
   d'épreuve SVT — elles ne sont pas ajoutées.
 - **2016 Maths exceptionnelle** : absente de l'index — `ARCHIVE.gaps`.
-- **Aucun PDF d'archive versé** (droit d'auteur).
+- **Aucun PDF d'archive versé** (droit d'auteur) — seule exception, assumée : les deux sujets
+  officiels **SVT 2025** à la racine du dépôt, servis par l'app et pré-cachés pour le mode
+  hors-ligne (voir la note « PDF versés dans le dépôt » plus haut).
 
 ---
 
@@ -305,24 +312,24 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **199** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **205** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0**
 - Taille de la façade UI (js/ui.js) : **371 lignes**
 
 <!-- AUTO-METRICS:END -->
 
 Ces valeurs sont régénérées par `npm run docs:update` et contrôlées par
-`npm run docs:check`, afin d'éviter que le README diverge du dépôt
-(l'étape CI correspondante est préparée dans la branche de session — voir
-rapport de session : la permission « workflows » du GitHub App est requise
-pour pousser la modification du workflow).
+`npm run docs:check`, afin d'éviter que le README diverge du dépôt.
+**`docs:check` n'est pas encore dans le workflow CI** (`.github/workflows/quality.yml`
+exécute lint, typecheck, format, test, build, e2e) : le lancer avant chaque commit, ou
+ajouter l'étape au workflow — ce qui exige la permission « workflows » côté GitHub App.
 
 ```bash
-npm install       # installe les devDependencies (jsdom, esbuild, eslint, prettier, typescript, playwright)
-npm test          # moteur, banc BAC, intégrité, UI, hard-benchmark
+npm ci            # installe exactement le lockfile (jamais `npm install` : le lockfile est le contrat)
+npm test          # moteur, banc BAC, intégrité, UI, hard-benchmark, service worker
 npm run test:hard   # intégrité du pipeline de copies réelles
 npm run calibration # métriques moteur ↔ double correction humaine
-npm run build       # génère dist/boussole-4d-standalone.html
+npm run build       # génère dist/boussole-4d-standalone.html (dist/ est gitignoré)
 ```
 
 ---
