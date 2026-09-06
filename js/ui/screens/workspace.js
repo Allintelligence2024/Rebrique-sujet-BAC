@@ -1,7 +1,6 @@
 import { BROUILLON_MODE_DATA } from "../../../data/brouillon.js";
 import { node, replaceContent, setInternalHTML } from "../dom.js";
 import { renderStepNavigation } from "../navigation.js";
-import { createReportController } from "../workspace/report-controller.js";
 import { createBrouillonController } from "../workspace/brouillon.js";
 import { mayScorePole } from "../workspace/feedback.js";
 import { firstEmptyPipelineSlot, PIPELINE_FIELDS } from "../workspace/pipeline-exercise.js";
@@ -14,7 +13,6 @@ export function createWorkspaceController(deps) {
   const {
     $,
     $$,
-    APP_CONFIG,
     METHOD_SCRIPTS,
     POLE,
     POLE_ORDER,
@@ -41,20 +39,9 @@ export function createWorkspaceController(deps) {
     store,
     timers,
     toast,
-    yearObj,
     sujetObj,
     exDef
   } = deps;
-  const { showReport } = createReportController({
-    $,
-    APP_CONFIG,
-    POLE_ORDER,
-    openModal,
-    store,
-    yearObj,
-    sujetObj
-  });
-
   const brouillonController = createBrouillonController({
     $,
     store,
@@ -93,8 +80,6 @@ export function createWorkspaceController(deps) {
         <button class="btn btn-amber btn-sm" id="ws-panic">✨ أحتاج تلميحاً</button>
         <button class="btn btn-ghost btn-sm" id="ws-brouillon">📝 المسودة</button>
         <button class="btn btn-indigo btn-sm" id="ws-pdf">📄 الموضوع</button>
-        <details class="more-tools"><summary>أدوات أخرى</summary><div class="flex mt-1">
-        </div></details>
       </div>
 
       <div class="progress mb-2" id="progress"><span></span></div>
