@@ -341,8 +341,17 @@ test("chaque consigne de pôle affiche le verdict des البوابتان avant l
   assert.ok(chipN, "puce du سنّ N manquante");
   assert.match(chipN.textContent, /رأس/);
   assert.match(chipN.textContent, /مسار 1 → 4/);
-  // Fiabilité : les consignes reconstruites portent l'avertissement, les officielles non.
-  const chipS = chips.find((chip) => chip.dataset.gateChip === "S");
-  assert.match(chipN.textContent, /معاد بناؤه/, "2025 E1 N est reconstructed → avertissement attendu");
-  assert.doesNotMatch(chipS.textContent, /معاد بناؤه/, "2025 E1 S est official → pas d'avertissement");
+  // Provenance affichée une seule fois (provenanceBadge), jamais dupliquée dans la puce.
+  assert.doesNotMatch(chipN.textContent, /معاد بناؤه/, "la puce ne duplique pas le badge de provenance");
+});
+
+test("أطلس والتشخيص التجريبي vivrent dans la section repliée تدريب المفتاح (hub épuré)", () => {
+  click("[data-hub-year]") && null; // no-op: s'assure seulement qu'on est sur le hub
+  const atlas = $("#btn-atlas");
+  const demo = $("#btn-demo");
+  assert.ok(atlas, "bouton أطلس introuvable");
+  assert.ok(demo, "bouton démo introuvable");
+  assert.ok(atlas.closest("#training-details"), "أطلس doit être dans تدريب المفتاح");
+  assert.ok(demo.closest("#training-details"), "la démo doit être dans تدريب المفتاح");
+  assert.equal($(".hub-tools #btn-atlas"), null, "l'en-tête du hub ne doit plus contenir أطلس");
 });

@@ -309,11 +309,8 @@ export function createWorkspaceController(deps) {
     const gate1 = c.mode === "paper" ? "📄 ورقة" : "🧠 رأس";
     const gate2 = c.gate2 ? (c.gate2 === "film" ? " · 🎬 فيلم" : " · 📷 صورة") : "";
     const columns = c.twoColumns ? " · عمودان: [من الوثيقة | من الدرس]" : "";
-    const reliability =
-      pole?.bacPromptSource === "official"
-        ? ""
-        : ` · <span class="gate-chip-recon">⚠ معاد بناؤه — تأكّد من صيغة السؤال الرسمية</span>`;
-    return `<div class="small text-muted gate-chip" data-gate-chip="${poleType}">🚪 القرار قبل الكتابة: <b>${gate1}${gate2}</b> — مسار ${c.pathLabel}${columns}${reliability}</div>`;
+    // Provenance déjà affichée par provenanceBadge au-dessus de la consigne — pas de doublon ici.
+    return `<div class="small text-muted gate-chip" data-gate-chip="${poleType}">🚪 القرار قبل الكتابة: <b>${gate1}${gate2}</b> — مسار ${c.pathLabel}${columns}</div>`;
   }
 
   function poleMethodHint(poleType, pole) {
@@ -419,6 +416,7 @@ export function createWorkspaceController(deps) {
     <div id="panel-1" class="card">
       <span class="badge badge-emerald" style="margin-bottom:.6rem">${POLE.N.title} (${fmtPts(ex.poles.N.points)})</span>
       <h3 class="mt-0">${ex.poles.N.prompt}</h3>
+      ${gateChipHTML("N", ex.poles.N)}
       <div class="grid grid-2">
         <input class="field" id="pipeline-var-indep" type="text" placeholder="${ex.poles.N.rule?.hypotheses ? "الفرضية 1: يعود السبب إلى…" : "المتغير المستقل..."}">
         <input class="field" id="pipeline-var-dep" type="text" placeholder="${ex.poles.N.rule?.hypotheses ? "الفرضية 2 (آلية مختلفة)" : "المتغير التابع..."}">
@@ -430,6 +428,7 @@ export function createWorkspaceController(deps) {
     <div id="panel-2" class="card hidden">
       <span class="badge badge-indigo" style="margin-bottom:.6rem">${POLE.S.title} (${fmtPts(ex.poles.S.points)})</span>
       <h3 class="mt-0">${ex.poles.S.prompt}</h3>
+      ${gateChipHTML("S", ex.poles.S)}
       <div class="card" style="background:var(--bg)">
         <label class="lbl">1. الشكل (أ): التحليل المقارن بالتوازي</label>
         <textarea class="field" rows="2" id="pipeline-doc1a"></textarea>

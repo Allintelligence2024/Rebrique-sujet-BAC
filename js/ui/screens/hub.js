@@ -100,7 +100,6 @@ export function createHubScreen(deps) {
           <button class="btn btn-ghost btn-sm" data-theme-toggle>☀️ الوضع الفاتح</button>
           <button class="btn-sound" id="btn-hub-sound">🔇 صوت</button>
           <button class="btn-adkar" id="btn-hub-adkar">🕌 أدعية وأذكار</button>
-          <button class="btn btn-amber" id="btn-atlas">🔬 أطلس التقنيات</button>
         </div>
       </header>
 
@@ -109,14 +108,6 @@ export function createHubScreen(deps) {
         <p class="text-muted small">اختر المسار الموجّه، أو ادخل مباشرة إلى تمرين دون المرور بالتهدئة والاستراتيجية.</p>
       </div>
       ${trainingLimitHTML()}
-      <section class="card demo-card mb-2" aria-labelledby="demo-title">
-        <div class="flex spread">
-          <div><h2 id="demo-title" class="mt-0 mb-1">تشخيص تجريبي في 60 ثانية</h2>
-          <p class="small text-muted mt-0">مثال توضيحي مكتوب للمنتج، وليس نسخة تلميذ أو شهادة مستخدم.</p></div>
-          <button class="btn btn-emerald" id="btn-demo">ابدأ المثال قبل / بعد</button>
-        </div>
-      </section>
-
       <div class="flex spread mb-1 hub-stream-bar">
         <p class="small text-muted mt-0 mb-1" id="hub-stream-caption"></p>
       </div>
@@ -133,10 +124,10 @@ export function createHubScreen(deps) {
     const caption = $("#hub-stream-caption");
     caption.textContent =
       streamId === "se"
-        ? `الشعبة المعروضة: ${stream.label} — 2013–2020 و 2022–2026 تدريب 4D، 2021 موضوع رسمي + تصحيح.`
+        ? `الشعبة: ${stream.label} — تدريب 4D 2013–2026 + موضوع رسمي 2021.`
         : streamId === "m"
-          ? `الشعبة المعروضة: ${stream.label} — 2021–2026 تدريب 4D، 2013–2020 موضوع رسمي + تصحيح.`
-          : `الشعبة المعروضة: ${stream.label} — لا يوجد اختبار علوم الطبيعة والحياة لهذه الشعبة على المصدر الرسمي (dzexams يعرض se و m فقط).`;
+          ? `الشعبة: ${stream.label} — تدريب 4D 2021–2026 + مواضيع رسمية 2013–2020.`
+          : `الشعبة: ${stream.label} — لا موضوع SVT رسمي على المصادر المتاحة.`;
 
     const fab = $("#btn-stream-fab");
     fab.setAttribute("aria-label", `الشعبة الحالية: ${stream.label}. اضغط للانتقال إلى شعبة ${other.label}`);
@@ -157,13 +148,31 @@ export function createHubScreen(deps) {
     $$("#year-grid [data-quick-year]:not([disabled])").forEach((btn) =>
       btn.addEventListener("click", () => openQuickAccess(btn.dataset.quickYear))
     );
-    $("#btn-demo").addEventListener("click", openDemo);
-    $("#btn-atlas").addEventListener("click", openAtlas);
     $("#btn-hub-adkar").addEventListener("click", openAdkar);
     $("#btn-hub-sound").addEventListener("click", () => cycleSound($("#btn-hub-sound")));
     $$("[data-theme-toggle]").forEach((button) => button.addEventListener("click", toggleTheme));
     fab.addEventListener("click", cycleStream);
     training.mount();
+    // Démo et أطلس : outils secondaires, dans la section repliée تدريب المفتاح.
+    const trainingSection = $("#training-section");
+    if (trainingSection) {
+      trainingSection.insertAdjacentHTML(
+        "beforeend",
+        `
+        <section class="card" id="demo-card">
+          <div class="flex spread">
+            <div><h3 class="mt-0 mb-1">تشخيص تجريبي في 60 ثانية</h3>
+            <p class="small text-muted mt-0">مثال توضيحي للمنتج — ليس نتيجة تلميذ.</p></div>
+            <button class="btn btn-emerald" id="btn-demo">ابدأ المثال قبل / بعد</button>
+          </div>
+        </section>
+        <div class="flex" style="justify-content:center">
+          <button class="btn btn-ghost btn-sm" id="btn-atlas">🔬 أطلس التقنيات</button>
+        </div>`
+      );
+      $("#btn-demo").addEventListener("click", openDemo);
+      $("#btn-atlas").addEventListener("click", openAtlas);
+    }
     applyTheme(document.documentElement.dataset.theme);
   }
 
