@@ -31,6 +31,7 @@ import { createGuideScreen } from "./ui/screens/guide.js";
 import { createHubScreen } from "./ui/screens/hub.js";
 import { createOnboardingScreen } from "./ui/screens/onboarding.js";
 import { createStrategyScreen } from "./ui/screens/strategy.js";
+import { createTrainingController } from "./ui/training.js";
 import { createWorkspaceController } from "./ui/screens/workspace.js";
 import { reportDiagnostic } from "./services/diagnostics.js";
 
@@ -273,6 +274,7 @@ hubScreen = createHubScreen({
   startSession,
   store,
   timers,
+  training: createTrainingController({ $, $$, store, openModal }),
   trainingLimitHTML,
   toggleTheme,
   yearObj

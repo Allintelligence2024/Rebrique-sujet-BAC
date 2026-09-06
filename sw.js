@@ -31,6 +31,7 @@ const ASSETS = [
   "./js/services/sound-engine.js",
   "./js/services/speech-recognition.js",
   "./js/services/diagnostics.js",
+  "./js/ui/training.js",
   "./js/ui/atlas.js",
   "./js/ui/dialogs.js",
   "./js/ui/dom.js",

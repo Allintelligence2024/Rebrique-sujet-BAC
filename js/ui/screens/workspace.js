@@ -333,11 +333,16 @@ export function createWorkspaceController(deps) {
         <div class="card answer-card">
           <span class="badge badge-${POLE[p].cls}" style="margin-bottom:.6rem">${POLE[p].title}</span>
           ${provenanceBadge(pole)}
-          <p class="small text-muted mb-1">Objectif méthodologique : ${pole.prompt}</p>
           <h3 class="bac-consigne">${pole.bacPrompt || pole.prompt}</h3>
-          ${gateChipHTML(p, pole)}
-          ${poleMethodHint(p, pole)}
-          ${quickCheckHTML()}
+          <details class="pole-help" id="pole-help-${p}">
+            <summary class="small">🧭 توجيه هذه السنّ — القرار، الخطوات، الفحص <span class="text-muted">(انقر للعرض)</span></summary>
+            <div style="margin-top:.4rem">
+              <p class="small text-muted mt-0">Objectif méthodologique : ${pole.prompt}</p>
+              ${gateChipHTML(p, pole)}
+              ${poleMethodHint(p, pole)}
+              ${quickCheckHTML()}
+            </div>
+          </details>
           ${
             pole.minLength >= 100
               ? `<textarea class="field" id="fld-${p}" rows="6" placeholder="${pole.placeholder || ""}"></textarea>`

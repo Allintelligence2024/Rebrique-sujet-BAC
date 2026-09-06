@@ -51,31 +51,30 @@ test("المفتاح+ et خمسة أخطاء sont résumés sans pourcentages de
   assert.match(html, /ليس سلم تنقيط رسمياً/);
 });
 
-/* ---------------- intégration écran guide ---------------- */
+/* ---------------- intégration section تدريب المفتاح (hub) ---------------- */
 
 const { JSDOM } = require("jsdom");
-const uiDom = new JSDOM("<!DOCTYPE html><body><div id='view-guide'></div></body>", {
+const uiDom = new JSDOM("<!DOCTYPE html><body><div id='view-hub'></div></body>", {
   url: "http://localhost/"
 });
 globalThis.document = uiDom.window.document;
 globalThis.window = uiDom.window;
 
-const { createGuideScreen } = await import("../js/ui/screens/guide.js");
+const { createTrainingController } = await import("../js/ui/training.js");
 
 const $ = (s) => uiDom.window.document.querySelector(s);
-const $$ = (s) => [...uiDom.window.document.querySelectorAll(s)];
 const click = (el) => el.dispatchEvent(new uiDom.window.MouseEvent("click", { bubbles: true }));
 
-function freshGuide({ openModal } = {}) {
-  return createGuideScreen({
+function freshTraining({ openModal } = {}) {
+  const training = createTrainingController({
     $,
-    $$,
-    adkarHTML: () => "",
-    goHome: () => {},
-    goToStrategy: () => {},
+    $$: (s) => [...uiDom.window.document.querySelectorAll(s)],
     store: { state: { drill: { streak: 0, best: 0, rounds: 0, unlocked: false } } },
     openModal
   });
+  $("#view-hub").innerHTML = training.html();
+  training.mount();
+  return training;
 }
 
 after(async () => {
@@ -85,16 +84,16 @@ after(async () => {
 });
 
 test("le bouton بطاقة المفتاح ouvre la modal imprimable (sans openModal: pas de crash)", () => {
-  const guide = freshGuide();
-  guide.renderGuide({ id: 2025 });
-  assert.ok($("#guide-keycard"), "bouton بطاقة المفتاح manquant");
-  click($("#guide-keycard")); // openModal absent → ne doit rien casser
+  const training = freshTraining();
+  assert.ok($("#keycard-open"), "bouton بطاقة المفتاح manquant");
+  click($("#keycard-open")); // openModal absent → ne doit rien casser
+  training.teardown();
 });
 
 test("openModal reçoit la keycard et le bouton d'impression ajoute la classe d'impression", async () => {
   let capturedTitle = "";
   let capturedBody = "";
-  const guide = freshGuide({
+  const training = freshTraining({
     openModal(title, body) {
       capturedTitle = title;
       capturedBody = body;
@@ -102,8 +101,7 @@ test("openModal reçoit la keycard et le bouton d'impression ajoute la classe d'
       return uiDom.window.document.querySelector(".modal");
     }
   });
-  guide.renderGuide({ id: 2025 });
-  click($("#guide-keycard"));
+  click($("#keycard-open"));
   assert.match(capturedTitle, /بطاقة المفتاح/);
   assert.match(capturedBody, /keycard-print/);
 
@@ -125,4 +123,5 @@ test("openModal reçoit la keycard et le bouton d'impression ajoute la classe d'
     false,
     "classe d'impression retirée après impression"
   );
+  training.teardown();
 });

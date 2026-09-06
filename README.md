@@ -15,12 +15,15 @@
 Parcours en 5 étapes pensé pour la **gestion du stress** et la **méthode** :
 
 1. **Hub** — choix entre accès rapide à un exercice et parcours guidé.
-2. **Sérénité** _(parcours guidé uniquement)_ — respiration + micro-conseils méthodologiques, **البوابتان** (classifieur ورقة/رأس puis صورة/فيلم pour toute instruction) et **شحذ المفتاح** (drill de 12 instructions, critère de sortie 12/12 ×3 → débloque la carte المفتاح+).
-3. **Stratégie** _(optionnelle)_ — consultation des PDF et calculatrice de choix (25 min).
-4. **Choix d'exercice** — sujet et exercice à travailler (accès rapide : les deux depuis le hub ; parcours guidé : sujet fixé à l'étape Stratégie, puis exercice).
-5. **Espace de travail 4D** — consigne et réponse prioritaires, diagnostic de couverture, aide contextuelle et indicateur chiffré secondaire.
+2. **Sérénité** _(parcours guidé uniquement)_ — volontairement dépouillé : respiration, rappel d'une ligne du مفتاح (اقرأ ← اجمع ← اربط ← اختُم), plan de session. **Aucun outil d'entraînement ici** : le flux examen doit rester aussi calme que l'épreuve.
+3. **تدريب المفتاح** _(hub, section repliée)_ — tous les outils d'entraînement : **البوابتان** (classifieur ورقة/رأس puis صورة/فيلم), **شحذ المفتاح** (drill 12 instructions, 12/12 ×3 → المفتاح+), خمسة أخطاء, بطاقة imprimable. Repliaction par défaut : visibles seulement si l'élève les cherche.
+4. **Stratégie** _(optionnelle)_ — consultation des PDF et calculatrice de choix (25 min).
+5. **Choix d'exercice** — sujet et exercice à travailler (accès rapide : les deux depuis le hub ; parcours guidé : sujet fixé à l'étape Stratégie, puis exercice).
+6. **Espace de travail 4D** — consigne et réponse prioritaires, diagnostic de couverture, aide contextuelle et indicateur chiffré secondaire.
 
-L'interface propose des thèmes clair et sombre persistants. Les outils secondaires sont regroupés afin de ne pas concurrencer la consigne.
+L'interface propose des thèmes clair et sombre persistants. Dans l'espace de travail, toute l'aide
+méthodologique (verdict des البوابتان, canevas, الفحص الرباعي) est regroupée dans **un seul dépliant
+fermé** « 🧭 توجيه هذه السنّ » : la consigne et la zone de réponse restent l'élément central.
 
 ---
 
@@ -301,9 +304,9 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **196** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **197** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0**
-- Taille de la façade UI (js/ui.js) : **408 lignes**
+- Taille de la façade UI (js/ui.js) : **410 lignes**
 
 <!-- AUTO-METRICS:END -->
 

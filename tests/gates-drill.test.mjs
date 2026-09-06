@@ -180,24 +180,25 @@ test("le drill survit à un cycle save/load (persistance locale)", () => {
   assert.equal(store.state.drill.rounds, 2);
 });
 
-/* ---------------- intégration UI (écran guide) ---------------- */
+/* ---------------- intégration UI (section تدريب المفتاح du hub) ---------------- */
 
 const { JSDOM } = require("jsdom");
-const uiDom = new JSDOM("<!DOCTYPE html><body><div id='view-guide'></div></body>", {
+const uiDom = new JSDOM("<!DOCTYPE html><body><div id='view-hub'></div><div id='view-guide'></div></body>", {
   url: "http://localhost/"
 });
 globalThis.document = uiDom.window.document;
 
+const { createTrainingController } = await import("../js/ui/training.js");
 const { createGuideScreen } = await import("../js/ui/screens/guide.js");
 
-let lastGuide = null;
+let lastTraining = null;
 
 const $$sel = (s) => [...uiDom.window.document.querySelectorAll(s)];
 function uiClick(el) {
   el.dispatchEvent(new uiDom.window.MouseEvent("click", { bubbles: true }));
 }
 
-function makeGuideStore() {
+function makeTrainingStore() {
   return {
     state: { drill: { streak: 0, best: 0, rounds: 0, unlocked: false } },
     recorded: [],
@@ -235,22 +236,25 @@ function playUiItems(count) {
   return uiDom.window.document.querySelector("#drill-summary");
 }
 
-function freshGuide() {
-  return createGuideScreen({
+function freshTraining(store = makeTrainingStore()) {
+  const training = createTrainingController({
     $: (s) => uiDom.window.document.querySelector(s),
     $$: $$sel,
-    adkarHTML: () => "<div id='adkar'></div>",
-    goHome: () => {},
-    goToStrategy: () => {},
-    store: makeGuideStore()
+    store,
+    openModal: undefined
   });
+  uiDom.window.document.querySelector("#view-hub").innerHTML = training.html();
+  training.mount();
+  lastTraining = training;
+  return { training, store };
 }
 
-test("la carte des البوابتان juge une instruction saisie (فيلم + عمودان)", () => {
-  const guide = freshGuide();
-  guide.renderGuide({ id: 2025 });
+test("la section تدريب porte les البوابتان et le drill — le المفتاح+ reste fermé", () => {
+  const { store: tStore } = freshTraining();
+  assert.ok(uiDom.window.document.querySelector("#training-details"));
   assert.ok(uiDom.window.document.querySelector("#gates-card"));
   assert.ok(uiDom.window.document.querySelector("#drill-card"));
+  assert.ok(uiDom.window.document.querySelector("#mistakes-card"));
   assert.equal(uiDom.window.document.querySelector("#plus-card"), null, "المفتاح+ fermé par défaut");
 
   const input = uiDom.window.document.querySelector("#gate-input");
@@ -260,20 +264,18 @@ test("la carte des البوابتان juge une instruction saisie (فيلم + ع
   assert.match(verdict, /ورقة/);
   assert.match(verdict, /فيلم/);
   assert.match(verdict, /من الوثيقة \| من الدرس/);
+  assert.equal(tStore.recorded.length, 0);
 });
 
 test("les exemples cliquables remplissent l'entrée et le verdict", () => {
-  const guide = freshGuide();
-  guide.renderGuide({ id: 2025 });
+  freshTraining();
   uiClick($$sel("[data-gate-example]")[2]);
   assert.equal(uiDom.window.document.querySelector("#gate-input").value, "عدّد خصائص المناعة الاكتسابية.");
   assert.match(uiDom.window.document.querySelector("#gate-verdict").textContent, /رأس/);
 });
 
-test("3 rounds parfaites 12/12 consécutives ouvrent المفتاح+ dans l'UI", () => {
-  const guide = freshGuide();
-  lastGuide = guide;
-  guide.renderGuide({ id: 2025 });
+test("3 rounds parfaites 12/12 consécutives ouvrent المفتاح+ dans la section", () => {
+  freshTraining();
   for (let round = 0; round < DRILL_UNLOCK_STREAK; round += 1) {
     uiClick(uiDom.window.document.querySelector("#drill-start"));
     const summary = playUiItems(DRILL_ROUND_SIZE);
@@ -291,9 +293,7 @@ test("3 rounds parfaites 12/12 consécutives ouvrent المفتاح+ dans l'UI",
 });
 
 test("une round imparfaite n'ouvre pas المفتاح+", () => {
-  const guide = freshGuide();
-  lastGuide = guide;
-  guide.renderGuide({ id: 2025 });
+  freshTraining();
   uiClick(uiDom.window.document.querySelector("#drill-start"));
   const instruction = uiDom.window.document.querySelector("#drill-instruction").textContent.trim();
   const bankItem = DRILL_BANK.find((entry) => entry.text === instruction);
@@ -305,20 +305,8 @@ test("une round imparfaite n'ouvre pas المفتاح+", () => {
   assert.equal(uiDom.window.document.querySelector("#plus-card"), null);
 });
 
-after(async () => {
-  // Nettoyage : un re-render purge le minuteur éventuel du drill.
-  try {
-    if (lastGuide) lastGuide.renderGuide({ id: 2025 });
-  } catch (e) {}
-  try {
-    uiDom.window.close();
-  } catch (e) {}
-});
-
-test("l'écran guide affiche خمسة أخطاء (contenu méthode, sans pourcentages de barème)", () => {
-  const guide = freshGuide();
-  lastGuide = guide;
-  guide.renderGuide({ id: 2025 });
+test("خمسة أخطاء : contenu méthode sans pourcentages de barème", () => {
+  freshTraining();
   const mistakes = uiDom.window.document.querySelector("#mistakes-card");
   assert.ok(mistakes, "carte خمسة أخطاء manquante");
   const text = mistakes.textContent;
@@ -327,28 +315,43 @@ test("l'écran guide affiche خمسة أخطاء (contenu méthode, sans pourcen
   assert.doesNotMatch(text, /نصف النقطة|0,25|0,5 نقطة/);
 });
 
-test("المفتاح+ porte les badges de gradation متوسط/امتياز", () => {
-  const guide = freshGuide();
-  lastGuide = guide;
-  guide.state_unlocked_helper = null;
-  guide.renderGuide({ id: 2025 });
-  // Simuler un store déjà débloqué : re-rendu via un guide fraîchement créé.
-  const unlockedStore = makeGuideStore();
-  unlockedStore.state.drill.unlocked = true;
-  const guide2 = createGuideScreen({
-    $: (s) => uiDom.window.document.querySelector(s),
-    $$: $$sel,
-    adkarHTML: () => "",
-    goHome: () => {},
-    goToStrategy: () => {},
-    store: unlockedStore
-  });
-  lastGuide = guide2;
-  guide2.renderGuide({ id: 2025 });
+test("المفتاح+ pré-rendu quand unlocked, avec badges de gradation متوسط/امتياز", () => {
+  const store = makeTrainingStore();
+  store.state.drill.unlocked = true;
+  freshTraining(store);
   const plus = uiDom.window.document.querySelector("#plus-card");
   assert.ok(plus, "المفتاح+ devrait être rendu d'emblée quand unlocked=true");
   const text = plus.textContent;
   assert.match(text, /مستوى متوسط/);
   assert.match(text, /مستوى امتياز/);
-  assert.match(text, /🟦 متوسط · صيغة الحساب|🟨 امتياز · صيغة الحساب/);
+});
+
+test("l'écran guide est calme : ni drill, ni البوابتان, ni carte erreurs", () => {
+  const guide = createGuideScreen({
+    $: (s) => uiDom.window.document.querySelector(s),
+    adkarHTML: () => "<div id='adkar'></div>",
+    goHome: () => {},
+    goToStrategy: () => {}
+  });
+  guide.renderGuide({ id: 2025 });
+  const guideEl = uiDom.window.document.querySelector("#view-guide");
+  assert.equal(
+    guideEl.querySelector("#gates-card"),
+    null,
+    "البوابتان ne doivent pas vivre dans le flux examen"
+  );
+  assert.equal(guideEl.querySelector("#drill-card"), null, "le drill ne doit pas vivre dans le flux examen");
+  assert.equal(guideEl.querySelector("#mistakes-card"), null);
+  assert.equal(guideEl.querySelector("#training-details"), null);
+  assert.ok(guideEl.querySelector(".breath"), "la respiration reste le cœur de l'écran");
+  assert.ok(guideEl.querySelector("#guide-next"), "une seule action principale : continuer");
+});
+
+after(async () => {
+  try {
+    lastTraining?.teardown?.();
+  } catch (e) {}
+  try {
+    uiDom.window.close();
+  } catch (e) {}
 });

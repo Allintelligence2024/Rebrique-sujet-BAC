@@ -72,12 +72,14 @@ export function createHubScreen(deps) {
     startSession,
     store,
     timers,
+    training,
     trainingLimitHTML,
     toggleTheme,
     yearObj
   } = deps;
 
   function renderHub() {
+    training?.teardown?.();
     const streamId = readStream();
     const stream = STREAMS[streamId];
     const other = STREAMS[nextStreamId(streamId)];
@@ -119,6 +121,7 @@ export function createHubScreen(deps) {
         <p class="small text-muted mt-0 mb-1" id="hub-stream-caption"></p>
       </div>
       <div class="grid grid-cards" id="year-grid"></div>
+      ${training.html()}
       <button type="button" class="stream-fab" id="btn-stream-fab">
         <span class="stream-fab-kicker">تغيير الشعبة</span>
         <strong id="stream-fab-label"></strong>
@@ -160,6 +163,7 @@ export function createHubScreen(deps) {
     $("#btn-hub-sound").addEventListener("click", () => cycleSound($("#btn-hub-sound")));
     $$("[data-theme-toggle]").forEach((button) => button.addEventListener("click", toggleTheme));
     fab.addEventListener("click", cycleStream);
+    training.mount();
     applyTheme(document.documentElement.dataset.theme);
   }
 
