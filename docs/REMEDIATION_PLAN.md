@@ -13,15 +13,15 @@
 
 ## P0 — Bloqueurs avant toute publication
 
-| Lot  | Correctif             | Critère d’acceptation                                                                                                                                                                 | État                         |
-| ---- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
-| P0.1 | Vérité produit        | Aucune mention « examen complet » ; l’interface annonce un entraînement partiel ; la provenance officielle/reconstruite est visible dans la copie.                                    | Terminé                      |
-| P0.2 | Serveur public        | Seuls `index.html`, `assets/`, `js/`, `data/`, le manifeste, le service worker et les deux PDF publics sont servis. `.git`, tests, sources de build et métadonnées retournent 404.    | Terminé                      |
-| P0.3 | CSP et build autonome | L’application rend ses styles sous la CSP livrée. Le monofichier embarque CSS, JS et PDF locaux, ne référence ni manifeste/icône externe ni service worker sous `file://`.            | Terminé                      |
-| P0.4 | Identifiants Maths    | Les identifiants `YYYY-m` survivent à la validation, à la persistance et au pipeline hard-benchmark.                                                                                  | Terminé                      |
-| P0.5 | Durées et stratégie   | Sciences expérimentales = 270 min, Maths = 150 min. La calculatrice lit le nombre d’exercices et les maxima du sujet sélectionné ; un input trafiqué ne peut pas dépasser le maximum. | Terminé                      |
-| P0.6 | Cycle de session      | Démarrage frais, restauration guide/stratégie/copie, fin manuelle, expiration automatique, verrouillage de la saisie et état persistant cohérent.                                     | Terminé                      |
-| P0.7 | Régression            | Lint, typecheck, format, documentation, tests Node, build et E2E CI sont verts. Les routes privées font l’objet d’un test HTTP.                                                       | Partiel — E2E CI à confirmer |
+| Lot  | Correctif             | Critère d’acceptation                                                                                                                                                                 | État    |
+| ---- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| P0.1 | Vérité produit        | Aucune mention « examen complet » ; l’interface annonce un entraînement partiel ; la provenance officielle/reconstruite est visible dans la copie.                                    | Terminé |
+| P0.2 | Serveur public        | Seuls `index.html`, `assets/`, `js/`, `data/`, le manifeste, le service worker et les deux PDF publics sont servis. `.git`, tests, sources de build et métadonnées retournent 404.    | Terminé |
+| P0.3 | CSP et build autonome | L’application rend ses styles sous la CSP livrée. Le monofichier embarque CSS, JS et PDF locaux, ne référence ni manifeste/icône externe ni service worker sous `file://`.            | Terminé |
+| P0.4 | Identifiants Maths    | Les identifiants `YYYY-m` survivent à la validation, à la persistance et au pipeline hard-benchmark.                                                                                  | Terminé |
+| P0.5 | Durées et stratégie   | Sciences expérimentales = 270 min, Maths = 150 min. La calculatrice lit le nombre d’exercices et les maxima du sujet sélectionné ; un input trafiqué ne peut pas dépasser le maximum. | Terminé |
+| P0.6 | Cycle de session      | Démarrage frais, restauration guide/stratégie/copie, fin manuelle, expiration automatique, verrouillage de la saisie et état persistant cohérent.                                     | Terminé |
+| P0.7 | Régression            | Lint, typecheck, format, documentation, tests Node, build et E2E CI sont verts. Les routes privées font l’objet d’un test HTTP.                                                       | Terminé |
 
 ### Décisions P0 explicites
 
@@ -82,7 +82,7 @@
 
 ## Validation du lot
 
-Validation locale du 7 septembre 2026 : `lint`, `typecheck`, `format:check`, `docs:check`, les 215 tests Node et le build autonome passent. Le test HTTP confirme la liste blanche et les 404 sur les routes privées. Le lancement E2E local reste non probant : le téléchargement Chromium échoue sur le CDN Playwright avec `ECONNRESET`. Un parcours Maths a été ajouté à la suite E2E ; la CI doit encore l’exécuter.
+Validation du 7 septembre 2026 : `lint`, `typecheck`, `format:check`, `docs:check`, les 215 tests Node et le build autonome passent. Le test HTTP confirme la liste blanche et les 404 sur les routes privées. Le téléchargement Chromium local échoue sur le CDN Playwright avec `ECONNRESET`, mais la CI Quality `34146913531` a installé Chromium et validé toute la matrice, dont les 13 tests E2E et le nouveau parcours Maths.
 
 ## Définition de « P0 terminé »
 
