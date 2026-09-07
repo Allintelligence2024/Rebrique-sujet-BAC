@@ -1,4 +1,3 @@
-import { BROUILLON_MODE_DATA } from "../../../data/brouillon.js";
 import { node, replaceContent, setInternalHTML } from "../dom.js";
 import { renderStepNavigation } from "../navigation.js";
 import { createBrouillonController } from "../workspace/brouillon.js";
@@ -7,7 +6,8 @@ import { firstEmptyPipelineSlot, PIPELINE_FIELDS } from "../workspace/pipeline-e
 import { textEvaluationRule } from "../workspace/text-exercise.js";
 import { composeDrafts, hasObservationBeforeExplanation } from "../workspace/scratchpad.js";
 import { quickCheckHTML } from "../workspace/quick-check.js";
-import { classifyInstruction } from "../../domain/method/gates.js";
+import { createWorkspacePresentation } from "../workspace/presentation.js";
+import { createSimulationController } from "./simulation.js";
 
 export function createWorkspaceController(deps) {
   const {
@@ -28,6 +28,7 @@ export function createWorkspaceController(deps) {
     helpers,
     micButton,
     normalizeArabic,
+    officialCoverageForSubject,
     officialTaskInventoryFor,
     openDrawer,
     openModal,
@@ -40,9 +41,20 @@ export function createWorkspaceController(deps) {
     store,
     timers,
     toast,
+    yearObj,
     sujetObj,
     exDef
   } = deps;
+  const { detectVerb, gateChipHTML, poleMethodHint, provenanceHTML, setFeedback } =
+    createWorkspacePresentation({
+      METHOD_SCRIPTS,
+      node,
+      normalizeArabic,
+      officialTaskInventoryFor,
+      replaceContent,
+      store,
+      levelWord
+    });
   const brouillonController = createBrouillonController({
     $,
     store,
@@ -56,6 +68,23 @@ export function createWorkspaceController(deps) {
     exDef,
     detectVerb
   });
+  const simulationController = createSimulationController({
+    $,
+    $$,
+    closeModal,
+    goHome,
+    officialCoverageForSubject,
+    officialTaskInventoryFor,
+    openDrawer,
+    openModal,
+    pdfFallbackHTML,
+    showScreen,
+    store,
+    timers,
+    toast,
+    yearObj,
+    sujetObj
+  });
 
   function enterExercise(exNum) {
     store.setActiveExercise(exNum);
@@ -64,6 +93,10 @@ export function createWorkspaceController(deps) {
   }
 
   function renderWorkspace() {
+    if (store.state.sessionMode === "simulation") {
+      simulationController.renderSimulation();
+      return;
+    }
     if (store.isSessionActive()) completionNoticeShown = false;
     const s = sujetObj();
     const ex = exDef(store.state.activeExercise);
@@ -99,7 +132,7 @@ export function createWorkspaceController(deps) {
           <div class="stack">${s.exercises
             .map(
               (e) => `
-            <button class="btn btn-ghost" data-switch="${e.number}" style="justify-content:space-between">
+            <button class="btn btn-ghost quick-exercise" data-switch="${e.number}">
               <span>ت${e.number}: ${e.label} (${e.max}ن)</span><span id="lock-${e.number}">${e.number === ex.number ? "●" : ""}</span>
             </button>`
             )
@@ -108,17 +141,17 @@ export function createWorkspaceController(deps) {
             <div class="flex spread small"><span class="bold text-muted">بوصلة ت${ex.number}</span><span class="text-emerald" id="pole-text">السنّ: اقرأ</span></div>
             <div class="compass">
               <div class="compass-ring"></div>
-              <span class="compass-mark" style="top:4px;inset-inline-start:50%;transform:translateX(50%);color:var(--emerald-soft)">1</span>
-              <span class="compass-mark" style="bottom:4px;inset-inline-start:50%;transform:translateX(50%);color:var(--blue)">2</span>
-              <span class="compass-mark" style="inset-block-start:50%;inset-inline-end:4px;transform:translateY(-50%);color:var(--amber-soft)">3</span>
-              <span class="compass-mark" style="inset-block-start:50%;inset-inline-start:4px;transform:translateY(-50%);color:var(--purple-soft)">4</span>
+              <span class="compass-mark compass-mark-north">1</span>
+              <span class="compass-mark compass-mark-south">2</span>
+              <span class="compass-mark compass-mark-east">3</span>
+              <span class="compass-mark compass-mark-west">4</span>
               <div class="compass-seq" id="compass-needle">
                 <svg viewBox="0 0 100 100"><polygon points="50,12 44,50 56,50" fill="#10b981"/><polygon points="50,88 44,50 56,50" fill="#3b82f6"/></svg>
               </div>
             </div>
           </div>
           <nav class="stepnav" id="stepnav"></nav>
-          <div class="feedback mid small" style="background:rgba(16,185,129,.08)">يمكنك الانتقال بحرية بين التمارين؛ تُحفظ إجاباتك تلقائياً.</div>
+          <div class="feedback mid small guidance-note">يمكنك الانتقال بحرية بين التمارين؛ تُحفظ إجاباتك تلقائياً.</div>
         </aside>
         <section class="card" id="ex-content"></section>
       </div>
@@ -174,125 +207,18 @@ export function createWorkspaceController(deps) {
     return mayScorePole(pole, store.state.reviewMode);
   }
 
-  function provenanceHTML(pole, exerciseNumber, poleType) {
-    const inventory = officialTaskInventoryFor(store.state.yearId, store.state.sujetId);
-    const mappedTasks = (inventory?.tasks || []).filter((task) =>
-      (task.trainingMappings || []).some(
-        (mapping) => mapping.exerciseNumber === exerciseNumber && mapping.pole === poleType
-      )
-    );
-    const taskIds = mappedTasks.map((task) => task.id).join("، ");
-    const taskLink = taskIds ? ` — المهمة: ${taskIds}` : "";
-    if (pole.bacPromptSource === "official") {
-      const page = pole.bacPromptPage ? ` — الصفحة ${pole.bacPromptPage}` : "";
-      return `<p class="small text-emerald provenance-note">✓ تعليمة رسمية من الموضوع${page}${taskLink}</p>`;
-    }
-    if (mappedTasks.length) {
-      return `<p class="small text-amber provenance-note">⚠ خطوة تدريبية مفككة من ${taskIds} — ليست تعليمة مستقلة في الموضوع الرسمي.</p>`;
-    }
-    return `<p class="small text-amber provenance-note">⚠ خطوة تدريبية معاد بناؤها — ليست تعليمة مستقلة في الموضوع الرسمي.</p>`;
-  }
-
-  function modelBox(pole) {
-    if (!pole.modelAnswer) return "";
-    return `<details class="model-box"><summary class="model-summary">إجابة نموذجية للتدريب</summary><div class="model-body"><pre class="model-text">${pole.modelAnswer}</pre></div></details>`;
-  }
-
-  function setFeedback(container, res, score, points, pole, showScore = true) {
-    // formatEvalFeedback is legacy presentation text. Render it as text, never as executable HTML.
-    const feedback = formatEvalFeedback(res, score, points)
-      .replace(/<br>/g, "\n")
-      .replace(/<[^>]*>/g, "");
-    const text = showScore
-      ? feedback
-      : `مراجعة منهجية فقط — لا توجد نقطة رقمية لهذه السنّ.\n${feedback.replace(/^.*?\n/, "")}`;
-    const fragments = [node("span", { text })];
-    if (pole?.modelAnswer) {
-      const details = node("details", { className: "model-box" });
-      details.append(
-        node("summary", { className: "model-summary", text: "إجابة نموذجية للتدريب" }),
-        node("div", { className: "model-body" })
-      );
-      details.lastElementChild.append(node("pre", { className: "model-text", text: pole.modelAnswer }));
-      fragments.push(details);
-    }
-    replaceContent(container, fragments);
-  }
-
-  function formatEvalFeedback(res, score, points) {
-    let html = `تشخيص تغطية الإجابة`;
-    if (res.verdict) html += `<br>${res.verdict}`;
-    if (res.rubric?.applicable && res.rubric.display) {
-      html += `<br><span class="small">ميزان التحليل: ${res.rubric.display}</span>`;
-      const skipped = (res.rubric.steps || []).filter((s) => !s.passed).map((s) => s.label);
-      if (skipped.length) html += `<br>⏭️ خطوات ناقصة: <b>${skipped.join("، ")}</b>`;
-    }
-    if (res.missing?.length) html += `<br>🔎 مفاهيم مفتاحية ناقصة: <b>${res.missing.join("، ")}</b>`;
-    if (res.forbiddenFound?.length)
-      html += `<br>⛔ كلمة يجب تجنّبها هنا: <b>${res.forbiddenFound.join("، ")}</b>`;
-    if (res.science?.errors?.length)
-      html += `<br>🧪 خطأ علمي: <b>${res.science.errors.map((e) => e.message).join(" — ")}</b>`;
-    if (res.document?.gaps?.length) html += `<br>📄 قراءة السند: <b>${res.document.gaps.join(" — ")}</b>`;
-    if (res.artifact?.gaps?.length) html += `<br>✏️ مخطط/معادلة: <b>${res.artifact.gaps.join(" — ")}</b>`;
-    if (res.hypotheses?.gaps?.length) html += `<br>🔬 الفرضيات: <b>${res.hypotheses.gaps.join(" — ")}</b>`;
-    if (res.technique?.gaps?.length) html += `<br>🧫 التقنية: <b>${res.technique.gaps.join(" — ")}</b>`;
-    if (res.closing?.applicable && res.taskProfile?.id === "scientific-text" && res.closing.score < 0.5)
-      html += `<br>🎯 الخاتمة لا تجيب عن المشكل المطروح في السنّ اقرأ.`;
-    if (res.methodology?.missing?.length) html += `<br>🧭 المنهجية: ${res.methodology.missing[0]}`;
-    if (res.coach?.tips?.length) html += `<br>📘 من دليل المنهجية: ${res.coach.tips.slice(0, 2).join(" ")}`;
-    else if (res.methodology?.score < 0.9 && res.coach?.script?.steps?.length) {
-      html += `<br>📘 ${res.coach.script.title}: ${res.coach.script.steps.join(" ← ")}`;
-    }
-    const pack = BROUILLON_MODE_DATA.sentenceModels.find((s) => {
-      const id = res.taskProfile?.id;
-      if (id === "analysis") return s.title.includes("تقديم");
-      if (id === "explanation") return s.title.includes("تفسير");
-      return false;
-    });
-    if (pack && res.fraction < 0.9) html += `<br>✍️ بدّل: <i>${pack.items[0]}</i>`;
-    html += `<br><span class="secondary-score">التقدير: <b>${levelWord(res.fraction)}</b></span>`;
-    if (res.empty) html = `لم تُدخل أي إجابة بعد.`;
-    return html;
-  }
-
-  function detectVerb(text) {
-    const n = normalizeArabic(text || "");
-    for (const route of BROUILLON_MODE_DATA.verbRouting) {
-      if (route.patterns.some((p) => n.includes(normalizeArabic(p)))) return route;
-    }
-    return BROUILLON_MODE_DATA.verbRouting[0];
-  }
-
-  /** البوابتان قبل الكتابة: verdict ورقة/رأس ثم صورة/فيلم pour cette consigne. */
-  function gateChipHTML(poleType, pole) {
-    const c = classifyInstruction(pole?.bacPrompt || pole?.prompt || "");
-    const gate1 = c.mode === "paper" ? "📄 ورقة" : "🧠 رأس";
-    const gate2 = c.gate2 ? (c.gate2 === "film" ? " · 🎬 فيلم" : " · 📷 صورة") : "";
-    const columns = c.twoColumns ? " · عمودان: [من الوثيقة | من الدرس]" : "";
-    return `<div class="small text-muted gate-chip" data-gate-chip="${poleType}">🚪 القرار قبل الكتابة: <b>${gate1}${gate2}</b> — مسار ${c.pathLabel}${columns}</div>`;
-  }
-
-  function poleMethodHint(poleType, pole) {
-    const fallback = { N: "problem", S: "analysis", E: "explanation", W: "scientific-text" };
-    const script = METHOD_SCRIPTS[fallback[poleType]] || METHOD_SCRIPTS.synthesis;
-    const verb = detectVerb(pole?.bacPrompt || pole?.prompt || "");
-    const trap = verb?.warning ? `<div class="atlas-trap">${verb.warning}</div>` : "";
-    if (!script) return trap;
-    return `<div class="method-script"><strong>${script.title}</strong> — ${script.steps.join(" ← ")}${trap}</div>`;
-  }
-
   function textHTML(ex) {
     return POLE_ORDER.map((p, i) => {
       const pole = ex.poles[p];
       return `
       <div id="panel-${i + 1}" class="${i === 0 ? "" : "hidden"}">
         <div class="card answer-card">
-          <span class="badge badge-${POLE[p].cls}" style="margin-bottom:.6rem">${POLE[p].title}</span>
+          <span class="badge badge-${POLE[p].cls} pole-badge">${POLE[p].title}</span>
           <h3 class="bac-consigne">${pole.bacPrompt || pole.prompt}</h3>
           ${provenanceHTML(pole, ex.number, p)}
           <details class="pole-help" id="pole-help-${p}">
             <summary class="small">🧭 توجيه هذه السنّ — القرار، الخطوات، الفحص <span class="text-muted">(انقر للعرض)</span></summary>
-            <div style="margin-top:.4rem">
+            <div class="pole-help-body">
               <p class="small text-muted mt-0">Objectif méthodologique : ${pole.prompt}</p>
               ${gateChipHTML(p, pole)}
               ${poleMethodHint(p, pole)}
@@ -306,7 +232,7 @@ export function createWorkspaceController(deps) {
           }
           ${micButton("fld-" + p)}
           <div class="feedback hidden" role="status" aria-live="polite" aria-atomic="true" id="fb-${p}"></div>
-          <div class="flex mt-2" style="justify-content:space-between">
+          <div class="flex spread mt-2 step-actions">
             <button class="btn btn-ghost btn-sm" data-goto="${i}">تخطّي</button>
             <button class="btn btn-emerald" data-check="${p}">🔎 فحص تغطية الإجابة</button>
           </div>
@@ -362,7 +288,7 @@ export function createWorkspaceController(deps) {
     fb.classList.remove("hidden");
     const grade = res.fraction >= 0.75 ? "good" : res.fraction >= 0.45 ? "mid" : "bad";
     fb.className = `feedback ${grade} mt-2`;
-    setFeedback(fb, res, st.scores[p], pole.points, pole, scoreAllowed);
+    setFeedback(fb, res, pole, scoreAllowed);
     if (!res.empty) goToSuccessStep(exNum);
   }
 
@@ -374,7 +300,7 @@ export function createWorkspaceController(deps) {
   function pipelineHTML(ex) {
     return `
     <div id="panel-1" class="card">
-      <span class="badge badge-emerald" style="margin-bottom:.6rem">${POLE.N.title} (${fmtPts(ex.poles.N.points)})</span>
+      <span class="badge badge-emerald pole-badge">${POLE.N.title} (${fmtPts(ex.poles.N.points)})</span>
       <h3 class="mt-0">${ex.poles.N.bacPrompt || ex.poles.N.prompt}</h3>
       ${provenanceHTML(ex.poles.N, ex.number, "N")}
       ${gateChipHTML("N", ex.poles.N)}
@@ -387,11 +313,11 @@ export function createWorkspaceController(deps) {
       <button class="btn btn-emerald mt-2" data-polo-check="N">تأكيد السنّ اقرأ (فكّ القفل)</button>
     </div>
     <div id="panel-2" class="card hidden">
-      <span class="badge badge-indigo" style="margin-bottom:.6rem">${POLE.S.title} (${fmtPts(ex.poles.S.points)})</span>
+      <span class="badge badge-indigo pole-badge">${POLE.S.title} (${fmtPts(ex.poles.S.points)})</span>
       <h3 class="mt-0">${ex.poles.S.bacPrompt || ex.poles.S.prompt}</h3>
       ${provenanceHTML(ex.poles.S, ex.number, "S")}
       ${gateChipHTML("S", ex.poles.S)}
-      <div class="card" style="background:var(--bg)">
+      <div class="card card-inset">
         <label class="lbl">1. الشكل (أ): التحليل المقارن بالتوازي</label>
         <textarea class="field" rows="2" id="pipeline-doc1a"></textarea>
         <label class="lbl">الاستنتاج الخاص بالشكل (أ):</label>
@@ -404,7 +330,7 @@ export function createWorkspaceController(deps) {
       <button class="btn btn-emerald mt-2" data-polo-check="S">فحص مصفوفة السندات</button>
     </div>
     <div id="panel-3" class="card hidden">
-      <span class="badge badge-amber" style="margin-bottom:.6rem">${POLE.E.title} (${fmtPts(ex.poles.E.points)})</span>
+      <span class="badge badge-amber pole-badge">${POLE.E.title} (${fmtPts(ex.poles.E.points)})</span>
       <h3 class="mt-0">${ex.poles.E.bacPrompt || ex.poles.E.prompt}</h3>
       ${provenanceHTML(ex.poles.E, ex.number, "E")}
       <div class="grid grid-2">
@@ -417,7 +343,7 @@ export function createWorkspaceController(deps) {
       <button class="btn btn-emerald mt-2" data-polo-check="E">تأكيد السنّ اربط</button>
     </div>
     <div id="panel-4" class="card hidden">
-      <span class="badge badge-purple" style="margin-bottom:.6rem">${POLE.W.title} (${fmtPts(ex.poles.W.points)})</span>
+      <span class="badge badge-purple pole-badge">${POLE.W.title} (${fmtPts(ex.poles.W.points)})</span>
       <h3 class="mt-0">${ex.poles.W.bacPrompt || ex.poles.W.prompt}</h3>
       ${provenanceHTML(ex.poles.W, ex.number, "W")}
       <span class="lbl">📦 بنك العناصر البيوكيميائية:</span>
@@ -426,8 +352,8 @@ export function createWorkspaceController(deps) {
         ${ex.streams
           .map(
             (str) => `
-          <div class="card" style="background:var(--bg);border-color:${str.theme === "rose" ? "var(--rose)" : "var(--emerald)"}">
-            <strong style="color:${str.theme === "rose" ? "#fb7185" : "var(--emerald-soft)"}">${str.title}</strong>
+          <div class="card stream-card-${str.theme === "rose" ? "rose" : "emerald"}">
+            <strong class="stream-title-${str.theme === "rose" ? "rose" : "emerald"}">${str.title}</strong>
             <div class="pipeline mt-1" data-stream="${str.id}">
               ${str.slots.map((sl, i) => `<button type="button" class="slot" data-slot="${i}" aria-label="${i + 1}. ${sl}">${i + 1}. ${sl}</button>`).join("")}
             </div>
@@ -548,7 +474,7 @@ export function createWorkspaceController(deps) {
       st.scores[p] = score;
       if (!st.answeredAny && text) st.answeredAny = true;
       fb.className = `feedback ${res.fraction >= 0.75 ? "good" : text ? "mid" : "bad"} mt-2`;
-      setFeedback(fb, res, score, ex.poles[p].points, ex.poles[p], scoreAllowed);
+      setFeedback(fb, res, ex.poles[p], scoreAllowed);
     } else {
       const res = evaluatePipeline(ex.blocksBank, st.pipeline);
       const scoreAllowed = canScorePole(ex.poles[p]);
@@ -571,9 +497,9 @@ export function createWorkspaceController(deps) {
     store.setActiveStep(n);
     $$("#ex-content [id^='panel-']").forEach((panel, i) => panel.classList.toggle("hidden", i !== n - 1));
     const bar = $("#progress span");
-    if (bar) bar.style.width = `${(n / 4) * 100}%`;
+    if (bar) bar.className = `step-${n}`;
     const needle = $("#compass-needle");
-    if (needle) needle.style.transform = `rotate(${n === 1 ? 0 : n === 2 ? 180 : n === 3 ? 90 : 270}deg)`;
+    if (needle) needle.className = `compass-seq step-${n}`;
     const poleText = $("#pole-text");
     if (poleText) poleText.textContent = `السنّ: ${POLE[activePole].short}`;
     const purposes = {
@@ -674,6 +600,10 @@ export function createWorkspaceController(deps) {
   }
 
   function handleSessionCompletion(reason = store.state.sessionEndReason) {
+    if (store.state.sessionMode === "simulation") {
+      simulationController.handleSessionCompletion(reason);
+      return;
+    }
     persistVisibleDraft();
     timers.stopAll();
     $("#global-timer-bar")?.classList.add("hidden");

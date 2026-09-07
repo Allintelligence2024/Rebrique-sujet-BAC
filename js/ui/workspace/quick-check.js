@@ -17,7 +17,7 @@ export function quickCheckHTML() {
   return `
     <details class="quick-check" id="quick-check">
       <summary class="small"><b>⏱️ الفحص الرباعي المعكوس</b> — 10 ثوانٍ قبل السؤال التالي</summary>
-      <div class="stack" style="margin-top:.5rem">
+      <div class="stack quick-check-stack">
         ${QUICK_CHECK_ITEMS.map((item) => `<div class="small">🔹 <b>${item.n}</b> ← ${item.q}</div>`).join("")}
       </div>
     </details>`;

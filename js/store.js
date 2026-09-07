@@ -4,10 +4,12 @@
 
 import { reportDiagnostic } from "./services/diagnostics.js";
 
-const KEY = "boussole4d.v3";
-const LEGACY_KEY = "boussole4d.v2";
-export const CURRENT_SCHEMA_VERSION = 3;
+const KEY = "boussole4d.v4";
+const LEGACY_KEY = "boussole4d.v3";
+const AMBIGUOUS_LEGACY_KEY = "boussole4d.v2";
+export const CURRENT_SCHEMA_VERSION = 4;
 export const YEAR_ID_PATTERN = /^\d{4}(?:-[a-z]{1,3})?$/;
+export const SESSION_MODES = Object.freeze(["training", "simulation"]);
 const POLES = ["N", "S", "E", "W"];
 const SCREENS = new Set(["view-hub", "view-guide", "view-strategy", "view-workspace"]);
 const SESSION_STATUSES = new Set(["idle", "active", "completed"]);
@@ -24,6 +26,7 @@ function emptyExercise() {
     text: { N: "", S: "", E: "", W: "" },
     scratch: { N: "", S: "", E: "", W: "", free: "" },
     fields: {},
+    officialTaskAnswers: {},
     pipeline: { stream1: [null, null, null, null], stream2: [null, null, null, null] }
   };
 }
@@ -38,6 +41,7 @@ function defaultState() {
     sessionStartedAt: null,
     sessionCompletedAt: null,
     sessionEndReason: null,
+    sessionMode: "training",
     reviewMode: false,
     yearId: "2025",
     sujetId: 1,
@@ -69,6 +73,13 @@ function sanitizeExercise(value) {
   if (isRecord(raw.fields)) {
     for (const [key, value] of Object.entries(raw.fields)) {
       if (typeof value === "string" && key.length <= 100) safe.fields[key] = value;
+    }
+  }
+  if (isRecord(raw.officialTaskAnswers)) {
+    for (const [taskId, value] of Object.entries(raw.officialTaskAnswers)) {
+      if (/^\d{4}(?:-[a-z]{1,3})?-S\d+-E\d+-Q\d+$/.test(taskId) && typeof value === "string") {
+        safe.officialTaskAnswers[taskId] = value;
+      }
     }
   }
   for (const stream of ["stream1", "stream2"]) {
@@ -108,16 +119,18 @@ export function migrateState(candidate) {
     return {
       ...candidate,
       schemaVersion: CURRENT_SCHEMA_VERSION,
+      sessionMode: "training",
       reviewMode: false,
       sessionStatus: candidate.sessionActive === true ? "active" : "idle"
     };
   }
-  if (version === 1 || version === 2) {
+  if (version === 1 || version === 2 || version === 3) {
     return {
       ...candidate,
       schemaVersion: CURRENT_SCHEMA_VERSION,
+      sessionMode: SESSION_MODES.includes(candidate.sessionMode) ? candidate.sessionMode : "training",
       reviewMode: candidate.reviewMode === true,
-      sessionStatus: candidate.sessionActive === true ? "active" : "idle"
+      sessionStatus: candidate.sessionActive === true ? "active" : candidate.sessionStatus || "idle"
     };
   }
   if (version === CURRENT_SCHEMA_VERSION) return candidate;
@@ -155,7 +168,8 @@ export function validateState(candidate) {
   state.sessionEndReason = ["manual", "time-expired", "left"].includes(candidate.sessionEndReason)
     ? candidate.sessionEndReason
     : null;
-  state.reviewMode = candidate.reviewMode === true;
+  state.sessionMode = SESSION_MODES.includes(candidate.sessionMode) ? candidate.sessionMode : "training";
+  state.reviewMode = candidate.reviewMode === true || state.sessionStatus === "completed";
   state.yearId = YEAR_ID_PATTERN.test(candidate.yearId) ? candidate.yearId : state.yearId;
   state.sujetId = asFiniteNumber(candidate.sujetId, state.sujetId, 1, 9);
   state.activeExercise = asFiniteNumber(candidate.activeExercise, state.activeExercise, 1, 9);
@@ -210,9 +224,21 @@ export const store = {
       } else {
         const legacy = localStorage.getItem(LEGACY_KEY);
         if (legacy) {
-          // v2 had no year in exercise keys. Keeping it is safer than a false migration.
-          localStorage.setItem(`${LEGACY_KEY}.legacy-unmigrated`, legacy);
-          localStorage.removeItem(LEGACY_KEY);
+          try {
+            this.state = validateState(migrateState(JSON.parse(legacy)));
+            localStorage.removeItem(LEGACY_KEY);
+            this.save();
+          } catch (error) {
+            reportDiagnostic("store.load-invalid-legacy-state", error);
+            backupMalformed(legacy);
+          }
+        } else {
+          const ambiguous = localStorage.getItem(AMBIGUOUS_LEGACY_KEY);
+          if (ambiguous) {
+            // v2 had no year in exercise keys. Keeping it is safer than a false migration.
+            localStorage.setItem(`${AMBIGUOUS_LEGACY_KEY}.legacy-unmigrated`, ambiguous);
+            localStorage.removeItem(AMBIGUOUS_LEGACY_KEY);
+          }
         }
       }
     } catch (error) {
@@ -268,6 +294,7 @@ export const store = {
     this.state.sessionActive = false;
     this.state.sessionCompletedAt = completedAt;
     this.state.sessionEndReason = reason;
+    this.state.reviewMode = true;
     this.state.globalLastTick = null;
     this.state.strategyRunning = false;
     this.state.strategyLastTick = null;
@@ -293,10 +320,12 @@ export const store = {
     return this.state.progress[yearId][sujetId][exNum];
   },
 
-  enterSession(yearId, sujetId, durationSeconds = 270 * 60, strategySeconds = 25 * 60) {
+  enterSession(yearId, sujetId, durationSeconds = 270 * 60, strategySeconds = 25 * 60, options = {}) {
     if (!YEAR_ID_PATTERN.test(yearId)) throw new Error(`yearId invalide: ${String(yearId)}`);
     const duration = asFiniteNumber(durationSeconds, 270 * 60, 60, 24 * 60 * 60);
     const strategyDuration = asFiniteNumber(strategySeconds, 25 * 60, 0, 60 * 60);
+    const requestedMode = options?.mode || "training";
+    if (!SESSION_MODES.includes(requestedMode)) throw new Error(`mode de session invalide: ${requestedMode}`);
     const now = Date.now();
     this.state.yearId = yearId;
     this.state.sujetId = sujetId || 1;
@@ -308,6 +337,8 @@ export const store = {
     this.state.sessionStartedAt = now;
     this.state.sessionCompletedAt = null;
     this.state.sessionEndReason = null;
+    this.state.sessionMode = requestedMode;
+    this.state.reviewMode = false;
     this.state.globalDuration = duration;
     this.state.globalRemaining = duration;
     this.state.globalLastTick = now;
@@ -315,6 +346,23 @@ export const store = {
     this.state.strategyLastTick = null;
     this.state.strategyRunning = false;
     this.save();
+  },
+  activateSubjectMode(sujetId, mode = "training") {
+    if (!this.isSessionActive()) return false;
+    if (!SESSION_MODES.includes(mode)) throw new Error(`mode de session invalide: ${String(mode)}`);
+    this.state.sujetId = sujetId || 1;
+    this.state.sessionMode = mode;
+    this.state.reviewMode = false;
+    this.state.activeExercise = 1;
+    this.state.activeStep = 1;
+    this.state.activeScreen = "view-workspace";
+    if (mode === "simulation") {
+      // Strategy and breathing happen before the official clock starts.
+      this.state.globalRemaining = this.state.globalDuration;
+      this.state.globalLastTick = Date.now();
+    }
+    this.save();
+    return true;
   },
   finishSession(reason = "manual") {
     if (this.state.sessionStatus === "completed") return false;
@@ -335,6 +383,9 @@ export const store = {
     return this.state.sessionStatus === "active" && this.state.sessionActive === true;
   },
   setReviewMode(enabled) {
+    if (enabled === true && this.state.sessionMode === "simulation" && this.isSessionActive()) {
+      throw new Error("la relecture est interdite pendant une simulation active");
+    }
     this.state.reviewMode = enabled === true;
     this.save();
   },

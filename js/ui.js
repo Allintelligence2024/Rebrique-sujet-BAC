@@ -104,8 +104,7 @@ function toast(msg, type = "info", ms = 3500) {
   t.append(node("span", { text: iconFor(type) }), node("div", { text: msg }));
   zone.appendChild(t);
   setTimeout(() => {
-    t.style.opacity = "0";
-    t.style.transform = "translateY(8px)";
+    t.classList.add("is-exiting");
     setTimeout(() => t.remove(), 250);
   }, ms);
 }
@@ -118,8 +117,8 @@ function iconFor(type) {
 // correction or a substitute for a human BAC marker.
 function trainingLimitHTML(compact = false) {
   const detail = compact
-    ? "نفحص تغطية العناصر العلمية والمنهجية؛ النقاط مؤشر ثانوي وليست علامة بكالوريا."
-    : "تتحقق المنصة من تغطية إجابتك للعناصر العلمية والمنهجية المنتظرة. لا تصحح نسختك ولا تستبدل الأستاذ؛ النقاط مؤشر تدريبي ثانوي مبني على قواعد، وبعض التعليمات معاد بناؤها.";
+    ? "نفحص تغطية العناصر العلمية والمنهجية نوعياً؛ لا نعرض نقطة آلية قبل اكتمال المعايرة البشرية."
+    : "تتحقق المنصة نوعياً من تغطية العناصر العلمية والمنهجية المنتظرة. لا تصحح نسختك ولا تستبدل الأستاذ؛ حُجبت النقاط الآلية حتى تنجح المعايرة على نسخ حقيقية مزدوجة التصحيح، وبعض التعليمات معاد بناؤها.";
   return `<div class="feedback mid ${compact ? "small" : "mb-2"}" role="note"><b>🔎 ما الذي تفحصه المنصة؟</b> — ${detail}</div>`;
 }
 
@@ -291,6 +290,7 @@ strategyScreen = createStrategyScreen({
   showScreen,
   store,
   timers,
+  toast,
   yearObj
 });
 
@@ -314,6 +314,7 @@ workspaceController = createWorkspaceController({
   micButton,
   node,
   normalizeArabic,
+  officialCoverageForSubject,
   officialTaskInventoryFor,
   openDrawer,
   openModal,
@@ -390,11 +391,24 @@ export function init() {
   }
 
   const activeYear = yearObj(store.state.yearId);
-  const canRestore = store.isSessionActive() && activeYear && sujetObj();
-  if (canRestore) {
-    timers.startGlobal();
-    bar.classList.remove("hidden");
-    if (store.state.activeScreen === "view-guide") {
+  const canRestoreActive = store.isSessionActive() && activeYear && sujetObj();
+  const canRestoreSimulationReview =
+    store.state.sessionStatus === "completed" &&
+    store.state.sessionMode === "simulation" &&
+    store.state.activeScreen === "view-workspace" &&
+    activeYear &&
+    sujetObj();
+  if (canRestoreActive || canRestoreSimulationReview) {
+    if (canRestoreActive) {
+      timers.startGlobal();
+      bar.classList.remove("hidden");
+    } else {
+      bar.classList.add("hidden");
+    }
+    if (canRestoreSimulationReview) {
+      renderWorkspace();
+      showScreen("view-workspace");
+    } else if (store.state.activeScreen === "view-guide") {
       renderGuide(activeYear);
       showScreen("view-guide");
     } else if (store.state.activeScreen === "view-strategy") {

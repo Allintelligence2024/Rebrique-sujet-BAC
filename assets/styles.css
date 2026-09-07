@@ -1043,6 +1043,182 @@ footer.screen-foot {
   position: relative;
 }
 
+/* --- CSP-safe presentation helpers ------------------------------- */
+.justify-end {
+  justify-content: flex-end;
+}
+.justify-center {
+  justify-content: center;
+}
+.year-number {
+  font-size: 1.6rem;
+}
+.full-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.preview-empty {
+  height: 100%;
+  justify-content: center;
+  padding: 1rem;
+}
+.strategy-preview-head {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 0;
+}
+.strategy-pdf-container {
+  height: 60vh;
+  background: var(--bg);
+}
+.strategy-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.calc-input {
+  width: 5rem;
+  text-align: center;
+}
+.subject-card {
+  justify-content: space-between;
+}
+.subject-card-head,
+.report-row {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.5rem;
+}
+.subject-estimate {
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid var(--line);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.8rem;
+}
+.compass-mark-north {
+  top: 4px;
+  inset-inline-start: 50%;
+  translate: 50% 0;
+  color: var(--emerald-soft);
+}
+.compass-mark-south {
+  bottom: 4px;
+  inset-inline-start: 50%;
+  translate: 50% 0;
+  color: var(--blue);
+}
+.compass-mark-east {
+  inset-block-start: 50%;
+  inset-inline-end: 4px;
+  translate: 0 -50%;
+  color: var(--amber-soft);
+}
+.compass-mark-west {
+  inset-block-start: 50%;
+  inset-inline-start: 4px;
+  translate: 0 -50%;
+  color: var(--purple-soft);
+}
+.compass-seq.step-1 {
+  transform: rotate(0deg);
+}
+.compass-seq.step-2 {
+  transform: rotate(180deg);
+}
+.compass-seq.step-3 {
+  transform: rotate(90deg);
+}
+.compass-seq.step-4 {
+  transform: rotate(270deg);
+}
+.progress > .step-1 {
+  width: 25%;
+}
+.progress > .step-2 {
+  width: 50%;
+}
+.progress > .step-3 {
+  width: 75%;
+}
+.progress > .step-4 {
+  width: 100%;
+}
+.guidance-note {
+  background: rgba(16, 185, 129, 0.08);
+}
+.pole-badge {
+  margin-bottom: 0.6rem;
+}
+.pole-help-body {
+  margin-top: 0.4rem;
+}
+.step-actions {
+  justify-content: space-between;
+}
+.card-inset {
+  background: var(--bg);
+}
+.stream-card-rose {
+  background: var(--bg);
+  border-color: var(--rose);
+}
+.stream-card-emerald {
+  background: var(--bg);
+  border-color: var(--emerald);
+}
+.stream-title-rose {
+  color: #fb7185;
+}
+.stream-title-emerald {
+  color: var(--emerald-soft);
+}
+.training-choice-row {
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.gate-examples {
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+.flush-list {
+  margin: 0;
+  padding-inline-start: 1.4rem;
+}
+.print-actions {
+  justify-content: flex-end;
+  margin-top: 0.6rem;
+}
+.training-section {
+  margin-top: 0.6rem;
+}
+.quick-check-stack {
+  margin-top: 0.5rem;
+}
+.report-score {
+  font-size: 1.4rem;
+}
+.native-progress {
+  width: 100%;
+  accent-color: var(--emerald);
+}
+.toast.is-exiting {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.simulation-layout > #simulation-task-list {
+  grid-column: 2;
+  grid-row: 1;
+}
+.simulation-task-head {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.5rem;
+}
+.simulation-reference-list {
+  margin-block: 0.5rem 0;
+}
+
 /* --- Atlas & Flashcards 4D --------------------------------------- */
 .atlas-header {
   position: sticky;
@@ -1354,15 +1530,16 @@ footer.screen-foot {
     font-size: 0.95rem;
   }
   .grid.grid-2,
-  .grid[style*="grid-template-columns"],
   .workspace-layout {
     grid-template-columns: 1fr !important;
   }
   .workspace-layout > aside,
-  .workspace-layout > #ex-content {
+  .workspace-layout > #ex-content,
+  .simulation-layout > #simulation-task-list {
     grid-column: 1;
   }
-  .workspace-layout > #ex-content {
+  .workspace-layout > #ex-content,
+  .simulation-layout > #simulation-task-list {
     grid-row: 1;
   }
   .workspace-layout > aside {

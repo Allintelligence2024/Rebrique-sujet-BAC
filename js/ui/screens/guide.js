@@ -47,7 +47,7 @@ export function createGuideScreen(deps) {
           )}</b>. خطتك هنا: <b>25 د</b> لتصفح الموضوع وتقدير الثقة، ثم تدريب منهجي سنّاً سنّاً.</p>
           <p class="small text-amber mt-0 mb-0">هذا التدريب جزئي ولا يعرض جميع تعليمات الموضوع الرسمي.</p>
         </div>
-        <div class="flex" style="justify-content:flex-end">
+        <div class="flex justify-end">
           <button class="btn btn-emerald" id="guide-next">♞ أنا هادئ ومستعد | تصفح PDF وحاسبة الاختيار (25 دقيقة)</button>
         </div>
       </div>

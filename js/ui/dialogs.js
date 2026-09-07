@@ -51,7 +51,7 @@ export function createDialogManager({ $, $$ }) {
     setInternalHTML(content, body);
     const extraContent = node("div");
     setInternalHTML(extraContent, extra);
-    const actions = node("div", { className: "flex", attrs: { style: "justify-content:flex-end" } });
+    const actions = node("div", { className: "flex justify-end" });
     actions.append(
       node("button", { className: "btn btn-emerald", text: "فهمت، سأواصل", dataset: { close: "ok" } })
     );

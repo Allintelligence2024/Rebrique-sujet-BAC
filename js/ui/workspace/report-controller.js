@@ -1,3 +1,4 @@
+import { CALIBRATION_STATUS } from "../../../data/calibration-status.js";
 import { downloadFile, printCurrentExercise, reportToCSV } from "../reports/exports.js";
 import { buildTrainingReport } from "../reports/report.js";
 
@@ -23,40 +24,41 @@ export function createReportController({
 
   function showReport() {
     const rep = computeReport();
-    const summary = store.state.reviewMode
-      ? `<div class="card" style="background:var(--bg)"><strong>وضع المراجعة</strong><p class="small text-muted mt-1">لا يعرض هذا الوضع نقاطاً أو نسبة؛ راجع feedback المنهجي لكل قطب.</p></div>`
-      : `<div class="card" style="background:var(--bg)">
-      <div class="flex spread"><strong>الحصيلة التدريبية الرسمية فقط</strong>
-        <span class="mono text-emerald" style="font-size:1.4rem">${rep.grand.toFixed(2)} / ${rep.grandMax.toFixed(2)}</span></div>
-      <div class="progress mt-1"><span style="width:${rep.percent}%"></span></div>
-      <p class="small text-muted mt-1">النسبة الرسمية المتاحة فقط: ${rep.percent}%</p>
-    </div>`;
-    const body = `
-    ${trainingLimitHTML()}
-    ${summary}
-    <div class="stack mt-2">
-      ${rep.rows
-        .map(
-          (row) => `
-        <div class="flex spread" style="border-bottom:1px solid var(--line);padding-bottom:.4rem">
-          <span class="bold">${row.exercise}: ${row.label} ${row.filled ? "" : "(غير مكتمل)"}</span>
-          ${store.state.reviewMode ? `<span class="text-muted">feedback فقط</span>` : `<span class="mono ${row.total >= row.max * 0.7 ? "text-emerald" : "text-amber"}">${row.total.toFixed(2)} / ${row.max.toFixed(2)} رسمي فقط</span>`}
+    const numericAllowed = CALIBRATION_STATUS.scorePromotionAllowed === true;
+    const summary = numericAllowed
+      ? `<div class="card card-inset">
+          <div class="flex spread"><strong>الحصيلة التدريبية</strong>
+            <span class="mono text-emerald report-score">${rep.grand.toFixed(2)} / ${rep.grandMax.toFixed(2)}</span>
+          </div>
+          <progress class="native-progress mt-1" max="100" value="${rep.percent}">${rep.percent}%</progress>
         </div>`
-        )
-        .join("")}
-    </div>
-    <div class="flex mt-2">
-      <button class="btn btn-emerald btn-sm" id="dl-csv">⬇️ تنزيل CSV</button>
-      <button class="btn btn-ghost btn-sm" id="dl-json">⬇️ تنزيل JSON</button>
-      <button class="btn btn-indigo btn-sm" id="btn-print-exam">🖨️ طباعة</button>
-    </div>`;
-    openModal(`📊 تقرير النتائج — ${rep.rows.length} تمارين`, body);
-    $("#dl-csv")?.addEventListener("click", () =>
-      downloadFile(`boussole4d_${rep.year}_sujet${rep.sujet}.csv`, reportToCSV(rep))
-    );
-    $("#dl-json")?.addEventListener("click", () =>
-      downloadFile(`boussole4d_${rep.year}_sujet${rep.sujet}.json`, JSON.stringify(rep, null, 2))
-    );
+      : `<div class="card card-inset"><strong>تشخيص نوعي فقط</strong><p class="small text-muted mt-1">النقاط والنسب الآلية محجوبة: لم تتحقق بعد عتبات المعايرة البشرية المزدوجة.</p></div>`;
+    const body = `
+      ${trainingLimitHTML()}
+      ${summary}
+      <div class="stack mt-2">
+        ${rep.rows
+          .map(
+            (row) => `<div class="flex spread report-row">
+              <span class="bold">${row.exercise}: ${row.label} ${row.filled ? "" : "(غير مكتمل)"}</span>
+              ${numericAllowed ? `<span class="mono ${row.total >= row.max * 0.7 ? "text-emerald" : "text-amber"}">${row.total.toFixed(2)} / ${row.max.toFixed(2)}</span>` : `<span class="text-muted">feedback فقط</span>`}
+            </div>`
+          )
+          .join("")}
+      </div>
+      <div class="flex mt-2">
+        ${numericAllowed ? `<button class="btn btn-emerald btn-sm" id="dl-csv">⬇️ تنزيل CSV</button><button class="btn btn-ghost btn-sm" id="dl-json">⬇️ تنزيل JSON</button>` : ""}
+        <button class="btn btn-indigo btn-sm" id="btn-print-exam">🖨️ طباعة</button>
+      </div>`;
+    openModal(`📊 تقرير التدريب — ${rep.rows.length} تمارين`, body);
+    if (numericAllowed) {
+      $("#dl-csv")?.addEventListener("click", () =>
+        downloadFile(`boussole4d_${rep.year}_sujet${rep.sujet}.csv`, reportToCSV(rep))
+      );
+      $("#dl-json")?.addEventListener("click", () =>
+        downloadFile(`boussole4d_${rep.year}_sujet${rep.sujet}.json`, JSON.stringify(rep, null, 2))
+      );
+    }
     $("#btn-print-exam")?.addEventListener("click", printCurrentExercise);
   }
 

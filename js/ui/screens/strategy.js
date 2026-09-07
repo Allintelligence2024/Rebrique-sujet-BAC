@@ -1,3 +1,4 @@
+import { assertSimulationEligible } from "../../domain/subjects/official-coverage.js";
 import { setInternalHTML } from "../dom.js";
 
 export function createStrategyScreen(deps) {
@@ -11,6 +12,7 @@ export function createStrategyScreen(deps) {
     showScreen,
     store,
     timers,
+    toast,
     yearObj
   } = deps;
 
@@ -28,15 +30,15 @@ export function createStrategyScreen(deps) {
 
   function pdfFallbackHTML(subject) {
     if (subject?.pdfAvailable && subject.pdf) {
-      return `<iframe id="strategy-pdf" src="${subject.pdf}" title="PDF du sujet" style="width:100%;height:100%;border:0"></iframe>`;
+      return `<iframe class="full-frame" id="strategy-pdf" src="${subject.pdf}" title="PDF du sujet"></iframe>`;
     }
     if (subject?.pdfExternalUrl) {
-      return `<div class="center stack" style="height:100%;justify-content:center;padding:1rem">
+      return `<div class="center stack preview-empty">
       <p class="small text-muted">${subject.pdfNote || "PDF non disponible localement."}</p>
       <a class="btn btn-indigo" href="${subject.pdfExternalUrl}" target="_blank" rel="noopener noreferrer">📄 فتح المصدر الخارجي</a>
     </div>`;
     }
-    return `<div class="center stack" style="height:100%;justify-content:center">
+    return `<div class="center stack preview-empty">
     <p class="small text-muted">${subject?.pdfNote || "لا يوجد PDF متاح لهذه الدورة."}</p>
   </div>`;
   }
@@ -62,7 +64,7 @@ export function createStrategyScreen(deps) {
       <div class="feedback bad mb-2" role="note">وضع المحاكاة الرسمية مقفل افتراضياً، ولا يُفتح إلا بعد جرد جميع الأسئلة والوثائق والسلالم وربطها كاملاً.</div>
       <div class="grid">
         <div class="card card-vign">
-          <div class="flex spread" style="padding:.9rem 1rem;border-bottom:1px solid var(--line);margin-bottom:0">
+          <div class="flex spread strategy-preview-head">
             <span class="text-indigo bold small">📄 الموضوعان الرسميان:</span>
             <div class="flex gap-2">
               ${year.sujets
@@ -73,14 +75,14 @@ export function createStrategyScreen(deps) {
                 .join("")}
             </div>
           </div>
-          <div style="height:60vh;background:var(--bg)" id="pdf-preview-container"></div>
+          <div class="strategy-pdf-container" id="pdf-preview-container"></div>
         </div>
         <div class="grid grid-2">
           ${year.sujets
             .map((subject, index) => calcCard(year, subject, index === 0 ? "indigo" : "purple"))
             .join("")}
         </div>
-        <div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">
+        <div class="card strategy-summary">
           <span class="bold" id="recommendation-text">التوصية المنهجية: …</span>
           <span class="mono text-emerald" id="recommendation-gain"></span>
         </div>
@@ -100,20 +102,23 @@ export function createStrategyScreen(deps) {
       input.addEventListener("input", calculateStrategicScores)
     );
     $$("#view-strategy [data-confirm]").forEach((button) =>
-      button.addEventListener("click", () => confirmChoice(+button.dataset.confirm))
+      button.addEventListener("click", () =>
+        confirmChoice(+button.dataset.confirm, button.dataset.sessionMode || "training")
+      )
     );
   }
 
-  function coverageHTML(report) {
+  function coverageHTML(report, subjectId) {
+    const id = `coverage-s${subjectId}`;
     if (report.simulationEligible) {
-      return `<div class="feedback good small" data-coverage-status="complete">✓ جرد رسمي مكتمل — المحاكاة مؤهلة تقنياً.</div>`;
+      return `<div class="feedback good small" id="${id}" data-coverage-status="complete">✓ جرد رسمي مكتمل — المحاكاة مؤهلة تقنياً.</div>`;
     }
     if (report.inventoryStatus === "missing") {
-      return `<div class="feedback bad small" data-coverage-status="missing">جرد الأسئلة الرسمية غير منجز — المحاكاة ممنوعة.</div>`;
+      return `<div class="feedback bad small" id="${id}" data-coverage-status="missing">جرد الأسئلة الرسمية غير منجز — المحاكاة ممنوعة.</div>`;
     }
     const mapped = `${report.mappedTaskCount}/${report.knownTaskCount}`;
     const scope = report.inventoriedExerciseNumbers.join("، ") || "—";
-    return `<div class="feedback mid small" data-coverage-status="${report.inventoryStatus}">جرد جزئي: رُبطت ${mapped} من التعليمات المعروفة (التمارين: ${scope}). تغطية الموضوع الكاملة غير معروفة؛ المحاكاة ممنوعة.</div>`;
+    return `<div class="feedback mid small" id="${id}" data-coverage-status="${report.inventoryStatus}">جرد جزئي: رُبطت ${mapped} من التعليمات المعروفة (التمارين: ${scope}). تغطية الموضوع الكاملة غير معروفة؛ المحاكاة ممنوعة.</div>`;
   }
 
   function calcCard(year, subject, theme) {
@@ -122,23 +127,26 @@ export function createStrategyScreen(deps) {
     const inputs = subject.exercises
       .map((exercise) => {
         const initial = Math.round(exercise.max * 0.75 * 4) / 4;
-        return `<div class="flex spread"><label class="small" for="strategy-s${subject.id}-e${exercise.number}">ت${exercise.number}: ${exercise.label} (${exercise.max}ن)</label><input class="field calc-input" id="strategy-s${subject.id}-e${exercise.number}" data-subject="${subject.id}" data-exercise="${exercise.number}" data-max="${exercise.max}" type="number" min="0" max="${exercise.max}" step="0.25" value="${initial}" style="width:5rem;text-align:center"></div>`;
+        return `<div class="flex spread"><label class="small" for="strategy-s${subject.id}-e${exercise.number}">ت${exercise.number}: ${exercise.label} (${exercise.max}ن)</label><input class="field calc-input" id="strategy-s${subject.id}-e${exercise.number}" data-subject="${subject.id}" data-exercise="${exercise.number}" data-max="${exercise.max}" type="number" min="0" max="${exercise.max}" step="0.25" value="${initial}"></div>`;
       })
       .join("");
     return `
-    <div class="card stack" style="justify-content:space-between" data-subject-coverage="${coverage.inventoryStatus}" data-simulation-eligible="${coverage.simulationEligible}">
+    <div class="card stack subject-card" data-subject-coverage="${coverage.inventoryStatus}" data-simulation-eligible="${coverage.simulationEligible}">
       <div>
-        <div class="flex spread" style="border-bottom:1px solid var(--line);padding-bottom:.5rem">
+        <div class="flex spread subject-card-head">
           <span class="badge badge-${theme}">الموضوع 0${subject.id}</span>
           <span class="mono small text-dim">${total.toFixed(2)} نقطة</span>
         </div>
-        ${coverageHTML(coverage)}
+        ${coverageHTML(coverage, subject.id)}
         <div class="stack mt-1">${inputs}</div>
-        <div class="flex spread small mt-1" style="background:rgba(99,102,241,.08);border:1px solid var(--line);padding:.5rem .75rem;border-radius:.8rem">
+        <div class="flex spread small mt-1 subject-estimate">
           <span class="bold text-muted">مجموع تقدير الموضوع ${subject.id}:</span><span class="mono text-${theme}" id="s${subject.id}-total"></span>
         </div>
       </div>
-      <button class="btn btn-block btn-${theme}" data-confirm="${subject.id}">تثبيت الموضوع 0${subject.id} وبدء التدريب</button>
+      <div class="stack subject-mode-actions">
+        <button class="btn btn-block btn-${theme}" data-confirm="${subject.id}" data-session-mode="training">ابدأ التدريب الموجّه</button>
+        <button class="btn btn-block btn-ghost" data-confirm="${subject.id}" data-session-mode="simulation"${coverage.simulationEligible ? "" : " disabled"} aria-describedby="coverage-s${subject.id}">ابدأ المحاكاة الرسمية</button>
+      </div>
     </div>`;
   }
 
@@ -195,10 +203,21 @@ export function createStrategyScreen(deps) {
     gain.textContent = `${(best.fraction * 100).toFixed(1)}% ثقة ذاتية`;
   }
 
-  function confirmChoice(sujetNum) {
+  function confirmChoice(sujetNum, mode = "training") {
     if (!store.isSessionActive()) return;
-    store.state.sujetId = sujetNum;
-    store.save();
+    const year = yearObj(store.state.yearId);
+    const subject = year?.sujets.find((item) => item.id === sujetNum);
+    if (!subject) return;
+    if (mode === "simulation") {
+      const report = officialCoverageForSubject(year, subject);
+      try {
+        assertSimulationEligible(report);
+      } catch {
+        toast(`المحاكاة مرفوضة: ${report.blockers.join(", ")}`, "error");
+        return;
+      }
+    }
+    store.activateSubjectMode(sujetNum, mode);
     timers.stopStrategy();
     enterExercise(1);
     $("#global-timer-bar")?.classList.remove("hidden");

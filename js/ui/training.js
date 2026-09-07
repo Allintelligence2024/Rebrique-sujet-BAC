@@ -32,7 +32,7 @@ function gatesCardHTML() {
       <h3 class="mt-0">🚪 البوابتان — أقرّر قبل أن أكتب، لا أثناء</h3>
       <p class="small text-muted mt-0">أدخل تعليمة من موضوع حقيقي (أو اختر مثالاً) وقرّر فوراً: ورقة أم رأس؟ ثم صورة أم فيلم؟</p>
       <input class="field" id="gate-input" placeholder="مثال: فسّر بالاعتماد على معلوماتك والشكل 3…" autocomplete="off" />
-      <div class="flex" id="gate-examples" style="gap:.4rem;flex-wrap:wrap">
+      <div class="flex gate-examples" id="gate-examples">
         ${GATE_EXAMPLES.map((example) => `<button class="btn btn-ghost btn-sm" data-gate-example="${example}">${example}</button>`).join("")}
       </div>
       <div id="gate-verdict" class="small">اكتب تعليمة أعلاه ليظهر الحكم فوراً.</div>
@@ -44,7 +44,7 @@ function mistakesCardHTML() {
     <div class="card stack" id="mistakes-card">
       <h3 class="mt-0">🧯 خمسة أخطاء تكلّف أكثر من الجهل</h3>
       <p class="small text-muted mt-0">أخطاء شكلية شائعة تُفقد نقاطاً مكتسبة — راجعها قبل التسليم.</p>
-      <ol class="small" style="margin:0;padding-inline-start:1.4rem">
+      <ol class="small flush-list">
         <li><b>إجابة بلا رقم سؤال</b> — الأسهل تفادياً والأغلى عند التصحيح.</li>
         <li><b>رقم بلا وحدة</b> — المعطى الكمي غير مكتمل بوحدته.</li>
         <li><b>خاتمة غائبة</b> — كل سؤال «فيلم» ينتظر جملة تجيب حرفياً عن السؤال.</li>
@@ -204,14 +204,14 @@ export function createTrainingController({ $, $$, store, openModal }) {
       drillRemaining > 0 ? `⏱ ${drillRemaining} ث` : "⏱ انتهى الوقت المستهدف — أكمل بلا عقوبة";
     const gate2HTML =
       state.stage === "gate2"
-        ? `<div class="flex" id="drill-gate2" style="gap:.5rem;flex-wrap:wrap">
+        ? `<div class="flex training-choice-row" id="drill-gate2">
              <button class="btn btn-sm" data-choice="image">📷 صورة</button>
              <button class="btn btn-sm" data-choice="film">🎬 فيلم</button>
            </div>`
         : "";
     const gate1HTML =
       state.stage === "gate1"
-        ? `<div class="flex" id="drill-gate1" style="gap:.5rem;flex-wrap:wrap">
+        ? `<div class="flex training-choice-row" id="drill-gate1">
              <button class="btn btn-sm" data-choice="paper">📄 ورقة</button>
              <button class="btn btn-sm" data-choice="head">🧠 رأس</button>
            </div>`
@@ -316,7 +316,7 @@ export function createTrainingController({ $, $$, store, openModal }) {
 
   function openKeycard() {
     const body = `${keycardHTML()}
-      <div class="flex" style="justify-content:flex-end;margin-top:.6rem">
+      <div class="flex print-actions">
         <button class="btn btn-emerald btn-sm" id="keycard-print-btn">🖨️ طباعة (A4)</button>
       </div>`;
     const modal = openModal?.("🖨️ بطاقة المفتاح — نسخة الطباعة", body);
@@ -335,7 +335,7 @@ export function createTrainingController({ $, $$, store, openModal }) {
     return `
       <details class="card stack" id="training-details">
         <summary><b>🔑 تدريب المفتاح</b> — البوابتان، شحذ المفتاح، البطاقة القابلة للطباعة <span class="small text-muted">(للتدريب فقط — لا يُفتح يوم الامتحان)</span></summary>
-        <div class="stack" id="training-section" style="margin-top:.6rem">
+        <div class="stack training-section" id="training-section">
           ${gatesCardHTML()}
           <div class="card stack" id="drill-card">
             <h3 class="mt-0">🔑 شحذ المفتاح — تدريب القرار (${DRILL_ROUND_SECONDS} ثانية)</h3>
@@ -343,7 +343,7 @@ export function createTrainingController({ $, $$, store, openModal }) {
           </div>
           ${mistakesCardHTML()}
           ${store.state.drill.unlocked ? plusCardHTML() : ""}
-          <div class="flex" style="justify-content:center">
+          <div class="flex justify-center">
             <button class="btn btn-ghost btn-sm" id="keycard-open">🖨️ بطاقة المفتاح — طباعة A4</button>
           </div>
         </div>

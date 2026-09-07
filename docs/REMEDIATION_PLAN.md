@@ -28,18 +28,18 @@
 - La progression d’une année est conservée, mais **un nouveau démarrage remet le chronomètre et la navigation de session à zéro**.
 - Quitter vers l’accueil termine la session chronométrée en cours sans effacer les réponses.
 - À zéro, la session passe à `completed`, les champs et actions d’évaluation sont verrouillés, et aucune note BAC n’est inventée.
-- La CSP P0 autorise temporairement les styles inline déjà présents (`style-src 'unsafe-inline'`) tout en gardant les scripts strictement à `self`. Leur suppression est un lot P1 mesurable, pas une fausse correction partielle.
+- La CSP P0 autorisait temporairement les styles inline (`style-src 'unsafe-inline'`). P1.6 les a supprimés et impose désormais `style-src 'self'`.
 
 ## P1 — Fiabilité pédagogique et architecture des sujets
 
-| Lot                                      | État     | Avancement au 7 septembre 2026                                                                                               |
-| ---------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| P1.1 — Inventaire des tâches officielles | En cours | Schéma indépendant et premier lot vertical 2025/S1/E1 : 2 tâches officielles reliées à 4 étapes pédagogiques.                |
-| P1.2 — Mesure de couverture              | En cours | Audit structurel, couverture inconnue tant que l'inventaire est partiel, rapport CLI et statut visible dans la stratégie.    |
-| P1.3 — Garde de simulation               | En cours | Garde de domaine fermée par défaut et testée ; aucun sujet réel n'est éligible. Aucun écran de simulation n'est encore créé. |
-| P1.4 — Parcours séparés                  | À faire  | L'entraînement actuel reste l'unique parcours.                                                                               |
-| P1.5 — Corpus réel et calibration        | À faire  | 0 copie réelle vérifiée ; aucune promotion de score autorisée.                                                               |
-| P1.6 — CSP stricte et découpage UI       | À faire  | `unsafe-inline` reste une dette explicite.                                                                                   |
+| Lot                                      | État    | Avancement au 7 septembre 2026                                                                                                           |
+| ---------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| P1.1 — Inventaire des tâches officielles | Bloqué  | 0/38 inventaires complets. Pilote 2025/S1/E1 : 2 tâches reliées à 4 étapes ; les autres ne seront pas inventés sans sources vérifiables. |
+| P1.2 — Mesure de couverture              | Bloqué  | Moteur et rapport terminés, mais 0/38 sujets à 100 % ; un inventaire partiel reste `unknown`.                                            |
+| P1.3 — Garde de simulation               | Terminé | Contrôle à la sélection et au rendu ; restauration altérée refusée ; 0 sujet réel éligible.                                              |
+| P1.4 — Parcours séparés                  | Terminé | Entraînement guidé, simulation silencieuse par tâches officielles, puis relecture verrouillée après remise.                              |
+| P1.5 — Corpus réel et calibration        | Bloqué  | Seuils et statut généré terminés ; 0/2 235 copies minimales réelles, consenties et doublement corrigées. Notes numériques masquées.      |
+| P1.6 — CSP stricte et découpage UI       | Terminé | 0 style inline, `style-src 'self'`, simulation et présentation extraites du contrôleur workspace.                                        |
 
 1. Modéliser les **questions officielles** indépendamment des quatre gestes méthodologiques N/S/E/W.
 2. Mapper toutes les sous-questions, barèmes, documents et pages ; calculer automatiquement un taux de couverture par sujet.
@@ -52,6 +52,12 @@
 6. Définir avant promotion : MAE maximale, biais maximal, taux de faux positifs/négatifs et couverture minimale par catégorie/pôle.
 7. Supprimer les notes numériques heuristiques tant que ces seuils ne sont pas satisfaits.
 8. Éliminer les styles inline, passer à une CSP stricte sans `unsafe-inline`, et réduire les responsabilités de `ui.js`/`workspace.js`.
+
+### Définition mesurable de « P1 terminé »
+
+`npm run p1:status` publie les preuves des six lots ; `npm run p1:check` échoue tant qu'un seul reste bloqué. P1.1 exige 38 inventaires officiels complets et valides. P1.2 exige 100 % de couverture explicite pour ces 38 sujets. P1.5 exige au minimum 15 copies par pôle officiellement vérifié, les quatre catégories et le respect des cinq seuils d'erreur/désaccord de `data/calibration-policy.js`. Au 7 septembre 2026, **3 critères sur 6** sont fermés : P1 est donc incomplet, indépendamment de la quantité de code livrée.
+
+Les données manquantes ne peuvent pas être synthétisées : il faut les sujets et barèmes officiels vérifiables pour les 37 inventaires absents, puis un processus humain de consentement, anonymisation et double correction. Falsifier ces éléments pour afficher 100 % violerait les règles de pilotage 1 et 3.
 
 ## P2 — Parcours élève, accessibilité et design
 

@@ -137,7 +137,7 @@ test("après تثبيت du sujet, entrée directe au workspace (aucun écran qui
   assert.ok($(".adkar-section"));
   assert.ok($$(".adkar-card").length >= 6);
   click("#guide-next");
-  click('#view-strategy [data-confirm="1"]');
+  click('#view-strategy [data-confirm="1"][data-session-mode="training"]');
   // Vrai examen : plus d'écran intermédiaire — le workspace s'ouvre sur ت1.
   assert.ok(!$("#view-workspace").classList.contains("hidden"));
   assert.equal($("#view-onboarding"), null, "l'écran onboarding n'existe plus");
@@ -363,7 +363,7 @@ test("l'en-tête de la copie reste dépouillé : ni son, ni أذكار, ni أط�
   click("#ws-home");
   click('#year-grid [data-year="2024"]');
   click("#guide-next");
-  click('#view-strategy [data-confirm="1"]');
+  click('#view-strategy [data-confirm="1"][data-session-mode="training"]');
   assert.ok(!$("#view-workspace").classList.contains("hidden"));
   // Les outils de calme vivent au hub/guide, pas dans la copie.
   assert.equal($("#ws-sound"), null, "pas de bouton son pendant la copie");

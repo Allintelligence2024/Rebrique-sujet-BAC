@@ -167,6 +167,9 @@ test("3. Stratégie : calculatrice, couverture officielle et confirmation", () =
   assert.equal(coverageCards[0].dataset.subjectCoverage, "partial");
   assert.equal(coverageCards[0].dataset.simulationEligible, "false");
   assert.equal(coverageCards[1].dataset.subjectCoverage, "missing");
+  const simulationButtons = $$('#view-strategy [data-session-mode="simulation"]');
+  assert.equal(simulationButtons.length, 2);
+  assert.ok(simulationButtons.every((button) => button.disabled));
   assert.match($("#view-strategy").textContent, /المحاكاة ممنوعة/);
 
   // Preview sujet 2
@@ -185,7 +188,8 @@ test("3. Stratégie : calculatrice, couverture officielle et confirmation", () =
   }
 
   // Confirm sujet 1 → entrée directe au workspace (examen, pas de spoiler)
-  click('#view-strategy [data-confirm="1"]');
+  click('#view-strategy [data-confirm="1"][data-session-mode="training"]');
+  assert.equal(store.state.sessionMode, "training");
   assert.ok(!$("#view-workspace").classList.contains("hidden"));
 });
 

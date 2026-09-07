@@ -155,7 +155,7 @@ export function createHubScreen(deps) {
             <button class="btn btn-emerald" id="btn-demo">ابدأ المثال قبل / بعد</button>
           </div>
         </section>
-        <div class="flex" style="justify-content:center">
+        <div class="flex justify-center">
           <button class="btn btn-ghost btn-sm" id="btn-atlas">🔬 أطلس التقنيات</button>
         </div>`
       );
@@ -179,7 +179,7 @@ export function createHubScreen(deps) {
     const header = node("div", { className: "flex spread" });
     header.append(
       node("span", { className: "badge badge-indigo", text: "غير متوفر" }),
-      node("span", { className: "mono bold", text: "—", attrs: { style: "font-size:1.6rem" } })
+      node("span", { className: "mono bold year-number", text: "—" })
     );
     const copy = node("div");
     copy.append(
@@ -223,7 +223,7 @@ export function createHubScreen(deps) {
     const header = node("div", { className: "flex spread" });
     header.append(
       node("span", { className: `badge badge-${y.theme}`, text: y.badge }),
-      node("span", { className: "mono bold", text: cardId, attrs: { style: "font-size:1.6rem" } })
+      node("span", { className: "mono bold year-number", text: cardId })
     );
     const copy = node("div");
     copy.append(
@@ -254,7 +254,7 @@ export function createHubScreen(deps) {
     const header = node("div", { className: "flex spread" });
     header.append(
       node("span", { className: "badge badge-indigo", text: "موضوع رسمي" }),
-      node("span", { className: "mono bold", text: item.id, attrs: { style: "font-size:1.6rem" } })
+      node("span", { className: "mono bold year-number", text: item.id })
     );
     const copy = node("div");
     copy.append(

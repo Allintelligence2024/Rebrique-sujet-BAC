@@ -52,7 +52,8 @@ test("le serveur livre le shell avec CSP et refuse les fichiers privés", async 
   assert.match(home.headers.get("content-type"), /^text\/html/);
   assert.equal(home.headers.get("content-security-policy"), securityHeaders["Content-Security-Policy"]);
   assert.match(home.headers.get("content-security-policy"), /script-src 'self'/);
-  assert.doesNotMatch(home.headers.get("content-security-policy"), /script-src[^;]*unsafe-inline/);
+  assert.match(home.headers.get("content-security-policy"), /style-src 'self'/);
+  assert.doesNotMatch(home.headers.get("content-security-policy"), /(?:script|style)-src[^;]*unsafe-inline/);
 
   for (const path of [
     "/.git/HEAD",

@@ -18,7 +18,7 @@
 - Cause racine : `tests/e2e/responsive.spec.mjs` cliquait `.more-tools summary` puis
   `#ws-report`, alors que `#ws-report` a été **volontairement supprimé** de la copie
   (verrouillé par `tests/all-buttons.test.mjs` : `assert.equal($("#ws-report"), null,
-  "التقرير retiré de la copie")`). Les tests unitaires avaient été mis à jour après l'épure,
+"التقرير retiré de la copie")`). Les tests unitaires avaient été mis à jour après l'épure,
   pas l'e2e.
 - Corrigé dans cette branche : l'e2e pointe désormais sur la modale réellement atteignable
   pendant la copie (`#ws-panic` → تلميح), le `<details class="more-tools">` **vide** qui
@@ -53,7 +53,7 @@
 
 **Technique — ce qui casse si on y touche**
 
-7. **Ne pas renommer les clés `boussole4d.*`** (`boussole4d.v3` = état, `boussole4d.v2` =
+7. **Ne pas renommer les clés `boussole4d.*`** (`boussole4d.v4` = état, `boussole4d.v3` = migration sûre, `boussole4d.v2` =
    migration, `boussole4d.stream` = filière). Une élève qui perd sa progression perd son
    travail. Toute évolution passe par un bump de version + un chemin de migration, comme
    `js/store.js` le fait déjà de v2 vers v3.
@@ -65,7 +65,7 @@
     `tests/service-worker.test.mjs` dérive désormais la liste du disque : si un module manque,
     le test échoue. Ne pas le contourner en éditant le test.
 11. **Ne pas réintroduire un bouton dans la copie sans supprimer le test verrou
-    correspondant** : si l'UI change, les tests unitaires *et* l'e2e changent dans le même
+    correspondant** : si l'UI change, les tests unitaires _et_ l'e2e changent dans le même
     commit. C'est exactement l'oubli qui a rendu `main` rouge.
 
 ## 3. Dette connue, assumée, non prioritaire

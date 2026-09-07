@@ -36,7 +36,7 @@ for (const phone of PHONES) {
     await page.locator("#guide-next").click();
     await expect(page.locator("#view-strategy")).toBeVisible();
     await expectNoHorizontalOverflow(page);
-    await page.locator('#view-strategy [data-confirm="1"]').click();
+    await page.locator('#view-strategy [data-confirm="1"][data-session-mode="training"]').click();
     await expect(page.locator("#view-workspace")).toBeVisible();
     await expectNoHorizontalOverflow(page);
   });
@@ -46,7 +46,7 @@ for (const phone of PHONES) {
     await page.goto("/");
     await page.locator('#year-grid [data-year="2025"]').click();
     await page.locator("#guide-next").click();
-    await page.locator('#view-strategy [data-confirm="1"]').click();
+    await page.locator('#view-strategy [data-confirm="1"][data-session-mode="training"]').click();
     await expect(page.locator("#view-workspace")).toBeVisible();
     await expectNoHorizontalOverflow(page);
     const field = page.locator("#ex-content textarea, #ex-content input.field").first();
@@ -73,7 +73,7 @@ test("[phone] parcours Maths : durée 2 h 30 et deux exercices", async ({ page }
   await expect(page.locator("#global-timer")).toHaveText("02:30:00");
   await expect(page.locator("#view-guide")).toContainText("2س30د");
   await page.locator("#guide-next").click();
-  await page.locator('#view-strategy [data-confirm="1"]').click();
+  await page.locator('#view-strategy [data-confirm="1"][data-session-mode="training"]').click();
   await expect(page.locator("#view-workspace [data-switch]")).toHaveCount(2);
   await expectNoHorizontalOverflow(page);
 });
@@ -94,7 +94,7 @@ test("[phone] tous les états de pages sans débordement (tiroirs, détails, mod
   // Parcours complet jusqu'à la copie
   await page.locator('#year-grid [data-year="2025"]').click();
   await page.locator("#guide-next").click();
-  await page.locator('#view-strategy [data-confirm="1"]').click();
+  await page.locator('#view-strategy [data-confirm="1"][data-session-mode="training"]').click();
   await expect(page.locator("#view-workspace")).toBeVisible();
 
   // Aide de pôle dépliée (portes + canevas + فحص رباعي)

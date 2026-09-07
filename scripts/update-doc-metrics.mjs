@@ -1,9 +1,12 @@
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { CALIBRATION_STATUS } from "../data/calibration-status.js";
+import { CALIBRATION_THRESHOLDS } from "../data/calibration-policy.js";
 import { APP_CONFIG } from "../data/subjects.js";
 import { officialTaskInventoryFor } from "../data/official-tasks.js";
 import { buildOfficialCoverageReport } from "../js/domain/subjects/official-coverage.js";
+import { buildP1Status } from "./report-p1-status.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const read = (path) => readFileSync(join(root, path), "utf8");
@@ -40,12 +43,16 @@ const coverageReports = APP_CONFIG.years.flatMap((year) =>
 const inventoriedSubjects = coverageReports.filter((report) => report.inventoryStatus !== "missing").length;
 const knownOfficialTasks = coverageReports.reduce((sum, report) => sum + report.knownTaskCount, 0);
 const simulationEligibleSubjects = coverageReports.filter((report) => report.simulationEligible).length;
+const requiredCalibrationCopies =
+  CALIBRATION_STATUS.activePoles * CALIBRATION_THRESHOLDS.minimumCopiesPerPole;
+const p1Status = buildP1Status();
 const generated = `<!-- AUTO-METRICS:START -->
 
 - Tests exécutés par \`npm test\` : **${executed}** (comptage statique des \`test()\` déclarés dans \`tests/*.test.mjs\`, boucle \`BENCHMARK_CASES\` comprise)
-- Copies vérifiées dans le hard benchmark : **${benchmarkCorpus}**
+- Copies vérifiées dans le hard benchmark : **${benchmarkCorpus}/${requiredCalibrationCopies} minimum** avant toute promotion numérique
 - Inventaires de tâches officielles commencés : **${inventoriedSubjects}/${coverageReports.length} sujets** (**${knownOfficialTasks} tâches connues**)
 - Sujets éligibles à la simulation : **${simulationEligibleSubjects}**
+- Critères P1 fermés : **${p1Status.completedGates}/${p1Status.totalGates}** — statut global : **${p1Status.complete ? "terminé" : "incomplet"}**
 - Taille de la façade UI (js/ui.js) : **${uiLines} lignes**
 
 <!-- AUTO-METRICS:END -->`;
