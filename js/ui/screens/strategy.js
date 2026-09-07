@@ -1,7 +1,18 @@
 import { setInternalHTML } from "../dom.js";
 
 export function createStrategyScreen(deps) {
-  const { $, $$, enterExercise, goHome, helpers, showScreen, store, timers, yearObj } = deps;
+  const {
+    $,
+    $$,
+    enterExercise,
+    goHome,
+    helpers,
+    officialCoverageForSubject,
+    showScreen,
+    store,
+    timers,
+    yearObj
+  } = deps;
 
   function goToStrategy() {
     renderStrategy(store.state.sujetId || 1);
@@ -48,6 +59,7 @@ export function createStrategyScreen(deps) {
       </header>
 
       <div class="feedback mid mb-2" role="note">هذه حاسبة تقدير ذاتي للتدريب، وليست توقعاً لعلامة البكالوريا.</div>
+      <div class="feedback bad mb-2" role="note">وضع المحاكاة الرسمية مقفل افتراضياً، ولا يُفتح إلا بعد جرد جميع الأسئلة والوثائق والسلالم وربطها كاملاً.</div>
       <div class="grid">
         <div class="card card-vign">
           <div class="flex spread" style="padding:.9rem 1rem;border-bottom:1px solid var(--line);margin-bottom:0">
@@ -64,7 +76,9 @@ export function createStrategyScreen(deps) {
           <div style="height:60vh;background:var(--bg)" id="pdf-preview-container"></div>
         </div>
         <div class="grid grid-2">
-          ${year.sujets.map((subject, index) => calcCard(subject, index === 0 ? "indigo" : "purple")).join("")}
+          ${year.sujets
+            .map((subject, index) => calcCard(year, subject, index === 0 ? "indigo" : "purple"))
+            .join("")}
         </div>
         <div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">
           <span class="bold" id="recommendation-text">التوصية المنهجية: …</span>
@@ -90,8 +104,21 @@ export function createStrategyScreen(deps) {
     );
   }
 
-  function calcCard(subject, theme) {
+  function coverageHTML(report) {
+    if (report.simulationEligible) {
+      return `<div class="feedback good small" data-coverage-status="complete">✓ جرد رسمي مكتمل — المحاكاة مؤهلة تقنياً.</div>`;
+    }
+    if (report.inventoryStatus === "missing") {
+      return `<div class="feedback bad small" data-coverage-status="missing">جرد الأسئلة الرسمية غير منجز — المحاكاة ممنوعة.</div>`;
+    }
+    const mapped = `${report.mappedTaskCount}/${report.knownTaskCount}`;
+    const scope = report.inventoriedExerciseNumbers.join("، ") || "—";
+    return `<div class="feedback mid small" data-coverage-status="${report.inventoryStatus}">جرد جزئي: رُبطت ${mapped} من التعليمات المعروفة (التمارين: ${scope}). تغطية الموضوع الكاملة غير معروفة؛ المحاكاة ممنوعة.</div>`;
+  }
+
+  function calcCard(year, subject, theme) {
     const total = subject.exercises.reduce((sum, exercise) => sum + exercise.max, 0);
+    const coverage = officialCoverageForSubject(year, subject);
     const inputs = subject.exercises
       .map((exercise) => {
         const initial = Math.round(exercise.max * 0.75 * 4) / 4;
@@ -99,12 +126,13 @@ export function createStrategyScreen(deps) {
       })
       .join("");
     return `
-    <div class="card stack" style="justify-content:space-between">
+    <div class="card stack" style="justify-content:space-between" data-subject-coverage="${coverage.inventoryStatus}" data-simulation-eligible="${coverage.simulationEligible}">
       <div>
         <div class="flex spread" style="border-bottom:1px solid var(--line);padding-bottom:.5rem">
           <span class="badge badge-${theme}">الموضوع 0${subject.id}</span>
           <span class="mono small text-dim">${total.toFixed(2)} نقطة</span>
         </div>
+        ${coverageHTML(coverage)}
         <div class="stack mt-1">${inputs}</div>
         <div class="flex spread small mt-1" style="background:rgba(99,102,241,.08);border:1px solid var(--line);padding:.5rem .75rem;border-radius:.8rem">
           <span class="bold text-muted">مجموع تقدير الموضوع ${subject.id}:</span><span class="mono text-${theme}" id="s${subject.id}-total"></span>

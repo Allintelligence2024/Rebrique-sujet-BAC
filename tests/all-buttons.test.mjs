@@ -161,7 +161,14 @@ test("2. Guide : respiration, adkar intégrés et navigation", () => {
   assert.ok(!$("#view-strategy").classList.contains("hidden"));
 });
 
-test("3. Stratégie : calculatrice, onglets sujets, confirmation", () => {
+test("3. Stratégie : calculatrice, couverture officielle et confirmation", () => {
+  const coverageCards = $$("#view-strategy [data-subject-coverage]");
+  assert.equal(coverageCards.length, 2);
+  assert.equal(coverageCards[0].dataset.subjectCoverage, "partial");
+  assert.equal(coverageCards[0].dataset.simulationEligible, "false");
+  assert.equal(coverageCards[1].dataset.subjectCoverage, "missing");
+  assert.match($("#view-strategy").textContent, /المحاكاة ممنوعة/);
+
   // Preview sujet 2
   click('#view-strategy [data-preview="2"]');
   assert.ok($("#strategy-pdf").src.includes("BAC2025_SVT_Sujet2.pdf"));
@@ -217,7 +224,13 @@ test("5. Workspace : test de tous les boutons du header et navigation", () => {
   assert.equal($(".drawer"), null);
 });
 
-test("6. Workspace : résolution de l'exercice 1 et corrigé officiel dépliable", () => {
+test("6. Workspace : tâches officielles visibles et résolution de l'exercice 1", () => {
+  const provenanceText = $$("#ex-content .provenance-note")
+    .map((note) => note.textContent)
+    .join(" ");
+  assert.match(provenanceText, /2025-S1-E1-Q1/);
+  assert.match(provenanceText, /2025-S1-E1-Q2/);
+
   // Pôle N
   $("#fld-N").value = "يلعب ARN دورا في تركيب البروتين";
   click('#ex-content [data-check="N"]');

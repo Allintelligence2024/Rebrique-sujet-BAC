@@ -338,7 +338,7 @@ test("chaque consigne de pôle affiche le verdict des البوابتان avant l
   // donc le سنّ N (كيف تتدخل…) est classé رأس (مسار 1 → 4) par la règle de la fiche.
   const provenance = $$("#ex-content .provenance-note");
   assert.equal(provenance.length, 4, "la provenance doit être visible pour chaque سنّ");
-  assert.ok(provenance.some((note) => /معاد بناؤها/.test(note.textContent)));
+  assert.ok(provenance.some((note) => /معاد بناؤها|مفككة/.test(note.textContent)));
   const chipN = chips.find((chip) => chip.dataset.gateChip === "N");
   assert.ok(chipN, "puce du سنّ N manquante");
   assert.match(chipN.textContent, /رأس/);

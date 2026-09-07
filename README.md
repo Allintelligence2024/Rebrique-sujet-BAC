@@ -64,6 +64,7 @@ Le disclaimers du hard benchmark (0 copie réelle doublement annotée) reste la 
 │   └── icon-192.png / icon-512.png   # icônes de marque (مفتاح الكنز)
 ├── data/
 │   ├── subjects.js                   # ⭐ CONFIG : 2013–2019+2020+2022–2026 SE + 2021–2026 Maths
+│   ├── official-tasks.js             # inventaires explicites des questions BAC, séparés des étapes N/S/E/W
 │   ├── subjects-archive.js           # archive reconstruite 2013–2019 SE (2020 du fichier non branché)
 │   ├── year-2026-se.js               # BAC 2026 علوم تجريبية (énoncé + corrigé eddirasa)
 │   ├── year-2020-se.js               # BAC 2020 علوم تجريبية (énoncé + corrigé eddirasa)
@@ -80,6 +81,7 @@ Le disclaimers du hard benchmark (0 copie réelle doublement annotée) reste la 
 │   ├── method-scripts.js             # scripts de méthode (conseils contextuels)
 │   ├── application/timers.js         # minuteurs globaux et stratégie
 │   ├── domain/evaluation/            # règles d'analyse et d'évaluation (5 modules)
+│   ├── domain/subjects/official-coverage.js # audit de couverture et garde de simulation fermée par défaut
 │   ├── domain/method/gates.js        # البوابتان (ورقة/رأس · صورة/فيلم) + moteur du drill شحذ المفتاح
 │   ├── services/                     # son, reconnaissance vocale et diagnostics récupérables
 │   └── ui/
@@ -89,12 +91,13 @@ Le disclaimers du hard benchmark (0 copie réelle doublement annotée) reste la 
 │       ├── workspace/          # texte, pipeline, brouillon, feedback, rapport
 │       └── reports/            # calcul du rapport, exports CSV/JSON et impression
 ├── tests/                            # tests automatisés (moteur, données, UI, sécurité) — `npm test`
-│   ├── *.test.mjs                    # 23 fichiers, exécutés par `node --test` (compte dans le bloc « Tests »)
+│   ├── *.test.mjs                    # exécutés par `node --test` (compte dans le bloc « Tests »)
 │   ├── e2e/                          # Playwright : mode hors-ligne PWA + responsive mobile (3 viewports) — `npm run test:e2e`
 │   └── hard-benchmark/               # pipeline de copies réelles (corpus : 0 copie)
 ├── scripts/
 │   ├── generate-pwa-version.mjs      # génère js/app-version.js (appelé par `npm run build`)
 │   ├── generate-archive-years.mjs    # régénère data/subjects-archive.js (2013–2020)
+│   ├── report-official-coverage.mjs  # inventaire connu, couverture globale et éligibilité simulation
 │   └── update-doc-metrics.mjs        # régénère / vérifie les métriques du README
 ├── docs/                             # protocoles (accessibilité, handoff)
 ├── server.mjs                        # serveur statique avec CSP — `npm start`
@@ -109,6 +112,16 @@ Le disclaimers du hard benchmark (0 copie réelle doublement annotée) reste la 
 │   └── boussole-4d-standalone.html   # version monofichier (ouvre en file://)
 └── package.json                      # npm start / npm test / npm run build
 ```
+
+### Couverture des tâches officielles (P1 en cours)
+
+Les questions BAC ne sont plus supposées équivalentes aux quatre étapes N/S/E/W. Un inventaire indépendant déclare désormais chaque tâche officielle, sa page, ses références documentaires, son maximum provisoire ou vérifié et ses liens vers les étapes d'entraînement.
+
+```bash
+npm run coverage:official
+```
+
+La couverture globale vaut `unknown` tant que l'inventaire d'un sujet est partiel. Elle n'est jamais transformée artificiellement en 0 % ou 100 %. La simulation est refusée par défaut ; elle ne pourra être autorisée que si tous les exercices, tâches, documents et barèmes sont inventoriés, vérifiés, correctement bornés et mappés. Le premier lot ne couvre que **2025 / sujet 1 / exercice 1** et ne rend donc aucun sujet éligible.
 
 ---
 
@@ -194,9 +207,7 @@ même PDF (pp. 11-21) et croisé avec une seconde source ([eddirasa](https://edd
 | **2** | ت2 (7ن)  | **α-amanitine** (ARN بوليميراز) ودواء **ATAC** ضد الأورام السرطانية         |
 | **2** | ت3 (8ن)  | **غاز الميثان (CH₄)** في الأبقار والمكمل الغذائي **(3-NOP)** (أنزيم M/CoEM) |
 
-Le **barème** adapte les points officiels à la méthode (N/S/E/W, affichés aux élèves sous les noms اقرأ · اجمع · اربط · اختُم), et l'évaluation
-compare les réponses à des **mots-clés normalisés** (via `normalizeArabic`) + inter-dits
-(ex. « بسبب » pénalisé à l'étape S) + longueur minimale.
+Les points N/S/E/W sont une **allocation pédagogique interne**, pas le barème officiel question par question. Le premier inventaire P1 (`data/official-tasks.js`) sépare les deux tâches officielles de 2025/S1/E1 des quatre étapes méthodologiques et marque encore leur découpage de points comme provisoire. L'évaluation compare les réponses à des **mots-clés normalisés** (via `normalizeArabic`), des interdits contextuels et une longueur minimale ; elle ne produit pas de note BAC.
 
 ### Provenance des consignes
 
@@ -314,9 +325,11 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **215** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **220** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0**
-- Taille de la façade UI (js/ui.js) : **406 lignes**
+- Inventaires de tâches officielles commencés : **1/38 sujets** (**2 tâches connues**)
+- Sujets éligibles à la simulation : **0**
+- Taille de la façade UI (js/ui.js) : **417 lignes**
 
 <!-- AUTO-METRICS:END -->
 
@@ -338,8 +351,9 @@ la permission « workflows » à l'App, soit ajouter lui-même cette étape apr�
 npm ci            # installe exactement le lockfile (jamais `npm install` : le lockfile est le contrat)
 npm test          # moteur, banc BAC, intégrité, UI, hard-benchmark, service worker
 npm run test:hard   # intégrité du pipeline de copies réelles
-npm run calibration # métriques moteur ↔ double correction humaine
-npm run build       # génère dist/boussole-4d-standalone.html (dist/ est gitignoré)
+npm run calibration       # métriques moteur ↔ double correction humaine
+npm run coverage:official # couverture connue et garde d'éligibilité simulation
+npm run build             # génère dist/boussole-4d-standalone.html (dist/ est gitignoré)
 ```
 
 ---

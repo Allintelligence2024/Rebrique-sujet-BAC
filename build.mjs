@@ -29,7 +29,12 @@ const jsResult = esbuild.buildSync({
 
 let bundleJs = jsResult.outputFiles[0].text;
 for (const pdf of LOCAL_PDFS) {
-  bundleJs = bundleJs.replaceAll(JSON.stringify(pdf), JSON.stringify(pdfDataUrl(pdf)));
+  const pdfProperty = `pdf: ${JSON.stringify(pdf)}`;
+  if (!bundleJs.includes(pdfProperty))
+    throw new Error(`Standalone build cannot find data property for ${pdf}`);
+  // Replace only the subject's runtime PDF property. The same filename may also
+  // appear as provenance metadata and must not duplicate a multi-megabyte data URL.
+  bundleJs = bundleJs.replace(pdfProperty, `pdf: ${JSON.stringify(pdfDataUrl(pdf))}`);
 }
 
 const css = readText("assets/styles.css");
@@ -64,7 +69,7 @@ for (const reference of forbiddenReferences) {
     throw new Error(`Standalone build still contains external reference: ${reference}`);
 }
 for (const pdf of LOCAL_PDFS) {
-  if (out.includes(`"${pdf}"`)) throw new Error(`Standalone build did not embed ${pdf}`);
+  if (out.includes(`pdf: "${pdf}"`)) throw new Error(`Standalone build did not embed ${pdf}`);
 }
 
 mkdirSync(join(__dirname, "dist"), { recursive: true });

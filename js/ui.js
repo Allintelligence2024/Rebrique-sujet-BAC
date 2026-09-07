@@ -5,6 +5,8 @@
 
 import { APP_CONFIG, examMinutesForYear, normalizeArabic } from "../data/subjects.js";
 import { BROUILLON_MODE_DATA } from "../data/brouillon.js";
+import { officialTaskInventoryFor } from "../data/official-tasks.js";
+import { buildOfficialCoverageReport } from "./domain/subjects/official-coverage.js";
 import { store, helpers } from "./store.js";
 import {
   timers,
@@ -77,6 +79,13 @@ function debounce(fn, wait = 350) {
 
 function yearObj(id) {
   return APP_CONFIG.years.find((y) => y.id === id);
+}
+function officialCoverageForSubject(year, subject) {
+  return buildOfficialCoverageReport({
+    yearId: year?.id,
+    subject,
+    inventory: officialTaskInventoryFor(year?.id, subject?.id)
+  });
 }
 function sujetObj() {
   return yearObj(store.state.yearId)?.sujets.find((s) => s.id === store.state.sujetId);
@@ -278,6 +287,7 @@ strategyScreen = createStrategyScreen({
   enterExercise,
   goHome,
   helpers,
+  officialCoverageForSubject,
   showScreen,
   store,
   timers,
@@ -304,6 +314,7 @@ workspaceController = createWorkspaceController({
   micButton,
   node,
   normalizeArabic,
+  officialTaskInventoryFor,
   openDrawer,
   openModal,
   pdfFallbackHTML,

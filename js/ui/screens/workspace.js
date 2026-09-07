@@ -28,6 +28,7 @@ export function createWorkspaceController(deps) {
     helpers,
     micButton,
     normalizeArabic,
+    officialTaskInventoryFor,
     openDrawer,
     openModal,
     pdfFallbackHTML,
@@ -173,10 +174,21 @@ export function createWorkspaceController(deps) {
     return mayScorePole(pole, store.state.reviewMode);
   }
 
-  function provenanceHTML(pole) {
+  function provenanceHTML(pole, exerciseNumber, poleType) {
+    const inventory = officialTaskInventoryFor(store.state.yearId, store.state.sujetId);
+    const mappedTasks = (inventory?.tasks || []).filter((task) =>
+      (task.trainingMappings || []).some(
+        (mapping) => mapping.exerciseNumber === exerciseNumber && mapping.pole === poleType
+      )
+    );
+    const taskIds = mappedTasks.map((task) => task.id).join("، ");
+    const taskLink = taskIds ? ` — المهمة: ${taskIds}` : "";
     if (pole.bacPromptSource === "official") {
       const page = pole.bacPromptPage ? ` — الصفحة ${pole.bacPromptPage}` : "";
-      return `<p class="small text-emerald provenance-note">✓ تعليمة رسمية من الموضوع${page}</p>`;
+      return `<p class="small text-emerald provenance-note">✓ تعليمة رسمية من الموضوع${page}${taskLink}</p>`;
+    }
+    if (mappedTasks.length) {
+      return `<p class="small text-amber provenance-note">⚠ خطوة تدريبية مفككة من ${taskIds} — ليست تعليمة مستقلة في الموضوع الرسمي.</p>`;
     }
     return `<p class="small text-amber provenance-note">⚠ خطوة تدريبية معاد بناؤها — ليست تعليمة مستقلة في الموضوع الرسمي.</p>`;
   }
@@ -277,7 +289,7 @@ export function createWorkspaceController(deps) {
         <div class="card answer-card">
           <span class="badge badge-${POLE[p].cls}" style="margin-bottom:.6rem">${POLE[p].title}</span>
           <h3 class="bac-consigne">${pole.bacPrompt || pole.prompt}</h3>
-          ${provenanceHTML(pole)}
+          ${provenanceHTML(pole, ex.number, p)}
           <details class="pole-help" id="pole-help-${p}">
             <summary class="small">🧭 توجيه هذه السنّ — القرار، الخطوات، الفحص <span class="text-muted">(انقر للعرض)</span></summary>
             <div style="margin-top:.4rem">
@@ -364,7 +376,7 @@ export function createWorkspaceController(deps) {
     <div id="panel-1" class="card">
       <span class="badge badge-emerald" style="margin-bottom:.6rem">${POLE.N.title} (${fmtPts(ex.poles.N.points)})</span>
       <h3 class="mt-0">${ex.poles.N.bacPrompt || ex.poles.N.prompt}</h3>
-      ${provenanceHTML(ex.poles.N)}
+      ${provenanceHTML(ex.poles.N, ex.number, "N")}
       ${gateChipHTML("N", ex.poles.N)}
       <div class="grid grid-2">
         <input class="field" id="pipeline-var-indep" type="text" placeholder="${ex.poles.N.rule?.hypotheses ? "الفرضية 1: يعود السبب إلى…" : "المتغير المستقل..."}">
@@ -377,7 +389,7 @@ export function createWorkspaceController(deps) {
     <div id="panel-2" class="card hidden">
       <span class="badge badge-indigo" style="margin-bottom:.6rem">${POLE.S.title} (${fmtPts(ex.poles.S.points)})</span>
       <h3 class="mt-0">${ex.poles.S.bacPrompt || ex.poles.S.prompt}</h3>
-      ${provenanceHTML(ex.poles.S)}
+      ${provenanceHTML(ex.poles.S, ex.number, "S")}
       ${gateChipHTML("S", ex.poles.S)}
       <div class="card" style="background:var(--bg)">
         <label class="lbl">1. الشكل (أ): التحليل المقارن بالتوازي</label>
@@ -394,7 +406,7 @@ export function createWorkspaceController(deps) {
     <div id="panel-3" class="card hidden">
       <span class="badge badge-amber" style="margin-bottom:.6rem">${POLE.E.title} (${fmtPts(ex.poles.E.points)})</span>
       <h3 class="mt-0">${ex.poles.E.bacPrompt || ex.poles.E.prompt}</h3>
-      ${provenanceHTML(ex.poles.E)}
+      ${provenanceHTML(ex.poles.E, ex.number, "E")}
       <div class="grid grid-2">
         <input class="field" id="pipeline-hyp1" type="text" placeholder="الفرضية 1">
         <input class="field" id="pipeline-hyp2" type="text" placeholder="الفرضية 2">
@@ -407,7 +419,7 @@ export function createWorkspaceController(deps) {
     <div id="panel-4" class="card hidden">
       <span class="badge badge-purple" style="margin-bottom:.6rem">${POLE.W.title} (${fmtPts(ex.poles.W.points)})</span>
       <h3 class="mt-0">${ex.poles.W.bacPrompt || ex.poles.W.prompt}</h3>
-      ${provenanceHTML(ex.poles.W)}
+      ${provenanceHTML(ex.poles.W, ex.number, "W")}
       <span class="lbl">📦 بنك العناصر البيوكيميائية:</span>
       <div class="bank" id="blocks-bank"></div>
       <div class="grid grid-2 mt-2">

@@ -1,6 +1,9 @@
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { APP_CONFIG } from "../data/subjects.js";
+import { officialTaskInventoryFor } from "../data/official-tasks.js";
+import { buildOfficialCoverageReport } from "../js/domain/subjects/official-coverage.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const read = (path) => readFileSync(join(root, path), "utf8");
@@ -25,10 +28,24 @@ const executed = declared - loopDeclarations + benchmarkCases;
 
 const benchmarkCorpus = JSON.parse(read("tests/hard-benchmark/cases.json")).cases.length;
 const uiLines = read("js/ui.js").trimEnd().split("\n").length;
+const coverageReports = APP_CONFIG.years.flatMap((year) =>
+  (year.sujets || []).map((subject) =>
+    buildOfficialCoverageReport({
+      yearId: year.id,
+      subject,
+      inventory: officialTaskInventoryFor(year.id, subject.id)
+    })
+  )
+);
+const inventoriedSubjects = coverageReports.filter((report) => report.inventoryStatus !== "missing").length;
+const knownOfficialTasks = coverageReports.reduce((sum, report) => sum + report.knownTaskCount, 0);
+const simulationEligibleSubjects = coverageReports.filter((report) => report.simulationEligible).length;
 const generated = `<!-- AUTO-METRICS:START -->
 
 - Tests exécutés par \`npm test\` : **${executed}** (comptage statique des \`test()\` déclarés dans \`tests/*.test.mjs\`, boucle \`BENCHMARK_CASES\` comprise)
 - Copies vérifiées dans le hard benchmark : **${benchmarkCorpus}**
+- Inventaires de tâches officielles commencés : **${inventoriedSubjects}/${coverageReports.length} sujets** (**${knownOfficialTasks} tâches connues**)
+- Sujets éligibles à la simulation : **${simulationEligibleSubjects}**
 - Taille de la façade UI (js/ui.js) : **${uiLines} lignes**
 
 <!-- AUTO-METRICS:END -->`;

@@ -32,6 +32,15 @@
 
 ## P1 — Fiabilité pédagogique et architecture des sujets
 
+| Lot                                      | État     | Avancement au 7 septembre 2026                                                                                               |
+| ---------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| P1.1 — Inventaire des tâches officielles | En cours | Schéma indépendant et premier lot vertical 2025/S1/E1 : 2 tâches officielles reliées à 4 étapes pédagogiques.                |
+| P1.2 — Mesure de couverture              | En cours | Audit structurel, couverture inconnue tant que l'inventaire est partiel, rapport CLI et statut visible dans la stratégie.    |
+| P1.3 — Garde de simulation               | En cours | Garde de domaine fermée par défaut et testée ; aucun sujet réel n'est éligible. Aucun écran de simulation n'est encore créé. |
+| P1.4 — Parcours séparés                  | À faire  | L'entraînement actuel reste l'unique parcours.                                                                               |
+| P1.5 — Corpus réel et calibration        | À faire  | 0 copie réelle vérifiée ; aucune promotion de score autorisée.                                                               |
+| P1.6 — CSP stricte et découpage UI       | À faire  | `unsafe-inline` reste une dette explicite.                                                                                   |
+
 1. Modéliser les **questions officielles** indépendamment des quatre gestes méthodologiques N/S/E/W.
 2. Mapper toutes les sous-questions, barèmes, documents et pages ; calculer automatiquement un taux de couverture par sujet.
 3. Refuser le mode simulation si la couverture officielle n’atteint pas 100 %.

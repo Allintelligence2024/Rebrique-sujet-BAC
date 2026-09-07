@@ -54,6 +54,16 @@ for (const phone of PHONES) {
   });
 }
 
+test("[phone] la couverture partielle garde la simulation verrouillée", async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 800 });
+  await page.goto("/");
+  await page.locator('#year-grid [data-year="2025"]').click();
+  await page.locator("#guide-next").click();
+  await expect(page.locator('[data-subject-coverage="partial"]')).toHaveCount(1);
+  await expect(page.locator('[data-simulation-eligible="true"]')).toHaveCount(0);
+  await expect(page.locator("#view-strategy")).toContainText("المحاكاة ممنوعة");
+});
+
 test("[phone] parcours Maths : durée 2 h 30 et deux exercices", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
   await page.goto("/");
