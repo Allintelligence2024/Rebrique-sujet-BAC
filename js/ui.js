@@ -3,7 +3,7 @@
    Facade stable : init, renderHub, notify, voiceEngine
    ============================================================ */
 
-import { APP_CONFIG, normalizeArabic } from "../data/subjects.js";
+import { APP_CONFIG, examMinutesForYear, normalizeArabic } from "../data/subjects.js";
 import { BROUILLON_MODE_DATA } from "../data/brouillon.js";
 import { store, helpers } from "./store.js";
 import {
@@ -188,8 +188,7 @@ export function renderHub() {
 function goHome() {
   timers.stopAll();
   soundEngine.stop();
-  store.state.sessionActive = false;
-  store.save();
+  if (store.isSessionActive()) store.leaveSession();
   renderHub();
   showScreen("view-hub");
   const bar = $("#global-timer-bar");
@@ -199,10 +198,12 @@ function goHome() {
 /* ===================== 2) GUIDE ===================== */
 function startSession(yearId) {
   const y = yearObj(yearId);
-  store.enterSession(yearId, y.sujets[0].id);
+  if (!y) return;
+  store.enterSession(yearId, y.sujets[0].id, examMinutesForYear(y) * 60, APP_CONFIG.strategyMinutes * 60);
   renderGuide(y);
   timers.startGlobal();
   showScreen("view-guide");
+  $("#global-timer-bar")?.classList.remove("hidden");
 }
 
 function renderGuide(year) {
@@ -217,8 +218,10 @@ function pdfFallbackHTML(subject) {
   return strategyScreen.pdfFallbackHTML(subject);
 }
 
-function timeFor(points) {
-  return points >= 8 ? "1س 45د" : points >= 5 ? "45 دقيقة" : "1س 15د";
+function formatDuration(minutes) {
+  const hours = Math.floor(minutes / 60);
+  const rest = minutes % 60;
+  return rest ? `${hours}س${String(rest).padStart(2, "0")}د` : `${hours}س`;
 }
 
 /* ===================== 5) WORKSPACE ===================== */
@@ -247,6 +250,8 @@ hubScreen = createHubScreen({
   closeModal,
   cycleSound,
   enterExercise,
+  examMinutesForYear,
+  formatDuration,
   openAdkar,
   openAtlas,
   openModal,
@@ -256,7 +261,17 @@ hubScreen = createHubScreen({
   training: createTrainingController({ $, $$, store, openModal }),
   yearObj
 });
-guideScreen = createGuideScreen({ $, $$, adkarHTML, goHome, goToStrategy, store, openModal });
+guideScreen = createGuideScreen({
+  $,
+  $$,
+  adkarHTML,
+  examMinutesForYear,
+  formatDuration,
+  goHome,
+  goToStrategy,
+  store,
+  openModal
+});
 strategyScreen = createStrategyScreen({
   $,
   $$,
@@ -322,16 +337,16 @@ export function init() {
   if (!bar) {
     bar = document.createElement("div");
     bar.id = "global-timer-bar";
-    bar.className = "hidden";
-    bar.style.cssText =
-      "position:sticky;top:0;z-index:40;display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.5rem 1.5rem;background:rgba(2,6,23,.9);border-bottom:1px solid var(--line);font-size:.8rem";
+    bar.className = "global-timer-bar hidden";
     const timerLabel = node("span", {
-      className: "text-emerald bold",
-      text: "● وقت الامتحان",
-      attrs: { style: "display:flex;align-items:center;gap:.5rem" }
+      className: "global-timer-label text-emerald bold",
+      text: "● وقت الجلسة"
     });
-    const timerValue = node("span", { className: "mono bold", attrs: { style: "color:#fb7185" } });
-    timerValue.append("⏳ ", node("span", { text: "04:30:00", attrs: { id: "global-timer" } }));
+    const timerValue = node("span", { className: "global-timer-value mono bold" });
+    timerValue.append(
+      "⏳ ",
+      node("span", { text: helpers.fmt(store.state.globalRemaining), attrs: { id: "global-timer" } })
+    );
     replaceContent(bar, [timerLabel, timerValue]);
     document.body.prepend(bar);
   }
@@ -340,6 +355,17 @@ export function init() {
     const t = $("#global-timer");
     if (t) t.textContent = helpers.fmt(store.state.globalRemaining);
     if (which === "strategy") strategyScreen.updateStrategyTimer();
+    if (which === "global" && store.state.sessionStatus === "completed") {
+      if (store.state.activeScreen === "view-workspace") {
+        workspaceController.handleSessionCompletion("time-expired");
+      } else {
+        timers.stopAll();
+        renderHub();
+        showScreen("view-hub");
+        bar.classList.add("hidden");
+        toast("انتهى وقت الجلسة وحُفظ التقدم.", "warn");
+      }
+    }
   };
 
   if (!$("#toast-zone")) {
@@ -352,19 +378,28 @@ export function init() {
     document.body.appendChild(toastZone);
   }
 
-  if (
-    store.state.sessionActive &&
-    store.state.activeScreen === "view-workspace" &&
-    sujetObj() &&
-    exDef(store.state.activeExercise)
-  ) {
+  const activeYear = yearObj(store.state.yearId);
+  const canRestore = store.isSessionActive() && activeYear && sujetObj();
+  if (canRestore) {
     timers.startGlobal();
-    renderWorkspace();
-    showScreen("view-workspace");
     bar.classList.remove("hidden");
+    if (store.state.activeScreen === "view-guide") {
+      renderGuide(activeYear);
+      showScreen("view-guide");
+    } else if (store.state.activeScreen === "view-strategy") {
+      strategyScreen.restoreStrategy();
+    } else if (store.state.activeScreen === "view-workspace" && exDef(store.state.activeExercise)) {
+      renderWorkspace();
+      showScreen("view-workspace");
+    } else {
+      renderGuide(activeYear);
+      showScreen("view-guide");
+    }
   } else {
+    if (store.isSessionActive()) store.leaveSession();
     renderHub();
     showScreen("view-hub");
+    bar.classList.add("hidden");
   }
 }
 

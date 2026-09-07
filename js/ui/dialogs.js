@@ -59,7 +59,10 @@ export function createDialogManager({ $, $$ }) {
     overlay.append(dialog);
     modal = overlay;
     document.body.append(overlay);
-    $$("[data-close]", modal).forEach((button) => button.addEventListener("click", closeModal));
+    $$("[data-close]", dialog).forEach((button) => button.addEventListener("click", closeModal));
+    overlay.addEventListener("click", (event) => {
+      if (event.target === overlay) closeModal();
+    });
     modal.addEventListener("keydown", (event) => trapFocus(event, modal, closeModal));
     $("[data-close='btn']", modal)?.focus();
     return modal;

@@ -133,6 +133,14 @@ test("validateCase / generateId / detectLLM fonctionnent hors cases.json", async
   );
   assert.equal(generateId([], "2025", 1, 1, "N"), "2025-S1-E1-N-001");
   assert.equal(generateId([valid], "2025", 1, 1, "N"), "2025-S1-E1-N-002");
+  const maths = {
+    ...valid,
+    id: "2025-m-S1-E1-N-001",
+    year: "2025-m"
+  };
+  assert.deepEqual(validateCase(maths, 1), []);
+  assert.equal(generateId([], "2025-m", 1, 1, "N"), "2025-m-S1-E1-N-001");
+  assert.ok(validateCase(maths, 0.25).includes("score annotateur 1 invalide"));
   assert.ok(detectLLM("En conclusion, le mécanisme est clair.").includes("En conclusion"));
   assert.equal(detectLLM("نستنتج أن التدرج البروتوني شرط أساسي.").length, 0);
 });

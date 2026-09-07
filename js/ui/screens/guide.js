@@ -10,7 +10,7 @@
 import { setInternalHTML } from "../dom.js";
 
 export function createGuideScreen(deps) {
-  const { $, adkarHTML, goHome, goToStrategy } = deps;
+  const { $, adkarHTML, examMinutesForYear, formatDuration, goHome, goToStrategy } = deps;
 
   function renderGuide(y) {
     setInternalHTML(
@@ -22,7 +22,7 @@ export function createGuideScreen(deps) {
           <button class="btn btn-rose btn-sm" id="guide-exit">✕ إلغاء والعودة</button>
           <div class="brand-icon">🌿</div>
           <div><h2 id="guide-title">ساس الهدوء والتركيز المنهجي</h2>
-          <p class="small text-emerald">جلسة التأطير النفسي والتنفس الموجه — بكالوريا ${y.id}</p></div>
+          <p class="small text-emerald">جلسة التأطير النفسي والتنفس الموجه — بكالوريا ${y.calendarYear || y.id}</p></div>
         </div>
       </header>
 
@@ -42,8 +42,10 @@ export function createGuideScreen(deps) {
           <span class="small text-muted"> — سنّ واحدة في كل مرة، والقرار قبل الكتابة.</span></p>
         </div>
         <div class="card center stack">
-          <p class="small text-muted mt-0 mb-0">خطتك الآن: <b>25 د</b> تصفح الموضوع وحاسبة الاختيار ←
-          ثم التمارين سنّاً سنّاً ← و<b>10 ثوانٍ</b> من الفحص قبل كل سؤال موالي.</p>
+          <p class="small text-muted mt-0 mb-0">مدة الاختبار الرسمية لهذه الشعبة: <b>${formatDuration(
+            examMinutesForYear(y)
+          )}</b>. خطتك هنا: <b>25 د</b> لتصفح الموضوع وتقدير الثقة، ثم تدريب منهجي سنّاً سنّاً.</p>
+          <p class="small text-amber mt-0 mb-0">هذا التدريب جزئي ولا يعرض جميع تعليمات الموضوع الرسمي.</p>
         </div>
         <div class="flex" style="justify-content:flex-end">
           <button class="btn btn-emerald" id="guide-next">♞ أنا هادئ ومستعد | تصفح PDF وحاسبة الاختيار (25 دقيقة)</button>

@@ -126,6 +126,8 @@ test("l'ouverture des أدعية وأذكار الامتحان affiche les invoc
   assert.ok($(".modal"));
   assert.match($(".modal").textContent, /أدعية وأذكار/);
   assert.match($(".modal").textContent, /سورة طه/);
+  $(".modal .small").dispatchEvent(new dom.window.MouseEvent("click", { bubbles: true }));
+  assert.ok($(".modal"), "un clic dans le contenu ne doit pas fermer la modale");
   click('[data-close="ok"]');
   assert.equal($(".modal"), null);
 });
@@ -334,6 +336,9 @@ test("chaque consigne de pôle affiche le verdict des البوابتان avant l
   }
   // Données réelles 2025 S1 E1 : aucune consigne ne cite de سند documentaire,
   // donc le سنّ N (كيف تتدخل…) est classé رأس (مسار 1 → 4) par la règle de la fiche.
+  const provenance = $$("#ex-content .provenance-note");
+  assert.equal(provenance.length, 4, "la provenance doit être visible pour chaque سنّ");
+  assert.ok(provenance.some((note) => /معاد بناؤها/.test(note.textContent)));
   const chipN = chips.find((chip) => chip.dataset.gateChip === "N");
   assert.ok(chipN, "puce du سنّ N manquante");
   assert.match(chipN.textContent, /رأس/);
@@ -367,7 +372,23 @@ test("l'en-tête de la copie reste dépouillé : ni son, ni أذكار, ni أط�
   // Le résumé de l'exercice ne s'affiche pas en tête de copie (vrai examen).
   assert.equal($("#ws-desc"), null, "pas de spoiler du contenu en haut de la copie");
   // L'essentiel reste : sortie, tlmih (valve anti-stress), مسودة, موضوع PDF.
-  for (const id of ["#ws-home", "#ws-panic", "#ws-brouillon", "#ws-pdf"]) {
+  for (const id of ["#ws-home", "#ws-panic", "#ws-brouillon", "#ws-pdf", "#ws-finish"]) {
     assert.ok($(id), `outil essentiel manquant: ${id}`);
   }
+});
+
+test("la fin manuelle sauvegarde puis verrouille les contrôles de réponse", async () => {
+  const { store } = await import("../js/store.js");
+  $("#fld-N").value = "réponse conservée à la remise";
+  click("#ws-finish");
+  assert.ok($("#finish-session-yes"));
+  click("#finish-session-yes");
+
+  assert.equal(store.state.sessionStatus, "completed");
+  assert.equal(store.state.sessionEndReason, "manual");
+  assert.equal(store.exercise("2024", 1, 1).text.N, "réponse conservée à la remise");
+  assert.equal($("#fld-N").disabled, true);
+  assert.ok($("#global-timer-bar").classList.contains("hidden"));
+  assert.ok($("#session-complete-notice"));
+  assert.match($(".modal").textContent, /لا تُعرض علامة بكالوريا/);
 });

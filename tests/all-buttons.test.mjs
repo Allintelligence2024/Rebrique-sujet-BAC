@@ -81,7 +81,7 @@ test("1. Hub : test des boutons d'accueil, adkar, atlas, sons et années", () =>
   assert.equal($('#year-grid [data-year="2024"]').disabled, false);
   assert.equal($('#year-grid [data-year="2023"]').disabled, false);
 
-  // Une seule action par carte-sujet : démarrer l'examen (pas de double bouton).
+  // Une seule action par carte-sujet : démarrer l'entraînement (pas de double bouton).
   assert.equal($('#year-grid [data-hub-year="2025"]').querySelectorAll("button").length, 1);
   assert.equal($("#year-grid [data-quick-year]"), null, "l'accès rapide séparé est supprimé");
   click('#year-grid [data-year="2025"]');
@@ -123,6 +123,14 @@ test("1c. Le bouton filière affiche Maths puis le trou تقني رياضي", ()
   assert.ok($('#year-grid [data-hub-year="2013"]'));
   const links = $$('#year-grid [data-kind="consult"] a[href*="dzexams.com/ar/annales/"]');
   assert.equal(links.length, 9, "filière Maths : 8 principales 2013–2020 + 2017 exceptionnelle");
+
+  click('#year-grid [data-year="2026-m"]');
+  assert.match($("#view-guide").textContent, /2س30د/);
+  assert.equal($("#global-timer").textContent, "02:30:00");
+  click("#guide-next");
+  assert.doesNotMatch($("#view-strategy").textContent, /110 د/);
+  click("#strategy-exit");
+
   click("#btn-stream-fab");
   assert.match($("#stream-fab-label").textContent, /تقني رياضي/);
   assert.equal($$('#year-grid [data-kind="gap"]').length, 1);
@@ -174,14 +182,18 @@ test("3. Stratégie : calculatrice, onglets sujets, confirmation", () => {
   assert.ok(!$("#view-workspace").classList.contains("hidden"));
 });
 
-test("4. L'écran onboarding (spoiler du contenu) n'existe plus ; verrou examen actif", () => {
+test("4. L'écran onboarding n'existe plus et les exercices restent librement accessibles", () => {
   assert.equal($("#view-onboarding"), null, "view-onboarding supprimé du DOM");
-  assert.equal($("#ws-onb"), null, "le bouton vers le spoiler est retiré du workspace");
-  // Sans réponse dans ت1, le changement d'exercice est refusé (comportement examen).
-  const toastsBefore = $("#toast-zone").children.length;
+  assert.equal($("#ws-onb"), null, "le bouton vers l'ancien écran est retiré du workspace");
   click('#view-workspace [data-switch="2"]');
+  assert.equal(
+    store.state.activeExercise,
+    2,
+    "le changement d'exercice ne doit pas être artificiellement verrouillé"
+  );
   assert.ok(!$("#view-workspace").classList.contains("hidden"));
-  assert.ok($("#toast-zone").children.length > toastsBefore, "un avertissement de verrou est affiché");
+  click('#view-workspace [data-switch="1"]');
+  assert.equal(store.state.activeExercise, 1);
 });
 
 test("5. Workspace : test de tous les boutons du header et navigation", () => {

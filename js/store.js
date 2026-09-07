@@ -6,9 +6,11 @@ import { reportDiagnostic } from "./services/diagnostics.js";
 
 const KEY = "boussole4d.v3";
 const LEGACY_KEY = "boussole4d.v2";
-export const CURRENT_SCHEMA_VERSION = 2;
+export const CURRENT_SCHEMA_VERSION = 3;
+export const YEAR_ID_PATTERN = /^\d{4}(?:-[a-z]{1,3})?$/;
 const POLES = ["N", "S", "E", "W"];
 const SCREENS = new Set(["view-hub", "view-guide", "view-strategy", "view-workspace"]);
+const SESSION_STATUSES = new Set(["idle", "active", "completed"]);
 
 const isRecord = (value) => !!value && typeof value === "object" && !Array.isArray(value);
 const asString = (value) => (typeof value === "string" ? value : "");
@@ -30,12 +32,18 @@ function defaultState() {
   return {
     schemaVersion: CURRENT_SCHEMA_VERSION,
     activeScreen: "view-hub",
+    sessionStatus: "idle",
+    // Kept as a normalized compatibility flag for older consumers.
     sessionActive: false,
+    sessionStartedAt: null,
+    sessionCompletedAt: null,
+    sessionEndReason: null,
     reviewMode: false,
     yearId: "2025",
     sujetId: 1,
     activeExercise: 1,
     activeStep: 1,
+    globalDuration: 270 * 60,
     globalRemaining: 270 * 60,
     globalLastTick: null,
     strategyRemaining: 25 * 60,
@@ -77,7 +85,7 @@ function sanitizeProgress(value) {
   const progress = {};
   if (!isRecord(value)) return progress;
   for (const [yearId, subjects] of Object.entries(value)) {
-    if (!/^\d{4}$/.test(yearId) || !isRecord(subjects)) continue;
+    if (!YEAR_ID_PATTERN.test(yearId) || !isRecord(subjects)) continue;
     progress[yearId] = {};
     for (const [sujetId, exercises] of Object.entries(subjects)) {
       if (!/^[1-9]\d*$/.test(sujetId) || !isRecord(exercises)) continue;
@@ -96,10 +104,22 @@ export function migrateState(candidate) {
   if (!isRecord(candidate)) throw new Error("state is not an object");
   const version = candidate.schemaVersion;
   if (version === undefined && isRecord(candidate.progress)) {
-    // v3 introduced year-keyed progress but did not persist a schema version.
-    return { ...candidate, schemaVersion: CURRENT_SCHEMA_VERSION, reviewMode: false };
+    // The first year-keyed store did not persist a schema version.
+    return {
+      ...candidate,
+      schemaVersion: CURRENT_SCHEMA_VERSION,
+      reviewMode: false,
+      sessionStatus: candidate.sessionActive === true ? "active" : "idle"
+    };
   }
-  if (version === 1) return { ...candidate, schemaVersion: 2, reviewMode: false };
+  if (version === 1 || version === 2) {
+    return {
+      ...candidate,
+      schemaVersion: CURRENT_SCHEMA_VERSION,
+      reviewMode: candidate.reviewMode === true,
+      sessionStatus: candidate.sessionActive === true ? "active" : "idle"
+    };
+  }
   if (version === CURRENT_SCHEMA_VERSION) return candidate;
   if (typeof version === "number" && version > CURRENT_SCHEMA_VERSION) {
     throw new Error(`unsupported future schema ${version}`);
@@ -124,13 +144,30 @@ export function validateState(candidate) {
   }
   const state = defaultState();
   state.activeScreen = SCREENS.has(candidate.activeScreen) ? candidate.activeScreen : state.activeScreen;
-  state.sessionActive = candidate.sessionActive === true;
+  state.sessionStatus = SESSION_STATUSES.has(candidate.sessionStatus)
+    ? candidate.sessionStatus
+    : candidate.sessionActive === true
+      ? "active"
+      : "idle";
+  state.sessionActive = state.sessionStatus === "active";
+  state.sessionStartedAt = asFiniteNumber(candidate.sessionStartedAt, null, 0);
+  state.sessionCompletedAt = asFiniteNumber(candidate.sessionCompletedAt, null, 0);
+  state.sessionEndReason = ["manual", "time-expired", "left"].includes(candidate.sessionEndReason)
+    ? candidate.sessionEndReason
+    : null;
   state.reviewMode = candidate.reviewMode === true;
-  state.yearId = /^\d{4}$/.test(candidate.yearId) ? candidate.yearId : state.yearId;
+  state.yearId = YEAR_ID_PATTERN.test(candidate.yearId) ? candidate.yearId : state.yearId;
   state.sujetId = asFiniteNumber(candidate.sujetId, state.sujetId, 1, 9);
   state.activeExercise = asFiniteNumber(candidate.activeExercise, state.activeExercise, 1, 9);
   state.activeStep = asFiniteNumber(candidate.activeStep, state.activeStep, 1, 4);
-  state.globalRemaining = asFiniteNumber(candidate.globalRemaining, state.globalRemaining, 0, 24 * 60 * 60);
+  const inferredDuration = state.yearId.endsWith("-m") ? 150 * 60 : state.globalDuration;
+  state.globalDuration = asFiniteNumber(candidate.globalDuration, inferredDuration, 60, 24 * 60 * 60);
+  state.globalRemaining = asFiniteNumber(
+    candidate.globalRemaining,
+    state.globalDuration,
+    0,
+    state.globalDuration
+  );
   state.globalLastTick = asFiniteNumber(candidate.globalLastTick, null, 0);
   state.strategyRemaining = asFiniteNumber(
     candidate.strategyRemaining,
@@ -184,6 +221,7 @@ export const store = {
     }
     this.loaded = true;
     this._reconcileTimers();
+    this.save();
     return this.state;
   },
 
@@ -212,17 +250,33 @@ export const store = {
       const elapsed = Math.max(0, Math.floor((now - this.state.globalLastTick) / 1000));
       this.state.globalRemaining = Math.max(0, this.state.globalRemaining - elapsed);
       this.state.globalLastTick = now;
+      if (this.state.globalRemaining === 0) this._complete("time-expired", now);
     }
     if (this.state.strategyRunning && this.state.strategyLastTick) {
       const elapsed = Math.max(0, Math.floor((now - this.state.strategyLastTick) / 1000));
       this.state.strategyRemaining = Math.max(0, this.state.strategyRemaining - elapsed);
       this.state.strategyLastTick = now;
+      if (this.state.strategyRemaining === 0) {
+        this.state.strategyRunning = false;
+        this.state.strategyLastTick = null;
+      }
     }
+  },
+
+  _complete(reason, completedAt = Date.now()) {
+    this.state.sessionStatus = "completed";
+    this.state.sessionActive = false;
+    this.state.sessionCompletedAt = completedAt;
+    this.state.sessionEndReason = reason;
+    this.state.globalLastTick = null;
+    this.state.strategyRunning = false;
+    this.state.strategyLastTick = null;
   },
 
   tickGlobal(seconds) {
     this.state.globalRemaining = Math.max(0, this.state.globalRemaining - seconds);
     this.state.globalLastTick = Date.now();
+    if (this.state.globalRemaining === 0) this._complete("time-expired");
   },
   tickStrategy(seconds) {
     this.state.strategyRemaining = Math.max(0, this.state.strategyRemaining - seconds);
@@ -231,6 +285,7 @@ export const store = {
 
   exercise(yearId, sujetId, exNum) {
     if (!yearId) throw new Error("yearId est requis pour isoler la progression BAC.");
+    if (!YEAR_ID_PATTERN.test(yearId)) throw new Error(`yearId invalide: ${String(yearId)}`);
     if (!this.state.progress[yearId]) this.state.progress[yearId] = {};
     if (!this.state.progress[yearId][sujetId]) this.state.progress[yearId][sujetId] = {};
     if (!this.state.progress[yearId][sujetId][exNum])
@@ -238,12 +293,46 @@ export const store = {
     return this.state.progress[yearId][sujetId][exNum];
   },
 
-  enterSession(yearId, sujetId) {
+  enterSession(yearId, sujetId, durationSeconds = 270 * 60, strategySeconds = 25 * 60) {
+    if (!YEAR_ID_PATTERN.test(yearId)) throw new Error(`yearId invalide: ${String(yearId)}`);
+    const duration = asFiniteNumber(durationSeconds, 270 * 60, 60, 24 * 60 * 60);
+    const strategyDuration = asFiniteNumber(strategySeconds, 25 * 60, 0, 60 * 60);
+    const now = Date.now();
     this.state.yearId = yearId;
     this.state.sujetId = sujetId || 1;
+    this.state.activeExercise = 1;
+    this.state.activeStep = 1;
+    this.state.activeScreen = "view-guide";
+    this.state.sessionStatus = "active";
     this.state.sessionActive = true;
-    this.state.globalLastTick = Date.now();
+    this.state.sessionStartedAt = now;
+    this.state.sessionCompletedAt = null;
+    this.state.sessionEndReason = null;
+    this.state.globalDuration = duration;
+    this.state.globalRemaining = duration;
+    this.state.globalLastTick = now;
+    this.state.strategyRemaining = strategyDuration;
+    this.state.strategyLastTick = null;
+    this.state.strategyRunning = false;
     this.save();
+  },
+  finishSession(reason = "manual") {
+    if (this.state.sessionStatus === "completed") return false;
+    this._complete(reason === "time-expired" ? "time-expired" : "manual");
+    this.save();
+    return true;
+  },
+  leaveSession() {
+    this.state.sessionStatus = "idle";
+    this.state.sessionActive = false;
+    this.state.sessionEndReason = "left";
+    this.state.globalLastTick = null;
+    this.state.strategyRunning = false;
+    this.state.strategyLastTick = null;
+    this.save();
+  },
+  isSessionActive() {
+    return this.state.sessionStatus === "active" && this.state.sessionActive === true;
   },
   setReviewMode(enabled) {
     this.state.reviewMode = enabled === true;

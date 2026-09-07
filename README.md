@@ -14,11 +14,11 @@
 
 Parcours en 5 étapes pensé pour la **gestion du stress** et la **méthode** :
 
-1. **Hub** — une seule action par carte-sujet : **▶ ابدأ الموضوع (امتحان كامل ≈ 3س30د)**. Sélecteur de filiale en haut, aucun texte d'introduction, aucun sélecteur de thème (apparence fixe), aucun raccourci de session courte.
-2. **Sérénité** _(parcours guidé uniquement)_ — volontairement dépouillé : respiration, rappel d'une ligne du مفتاح (اقرأ ← اجمع ← اربط ← اختُم), plan de session. **Aucun outil d'entraînement ici** : le flux examen doit rester aussi calme que l'épreuve.
+1. **Hub** — une seule action par carte-sujet : **▶ ابدأ التدريب المنهجي**. Chaque carte annonce que le mapping est partiel et affiche la durée officielle selon la filière : 4 h 30 en Sciences expérimentales, 2 h 30 en Maths.
+2. **Sérénité** _(parcours guidé uniquement)_ — volontairement dépouillé : respiration, rappel d'une ligne du مفتاح (اقرأ ← اجمع ← اربط ← اختُم), plan de session. Cet écran appartient au parcours d'entraînement, pas à une simulation certifiée de l'épreuve.
 3. **تدريب المفتاح** _(hub, section repliée)_ — tous les outils d'entraînement : **البوابتان** (classifieur ورقة/رأس puis صورة/فيلم), **شحذ المفتاح** (drill 12 instructions, 12/12 ×3 → المفتاح+), خمسة أخطاء, بطاقة imprimable, **أطلس التقنيات** et **تشخيص تجريبي** (déplacés ici : le hub reste épuré). Repliaction par défaut : visibles seulement si l'élève les cherche.
-4. **Stratégie** _(optionnelle)_ — consultation des PDF et calculatrice de choix (25 min). Après **تثبيت** du sujet : entrée **directe** dans l'espace de travail sur ت1 — aucun écran intermédiaire ne révèle le contenu des exercices (effet vrai examen). Le changement d'exercice se fait depuis les onglets de la copie.
-5. **Espace de travail** — consigne et réponse prioritaires, diagnostic de couverture, aide contextuelle repliée. En-tête minimal : sortie, تلميح (valve anti-stress), مسودة, موضوع PDF — rien d'autre. Le retour est **qualitatif** (ممتاز · جيد · متوسط · ضعيف), jamais chiffré dans la copie ; le score numérique reste calculé en interne pour l'export. Ni son, ni أذكار, ni أطلس, ni rapport, ni تصفير pendant la copie (l'élève lit le sujet dans le PDF, comme dans une salle d'examen).
+4. **Stratégie** _(optionnelle)_ — consultation des PDF et estimation personnelle par exercice (25 min). La calculatrice reprend dynamiquement le nombre d'exercices et leurs maxima ; elle ne prédit pas une note BAC.
+5. **Espace de travail** — consigne et réponse prioritaires, provenance visible, diagnostic de couverture et aide contextuelle repliée. L'élève change librement d'exercice. Une fin manuelle ou l'expiration du temps sauvegarde puis verrouille la saisie. Aucune note BAC n'est affichée : le moteur n'est pas calibré.
 
 > 📱 **Responsive** : l'interface est utilisable sur téléphone (grilles qui se replient, cibles tactiles ≥ 44 px, champs 16 px sans zoom iOS, modales scrollables). Verrouillé par `tests/e2e/responsive.spec.mjs` (3 viewports réels, zéro défilement horizontal) dans la CI.
 
@@ -115,9 +115,11 @@ Le disclaimers du hard benchmark (0 copie réelle doublement annotée) reste la 
 ## 🌐 Lancer l'application
 
 ```bash
-python3 -m http.server 8080     # ou : npm start
+npm start
 # ouvrir http://localhost:8080
 ```
+
+Le serveur applique une liste blanche d'assets publics. Ne pas remplacer cette commande par un serveur exposant toute la racine du dépôt.
 
 > ⚠️ Ouvrir `index.html` via `file://` peut bloquer les modules ES6.
 > Pour un fichier 100 % autonome, ouvrir directement
@@ -312,9 +314,9 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **205** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **215** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0**
-- Taille de la façade UI (js/ui.js) : **371 lignes**
+- Taille de la façade UI (js/ui.js) : **406 lignes**
 
 <!-- AUTO-METRICS:END -->
 
@@ -385,12 +387,12 @@ Le script accepte soit un fichier JSON en argument, soit un mode interactif.
 
 ---
 
-## 📤 Export & persistance
+## 💾 Fin de session et persistance
 
-- **Rapport** (📊) : vue d'ensemble des scores + export **CSV** (compatible Excel/arabe) et **JSON**.
-- **↺ Réinitialiser** : efface toute la progression.
-- **Progression sauvegardée** (localStorage) : réponses, scores, année/sujet choisis —
-  conservés même après un refresh.
+- **Fin manuelle ou expiration** : sauvegarde immédiate, passage de la session à `completed` et verrouillage de la saisie.
+- **Progression sauvegardée** (`localStorage`) : réponses, année/sujet, écran, étape et chronomètres sont validés avant restauration.
+- Les identifiants de sessions Maths (`YYYY-m`) sont conservés sans collision avec Sciences expérimentales.
+- Les anciens modules de rapport chiffré/CSV ne sont pas exposés : ils restent hors du parcours tant que l'évaluation n'est pas calibrée.
 
 ---
 
@@ -410,5 +412,5 @@ N: { points: 1, prompt: "…", minLength: 40,
 
 ## 🧭 Version monofichier
 
-`dist/boussole-4d-standalone.html` = CSS + JS (imports/exports supprimés) inlinés en un seul
-fichier. Il s'ouvre via `file://` (aucun module ES6, aucun CDN). Régénérer avec `node build.mjs`.
+`dist/boussole-4d-standalone.html` embarque le CSS, le bundle JS et les deux PDF locaux 2025.
+Il s'ouvre via `file://` sans enregistrer de service worker. Les PDF des autres années restent des liens externes optionnels, puisqu'ils ne sont pas redistribués dans le dépôt. Régénérer avec `npm run build`.

@@ -100,6 +100,49 @@ test("la validation rejette les futures versions et élimine les champs incohér
   assert.deepEqual(validated.progress, {});
 });
 
+test("les identifiants Maths sont validés et leur progression persiste", () => {
+  store.enterSession("2025-m", 1, 150 * 60);
+  store.exercise("2025-m", 1, 2).text.N = "réponse Maths";
+  store.save();
+  store.load();
+
+  assert.equal(store.state.yearId, "2025-m");
+  assert.equal(store.state.globalDuration, 150 * 60);
+  assert.equal(store.exercise("2025-m", 1, 2).text.N, "réponse Maths");
+});
+
+test("le cycle de session démarre frais puis se termine sans effacer les réponses", () => {
+  store.enterSession("2025", 1, 270 * 60, 25 * 60);
+  assert.equal(store.state.sessionStatus, "active");
+  assert.equal(store.state.globalRemaining, 270 * 60);
+  store.exercise("2025", 1, 1).text.N = "réponse conservée";
+  store.state.globalRemaining = 10;
+
+  store.enterSession("2025", 2, 270 * 60, 25 * 60);
+  assert.equal(store.state.sujetId, 2);
+  assert.equal(store.state.globalRemaining, 270 * 60);
+  assert.equal(store.state.activeExercise, 1);
+  assert.equal(store.exercise("2025", 1, 1).text.N, "réponse conservée");
+
+  assert.equal(store.finishSession("manual"), true);
+  assert.equal(store.state.sessionStatus, "completed");
+  assert.equal(store.state.sessionActive, false);
+  assert.equal(store.state.sessionEndReason, "manual");
+  assert.equal(store.finishSession("manual"), false);
+});
+
+test("la réconciliation termine une session dont le temps est écoulé", () => {
+  store.enterSession("2025-m", 1, 150 * 60);
+  store.state.globalRemaining = 2;
+  store.state.globalLastTick = Date.now() - 5_000;
+  store._reconcileTimers();
+
+  assert.equal(store.state.globalRemaining, 0);
+  assert.equal(store.state.sessionStatus, "completed");
+  assert.equal(store.state.sessionEndReason, "time-expired");
+  assert.equal(store.state.globalLastTick, null);
+});
+
 test("exercise exige explicitement yearId", () => {
   assert.throws(() => store.exercise("", 1, 1), /yearId est requis/);
 });

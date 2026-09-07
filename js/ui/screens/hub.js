@@ -66,6 +66,8 @@ export function createHubScreen(deps) {
     closeModal,
     cycleSound,
     enterExercise,
+    examMinutesForYear,
+    formatDuration,
     openAdkar,
     openAtlas,
     openModal,
@@ -208,7 +210,9 @@ export function createHubScreen(deps) {
     const disabled = !y.enabled;
     const note = disabled
       ? y.loadingNote || "لم تُرفق وثائق PDF لهذه الدورة بعد — قريباً."
-      : "وقت الامتحان الحقيقي ≈ 3س30د.";
+      : `تدريب منهجي جزئي — لا يمثل جميع تعليمات الموضوع. مدة الاختبار الرسمية: ${formatDuration(
+          examMinutesForYear(y)
+        )}.`;
     const cardId = yearCardId(y);
     const card = node("div", {
       className: `card year-card ${disabled ? "dim" : ""}`,
@@ -231,7 +235,7 @@ export function createHubScreen(deps) {
       y.theme === "emerald" ? "btn-emerald" : y.theme === "indigo" ? "btn-indigo" : "btn-amber";
     const button = node("button", {
       className: `btn btn-block ${buttonTheme}`,
-      text: disabled ? "غير متاح بعد" : "▶ ابدأ الموضوع (امتحان كامل)",
+      text: disabled ? "غير متاح بعد" : "▶ ابدأ التدريب المنهجي",
       attrs: disabled ? { disabled: "" } : {},
       dataset: { year: y.id }
     });

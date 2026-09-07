@@ -63,6 +63,7 @@ export function createWorkspaceController(deps) {
   }
 
   function renderWorkspace() {
+    if (store.isSessionActive()) completionNoticeShown = false;
     const s = sujetObj();
     const ex = exDef(store.state.activeExercise);
     setInternalHTML(
@@ -76,12 +77,14 @@ export function createWorkspaceController(deps) {
         </div>
       </header>
 
-      <div class="workspace-tools" aria-label="أدوات ثانوية">
+      <div class="workspace-tools" aria-label="أدوات الجلسة">
         <button class="btn btn-amber btn-sm" id="ws-panic">✨ أحتاج تلميحاً</button>
         <button class="btn btn-ghost btn-sm" id="ws-brouillon">📝 المسودة</button>
         <button class="btn btn-indigo btn-sm" id="ws-pdf">📄 الموضوع</button>
+        <button class="btn btn-rose btn-sm" id="ws-finish">✓ إنهاء التدريب</button>
       </div>
 
+      <div class="feedback mid mb-2" role="note">تدريب منهجي جزئي: بعض السنون خطوات معاد بناؤها، ولا تمثل هذه الواجهة جميع تعليمات الموضوع الرسمي.</div>
       <div class="progress mb-2" id="progress"><span></span></div>
       <div class="card mb-2 compass-guide" id="boussole-scratch-card">
         <strong>🧭 البوصلة = أربع أسئلة عملية، وليست زينة</strong>
@@ -96,7 +99,7 @@ export function createWorkspaceController(deps) {
             .map(
               (e) => `
             <button class="btn btn-ghost" data-switch="${e.number}" style="justify-content:space-between">
-              <span>ت${e.number}: ${e.label} (${e.max}ن)</span><span id="lock-${e.number}">🔒</span>
+              <span>ت${e.number}: ${e.label} (${e.max}ن)</span><span id="lock-${e.number}">${e.number === ex.number ? "●" : ""}</span>
             </button>`
             )
             .join("")}</div>
@@ -114,7 +117,7 @@ export function createWorkspaceController(deps) {
             </div>
           </div>
           <nav class="stepnav" id="stepnav"></nav>
-          <div class="feedback mid small" style="background:rgba(16,185,129,.08)">⚠️ القاعدة: ركّز على كل قطب لحاله، وفُعلت باقي التمارين بعد إجابتك.</div>
+          <div class="feedback mid small" style="background:rgba(16,185,129,.08)">يمكنك الانتقال بحرية بين التمارين؛ تُحفظ إجاباتك تلقائياً.</div>
         </aside>
         <section class="card" id="ex-content"></section>
       </div>
@@ -126,6 +129,7 @@ export function createWorkspaceController(deps) {
     $("#ws-brouillon").addEventListener("click", () => brouillonController.openBrouillon());
     $("#boussole-open-scratch").addEventListener("click", () => brouillonController.openBrouillon());
     $("#ws-pdf").addEventListener("click", openPdfDrawer);
+    $("#ws-finish").addEventListener("click", confirmFinishSession);
     applyTheme(document.documentElement.dataset.theme);
     $$("#view-workspace [data-switch]").forEach((b) =>
       b.addEventListener("click", () => attemptSwitch(+b.dataset.switch))
@@ -135,6 +139,7 @@ export function createWorkspaceController(deps) {
     renderExercise(ex);
     goToStep(store.state.activeStep || 1);
     updateLiveScore();
+    applySessionLock();
   }
 
   function renderStepnav(ex) {
@@ -166,6 +171,14 @@ export function createWorkspaceController(deps) {
 
   function canScorePole(pole) {
     return mayScorePole(pole, store.state.reviewMode);
+  }
+
+  function provenanceHTML(pole) {
+    if (pole.bacPromptSource === "official") {
+      const page = pole.bacPromptPage ? ` — الصفحة ${pole.bacPromptPage}` : "";
+      return `<p class="small text-emerald provenance-note">✓ تعليمة رسمية من الموضوع${page}</p>`;
+    }
+    return `<p class="small text-amber provenance-note">⚠ خطوة تدريبية معاد بناؤها — ليست تعليمة مستقلة في الموضوع الرسمي.</p>`;
   }
 
   function modelBox(pole) {
@@ -264,6 +277,7 @@ export function createWorkspaceController(deps) {
         <div class="card answer-card">
           <span class="badge badge-${POLE[p].cls}" style="margin-bottom:.6rem">${POLE[p].title}</span>
           <h3 class="bac-consigne">${pole.bacPrompt || pole.prompt}</h3>
+          ${provenanceHTML(pole)}
           <details class="pole-help" id="pole-help-${p}">
             <summary class="small">🧭 توجيه هذه السنّ — القرار، الخطوات، الفحص <span class="text-muted">(انقر للعرض)</span></summary>
             <div style="margin-top:.4rem">
@@ -312,6 +326,7 @@ export function createWorkspaceController(deps) {
   }
 
   function checkText(exNum, p) {
+    if (!store.isSessionActive()) return;
     const ex = exDef(exNum);
     const pole = ex.poles[p];
     const input = $("#fld-" + p);
@@ -348,7 +363,8 @@ export function createWorkspaceController(deps) {
     return `
     <div id="panel-1" class="card">
       <span class="badge badge-emerald" style="margin-bottom:.6rem">${POLE.N.title} (${fmtPts(ex.poles.N.points)})</span>
-      <h3 class="mt-0">${ex.poles.N.prompt}</h3>
+      <h3 class="mt-0">${ex.poles.N.bacPrompt || ex.poles.N.prompt}</h3>
+      ${provenanceHTML(ex.poles.N)}
       ${gateChipHTML("N", ex.poles.N)}
       <div class="grid grid-2">
         <input class="field" id="pipeline-var-indep" type="text" placeholder="${ex.poles.N.rule?.hypotheses ? "الفرضية 1: يعود السبب إلى…" : "المتغير المستقل..."}">
@@ -360,7 +376,8 @@ export function createWorkspaceController(deps) {
     </div>
     <div id="panel-2" class="card hidden">
       <span class="badge badge-indigo" style="margin-bottom:.6rem">${POLE.S.title} (${fmtPts(ex.poles.S.points)})</span>
-      <h3 class="mt-0">${ex.poles.S.prompt}</h3>
+      <h3 class="mt-0">${ex.poles.S.bacPrompt || ex.poles.S.prompt}</h3>
+      ${provenanceHTML(ex.poles.S)}
       ${gateChipHTML("S", ex.poles.S)}
       <div class="card" style="background:var(--bg)">
         <label class="lbl">1. الشكل (أ): التحليل المقارن بالتوازي</label>
@@ -376,7 +393,8 @@ export function createWorkspaceController(deps) {
     </div>
     <div id="panel-3" class="card hidden">
       <span class="badge badge-amber" style="margin-bottom:.6rem">${POLE.E.title} (${fmtPts(ex.poles.E.points)})</span>
-      <h3 class="mt-0">${ex.poles.E.prompt}</h3>
+      <h3 class="mt-0">${ex.poles.E.bacPrompt || ex.poles.E.prompt}</h3>
+      ${provenanceHTML(ex.poles.E)}
       <div class="grid grid-2">
         <input class="field" id="pipeline-hyp1" type="text" placeholder="الفرضية 1">
         <input class="field" id="pipeline-hyp2" type="text" placeholder="الفرضية 2">
@@ -388,7 +406,8 @@ export function createWorkspaceController(deps) {
     </div>
     <div id="panel-4" class="card hidden">
       <span class="badge badge-purple" style="margin-bottom:.6rem">${POLE.W.title} (${fmtPts(ex.poles.W.points)})</span>
-      <h3 class="mt-0">${ex.poles.W.prompt}</h3>
+      <h3 class="mt-0">${ex.poles.W.bacPrompt || ex.poles.W.prompt}</h3>
+      ${provenanceHTML(ex.poles.W)}
       <span class="lbl">📦 بنك العناصر البيوكيميائية:</span>
       <div class="bank" id="blocks-bank"></div>
       <div class="grid grid-2 mt-2">
@@ -447,6 +466,7 @@ export function createWorkspaceController(deps) {
   }
 
   function placeBlock(ex, blockId) {
+    if (!store.isSessionActive()) return;
     const st = store.exercise(store.state.yearId, store.state.sujetId, ex.number);
     const slot = firstEmptyPipelineSlot(st.pipeline);
     if (!slot) return;
@@ -455,6 +475,7 @@ export function createWorkspaceController(deps) {
     store.save();
   }
   function clearBlock(ex, stream, index) {
+    if (!store.isSessionActive()) return;
     const st = store.exercise(store.state.yearId, store.state.sujetId, ex.number);
     const key = stream === 1 ? "stream1" : "stream2";
     if (st.pipeline[key][index]) {
@@ -487,6 +508,7 @@ export function createWorkspaceController(deps) {
   }
 
   function checkPipelinePole(exNum, p) {
+    if (!store.isSessionActive()) return;
     const ex = exDef(exNum);
     const st = store.exercise(store.state.yearId, store.state.sujetId, exNum);
     const fb = $("#fb-" + p);
@@ -569,16 +591,104 @@ export function createWorkspaceController(deps) {
     exDef(store.state.activeExercise);
   }
 
-  function attemptSwitch(target) {
-    const cur = store.state.activeExercise;
-    if (target === cur) return;
-    if (!store.exercise(store.state.yearId, store.state.sujetId, cur).answeredAny) {
-      toast(
-        `يجب الإجابة على سؤال واحد على الأقل في التمرين ${cur} لفكّ القفل قبل الانتقال لتمرين آخر!`,
-        "warn"
-      );
-      return;
+  function persistVisibleDraft() {
+    const exercise = exDef(store.state.activeExercise);
+    if (!exercise) return;
+    const progress = store.exercise(store.state.yearId, store.state.sujetId, exercise.number);
+    if (exercise.ui === "pipeline") {
+      $$("#ex-content input.field, #ex-content textarea.field").forEach((field) => {
+        progress.fields[field.id] = field.value;
+        if (field.value.trim()) progress.answeredAny = true;
+      });
+    } else {
+      for (const pole of POLE_ORDER) {
+        const field = $("#fld-" + pole);
+        if (!field) continue;
+        progress.text[pole] = field.value;
+        if (field.value.trim()) progress.answeredAny = true;
+      }
     }
+    store.save();
+  }
+
+  function applySessionLock() {
+    const locked = !store.isSessionActive();
+    const root = $("#view-workspace");
+    if (!root) return;
+    $$(
+      "#ex-content input, #ex-content textarea, #ex-content [data-check], #ex-content [data-polo-check], #ex-content .chip, #ex-content .slot, #ex-content [data-mic]"
+    ).forEach((control) => {
+      control.disabled = locked;
+    });
+    for (const id of ["#ws-panic", "#ws-brouillon", "#boussole-open-scratch", "#ws-finish"]) {
+      const control = $(id);
+      if (control) control.disabled = locked;
+    }
+    let notice = $("#session-complete-notice");
+    if (locked && !notice) {
+      notice = node("div", {
+        className: "feedback bad mb-2",
+        text: "انتهت الجلسة وحُفظت الإجابات. يمكنك مراجعتها فقط؛ أُغلقت الكتابة والفحص.",
+        attrs: { id: "session-complete-notice", role: "status" }
+      });
+      $(".workspace-tools")?.insertAdjacentElement("afterend", notice);
+    } else if (!locked) {
+      notice?.remove();
+    }
+  }
+
+  let completionNoticeShown = false;
+  function showCompletionNotice(reason) {
+    if (completionNoticeShown) return;
+    completionNoticeShown = true;
+    const subject = sujetObj();
+    const answered = (subject?.exercises || []).filter(
+      (exercise) => store.exercise(store.state.yearId, store.state.sujetId, exercise.number).answeredAny
+    ).length;
+    const total = subject?.exercises.length || 0;
+    const title = reason === "time-expired" ? "انتهى الوقت" : "اكتملت الجلسة";
+    openModal(
+      title,
+      `<p>حُفظت إجاباتك محلياً. أجبت في ${answered} من ${total} تمارين.</p>
+       <p class="feedback mid">لا تُعرض علامة بكالوريا: التشخيص الحالي أداة تدريب غير معايرة على نسخ حقيقية كافية.</p>`,
+      `<button class="btn btn-indigo" id="completion-home">العودة إلى الرئيسية</button>`
+    );
+    const continueButton = $("[data-close='ok']");
+    if (continueButton) continueButton.textContent = "مراجعة الإجابات";
+    $("#completion-home")?.addEventListener("click", () => {
+      closeModal();
+      goHome();
+    });
+  }
+
+  function handleSessionCompletion(reason = store.state.sessionEndReason) {
+    persistVisibleDraft();
+    timers.stopAll();
+    $("#global-timer-bar")?.classList.add("hidden");
+    applySessionLock();
+    showCompletionNotice(reason);
+  }
+
+  function confirmFinishSession() {
+    if (!store.isSessionActive()) return;
+    openModal(
+      "إنهاء التدريب",
+      "سيُوقف المؤقت وتُغلق الكتابة والفحص. ستبقى الإجابات محفوظة للمراجعة.",
+      `<button class="btn btn-rose" id="finish-session-yes">نعم، أنهِ الجلسة</button>`
+    );
+    const cancelButton = $("[data-close='ok']");
+    if (cancelButton) cancelButton.textContent = "إلغاء";
+    $("#finish-session-yes")?.addEventListener("click", () => {
+      persistVisibleDraft();
+      store.finishSession("manual");
+      closeModal();
+      completionNoticeShown = false;
+      handleSessionCompletion("manual");
+    });
+  }
+
+  function attemptSwitch(target) {
+    if (target === store.state.activeExercise) return;
     store.setActiveExercise(target);
     renderWorkspace();
     showScreen("view-workspace");
@@ -621,5 +731,5 @@ export function createWorkspaceController(deps) {
     );
   }
 
-  return { enterExercise, renderWorkspace };
+  return { enterExercise, renderWorkspace, handleSessionCompletion };
 }

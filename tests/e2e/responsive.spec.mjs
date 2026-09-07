@@ -54,6 +54,20 @@ for (const phone of PHONES) {
   });
 }
 
+test("[phone] parcours Maths : durée 2 h 30 et deux exercices", async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 800 });
+  await page.goto("/");
+  await page.locator("#btn-stream-fab").click();
+  await expect(page.locator("#stream-fab-label")).toContainText("رياضيات");
+  await page.locator('#year-grid [data-year="2026-m"]').click();
+  await expect(page.locator("#global-timer")).toHaveText("02:30:00");
+  await expect(page.locator("#view-guide")).toContainText("2س30د");
+  await page.locator("#guide-next").click();
+  await page.locator('#view-strategy [data-confirm="1"]').click();
+  await expect(page.locator("#view-workspace [data-switch]")).toHaveCount(2);
+  await expectNoHorizontalOverflow(page);
+});
+
 test("[phone] tous les états de pages sans débordement (tiroirs, détails, modale)", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
   await page.goto("/");

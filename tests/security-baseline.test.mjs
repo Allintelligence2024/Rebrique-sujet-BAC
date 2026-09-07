@@ -39,6 +39,9 @@ test("le serveur de production définit une CSP et des en-têtes de sécurité",
   assert.match(server, /Referrer-Policy/);
   assert.match(server, /Permissions-Policy/);
   assert.match(server, /Cache-Control/);
-  assert.match(server, /relative\(root, path\)/);
+  assert.match(server, /PUBLIC_FILES/);
+  assert.match(server, /PUBLIC_DIRECTORIES/);
+  assert.match(server, /relative\(canonicalRoot, path\)/);
+  assert.match(server, /realpathSync\(path\)/);
   assert.match(server, /GET, HEAD/);
 });
