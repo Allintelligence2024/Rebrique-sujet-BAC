@@ -1,4 +1,5 @@
 import { assertSimulationEligible } from "../../domain/subjects/official-coverage.js";
+import { simulationBlockersArabic } from "../coverage-messages.js";
 import { setInternalHTML } from "../dom.js";
 
 export function createStrategyScreen(deps) {
@@ -30,16 +31,16 @@ export function createStrategyScreen(deps) {
 
   function pdfFallbackHTML(subject) {
     if (subject?.pdfAvailable && subject.pdf) {
-      return `<iframe class="full-frame" id="strategy-pdf" src="${subject.pdf}" title="PDF du sujet"></iframe>`;
+      return `<iframe class="full-frame" id="strategy-pdf" src="${subject.pdf}" title="ملف الموضوع المختار"></iframe>`;
     }
     if (subject?.pdfExternalUrl) {
       return `<div class="center stack preview-empty">
-      <p class="small text-muted">${subject.pdfNote || "PDF non disponible localement."}</p>
+      <p class="small text-muted">الملف غير مرفق بالتطبيق؛ افتح صفحة المصدر للتحقق منه.</p>
       <a class="btn btn-indigo" href="${subject.pdfExternalUrl}" target="_blank" rel="noopener noreferrer">📄 فتح المصدر الخارجي</a>
     </div>`;
     }
     return `<div class="center stack preview-empty">
-    <p class="small text-muted">${subject?.pdfNote || "لا يوجد PDF متاح لهذه الدورة."}</p>
+    <p class="small text-muted">لا يوجد ملف موضوع متاح لهذه الدورة في التطبيق.</p>
   </div>`;
   }
 
@@ -53,7 +54,7 @@ export function createStrategyScreen(deps) {
       <header class="screen-head">
         <div class="brand">
           <button class="btn btn-rose btn-sm" id="strategy-exit">✕ إلغاء وخروج</button>
-          <div class="brand-icon">♞</div>
+          <div class="brand-icon" aria-hidden="true">٤</div>
           <div><h2>اختر موضوع التدريب</h2>
           <p class="small text-muted">تصفّح وقدّر ثقتك في كل تمرين — 25 د.</p></div>
         </div>
@@ -213,7 +214,7 @@ export function createStrategyScreen(deps) {
       try {
         assertSimulationEligible(report);
       } catch {
-        toast(`المحاكاة مرفوضة: ${report.blockers.join(", ")}`, "error");
+        toast(`المحاكاة مرفوضة: ${simulationBlockersArabic(report.blockers)}`, "error");
         return;
       }
     }

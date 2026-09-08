@@ -23,7 +23,9 @@ test("les brouillons persistés sont échappés avant interpolation HTML", () =>
 test("les dialogues centralisés supportent clavier, échappement et retour de focus", () => {
   assert.match(dialogs, /function trapFocus/);
   assert.match(dialogs, /event\.key === "Escape"/);
-  assert.match(dialogs, /lastFocusedElement\?\.focus/);
+  assert.match(dialogs, /returnFocus\.focus/);
+  assert.match(dialogs, /function isolateDialog/);
+  assert.match(dialogs, /"aria-labelledby": ids\.title/);
 });
 
 test("les erreurs récupérables passent par le service de diagnostic", () => {

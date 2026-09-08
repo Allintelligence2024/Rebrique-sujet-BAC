@@ -61,10 +61,10 @@ export function createWorkspacePresentation({
       result.taskProfile?.id === "scientific-text" &&
       result.closing.score < 0.5
     ) {
-      html += "<br>🎯 الخاتمة لا تجيب عن المشكل المطروح في السنّ اقرأ.";
+      html += "<br>🎯 الخاتمة لا تجيب عن المشكل المطروح في خطوة اقرأ.";
     }
     if (result.methodology?.missing?.length) {
-      html += `<br>🧭 المنهجية: ${result.methodology.missing[0]}`;
+      html += `<br>المنهجية: ${result.methodology.missing[0]}`;
     }
     if (result.coach?.tips?.length) {
       html += `<br>📘 من دليل المنهجية: ${result.coach.tips.slice(0, 2).join(" ")}`;
@@ -86,7 +86,7 @@ export function createWorkspacePresentation({
     const feedback = formatEvalFeedback(result)
       .replace(/<br>/g, "\n")
       .replace(/<[^>]*>/g, "");
-    const prefix = showScore ? "" : "مراجعة منهجية فقط — لا توجد نقطة رقمية لهذه السنّ.\n";
+    const prefix = showScore ? "" : "مراجعة منهجية فقط — لا توجد نقطة رقمية لهذه الخطوة.\n";
     const fragments = [node("span", { text: prefix + feedback })];
     if (pole?.modelAnswer) {
       const details = node("details", { className: "model-box" });
@@ -110,10 +110,14 @@ export function createWorkspacePresentation({
 
   function gateChipHTML(poleType, pole) {
     const classification = classifyInstruction(pole?.bacPrompt || pole?.prompt || "");
-    const gate1 = classification.mode === "paper" ? "📄 ورقة" : "🧠 رأس";
-    const gate2 = classification.gate2 ? (classification.gate2 === "film" ? " · 🎬 فيلم" : " · 📷 صورة") : "";
+    const source = classification.mode === "paper" ? "تعليمة بسند" : "تعليمة معرفية";
+    const processing = classification.gate2
+      ? classification.gate2 === "film"
+        ? " · تفسير أو استنتاج"
+        : " · وصف أو استخراج"
+      : "";
     const columns = classification.twoColumns ? " · عمودان: [من الوثيقة | من الدرس]" : "";
-    return `<div class="small text-muted gate-chip" data-gate-chip="${poleType}">🚪 القرار قبل الكتابة: <b>${gate1}${gate2}</b> — مسار ${classification.pathLabel}${columns}</div>`;
+    return `<div class="small text-muted gate-chip" data-gate-chip="${poleType}">القرار قبل الكتابة: <b>${source}${processing}</b> — الخطوات ${classification.pathLabel}${columns}</div>`;
   }
 
   function poleMethodHint(poleType, pole) {

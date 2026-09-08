@@ -7,6 +7,7 @@ import { APP_CONFIG } from "../data/subjects.js";
 import { officialTaskInventoryFor } from "../data/official-tasks.js";
 import { buildOfficialCoverageReport } from "../js/domain/subjects/official-coverage.js";
 import { buildP1Status } from "./report-p1-status.mjs";
+import { buildP2Status } from "./report-p2-status.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const read = (path) => readFileSync(join(root, path), "utf8");
@@ -46,6 +47,7 @@ const simulationEligibleSubjects = coverageReports.filter((report) => report.sim
 const requiredCalibrationCopies =
   CALIBRATION_STATUS.activePoles * CALIBRATION_THRESHOLDS.minimumCopiesPerPole;
 const p1Status = buildP1Status();
+const p2Status = buildP2Status();
 const generated = `<!-- AUTO-METRICS:START -->
 
 - Tests exécutés par \`npm test\` : **${executed}** (comptage statique des \`test()\` déclarés dans \`tests/*.test.mjs\`, boucle \`BENCHMARK_CASES\` comprise)
@@ -53,6 +55,7 @@ const generated = `<!-- AUTO-METRICS:START -->
 - Inventaires de tâches officielles commencés : **${inventoriedSubjects}/${coverageReports.length} sujets** (**${knownOfficialTasks} tâches connues**)
 - Sujets éligibles à la simulation : **${simulationEligibleSubjects}**
 - Critères P1 fermés : **${p1Status.completedGates}/${p1Status.totalGates}** — statut global : **${p1Status.complete ? "terminé" : "incomplet"}**
+- Critères P2 fermés : **${p2Status.completedGates}/${p2Status.totalGates}** — élèves distincts testés : **${p2Status.usability.uniqueParticipants}/${p2Status.usability.requiredParticipants}**
 - Taille de la façade UI (js/ui.js) : **${uiLines} lignes**
 
 <!-- AUTO-METRICS:END -->`;

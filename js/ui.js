@@ -37,10 +37,10 @@ import { createWorkspaceController } from "./ui/screens/workspace.js";
 import { reportDiagnostic } from "./services/diagnostics.js";
 
 const POLE = {
-  N: { title: "السنّ 1 · اقرأ", short: "اقرأ", cls: "emerald" },
-  S: { title: "السنّ 2 · اجمع", short: "اجمع", cls: "blue" },
-  E: { title: "السنّ 3 · اربط", short: "اربط", cls: "amber" },
-  W: { title: "السنّ 4 · اختُم", short: "اختُم", cls: "purple" }
+  N: { title: "الخطوة 1 · اقرأ", short: "اقرأ", cls: "emerald" },
+  S: { title: "الخطوة 2 · اجمع", short: "اجمع", cls: "blue" },
+  E: { title: "الخطوة 3 · اربط", short: "اربط", cls: "amber" },
+  W: { title: "الخطوة 4 · اختُم", short: "اختُم", cls: "purple" }
 };
 const POLE_ORDER = ["N", "S", "E", "W"];
 let hubScreen;
@@ -53,10 +53,10 @@ const dialogs = createDialogManager({ $, $$ });
 const { openModal, closeModal, openDrawer } = dialogs;
 const showScreen = createScreenNavigator({
   screens: () => $$(".screen"),
-  onNavigate: (id) => {
+  onNavigate: (id, { initial = false } = {}) => {
     store.setActiveScreen(id);
     associateFieldsWithInstructions(document.getElementById(id));
-    announceScreen(document, id);
+    announceScreen(document, id, { focus: !initial });
   }
 });
 

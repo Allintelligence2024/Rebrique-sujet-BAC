@@ -20,10 +20,10 @@ test("la بطاقة المفتاح couvre les 4 أسنان et les 2 بوابتا
   for (const name of ["اقرأ", "اجمع", "اربط", "اختُم"]) {
     assert.ok(html.includes(name), `سنّ manquante: ${name}`);
   }
-  assert.match(html, /ورقة أم رأس/);
-  assert.match(html, /صورة أم فيلم/);
-  assert.match(html, /1 → 4/);
-  assert.match(html, /1 → 2 → 3 → 4/);
+  assert.match(html, /سند أم معارف/);
+  assert.match(html, /وصف أم تفسير/);
+  assert.match(html, /1 ← 4/);
+  assert.match(html, /1 ← 2 ← 3 ← 4/);
 });
 
 test("le الفحص الرباعي provient de la source partagée (quick-check.js), pas d'une copie", () => {
@@ -39,7 +39,7 @@ test("le critère du drill est affiché avec les constantes importées (12/12 ×
     html.includes(`${DRILL_ROUND_SIZE}/${DRILL_ROUND_SIZE} × ${DRILL_UNLOCK_STREAK}`),
     "critère 12/12 ×3 absent ou désynchronisé"
   );
-  assert.match(html, /المفتاح\+/);
+  assert.match(html, /المستوى المتقدم/);
 });
 
 test("المفتاح+ et خمسة أخطاء sont résumés sans pourcentages de barème", () => {
@@ -102,7 +102,7 @@ test("openModal reçoit la keycard et le bouton d'impression ajoute la classe d'
     }
   });
   click($("#keycard-open"));
-  assert.match(capturedTitle, /بطاقة المفتاح/);
+  assert.match(capturedTitle, /بطاقة الخطوات الأربع/);
   assert.match(capturedBody, /keycard-print/);
 
   let printed = false;

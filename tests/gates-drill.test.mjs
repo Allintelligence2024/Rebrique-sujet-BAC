@@ -265,8 +265,8 @@ test("la section تدريب porte les البوابتان et le drill — le ال
   input.value = "فسّر بالاعتماد على معلوماتك والشكل 3 نتائج التجربة.";
   input.dispatchEvent(new uiDom.window.Event("input", { bubbles: true }));
   const verdict = uiDom.window.document.querySelector("#gate-verdict").textContent;
-  assert.match(verdict, /ورقة/);
-  assert.match(verdict, /فيلم/);
+  assert.match(verdict, /تعتمد على سند/);
+  assert.match(verdict, /تفسير أو استنتاج/);
   assert.match(verdict, /من الوثيقة \| من الدرس/);
   assert.equal(tStore.recorded.length, 0);
 });
@@ -275,7 +275,7 @@ test("les exemples cliquables remplissent l'entrée et le verdict", () => {
   freshTraining();
   uiClick($$sel("[data-gate-example]")[2]);
   assert.equal(uiDom.window.document.querySelector("#gate-input").value, "عدّد خصائص المناعة الاكتسابية.");
-  assert.match(uiDom.window.document.querySelector("#gate-verdict").textContent, /رأس/);
+  assert.match(uiDom.window.document.querySelector("#gate-verdict").textContent, /تعتمد على المعارف/);
 });
 
 test("3 rounds parfaites 12/12 consécutives ouvrent المفتاح+ dans la section", () => {
@@ -288,7 +288,7 @@ test("3 rounds parfaites 12/12 consécutives ouvrent المفتاح+ dans la sec
       uiClick(uiDom.window.document.querySelector("#drill-again"));
     }
   }
-  assert.match(uiDom.window.document.querySelector("#drill-summary").textContent, /فُتح المفتاح/);
+  assert.match(uiDom.window.document.querySelector("#drill-summary").textContent, /فُتح المستوى المتقدم/);
   assert.ok(uiDom.window.document.querySelector("#plus-card"), "المفتاح+ doit apparaître après déblocage");
   const plusText = uiDom.window.document.querySelector("#plus-card").textContent;
   for (const expected of ["افتح", "ومنه", "شجرة النسب", "عامّ أم خاصّ", "وتفسير ذلك أنّ"]) {

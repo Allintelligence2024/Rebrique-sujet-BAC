@@ -59,7 +59,8 @@ export function createWorkspaceController(deps) {
     $,
     store,
     openDrawer,
-    openModal,
+    closeModal,
+    toast,
     escapeHTML,
     normalizeArabic,
     composeDrafts,
@@ -118,12 +119,12 @@ export function createWorkspaceController(deps) {
         <button class="btn btn-rose btn-sm" id="ws-finish">✓ إنهاء التدريب</button>
       </div>
 
-      <div class="feedback mid mb-2" role="note">تدريب منهجي جزئي: بعض السنون خطوات معاد بناؤها، ولا تمثل هذه الواجهة جميع تعليمات الموضوع الرسمي.</div>
+      <div class="feedback mid mb-2" role="note">تدريب منهجي جزئي: بعض الخطوات مبنية لأغراض التدريب، ولا تمثل هذه الواجهة جميع تعليمات الموضوع الرسمي.</div>
       <div class="progress mb-2" id="progress"><span></span></div>
-      <div class="card mb-2 compass-guide" id="boussole-scratch-card">
-        <strong>🧭 البوصلة = أربع أسئلة عملية، وليست زينة</strong>
-        <p class="small text-muted mt-0" id="pole-purpose">N — ما المشكل العلمي الذي يجب أن أؤطّره؟</p>
-        <button class="btn btn-ghost btn-sm" id="boussole-open-scratch">افتح ورقة المسودة (اقرأ · اجمع · اربط · اختُم)</button>
+      <div class="card mb-2 method-guide" id="method-scratch-card">
+        <strong>المسار المنهجي: أربع خطوات عملية</strong>
+        <p class="small text-muted mt-0" id="step-purpose">اقرأ — ما المشكل العلمي الذي يجب أن أؤطّره؟</p>
+        <button class="btn btn-ghost btn-sm" id="method-open-scratch">افتح ورقة المسودة (اقرأ · اجمع · اربط · اختُم)</button>
       </div>
 
       <div class="grid workspace-layout">
@@ -133,22 +134,13 @@ export function createWorkspaceController(deps) {
             .map(
               (e) => `
             <button class="btn btn-ghost quick-exercise" data-switch="${e.number}">
-              <span>ت${e.number}: ${e.label} (${e.max}ن)</span><span id="lock-${e.number}">${e.number === ex.number ? "●" : ""}</span>
+              <span>ت${e.number}: ${e.label} (${e.max}ن)</span><span id="active-exercise-${e.number}" aria-hidden="true">${e.number === ex.number ? "●" : ""}</span>
             </button>`
             )
             .join("")}</div>
           <div class="card center stack">
-            <div class="flex spread small"><span class="bold text-muted">بوصلة ت${ex.number}</span><span class="text-emerald" id="pole-text">السنّ: اقرأ</span></div>
-            <div class="compass">
-              <div class="compass-ring"></div>
-              <span class="compass-mark compass-mark-north">1</span>
-              <span class="compass-mark compass-mark-south">2</span>
-              <span class="compass-mark compass-mark-east">3</span>
-              <span class="compass-mark compass-mark-west">4</span>
-              <div class="compass-seq" id="compass-needle">
-                <svg viewBox="0 0 100 100"><polygon points="50,12 44,50 56,50" fill="#10b981"/><polygon points="50,88 44,50 56,50" fill="#3b82f6"/></svg>
-              </div>
-            </div>
+            <span class="bold text-muted">خطوات التمرين ${ex.number}</span>
+            <span class="text-emerald" id="step-text">الخطوة الحالية: اقرأ</span>
           </div>
           <nav class="stepnav" id="stepnav"></nav>
           <div class="feedback mid small guidance-note">يمكنك الانتقال بحرية بين التمارين؛ تُحفظ إجاباتك تلقائياً.</div>
@@ -161,7 +153,7 @@ export function createWorkspaceController(deps) {
     $("#ws-home").addEventListener("click", goHome);
     $("#ws-panic").addEventListener("click", showPanic);
     $("#ws-brouillon").addEventListener("click", () => brouillonController.openBrouillon());
-    $("#boussole-open-scratch").addEventListener("click", () => brouillonController.openBrouillon());
+    $("#method-open-scratch").addEventListener("click", () => brouillonController.openBrouillon());
     $("#ws-pdf").addEventListener("click", openPdfDrawer);
     $("#ws-finish").addEventListener("click", confirmFinishSession);
     applyTheme(document.documentElement.dataset.theme);
@@ -217,9 +209,9 @@ export function createWorkspaceController(deps) {
           <h3 class="bac-consigne">${pole.bacPrompt || pole.prompt}</h3>
           ${provenanceHTML(pole, ex.number, p)}
           <details class="pole-help" id="pole-help-${p}">
-            <summary class="small">🧭 توجيه هذه السنّ — القرار، الخطوات، الفحص <span class="text-muted">(انقر للعرض)</span></summary>
+            <summary class="small">توجيه هذه الخطوة — القرار، التنفيذ، الفحص <span class="text-muted">(انقر للعرض)</span></summary>
             <div class="pole-help-body">
-              <p class="small text-muted mt-0">Objectif méthodologique : ${pole.prompt}</p>
+              <p class="small text-muted mt-0">الهدف المنهجي: ${pole.prompt}</p>
               ${gateChipHTML(p, pole)}
               ${poleMethodHint(p, pole)}
               ${quickCheckHTML()}
@@ -310,7 +302,7 @@ export function createWorkspaceController(deps) {
       </div>
       ${micButton("pipeline-var-indep")}
       <div class="feedback hidden" role="status" aria-live="polite" aria-atomic="true" id="fb-N"></div>
-      <button class="btn btn-emerald mt-2" data-polo-check="N">تأكيد السنّ اقرأ (فكّ القفل)</button>
+      <button class="btn btn-emerald mt-2" data-polo-check="N">فحص خطوة اقرأ</button>
     </div>
     <div id="panel-2" class="card hidden">
       <span class="badge badge-indigo pole-badge">${POLE.S.title} (${fmtPts(ex.poles.S.points)})</span>
@@ -340,7 +332,7 @@ export function createWorkspaceController(deps) {
       <label class="lbl mt-2">استدلال الوثيقة 2:</label>
       <textarea class="field" rows="4" id="pipeline-doc2"></textarea>
       <div class="feedback hidden" role="status" aria-live="polite" aria-atomic="true" id="fb-E"></div>
-      <button class="btn btn-emerald mt-2" data-polo-check="E">تأكيد السنّ اربط</button>
+      <button class="btn btn-emerald mt-2" data-polo-check="E">فحص خطوة اربط</button>
     </div>
     <div id="panel-4" class="card hidden">
       <span class="badge badge-purple pole-badge">${POLE.W.title} (${fmtPts(ex.poles.W.points)})</span>
@@ -498,17 +490,15 @@ export function createWorkspaceController(deps) {
     $$("#ex-content [id^='panel-']").forEach((panel, i) => panel.classList.toggle("hidden", i !== n - 1));
     const bar = $("#progress span");
     if (bar) bar.className = `step-${n}`;
-    const needle = $("#compass-needle");
-    if (needle) needle.className = `compass-seq step-${n}`;
-    const poleText = $("#pole-text");
-    if (poleText) poleText.textContent = `السنّ: ${POLE[activePole].short}`;
+    const stepText = $("#step-text");
+    if (stepText) stepText.textContent = `الخطوة الحالية: ${POLE[activePole].short}`;
     const purposes = {
       N: "اقرأ — ما المشكل أو الفرضية التي يجب أن أؤطّرها؟",
       S: "اجمع — ماذا ألاحظ وأقارن في السندات، دون تفسير متسرّع؟",
       E: "اربط — ما الآلية العلمية التي تربط الملاحظات بالنتيجة؟",
       W: "اختُم — هل تجيب خلاصتي عن المشكل وتغطي النتائج الأساسية؟"
     };
-    if ($("#pole-purpose")) $("#pole-purpose").textContent = purposes[activePole];
+    if ($("#step-purpose")) $("#step-purpose").textContent = purposes[activePole];
     $$("#stepnav [data-step]").forEach((b, i) => b.classList.toggle("active", i === n - 1));
     return { ex, pole: activePole };
   }
@@ -558,7 +548,7 @@ export function createWorkspaceController(deps) {
     ).forEach((control) => {
       control.disabled = locked;
     });
-    for (const id of ["#ws-panic", "#ws-brouillon", "#boussole-open-scratch", "#ws-finish"]) {
+    for (const id of ["#ws-panic", "#ws-brouillon", "#method-open-scratch", "#ws-finish"]) {
       const control = $(id);
       if (control) control.disabled = locked;
     }
@@ -659,9 +649,9 @@ export function createWorkspaceController(deps) {
     const hints = {
       1: "لاحظ سياق التمرين: ما العامل الذي يغيّره المجرِّب (متغير مستقل) وما الظاهرة المقاسة (تابع)؟ صِغ المشكل بعلامة (؟) دون الإجابة هنا.",
       2: "ركّز على الأرقام في المنحنى أو الجدول، قارن بالتوازي ذاكراً القيم الابتدائية والنهائية، وتجنّب كلمة «بسبب» في هذه المرحلة.",
-      3: "تخيّل الآلية كشريط فيديو: ارتباط الجزيء → تفعيل البروتينات الغشائية → حركة الشوارد → إفراز المبلغ. صِغ فرضيتك كحلٍّ سببي دون «ربما»."
+      3: "رتّب الآلية كسلسلة سببية: ارتباط الجزيء → تفعيل البروتينات الغشائية → حركة الشوارد → إفراز المبلغ. صِغ فرضيتك كحلٍّ سببي دون «ربما»."
     };
-    openModal("💡 تلميح فكّ القفل الذهني", hints[ex.number] || hints[3]);
+    openModal("💡 تلميح منهجي", hints[ex.number] || hints[3]);
   }
 
   function openPdfDrawer() {

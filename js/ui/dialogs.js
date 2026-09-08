@@ -1,27 +1,57 @@
 import { node, replaceContent, setInternalHTML } from "./dom.js";
 
 export function createDialogManager({ $, $$ }) {
-  let modal = null;
-  let lastFocusedElement = null;
+  let activeDialog = null;
+  let dialogSequence = 0;
+  let backgroundState = [];
 
-  function restoreFocus() {
-    lastFocusedElement?.focus?.();
-    lastFocusedElement = null;
+  function restoreBackground() {
+    for (const state of backgroundState) {
+      state.element.inert = state.inert;
+      if (state.ariaHidden === null) state.element.removeAttribute("aria-hidden");
+      else state.element.setAttribute("aria-hidden", state.ariaHidden);
+    }
+    backgroundState = [];
+  }
+
+  function isolateDialog(element) {
+    backgroundState = [...document.body.children]
+      .filter((child) => child !== element)
+      .map((child) => ({
+        element: child,
+        inert: child.inert === true,
+        ariaHidden: child.getAttribute("aria-hidden")
+      }));
+    for (const state of backgroundState) {
+      state.element.inert = true;
+      state.element.setAttribute("aria-hidden", "true");
+    }
+  }
+
+  function closeActiveDialog() {
+    if (!activeDialog) return;
+    const { element, returnFocus } = activeDialog;
+    activeDialog = null;
+    element.remove();
+    restoreBackground();
+    if (returnFocus?.isConnected) returnFocus.focus();
   }
 
   function closeModal() {
-    modal?.remove();
-    modal = null;
-    restoreFocus();
+    closeActiveDialog();
   }
 
   function trapFocus(event, container, close) {
-    if (event.key === "Escape") return close();
+    if (event.key === "Escape") {
+      event.preventDefault();
+      close();
+      return;
+    }
     if (event.key !== "Tab") return;
     const focusable = $$(
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
       container
-    ).filter((item) => !item.disabled);
+    ).filter((item) => !item.disabled && !item.hidden && item.getAttribute("aria-hidden") !== "true");
     if (!focusable.length) return event.preventDefault();
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
@@ -34,18 +64,34 @@ export function createDialogManager({ $, $$ }) {
     }
   }
 
+  function dialogIds(prefix) {
+    dialogSequence += 1;
+    return { title: `${prefix}-title-${dialogSequence}` };
+  }
+
   function openModal(title, body, extra = "") {
-    closeModal();
-    lastFocusedElement = document.activeElement;
+    closeActiveDialog();
+    const returnFocus = document.activeElement;
+    const ids = dialogIds("modal");
     const overlay = node("div", { className: "overlay", dataset: { close: "overlay" } });
     const dialog = node("div", {
       className: "modal",
-      attrs: { role: "dialog", "aria-modal": "true", "aria-label": title, tabindex: "-1" }
+      attrs: {
+        role: "dialog",
+        "aria-modal": "true",
+        "aria-labelledby": ids.title,
+        tabindex: "-1"
+      }
     });
     const head = node("div", { className: "modal-head" });
     head.append(
-      node("strong", { className: "text-amber", text: title }),
-      node("button", { className: "btn btn-ghost btn-sm", text: "✕", dataset: { close: "btn" } })
+      node("h2", { className: "modal-title text-amber", text: title, attrs: { id: ids.title } }),
+      node("button", {
+        className: "btn btn-ghost btn-sm",
+        text: "✕",
+        dataset: { close: "btn" },
+        attrs: { "aria-label": "إغلاق النافذة" }
+      })
     );
     const content = node("div", { className: "small" });
     setInternalHTML(content, body);
@@ -57,40 +103,48 @@ export function createDialogManager({ $, $$ }) {
     );
     replaceContent(dialog, [head, content, extraContent, actions]);
     overlay.append(dialog);
-    modal = overlay;
     document.body.append(overlay);
-    $$("[data-close]", dialog).forEach((button) => button.addEventListener("click", closeModal));
+    activeDialog = { element: overlay, returnFocus };
+    isolateDialog(overlay);
+    $$("[data-close]", dialog).forEach((button) => button.addEventListener("click", closeActiveDialog));
     overlay.addEventListener("click", (event) => {
-      if (event.target === overlay) closeModal();
+      if (event.target === overlay) closeActiveDialog();
     });
-    modal.addEventListener("keydown", (event) => trapFocus(event, modal, closeModal));
-    $("[data-close='btn']", modal)?.focus();
-    return modal;
+    overlay.addEventListener("keydown", (event) => trapFocus(event, dialog, closeActiveDialog));
+    $("[data-close='btn']", dialog)?.focus();
+    return overlay;
   }
 
   function openDrawer(side, title, body) {
-    closeModal();
-    lastFocusedElement = document.activeElement;
-    $$(".drawer").forEach((drawer) => drawer.remove());
+    closeActiveDialog();
+    const returnFocus = document.activeElement;
+    const ids = dialogIds("drawer");
     const drawer = node("div", {
       className: `drawer ${side} open`,
-      attrs: { role: "dialog", "aria-modal": "true", "aria-label": title, tabindex: "-1" }
+      attrs: {
+        role: "dialog",
+        "aria-modal": "true",
+        "aria-labelledby": ids.title,
+        tabindex: "-1"
+      }
     });
     const head = node("div", { className: "drawer-head" });
     head.append(
-      node("strong", { text: title }),
-      node("button", { className: "btn btn-ghost btn-sm", text: "✕", attrs: { "data-close": "" } })
+      node("h2", { className: "modal-title", text: title, attrs: { id: ids.title } }),
+      node("button", {
+        className: "btn btn-ghost btn-sm",
+        text: "✕",
+        attrs: { "data-close": "", "aria-label": "إغلاق اللوحة" }
+      })
     );
     const content = node("div", { className: "drawer-body" });
     setInternalHTML(content, body);
     drawer.append(head, content);
     document.body.append(drawer);
-    const closeDrawer = () => {
-      drawer.remove();
-      restoreFocus();
-    };
-    $$("[data-close]", drawer).forEach((button) => button.addEventListener("click", closeDrawer));
-    drawer.addEventListener("keydown", (event) => trapFocus(event, drawer, closeDrawer));
+    activeDialog = { element: drawer, returnFocus };
+    isolateDialog(drawer);
+    $$("[data-close]", drawer).forEach((button) => button.addEventListener("click", closeActiveDialog));
+    drawer.addEventListener("keydown", (event) => trapFocus(event, drawer, closeActiveDialog));
     $("[data-close]", drawer)?.focus();
     return drawer;
   }

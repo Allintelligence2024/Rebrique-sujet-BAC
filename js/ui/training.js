@@ -1,9 +1,9 @@
 /* ============================================================
-   TRAINING — تدريب المفتاح (قسم التدريب في المركز، مطوية)
+   TRAINING — تدريب الخطوات الأربع (قسم التدريب في المركز، مطوية)
    ------------------------------------------------------------
    فصل صارم بين منتجين:
    - مسار الامتحان (تهدئة ← استراتيجية ← تمرين): بسيط وهادئ.
-   - أدوات التدريب (البوابتان، شحذ المفتاح، الأخطاء، البطاقة):
+   - أدوات التدريب (البوابتان، تدريب القرار، الأخطاء، البطاقة):
      هنا فقط، مطوية افتراضياً في المركز — لا تدخل مسار الامتحان.
    المنطق (gates.js) والواجهة (keycard.js) من مصادر مشتركة مُختبرة.
    ============================================================ */
@@ -29,8 +29,8 @@ const GATE_EXAMPLES = [
 function gatesCardHTML() {
   return `
     <div class="card stack" id="gates-card">
-      <h3 class="mt-0">🚪 البوابتان — أقرّر قبل أن أكتب، لا أثناء</h3>
-      <p class="small text-muted mt-0">أدخل تعليمة من موضوع حقيقي (أو اختر مثالاً) وقرّر فوراً: ورقة أم رأس؟ ثم صورة أم فيلم؟</p>
+      <h3 class="mt-0">قراران قبل الكتابة</h3>
+      <p class="small text-muted mt-0">أدخل تعليمة من موضوع حقيقي (أو اختر مثالاً): هل تعتمد على سند أم على المعارف؟ وهل تطلب وصفاً أم تفسيراً؟</p>
       <input class="field" id="gate-input" placeholder="مثال: فسّر بالاعتماد على معلوماتك والشكل 3…" autocomplete="off" />
       <div class="flex gate-examples" id="gate-examples">
         ${GATE_EXAMPLES.map((example) => `<button class="btn btn-ghost btn-sm" data-gate-example="${example}">${example}</button>`).join("")}
@@ -47,7 +47,7 @@ function mistakesCardHTML() {
       <ol class="small flush-list">
         <li><b>إجابة بلا رقم سؤال</b> — الأسهل تفادياً والأغلى عند التصحيح.</li>
         <li><b>رقم بلا وحدة</b> — المعطى الكمي غير مكتمل بوحدته.</li>
-        <li><b>خاتمة غائبة</b> — كل سؤال «فيلم» ينتظر جملة تجيب حرفياً عن السؤال.</li>
+        <li><b>خاتمة غائبة</b> — كل سؤال تفسير ينتظر جملة تجيب حرفياً عن السؤال.</li>
         <li><b>شجرة نسب بحكم واحد</b> — حدّدا السيادة ثم الموقع، الحكمان معاً.</li>
         <li><b>تركيب يعيد الأجزاء دون «ومنه»</b> — الجملة الختامية تُكتب في 30 ثانية وتغلق التمرين.</li>
       </ol>
@@ -57,28 +57,28 @@ function mistakesCardHTML() {
 function drillIdleHTML(drill) {
   const status =
     drill.unlocked || drill.streak >= DRILL_UNLOCK_STREAK
-      ? `<span class="text-emerald">✅ المفتاح+ مفتوح — حافظ على الطبيعة بجولات دورية.</span>`
+      ? `<span class="text-emerald">✅ المستوى المتقدم مفتوح — حافظ على المهارة بجولات دورية.</span>`
       : `<span>متتالية الجولات الكاملة: <b>${drill.streak}/${DRILL_UNLOCK_STREAK}</b> · أفضل سلسلة: <b>${drill.best}</b> · جولات منجزة: <b>${drill.rounds}</b></span>`;
   return `
     <div id="drill-idle" class="stack">
       <p class="small mt-0">
         <b>الهدف:</b> ${DRILL_ROUND_SIZE} تعليمة قصيرة، لكل واحدة قراران متتاليان:
-        <b>ورقة / رأس</b> ثم — إن كانت ورقة — <b>صورة / فيلم</b>.
+        <b>سند / معارف</b> ثم — إن ذُكر سند — <b>وصف / تفسير</b>.
         شرط الفتح: <b>12/12 ثلاث مرات متتالية</b> قبل أي تحرير كامل.
       </p>
       <p class="small">${status}</p>
-      <div><button class="btn btn-emerald" id="drill-start">🔑 ابدأ التدريب (${DRILL_ROUND_SIZE} تعليمة · ${DRILL_ROUND_SECONDS} ثانية)</button></div>
+      <div><button class="btn btn-emerald" id="drill-start">ابدأ التدريب (${DRILL_ROUND_SIZE} تعليمة · ${DRILL_ROUND_SECONDS} ثانية)</button></div>
     </div>`;
 }
 
 function plusCardHTML() {
   return `
     <div class="card stack" id="plus-card">
-      <h3 class="mt-0">🧫🧱 المفتاح+ — الأسنان الإضافية (مفتوحة)</h3>
+      <h3 class="mt-0">🧫🧱 المستوى المتقدم — تطبيقات إضافية (مفتوحة)</h3>
       <p class="small text-muted mt-0">لا تُستدعى كلها في آن واحد — تعود إليها حسب نوع التمرين.
       <b>مستوى متوسط:</b> البطاقتان الأوليان + فحص الخاتمة · <b>مستوى امتياز:</b> الصيغتان الخاصتان وجملة النجاة.</p>
       <div class="stack">
-        <details open><summary><b>🟦 مستوى متوسط · السنّ 0 — افتح (مرة واحدة لكل تمرين)</b></summary>
+        <details open><summary><b>🟦 مستوى متوسط · الخطوة 0 — افتح (مرة واحدة لكل تمرين)</b></summary>
           <p class="small">بعد قراءة سياق التمرين مباشرة، اكتب أعلى المسودة:
           <b>«الهدف العام: ……»</b> في ≤ 5 كلمات (مثال: «آلية عمل الأنسولين»).
           التركيب النهائي يُبنى على إجابته لهذا السطر بالذات.</p></details>
@@ -87,14 +87,14 @@ function plusCardHTML() {
           القالب: «من الجزء I نعلم أنّ … ، ومن الجزء II أنّ … ، ومن الجزء III أنّ … ؛
           <b>ومنه</b> [الإجابة عن سطر الهدف العام]». تركيب بلا «ومنه» يضيّف نصف جودته.</p></details>
         <details><summary><b>🟨 امتياز · صيغة الحساب</b></summary>
-          <p class="small">السنّ 2: القانون بالحروف أولًا (Chargaff: %A = %T…) ·
-          السنّ 3: التعويض خطوة خطوة · السنّ 4: النتيجة <b>بوحدتها</b>.
+          <p class="small">الخطوة 2: القانون بالحروف أولًا (Chargaff: %A = %T…) ·
+          الخطوة 3: التعويض خطوة خطوة · الخطوة 4: النتيجة <b>بوحدتها</b>.
           القانون بالحروف يُكتب ولو خاب الحساب.</p></details>
         <details><summary><b>🟨 امتياز · صيغة شجرة النسب</b></summary>
-          <p class="small">حدثان حاسمان في السنّ 2: ① أبوان سليمانان ← طفل مصاب (يحسم
+          <p class="small">حدثان حاسمان في الخطوة 2: ① أبوان سليمانان ← طفل مصاب (يحسم
           <b>السيادة</b>) ② بنت مصابة من أب سليم / ابن سليم من أم مصابة (يحسم
-          <b>الموقع</b>) · السنّ 3: لماذا يستبعد كل حدث الفرضية المقابلة ·
-          السنّ 4: الحكمان (متنحٍّ/سائد + جسمي/مرتبط بـ X) ثم الأنماط الوراثية بالترميز.
+          <b>الموقع</b>) · الخطوة 3: لماذا يستبعد كل حدث الفرضية المقابلة ·
+          الخطوة 4: الحكمان (متنحٍّ/سائد + جسمي/مرتبط بـ X) ثم الأنماط الوراثية بالترميز.
           نمط بلا الحكم الثاني نصف الجودة.</p></details>
         <details><summary><b>🟦 متوسط · فحص الخاتمة — عامّ أم خاصّ؟</b></summary>
           <p class="small">هل تبقى جملتي صحيحة لو غيّرنا اسم الجزيئة/الكائن؟ نعم ← عامّ،
@@ -103,7 +103,7 @@ function plusCardHTML() {
         <details><summary><b>🟨 امتياز · جملة النجاة</b></summary>
           <p class="small">بدأتَ تصف والفعل يطلب التفسير ← أكمل فوراً بـ
           <b>«وتفسير ذلك أنّ ……»</b> ثم الآلية، بلا شطب. وبدأتَ تفسّر والفعل يطلب
-          الوصف فقط ← لا حيلة سوى الشطب؛ لهذا تُفحص البوابة <b>قبل</b> الكتابة.</p></details>
+          الوصف فقط ← لا حيلة سوى الشطب؛ لهذا يُحسم القرار <b>قبل</b> الكتابة.</p></details>
       </div>
     </div>`;
 }
@@ -139,18 +139,18 @@ export function createTrainingController({ $, $$, store, openModal }) {
     const c = classifyInstruction(text);
     const step1 =
       c.mode === "paper"
-        ? `<b class="text-emerald">📄 ورقة</b> — سند وثائقي مذكور.`
-        : `<b>🧠 رأس</b> — لا سند مذكور: وضع الحفظ، مسار <span class="path">${c.pathLabel}</span>.`;
+        ? `<b class="text-emerald">تعليمة تعتمد على سند</b> — ابدأ بقراءة المعطيات.`
+        : `<b>تعليمة تعتمد على المعارف</b> — لا سند مذكور؛ انتقل من اقرأ إلى اختُم.`;
     const twoColumns = c.twoColumns
       ? `<div class="small">المسودة بعمودين: <b>[من الوثيقة | من الدرس]</b>.</div>`
       : "";
     const step2 =
       c.mode === "paper"
-        ? `<div>البوابة 2: ${
+        ? `<div>نوع المعالجة: ${
             c.gate2 === "film"
-              ? `<b class="text-amber">🎬 فيلم</b> — فعل تفسير/استنتاج: آلية + نتيجة.`
-              : `<b class="text-indigo">📷 صورة</b>${c.verbMatched ? "" : " (فعل غير مصنف — افترض استخراجاً)"}: وصف/استخراج دون تعليل.`
-          } المسار: <span class="path">${c.pathLabel}</span>.</div>`
+              ? `<b class="text-amber">تفسير أو استنتاج</b> — ملاحظة ثم آلية ونتيجة.`
+              : `<b class="text-indigo">وصف أو استخراج</b>${c.verbMatched ? "" : " (الفعل غير مصنف؛ ابدأ بالاستخراج)"} — دون تعليل سببي.`
+          } الخطوات: <span class="path">${c.pathLabel}</span>.</div>`
         : "";
     verdict.innerHTML = `${step1}${twoColumns}${step2}`;
   }
@@ -166,7 +166,7 @@ export function createTrainingController({ $, $$, store, openModal }) {
     });
   }
 
-  /* ---------------- شحذ المفتاح : drill ---------------- */
+  /* ---------------- تدريب القرار : drill ---------------- */
 
   function renderDrillIdle() {
     clearDrillTimer();
@@ -205,15 +205,15 @@ export function createTrainingController({ $, $$, store, openModal }) {
     const gate2HTML =
       state.stage === "gate2"
         ? `<div class="flex training-choice-row" id="drill-gate2">
-             <button class="btn btn-sm" data-choice="image">📷 صورة</button>
-             <button class="btn btn-sm" data-choice="film">🎬 فيلم</button>
+             <button class="btn btn-sm" data-choice="image">وصف أو استخراج</button>
+             <button class="btn btn-sm" data-choice="film">تفسير أو استنتاج</button>
            </div>`
         : "";
     const gate1HTML =
       state.stage === "gate1"
         ? `<div class="flex training-choice-row" id="drill-gate1">
-             <button class="btn btn-sm" data-choice="paper">📄 ورقة</button>
-             <button class="btn btn-sm" data-choice="head">🧠 رأس</button>
+             <button class="btn btn-sm" data-choice="paper">تعليمة بسند</button>
+             <button class="btn btn-sm" data-choice="head">تعليمة معرفية</button>
            </div>`
         : "";
     setInternalHTML(
@@ -235,12 +235,12 @@ export function createTrainingController({ $, $$, store, openModal }) {
     if (!feedback) return;
     const expectedLabel =
       step.expected === "paper"
-        ? "ورقة"
+        ? "تعليمة بسند"
         : step.expected === "head"
-          ? "رأس"
+          ? "تعليمة معرفية"
           : step.expected === "film"
-            ? "فيلم"
-            : "صورة";
+            ? "تفسير أو استنتاج"
+            : "وصف أو استخراج";
     feedback.innerHTML = `
       <div class="${step.ok ? "text-emerald" : "text-rose"}">${step.ok ? "✅ صحيح" : `❌ خطأ — الصواب: ${expectedLabel}`}</div>
       <div>${step.note || ""}</div>
@@ -266,7 +266,9 @@ export function createTrainingController({ $, $$, store, openModal }) {
         }
         const step = drill.answerGate1(choice);
         if (!step.advance) {
-          renderDrillStep(`<div class="text-emerald">✅ ورقة — الآن البوابة 2: صورة أم فيلم؟</div>`);
+          renderDrillStep(
+            `<div class="text-emerald">✅ تعتمد التعليمة على سند — حدّد الآن: وصف أم تفسير؟</div>`
+          );
           return;
         }
         renderDrillFeedback(step);
@@ -287,16 +289,16 @@ export function createTrainingController({ $, $$, store, openModal }) {
     const unlockedNow = unlockAction && unlockAction.unlocked;
     const remainingText =
       after.unlocked || unlockedNow
-        ? `<span class="text-emerald">المفتاح+ متاح الآن — البطاقة الثانية ظاهرة أسفل القسم.</span>`
+        ? `<span class="text-emerald">المستوى المتقدم متاح الآن — البطاقة الثانية ظاهرة أسفل القسم.</span>`
         : after.perfect
-          ? `ممتاز — تبقّى <b>${DRILL_UNLOCK_STREAK - after.streak}</b> جولة كاملة (12/12) لفتح المفتاح+.`
+          ? `ممتاز — تبقّى <b>${DRILL_UNLOCK_STREAK - after.streak}</b> جولة كاملة (12/12) لفتح المستوى المتقدم.`
           : `سلسلة الجولات الكاملة عادت إلى الصفر — الجولة التالية بلا أخطاء هي البداية.`;
     setInternalHTML(
       box,
       `
       <div class="stack" id="drill-summary">
         <h3 class="mt-0">نتيجة الجولة: <b class="${result.perfect ? "text-emerald" : "text-amber"}">${result.correct}/${result.total}</b></h3>
-        ${unlockedNow ? `<div class="text-emerald"><b>🔓 فُتح المفتاح+</b> — أُنجز الشرط: 12/12 × ${DRILL_UNLOCK_STREAK} متتالية.</div>` : ""}
+        ${unlockedNow ? `<div class="text-emerald"><b>🔓 فُتح المستوى المتقدم</b> — أُنجز الشرط: 12/12 × ${DRILL_UNLOCK_STREAK} متتالية.</div>` : ""}
         <p class="small">${remainingText}</p>
         <p class="small text-muted">متتالية حالية: ${after.streak}/${DRILL_UNLOCK_STREAK} · أفضل سلسلة: ${after.best} · جولات: ${after.rounds}</p>
         <div><button class="btn btn-ghost btn-sm" id="drill-again">جولة أخرى</button></div>
@@ -312,14 +314,14 @@ export function createTrainingController({ $, $$, store, openModal }) {
     host.append(elementFromInternalHTML(plusCardHTML()));
   }
 
-  /* ---------------- بطاقة المفتاح ---------------- */
+  /* ---------------- بطاقة الخطوات الأربع ---------------- */
 
   function openKeycard() {
     const body = `${keycardHTML()}
       <div class="flex print-actions">
         <button class="btn btn-emerald btn-sm" id="keycard-print-btn">🖨️ طباعة (A4)</button>
       </div>`;
-    const modal = openModal?.("🖨️ بطاقة المفتاح — نسخة الطباعة", body);
+    const modal = openModal?.("🖨️ بطاقة الخطوات الأربع — نسخة الطباعة", body);
     modal?.querySelector("#keycard-print-btn")?.addEventListener("click", () => {
       document.body.classList.add("keycard-printing");
       const cleanup = () => document.body.classList.remove("keycard-printing");
@@ -334,17 +336,17 @@ export function createTrainingController({ $, $$, store, openModal }) {
   function html() {
     return `
       <details class="card stack" id="training-details">
-        <summary><b>🔑 تدريب المفتاح</b> — البوابتان، شحذ المفتاح، البطاقة القابلة للطباعة <span class="small text-muted">(للتدريب فقط — لا يُفتح يوم الامتحان)</span></summary>
+        <summary><b>تدريب الخطوات الأربع</b> — قرارا البداية، تدريب سريع، بطاقة قابلة للطباعة <span class="small text-muted">(للتدريب فقط — لا يُفتح يوم الامتحان)</span></summary>
         <div class="stack training-section" id="training-section">
           ${gatesCardHTML()}
           <div class="card stack" id="drill-card">
-            <h3 class="mt-0">🔑 شحذ المفتاح — تدريب القرار (${DRILL_ROUND_SECONDS} ثانية)</h3>
+            <h3 class="mt-0">تدريب القرار السريع (${DRILL_ROUND_SECONDS} ثانية)</h3>
             <div id="drill-zone">${drillIdleHTML(store.state.drill)}</div>
           </div>
           ${mistakesCardHTML()}
           ${store.state.drill.unlocked ? plusCardHTML() : ""}
           <div class="flex justify-center">
-            <button class="btn btn-ghost btn-sm" id="keycard-open">🖨️ بطاقة المفتاح — طباعة A4</button>
+            <button class="btn btn-ghost btn-sm" id="keycard-open">🖨️ بطاقة الخطوات الأربع — طباعة A4</button>
           </div>
         </div>
       </details>`;

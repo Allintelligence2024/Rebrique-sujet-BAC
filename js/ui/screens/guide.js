@@ -4,7 +4,7 @@
    Règle de simplicité : cet écran appartient au flux d'examen.
    Trois éléments maximum : respiration, plan de session, suite.
    Toute l'aide méthodologique (بوابتان، drill، بطاقة…) vit dans
-   la section تدريب المفتاح du hub (js/ui/training.js) — jamais ici.
+   la section تدريب الخطوات الأربع du hub (js/ui/training.js) — jamais ici.
    ============================================================ */
 
 import { setInternalHTML } from "../dom.js";
@@ -36,19 +36,19 @@ export function createGuideScreen(deps) {
         </div>
         ${adkarHTML()}
         <div class="card center stack">
-          <p class="mt-0 mb-0"><b>المفتاح:</b>
+          <p class="mt-0 mb-0"><b>الخطوات الأربع:</b>
           <span class="text-emerald">اقرأ</span> ← <span class="text-indigo">اجمع</span> ←
           <span class="text-amber">اربط</span> ← <span class="text-purple">اختُم</span>
-          <span class="small text-muted"> — سنّ واحدة في كل مرة، والقرار قبل الكتابة.</span></p>
+          <span class="small text-muted"> — خطوة واحدة في كل مرة، والقرار قبل الكتابة.</span></p>
         </div>
         <div class="card center stack">
           <p class="small text-muted mt-0 mb-0">مدة الاختبار الرسمية لهذه الشعبة: <b>${formatDuration(
             examMinutesForYear(y)
-          )}</b>. خطتك هنا: <b>25 د</b> لتصفح الموضوع وتقدير الثقة، ثم تدريب منهجي سنّاً سنّاً.</p>
+          )}</b>. خطتك هنا: <b>25 د</b> لتصفح الموضوع وتقدير الثقة، ثم تطبيق الخطوات الأربع.</p>
           <p class="small text-amber mt-0 mb-0">هذا التدريب جزئي ولا يعرض جميع تعليمات الموضوع الرسمي.</p>
         </div>
         <div class="flex justify-end">
-          <button class="btn btn-emerald" id="guide-next">♞ أنا هادئ ومستعد | تصفح PDF وحاسبة الاختيار (25 دقيقة)</button>
+          <button class="btn btn-emerald" id="guide-next">أنا مستعد — تصفح الموضوع واختر خلال 25 دقيقة</button>
         </div>
       </div>
       <footer class="screen-foot">ثقة واحدة تكفي: خطوة في كل مرة.</footer>

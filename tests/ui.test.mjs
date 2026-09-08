@@ -141,25 +141,25 @@ test("après تثبيت du sujet, entrée directe au workspace (aucun écran qui
   // Vrai examen : plus d'écran intermédiaire — le workspace s'ouvre sur ت1.
   assert.ok(!$("#view-workspace").classList.contains("hidden"));
   assert.equal($("#view-onboarding"), null, "l'écran onboarding n'existe plus");
-  // Le verrou examen impose une réponse avant de changer d'exercice…
-  $("#fld-N").value = "يلعب ARN دورا مهما في تركيب البروتين";
-  click('#ex-content [data-check="N"]');
-  // …puis le pipeline (ت3) devient accessible via les onglets de la copie.
+  // L'ordre est libre : le pipeline (ت3) reste accessible sans réponse préalable.
   click('#view-workspace [data-switch="3"]');
   assert.equal($$("#blocks-bank [data-block]").length, 8);
 });
 
-test("le mode brouillon Boussole s'ouvre, expose la fiche N/S/E/W et persiste les notes", () => {
-  assert.ok($("#boussole-scratch-card"));
+test("le brouillon en quatre étapes s'ouvre, nomme ses champs et persiste les notes", () => {
+  assert.ok($("#method-scratch-card"));
   click("#ws-brouillon");
   assert.ok($(".drawer.open"));
-  assert.match($(".drawer").textContent, /ورقة المسودة · اقرأ \/ اجمع \/ اربط \/ اختُم/);
+  assert.match($(".drawer").textContent, /ورقة المسودة · الخطوات الأربع: اقرأ \/ اجمع \/ اربط \/ اختُم/);
   assert.match($(".drawer").textContent, /الفعل المكتشف/);
-  assert.match($(".drawer").textContent, /consigne brute BAC/);
-  assert.match($(".drawer").textContent, /consigne reconstruite/);
-  assert.match($(".drawer").textContent, /البلوك الأنسب: اقرأ/);
+  assert.match($(".drawer").textContent, /تعليمة البكالوريا/);
+  assert.match($(".drawer").textContent, /صياغة التدريب/);
+  assert.match($(".drawer").textContent, /الخطوة الأنسب: اقرأ/);
   assert.ok($("#scratch-N"));
   assert.ok($("#scratch-S"));
+  assert.equal($("label[for='scratch-N']").textContent, "اقرأ");
+  assert.equal($("#brouillon-draft-current").readOnly, true);
+  assert.equal($("#brouillon-draft-full").readOnly, true);
 
   const scratchN = $("#scratch-N");
   scratchN.value = "المشكل العلمي: كيف يؤثر المنبه على الاستجابة؟";
@@ -188,7 +188,8 @@ test("la copie finale du brouillon génère un texte rédigé puis peut l'inject
   $("#scratch-E").value =
     "يفسر ذلك بأن ARNm يحمل المعلومة وARNt ينقل الأحماض الأمينية وARNr يضمن الترجمة داخل الريبوزوم.";
   $("#scratch-E").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
-  $("#scratch-W").value = "في الختام يؤدي تعطل هذه العناصر إلى توقف تركيب البروتين.";
+  $("#scratch-W").value =
+    "في الختام يجيب ذلك عن المشكل العلمي ويؤدي تعطل هذه العناصر إلى توقف تركيب البروتين.";
   $("#scratch-W").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
 
   assert.match($("#brouillon-draft-current").value, /المشكل العلمي/);
@@ -196,10 +197,13 @@ test("la copie finale du brouillon génère un texte rédigé puis peut l'inject
 
   click("#brouillon-insert-current");
   assert.match($("#fld-N").value, /المشكل العلمي/);
+  assert.equal($(".drawer"), null, "l’insertion ferme le brouillon et revient dans la copie");
+  assert.equal(document.activeElement, $("#fld-N"));
 
+  click("#ws-brouillon");
   click("#brouillon-insert-full");
   assert.match($("#fld-N").value, /وتبين المعطيات أن/);
-  click(".drawer [data-close]");
+  assert.equal($(".drawer"), null);
 });
 
 test("le mini-contrôle du brouillon signale l'absence de comparaison avant injection", () => {
@@ -210,11 +214,12 @@ test("le mini-contrôle du brouillon signale l'absence de comparaison avant inje
   click("#ws-brouillon");
   $("#scratch-S").value = "النمط الطبيعي ينمو جيداً.";
   $("#scratch-S").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
-  assert.match($("#brouillon-preflight-current").textContent, /tu n’as pas mis de comparaison/);
+  assert.match($("#brouillon-preflight-current").textContent, /لم تكتب مقارنة واضحة/);
   click("#brouillon-insert-current");
-  assert.ok($(".modal"));
-  assert.match($(".modal").textContent, /tu n’as pas mis de comparaison/);
-  click('[data-close="btn"]');
+  assert.equal($(".modal"), null, "le contrôle reste dans le brouillon au lieu d’ouvrir une seconde fenêtre");
+  assert.ok($(".drawer"));
+  assert.equal($("#brouillon-preflight-current").getAttribute("role"), "alert");
+  assert.equal(document.activeElement, $("#brouillon-preflight-current"));
   click(".drawer [data-close]");
 });
 
@@ -225,7 +230,7 @@ test("le mini-contrôle du brouillon signale une explication sans observation", 
   $("#scratch-S").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
   $("#scratch-E").value = "يعود ذلك إلى خلل في الموقع الفعال للإنزيم.";
   $("#scratch-E").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
-  assert.match($("#brouillon-preflight-current").textContent, /tu as expliqué sans observer/);
+  assert.match($("#brouillon-preflight-current").textContent, /فسّرت النتيجة قبل تسجيل الملاحظة/);
   click(".drawer [data-close]");
 });
 
@@ -236,7 +241,7 @@ test("le mini-contrôle du brouillon signale une conclusion hors problème", () 
   $("#scratch-N").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
   $("#scratch-W").value = "في الختام هذه الظاهرة مهمة للكائنات الحية.";
   $("#scratch-W").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
-  assert.match($("#brouillon-preflight-full").textContent, /ta conclusion ne répond pas au problème/);
+  assert.match($("#brouillon-preflight-full").textContent, /الخاتمة لا تجيب عن المشكل العلمي/);
   click(".drawer [data-close]");
 });
 
@@ -326,23 +331,26 @@ test("les boutons d'إملاء صوتي (dictée vocale) sont bien présents sur
   assert.ok($("#toast-zone").children.length > 0);
 });
 
-test("chaque consigne de pôle affiche le verdict des البوابتان avant la réponse (MIFTAH)", () => {
+test("chaque étape affiche ses deux décisions littérales avant la réponse", () => {
   // Exercice 1 (texte) du même sujet : bascule via l'onglet du workspace.
   click('#view-workspace [data-switch="1"]');
   const chips = $$("#ex-content .gate-chip");
-  assert.equal(chips.length, 4, "4 puces de décision attendues (une par سنّ)");
+  assert.equal(chips.length, 4, "4 puces de décision attendues (une par étape)");
   for (const chip of chips) {
-    assert.match(chip.textContent, /ورقة|رأس/, `verdict بوابة 1 manquant: ${chip.textContent}`);
+    assert.match(
+      chip.textContent,
+      /تعليمة بسند|تعليمة معرفية/,
+      `décision de source manquante: ${chip.textContent}`
+    );
   }
-  // Données réelles 2025 S1 E1 : aucune consigne ne cite de سند documentaire,
-  // donc le سنّ N (كيف تتدخل…) est classé رأس (مسار 1 → 4) par la règle de la fiche.
+  // Données réelles 2025 S1 E1 : aucune consigne ne cite de سند documentaire.
   const provenance = $$("#ex-content .provenance-note");
-  assert.equal(provenance.length, 4, "la provenance doit être visible pour chaque سنّ");
+  assert.equal(provenance.length, 4, "la provenance doit être visible pour chaque étape");
   assert.ok(provenance.some((note) => /معاد بناؤها|مفككة/.test(note.textContent)));
   const chipN = chips.find((chip) => chip.dataset.gateChip === "N");
-  assert.ok(chipN, "puce du سنّ N manquante");
-  assert.match(chipN.textContent, /رأس/);
-  assert.match(chipN.textContent, /مسار 1 → 4/);
+  assert.ok(chipN, "puce de l’étape N manquante");
+  assert.match(chipN.textContent, /تعليمة معرفية/);
+  assert.match(chipN.textContent, /الخطوات 1 → 4/);
   // Provenance affichée une seule fois (provenanceBadge), jamais dupliquée dans la puce.
   assert.doesNotMatch(chipN.textContent, /معاد بناؤه/, "la puce ne duplique pas le badge de provenance");
 });

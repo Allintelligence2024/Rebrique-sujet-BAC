@@ -90,7 +90,7 @@ export function createHubScreen(deps) {
     <div class="app">
       <header class="screen-head">
         <div class="brand">
-          <div class="brand-icon">🔑</div>
+          <div class="brand-icon" aria-hidden="true">٤</div>
           <div>
             <h1>${APP_CONFIG.appTitle}</h1>
             <p>${APP_CONFIG.appSubtitle}</p>
@@ -142,7 +142,7 @@ export function createHubScreen(deps) {
     $("#btn-hub-sound").addEventListener("click", () => cycleSound($("#btn-hub-sound")));
     fab.addEventListener("click", cycleStream);
     training.mount();
-    // Démo et أطلس : outils secondaires, dans la section repliée تدريب المفتاح.
+    // Démo et أطلس : outils secondaires, dans la section repliée تدريب الخطوات الأربع.
     const trainingSection = $("#training-section");
     if (trainingSection) {
       trainingSection.insertAdjacentHTML(

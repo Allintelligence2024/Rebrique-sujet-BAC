@@ -10,8 +10,8 @@
   --panel-2: #1e293b; /* slate-800 */
   --line: #1e293b; /* slate-800 */
   --ink: #f1f5f9; /* slate-100 */
-  --muted: #94a3b8; /* slate-400 */
-  --dim: #64748b; /* slate-500 */
+  --muted: #a8b5c7;
+  --dim: #94a3b8; /* slate-400 — texte secondaire AA sur slate-950 */
 
   --emerald: #10b981;
   --emerald-soft: #34d399;
@@ -39,7 +39,7 @@
   --line: #cbd5e1;
   --ink: #0f172a;
   --muted: #475569;
-  --dim: #64748b;
+  --dim: #475569;
   --emerald-soft: #047857;
   --indigo-soft: #4338ca;
   --amber-soft: #b45309;
@@ -408,7 +408,7 @@ header.screen-head {
   color: var(--muted);
   font-size: 0.78rem;
 }
-.compass-guide {
+.method-guide {
   border-inline-start: 4px solid var(--emerald);
 }
 .quick-access-grid {
@@ -523,44 +523,6 @@ label.lbl {
   border-radius: 50%;
   filter: blur(70px);
   opacity: 0.5;
-}
-
-/* --- Compass ------------------------------------------------------ */
-.compass {
-  position: relative;
-  width: 7rem;
-  height: 7rem;
-  margin: 0 auto;
-  display: grid;
-  place-items: center;
-}
-.compass-ring {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 2px solid var(--line);
-  background: var(--panel);
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
-}
-.compass-mark {
-  position: absolute;
-  font-size: 0.6rem;
-  font-weight: 800;
-}
-.compass-seq {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  width: 62%;
-  height: 62%;
-  margin: auto;
-  transform-origin: center;
-  transition: transform 0.7s cubic-bezier(0.34, 1.4, 0.64, 1);
-}
-.compass-seq svg {
-  width: 100%;
-  height: 100%;
 }
 
 /* --- Breathing ---------------------------------------------------- */
@@ -713,7 +675,13 @@ label.lbl {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
   margin-bottom: 0.8rem;
+}
+.modal-title {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.5;
 }
 
 .drawer {
@@ -881,7 +849,6 @@ summary.model-summary:hover {
   aside,
   .stepnav,
   .progress,
-  .compass,
   nav,
   #ws-panic,
   .badge {
@@ -1096,42 +1063,6 @@ footer.screen-foot {
   border: 1px solid var(--line);
   padding: 0.5rem 0.75rem;
   border-radius: 0.8rem;
-}
-.compass-mark-north {
-  top: 4px;
-  inset-inline-start: 50%;
-  translate: 50% 0;
-  color: var(--emerald-soft);
-}
-.compass-mark-south {
-  bottom: 4px;
-  inset-inline-start: 50%;
-  translate: 50% 0;
-  color: var(--blue);
-}
-.compass-mark-east {
-  inset-block-start: 50%;
-  inset-inline-end: 4px;
-  translate: 0 -50%;
-  color: var(--amber-soft);
-}
-.compass-mark-west {
-  inset-block-start: 50%;
-  inset-inline-start: 4px;
-  translate: 0 -50%;
-  color: var(--purple-soft);
-}
-.compass-seq.step-1 {
-  transform: rotate(0deg);
-}
-.compass-seq.step-2 {
-  transform: rotate(180deg);
-}
-.compass-seq.step-3 {
-  transform: rotate(90deg);
-}
-.compass-seq.step-4 {
-  transform: rotate(270deg);
 }
 .progress > .step-1 {
   width: 25%;
@@ -1507,9 +1438,6 @@ footer.screen-foot {
     animation: none !important;
     transition: none !important;
   }
-  .compass-seq {
-    transition: none !important;
-  }
 }
 @media (max-width: 720px) {
   .app {
@@ -1567,6 +1495,59 @@ footer.screen-foot {
 }
 
 /* --- Accessibility: high contrast, focus and screen-reader text --- */
+.skip-link {
+  position: fixed;
+  inset-block-start: 0.5rem;
+  inset-inline-start: 0.5rem;
+  z-index: 100;
+  padding: 0.7rem 1rem;
+  border-radius: 0.7rem;
+  color: #ffffff;
+  background: #4338ca;
+  font-weight: 800;
+  transform: translateY(-150%);
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* Arabic helper copy must not collapse below a readable 14.4 px at the default zoom. */
+html[lang="ar"]
+  :where(
+    .small,
+    .brand p,
+    .btn-sm,
+    .badge,
+    .more-tools > summary,
+    .secondary-score,
+    label.lbl,
+    .stepnav button,
+    .chip,
+    .slot,
+    .breath,
+    .toast,
+    .global-timer-bar,
+    .pill,
+    summary.model-summary,
+    .btn-mic,
+    .mic-status-badge,
+    .method-script,
+    footer.screen-foot,
+    .atlas-tab-btn,
+    .atlas-trap,
+    .atlas-golden,
+    .flashcard-a,
+    .brouillon-focus,
+    .brouillon-chip,
+    .brouillon-verb-grid,
+    .btn-sound,
+    .adkar-title,
+    .adkar-note,
+    .btn-adkar
+  ) {
+  font-size: 0.9rem;
+}
+
 .sr-only {
   position: absolute !important;
   width: 1px !important;
@@ -1709,9 +1690,6 @@ footer.screen-foot {
   .app {
     padding: 0.6rem 0.75rem 1.25rem;
   }
-  .compass {
-    display: none;
-  }
   #pdf-preview-container {
     height: 38vh;
   }
@@ -1722,7 +1700,7 @@ footer.screen-foot {
     font-size: 0.9rem;
   }
   footer.screen-foot {
-    font-size: 0.75rem;
+    font-size: 0.9rem;
   }
 }
 

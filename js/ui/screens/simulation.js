@@ -1,4 +1,5 @@
 import { assertSimulationEligible } from "../../domain/subjects/official-coverage.js";
+import { simulationBlockersArabic } from "../coverage-messages.js";
 import { setInternalHTML } from "../dom.js";
 
 const escapeHTML = (value = "") =>
@@ -193,7 +194,7 @@ export function createSimulationController(deps) {
   function denyInvalidSimulation(report) {
     timers.stopAll();
     if (store.isSessionActive()) store.leaveSession();
-    toast(`المحاكاة مرفوضة: ${(report?.blockers || ["coverage-unknown"]).join(", ")}`, "error");
+    toast(`المحاكاة مرفوضة: ${simulationBlockersArabic(report?.blockers)}`, "error");
     goHome();
   }
 

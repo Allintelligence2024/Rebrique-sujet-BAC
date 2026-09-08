@@ -35,6 +35,7 @@ const ASSETS = [
   "./js/ui/training.js",
   "./js/ui/atlas.js",
   "./js/ui/dialogs.js",
+  "./js/ui/coverage-messages.js",
   "./js/ui/dom.js",
   "./js/ui/navigation.js",
   "./js/ui/screens/hub.js",
@@ -70,6 +71,7 @@ const ASSETS = [
   "./data/year-2026-m.js",
   "./data/archive.js",
   "./data/brouillon.js",
+  "./data/usability-study.js",
   "./BAC2025_SVT_Sujet1.pdf",
   "./BAC2025_SVT_Sujet2.pdf"
 ];

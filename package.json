@@ -18,6 +18,8 @@
     "coverage:official": "node scripts/report-official-coverage.mjs",
     "p1:status": "node scripts/report-p1-status.mjs",
     "p1:check": "node scripts/report-p1-status.mjs --check-complete",
+    "p2:status": "node scripts/report-p2-status.mjs",
+    "p2:check": "node scripts/report-p2-status.mjs --check-complete",
     "pwa:version": "node scripts/generate-pwa-version.mjs",
     "test:e2e": "playwright test",
     "docs:update": "node scripts/update-doc-metrics.mjs",

@@ -69,6 +69,20 @@ Les données manquantes ne peuvent pas être synthétisées : il faut les sujets
 6. Donner un vrai flux au brouillon : édition, insertion vérifiable, sauvegarde et retour dans la copie.
 7. Tester avec au moins cinq élèves sur mobile bas de gamme ; mesurer abandon, temps d’accès à une question et incompréhensions.
 
+### Suivi P2 — 8 septembre 2026
+
+| Lot  | Preuve d’acceptation                                                                                                                                 | État    |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| P2.1 | Lien d’évitement arabe, focus sur le titre à chaque route, identifiants de champs uniques, annonces live, modales/tiroirs isolés et retour de focus. | Terminé |
+| P2.2 | Les boutons d’exercice changent directement d’exercice ; aucune réponse préalable n’est exigée.                                                      | Terminé |
+| P2.3 | Le vocabulaire visible emploie le parcours en quatre étapes ; boussole, dents, cheval et décisions imagées ont été retirés de la présentation.       | Terminé |
+| P2.4 | Les libellés et avertissements du parcours élève sont en arabe ; les anciens messages français du brouillon et du lecteur PDF ont été traduits.      | Terminé |
+| P2.5 | `--dim` atteint AA, les petits textes arabes ont un plancher de 0,9 rem et la CI teste le reflow équivalent à 200 % sur une largeur utile de 640 px. | Terminé |
+| P2.6 | Le brouillon permet édition, contrôle bloquant, sauvegarde, insertion, fermeture du tiroir et retour de focus dans la réponse.                       | Terminé |
+| P2.7 | Cinq élèves distincts, consentants, avec sessions pseudonymisées sur mobile bas de gamme selon `docs/P2_USABILITY_PROTOCOL.md`. État actuel : 0/5.   | Bloqué  |
+
+`npm run p2:status` publie ces preuves et `npm run p2:check` reste rouge jusqu’à cinq sessions humaines valides. Les six corrections techniques ne remplacent pas le test utilisateur.
+
 ## P3 — PWA, performance et exploitation
 
 1. Découper les données par filière/année et charger à la demande.
