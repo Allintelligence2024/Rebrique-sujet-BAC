@@ -73,10 +73,10 @@ export function detectLLM(text) {
   return hits;
 }
 
-export function validateCase(caseObj) {
+export function validateCase(caseObj, maxScore = Infinity) {
   const errors = [];
   if (!caseObj.id || typeof caseObj.id !== "string") errors.push("id manquant");
-  if (!caseObj.year || !/^\d{4}$/.test(caseObj.year)) errors.push("year invalide");
+  if (!caseObj.year || !/^\d{4}(?:-[a-z]{1,3})?$/.test(caseObj.year)) errors.push("year invalide");
   if (typeof caseObj.sujet !== "number") errors.push("sujet invalide");
   if (typeof caseObj.exercise !== "number") errors.push("exercise invalide");
   if (!["N", "S", "E", "W"].includes(caseObj.pole)) errors.push("pole invalide");
@@ -94,7 +94,13 @@ export function validateCase(caseObj) {
     caseObj.annotations.forEach((annotation, index) => {
       if (!annotation || typeof annotation.annotator !== "string" || !annotation.annotator.trim())
         errors.push(`annotator ${index + 1} invalide`);
-      if (!annotation || typeof annotation.score !== "number" || annotation.score < 0)
+      if (
+        !annotation ||
+        typeof annotation.score !== "number" ||
+        !Number.isFinite(annotation.score) ||
+        annotation.score < 0 ||
+        annotation.score > maxScore
+      )
         errors.push(`score annotateur ${index + 1} invalide`);
       if (!annotation || typeof annotation.note !== "string" || !annotation.note.trim())
         errors.push(`note annotateur ${index + 1} invalide`);
@@ -187,26 +193,30 @@ async function main() {
 
   if (!input) {
     console.log("=== Import d'une copie réelle ===\n");
-    caseObj.year = await prompt("Année (YYYY): ");
+    caseObj.year = await prompt("Session (YYYY ou YYYY-m): ");
     caseObj.sujet = parseInt(await prompt("Sujet (1 ou 2): "), 10);
     caseObj.exercise = parseInt(await prompt("Exercice (1-3): "), 10);
     caseObj.pole = (await prompt("Pôle (N/S/E/W): ")).toUpperCase();
-    caseObj.category = await prompt("Catégorie (ex: bonne-forme-fond-faux, confusion-concepts): ");
+    caseObj.category = await prompt("Catégorie (strong/weak/scientifically-wrong/off-topic): ");
     caseObj.answer = await prompt("Réponse transcrite: ");
     caseObj.source = await prompt("Source (fichier/établissement): ");
     caseObj.collector = await prompt("Collecteur: ");
-    caseObj.annotations = [
-      {
-        annotator: await prompt("Correcteur 1 (identifiant pseudonymisé): "),
-        score: Number(await prompt("Note du correcteur 1: ")),
-        note: await prompt("Justification du correcteur 1: ")
-      },
-      {
-        annotator: await prompt("Correcteur 2 (identifiant pseudonymisé): "),
-        score: Number(await prompt("Note du correcteur 2: ")),
-        note: await prompt("Justification du correcteur 2: ")
-      }
-    ];
+    caseObj.auditId = await prompt("Identifiant du manifeste d'audit (AUD-...): ");
+    caseObj.annotations = [];
+    for (const index of [1, 2]) {
+      const blindedToPeer =
+        (await prompt(`Correcteur ${index} aveugle à l'autre note ? (oui/non): `)) === "oui";
+      const blindedToEngine =
+        (await prompt(`Correcteur ${index} aveugle au résultat moteur ? (oui/non): `)) === "oui";
+      caseObj.annotations.push({
+        annotator: await prompt(`Correcteur ${index} (identifiant pseudonymisé): `),
+        score: Number(await prompt(`Note du correcteur ${index}: `)),
+        note: await prompt(`Justification du correcteur ${index}: `),
+        completedAt: await prompt(`Horodatage ISO du correcteur ${index}: `),
+        blindedToPeer,
+        blindedToEngine
+      });
+    }
     caseObj.date = await prompt("Date (YYYY-MM-DD): ");
   }
 
@@ -228,7 +238,10 @@ async function main() {
   caseObj.id =
     caseObj.id || generateId(data.cases, caseObj.year, caseObj.sujet, caseObj.exercise, caseObj.pole);
 
-  const errors = [...validateCase(caseObj), ...validateAuditRecord(caseObj, auditManifest)];
+  const errors = [
+    ...validateCase(caseObj, poleInfo.pole.points),
+    ...validateAuditRecord(caseObj, auditManifest)
+  ];
   if (errors.length) {
     console.error("❌ Validation échouée:", errors.join(", "));
     process.exit(1);

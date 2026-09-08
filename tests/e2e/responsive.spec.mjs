@@ -36,7 +36,7 @@ for (const phone of PHONES) {
     await page.locator("#guide-next").click();
     await expect(page.locator("#view-strategy")).toBeVisible();
     await expectNoHorizontalOverflow(page);
-    await page.locator('#view-strategy [data-confirm="1"]').click();
+    await page.locator('#view-strategy [data-confirm="1"][data-session-mode="training"]').click();
     await expect(page.locator("#view-workspace")).toBeVisible();
     await expectNoHorizontalOverflow(page);
   });
@@ -46,13 +46,37 @@ for (const phone of PHONES) {
     await page.goto("/");
     await page.locator('#year-grid [data-year="2025"]').click();
     await page.locator("#guide-next").click();
-    await page.locator('#view-strategy [data-confirm="1"]').click();
+    await page.locator('#view-strategy [data-confirm="1"][data-session-mode="training"]').click();
     await expect(page.locator("#view-workspace")).toBeVisible();
     await expectNoHorizontalOverflow(page);
     const field = page.locator("#ex-content textarea, #ex-content input.field").first();
     await expect(field).toBeVisible();
   });
 }
+
+test("[phone] la couverture partielle garde la simulation verrouillée", async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 800 });
+  await page.goto("/");
+  await page.locator('#year-grid [data-year="2025"]').click();
+  await page.locator("#guide-next").click();
+  await expect(page.locator('[data-subject-coverage="partial"]')).toHaveCount(1);
+  await expect(page.locator('[data-simulation-eligible="true"]')).toHaveCount(0);
+  await expect(page.locator("#view-strategy")).toContainText("المحاكاة ممنوعة");
+});
+
+test("[phone] parcours Maths : durée 2 h 30 et deux exercices", async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 800 });
+  await page.goto("/");
+  await page.locator("#btn-stream-fab").click();
+  await expect(page.locator("#stream-fab-label")).toContainText("رياضيات");
+  await page.locator('#year-grid [data-year="2026-m"]').click();
+  await expect(page.locator("#global-timer")).toHaveText("02:30:00");
+  await expect(page.locator("#view-guide")).toContainText("2س30د");
+  await page.locator("#guide-next").click();
+  await page.locator('#view-strategy [data-confirm="1"][data-session-mode="training"]').click();
+  await expect(page.locator("#view-workspace [data-switch]")).toHaveCount(2);
+  await expectNoHorizontalOverflow(page);
+});
 
 test("[phone] tous les états de pages sans débordement (tiroirs, détails, modale)", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
@@ -70,7 +94,7 @@ test("[phone] tous les états de pages sans débordement (tiroirs, détails, mod
   // Parcours complet jusqu'à la copie
   await page.locator('#year-grid [data-year="2025"]').click();
   await page.locator("#guide-next").click();
-  await page.locator('#view-strategy [data-confirm="1"]').click();
+  await page.locator('#view-strategy [data-confirm="1"][data-session-mode="training"]').click();
   await expect(page.locator("#view-workspace")).toBeVisible();
 
   // Aide de pôle dépliée (portes + canevas + فحص رباعي)

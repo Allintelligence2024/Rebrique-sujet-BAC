@@ -15,12 +15,22 @@ function ratio(foreground, background) {
   return (values[0] + 0.05) / (values[1] + 0.05);
 }
 
+test("les jetons --dim corrigés sont réellement déclarés dans les thèmes sombre et clair", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const css = await readFile(new URL("../assets/styles.css", import.meta.url), "utf8");
+  assert.match(css, /:root\s*\{[\s\S]*--dim:\s*#94a3b8/);
+  assert.match(css, /:root\[data-theme="light"\]\s*\{[\s\S]*--dim:\s*#475569/);
+  assert.match(css, /html\[lang="ar"\][\s\S]*font-size:\s*0\.9rem/);
+});
+
 test("audit WCAG AA : les couples de couleurs textuelles essentiels atteignent 4,5:1", () => {
   const pairs = {
     "dark/texte": ["#f1f5f9", "#020617"],
-    "dark/texte-secondaire": ["#94a3b8", "#020617"],
+    "dark/texte-secondaire": ["#a8b5c7", "#020617"],
+    "dark/texte-dim": ["#94a3b8", "#020617"],
     "light/texte": ["#0f172a", "#ffffff"],
     "light/texte-secondaire": ["#475569", "#ffffff"],
+    "light/texte-dim": ["#475569", "#ffffff"],
     "bouton-émeraude": ["#ffffff", "#047857"],
     "bouton-indigo": ["#ffffff", "#4338ca"],
     "bouton-violet": ["#ffffff", "#7e22ce"],

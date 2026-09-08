@@ -4,7 +4,8 @@
 import { init } from "./ui.js";
 import { reportDiagnostic } from "./services/diagnostics.js";
 
-if ("serviceWorker" in navigator) {
+// Service workers are unavailable and unwanted in the file:// standalone build.
+if (globalThis.location?.protocol !== "file:" && "serviceWorker" in navigator) {
   window.addEventListener("load", () =>
     navigator.serviceWorker
       .register("./sw.js")

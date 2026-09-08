@@ -22,7 +22,7 @@ function memoryStorage() {
   };
 }
 globalThis.localStorage = memoryStorage();
-const { store, validateState } = await import("../js/store.js");
+const { store, migrateState, validateState } = await import("../js/store.js");
 const { DRILL_BANK, DRILL_ROUND_SIZE, DRILL_UNLOCK_STREAK, classifyInstruction, createDrillEngine } =
   await import("../js/domain/method/gates.js");
 
@@ -159,16 +159,20 @@ test("recordDrillRound construit la série et remet à zéro après un échec", 
   assert.deepEqual(store.recordDrillRound(false), { streak: 0, best: 2, rounds: 3, unlocked: false });
 });
 
-test("validateState conserve le drill et tolère son absence (états anciens)", () => {
-  const legacy = validateState({ schemaVersion: 2, progress: {} });
+test("validateState conserve le drill et la migration tolère son absence (états anciens)", () => {
+  const legacy = validateState(migrateState({ schemaVersion: 2, progress: {} }));
   assert.deepEqual(legacy.drill, { streak: 0, best: 0, rounds: 0, unlocked: false });
-  const validated = validateState({
-    schemaVersion: 2,
-    progress: {},
-    drill: { streak: 2, best: 5, rounds: 9, unlocked: true }
-  });
+  const validated = validateState(
+    migrateState({
+      schemaVersion: 2,
+      progress: {},
+      drill: { streak: 2, best: 5, rounds: 9, unlocked: true }
+    })
+  );
   assert.deepEqual(validated.drill, { streak: 2, best: 5, rounds: 9, unlocked: true });
-  const coerced = validateState({ schemaVersion: 2, progress: {}, drill: { streak: "x", unlocked: "oui" } });
+  const coerced = validateState(
+    migrateState({ schemaVersion: 2, progress: {}, drill: { streak: "x", unlocked: "oui" } })
+  );
   assert.deepEqual(coerced.drill, { streak: 0, best: 0, rounds: 0, unlocked: false });
 });
 
@@ -261,8 +265,8 @@ test("la section تدريب porte les البوابتان et le drill — le ال
   input.value = "فسّر بالاعتماد على معلوماتك والشكل 3 نتائج التجربة.";
   input.dispatchEvent(new uiDom.window.Event("input", { bubbles: true }));
   const verdict = uiDom.window.document.querySelector("#gate-verdict").textContent;
-  assert.match(verdict, /ورقة/);
-  assert.match(verdict, /فيلم/);
+  assert.match(verdict, /تعتمد على سند/);
+  assert.match(verdict, /تفسير أو استنتاج/);
   assert.match(verdict, /من الوثيقة \| من الدرس/);
   assert.equal(tStore.recorded.length, 0);
 });
@@ -271,7 +275,7 @@ test("les exemples cliquables remplissent l'entrée et le verdict", () => {
   freshTraining();
   uiClick($$sel("[data-gate-example]")[2]);
   assert.equal(uiDom.window.document.querySelector("#gate-input").value, "عدّد خصائص المناعة الاكتسابية.");
-  assert.match(uiDom.window.document.querySelector("#gate-verdict").textContent, /رأس/);
+  assert.match(uiDom.window.document.querySelector("#gate-verdict").textContent, /تعتمد على المعارف/);
 });
 
 test("3 rounds parfaites 12/12 consécutives ouvrent المفتاح+ dans la section", () => {
@@ -284,7 +288,7 @@ test("3 rounds parfaites 12/12 consécutives ouvrent المفتاح+ dans la sec
       uiClick(uiDom.window.document.querySelector("#drill-again"));
     }
   }
-  assert.match(uiDom.window.document.querySelector("#drill-summary").textContent, /فُتح المفتاح/);
+  assert.match(uiDom.window.document.querySelector("#drill-summary").textContent, /فُتح المستوى المتقدم/);
   assert.ok(uiDom.window.document.querySelector("#plus-card"), "المفتاح+ doit apparaître après déblocage");
   const plusText = uiDom.window.document.querySelector("#plus-card").textContent;
   for (const expected of ["افتح", "ومنه", "شجرة النسب", "عامّ أم خاصّ", "وتفسير ذلك أنّ"]) {
@@ -330,6 +334,8 @@ test("l'écran guide est calme : ni drill, ni البوابتان, ni carte erreu
   const guide = createGuideScreen({
     $: (s) => uiDom.window.document.querySelector(s),
     adkarHTML: () => "<div id='adkar'></div>",
+    examMinutesForYear: () => 270,
+    formatDuration: (minutes) => `${minutes} min`,
     goHome: () => {},
     goToStrategy: () => {}
   });
