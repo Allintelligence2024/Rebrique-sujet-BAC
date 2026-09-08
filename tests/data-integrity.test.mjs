@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { APP_CONFIG } from "../data/subjects.js";
+import { APP_CONFIG, examMinutesForYear } from "../data/subjects.js";
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -17,6 +17,14 @@ function loadCases() {
 }
 
 const BAD_KEYWORDS = ["synthetic", "généré", "LLM", "GPT", "Claude", "Gemini", "chatbot", "fabriqué"];
+
+test("la durée officielle dépend de la filière", () => {
+  assert.equal(examMinutesForYear(APP_CONFIG.years.find((year) => year.id === "2026")), 270);
+  assert.equal(examMinutesForYear(APP_CONFIG.years.find((year) => year.id === "2026-m")), 150);
+  for (const year of APP_CONFIG.years.filter((item) => item.enabled)) {
+    assert.ok([150, 270].includes(examMinutesForYear(year)), `durée non modélisée pour ${year.id}`);
+  }
+});
 
 test("aucune entrée cases.json ne contient de mots-clés synthétiques dans source", () => {
   const data = loadCases();

@@ -31,7 +31,8 @@ const baseDeps = {
     save() {}
   },
   openDrawer: () => {},
-  openModal: () => {},
+  closeModal: () => {},
+  toast: () => {},
   escapeHTML: (s) =>
     String(s).replace(
       /[&<>"']/g,
@@ -62,10 +63,16 @@ test("createBrouillonController exposes the expected methods", () => {
   assert.equal(typeof controller.openBrouillon, "function");
 });
 
+test("brouillonPreflight refuse une insertion vide", () => {
+  const st = { scratch: { N: "", S: "", E: "", W: "", free: "" } };
+  assert.ok(controller.brouillonPreflight(st, "N").some((message) => message.includes("فارغة")));
+  assert.ok(controller.brouillonPreflight(st, "full").some((message) => message.includes("فارغة")));
+});
+
 test("brouillonPreflight signale l'absence de comparaison en S", () => {
   const st = { scratch: { S: "texte sans comparaison", E: "", W: "", N: "" } };
   const msgs = controller.brouillonPreflight(st, "S");
-  assert.ok(msgs.some((m) => m.includes("comparaison")));
+  assert.ok(msgs.some((m) => m.includes("مقارنة")));
 });
 
 test("brouillonPreflight signale une explication sans observation en E", () => {
@@ -75,13 +82,13 @@ test("brouillonPreflight signale une explication sans observation en E", () => {
   });
   const st = { scratch: { S: "", E: "explication directe", W: "", N: "" } };
   const msgs = ctrl.brouillonPreflight(st, "E");
-  assert.ok(msgs.some((m) => m.includes("observer")));
+  assert.ok(msgs.some((m) => m.includes("الملاحظة")));
 });
 
 test("brouillonPreflight signale une conclusion hors problème en W", () => {
   const st = { scratch: { S: "", E: "", W: "conclusion finale", N: "problème scientifique" } };
   const msgs = controller.brouillonPreflight(st, "W");
-  assert.ok(msgs.some((m) => m.includes("problème")));
+  assert.ok(msgs.some((m) => m.includes("المشكل")));
 });
 
 test("buildDrafts compose les drafts pour le pôle actif", () => {
@@ -100,7 +107,7 @@ test("openBrouillon ouvre le drawer avec le titre attendu", () => {
     }
   });
   ctrl.openBrouillon();
-  assert.equal(drawerTitle, "📝 وضع البوصلة — المسودة");
+  assert.equal(drawerTitle, "📝 المسودة — الخطوات الأربع");
 });
 
 test("openBrouillon ne lève pas quand le DOM est minimal", () => {

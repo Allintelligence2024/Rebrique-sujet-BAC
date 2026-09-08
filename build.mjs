@@ -1,11 +1,7 @@
 /* ============================================================
-   BUILD — génère une version "monofichier" autonome (sans serveur)
-   ------------------------------------------------------------
-   Le fichier produit (dist/boussole-4d-standalone.html) embarque :
-     - le CSS  -> <style> inline
-     - tous les modules JS packagés via esbuild -> <script> inline (IIFE)
-   Il s'ouvre directement via file:// (aucune dépendance, aucun
-   module ES6, aucun CDN) -> parfait pour prévisualiser / partager.
+   BUILD — génère une version monofichier utilisable hors ligne.
+   Le shell, le CSS, le bundle JS et les deux PDF locaux sont embarqués.
+   Les liens vers des sources PDF externes restent des liens optionnels.
    ============================================================ */
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -13,12 +9,16 @@ import { fileURLToPath } from "node:url";
 import * as esbuild from "esbuild";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const LOCAL_PDFS = ["BAC2025_SVT_Sujet1.pdf", "BAC2025_SVT_Sujet2.pdf"];
 
-function read(p) {
-  return readFileSync(join(__dirname, p), "utf8");
+function readText(path) {
+  return readFileSync(join(__dirname, path), "utf8");
 }
 
-// 1. Bundle JS complet via esbuild (résolution propre des dépendances ESM)
+function pdfDataUrl(path) {
+  return `data:application/pdf;base64,${readFileSync(join(__dirname, path)).toString("base64")}`;
+}
+
 const jsResult = esbuild.buildSync({
   entryPoints: [join(__dirname, "js/main.js")],
   bundle: true,
@@ -27,30 +27,50 @@ const jsResult = esbuild.buildSync({
   write: false
 });
 
-const bundleJs = jsResult.outputFiles[0].text;
-const css = read("assets/styles.css");
-const html = read("index.html");
+let bundleJs = jsResult.outputFiles[0].text;
+for (const pdf of LOCAL_PDFS) {
+  const pdfProperty = `pdf: ${JSON.stringify(pdf)}`;
+  if (!bundleJs.includes(pdfProperty))
+    throw new Error(`Standalone build cannot find data property for ${pdf}`);
+  // Replace only the subject's runtime PDF property. The same filename may also
+  // appear as provenance metadata and must not duplicate a multi-megabyte data URL.
+  bundleJs = bundleJs.replace(pdfProperty, `pdf: ${JSON.stringify(pdfDataUrl(pdf))}`);
+}
 
-// 2. CSS -> <style> inline
+const css = readText("assets/styles.css");
+const html = readText("index.html");
+
+// Embed the stylesheet. Accept both HTML and XHTML-style self-closing links.
 let out = html.replace(
-  /<link rel="stylesheet" href="assets\/styles\.css">/,
+  /<link\s+rel="stylesheet"\s+href="assets\/styles\.css"\s*\/?>/,
   () => `<style>\n${css}\n</style>`
 );
 
-// 3. Retire les liens d'icônes/manifest pour garder un fichier 100% autonome
+// A standalone file has no installable manifest or external icon dependency.
 out = out
-  .replace(/<link rel="icon"[^>]*>\s*/, "")
-  .replace(/<link rel="apple-touch-icon"[^>]*>\s*/, "")
-  .replace(/<link rel="manifest"[^>]*>\s*/, "");
+  .replace(/\s*<link\s+rel="icon"[^>]*\/?>/g, "")
+  .replace(/\s*<link\s+rel="apple-touch-icon"[^>]*\/?>/g, "")
+  .replace(/\s*<link\s+rel="manifest"[^>]*\/?>/g, "");
 
-// 4. Retire l'enregistrement du service worker (inutile en file://)
-out = out.replace(/<script>\s*if \("serviceWorker"[\s\S]*?<\/script>\s*/, "");
-
-// 5. Script modules -> bundle JS global
 out = out.replace(
-  /<script type="module" src="js\/main\.js"><\/script>/,
+  /<script\s+type="module"\s+src="js\/main\.js"><\/script>/,
   () => `<script>\n${bundleJs}\n</script>`
 );
+
+const forbiddenReferences = [
+  'href="assets/styles.css"',
+  'src="js/main.js"',
+  'href="manifest.webmanifest"',
+  'href="assets/icon-192.png"',
+  'href="assets/icon-512.png"'
+];
+for (const reference of forbiddenReferences) {
+  if (out.includes(reference))
+    throw new Error(`Standalone build still contains external reference: ${reference}`);
+}
+for (const pdf of LOCAL_PDFS) {
+  if (out.includes(`pdf: "${pdf}"`)) throw new Error(`Standalone build did not embed ${pdf}`);
+}
 
 mkdirSync(join(__dirname, "dist"), { recursive: true });
 const target = join(__dirname, "dist", "boussole-4d-standalone.html");

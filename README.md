@@ -1,9 +1,9 @@
 # 🔑 مفتاح الكنز — منهجية الإجابة في بكالوريا الجزائر
 
-**مادة علوم الطبيعة والحياة** — أداة تتحقق من تغطية الإجابة للعناصر العلمية والمنهجية المنتظرة وفق أربع سنّ
-(N = اقرأ — تأطير المسألة، S = اجمع — استغلال السندات، E = اربط — الربط والتفسير، W = اختُم — التركيب والمصادقة). Les identifiants internes restent N/S/E/W ; l'interface affiche les noms arabes « الأسنان ». Elle ne prétend pas corriger une copie à la place d'un professeur.
+**مادة علوم الطبيعة والحياة** — أداة تتحقق من تغطية الإجابة للعناصر العلمية والمنهجية المنتظرة وفق أربع خطوات:
+N = اقرأ — تأطير المسألة، S = اجمع — استغلال السندات، E = اربط — الربط والتفسير، W = اختُم — التركيب والمصادقة. Les identifiants techniques restent N/S/E/W ; l'interface emploie une seule représentation visible : le parcours en quatre étapes. Elle ne prétend pas corriger une copie à la place d'un professeur.
 
-> ⚠️ **Positionnement honnête : outil d'entraînement méthodologique non calibré.** Les scores sont des estimations automatiques fondées sur des règles ; ils ne sont ni une correction ministérielle ni une note attribuée par un professeur. Les consignes marquées `reconstructed` ne sont pas des énoncés officiels. Le benchmark vérifié contient actuellement **0 copie réelle doublement annotée** : aucune métrique de fiabilité ne peut donc être publiée.
+> ⚠️ **Positionnement honnête : outil d'entraînement méthodologique non calibré.** Le moteur calcule des signaux heuristiques pour ses tests, mais l'interface masque toute note numérique tant que les seuils de calibration humaine ne sont pas franchis. Les consignes marquées `reconstructed` ne sont pas des énoncés officiels. Le benchmark vérifié contient actuellement **0 copie réelle doublement annotée** : aucune métrique de fiabilité ne peut donc être publiée.
 
 > ✅ **Version intégrée à la racine.** L'ancien site monolithique est conservé dans
 > [`_v1_backup/`](_v1_backup) au cas où.
@@ -14,17 +14,17 @@
 
 Parcours en 5 étapes pensé pour la **gestion du stress** et la **méthode** :
 
-1. **Hub** — une seule action par carte-sujet : **▶ ابدأ الموضوع (امتحان كامل ≈ 3س30د)**. Sélecteur de filiale en haut, aucun texte d'introduction, aucun sélecteur de thème (apparence fixe), aucun raccourci de session courte.
-2. **Sérénité** _(parcours guidé uniquement)_ — volontairement dépouillé : respiration, rappel d'une ligne du مفتاح (اقرأ ← اجمع ← اربط ← اختُم), plan de session. **Aucun outil d'entraînement ici** : le flux examen doit rester aussi calme que l'épreuve.
-3. **تدريب المفتاح** _(hub, section repliée)_ — tous les outils d'entraînement : **البوابتان** (classifieur ورقة/رأس puis صورة/فيلم), **شحذ المفتاح** (drill 12 instructions, 12/12 ×3 → المفتاح+), خمسة أخطاء, بطاقة imprimable, **أطلس التقنيات** et **تشخيص تجريبي** (déplacés ici : le hub reste épuré). Repliaction par défaut : visibles seulement si l'élève les cherche.
-4. **Stratégie** _(optionnelle)_ — consultation des PDF et calculatrice de choix (25 min). Après **تثبيت** du sujet : entrée **directe** dans l'espace de travail sur ت1 — aucun écran intermédiaire ne révèle le contenu des exercices (effet vrai examen). Le changement d'exercice se fait depuis les onglets de la copie.
-5. **Espace de travail** — consigne et réponse prioritaires, diagnostic de couverture, aide contextuelle repliée. En-tête minimal : sortie, تلميح (valve anti-stress), مسودة, موضوع PDF — rien d'autre. Le retour est **qualitatif** (ممتاز · جيد · متوسط · ضعيف), jamais chiffré dans la copie ; le score numérique reste calculé en interne pour l'export. Ni son, ni أذكار, ni أطلس, ni rapport, ni تصفير pendant la copie (l'élève lit le sujet dans le PDF, comme dans une salle d'examen).
+1. **Hub** — une seule action par carte-sujet : **▶ ابدأ التدريب المنهجي**. Chaque carte annonce que le mapping est partiel et affiche la durée officielle selon la filière : 4 h 30 en Sciences expérimentales, 2 h 30 en Maths.
+2. **Sérénité** _(parcours guidé uniquement)_ — volontairement dépouillé : respiration, rappel des quatre étapes (اقرأ ← اجمع ← اربط ← اختُم), plan de session. Cet écran appartient au parcours d'entraînement, pas à une simulation certifiée de l'épreuve.
+3. **تدريب الخطوات الأربع** _(hub, section repliée)_ — outils d'entraînement formulés littéralement : décision **سند/معارف**, décision **وصف/تفسير**, exercice rapide de 12 instructions, niveau avancé après 12/12 ×3, cinq erreurs, carte imprimable, **أطلس التقنيات** et **تشخيص تجريبي**. Ils restent repliés par défaut.
+4. **Stratégie** _(optionnelle)_ — consultation des PDF, estimation personnelle et choix explicite du parcours. L'entraînement reste disponible ; le bouton de simulation est désactivé sujet par sujet tant que sa couverture officielle n'est pas de 100 %.
+5. **Espace de travail séparé** — l'entraînement conserve les aides, modèles et diagnostics qualitatifs. La simulation utilise uniquement les tâches officielles, sans indice, modèle ni diagnostic pendant l'épreuve ; après remise, les réponses sont verrouillées et une relecture distincte devient disponible. Aucune note BAC n'est affichée : le moteur n'est pas calibré.
 
 > 📱 **Responsive** : l'interface est utilisable sur téléphone (grilles qui se replient, cibles tactiles ≥ 44 px, champs 16 px sans zoom iOS, modales scrollables). Verrouillé par `tests/e2e/responsive.spec.mjs` (3 viewports réels, zéro défilement horizontal) dans la CI.
 
 L'interface propose des thèmes clair et sombre persistants. Dans l'espace de travail, toute l'aide
-méthodologique (verdict des البوابتان, canevas, الفحص الرباعي) est regroupée dans **un seul dépliant
-fermé** « 🧭 توجيه هذه السنّ » : la consigne et la zone de réponse restent l'élément central.
+méthodologique (décisions سند/معارف et وصف/تفسير, canevas, الفحص الرباعي) est regroupée dans **un seul dépliant
+fermé** « توجيه هذه الخطوة » : la consigne et la zone de réponse restent l'élément central.
 
 ---
 
@@ -34,18 +34,18 @@ La fiche élève **MIFTAH v3.1** (recto المفتاح / verso المفتاح+) 
 Le contenu méthode vit dans les modules testés ; la vue imprimable (`js/ui/keycard.js`,
 bouton 🖨️ de l'écran guide) est générée à partir des **mêmes sources** (quick-check.js, gates.js).
 
-| Section de la fiche                                                     | Où elle vit dans l'app                                                                                                                                                                | Test                                             |
-| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| الأسنان 1-4 (اقرأ/اجمع/اربط/اختُم)                                      | badges, boussole, tiroir brouillon — IDs internes N/S/E/W inchangés                                                                                                                   | `ui.test.mjs`                                    |
-| البوابتان (ورقة/رأس · صورة/فيلم)                                        | classifieur `js/domain/method/gates.js` : carte interactive (guide), drill, puce « القرار قبل الكتابة » sous chaque consigne du workspace (+ ⚠ معاد بناؤه si consigne non officielle) | `gates-drill.test.mjs`, `ui.test.mjs`            |
-| شحذ المفتاح (12/12 ×3)                                                  | drill de l'écran guide, série persistée → débloque المفتاح+                                                                                                                           | `gates-drill.test.mjs`                           |
-| المفتاح+ (افتح، قالب التركيب، حساب، شجرة النسب، عامّ/خاصّ، جملة النجاة) | carte dédiée de l'écran guide (déverrouillable) + gradation متوسط/امتياز                                                                                                              | `gates-drill.test.mjs`                           |
-| وضع الحفظ (عرّف / اذكر)                                                 | canevas `definition`/`listing` de `js/method-scripts.js`                                                                                                                              | `method-coach.test.mjs`                          |
-| الجمل الثلاث الجاهزة                                                    | `sentenceModels` de `data/brouillon.js`                                                                                                                                               | `brouillon.test.mjs`                             |
-| الفحص الرباعي المعكوس                                                   | `js/ui/workspace/quick-check.js`, dépliable dans chaque pôle du workspace + keycard                                                                                                   | `workspace-modules.test.mjs`, `keycard.test.mjs` |
-| خمسة أخطاء تكلّف أكثر من الجهل                                          | carte de l'écran guide + keycard (reformulés **sans** pourcentages de barème)                                                                                                         | `gates-drill.test.mjs`                           |
-| التصنيف حسب المستوى (متعثر/متوسط/امتياز)                                | badges 🟦/🟨 sur les sections du المفتاح+                                                                                                                                             | `gates-drill.test.mjs`                           |
-| بطاقة imprimable                                                        | vue générée par `js/ui/keycard.js` (impression A4 isolée), pas de fichier statique dupliqué                                                                                           | `keycard.test.mjs`                               |
+| Section de la fiche                                                            | Où elle vit dans l'app                                                                                                  | Test                                             |
+| ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| الخطوات 1-4 (اقرأ/اجمع/اربط/اختُم)                                             | parcours linéaire et tiroir brouillon — IDs internes N/S/E/W inchangés                                                  | `ui.test.mjs`                                    |
+| قرارا البداية (سند/معارف · وصف/تفسير)                                          | classifieur `js/domain/method/gates.js` : carte interactive, exercice rapide et décision littérale sous chaque consigne | `gates-drill.test.mjs`, `ui.test.mjs`            |
+| تدريب القرار (12/12 ×3)                                                        | exercice du hub, série persistée qui ouvre le niveau avancé                                                             | `gates-drill.test.mjs`                           |
+| المستوى المتقدم (افتح، قالب التركيب، حساب، شجرة النسب، عامّ/خاصّ، جملة النجاة) | carte dédiée déverrouillable + gradation متوسط/امتياز                                                                   | `gates-drill.test.mjs`                           |
+| وضع الحفظ (عرّف / اذكر)                                                        | canevas `definition`/`listing` de `js/method-scripts.js`                                                                | `method-coach.test.mjs`                          |
+| الجمل الثلاث الجاهزة                                                           | `sentenceModels` de `data/brouillon.js`                                                                                 | `brouillon.test.mjs`                             |
+| الفحص الرباعي المعكوس                                                          | `js/ui/workspace/quick-check.js`, dépliable dans chaque pôle du workspace + keycard                                     | `workspace-modules.test.mjs`, `keycard.test.mjs` |
+| خمسة أخطاء تكلّف أكثر من الجهل                                                 | carte de l'écran guide + keycard (reformulés **sans** pourcentages de barème)                                           | `gates-drill.test.mjs`                           |
+| التصنيف حسب المستوى (متعثر/متوسط/امتياز)                                       | badges 🟦/🟨 dans le niveau avancé                                                                                      | `gates-drill.test.mjs`                           |
+| بطاقة imprimable                                                               | vue générée par `js/ui/keycard.js` (impression A4 isolée), pas de fichier statique dupliqué                             | `keycard.test.mjs`                               |
 
 **Hors périmètre, volontairement :** la colonne « 📝 المصحح » de la fiche (pourcentages, « نصف النقطة
 دائما », « إجابة بلا رقم = 0 »…) : aucune source officielle (`عناصر الإجابة والعلامة المترتبة`) ne
@@ -64,6 +64,10 @@ Le disclaimers du hard benchmark (0 copie réelle doublement annotée) reste la 
 │   └── icon-192.png / icon-512.png   # icônes de marque (مفتاح الكنز)
 ├── data/
 │   ├── subjects.js                   # ⭐ CONFIG : 2013–2019+2020+2022–2026 SE + 2021–2026 Maths
+│   ├── calibration-policy.js         # seuils quantitatifs préalables à toute promotion de score
+│   ├── calibration-status.js         # statut public généré depuis le corpus audité
+│   ├── usability-study.js            # agrégats P2 pseudonymisés (aucune session inventée)
+│   ├── official-tasks.js             # inventaires explicites des questions BAC, séparés des étapes N/S/E/W
 │   ├── subjects-archive.js           # archive reconstruite 2013–2019 SE (2020 du fichier non branché)
 │   ├── year-2026-se.js               # BAC 2026 علوم تجريبية (énoncé + corrigé eddirasa)
 │   ├── year-2020-se.js               # BAC 2020 علوم تجريبية (énoncé + corrigé eddirasa)
@@ -80,21 +84,26 @@ Le disclaimers du hard benchmark (0 copie réelle doublement annotée) reste la 
 │   ├── method-scripts.js             # scripts de méthode (conseils contextuels)
 │   ├── application/timers.js         # minuteurs globaux et stratégie
 │   ├── domain/evaluation/            # règles d'analyse et d'évaluation (5 modules)
-│   ├── domain/method/gates.js        # البوابتان (ورقة/رأس · صورة/فيلم) + moteur du drill شحذ المفتاح
+│   ├── domain/subjects/official-coverage.js # audit de couverture et garde de simulation fermée par défaut
+│   ├── domain/method/gates.js        # décisions سند/معارف · وصف/تفسير + exercice rapide
 │   ├── services/                     # son, reconnaissance vocale et diagnostics récupérables
 │   └── ui/
 │       ├── dom.js · dialogs.js · navigation.js · accessibility.js  # infrastructure UI partagée
 │       ├── atlas.js · demo-diagnostic.js                           # atlas des techniques + démo avant/après
-│       ├── screens/            # hub, guide (sérénité), strategy (PDF + calculatrice), onboarding (choix d'exercice), workspace
-│       ├── workspace/          # texte, pipeline, brouillon, feedback, rapport
+│       ├── screens/            # hub, guide, stratégie, entraînement et simulation/relecture
+│       ├── workspace/          # texte, pipeline, brouillon, présentation, feedback, rapport
 │       └── reports/            # calcul du rapport, exports CSV/JSON et impression
 ├── tests/                            # tests automatisés (moteur, données, UI, sécurité) — `npm test`
-│   ├── *.test.mjs                    # 23 fichiers, exécutés par `node --test` (compte dans le bloc « Tests »)
+│   ├── *.test.mjs                    # exécutés par `node --test` (compte dans le bloc « Tests »)
 │   ├── e2e/                          # Playwright : mode hors-ligne PWA + responsive mobile (3 viewports) — `npm run test:e2e`
 │   └── hard-benchmark/               # pipeline de copies réelles (corpus : 0 copie)
 ├── scripts/
 │   ├── generate-pwa-version.mjs      # génère js/app-version.js (appelé par `npm run build`)
 │   ├── generate-archive-years.mjs    # régénère data/subjects-archive.js (2013–2020)
+│   ├── report-official-coverage.mjs  # inventaire connu, couverture globale et éligibilité simulation
+│   ├── report-p1-status.mjs          # six critères P1, preuves et bloqueurs externes
+│   ├── report-p2-status.mjs          # sept critères P2, dont cinq élèves distincts
+│   ├── update-calibration-status.mjs # statut public dérivé du corpus audité
 │   └── update-doc-metrics.mjs        # régénère / vérifie les métriques du README
 ├── docs/                             # protocoles (accessibilité, handoff)
 ├── server.mjs                        # serveur statique avec CSP — `npm start`
@@ -110,14 +119,41 @@ Le disclaimers du hard benchmark (0 copie réelle doublement annotée) reste la 
 └── package.json                      # npm start / npm test / npm run build
 ```
 
+### Statut P1 mesuré — incomplet tant que les preuves manquent
+
+Les questions BAC ne sont plus supposées équivalentes aux quatre étapes N/S/E/W. Un inventaire indépendant déclare désormais chaque tâche officielle, sa page, ses références documentaires, son maximum provisoire ou vérifié et ses liens vers les étapes d'entraînement.
+
+```bash
+npm run coverage:official # détail des 38 sujets
+npm run p1:status         # verdict des six critères P1
+npm run p1:check          # échoue tant que P1 n'est pas réellement terminé
+```
+
+La couverture globale vaut `unknown` tant que l'inventaire d'un sujet est partiel. Elle n'est jamais transformée artificiellement en 0 % ou 100 %. La simulation est refusée à la sélection **et** au rendu ; elle ne pourra être autorisée que si tous les exercices, tâches, documents et barèmes sont inventoriés, vérifiés, correctement bornés et mappés. Le premier lot ne couvre que **2025 / sujet 1 / exercice 1** et ne rend donc aucun sujet éligible.
+
+Le code des parcours séparés est présent : entraînement guidé, simulation silencieuse fondée sur les tâches officielles, puis relecture verrouillée après remise. La CSP n'autorise plus `unsafe-inline` et les sources publiques ne contiennent plus de style inline. Cela ne clôt pas P1 : les inventaires complets et le corpus humain sont des preuves externes absentes, pas des cases que le code peut cocher seul. Le volume et le format des apports nécessaires sont détaillés dans [`docs/P1_EVIDENCE_REQUIREMENTS.md`](docs/P1_EVIDENCE_REQUIREMENTS.md).
+
+### Statut P2 mesuré — validation humaine encore requise
+
+La première tranche P2 ferme les six critères techniques : navigation clavier et focus de route, dialogues isolés, ordre libre des exercices, vocabulaire recentré sur les quatre étapes, interface élève en arabe, contraste et petites tailles, ainsi que le cycle complet du brouillon. Le septième critère reste externe : cinq élèves doivent tester le parcours sur leur téléphone bas de gamme.
+
+```bash
+npm run p2:status # verdict des sept critères P2
+npm run p2:check  # échoue tant que cinq sessions réelles ne sont pas auditées
+```
+
+Le protocole et le format d’agrégats pseudonymisés, sans identifiant direct, sont définis dans [`docs/P2_USABILITY_PROTOCOL.md`](docs/P2_USABILITY_PROTOCOL.md). Une session synthétique ne peut pas fermer P2.7.
+
 ---
 
 ## 🌐 Lancer l'application
 
 ```bash
-python3 -m http.server 8080     # ou : npm start
+npm start
 # ouvrir http://localhost:8080
 ```
+
+Le serveur applique une liste blanche d'assets publics. Ne pas remplacer cette commande par un serveur exposant toute la racine du dépôt.
 
 > ⚠️ Ouvrir `index.html` via `file://` peut bloquer les modules ES6.
 > Pour un fichier 100 % autonome, ouvrir directement
@@ -192,9 +228,7 @@ même PDF (pp. 11-21) et croisé avec une seconde source ([eddirasa](https://edd
 | **2** | ت2 (7ن)  | **α-amanitine** (ARN بوليميراز) ودواء **ATAC** ضد الأورام السرطانية         |
 | **2** | ت3 (8ن)  | **غاز الميثان (CH₄)** في الأبقار والمكمل الغذائي **(3-NOP)** (أنزيم M/CoEM) |
 
-Le **barème** adapte les points officiels à la méthode (N/S/E/W, affichés aux élèves sous les noms اقرأ · اجمع · اربط · اختُم), et l'évaluation
-compare les réponses à des **mots-clés normalisés** (via `normalizeArabic`) + inter-dits
-(ex. « بسبب » pénalisé à l'étape S) + longueur minimale.
+Les points N/S/E/W sont une **allocation pédagogique interne**, pas le barème officiel question par question. Le premier inventaire P1 (`data/official-tasks.js`) sépare les deux tâches officielles de 2025/S1/E1 des quatre étapes méthodologiques et marque encore leur découpage de points comme provisoire. L'évaluation compare les réponses à des **mots-clés normalisés** (via `normalizeArabic`), des interdits contextuels et une longueur minimale ; elle ne produit pas de note BAC.
 
 ### Provenance des consignes
 
@@ -312,32 +346,28 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **205** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
-- Copies vérifiées dans le hard benchmark : **0**
-- Taille de la façade UI (js/ui.js) : **371 lignes**
+- Tests exécutés par `npm test` : **241** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Copies vérifiées dans le hard benchmark : **0/2235 minimum** avant toute promotion numérique
+- Inventaires de tâches officielles commencés : **1/38 sujets** (**2 tâches connues**)
+- Sujets éligibles à la simulation : **0**
+- Critères P1 fermés : **3/6** — statut global : **incomplet**
+- Critères P2 fermés : **6/7** — élèves distincts testés : **0/5**
+- Taille de la façade UI (js/ui.js) : **431 lignes**
 
 <!-- AUTO-METRICS:END -->
 
-Ces valeurs sont régénérées par `npm run docs:update` et contrôlées par
-`npm run docs:check`, afin d'éviter que le README diverge du dépôt.
-**`docs:check` n'est pas dans le workflow CI** (`.github/workflows/quality.yml` exécute
-lint, typecheck, format, test, build, e2e) : le lancer avant chaque commit. L'ajouter à la
-CI est bloqué côté outillage, vérifié le 2026-09-06 : `git push` d'une modification du
-workflow est refusé — `refusing to allow a GitHub App to create or update workflow
-.github/workflows/quality.yml without 'workflows' permission`. Un humain doit soit accorder
-la permission « workflows » à l'App, soit ajouter lui-même cette étape après
-`- run: npm run format:check`, avec la même indentation que les étapes voisines :
-
-```yaml
-- run: npm run docs:check
-```
+Ces valeurs sont régénérées par `npm run docs:update` et contrôlées localement par `npm run docs:check`. Les contrôles `docs:check`, `calibration:check` et `coverage:official` ne sont pas ajoutés au workflow : le push GitHub refuse toute modification de `.github/workflows/quality.yml` à l'App Arena dépourvue de la permission `workflows`. Un mainteneur doit ajouter ces trois commandes avant `npm test`, ou réautoriser l'intégration avec cette permission. Le workflow existant continue d'exécuter lint, typecheck, format, tests, build et E2E.
 
 ```bash
 npm ci            # installe exactement le lockfile (jamais `npm install` : le lockfile est le contrat)
 npm test          # moteur, banc BAC, intégrité, UI, hard-benchmark, service worker
 npm run test:hard   # intégrité du pipeline de copies réelles
-npm run calibration # métriques moteur ↔ double correction humaine
-npm run build       # génère dist/boussole-4d-standalone.html (dist/ est gitignoré)
+npm run calibration       # métriques moteur ↔ double correction humaine
+npm run calibration:check # statut public synchronisé avec le corpus audité
+npm run coverage:official # couverture connue et garde d'éligibilité simulation
+npm run p1:status         # preuve détaillée des critères P1 fermés/bloqués
+npm run p2:status         # six preuves techniques et état des cinq élèves requis
+npm run build             # génère dist/boussole-4d-standalone.html (dist/ est gitignoré)
 ```
 
 ---
@@ -385,12 +415,12 @@ Le script accepte soit un fichier JSON en argument, soit un mode interactif.
 
 ---
 
-## 📤 Export & persistance
+## 💾 Fin de session et persistance
 
-- **Rapport** (📊) : vue d'ensemble des scores + export **CSV** (compatible Excel/arabe) et **JSON**.
-- **↺ Réinitialiser** : efface toute la progression.
-- **Progression sauvegardée** (localStorage) : réponses, scores, année/sujet choisis —
-  conservés même après un refresh.
+- **Fin manuelle ou expiration** : sauvegarde immédiate, passage de la session à `completed` et verrouillage de la saisie.
+- **Progression sauvegardée** (`localStorage`) : réponses, année/sujet, écran, étape et chronomètres sont validés avant restauration.
+- Les identifiants de sessions Maths (`YYYY-m`) sont conservés sans collision avec Sciences expérimentales.
+- Les anciens modules de rapport chiffré/CSV ne sont pas exposés : ils restent hors du parcours tant que l'évaluation n'est pas calibrée.
 
 ---
 
@@ -410,5 +440,5 @@ N: { points: 1, prompt: "…", minLength: 40,
 
 ## 🧭 Version monofichier
 
-`dist/boussole-4d-standalone.html` = CSS + JS (imports/exports supprimés) inlinés en un seul
-fichier. Il s'ouvre via `file://` (aucun module ES6, aucun CDN). Régénérer avec `node build.mjs`.
+`dist/boussole-4d-standalone.html` embarque le CSS, le bundle JS et les deux PDF locaux 2025.
+Il s'ouvre via `file://` sans enregistrer de service worker. Les PDF des autres années restent des liens externes optionnels, puisqu'ils ne sont pas redistribués dans le dépôt. Régénérer avec `npm run build`.
