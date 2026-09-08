@@ -1,5 +1,5 @@
 // Generated deterministically by scripts/generate-pwa-version.mjs
-globalThis.APP_BUILD_ID = "6479945569c7";
+globalThis.APP_BUILD_ID = "b859abb4121e";
 globalThis.APP_ASSET_REVISIONS = Object.freeze({
   "BAC2025_SVT_Sujet1.pdf": {
     bytes: 1099674,

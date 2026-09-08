@@ -120,7 +120,7 @@ P0 et les six lots techniques P3 sont fermés. Les prochains travaux ne doivent 
 
 ## Validation du lot
 
-Validation P3 du 8 septembre 2026 : `lint`, `typecheck`, `format:check`, `docs:check`, `calibration:check`, l’audit de couverture et les **256 tests Node** passent (255 réussis, 1 test réseau volontairement ignoré). Deux builds consécutifs donnent le même `release.json` et le même monofichier ; la release **6479945569c7** contient 77 fichiers et son digest d’arbre est `9a800ca34f55da56ef2295145eb61165c223fd48a58e09f89b77e8eb6d9d162d`. `release:verify` et `p3:check` (6/6) sont verts. La matrice compte désormais 20 tests E2E, dont les cas hors-ligne P3 ; leur exécution locale reste impossible car le CDN Playwright coupe le téléchargement Chromium avec `ECONNRESET`, tandis que le workflow Quality installe Chromium et ne publie l’artefact qu’après leur succès.
+Validation P3 du 8 septembre 2026 : `lint`, `typecheck`, `format:check`, `docs:check`, `calibration:check`, l’audit de couverture et les **256 tests Node** passent (255 réussis, 1 test réseau volontairement ignoré). Deux builds consécutifs donnent le même `release.json` et le même monofichier ; la release **b859abb4121e** contient 77 fichiers et son digest d’arbre est `d8fe79c15964c41a70c50b54221cbaaa196c1e08af6f7f4a90abeaaf0847a1ac`. `release:verify` et `p3:check` (6/6) sont verts. La matrice compte désormais 20 tests E2E, dont les cas hors-ligne P3 ; leur exécution locale reste impossible car le CDN Playwright coupe le téléchargement Chromium avec `ECONNRESET`, tandis que le workflow Quality installe Chromium et ne publie l’artefact qu’après leur succès.
 
 ## Définition de « P0 terminé »
 

@@ -123,8 +123,9 @@ function recordServiceWorkerEvent(type) {
   if (!allowed.has(type)) return;
   increment(serviceWorkerEvents, type);
   if (type.startsWith("offline-")) setOnline(false);
-  else if (type === "runtime-cache-updated") setOnline(true);
-  else dispatchOperationalUpdate();
+  else if (type === "runtime-cache-updated" && initializedWindow?.navigator?.onLine !== false) {
+    setOnline(true);
+  } else dispatchOperationalUpdate();
 }
 
 /**

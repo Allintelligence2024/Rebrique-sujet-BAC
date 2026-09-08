@@ -80,9 +80,20 @@ test("les changements online/offline et événements SW sont comptés localement
 test("l'état opérationnel visible annonce la version et le mode hors ligne", () => {
   const status = mountOperationalStatus(dom.window.document, dom.window);
   assert.match(status.textContent, /abcdef123456/);
+  Object.defineProperty(dom.window.navigator, "onLine", { value: false, configurable: true });
   dom.window.dispatchEvent(new dom.window.Event("offline"));
-  assert.equal(status.dataset.online, "false");
+  serviceWorker.dispatchEvent(
+    new dom.window.MessageEvent("message", {
+      data: { source: "miftah-sw", type: "runtime-cache-updated", resource: "year-data" }
+    })
+  );
+  assert.equal(
+    status.dataset.online,
+    "false",
+    "un événement cache différé ne doit pas masquer le mode hors ligne"
+  );
   assert.match(status.textContent, /دون اتصال/);
+  Object.defineProperty(dom.window.navigator, "onLine", { value: true, configurable: true });
   dom.window.dispatchEvent(new dom.window.Event("online"));
   assert.equal(status.dataset.online, "true");
   assert.match(status.textContent, /متصل/);
