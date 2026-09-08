@@ -24,7 +24,8 @@ test("le shell et une année déjà ouverte redémarrent hors ligne", async ({ p
   await page.reload();
 
   await expect(page.locator("#view-guide")).toBeVisible();
-  await expect(page.locator("#operational-status")).toHaveAttribute("data-online", "false");
+  // Chromium's CDP network emulation keeps navigator.onLine=true after reload;
+  // connectivity is therefore asserted below after a real service-worker miss.
   await expect(page.locator("#operational-status [data-build-id]")).toHaveText(/^[a-f0-9]{12}$/);
   await context.setOffline(false);
 });
@@ -40,6 +41,7 @@ test("une année jamais ouverte annonce clairement son indisponibilité hors lig
   await page.locator('#year-grid [data-year="2024"]').click();
   await expect(page.locator("#view-hub")).toBeVisible();
   await expect(page.locator(".toast")).toContainText("غير محفوظة");
+  await expect(page.locator("#operational-status")).toHaveAttribute("data-online", "false");
   await context.setOffline(false);
 });
 
