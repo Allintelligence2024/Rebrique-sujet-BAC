@@ -5,6 +5,16 @@ const SCREEN_NAMES = {
   "view-workspace": "مساحة الإجابة"
 };
 
+function uniqueId(document, prefix) {
+  let index = 1;
+  let candidate = prefix;
+  while (document.getElementById(candidate)) {
+    index += 1;
+    candidate = `${prefix}-${index}`;
+  }
+  return candidate;
+}
+
 export function ensureLiveRegions(document) {
   let announcer = document.getElementById("screen-announcer");
   if (!announcer) {
@@ -30,7 +40,7 @@ export function ensureLiveRegions(document) {
   return { announcer, diagnostics };
 }
 
-export function announceScreen(document, id) {
+export function announceScreen(document, id, { focus = true } = {}) {
   const target = document.getElementById(id);
   const { announcer } = ensureLiveRegions(document);
   const heading = target?.querySelector("h1, h2, h3");
@@ -40,8 +50,19 @@ export function announceScreen(document, id) {
   schedule.call(document.defaultView, () => {
     announcer.textContent = `تم فتح: ${name}`;
   });
-  if (target) {
-    target.setAttribute("aria-label", name);
+  if (!target) return;
+  if (heading) {
+    if (!heading.id) heading.id = uniqueId(document, `${id}-title`);
+    target.setAttribute("aria-labelledby", heading.id);
+    target.removeAttribute("aria-label");
+    if (focus) {
+      heading.setAttribute("tabindex", "-1");
+      heading.focus({ preventScroll: true });
+    }
+    return;
+  }
+  target.setAttribute("aria-label", name);
+  if (focus) {
     target.setAttribute("tabindex", "-1");
     target.focus({ preventScroll: true });
   }
@@ -56,32 +77,58 @@ function hasExplicitName(field, document) {
 
 export function associateFieldsWithInstructions(root = document) {
   const document = root.ownerDocument || root;
+  const seenIds = new Set();
+  document.querySelectorAll("[id]").forEach((element) => {
+    if (!root.contains?.(element)) seenIds.add(element.id);
+  });
   root.querySelectorAll("input, textarea, select").forEach((field, index) => {
+    const precedingLabel =
+      field.previousElementSibling?.tagName === "LABEL" ? field.previousElementSibling : null;
+    if (!field.id || seenIds.has(field.id)) {
+      field.id = uniqueId(document, `accessible-field-${index + 1}`);
+      if (precedingLabel) precedingLabel.htmlFor = field.id;
+    }
+    seenIds.add(field.id);
     if (hasExplicitName(field, document)) return;
-    if (!field.id) field.id = `accessible-field-${index + 1}`;
-    const precedingLabel = field.previousElementSibling;
-    if (precedingLabel?.tagName === "LABEL") {
+    if (precedingLabel) {
       precedingLabel.htmlFor = field.id;
+      return;
+    }
+    if (field.placeholder || field.name) {
+      const label = document.createElement("label");
+      label.className = "sr-only";
+      label.htmlFor = field.id;
+      label.textContent = field.placeholder || field.name;
+      field.before(label);
       return;
     }
     const context = field.closest("section, article, .card, [role='dialog']");
     const instruction = context?.querySelector("h1, h2, h3, .bac-consigne, .lbl");
     if (instruction) {
-      if (!instruction.id) instruction.id = `${field.id}-instruction`;
+      if (!instruction.id) instruction.id = uniqueId(document, `${field.id}-instruction`);
       field.setAttribute("aria-labelledby", instruction.id);
       return;
     }
     const label = document.createElement("label");
     label.className = "sr-only";
     label.htmlFor = field.id;
-    label.textContent = field.placeholder || field.name || "حقل إدخال";
+    label.textContent = "حقل إدخال";
     field.before(label);
   });
+}
+
+function diagnosticMessage(code = "") {
+  if (code.startsWith("store.")) return "تعذر حفظ البيانات محلياً";
+  if (code.startsWith("speech.")) return "تعذر تشغيل الإملاء الصوتي";
+  if (code.startsWith("sound.")) return "تعذر تشغيل الصوت";
+  if (code.startsWith("theme.")) return "تعذر حفظ إعداد العرض";
+  if (code.startsWith("service-worker.")) return "تعذر تحديث وضع العمل دون اتصال";
+  return "حدث خطأ تقني غير متوقع";
 }
 
 export function bindDiagnosticAnnouncements(window) {
   window.addEventListener("boussole4d:diagnostic", (event) => {
     const { diagnostics } = ensureLiveRegions(window.document);
-    diagnostics.textContent = `تعذر إتمام العملية: ${event.detail?.code || "خطأ غير متوقع"}`;
+    diagnostics.textContent = diagnosticMessage(event.detail?.code);
   });
 }

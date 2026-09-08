@@ -2,9 +2,12 @@
    MAIN — point d'entrée. Charge la config et initialise l'UI.
    ============================================================ */
 import { init } from "./ui.js";
-import { reportDiagnostic } from "./services/diagnostics.js";
+import { initializeOperationalObservability, reportDiagnostic } from "./services/diagnostics.js";
 
-if ("serviceWorker" in navigator) {
+initializeOperationalObservability(globalThis.window);
+
+// Service workers are unavailable and unwanted in the file:// standalone build.
+if (globalThis.location?.protocol !== "file:" && "serviceWorker" in navigator) {
   window.addEventListener("load", () =>
     navigator.serviceWorker
       .register("./sw.js")
@@ -12,4 +15,6 @@ if ("serviceWorker" in navigator) {
   );
 }
 
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded", () =>
+  init().catch((error) => reportDiagnostic("application.init", error))
+);

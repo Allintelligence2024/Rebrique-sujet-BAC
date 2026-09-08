@@ -3,8 +3,17 @@
    Facade stable : init, renderHub, notify, voiceEngine
    ============================================================ */
 
-import { APP_CONFIG, normalizeArabic } from "../data/subjects.js";
+import {
+  APP_CONFIG,
+  examMinutesForYear,
+  getLoadedYear,
+  loadYear,
+  normalizeArabic
+} from "../data/subjects.js";
 import { BROUILLON_MODE_DATA } from "../data/brouillon.js";
+import { officialTaskInventoryFor } from "../data/official-tasks.js";
+import { createSubjectSessionStarter } from "./application/subject-session.js";
+import { buildOfficialCoverageReport } from "./domain/subjects/official-coverage.js";
 import { store, helpers } from "./store.js";
 import {
   timers,
@@ -27,6 +36,7 @@ import { createDialogManager } from "./ui/dialogs.js";
 import { buildDemoDiagnostic } from "./ui/demo-diagnostic.js";
 import { node, replaceContent, setInternalHTML } from "./ui/dom.js";
 import { createScreenNavigator } from "./ui/navigation.js";
+import { mountOperationalStatus } from "./ui/operational-status.js";
 import { createGuideScreen } from "./ui/screens/guide.js";
 import { createHubScreen } from "./ui/screens/hub.js";
 import { createStrategyScreen } from "./ui/screens/strategy.js";
@@ -35,10 +45,10 @@ import { createWorkspaceController } from "./ui/screens/workspace.js";
 import { reportDiagnostic } from "./services/diagnostics.js";
 
 const POLE = {
-  N: { title: "السنّ 1 · اقرأ", short: "اقرأ", cls: "emerald" },
-  S: { title: "السنّ 2 · اجمع", short: "اجمع", cls: "blue" },
-  E: { title: "السنّ 3 · اربط", short: "اربط", cls: "amber" },
-  W: { title: "السنّ 4 · اختُم", short: "اختُم", cls: "purple" }
+  N: { title: "الخطوة 1 · اقرأ", short: "اقرأ", cls: "emerald" },
+  S: { title: "الخطوة 2 · اجمع", short: "اجمع", cls: "blue" },
+  E: { title: "الخطوة 3 · اربط", short: "اربط", cls: "amber" },
+  W: { title: "الخطوة 4 · اختُم", short: "اختُم", cls: "purple" }
 };
 const POLE_ORDER = ["N", "S", "E", "W"];
 let hubScreen;
@@ -51,10 +61,10 @@ const dialogs = createDialogManager({ $, $$ });
 const { openModal, closeModal, openDrawer } = dialogs;
 const showScreen = createScreenNavigator({
   screens: () => $$(".screen"),
-  onNavigate: (id) => {
+  onNavigate: (id, { initial = false } = {}) => {
     store.setActiveScreen(id);
     associateFieldsWithInstructions(document.getElementById(id));
-    announceScreen(document, id);
+    announceScreen(document, id, { focus: !initial });
   }
 });
 
@@ -76,7 +86,17 @@ function debounce(fn, wait = 350) {
 }
 
 function yearObj(id) {
-  return APP_CONFIG.years.find((y) => y.id === id);
+  return getLoadedYear(id);
+}
+function yearMetadata(id) {
+  return APP_CONFIG.years.find((year) => year.id === id);
+}
+function officialCoverageForSubject(year, subject) {
+  return buildOfficialCoverageReport({
+    yearId: year?.id,
+    subject,
+    inventory: officialTaskInventoryFor(year?.id, subject?.id)
+  });
 }
 function sujetObj() {
   return yearObj(store.state.yearId)?.sujets.find((s) => s.id === store.state.sujetId);
@@ -95,8 +115,7 @@ function toast(msg, type = "info", ms = 3500) {
   t.append(node("span", { text: iconFor(type) }), node("div", { text: msg }));
   zone.appendChild(t);
   setTimeout(() => {
-    t.style.opacity = "0";
-    t.style.transform = "translateY(8px)";
+    t.classList.add("is-exiting");
     setTimeout(() => t.remove(), 250);
   }, ms);
 }
@@ -109,8 +128,8 @@ function iconFor(type) {
 // correction or a substitute for a human BAC marker.
 function trainingLimitHTML(compact = false) {
   const detail = compact
-    ? "نفحص تغطية العناصر العلمية والمنهجية؛ النقاط مؤشر ثانوي وليست علامة بكالوريا."
-    : "تتحقق المنصة من تغطية إجابتك للعناصر العلمية والمنهجية المنتظرة. لا تصحح نسختك ولا تستبدل الأستاذ؛ النقاط مؤشر تدريبي ثانوي مبني على قواعد، وبعض التعليمات معاد بناؤها.";
+    ? "نفحص تغطية العناصر العلمية والمنهجية نوعياً؛ لا نعرض نقطة آلية قبل اكتمال المعايرة البشرية."
+    : "تتحقق المنصة نوعياً من تغطية العناصر العلمية والمنهجية المنتظرة. لا تصحح نسختك ولا تستبدل الأستاذ؛ حُجبت النقاط الآلية حتى تنجح المعايرة على نسخ حقيقية مزدوجة التصحيح، وبعض التعليمات معاد بناؤها.";
   return `<div class="feedback mid ${compact ? "small" : "mb-2"}" role="note"><b>🔎 ما الذي تفحصه المنصة؟</b> — ${detail}</div>`;
 }
 
@@ -127,7 +146,6 @@ function applyTheme(theme) {
 
 const openAtlas = createAtlas({ $, $$, openDrawer, normalizeArabic, bacVerbs: BROUILLON_MODE_DATA.bacVerbs });
 
-/* ---------- Voice / dictée ---------- */
 export const voiceEngine = createSpeechEngine(toast);
 
 function micButton(fieldId) {
@@ -142,7 +160,6 @@ function bindMics(root = document) {
   });
 }
 
-/* ---------- Adkar ---------- */
 const ADKAR = [
   {
     title: "دعاء بداية الامتحان",
@@ -180,7 +197,6 @@ function cycleSound(btn) {
   }
 }
 
-/* ===================== 1) HUB ===================== */
 export function renderHub() {
   return hubScreen.renderHub();
 }
@@ -188,28 +204,17 @@ export function renderHub() {
 function goHome() {
   timers.stopAll();
   soundEngine.stop();
-  store.state.sessionActive = false;
-  store.save();
+  if (store.isSessionActive()) store.leaveSession();
   renderHub();
   showScreen("view-hub");
   const bar = $("#global-timer-bar");
   if (bar) bar.classList.add("hidden");
 }
 
-/* ===================== 2) GUIDE ===================== */
-function startSession(yearId) {
-  const y = yearObj(yearId);
-  store.enterSession(yearId, y.sujets[0].id);
-  renderGuide(y);
-  timers.startGlobal();
-  showScreen("view-guide");
-}
-
 function renderGuide(year) {
   return guideScreen.renderGuide(year);
 }
 
-/* ===================== 3) STRATEGY ===================== */
 function goToStrategy() {
   return strategyScreen.goToStrategy();
 }
@@ -217,11 +222,12 @@ function pdfFallbackHTML(subject) {
   return strategyScreen.pdfFallbackHTML(subject);
 }
 
-function timeFor(points) {
-  return points >= 8 ? "1س 45د" : points >= 5 ? "45 دقيقة" : "1س 15د";
+function formatDuration(minutes) {
+  const hours = Math.floor(minutes / 60);
+  const rest = minutes % 60;
+  return rest ? `${hours}س${String(rest).padStart(2, "0")}د` : `${hours}س`;
 }
 
-/* ===================== 5) WORKSPACE ===================== */
 let workspaceController;
 function enterExercise(exerciseNumber) {
   return workspaceController.enterExercise(exerciseNumber);
@@ -238,6 +244,16 @@ function short(text, n = 7) {
   return words.length <= n ? text : words.slice(0, n).join(" ") + "…";
 }
 
+const startSession = createSubjectSessionStarter({
+  appConfig: APP_CONFIG,
+  renderGuide,
+  showScreen,
+  store,
+  timers,
+  toast,
+  timerBar: () => $("#global-timer-bar")
+});
+
 hubScreen = createHubScreen({
   $,
   $$,
@@ -247,6 +263,8 @@ hubScreen = createHubScreen({
   closeModal,
   cycleSound,
   enterExercise,
+  examMinutesForYear,
+  formatDuration,
   openAdkar,
   openAtlas,
   openModal,
@@ -256,16 +274,28 @@ hubScreen = createHubScreen({
   training: createTrainingController({ $, $$, store, openModal }),
   yearObj
 });
-guideScreen = createGuideScreen({ $, $$, adkarHTML, goHome, goToStrategy, store, openModal });
+guideScreen = createGuideScreen({
+  $,
+  $$,
+  adkarHTML,
+  examMinutesForYear,
+  formatDuration,
+  goHome,
+  goToStrategy,
+  store,
+  openModal
+});
 strategyScreen = createStrategyScreen({
   $,
   $$,
   enterExercise,
   goHome,
   helpers,
+  officialCoverageForSubject,
   showScreen,
   store,
   timers,
+  toast,
   yearObj
 });
 
@@ -289,6 +319,8 @@ workspaceController = createWorkspaceController({
   micButton,
   node,
   normalizeArabic,
+  officialCoverageForSubject,
+  officialTaskInventoryFor,
   openDrawer,
   openModal,
   pdfFallbackHTML,
@@ -306,8 +338,9 @@ workspaceController = createWorkspaceController({
   exDef
 });
 
-export function init() {
+export async function init() {
   ensureLiveRegions(document);
+  mountOperationalStatus(document, globalThis.window);
   bindDiagnosticAnnouncements(window);
   store.load();
   let savedTheme = "dark";
@@ -322,16 +355,16 @@ export function init() {
   if (!bar) {
     bar = document.createElement("div");
     bar.id = "global-timer-bar";
-    bar.className = "hidden";
-    bar.style.cssText =
-      "position:sticky;top:0;z-index:40;display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.5rem 1.5rem;background:rgba(2,6,23,.9);border-bottom:1px solid var(--line);font-size:.8rem";
+    bar.className = "global-timer-bar hidden";
     const timerLabel = node("span", {
-      className: "text-emerald bold",
-      text: "● وقت الامتحان",
-      attrs: { style: "display:flex;align-items:center;gap:.5rem" }
+      className: "global-timer-label text-emerald bold",
+      text: "● وقت الجلسة"
     });
-    const timerValue = node("span", { className: "mono bold", attrs: { style: "color:#fb7185" } });
-    timerValue.append("⏳ ", node("span", { text: "04:30:00", attrs: { id: "global-timer" } }));
+    const timerValue = node("span", { className: "global-timer-value mono bold" });
+    timerValue.append(
+      "⏳ ",
+      node("span", { text: helpers.fmt(store.state.globalRemaining), attrs: { id: "global-timer" } })
+    );
     replaceContent(bar, [timerLabel, timerValue]);
     document.body.prepend(bar);
   }
@@ -340,6 +373,17 @@ export function init() {
     const t = $("#global-timer");
     if (t) t.textContent = helpers.fmt(store.state.globalRemaining);
     if (which === "strategy") strategyScreen.updateStrategyTimer();
+    if (which === "global" && store.state.sessionStatus === "completed") {
+      if (store.state.activeScreen === "view-workspace") {
+        workspaceController.handleSessionCompletion("time-expired");
+      } else {
+        timers.stopAll();
+        renderHub();
+        showScreen("view-hub");
+        bar.classList.add("hidden");
+        toast("انتهى وقت الجلسة وحُفظ التقدم.", "warn");
+      }
+    }
   };
 
   if (!$("#toast-zone")) {
@@ -352,19 +396,53 @@ export function init() {
     document.body.appendChild(toastZone);
   }
 
-  if (
-    store.state.sessionActive &&
+  const hasRestorableSession =
+    store.isSessionActive() ||
+    (store.state.sessionStatus === "completed" &&
+      store.state.sessionMode === "simulation" &&
+      store.state.activeScreen === "view-workspace");
+  let activeYear = yearObj(store.state.yearId);
+  if (hasRestorableSession && yearMetadata(store.state.yearId) && !activeYear) {
+    try {
+      activeYear = await loadYear(store.state.yearId);
+    } catch (error) {
+      reportDiagnostic("subjects.restore-year", error, { yearId: store.state.yearId });
+    }
+  }
+  const canRestoreActive = store.isSessionActive() && activeYear && sujetObj();
+  const canRestoreSimulationReview =
+    store.state.sessionStatus === "completed" &&
+    store.state.sessionMode === "simulation" &&
     store.state.activeScreen === "view-workspace" &&
-    sujetObj() &&
-    exDef(store.state.activeExercise)
-  ) {
-    timers.startGlobal();
-    renderWorkspace();
-    showScreen("view-workspace");
-    bar.classList.remove("hidden");
+    activeYear &&
+    sujetObj();
+  if (canRestoreActive || canRestoreSimulationReview) {
+    if (canRestoreActive) {
+      timers.startGlobal();
+      bar.classList.remove("hidden");
+    } else {
+      bar.classList.add("hidden");
+    }
+    if (canRestoreSimulationReview) {
+      renderWorkspace();
+      showScreen("view-workspace");
+    } else if (store.state.activeScreen === "view-guide") {
+      renderGuide(activeYear);
+      showScreen("view-guide");
+    } else if (store.state.activeScreen === "view-strategy") {
+      strategyScreen.restoreStrategy();
+    } else if (store.state.activeScreen === "view-workspace" && exDef(store.state.activeExercise)) {
+      renderWorkspace();
+      showScreen("view-workspace");
+    } else {
+      renderGuide(activeYear);
+      showScreen("view-guide");
+    }
   } else {
+    if (store.isSessionActive()) store.leaveSession();
     renderHub();
     showScreen("view-hub");
+    bar.classList.add("hidden");
   }
 }
 

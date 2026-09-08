@@ -1,13 +1,21 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { APP_CONFIG } from "../data/subjects.js";
+import { APP_CONFIG } from "./helpers/full-app-config.mjs";
 import { createReportController } from "../js/ui/workspace/report-controller.js";
+import { mayScorePole } from "../js/ui/workspace/feedback.js";
 
 const year = APP_CONFIG.years.find((item) => item.enabled);
 const sujet = year.sujets[0];
 const emptyProgress = () => ({
   scores: { N: 0, S: 0, E: 0, W: 0 },
   answeredAny: false
+});
+
+test("les points heuristiques restent cachés tant que la calibration publique bloque la promotion", () => {
+  const officialPole = { bacPromptSource: "official" };
+  assert.equal(mayScorePole(officialPole, false), false);
+  assert.equal(mayScorePole(officialPole, false, { scorePromotionAllowed: true }), true);
+  assert.equal(mayScorePole(officialPole, true, { scorePromotionAllowed: true }), false);
 });
 
 test("report-controller calcule directement un rapport sans dépendre du contrôleur workspace", () => {

@@ -418,3 +418,5 @@ export const YEAR_2025_M = {
     }
   ]
 };
+
+export default YEAR_2025_M;

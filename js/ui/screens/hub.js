@@ -66,6 +66,8 @@ export function createHubScreen(deps) {
     closeModal,
     cycleSound,
     enterExercise,
+    examMinutesForYear,
+    formatDuration,
     openAdkar,
     openAtlas,
     openModal,
@@ -88,7 +90,7 @@ export function createHubScreen(deps) {
     <div class="app">
       <header class="screen-head">
         <div class="brand">
-          <div class="brand-icon">🔑</div>
+          <div class="brand-icon" aria-hidden="true">٤</div>
           <div>
             <h1>${APP_CONFIG.appTitle}</h1>
             <p>${APP_CONFIG.appSubtitle}</p>
@@ -133,14 +135,25 @@ export function createHubScreen(deps) {
       }
     }
 
-    $$("#year-grid [data-year]:not([disabled])").forEach((btn) =>
-      btn.addEventListener("click", () => startSession(btn.dataset.year))
+    $$("#year-grid [data-year]:not([disabled])").forEach((button) =>
+      button.addEventListener("click", async () => {
+        const label = button.textContent;
+        button.disabled = true;
+        button.setAttribute("aria-busy", "true");
+        button.textContent = "جارٍ تحميل السنة…";
+        const loaded = await startSession(button.dataset.year);
+        if (!loaded && button.isConnected) {
+          button.disabled = false;
+          button.removeAttribute("aria-busy");
+          button.textContent = label;
+        }
+      })
     );
     $("#btn-hub-adkar").addEventListener("click", openAdkar);
     $("#btn-hub-sound").addEventListener("click", () => cycleSound($("#btn-hub-sound")));
     fab.addEventListener("click", cycleStream);
     training.mount();
-    // Démo et أطلس : outils secondaires, dans la section repliée تدريب المفتاح.
+    // Démo et أطلس : outils secondaires, dans la section repliée تدريب الخطوات الأربع.
     const trainingSection = $("#training-section");
     if (trainingSection) {
       trainingSection.insertAdjacentHTML(
@@ -153,7 +166,7 @@ export function createHubScreen(deps) {
             <button class="btn btn-emerald" id="btn-demo">ابدأ المثال قبل / بعد</button>
           </div>
         </section>
-        <div class="flex" style="justify-content:center">
+        <div class="flex justify-center">
           <button class="btn btn-ghost btn-sm" id="btn-atlas">🔬 أطلس التقنيات</button>
         </div>`
       );
@@ -177,7 +190,7 @@ export function createHubScreen(deps) {
     const header = node("div", { className: "flex spread" });
     header.append(
       node("span", { className: "badge badge-indigo", text: "غير متوفر" }),
-      node("span", { className: "mono bold", text: "—", attrs: { style: "font-size:1.6rem" } })
+      node("span", { className: "mono bold year-number", text: "—" })
     );
     const copy = node("div");
     copy.append(
@@ -208,7 +221,9 @@ export function createHubScreen(deps) {
     const disabled = !y.enabled;
     const note = disabled
       ? y.loadingNote || "لم تُرفق وثائق PDF لهذه الدورة بعد — قريباً."
-      : "وقت الامتحان الحقيقي ≈ 3س30د.";
+      : `تدريب منهجي جزئي — لا يمثل جميع تعليمات الموضوع. مدة الاختبار الرسمية: ${formatDuration(
+          examMinutesForYear(y)
+        )}.`;
     const cardId = yearCardId(y);
     const card = node("div", {
       className: `card year-card ${disabled ? "dim" : ""}`,
@@ -219,7 +234,7 @@ export function createHubScreen(deps) {
     const header = node("div", { className: "flex spread" });
     header.append(
       node("span", { className: `badge badge-${y.theme}`, text: y.badge }),
-      node("span", { className: "mono bold", text: cardId, attrs: { style: "font-size:1.6rem" } })
+      node("span", { className: "mono bold year-number", text: cardId })
     );
     const copy = node("div");
     copy.append(
@@ -231,7 +246,7 @@ export function createHubScreen(deps) {
       y.theme === "emerald" ? "btn-emerald" : y.theme === "indigo" ? "btn-indigo" : "btn-amber";
     const button = node("button", {
       className: `btn btn-block ${buttonTheme}`,
-      text: disabled ? "غير متاح بعد" : "▶ ابدأ الموضوع (امتحان كامل)",
+      text: disabled ? "غير متاح بعد" : "▶ ابدأ التدريب المنهجي",
       attrs: disabled ? { disabled: "" } : {},
       dataset: { year: y.id }
     });
@@ -250,7 +265,7 @@ export function createHubScreen(deps) {
     const header = node("div", { className: "flex spread" });
     header.append(
       node("span", { className: "badge badge-indigo", text: "موضوع رسمي" }),
-      node("span", { className: "mono bold", text: item.id, attrs: { style: "font-size:1.6rem" } })
+      node("span", { className: "mono bold year-number", text: item.id })
     );
     const copy = node("div");
     copy.append(

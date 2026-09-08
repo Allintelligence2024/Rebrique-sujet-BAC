@@ -426,3 +426,5 @@ export const YEAR_2023_M = {
     }
   ]
 };
+
+export default YEAR_2023_M;

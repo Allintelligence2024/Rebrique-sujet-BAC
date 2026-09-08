@@ -1,5 +1,5 @@
 /* ============================================================
-   KEYCARD — بطاقة المفتاح · vue imprimable (A4)
+   KEYCARD — بطاقة الخطوات الأربع · vue imprimable (A4)
    ------------------------------------------------------------
    Version application de la fiche élève (MIFTAH v3.1) : le même
    contenu méthodologique, imprimable depuis l'écran guide.
@@ -11,7 +11,7 @@
 import { QUICK_CHECK_ITEMS } from "./workspace/quick-check.js";
 import { DRILL_ROUND_SIZE, DRILL_UNLOCK_STREAK } from "../domain/method/gates.js";
 
-const TEETH = [
+const STEPS = [
   {
     n: 1,
     name: "اقرأ",
@@ -20,7 +20,7 @@ const TEETH = [
   {
     n: 2,
     name: "اجمع",
-    action: "أستخرج من الوثيقة أرقاماً + وحدات + اتجاه التغيّر («يرتفع من 2 إلى 8 mg/L بين 0 و 10 min»)."
+    action: "أستخرج من الوثيقة أرقاماً + وحدات + اتجاه التغيّر («يرتفع من 2 إلى 8 mg/L بين 0 و10 دقائق»)."
   },
   {
     n: 3,
@@ -30,16 +30,16 @@ const TEETH = [
   { n: 4, name: "اختُم", action: "جملة واحدة تجيب حرفياً عن كلمات السؤال المسطّرة." }
 ];
 
-const GATES = [
+const DECISIONS = [
   {
     n: 1,
-    q: "ورقة أم رأس؟",
-    rule: "هل تذكر التعليمة وثيقة/شكلاً/جدولاً/منحنى؟ لا → 🧠 رأس (مسار 1 → 4) · نعم → 📄 ورقة (والبوابة 2)."
+    q: "سند أم معارف؟",
+    rule: "هل تذكر التعليمة وثيقة أو شكلاً أو جدولاً أو منحنى؟ لا: أجب من المعارف (1 ← 4). نعم: ابدأ بقراءة السند ثم انتقل إلى القرار الثاني."
   },
   {
     n: 2,
-    q: "صورة أم فيلم؟",
-    rule: "استخرج/صف/حلّل/قارن → 📷 صورة (1 → 2 → 4) · فسّر/اشرح/علّل/استنتج → 🎬 فيلم (1 → 2 → 3 → 4)."
+    q: "وصف أم تفسير؟",
+    rule: "استخرج/صف/حلّل/قارن: ملاحظة ثم استنتاج (1 ← 2 ← 4). فسّر/اشرح/علّل/استنتج: ملاحظة ثم آلية ونتيجة (1 ← 2 ← 3 ← 4)."
   }
 ];
 
@@ -55,7 +55,7 @@ const SENTENCES = [
 ];
 
 const PLUS = [
-  "السنّ 0 — افتح: «الهدف العام: ……» في ≤ 5 كلمات أعلى المسودة، والتركيب يُجيب عنه.",
+  "الخطوة 0 — افتح: «الهدف العام: ……» في ≤ 5 كلمات أعلى المسودة، والتركيب يُجيب عنه.",
   "البنية المتسلسلة: افتح ← جزء I ← جزء II ← جزء III ← تركيب يُجيب عن «افتح».",
   "قالب التركيب: «من الجزء I نعلم أنّ … ، ومن الجزء II أنّ … ؛ ومنه [الهدف العام]».",
   "الحساب: القانون بالحروف أولًا، ثم التعويض خطوة خطوة، ثم النتيجة بوحدتها.",
@@ -74,13 +74,13 @@ const MISTAKES = [
 export function keycardHTML() {
   return `
     <div class="keycard-print" dir="rtl">
-      <h3>🔑 المفتاح — 4 أسنان تفتح كل إجابة</h3>
-      <ol class="keycard-teeth">
-        ${TEETH.map((t) => `<li><b>السنّ ${t.n} · ${t.name}</b> — ${t.action}</li>`).join("")}
+      <h3>الخطوات الأربع لبناء الإجابة</h3>
+      <ol class="keycard-steps">
+        ${STEPS.map((t) => `<li><b>الخطوة ${t.n} · ${t.name}</b> — ${t.action}</li>`).join("")}
       </ol>
-      <h4>🚪 البوابتان — أقرّر قبل أن أكتب، لا أثناء</h4>
+      <h4>قراران قبل الكتابة</h4>
       <ol>
-        ${GATES.map((g) => `<li><b>البوابة ${g.n} · ${g.q}</b> — ${g.rule}</li>`).join("")}
+        ${DECISIONS.map((decision) => `<li><b>القرار ${decision.n} · ${decision.q}</b> — ${decision.rule}</li>`).join("")}
       </ol>
       <h4>🧠 وضع الحفظ</h4>
       <ul>
@@ -94,7 +94,7 @@ export function keycardHTML() {
       <ul>
         ${QUICK_CHECK_ITEMS.map((item) => `<li><b>${item.n}</b> ← ${item.q}</li>`).join("")}
       </ul>
-      <h4>🧫🧱 المفتاح+ (يُفتح بعد ${DRILL_ROUND_SIZE}/${DRILL_ROUND_SIZE} × ${DRILL_UNLOCK_STREAK} في شحذ المفتاح)</h4>
+      <h4>المستوى المتقدم (يُفتح بعد ${DRILL_ROUND_SIZE}/${DRILL_ROUND_SIZE} × ${DRILL_UNLOCK_STREAK} في تدريب القرار)</h4>
       <ol>
         ${PLUS.map((p) => `<li>${p}</li>`).join("")}
       </ol>
@@ -102,8 +102,8 @@ export function keycardHTML() {
       <ol>
         ${MISTAKES.map((m) => `<li>${m}</li>`).join("")}
       </ol>
-      <p class="small">🔑 شحذ المفتاح: ${DRILL_ROUND_SIZE} تعليمة في الجولة، لكل واحدة ورقة/رأس ثم صورة/فيلم —
-      ${DRILL_ROUND_SIZE}/${DRILL_ROUND_SIZE} ثلاث مرات متتالية تفتح المفتاح+ في التطبيق.</p>
+      <p class="small">تدريب القرار: ${DRILL_ROUND_SIZE} تعليمة في الجولة، لكل واحدة سند/معارف ثم وصف/تفسير —
+      ${DRILL_ROUND_SIZE}/${DRILL_ROUND_SIZE} ثلاث مرات متتالية تفتح المستوى المتقدم في التطبيق.</p>
       <p class="small text-muted">توجيه منهجي للتدريب — ليس سلم تنقيط رسمياً ولا تصحيحاً وزارياً.</p>
     </div>`;
 }

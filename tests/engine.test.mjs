@@ -4,7 +4,8 @@
    ============================================================ */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { APP_CONFIG, normalizeArabic, stripArabicClitics } from "../data/subjects.js";
+import { normalizeArabic, stripArabicClitics } from "../data/subjects.js";
+import { APP_CONFIG } from "./helpers/full-app-config.mjs";
 import { evaluateText, evaluatePipeline, scoreFromFraction, scoreBac, matchConcept } from "../js/engine.js";
 
 const ex1 = APP_CONFIG.years[0].sujets[0].exercises[0];

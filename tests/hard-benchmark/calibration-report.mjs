@@ -1,4 +1,7 @@
-import { APP_CONFIG } from "../../data/subjects.js";
+import { assessCalibrationPromotion } from "../../data/calibration-policy.js";
+import { loadFullAppConfig } from "../../data/subjects.js";
+
+const APP_CONFIG = await loadFullAppConfig();
 import { evaluateText, scoreBac } from "../../js/engine.js";
 import { loadCases } from "./import-copy.mjs";
 import { findPole } from "./_find-pole.mjs";
@@ -27,8 +30,11 @@ function activePoleKeys() {
   for (const year of APP_CONFIG.years.filter((item) => item.enabled)) {
     for (const sujet of year.sujets) {
       for (const exercise of sujet.exercises) {
-        for (const pole of ["N", "S", "E", "W"])
-          keys.push(`${year.id}/S${sujet.id}/E${exercise.number}/${pole}`);
+        for (const pole of ["N", "S", "E", "W"]) {
+          if (exercise.poles[pole]?.bacPromptSource === "official") {
+            keys.push(`${year.id}/S${sujet.id}/E${exercise.number}/${pole}`);
+          }
+        }
       }
     }
   }
@@ -43,10 +49,11 @@ export function buildCalibrationReport(cases = []) {
   const rows = [];
   const coverage = Object.fromEntries(activePoleKeys().map((key) => [key, 0]));
   for (const caseObj of cases) {
+    const key = `${caseObj.year}/S${caseObj.sujet}/E${caseObj.exercise}/${caseObj.pole}`;
+    if (!(key in coverage)) continue;
     const human = humanScore(caseObj);
     const engine = engineScore(caseObj);
-    const key = `${caseObj.year}/S${caseObj.sujet}/E${caseObj.exercise}/${caseObj.pole}`;
-    if (key in coverage) coverage[key] += 1;
+    coverage[key] += 1;
     if (human === null || engine === null) continue;
     const annotations = caseObj.annotations || [];
     const disagreement =
@@ -54,17 +61,22 @@ export function buildCalibrationReport(cases = []) {
     const max = findPole(caseObj.year, caseObj.sujet, caseObj.exercise, caseObj.pole)?.pole.points || 1;
     const humanPass = human / max >= 0.6;
     const enginePass = engine / max >= 0.6;
+    const delta = engine - human;
     rows.push({
       id: caseObj.id,
       key,
       category: caseObj.category,
       human,
       engine,
+      max,
       humanPass,
       enginePass,
-      delta: engine - human,
-      absoluteError: Math.abs(engine - human),
-      disagreement
+      delta,
+      normalizedDelta: delta / max,
+      absoluteError: Math.abs(delta),
+      normalizedAbsoluteError: Math.abs(delta) / max,
+      disagreement,
+      normalizedDisagreement: Number.isFinite(disagreement) ? disagreement / max : null
     });
   }
   const count = rows.length;
@@ -84,26 +96,31 @@ export function buildCalibrationReport(cases = []) {
       )
     ])
   );
-  const scorePromotionAllowed =
-    count > 0 &&
-    Object.entries(coverage).every(
-      ([key, total]) => total >= 15 && Object.values(categoryCoverageByPole[key]).every((value) => value > 0)
-    );
-  return {
+  const falsePositives = rows.filter((row) => row.enginePass && !row.humanPass).length;
+  const falseNegatives = rows.filter((row) => !row.enginePass && row.humanPass).length;
+  const humanNegatives = rows.filter((row) => !row.humanPass).length;
+  const humanPositives = rows.filter((row) => row.humanPass).length;
+  const report = {
     calibrated: count > 0,
-    scorePromotionAllowed,
     copiesCompared: count,
     activePoles: Object.keys(coverage).length,
     coveredPoles: Object.keys(coverage).length - emptyPoles.length,
     emptyPoles,
     coverage,
     meanAbsoluteError: mean(rows.map((row) => row.absoluteError)),
+    normalizedMeanAbsoluteError: mean(rows.map((row) => row.normalizedAbsoluteError)),
     meanBias: mean(rows.map((row) => row.delta)),
+    normalizedMeanBias: mean(rows.map((row) => row.normalizedDelta)),
     overEvaluations: rows.filter((row) => row.delta > 0).length,
     underEvaluations: rows.filter((row) => row.delta < 0).length,
     meanInterRaterDifference: mean(rows.map((row) => row.disagreement).filter(Number.isFinite)),
-    falsePositives: rows.filter((row) => row.enginePass && !row.humanPass).length,
-    falseNegatives: rows.filter((row) => !row.enginePass && row.humanPass).length,
+    normalizedMeanInterRaterDifference: mean(
+      rows.map((row) => row.normalizedDisagreement).filter(Number.isFinite)
+    ),
+    falsePositives,
+    falseNegatives,
+    falsePositiveRate: humanNegatives ? falsePositives / humanNegatives : null,
+    falseNegativeRate: humanPositives ? falseNegatives / humanPositives : null,
     categoryCoverage: Object.fromEntries(
       ["strong", "weak", "scientifically-wrong", "off-topic"].map((category) => [
         category,
@@ -113,6 +130,8 @@ export function buildCalibrationReport(cases = []) {
     categoryCoverageByPole,
     rows
   };
+  const promotion = assessCalibrationPromotion(report);
+  return { ...report, scorePromotionAllowed: promotion.allowed, promotionBlockers: promotion.reasons };
 }
 
 function printReport(report) {
@@ -124,19 +143,30 @@ function printReport(report) {
     );
     return;
   }
-  console.log(`MAE moteur/humain : ${report.meanAbsoluteError.toFixed(2)} point(s)`);
-  console.log(`Biais moyen moteur-humain : ${report.meanBias.toFixed(2)} point(s)`);
+  console.log(
+    `MAE moteur/humain : ${report.meanAbsoluteError.toFixed(2)} point(s) (${(
+      report.normalizedMeanAbsoluteError * 100
+    ).toFixed(1)} % normalisé)`
+  );
+  console.log(
+    `Biais moyen moteur-humain : ${report.meanBias.toFixed(2)} point(s) (${(
+      report.normalizedMeanBias * 100
+    ).toFixed(1)} % normalisé)`
+  );
   console.log(`Surévaluations / sous-évaluations : ${report.overEvaluations} / ${report.underEvaluations}`);
   console.log(
-    `Faux positifs / faux négatifs (seuil 60 %) : ${report.falsePositives} / ${report.falseNegatives}`
+    `Faux positifs / faux négatifs (seuil 60 %) : ${report.falsePositives} / ${report.falseNegatives}; taux ${report.falsePositiveRate?.toFixed(3) ?? "n/a"} / ${report.falseNegativeRate?.toFixed(3) ?? "n/a"}`
   );
   console.log(`Couverture des catégories : ${JSON.stringify(report.categoryCoverage)}`);
   console.log(
     `Écart moyen entre correcteurs : ${report.meanInterRaterDifference?.toFixed(2) ?? "n/a"} point(s)`
   );
   console.log(
-    `Promotion du score dans l'interface : ${report.scorePromotionAllowed ? "autorisée" : "INTERDITE — couverture insuffisante"}`
+    `Promotion du score dans l'interface : ${report.scorePromotionAllowed ? "autorisée" : "INTERDITE"}`
   );
+  if (report.promotionBlockers.length) {
+    console.log(`Bloqueurs de promotion : ${report.promotionBlockers.join(", ")}`);
+  }
   if (report.emptyPoles.length) console.log(`Pôles sans copie : ${report.emptyPoles.join(", ")}`);
 }
 

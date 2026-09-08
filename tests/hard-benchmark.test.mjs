@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { APP_CONFIG } from "../data/subjects.js";
+import { APP_CONFIG } from "./helpers/full-app-config.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CASES_PATH = join(__dirname, "hard-benchmark", "cases.json");
@@ -133,6 +133,14 @@ test("validateCase / generateId / detectLLM fonctionnent hors cases.json", async
   );
   assert.equal(generateId([], "2025", 1, 1, "N"), "2025-S1-E1-N-001");
   assert.equal(generateId([valid], "2025", 1, 1, "N"), "2025-S1-E1-N-002");
+  const maths = {
+    ...valid,
+    id: "2025-m-S1-E1-N-001",
+    year: "2025-m"
+  };
+  assert.deepEqual(validateCase(maths, 1), []);
+  assert.equal(generateId([], "2025-m", 1, 1, "N"), "2025-m-S1-E1-N-001");
+  assert.ok(validateCase(maths, 0.25).includes("score annotateur 1 invalide"));
   assert.ok(detectLLM("En conclusion, le mécanisme est clair.").includes("En conclusion"));
   assert.equal(detectLLM("نستنتج أن التدرج البروتوني شرط أساسي.").length, 0);
 });
@@ -247,6 +255,17 @@ test("findPole retourne null pour une année inexistante", async () => {
   assert.equal(result, null);
 });
 
+test("le statut de calibration public correspond exactement au corpus audité", async () => {
+  const { CALIBRATION_STATUS } = await import("../data/calibration-status.js");
+  const { buildCalibrationReport } = await import("./hard-benchmark/calibration-report.mjs");
+  const report = buildCalibrationReport(loadCases().cases);
+  assert.equal(CALIBRATION_STATUS.copiesCompared, report.copiesCompared);
+  assert.equal(CALIBRATION_STATUS.activePoles, report.activePoles);
+  assert.equal(CALIBRATION_STATUS.coveredPoles, report.coveredPoles);
+  assert.equal(CALIBRATION_STATUS.scorePromotionAllowed, report.scorePromotionAllowed);
+  assert.deepEqual(CALIBRATION_STATUS.promotionBlockers, report.promotionBlockers);
+});
+
 test("rapport de calibration : l'absence de copies reste explicitement non calibrée", async () => {
   const { buildCalibrationReport } = await import("./hard-benchmark/calibration-report.mjs");
   const report = buildCalibrationReport(loadCases().cases);
@@ -260,7 +279,7 @@ test("rapport de calibration : l'absence de copies reste explicitement non calib
   }
 });
 
-test("rapport de calibration : catégories, erreurs binaires et porte de promotion", async () => {
+test("rapport de calibration : la couverture seule ne franchit pas les seuils de qualité", async () => {
   const { buildCalibrationReport } = await import("./hard-benchmark/calibration-report.mjs");
   const categories = ["strong", "weak", "scientifically-wrong", "off-topic"];
   const synthetic = [];
@@ -287,7 +306,8 @@ test("rapport de calibration : catégories, erreurs binaires et porte de promoti
     }
   }
   const report = buildCalibrationReport(synthetic);
-  assert.equal(report.scorePromotionAllowed, true);
+  assert.equal(report.scorePromotionAllowed, false);
+  assert.ok(report.promotionBlockers.includes("mae-threshold-not-met"));
   assert.ok(Object.values(report.categoryCoverage).every((count) => count > 0));
   assert.ok(
     Object.values(report.categoryCoverageByPole).every((counts) =>
@@ -297,6 +317,25 @@ test("rapport de calibration : catégories, erreurs binaires et porte de promoti
   assert.equal(report.falsePositives, report.rows.filter((row) => row.enginePass && !row.humanPass).length);
   assert.equal(report.falseNegatives, report.rows.filter((row) => !row.enginePass && row.humanPass).length);
   assert.equal(buildCalibrationReport(synthetic.slice(1)).scorePromotionAllowed, false);
+});
+
+test("la politique de promotion exige couverture, catégories et six seuils quantitatifs", async () => {
+  const { assessCalibrationPromotion, CALIBRATION_THRESHOLDS } =
+    await import("../data/calibration-policy.js");
+  const categoryCounts = { strong: 4, weak: 4, "scientifically-wrong": 4, "off-topic": 3 };
+  const report = {
+    copiesCompared: 15,
+    coverage: { "2025/S1/E1/N": 15 },
+    categoryCoverageByPole: { "2025/S1/E1/N": categoryCounts },
+    normalizedMeanAbsoluteError: CALIBRATION_THRESHOLDS.maximumNormalizedMeanAbsoluteError,
+    normalizedMeanBias: CALIBRATION_THRESHOLDS.maximumAbsoluteNormalizedBias,
+    falsePositiveRate: CALIBRATION_THRESHOLDS.maximumFalsePositiveRate,
+    falseNegativeRate: CALIBRATION_THRESHOLDS.maximumFalseNegativeRate,
+    normalizedMeanInterRaterDifference: CALIBRATION_THRESHOLDS.maximumNormalizedInterRaterDifference
+  };
+  assert.deepEqual(assessCalibrationPromotion(report), { allowed: true, reasons: [] });
+  assert.equal(assessCalibrationPromotion({ ...report, normalizedMeanBias: 0.051 }).allowed, false);
+  assert.equal(assessCalibrationPromotion({ ...report, coverage: { "2025/S1/E1/N": 14 } }).allowed, false);
 });
 
 test("rapport de couverture : copies réelles par pôle APP_CONFIG", () => {
