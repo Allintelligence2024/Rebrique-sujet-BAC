@@ -149,6 +149,12 @@ Le protocole et le format d’agrégats pseudonymisés, sans identifiant direct,
 
 ---
 
+## ⚖️ Publication responsable
+
+Le code original et la documentation sont sous Apache-2.0 (`LICENSE`). Les droits des sujets, corrigés et scans tiers ne sont pas transférés par cette licence : consultez [`docs/CONTENT_RIGHTS.md`](docs/CONTENT_RIGHTS.md) avant toute redistribution. La politique de confidentialité locale, l’effacement et l’usage du microphone sont décrits dans [`docs/PRIVACY.md`](docs/PRIVACY.md) ; les mentions légales et le signalement d’erreur dans [`docs/LEGAL_NOTICE.md`](docs/LEGAL_NOTICE.md).
+
+La revue P4 reste bloquée pour une mise en production tant que les droits de redistribution des deux scans PDF 2025 ne sont pas établis et qu’une revue scientifique indépendante n’est pas attestée. Voir [`docs/P4_PUBLICATION.md`](docs/P4_PUBLICATION.md).
+
 ## 🌐 Lancer l'application
 
 ```bash

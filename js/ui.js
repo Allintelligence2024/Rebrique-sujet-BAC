@@ -155,7 +155,17 @@ function bindMics(root = document) {
   $$("[data-mic]", root).forEach((btn) => {
     btn.addEventListener("click", () => {
       const input = $("#" + btn.dataset.mic);
-      voiceEngine.start(input);
+      // Explain the privacy boundary before the browser permission prompt. The
+      // app only receives a transcript and never stores an audio recording.
+      openModal(
+        "🎤 قبل تفعيل الإملاء الصوتي",
+        "سيطلب المتصفح إذن الميكروفون الآن. قد يعالج المتصفح الصوت عبر محركه الخاص؛ لا تحفظ منصة مفتاح الكنز أي تسجيل صوتي، ولا تستقبل إلا النص المحوّل. يمكنك الرفض ومواصلة الكتابة يدوياً.",
+        '<p class="small text-muted">راجع سياسة الخصوصية لمزيد من التفاصيل.</p>'
+      );
+      const modal = $(".overlay:last-child");
+      $("[data-close='ok']", modal)?.addEventListener("click", () => voiceEngine.start(input), {
+        once: true
+      });
     });
   });
 }
