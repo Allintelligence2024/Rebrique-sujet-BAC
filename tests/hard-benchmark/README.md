@@ -113,10 +113,9 @@ moins 60 %. C'est une convention de calibration interne, **pas** un seuil offici
 de réussite au BAC. Avec zéro copie, le rapport affiche explicitement `non calibré` :
 aucune métrique ne doit être inventée.
 
-Le champ `scorePromotionAllowed` ne devient vrai que si chacun des 72 pôles actifs
-possède au moins 15 copies et couvre les quatre catégories. Avoir quelques copies
-constitue un début de preuve ; cela n'autorise pas à renforcer la visibilité du
-score dans l'interface.
+Le champ `scorePromotionAllowed` ne devient vrai que si chacun des pôles dont la consigne est officiellement vérifiée possède au moins 15 copies et couvre les quatre catégories. La liste est dérivée de `APP_CONFIG` (149 pôles actuellement, soit **2 235 copies au minimum**). Les pôles reconstruits restent qualitatifs et ne peuvent pas acquérir un score numérique par effet de bord.
+
+La couverture ne suffit pas. `data/calibration-policy.js` fixe avant collecte les six portes quantitatives : MAE normalisée ≤ 15 %, biais normalisé absolu ≤ 5 %, faux positifs ≤ 10 %, faux négatifs ≤ 10 %, désaccord intercorrecteurs normalisé ≤ 15 %, plus les 15 copies et quatre catégories par pôle. Une métrique absente bloque la promotion. `npm run calibration:check` garantit que le statut public consommé par l'interface correspond au corpus audité.
 
 Toute évolution de règle après copies réelles suit
 [`RULE_REVIEW.md`](RULE_REVIEW.md) et doit commencer par un test de régression

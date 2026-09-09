@@ -42,7 +42,7 @@ test("une progression v2 ambiguë n'est jamais attribuée arbitrairement à une 
     subjects: { 1: { 1: { text: { N: "ancienne réponse" } } } }
   };
   localStorage.setItem("boussole4d.v2", JSON.stringify(legacy));
-  localStorage.removeItem("boussole4d.v3");
+  localStorage.removeItem("boussole4d.v4");
   store.load();
 
   assert.equal(store.state.progress["2025"], undefined);
@@ -58,22 +58,25 @@ test("une sauvegarde v3 sans schemaVersion migre explicitement puis est normalis
     progress: { 2024: { 1: { 1: { text: { N: "réponse" }, scores: { N: 1 } } } } }
   };
   localStorage.setItem("boussole4d.v3", JSON.stringify(legacyV3));
+  localStorage.removeItem("boussole4d.v4");
   store.load();
 
   assert.equal(store.state.schemaVersion, CURRENT_SCHEMA_VERSION);
   assert.equal(store.state.activeScreen, "view-workspace");
   assert.equal(store.exercise("2024", 1, 1).text.N, "réponse");
-  assert.equal(JSON.parse(localStorage.getItem("boussole4d.v3")).schemaVersion, CURRENT_SCHEMA_VERSION);
+  assert.equal(localStorage.getItem("boussole4d.v3"), null);
+  assert.equal(JSON.parse(localStorage.getItem("boussole4d.v4")).schemaVersion, CURRENT_SCHEMA_VERSION);
+  assert.equal(store.state.sessionMode, "training");
 });
 
 test("un état stocké invalide est remis à zéro et sauvegardé dans une copie de secours", () => {
   const malformed = "{not-json";
-  localStorage.setItem("boussole4d.v3", malformed);
+  localStorage.setItem("boussole4d.v4", malformed);
   store.load();
 
   assert.equal(store.state.schemaVersion, CURRENT_SCHEMA_VERSION);
   assert.equal(store.state.activeScreen, "view-hub");
-  const backupKey = localStorage.keys().find((key) => key.startsWith("boussole4d.v3.corrupt-"));
+  const backupKey = localStorage.keys().find((key) => key.startsWith("boussole4d.v4.corrupt-"));
   assert.equal(localStorage.getItem(backupKey), malformed);
 });
 
@@ -81,6 +84,7 @@ test("la migration v1 ajoute le mode révision désactivé", () => {
   const migrated = migrateState({ schemaVersion: 1, progress: {} });
   assert.equal(migrated.schemaVersion, CURRENT_SCHEMA_VERSION);
   assert.equal(migrated.reviewMode, false);
+  assert.equal(migrated.sessionMode, "training");
 });
 
 test("la validation rejette les futures versions et élimine les champs incohérents", () => {
@@ -98,6 +102,66 @@ test("la validation rejette les futures versions et élimine les champs incohér
   assert.equal(validated.sujetId, 1);
   assert.equal(validated.globalRemaining, 0);
   assert.deepEqual(validated.progress, {});
+});
+
+test("les identifiants Maths sont validés et leur progression persiste", () => {
+  store.enterSession("2025-m", 1, 150 * 60);
+  store.exercise("2025-m", 1, 2).text.N = "réponse Maths";
+  store.save();
+  store.load();
+
+  assert.equal(store.state.yearId, "2025-m");
+  assert.equal(store.state.globalDuration, 150 * 60);
+  assert.equal(store.exercise("2025-m", 1, 2).text.N, "réponse Maths");
+});
+
+test("le cycle de session démarre frais puis se termine sans effacer les réponses", () => {
+  store.enterSession("2025", 1, 270 * 60, 25 * 60);
+  assert.equal(store.state.sessionStatus, "active");
+  assert.equal(store.state.globalRemaining, 270 * 60);
+  store.exercise("2025", 1, 1).text.N = "réponse conservée";
+  store.state.globalRemaining = 10;
+
+  store.enterSession("2025", 2, 270 * 60, 25 * 60);
+  assert.equal(store.state.sujetId, 2);
+  assert.equal(store.state.globalRemaining, 270 * 60);
+  assert.equal(store.state.activeExercise, 1);
+  assert.equal(store.exercise("2025", 1, 1).text.N, "réponse conservée");
+
+  assert.equal(store.finishSession("manual"), true);
+  assert.equal(store.state.sessionStatus, "completed");
+  assert.equal(store.state.sessionActive, false);
+  assert.equal(store.state.sessionEndReason, "manual");
+  assert.equal(store.state.reviewMode, true);
+  assert.equal(store.finishSession("manual"), false);
+});
+
+test("le mode simulation démarre son horloge au choix du sujet et interdit la relecture anticipée", () => {
+  store.enterSession("2025", 1, 270 * 60, 25 * 60);
+  store.state.globalRemaining = 123;
+  assert.equal(store.activateSubjectMode(2, "simulation"), true);
+  assert.equal(store.state.sessionMode, "simulation");
+  assert.equal(store.state.sujetId, 2);
+  assert.equal(store.state.globalRemaining, 270 * 60);
+  assert.throws(() => store.setReviewMode(true), /relecture est interdite/);
+
+  const answer = store.exercise("2025", 2, 1);
+  answer.officialTaskAnswers["2025-S2-E1-Q1"] = "إجابة محفوظة";
+  store.save();
+  store.load();
+  assert.equal(store.exercise("2025", 2, 1).officialTaskAnswers["2025-S2-E1-Q1"], "إجابة محفوظة");
+});
+
+test("la réconciliation termine une session dont le temps est écoulé", () => {
+  store.enterSession("2025-m", 1, 150 * 60);
+  store.state.globalRemaining = 2;
+  store.state.globalLastTick = Date.now() - 5_000;
+  store._reconcileTimers();
+
+  assert.equal(store.state.globalRemaining, 0);
+  assert.equal(store.state.sessionStatus, "completed");
+  assert.equal(store.state.sessionEndReason, "time-expired");
+  assert.equal(store.state.globalLastTick, null);
 });
 
 test("exercise exige explicitement yearId", () => {

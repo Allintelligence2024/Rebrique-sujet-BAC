@@ -76,10 +76,21 @@ const RECON = (notes) => ({
   bacPromptNotes: notes
 });
 
+export const EXAM_MINUTES_BY_STREAM = Object.freeze({
+  se: 270,
+  m: 150
+});
+
+/** Durée officielle de l'épreuve SVT selon la filière, surchargeable par session. */
+export function examMinutesForYear(year) {
+  if (Number.isFinite(year?.examMinutes) && year.examMinutes > 0) return year.examMinutes;
+  return EXAM_MINUTES_BY_STREAM[year?.stream || "se"] || EXAM_MINUTES_BY_STREAM.se;
+}
+
 export const APP_CONFIG = {
   appTitle: "مفتاح الكنز",
   appSubtitle: "منهجية الإجابة — بكالوريا علوم الطبيعة والحياة",
-  globalExamMinutes: 270,
+  examMinutesByStream: EXAM_MINUTES_BY_STREAM,
   strategyMinutes: 25,
   note: "المحتوى 2025 مُراجع على PDF المستودع. 2024: صفحات 2 و6 و7 و10 مُراجعة على صور الموضوع الرسمي؛ الباقي مُعاد بناؤه. 2023 و2022 من PDF dzexams. 2026 و2020 علوم تجريبية و2021–2026 رياضيات مرمّزة 4D من الموضوع والتصحيح الرسميين. أرشيف 2013-2019 علوم تجريبية مُعاد بناؤه وغير مصادق كإنشاء وزاري.",
   years: [

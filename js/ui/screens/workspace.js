@@ -1,4 +1,3 @@
-import { BROUILLON_MODE_DATA } from "../../../data/brouillon.js";
 import { node, replaceContent, setInternalHTML } from "../dom.js";
 import { renderStepNavigation } from "../navigation.js";
 import { createBrouillonController } from "../workspace/brouillon.js";
@@ -7,7 +6,8 @@ import { firstEmptyPipelineSlot, PIPELINE_FIELDS } from "../workspace/pipeline-e
 import { textEvaluationRule } from "../workspace/text-exercise.js";
 import { composeDrafts, hasObservationBeforeExplanation } from "../workspace/scratchpad.js";
 import { quickCheckHTML } from "../workspace/quick-check.js";
-import { classifyInstruction } from "../../domain/method/gates.js";
+import { createWorkspacePresentation } from "../workspace/presentation.js";
+import { createSimulationController } from "./simulation.js";
 
 export function createWorkspaceController(deps) {
   const {
@@ -28,6 +28,8 @@ export function createWorkspaceController(deps) {
     helpers,
     micButton,
     normalizeArabic,
+    officialCoverageForSubject,
+    officialTaskInventoryFor,
     openDrawer,
     openModal,
     pdfFallbackHTML,
@@ -39,14 +41,26 @@ export function createWorkspaceController(deps) {
     store,
     timers,
     toast,
+    yearObj,
     sujetObj,
     exDef
   } = deps;
+  const { detectVerb, gateChipHTML, poleMethodHint, provenanceHTML, setFeedback } =
+    createWorkspacePresentation({
+      METHOD_SCRIPTS,
+      node,
+      normalizeArabic,
+      officialTaskInventoryFor,
+      replaceContent,
+      store,
+      levelWord
+    });
   const brouillonController = createBrouillonController({
     $,
     store,
     openDrawer,
-    openModal,
+    closeModal,
+    toast,
     escapeHTML,
     normalizeArabic,
     composeDrafts,
@@ -54,6 +68,23 @@ export function createWorkspaceController(deps) {
     POLE_ORDER,
     exDef,
     detectVerb
+  });
+  const simulationController = createSimulationController({
+    $,
+    $$,
+    closeModal,
+    goHome,
+    officialCoverageForSubject,
+    officialTaskInventoryFor,
+    openDrawer,
+    openModal,
+    pdfFallbackHTML,
+    showScreen,
+    store,
+    timers,
+    toast,
+    yearObj,
+    sujetObj
   });
 
   function enterExercise(exNum) {
@@ -63,6 +94,11 @@ export function createWorkspaceController(deps) {
   }
 
   function renderWorkspace() {
+    if (store.state.sessionMode === "simulation") {
+      simulationController.renderSimulation();
+      return;
+    }
+    if (store.isSessionActive()) completionNoticeShown = false;
     const s = sujetObj();
     const ex = exDef(store.state.activeExercise);
     setInternalHTML(
@@ -76,17 +112,19 @@ export function createWorkspaceController(deps) {
         </div>
       </header>
 
-      <div class="workspace-tools" aria-label="أدوات ثانوية">
+      <div class="workspace-tools" aria-label="أدوات الجلسة">
         <button class="btn btn-amber btn-sm" id="ws-panic">✨ أحتاج تلميحاً</button>
         <button class="btn btn-ghost btn-sm" id="ws-brouillon">📝 المسودة</button>
         <button class="btn btn-indigo btn-sm" id="ws-pdf">📄 الموضوع</button>
+        <button class="btn btn-rose btn-sm" id="ws-finish">✓ إنهاء التدريب</button>
       </div>
 
+      <div class="feedback mid mb-2" role="note">تدريب منهجي جزئي: بعض الخطوات مبنية لأغراض التدريب، ولا تمثل هذه الواجهة جميع تعليمات الموضوع الرسمي.</div>
       <div class="progress mb-2" id="progress"><span></span></div>
-      <div class="card mb-2 compass-guide" id="boussole-scratch-card">
-        <strong>🧭 البوصلة = أربع أسئلة عملية، وليست زينة</strong>
-        <p class="small text-muted mt-0" id="pole-purpose">N — ما المشكل العلمي الذي يجب أن أؤطّره؟</p>
-        <button class="btn btn-ghost btn-sm" id="boussole-open-scratch">افتح ورقة المسودة (اقرأ · اجمع · اربط · اختُم)</button>
+      <div class="card mb-2 method-guide" id="method-scratch-card">
+        <strong>المسار المنهجي: أربع خطوات عملية</strong>
+        <p class="small text-muted mt-0" id="step-purpose">اقرأ — ما المشكل العلمي الذي يجب أن أؤطّره؟</p>
+        <button class="btn btn-ghost btn-sm" id="method-open-scratch">افتح ورقة المسودة (اقرأ · اجمع · اربط · اختُم)</button>
       </div>
 
       <div class="grid workspace-layout">
@@ -95,26 +133,17 @@ export function createWorkspaceController(deps) {
           <div class="stack">${s.exercises
             .map(
               (e) => `
-            <button class="btn btn-ghost" data-switch="${e.number}" style="justify-content:space-between">
-              <span>ت${e.number}: ${e.label} (${e.max}ن)</span><span id="lock-${e.number}">🔒</span>
+            <button class="btn btn-ghost quick-exercise" data-switch="${e.number}">
+              <span>ت${e.number}: ${e.label} (${e.max}ن)</span><span id="active-exercise-${e.number}" aria-hidden="true">${e.number === ex.number ? "●" : ""}</span>
             </button>`
             )
             .join("")}</div>
           <div class="card center stack">
-            <div class="flex spread small"><span class="bold text-muted">بوصلة ت${ex.number}</span><span class="text-emerald" id="pole-text">السنّ: اقرأ</span></div>
-            <div class="compass">
-              <div class="compass-ring"></div>
-              <span class="compass-mark" style="top:4px;inset-inline-start:50%;transform:translateX(50%);color:var(--emerald-soft)">1</span>
-              <span class="compass-mark" style="bottom:4px;inset-inline-start:50%;transform:translateX(50%);color:var(--blue)">2</span>
-              <span class="compass-mark" style="inset-block-start:50%;inset-inline-end:4px;transform:translateY(-50%);color:var(--amber-soft)">3</span>
-              <span class="compass-mark" style="inset-block-start:50%;inset-inline-start:4px;transform:translateY(-50%);color:var(--purple-soft)">4</span>
-              <div class="compass-seq" id="compass-needle">
-                <svg viewBox="0 0 100 100"><polygon points="50,12 44,50 56,50" fill="#10b981"/><polygon points="50,88 44,50 56,50" fill="#3b82f6"/></svg>
-              </div>
-            </div>
+            <span class="bold text-muted">خطوات التمرين ${ex.number}</span>
+            <span class="text-emerald" id="step-text">الخطوة الحالية: اقرأ</span>
           </div>
           <nav class="stepnav" id="stepnav"></nav>
-          <div class="feedback mid small" style="background:rgba(16,185,129,.08)">⚠️ القاعدة: ركّز على كل قطب لحاله، وفُعلت باقي التمارين بعد إجابتك.</div>
+          <div class="feedback mid small guidance-note">يمكنك الانتقال بحرية بين التمارين؛ تُحفظ إجاباتك تلقائياً.</div>
         </aside>
         <section class="card" id="ex-content"></section>
       </div>
@@ -124,8 +153,9 @@ export function createWorkspaceController(deps) {
     $("#ws-home").addEventListener("click", goHome);
     $("#ws-panic").addEventListener("click", showPanic);
     $("#ws-brouillon").addEventListener("click", () => brouillonController.openBrouillon());
-    $("#boussole-open-scratch").addEventListener("click", () => brouillonController.openBrouillon());
+    $("#method-open-scratch").addEventListener("click", () => brouillonController.openBrouillon());
     $("#ws-pdf").addEventListener("click", openPdfDrawer);
+    $("#ws-finish").addEventListener("click", confirmFinishSession);
     applyTheme(document.documentElement.dataset.theme);
     $$("#view-workspace [data-switch]").forEach((b) =>
       b.addEventListener("click", () => attemptSwitch(+b.dataset.switch))
@@ -135,6 +165,7 @@ export function createWorkspaceController(deps) {
     renderExercise(ex);
     goToStep(store.state.activeStep || 1);
     updateLiveScore();
+    applySessionLock();
   }
 
   function renderStepnav(ex) {
@@ -168,106 +199,19 @@ export function createWorkspaceController(deps) {
     return mayScorePole(pole, store.state.reviewMode);
   }
 
-  function modelBox(pole) {
-    if (!pole.modelAnswer) return "";
-    return `<details class="model-box"><summary class="model-summary">إجابة نموذجية للتدريب</summary><div class="model-body"><pre class="model-text">${pole.modelAnswer}</pre></div></details>`;
-  }
-
-  function setFeedback(container, res, score, points, pole, showScore = true) {
-    // formatEvalFeedback is legacy presentation text. Render it as text, never as executable HTML.
-    const feedback = formatEvalFeedback(res, score, points)
-      .replace(/<br>/g, "\n")
-      .replace(/<[^>]*>/g, "");
-    const text = showScore
-      ? feedback
-      : `مراجعة منهجية فقط — لا توجد نقطة رقمية لهذه السنّ.\n${feedback.replace(/^.*?\n/, "")}`;
-    const fragments = [node("span", { text })];
-    if (pole?.modelAnswer) {
-      const details = node("details", { className: "model-box" });
-      details.append(
-        node("summary", { className: "model-summary", text: "إجابة نموذجية للتدريب" }),
-        node("div", { className: "model-body" })
-      );
-      details.lastElementChild.append(node("pre", { className: "model-text", text: pole.modelAnswer }));
-      fragments.push(details);
-    }
-    replaceContent(container, fragments);
-  }
-
-  function formatEvalFeedback(res, score, points) {
-    let html = `تشخيص تغطية الإجابة`;
-    if (res.verdict) html += `<br>${res.verdict}`;
-    if (res.rubric?.applicable && res.rubric.display) {
-      html += `<br><span class="small">ميزان التحليل: ${res.rubric.display}</span>`;
-      const skipped = (res.rubric.steps || []).filter((s) => !s.passed).map((s) => s.label);
-      if (skipped.length) html += `<br>⏭️ خطوات ناقصة: <b>${skipped.join("، ")}</b>`;
-    }
-    if (res.missing?.length) html += `<br>🔎 مفاهيم مفتاحية ناقصة: <b>${res.missing.join("، ")}</b>`;
-    if (res.forbiddenFound?.length)
-      html += `<br>⛔ كلمة يجب تجنّبها هنا: <b>${res.forbiddenFound.join("، ")}</b>`;
-    if (res.science?.errors?.length)
-      html += `<br>🧪 خطأ علمي: <b>${res.science.errors.map((e) => e.message).join(" — ")}</b>`;
-    if (res.document?.gaps?.length) html += `<br>📄 قراءة السند: <b>${res.document.gaps.join(" — ")}</b>`;
-    if (res.artifact?.gaps?.length) html += `<br>✏️ مخطط/معادلة: <b>${res.artifact.gaps.join(" — ")}</b>`;
-    if (res.hypotheses?.gaps?.length) html += `<br>🔬 الفرضيات: <b>${res.hypotheses.gaps.join(" — ")}</b>`;
-    if (res.technique?.gaps?.length) html += `<br>🧫 التقنية: <b>${res.technique.gaps.join(" — ")}</b>`;
-    if (res.closing?.applicable && res.taskProfile?.id === "scientific-text" && res.closing.score < 0.5)
-      html += `<br>🎯 الخاتمة لا تجيب عن المشكل المطروح في السنّ اقرأ.`;
-    if (res.methodology?.missing?.length) html += `<br>🧭 المنهجية: ${res.methodology.missing[0]}`;
-    if (res.coach?.tips?.length) html += `<br>📘 من دليل المنهجية: ${res.coach.tips.slice(0, 2).join(" ")}`;
-    else if (res.methodology?.score < 0.9 && res.coach?.script?.steps?.length) {
-      html += `<br>📘 ${res.coach.script.title}: ${res.coach.script.steps.join(" ← ")}`;
-    }
-    const pack = BROUILLON_MODE_DATA.sentenceModels.find((s) => {
-      const id = res.taskProfile?.id;
-      if (id === "analysis") return s.title.includes("تقديم");
-      if (id === "explanation") return s.title.includes("تفسير");
-      return false;
-    });
-    if (pack && res.fraction < 0.9) html += `<br>✍️ بدّل: <i>${pack.items[0]}</i>`;
-    html += `<br><span class="secondary-score">التقدير: <b>${levelWord(res.fraction)}</b></span>`;
-    if (res.empty) html = `لم تُدخل أي إجابة بعد.`;
-    return html;
-  }
-
-  function detectVerb(text) {
-    const n = normalizeArabic(text || "");
-    for (const route of BROUILLON_MODE_DATA.verbRouting) {
-      if (route.patterns.some((p) => n.includes(normalizeArabic(p)))) return route;
-    }
-    return BROUILLON_MODE_DATA.verbRouting[0];
-  }
-
-  /** البوابتان قبل الكتابة: verdict ورقة/رأس ثم صورة/فيلم pour cette consigne. */
-  function gateChipHTML(poleType, pole) {
-    const c = classifyInstruction(pole?.bacPrompt || pole?.prompt || "");
-    const gate1 = c.mode === "paper" ? "📄 ورقة" : "🧠 رأس";
-    const gate2 = c.gate2 ? (c.gate2 === "film" ? " · 🎬 فيلم" : " · 📷 صورة") : "";
-    const columns = c.twoColumns ? " · عمودان: [من الوثيقة | من الدرس]" : "";
-    return `<div class="small text-muted gate-chip" data-gate-chip="${poleType}">🚪 القرار قبل الكتابة: <b>${gate1}${gate2}</b> — مسار ${c.pathLabel}${columns}</div>`;
-  }
-
-  function poleMethodHint(poleType, pole) {
-    const fallback = { N: "problem", S: "analysis", E: "explanation", W: "scientific-text" };
-    const script = METHOD_SCRIPTS[fallback[poleType]] || METHOD_SCRIPTS.synthesis;
-    const verb = detectVerb(pole?.bacPrompt || pole?.prompt || "");
-    const trap = verb?.warning ? `<div class="atlas-trap">${verb.warning}</div>` : "";
-    if (!script) return trap;
-    return `<div class="method-script"><strong>${script.title}</strong> — ${script.steps.join(" ← ")}${trap}</div>`;
-  }
-
   function textHTML(ex) {
     return POLE_ORDER.map((p, i) => {
       const pole = ex.poles[p];
       return `
       <div id="panel-${i + 1}" class="${i === 0 ? "" : "hidden"}">
         <div class="card answer-card">
-          <span class="badge badge-${POLE[p].cls}" style="margin-bottom:.6rem">${POLE[p].title}</span>
+          <span class="badge badge-${POLE[p].cls} pole-badge">${POLE[p].title}</span>
           <h3 class="bac-consigne">${pole.bacPrompt || pole.prompt}</h3>
+          ${provenanceHTML(pole, ex.number, p)}
           <details class="pole-help" id="pole-help-${p}">
-            <summary class="small">🧭 توجيه هذه السنّ — القرار، الخطوات، الفحص <span class="text-muted">(انقر للعرض)</span></summary>
-            <div style="margin-top:.4rem">
-              <p class="small text-muted mt-0">Objectif méthodologique : ${pole.prompt}</p>
+            <summary class="small">توجيه هذه الخطوة — القرار، التنفيذ، الفحص <span class="text-muted">(انقر للعرض)</span></summary>
+            <div class="pole-help-body">
+              <p class="small text-muted mt-0">الهدف المنهجي: ${pole.prompt}</p>
               ${gateChipHTML(p, pole)}
               ${poleMethodHint(p, pole)}
               ${quickCheckHTML()}
@@ -280,7 +224,7 @@ export function createWorkspaceController(deps) {
           }
           ${micButton("fld-" + p)}
           <div class="feedback hidden" role="status" aria-live="polite" aria-atomic="true" id="fb-${p}"></div>
-          <div class="flex mt-2" style="justify-content:space-between">
+          <div class="flex spread mt-2 step-actions">
             <button class="btn btn-ghost btn-sm" data-goto="${i}">تخطّي</button>
             <button class="btn btn-emerald" data-check="${p}">🔎 فحص تغطية الإجابة</button>
           </div>
@@ -312,6 +256,7 @@ export function createWorkspaceController(deps) {
   }
 
   function checkText(exNum, p) {
+    if (!store.isSessionActive()) return;
     const ex = exDef(exNum);
     const pole = ex.poles[p];
     const input = $("#fld-" + p);
@@ -335,7 +280,7 @@ export function createWorkspaceController(deps) {
     fb.classList.remove("hidden");
     const grade = res.fraction >= 0.75 ? "good" : res.fraction >= 0.45 ? "mid" : "bad";
     fb.className = `feedback ${grade} mt-2`;
-    setFeedback(fb, res, st.scores[p], pole.points, pole, scoreAllowed);
+    setFeedback(fb, res, pole, scoreAllowed);
     if (!res.empty) goToSuccessStep(exNum);
   }
 
@@ -347,8 +292,9 @@ export function createWorkspaceController(deps) {
   function pipelineHTML(ex) {
     return `
     <div id="panel-1" class="card">
-      <span class="badge badge-emerald" style="margin-bottom:.6rem">${POLE.N.title} (${fmtPts(ex.poles.N.points)})</span>
-      <h3 class="mt-0">${ex.poles.N.prompt}</h3>
+      <span class="badge badge-emerald pole-badge">${POLE.N.title} (${fmtPts(ex.poles.N.points)})</span>
+      <h3 class="mt-0">${ex.poles.N.bacPrompt || ex.poles.N.prompt}</h3>
+      ${provenanceHTML(ex.poles.N, ex.number, "N")}
       ${gateChipHTML("N", ex.poles.N)}
       <div class="grid grid-2">
         <input class="field" id="pipeline-var-indep" type="text" placeholder="${ex.poles.N.rule?.hypotheses ? "الفرضية 1: يعود السبب إلى…" : "المتغير المستقل..."}">
@@ -356,13 +302,14 @@ export function createWorkspaceController(deps) {
       </div>
       ${micButton("pipeline-var-indep")}
       <div class="feedback hidden" role="status" aria-live="polite" aria-atomic="true" id="fb-N"></div>
-      <button class="btn btn-emerald mt-2" data-polo-check="N">تأكيد السنّ اقرأ (فكّ القفل)</button>
+      <button class="btn btn-emerald mt-2" data-polo-check="N">فحص خطوة اقرأ</button>
     </div>
     <div id="panel-2" class="card hidden">
-      <span class="badge badge-indigo" style="margin-bottom:.6rem">${POLE.S.title} (${fmtPts(ex.poles.S.points)})</span>
-      <h3 class="mt-0">${ex.poles.S.prompt}</h3>
+      <span class="badge badge-indigo pole-badge">${POLE.S.title} (${fmtPts(ex.poles.S.points)})</span>
+      <h3 class="mt-0">${ex.poles.S.bacPrompt || ex.poles.S.prompt}</h3>
+      ${provenanceHTML(ex.poles.S, ex.number, "S")}
       ${gateChipHTML("S", ex.poles.S)}
-      <div class="card" style="background:var(--bg)">
+      <div class="card card-inset">
         <label class="lbl">1. الشكل (أ): التحليل المقارن بالتوازي</label>
         <textarea class="field" rows="2" id="pipeline-doc1a"></textarea>
         <label class="lbl">الاستنتاج الخاص بالشكل (أ):</label>
@@ -375,8 +322,9 @@ export function createWorkspaceController(deps) {
       <button class="btn btn-emerald mt-2" data-polo-check="S">فحص مصفوفة السندات</button>
     </div>
     <div id="panel-3" class="card hidden">
-      <span class="badge badge-amber" style="margin-bottom:.6rem">${POLE.E.title} (${fmtPts(ex.poles.E.points)})</span>
-      <h3 class="mt-0">${ex.poles.E.prompt}</h3>
+      <span class="badge badge-amber pole-badge">${POLE.E.title} (${fmtPts(ex.poles.E.points)})</span>
+      <h3 class="mt-0">${ex.poles.E.bacPrompt || ex.poles.E.prompt}</h3>
+      ${provenanceHTML(ex.poles.E, ex.number, "E")}
       <div class="grid grid-2">
         <input class="field" id="pipeline-hyp1" type="text" placeholder="الفرضية 1">
         <input class="field" id="pipeline-hyp2" type="text" placeholder="الفرضية 2">
@@ -384,19 +332,20 @@ export function createWorkspaceController(deps) {
       <label class="lbl mt-2">استدلال الوثيقة 2:</label>
       <textarea class="field" rows="4" id="pipeline-doc2"></textarea>
       <div class="feedback hidden" role="status" aria-live="polite" aria-atomic="true" id="fb-E"></div>
-      <button class="btn btn-emerald mt-2" data-polo-check="E">تأكيد السنّ اربط</button>
+      <button class="btn btn-emerald mt-2" data-polo-check="E">فحص خطوة اربط</button>
     </div>
     <div id="panel-4" class="card hidden">
-      <span class="badge badge-purple" style="margin-bottom:.6rem">${POLE.W.title} (${fmtPts(ex.poles.W.points)})</span>
-      <h3 class="mt-0">${ex.poles.W.prompt}</h3>
+      <span class="badge badge-purple pole-badge">${POLE.W.title} (${fmtPts(ex.poles.W.points)})</span>
+      <h3 class="mt-0">${ex.poles.W.bacPrompt || ex.poles.W.prompt}</h3>
+      ${provenanceHTML(ex.poles.W, ex.number, "W")}
       <span class="lbl">📦 بنك العناصر البيوكيميائية:</span>
       <div class="bank" id="blocks-bank"></div>
       <div class="grid grid-2 mt-2">
         ${ex.streams
           .map(
             (str) => `
-          <div class="card" style="background:var(--bg);border-color:${str.theme === "rose" ? "var(--rose)" : "var(--emerald)"}">
-            <strong style="color:${str.theme === "rose" ? "#fb7185" : "var(--emerald-soft)"}">${str.title}</strong>
+          <div class="card stream-card-${str.theme === "rose" ? "rose" : "emerald"}">
+            <strong class="stream-title-${str.theme === "rose" ? "rose" : "emerald"}">${str.title}</strong>
             <div class="pipeline mt-1" data-stream="${str.id}">
               ${str.slots.map((sl, i) => `<button type="button" class="slot" data-slot="${i}" aria-label="${i + 1}. ${sl}">${i + 1}. ${sl}</button>`).join("")}
             </div>
@@ -447,6 +396,7 @@ export function createWorkspaceController(deps) {
   }
 
   function placeBlock(ex, blockId) {
+    if (!store.isSessionActive()) return;
     const st = store.exercise(store.state.yearId, store.state.sujetId, ex.number);
     const slot = firstEmptyPipelineSlot(st.pipeline);
     if (!slot) return;
@@ -455,6 +405,7 @@ export function createWorkspaceController(deps) {
     store.save();
   }
   function clearBlock(ex, stream, index) {
+    if (!store.isSessionActive()) return;
     const st = store.exercise(store.state.yearId, store.state.sujetId, ex.number);
     const key = stream === 1 ? "stream1" : "stream2";
     if (st.pipeline[key][index]) {
@@ -487,6 +438,7 @@ export function createWorkspaceController(deps) {
   }
 
   function checkPipelinePole(exNum, p) {
+    if (!store.isSessionActive()) return;
     const ex = exDef(exNum);
     const st = store.exercise(store.state.yearId, store.state.sujetId, exNum);
     const fb = $("#fb-" + p);
@@ -514,7 +466,7 @@ export function createWorkspaceController(deps) {
       st.scores[p] = score;
       if (!st.answeredAny && text) st.answeredAny = true;
       fb.className = `feedback ${res.fraction >= 0.75 ? "good" : text ? "mid" : "bad"} mt-2`;
-      setFeedback(fb, res, score, ex.poles[p].points, ex.poles[p], scoreAllowed);
+      setFeedback(fb, res, ex.poles[p], scoreAllowed);
     } else {
       const res = evaluatePipeline(ex.blocksBank, st.pipeline);
       const scoreAllowed = canScorePole(ex.poles[p]);
@@ -537,18 +489,16 @@ export function createWorkspaceController(deps) {
     store.setActiveStep(n);
     $$("#ex-content [id^='panel-']").forEach((panel, i) => panel.classList.toggle("hidden", i !== n - 1));
     const bar = $("#progress span");
-    if (bar) bar.style.width = `${(n / 4) * 100}%`;
-    const needle = $("#compass-needle");
-    if (needle) needle.style.transform = `rotate(${n === 1 ? 0 : n === 2 ? 180 : n === 3 ? 90 : 270}deg)`;
-    const poleText = $("#pole-text");
-    if (poleText) poleText.textContent = `السنّ: ${POLE[activePole].short}`;
+    if (bar) bar.className = `step-${n}`;
+    const stepText = $("#step-text");
+    if (stepText) stepText.textContent = `الخطوة الحالية: ${POLE[activePole].short}`;
     const purposes = {
       N: "اقرأ — ما المشكل أو الفرضية التي يجب أن أؤطّرها؟",
       S: "اجمع — ماذا ألاحظ وأقارن في السندات، دون تفسير متسرّع؟",
       E: "اربط — ما الآلية العلمية التي تربط الملاحظات بالنتيجة؟",
       W: "اختُم — هل تجيب خلاصتي عن المشكل وتغطي النتائج الأساسية؟"
     };
-    if ($("#pole-purpose")) $("#pole-purpose").textContent = purposes[activePole];
+    if ($("#step-purpose")) $("#step-purpose").textContent = purposes[activePole];
     $$("#stepnav [data-step]").forEach((b, i) => b.classList.toggle("active", i === n - 1));
     return { ex, pole: activePole };
   }
@@ -569,16 +519,108 @@ export function createWorkspaceController(deps) {
     exDef(store.state.activeExercise);
   }
 
-  function attemptSwitch(target) {
-    const cur = store.state.activeExercise;
-    if (target === cur) return;
-    if (!store.exercise(store.state.yearId, store.state.sujetId, cur).answeredAny) {
-      toast(
-        `يجب الإجابة على سؤال واحد على الأقل في التمرين ${cur} لفكّ القفل قبل الانتقال لتمرين آخر!`,
-        "warn"
-      );
+  function persistVisibleDraft() {
+    const exercise = exDef(store.state.activeExercise);
+    if (!exercise) return;
+    const progress = store.exercise(store.state.yearId, store.state.sujetId, exercise.number);
+    if (exercise.ui === "pipeline") {
+      $$("#ex-content input.field, #ex-content textarea.field").forEach((field) => {
+        progress.fields[field.id] = field.value;
+        if (field.value.trim()) progress.answeredAny = true;
+      });
+    } else {
+      for (const pole of POLE_ORDER) {
+        const field = $("#fld-" + pole);
+        if (!field) continue;
+        progress.text[pole] = field.value;
+        if (field.value.trim()) progress.answeredAny = true;
+      }
+    }
+    store.save();
+  }
+
+  function applySessionLock() {
+    const locked = !store.isSessionActive();
+    const root = $("#view-workspace");
+    if (!root) return;
+    $$(
+      "#ex-content input, #ex-content textarea, #ex-content [data-check], #ex-content [data-polo-check], #ex-content .chip, #ex-content .slot, #ex-content [data-mic]"
+    ).forEach((control) => {
+      control.disabled = locked;
+    });
+    for (const id of ["#ws-panic", "#ws-brouillon", "#method-open-scratch", "#ws-finish"]) {
+      const control = $(id);
+      if (control) control.disabled = locked;
+    }
+    let notice = $("#session-complete-notice");
+    if (locked && !notice) {
+      notice = node("div", {
+        className: "feedback bad mb-2",
+        text: "انتهت الجلسة وحُفظت الإجابات. يمكنك مراجعتها فقط؛ أُغلقت الكتابة والفحص.",
+        attrs: { id: "session-complete-notice", role: "status" }
+      });
+      $(".workspace-tools")?.insertAdjacentElement("afterend", notice);
+    } else if (!locked) {
+      notice?.remove();
+    }
+  }
+
+  let completionNoticeShown = false;
+  function showCompletionNotice(reason) {
+    if (completionNoticeShown) return;
+    completionNoticeShown = true;
+    const subject = sujetObj();
+    const answered = (subject?.exercises || []).filter(
+      (exercise) => store.exercise(store.state.yearId, store.state.sujetId, exercise.number).answeredAny
+    ).length;
+    const total = subject?.exercises.length || 0;
+    const title = reason === "time-expired" ? "انتهى الوقت" : "اكتملت الجلسة";
+    openModal(
+      title,
+      `<p>حُفظت إجاباتك محلياً. أجبت في ${answered} من ${total} تمارين.</p>
+       <p class="feedback mid">لا تُعرض علامة بكالوريا: التشخيص الحالي أداة تدريب غير معايرة على نسخ حقيقية كافية.</p>`,
+      `<button class="btn btn-indigo" id="completion-home">العودة إلى الرئيسية</button>`
+    );
+    const continueButton = $("[data-close='ok']");
+    if (continueButton) continueButton.textContent = "مراجعة الإجابات";
+    $("#completion-home")?.addEventListener("click", () => {
+      closeModal();
+      goHome();
+    });
+  }
+
+  function handleSessionCompletion(reason = store.state.sessionEndReason) {
+    if (store.state.sessionMode === "simulation") {
+      simulationController.handleSessionCompletion(reason);
       return;
     }
+    persistVisibleDraft();
+    timers.stopAll();
+    $("#global-timer-bar")?.classList.add("hidden");
+    applySessionLock();
+    showCompletionNotice(reason);
+  }
+
+  function confirmFinishSession() {
+    if (!store.isSessionActive()) return;
+    openModal(
+      "إنهاء التدريب",
+      "سيُوقف المؤقت وتُغلق الكتابة والفحص. ستبقى الإجابات محفوظة للمراجعة.",
+      `<button class="btn btn-rose" id="finish-session-yes">نعم، أنهِ الجلسة</button>`
+    );
+    const cancelButton = $("[data-close='ok']");
+    if (cancelButton) cancelButton.textContent = "إلغاء";
+    $("#finish-session-yes")?.addEventListener("click", () => {
+      persistVisibleDraft();
+      store.finishSession("manual");
+      closeModal();
+      completionNoticeShown = false;
+      handleSessionCompletion("manual");
+    });
+  }
+
+  function attemptSwitch(target) {
+    if (target === store.state.activeExercise) return;
     store.setActiveExercise(target);
     renderWorkspace();
     showScreen("view-workspace");
@@ -607,9 +649,9 @@ export function createWorkspaceController(deps) {
     const hints = {
       1: "لاحظ سياق التمرين: ما العامل الذي يغيّره المجرِّب (متغير مستقل) وما الظاهرة المقاسة (تابع)؟ صِغ المشكل بعلامة (؟) دون الإجابة هنا.",
       2: "ركّز على الأرقام في المنحنى أو الجدول، قارن بالتوازي ذاكراً القيم الابتدائية والنهائية، وتجنّب كلمة «بسبب» في هذه المرحلة.",
-      3: "تخيّل الآلية كشريط فيديو: ارتباط الجزيء → تفعيل البروتينات الغشائية → حركة الشوارد → إفراز المبلغ. صِغ فرضيتك كحلٍّ سببي دون «ربما»."
+      3: "رتّب الآلية كسلسلة سببية: ارتباط الجزيء → تفعيل البروتينات الغشائية → حركة الشوارد → إفراز المبلغ. صِغ فرضيتك كحلٍّ سببي دون «ربما»."
     };
-    openModal("💡 تلميح فكّ القفل الذهني", hints[ex.number] || hints[3]);
+    openModal("💡 تلميح منهجي", hints[ex.number] || hints[3]);
   }
 
   function openPdfDrawer() {
@@ -621,5 +663,5 @@ export function createWorkspaceController(deps) {
     );
   }
 
-  return { enterExercise, renderWorkspace };
+  return { enterExercise, renderWorkspace, handleSessionCompletion };
 }

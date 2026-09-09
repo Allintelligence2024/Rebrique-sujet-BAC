@@ -10,8 +10,8 @@
   --panel-2: #1e293b; /* slate-800 */
   --line: #1e293b; /* slate-800 */
   --ink: #f1f5f9; /* slate-100 */
-  --muted: #94a3b8; /* slate-400 */
-  --dim: #64748b; /* slate-500 */
+  --muted: #a8b5c7;
+  --dim: #94a3b8; /* slate-400 — texte secondaire AA sur slate-950 */
 
   --emerald: #10b981;
   --emerald-soft: #34d399;
@@ -39,7 +39,7 @@
   --line: #cbd5e1;
   --ink: #0f172a;
   --muted: #475569;
-  --dim: #64748b;
+  --dim: #475569;
   --emerald-soft: #047857;
   --indigo-soft: #4338ca;
   --amber-soft: #b45309;
@@ -408,7 +408,7 @@ header.screen-head {
   color: var(--muted);
   font-size: 0.78rem;
 }
-.compass-guide {
+.method-guide {
   border-inline-start: 4px solid var(--emerald);
 }
 .quick-access-grid {
@@ -523,44 +523,6 @@ label.lbl {
   border-radius: 50%;
   filter: blur(70px);
   opacity: 0.5;
-}
-
-/* --- Compass ------------------------------------------------------ */
-.compass {
-  position: relative;
-  width: 7rem;
-  height: 7rem;
-  margin: 0 auto;
-  display: grid;
-  place-items: center;
-}
-.compass-ring {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 2px solid var(--line);
-  background: var(--panel);
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
-}
-.compass-mark {
-  position: absolute;
-  font-size: 0.6rem;
-  font-weight: 800;
-}
-.compass-seq {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  width: 62%;
-  height: 62%;
-  margin: auto;
-  transform-origin: center;
-  transition: transform 0.7s cubic-bezier(0.34, 1.4, 0.64, 1);
-}
-.compass-seq svg {
-  width: 100%;
-  height: 100%;
 }
 
 /* --- Breathing ---------------------------------------------------- */
@@ -713,7 +675,13 @@ label.lbl {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
   margin-bottom: 0.8rem;
+}
+.modal-title {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.5;
 }
 
 .drawer {
@@ -784,7 +752,32 @@ label.lbl {
   background: var(--bg);
 }
 
-/* --- Live score / pill ------------------------------------------- */
+/* --- Session timer / live score / pill --------------------------- */
+.global-timer-bar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1.5rem;
+  background: rgba(2, 6, 23, 0.94);
+  border-bottom: 1px solid var(--line);
+  font-size: 0.8rem;
+}
+.global-timer-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.global-timer-value {
+  color: #fb7185;
+}
+.provenance-note {
+  margin-block: -0.35rem 0.75rem;
+}
+
 .pill {
   display: inline-flex;
   align-items: center;
@@ -856,7 +849,6 @@ summary.model-summary:hover {
   aside,
   .stepnav,
   .progress,
-  .compass,
   nav,
   #ws-panic,
   .badge {
@@ -1016,6 +1008,146 @@ footer.screen-foot {
 }
 .region {
   position: relative;
+}
+
+/* --- CSP-safe presentation helpers ------------------------------- */
+.justify-end {
+  justify-content: flex-end;
+}
+.justify-center {
+  justify-content: center;
+}
+.year-number {
+  font-size: 1.6rem;
+}
+.full-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.preview-empty {
+  height: 100%;
+  justify-content: center;
+  padding: 1rem;
+}
+.strategy-preview-head {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 0;
+}
+.strategy-pdf-container {
+  height: 60vh;
+  background: var(--bg);
+}
+.strategy-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.calc-input {
+  width: 5rem;
+  text-align: center;
+}
+.subject-card {
+  justify-content: space-between;
+}
+.subject-card-head,
+.report-row {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.5rem;
+}
+.subject-estimate {
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid var(--line);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.8rem;
+}
+.progress > .step-1 {
+  width: 25%;
+}
+.progress > .step-2 {
+  width: 50%;
+}
+.progress > .step-3 {
+  width: 75%;
+}
+.progress > .step-4 {
+  width: 100%;
+}
+.guidance-note {
+  background: rgba(16, 185, 129, 0.08);
+}
+.pole-badge {
+  margin-bottom: 0.6rem;
+}
+.pole-help-body {
+  margin-top: 0.4rem;
+}
+.step-actions {
+  justify-content: space-between;
+}
+.card-inset {
+  background: var(--bg);
+}
+.stream-card-rose {
+  background: var(--bg);
+  border-color: var(--rose);
+}
+.stream-card-emerald {
+  background: var(--bg);
+  border-color: var(--emerald);
+}
+.stream-title-rose {
+  color: #fb7185;
+}
+.stream-title-emerald {
+  color: var(--emerald-soft);
+}
+.training-choice-row {
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.gate-examples {
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+.flush-list {
+  margin: 0;
+  padding-inline-start: 1.4rem;
+}
+.print-actions {
+  justify-content: flex-end;
+  margin-top: 0.6rem;
+}
+.training-section {
+  margin-top: 0.6rem;
+}
+.quick-check-stack {
+  margin-top: 0.5rem;
+}
+.report-score {
+  font-size: 1.4rem;
+}
+.native-progress {
+  width: 100%;
+  accent-color: var(--emerald);
+}
+.toast.is-exiting {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.simulation-layout > #simulation-task-list {
+  grid-column: 2;
+  grid-row: 1;
+}
+.simulation-task-head {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.5rem;
+}
+.simulation-reference-list {
+  margin-block: 0.5rem 0;
 }
 
 /* --- Atlas & Flashcards 4D --------------------------------------- */
@@ -1306,9 +1438,6 @@ footer.screen-foot {
     animation: none !important;
     transition: none !important;
   }
-  .compass-seq {
-    transition: none !important;
-  }
 }
 @media (max-width: 720px) {
   .app {
@@ -1329,15 +1458,16 @@ footer.screen-foot {
     font-size: 0.95rem;
   }
   .grid.grid-2,
-  .grid[style*="grid-template-columns"],
   .workspace-layout {
     grid-template-columns: 1fr !important;
   }
   .workspace-layout > aside,
-  .workspace-layout > #ex-content {
+  .workspace-layout > #ex-content,
+  .simulation-layout > #simulation-task-list {
     grid-column: 1;
   }
-  .workspace-layout > #ex-content {
+  .workspace-layout > #ex-content,
+  .simulation-layout > #simulation-task-list {
     grid-row: 1;
   }
   .workspace-layout > aside {
@@ -1365,6 +1495,59 @@ footer.screen-foot {
 }
 
 /* --- Accessibility: high contrast, focus and screen-reader text --- */
+.skip-link {
+  position: fixed;
+  inset-block-start: 0.5rem;
+  inset-inline-start: 0.5rem;
+  z-index: 100;
+  padding: 0.7rem 1rem;
+  border-radius: 0.7rem;
+  color: #ffffff;
+  background: #4338ca;
+  font-weight: 800;
+  transform: translateY(-150%);
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* Arabic helper copy must not collapse below a readable 14.4 px at the default zoom. */
+html[lang="ar"]
+  :where(
+    .small,
+    .brand p,
+    .btn-sm,
+    .badge,
+    .more-tools > summary,
+    .secondary-score,
+    label.lbl,
+    .stepnav button,
+    .chip,
+    .slot,
+    .breath,
+    .toast,
+    .global-timer-bar,
+    .pill,
+    summary.model-summary,
+    .btn-mic,
+    .mic-status-badge,
+    .method-script,
+    footer.screen-foot,
+    .atlas-tab-btn,
+    .atlas-trap,
+    .atlas-golden,
+    .flashcard-a,
+    .brouillon-focus,
+    .brouillon-chip,
+    .brouillon-verb-grid,
+    .btn-sound,
+    .adkar-title,
+    .adkar-note,
+    .btn-adkar
+  ) {
+  font-size: 0.9rem;
+}
+
 .sr-only {
   position: absolute !important;
   width: 1px !important;
@@ -1507,9 +1690,6 @@ footer.screen-foot {
   .app {
     padding: 0.6rem 0.75rem 1.25rem;
   }
-  .compass {
-    display: none;
-  }
   #pdf-preview-container {
     height: 38vh;
   }
@@ -1520,7 +1700,7 @@ footer.screen-foot {
     font-size: 0.9rem;
   }
   footer.screen-foot {
-    font-size: 0.75rem;
+    font-size: 0.9rem;
   }
 }
 

@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -23,7 +23,9 @@ test("les brouillons persistés sont échappés avant interpolation HTML", () =>
 test("les dialogues centralisés supportent clavier, échappement et retour de focus", () => {
   assert.match(dialogs, /function trapFocus/);
   assert.match(dialogs, /event\.key === "Escape"/);
-  assert.match(dialogs, /lastFocusedElement\?\.focus/);
+  assert.match(dialogs, /returnFocus\.focus/);
+  assert.match(dialogs, /function isolateDialog/);
+  assert.match(dialogs, /"aria-labelledby": ids\.title/);
 });
 
 test("les erreurs récupérables passent par le service de diagnostic", () => {
@@ -39,6 +41,24 @@ test("le serveur de production définit une CSP et des en-têtes de sécurité",
   assert.match(server, /Referrer-Policy/);
   assert.match(server, /Permissions-Policy/);
   assert.match(server, /Cache-Control/);
-  assert.match(server, /relative\(root, path\)/);
+  assert.match(server, /PUBLIC_FILES/);
+  assert.match(server, /PUBLIC_DIRECTORIES/);
+  assert.match(server, /relative\(canonicalRoot, path\)/);
+  assert.match(server, /realpathSync\(path\)/);
   assert.match(server, /GET, HEAD/);
+  assert.doesNotMatch(server, /style-src[^;]*unsafe-inline/);
+});
+
+test("aucun module public ne recrée de style inline sous la CSP stricte", () => {
+  const walk = (directory) =>
+    readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+      const path = join(directory, entry.name);
+      return entry.isDirectory() ? walk(path) : path.endsWith(".js") ? [path] : [];
+    });
+  const publicSources = [join(root, "index.html"), ...walk(join(root, "js")), ...walk(join(root, "data"))];
+  for (const path of publicSources) {
+    const source = readFileSync(path, "utf8");
+    assert.doesNotMatch(source, /\bstyle\s*=/i, `attribut style inline dans ${path}`);
+    assert.doesNotMatch(source, /\.style\.[a-z-]+\s*=/i, `écriture element.style dans ${path}`);
+  }
 });

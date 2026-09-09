@@ -1,11 +1,12 @@
-/* Noms d'affichage des pôles (les IDs internes N/S/E/W restent inchangés). */
-const POLE_TOOTH = { N: "اقرأ", S: "اجمع", E: "اربط", W: "اختُم" };
+/* Noms d'affichage des étapes (les IDs internes N/S/E/W restent inchangés). */
+const STEP_LABEL = { N: "اقرأ", S: "اجمع", E: "اربط", W: "اختُم" };
 
 export function createBrouillonController({
   $,
   store,
   openDrawer,
-  openModal,
+  closeModal,
+  toast,
   escapeHTML,
   normalizeArabic,
   composeDrafts,
@@ -22,16 +23,19 @@ export function createBrouillonController({
     const sNorm = normalizeArabic(s);
     const hasCompare = /بينما|في حين|مقابل|مقارن|بالتوازي|اكثر|اقل/.test(sNorm);
     const msgs = [];
-    if (pole === "S" && s && !hasCompare) msgs.push("tu n’as pas mis de comparaison");
+    const selectedDraft = pole === "full" ? [n, s, e, w].filter(Boolean).join("\n") : st.scratch[pole] || "";
+    if (!selectedDraft.trim())
+      msgs.push(pole === "full" ? "المسودة الكاملة فارغة" : "مسودة هذه الخطوة فارغة");
+    if (pole === "S" && s && !hasCompare) msgs.push("لم تكتب مقارنة واضحة بين المعطيات");
     if (pole === "E" && !hasObservationBeforeExplanation(st.scratch))
-      msgs.push("tu as expliqué sans observer");
+      msgs.push("فسّرت النتيجة قبل تسجيل الملاحظة");
     if ((pole === "W" || pole === "full") && w && n) {
       const nTokens = normalizeArabic(n)
         .split(" ")
         .filter((t) => t.length > 3)
         .slice(0, 4);
       const hit = nTokens.some((t) => normalizeArabic(w).includes(t));
-      if (!hit) msgs.push("ta conclusion ne répond pas au problème");
+      if (!hit) msgs.push("الخاتمة لا تجيب عن المشكل العلمي المصاغ");
     }
     return msgs;
   }
@@ -54,34 +58,34 @@ export function createBrouillonController({
     const body = `
     <div class="brouillon-shell stack">
       <div class="brouillon-context-card card recommended">
-        <strong>ورقة المسودة · اقرأ / اجمع / اربط / اختُم</strong>
-        <p class="small">الفعل المكتشف: ${verb.canonical} — البلوك الأنسب: ${POLE_TOOTH[recommended] || recommended}</p>
-        <p class="small"><b>consigne brute BAC</b> : ${pole.bacPrompt || pole.prompt}</p>
-        <p class="small"><b>consigne reconstruite</b> : ${pole.prompt}</p>
+        <strong>ورقة المسودة · الخطوات الأربع: اقرأ / اجمع / اربط / اختُم</strong>
+        <p class="small">الفعل المكتشف: ${verb.canonical} — الخطوة الأنسب: ${STEP_LABEL[recommended] || recommended}</p>
+        <p class="small"><b>تعليمة البكالوريا:</b> ${pole.bacPrompt || pole.prompt}</p>
+        <p class="small"><b>صياغة التدريب:</b> ${pole.prompt}</p>
       </div>
       <div class="brouillon-mini-grid">
         ${POLE_ORDER.map(
           (p) => `
           <div>
-            <label class="lbl">${POLE_TOOTH[p] || p}</label>
+            <label class="lbl" for="scratch-${p}">${STEP_LABEL[p] || p}</label>
             <textarea class="field brouillon-area" id="scratch-${p}">${escapeHTML(st.scratch[p])}</textarea>
           </div>`
         ).join("")}
       </div>
-      <label class="lbl">حر</label>
+      <label class="lbl" for="scratch-free">ملاحظات حرة</label>
       <textarea class="field" id="scratch-free">${escapeHTML(st.scratch.free)}</textarea>
-      <label class="lbl">مسودة السنّ الحالية</label>
-      <textarea class="field" id="brouillon-draft-current">${escapeHTML(drafts.current)}</textarea>
-      <label class="lbl">المسودة الكاملة</label>
-      <textarea class="field" id="brouillon-draft-full">${escapeHTML(drafts.full)}</textarea>
-      <div id="brouillon-preflight-current" class="feedback mid">${preC.join(" — ")}</div>
-      <div id="brouillon-preflight-full" class="feedback mid">${preF.join(" — ")}</div>
+      <label class="lbl" for="brouillon-draft-current">معاينة مسودة الخطوة الحالية</label>
+      <textarea class="field" id="brouillon-draft-current" readonly>${escapeHTML(drafts.current)}</textarea>
+      <label class="lbl" for="brouillon-draft-full">معاينة المسودة الكاملة</label>
+      <textarea class="field" id="brouillon-draft-full" readonly>${escapeHTML(drafts.full)}</textarea>
+      <div id="brouillon-preflight-current" class="feedback mid" role="status" aria-live="polite" tabindex="-1">${preC.join(" — ")}</div>
+      <div id="brouillon-preflight-full" class="feedback mid" role="status" aria-live="polite" tabindex="-1">${preF.join(" — ")}</div>
       <div class="flex">
         <button class="btn btn-emerald btn-sm" id="brouillon-insert-current">إدراج الحالي</button>
         <button class="btn btn-ghost btn-sm" id="brouillon-insert-full">إدراج الكامل</button>
       </div>
     </div>`;
-    openDrawer("left", "📝 وضع البوصلة — المسودة", body);
+    openDrawer("left", "📝 المسودة — الخطوات الأربع", body);
 
     const persist = () => {
       POLE_ORDER.forEach((p) => {
@@ -105,15 +109,28 @@ export function createBrouillonController({
 
     const insert = (which) => {
       persist();
-      const warns = brouillonPreflight(st, which === "full" ? "full" : activePole);
-      if (warns.length) openModal("Contrôle brouillon", warns.join(" — "));
-      const target = $("#fld-" + activePole);
-      if (target) {
-        const d = buildDrafts(st);
-        target.value = which === "full" ? d.full : d.current;
-        st.text[activePole] = target.value;
-        store.save();
+      const scope = which === "full" ? "full" : activePole;
+      const warns = brouillonPreflight(st, scope);
+      const warning = $(`#brouillon-preflight-${which === "full" ? "full" : "current"}`);
+      if (warns.length) {
+        if (warning) {
+          warning.setAttribute("role", "alert");
+          warning.focus();
+        }
+        toast?.("راجع التنبيه المنهجي قبل إدراج المسودة.", "warn");
+        return false;
       }
+      const target = $("#fld-" + activePole);
+      if (!target) return false;
+      const d = buildDrafts(st);
+      target.value = which === "full" ? d.full : d.current;
+      st.text[activePole] = target.value;
+      st.answeredAny = Boolean(target.value.trim()) || st.answeredAny;
+      store.save();
+      closeModal?.();
+      target.focus();
+      toast?.("أُدرجت المسودة في الإجابة وحُفظت محلياً.", "success");
+      return true;
     };
     $("#brouillon-insert-current")?.addEventListener("click", () => insert("current"));
     $("#brouillon-insert-full")?.addEventListener("click", () => insert("full"));
