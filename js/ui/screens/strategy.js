@@ -30,21 +30,6 @@ export function createStrategyScreen(deps) {
   }
 
   function pdfFallbackHTML(subject) {
-    if (subject?.pdfAvailable && subject.pdf) {
-      const bytes = Number(subject.pdfBytes);
-      const size =
-        Number.isFinite(bytes) && bytes > 0 ? `${(bytes / 1024 / 1024).toFixed(2)} م.ب` : "غير معروف";
-      const filename = subject.pdfFilename || `sujet-${subject.id || "bac"}.pdf`;
-      const revision = subject.pdf.startsWith("data:")
-        ? null
-        : globalThis.APP_ASSET_REVISIONS?.[subject.pdf]?.sha256;
-      const pdfUrl = revision ? `${subject.pdf}?v=${revision.slice(0, 12)}` : subject.pdf;
-      return `<div class="center stack preview-empty pdf-download-card">
-      <p class="small text-muted">لا يُنزّل الملف تلقائياً. نزّله فقط عندما تريد قراءة الموضوع؛ ويمكن استعماله دون اتصال بعد أول تنزيل.</p>
-      <p class="small"><strong>حجم الملف:</strong> <span class="mono" data-pdf-bytes="${Number.isFinite(bytes) ? bytes : ""}">${size}</span></p>
-      <a class="btn btn-indigo pdf-download" href="${pdfUrl}" target="_blank" rel="noopener noreferrer" download="${filename}">⬇️ تنزيل وفتح ملف الموضوع — ${size}</a>
-    </div>`;
-    }
     if (subject?.pdfExternalUrl) {
       return `<div class="center stack preview-empty">
       <p class="small text-muted">الملف غير مرفق بالتطبيق وحجمه غير متاح؛ افتح صفحة المصدر للتحقق منه.</p>

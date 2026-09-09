@@ -10,7 +10,7 @@ _Version 1.0 — 9 septembre 2026._
 
 ## Inventaire au 9 septembre 2026
 
-Les deux PDF 2025 présents à la racine (`BAC2025_SVT_Sujet1.pdf`, `BAC2025_SVT_Sujet2.pdf`) sont des scans tiers. Leur droit de redistribution n’est pas établi par le dépôt. Ils sont donc **bloqués pour toute publication de production** : l’exploitant doit obtenir une autorisation écrite ou les retirer de l’artefact et proposer seulement un lien vers la source officielle. Les autres années sont décrites par métadonnées et provenance dans `README.md` et les fichiers `data/years/` ; leurs fichiers sources tiers ne sont pas copiés dans le dépôt.
+Les 32 PDF tiers auparavant suivis par Git ont été retirés de cette branche faute de preuve de redistribution. Les données conservent uniquement des liens vers les sources externes et signalent que les fichiers ne sont pas redistribués. Toute réintégration exige une autorisation écrite documentée dans cet inventaire.
 
 ## Retrait ou correction
 

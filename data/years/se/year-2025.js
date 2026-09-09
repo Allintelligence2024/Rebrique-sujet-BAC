@@ -10,10 +10,11 @@ const YEAR_2025_SE = {
   sujets: [
     {
       id: 1,
-      pdf: "BAC2025_SVT_Sujet1.pdf",
-      pdfFilename: "BAC2025_SVT_Sujet1.pdf",
-      pdfAvailable: true,
-      pdfNote: "PDF officiel fourni dans le dépôt (scan dzexams).",
+      pdf: null,
+      pdfFilename: null,
+      pdfAvailable: false,
+      pdfExternalUrl: "https://www.dzexams.com/ar/bac/sciences-naturelles",
+      pdfNote: "PDF tiers non redistribué dans le dépôt ; consulter la source externe.",
       title: "الموضوع الأول",
       exercises: [
         {
@@ -420,16 +421,15 @@ const YEAR_2025_SE = {
             }
           ]
         }
-      ],
-      pdfBytes: 1099674,
-      pdfSha256: "2f81965e9afd2ea1e7b51ff9c32d268d64769ffad975e67a1541b1d9ce9812cb"
+      ]
     },
     {
       id: 2,
-      pdf: "BAC2025_SVT_Sujet2.pdf",
-      pdfFilename: "BAC2025_SVT_Sujet2.pdf",
-      pdfAvailable: true,
-      pdfNote: "PDF officiel fourni dans le dépôt (scan dzexams).",
+      pdf: null,
+      pdfFilename: null,
+      pdfAvailable: false,
+      pdfExternalUrl: "https://www.dzexams.com/ar/bac/sciences-naturelles",
+      pdfNote: "PDF tiers non redistribué dans le dépôt ; consulter la source externe.",
       title: "الموضوع الثاني",
       exercises: [
         {
@@ -752,9 +752,7 @@ const YEAR_2025_SE = {
             }
           }
         }
-      ],
-      pdfBytes: 1158907,
-      pdfSha256: "8f771a08b57f33e5fb42129e780cfc75b5d20822386bf6ee200c0538f24660f7"
+      ]
     }
   ],
   stream: "se",

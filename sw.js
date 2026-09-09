@@ -69,7 +69,9 @@ const SHELL_ASSETS = [
   "./data/archive.js",
   "./data/brouillon.js",
   "./data/calibration-status.js",
-  "./data/official-tasks.js"
+  "./data/official-tasks.js",
+  "./legal/privacy.html",
+  "./legal/legal-notice.html"
 ];
 
 function isLocalRequest(request) {
@@ -80,13 +82,9 @@ function isLocalRequest(request) {
   }
 }
 
-function isPdfRequest(request) {
-  return /\/BAC2025_SVT_Sujet[12]\.pdf$/.test(new URL(request.url).pathname);
-}
-
 function isRuntimeAsset(request) {
   const pathname = new URL(request.url).pathname;
-  return /\/data\/years\/(?:se|m)\/year-\d{4}\.js$/.test(pathname) || isPdfRequest(request);
+  return /\/data\/years\/(?:se|m)\/year-\d{4}\.js$/.test(pathname);
 }
 
 function isCacheableResponse(response) {
@@ -116,7 +114,7 @@ async function cacheRuntimeResponse(request, response) {
   await cache.put(request, response.clone());
   await trimRuntimeCache(cache);
   await notifyClients("runtime-cache-updated", {
-    resource: isPdfRequest(request) ? "pdf" : "year-data"
+    resource: "year-data"
   });
   return true;
 }
@@ -141,7 +139,7 @@ async function fetchNavigation(request) {
 }
 
 async function fetchRuntime(request) {
-  // Revision queries on manifest icons/PDFs must reuse the matching build cache offline.
+  // Revision queries on manifest icons reuse the matching build cache offline.
   const cached = await caches.match(request, { ignoreSearch: true });
   if (cached) return cached;
   let response;
@@ -149,7 +147,7 @@ async function fetchRuntime(request) {
     response = await fetch(request);
   } catch {
     await notifyClients("offline-miss", {
-      resource: isPdfRequest(request) ? "pdf" : "year-data"
+      resource: "year-data"
     });
     return Response.error();
   }

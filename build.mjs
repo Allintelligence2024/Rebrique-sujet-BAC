@@ -2,8 +2,7 @@
    Builds two deterministic, offline-capable deliverables:
    1. dist/site/ — exact production static surface + release.json;
    2. dist/boussole-4d-standalone.html — single file for file://.
-   The standalone embeds the two local PDFs once. The PWA site does not:
-   PDFs are fetched explicitly by the student and runtime-cached afterwards.
+   PDFs are never bundled or redistributed; students use external source links.
    ============================================================ */
 import { copyFileSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -17,14 +16,8 @@ import {
 } from "./scripts/lib/public-assets.mjs";
 
 const root = dirname(fileURLToPath(import.meta.url));
-const LOCAL_PDFS = ["BAC2025_SVT_Sujet1.pdf", "BAC2025_SVT_Sujet2.pdf"];
-
 function readText(path) {
   return readFileSync(join(root, path), "utf8");
-}
-
-function pdfDataUrl(path) {
-  return `data:application/pdf;base64,${readFileSync(join(root, path)).toString("base64")}`;
 }
 
 function verifiedBuildMetadata() {
@@ -49,15 +42,6 @@ function buildStandalone() {
   });
 
   let bundleJs = jsResult.outputFiles[0].text;
-  for (const pdf of LOCAL_PDFS) {
-    const pdfProperty = `pdf: ${JSON.stringify(pdf)}`;
-    if (!bundleJs.includes(pdfProperty)) {
-      throw new Error(`Standalone build cannot find data property for ${pdf}`);
-    }
-    // Replace only the subject runtime property. Provenance strings containing
-    // the same filename must not duplicate a multi-megabyte data URL.
-    bundleJs = bundleJs.replace(pdfProperty, `pdf: ${JSON.stringify(pdfDataUrl(pdf))}`);
-  }
 
   const css = readText("assets/styles.css");
   const appVersion = readText("js/app-version.js");
@@ -87,9 +71,6 @@ function buildStandalone() {
     if (out.includes(reference)) {
       throw new Error(`Standalone build still contains external reference: ${reference}`);
     }
-  }
-  for (const pdf of LOCAL_PDFS) {
-    if (out.includes(`pdf: "${pdf}"`)) throw new Error(`Standalone build did not embed ${pdf}`);
   }
 
   const target = join(root, "dist", "boussole-4d-standalone.html");

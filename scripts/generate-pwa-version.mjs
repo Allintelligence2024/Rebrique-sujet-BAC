@@ -4,13 +4,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { computeBuildMetadata, GENERATED_VERSION_FILE, sha256 } from "./lib/public-assets.mjs";
 
 const defaultRoot = fileURLToPath(new URL("../", import.meta.url));
-const REVISIONED_ASSETS = new Set([
-  "manifest.webmanifest",
-  "assets/icon-192.png",
-  "assets/icon-512.png",
-  "BAC2025_SVT_Sujet1.pdf",
-  "BAC2025_SVT_Sujet2.pdf"
-]);
+const REVISIONED_ASSETS = new Set(["manifest.webmanifest", "assets/icon-192.png", "assets/icon-512.png"]);
 const ICON_ASSETS = ["assets/icon-192.png", "assets/icon-512.png"];
 
 const contentRevision = (root, path) => sha256(readFileSync(join(root, path))).slice(0, 12);

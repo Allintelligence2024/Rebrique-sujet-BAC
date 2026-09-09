@@ -163,18 +163,12 @@ test("le fallback HTML reste réservé aux navigations", () => {
   assert.match(source, /return Response\.error\(\)/);
 });
 
-test("manifeste, icônes et PDF portent une révision de contenu vérifiable et consommée", () => {
+test("manifeste et icônes portent une révision de contenu vérifiable et consommée", () => {
   const version = readFileSync(join(root, "js/app-version.js"), "utf8");
   const manifest = JSON.parse(readFileSync(join(root, "manifest.webmanifest"), "utf8"));
   const index = readFileSync(join(root, "index.html"), "utf8");
   const strategy = readFileSync(join(root, "js/ui/screens/strategy.js"), "utf8");
-  for (const path of [
-    "manifest.webmanifest",
-    "assets/icon-192.png",
-    "assets/icon-512.png",
-    "BAC2025_SVT_Sujet1.pdf",
-    "BAC2025_SVT_Sujet2.pdf"
-  ]) {
+  for (const path of ["manifest.webmanifest", "assets/icon-192.png", "assets/icon-512.png"]) {
     const expected = createHash("sha256")
       .update(readFileSync(join(root, path)))
       .digest("hex");
@@ -189,6 +183,6 @@ test("manifeste, icônes et PDF portent une révision de contenu vérifiable et 
     assert.ok(manifest.icons.some((icon) => icon.src === `${path}?v=${revision}`));
     if (path === "assets/icon-192.png") assert.ok(index.includes(`${path}?v=${revision}`));
   }
-  assert.match(strategy, /APP_ASSET_REVISIONS\?\.\[subject\.pdf\]/);
-  assert.match(source, /isPdfRequest\(request\)/);
+  assert.doesNotMatch(strategy, /APP_ASSET_REVISIONS\?\.\[subject\.pdf\]/);
+  assert.doesNotMatch(source, /isPdfRequest\(request\)/);
 });

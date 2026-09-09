@@ -110,7 +110,7 @@ export function createHubScreen(deps) {
       </div>
       <div class="grid grid-cards" id="year-grid"></div>
       ${training.html()}
-      <footer class="screen-foot">منصة تدريب منهجي لامتحانات بكالوريا علوم الطبيعة والحياة.</footer>
+      <footer class="screen-foot">منصة تدريب منهجي لامتحانات بكالوريا علوم الطبيعة والحياة. <a href="legal/privacy.html">الخصوصية</a> · <a href="legal/legal-notice.html">المعلومات القانونية</a></footer>
     </div>`
     );
 

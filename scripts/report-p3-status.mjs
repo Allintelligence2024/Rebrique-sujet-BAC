@@ -28,13 +28,7 @@ export function buildP3Status() {
   const version = read("js/app-version.js");
   const shell = shellAssets(serviceWorker);
   const yearPaths = YEAR_CATALOG.map((year) => year.modulePath);
-  const revisioned = [
-    "manifest.webmanifest",
-    "assets/icon-192.png",
-    "assets/icon-512.png",
-    "BAC2025_SVT_Sujet1.pdf",
-    "BAC2025_SVT_Sujet2.pdf"
-  ];
+  const revisioned = ["manifest.webmanifest", "assets/icon-192.png", "assets/icon-512.png"];
   const lazyData =
     YEAR_CATALOG.length === 19 &&
     YEAR_CATALOG.every(
@@ -46,9 +40,9 @@ export function buildP3Status() {
     !/^import .*years\//m.test(subjects);
   const explicitPdf =
     !shell.some((asset) => asset.endsWith(".pdf") || asset.includes("data/years/")) &&
-    strategy.includes("pdfBytes") &&
-    strategy.includes("download=") &&
-    strategy.includes("لا يُنزّل الملف تلقائياً") &&
+    strategy.includes("pdfExternalUrl") &&
+    strategy.includes("فتح المصدر الخارجي") &&
+    !strategy.includes("download=") &&
     !strategy.includes("<iframe");
   const versionedAssets = revisioned.every((path) => revisionMatches(version, path));
   const runtimeMaximum = Number(serviceWorker.match(/const RUNTIME_MAX_ENTRIES = (\d+);/)?.[1]);
@@ -83,12 +77,12 @@ export function buildP3Status() {
     {
       id: "P3.2",
       complete: explicitPdf,
-      evidence: `${shell.length} ressources shell; 0 payload annuel/PDF précaché; téléchargement PDF avec taille`
+      evidence: `${shell.length} ressources shell; 0 payload annuel/PDF précaché; liens PDF externes explicites`
     },
     {
       id: "P3.3",
       complete: versionedAssets,
-      evidence: `${revisioned.filter((path) => revisionMatches(version, path)).length}/${revisioned.length} manifeste/icônes/PDF révisionnés par SHA-256`
+      evidence: `${revisioned.filter((path) => revisionMatches(version, path)).length}/${revisioned.length} manifeste/icônes révisionnés par SHA-256`
     },
     {
       id: "P3.4",

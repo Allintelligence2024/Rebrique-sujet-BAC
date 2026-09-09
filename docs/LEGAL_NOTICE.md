@@ -12,7 +12,7 @@ Contact de signalement : ouvrir une issue GitHub dans le dépôt du projet. Ne p
 
 ## Hébergement
 
-L’hébergeur dépend du déploiement choisi par l’exploitant. Aucun hébergeur ou adresse postale ne doit être inventé dans cette version : ils doivent être complétés dans l’instance déployée avant production.
+GitHub Pages est le choix envisagé pour l’hébergement, mais l’instance et son exploitant légal ne sont pas vérifiés dans ce dépôt. Le nom légal de l’éditeur, son adresse et l’identité de l’hébergeur doivent être complétés avant production ; aucune identité ne doit être inventée.
 
 ## Propriété intellectuelle
 

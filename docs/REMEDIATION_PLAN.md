@@ -13,15 +13,15 @@
 
 ## P0 — Bloqueurs avant toute publication
 
-| Lot  | Correctif             | Critère d’acceptation                                                                                                                                                                 | État    |
-| ---- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| P0.1 | Vérité produit        | Aucune mention « examen complet » ; l’interface annonce un entraînement partiel ; la provenance officielle/reconstruite est visible dans la copie.                                    | Terminé |
-| P0.2 | Serveur public        | Seuls `index.html`, `assets/`, `js/`, `data/`, le manifeste, le service worker et les deux PDF publics sont servis. `.git`, tests, sources de build et métadonnées retournent 404.    | Terminé |
-| P0.3 | CSP et build autonome | L’application rend ses styles sous la CSP livrée. Le monofichier embarque CSS, JS et PDF locaux, ne référence ni manifeste/icône externe ni service worker sous `file://`.            | Terminé |
-| P0.4 | Identifiants Maths    | Les identifiants `YYYY-m` survivent à la validation, à la persistance et au pipeline hard-benchmark.                                                                                  | Terminé |
-| P0.5 | Durées et stratégie   | Sciences expérimentales = 270 min, Maths = 150 min. La calculatrice lit le nombre d’exercices et les maxima du sujet sélectionné ; un input trafiqué ne peut pas dépasser le maximum. | Terminé |
-| P0.6 | Cycle de session      | Démarrage frais, restauration guide/stratégie/copie, fin manuelle, expiration automatique, verrouillage de la saisie et état persistant cohérent.                                     | Terminé |
-| P0.7 | Régression            | Lint, typecheck, format, documentation, tests Node, build et E2E CI sont verts. Les routes privées font l’objet d’un test HTTP.                                                       | Terminé |
+| Lot  | Correctif             | Critère d’acceptation                                                                                                                                                                    | État    |
+| ---- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| P0.1 | Vérité produit        | Aucune mention « examen complet » ; l’interface annonce un entraînement partiel ; la provenance officielle/reconstruite est visible dans la copie.                                       | Terminé |
+| P0.2 | Serveur public        | Seuls `index.html`, `assets/`, `js/`, `data/`, le manifeste, le service worker et les liens PDF externes sont documentés. `.git`, tests, sources de build et métadonnées retournent 404. | Terminé |
+| P0.3 | CSP et build autonome | L’application rend ses styles sous la CSP livrée. Le monofichier embarque CSS, JS et aucun PDF tiers local, ne référence ni manifeste/icône externe ni service worker sous `file://`.    | Terminé |
+| P0.4 | Identifiants Maths    | Les identifiants `YYYY-m` survivent à la validation, à la persistance et au pipeline hard-benchmark.                                                                                     | Terminé |
+| P0.5 | Durées et stratégie   | Sciences expérimentales = 270 min, Maths = 150 min. La calculatrice lit le nombre d’exercices et les maxima du sujet sélectionné ; un input trafiqué ne peut pas dépasser le maximum.    | Terminé |
+| P0.6 | Cycle de session      | Démarrage frais, restauration guide/stratégie/copie, fin manuelle, expiration automatique, verrouillage de la saisie et état persistant cohérent.                                        | Terminé |
+| P0.7 | Régression            | Lint, typecheck, format, documentation, tests Node, build et E2E CI sont verts. Les routes privées font l’objet d’un test HTTP.                                                          | Terminé |
 
 ### Décisions P0 explicites
 
@@ -86,7 +86,7 @@ Les données manquantes ne peuvent pas être synthétisées : il faut les sujets
 ## P3 — PWA, performance et exploitation
 
 1. Découper les données par filière/année et charger à la demande.
-2. Ne précacher que le shell ; mettre les PDF en téléchargement explicite avec taille annoncée.
+2. Ne précacher que le shell ; ouvrir les sources PDF externes via un lien explicite, sans les redistribuer.
 3. Inclure manifeste, icônes et PDF dans le versionnage ou utiliser des noms de fichiers hachés.
 4. Borner le cache runtime, ne jamais mettre en cache une réponse en échec, prévoir une stratégie d’éviction.
 5. Ajouter observabilité sans données personnelles : erreurs techniques agrégées, version de build, état offline.
@@ -97,7 +97,7 @@ Les données manquantes ne peuvent pas être synthétisées : il faut les sujets
 | Lot  | Preuve d’acceptation                                                                                                                                                           | État    |
 | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- |
 | P3.1 | Catalogue initial limité aux métadonnées ; 19 payloads filière/année importés à la demande, dédupliqués et validés.                                                            | Terminé |
-| P3.2 | Shell statique exhaustif sans année/PDF ; PDF locaux chargés seulement par un lien explicite qui annonce leur taille exacte.                                                   | Terminé |
+| P3.2 | Shell statique exhaustif sans année/PDF ; aucun PDF tiers local ; sources externes ouvertes seulement via un lien explicite.                                                   | Terminé |
 | P3.3 | Identifiant dérivé du contenu ; manifeste, icônes et PDF portent une révision SHA-256 ; caches isolés par build, anciens caches MIFTAH nettoyés et version affichée dans l’UI. | Terminé |
 | P3.4 | Runtime limité à 12 réponses locales HTTP 200 ; erreurs, réponses partielles et requêtes `Range` exclues ; plus anciennes insertions évincées.                                 | Terminé |
 | P3.5 | Diagnostics locaux bornés à des compteurs techniques agrégés et des états connectivité/SW ; réponses, textes d’erreur, URLs et données élève interdits et testés.              | Terminé |
