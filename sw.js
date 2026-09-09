@@ -1,27 +1,38 @@
 /* ============================================================
-   Service Worker — mode hors-ligne (PWA)
+   Service worker — shell minimal + cache runtime borné
    ------------------------------------------------------------
-   Met en cache l'application (HTML, CSS, JS, data, icônes, PDF
-   des sujets) pour un usage fiable même sans connexion.
+   - le shell applicatif est le seul contenu précaché ;
+   - les payloads d'années et PDF sont récupérés à la demande ;
+   - seules les réponses locales HTTP 200 réussies entrent au runtime ;
+   - le runtime évince les insertions les plus anciennes au-delà de la borne.
    ============================================================ */
 
 importScripts("./js/app-version.js");
-const CACHE = `boussole4d-${self.APP_BUILD_ID || "dev"}`;
-// Keep this list aligned with every local module imported by index.html.
-const ASSETS = [
+
+const CACHE_PREFIX = "miftah-kanz";
+const BUILD_ID = self.APP_BUILD_ID || "dev";
+const SHELL_CACHE = `${CACHE_PREFIX}-shell-${BUILD_ID}`;
+const RUNTIME_CACHE = `${CACHE_PREFIX}-runtime-${BUILD_ID}`;
+const CURRENT_CACHES = new Set([SHELL_CACHE, RUNTIME_CACHE]);
+const RUNTIME_MAX_ENTRIES = 12;
+
+// Shell = document, apparence, manifeste et graphe d'imports STATIQUES de
+// js/main.js. Les data/years/** et les PDF sont volontairement absents.
+const SHELL_ASSETS = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
   "./assets/styles.css",
   "./assets/icon-192.png",
   "./assets/icon-512.png",
-  "./js/main.js",
   "./js/app-version.js",
+  "./js/main.js",
   "./js/ui.js",
   "./js/store.js",
   "./js/engine.js",
   "./js/method-scripts.js",
   "./js/application/timers.js",
+  "./js/application/subject-session.js",
   "./js/domain/subjects/official-coverage.js",
   "./js/domain/method/gates.js",
   "./js/domain/evaluation/text-analysis.js",
@@ -38,6 +49,7 @@ const ASSETS = [
   "./js/ui/coverage-messages.js",
   "./js/ui/dom.js",
   "./js/ui/navigation.js",
+  "./js/ui/operational-status.js",
   "./js/ui/screens/hub.js",
   "./js/ui/screens/guide.js",
   "./js/ui/screens/strategy.js",
@@ -50,69 +62,136 @@ const ASSETS = [
   "./js/ui/workspace/brouillon.js",
   "./js/ui/workspace/presentation.js",
   "./js/ui/workspace/quick-check.js",
-  "./js/ui/workspace/report-controller.js",
   "./js/ui/accessibility.js",
   "./js/ui/demo-diagnostic.js",
   "./js/ui/keycard.js",
-  "./js/ui/reports/report.js",
-  "./js/ui/reports/exports.js",
   "./data/subjects.js",
-  "./data/calibration-policy.js",
-  "./data/calibration-status.js",
-  "./data/official-tasks.js",
-  "./data/subjects-archive.js",
-  "./data/year-2026-se.js",
-  "./data/year-2020-se.js",
-  "./data/year-2021-m.js",
-  "./data/year-2022-m.js",
-  "./data/year-2023-m.js",
-  "./data/year-2024-m.js",
-  "./data/year-2025-m.js",
-  "./data/year-2026-m.js",
   "./data/archive.js",
   "./data/brouillon.js",
-  "./data/usability-study.js",
-  "./BAC2025_SVT_Sujet1.pdf",
-  "./BAC2025_SVT_Sujet2.pdf"
+  "./data/calibration-status.js",
+  "./data/official-tasks.js"
 ];
 
-self.addEventListener("install", (e) => {
-  e.waitUntil(
+function isLocalRequest(request) {
+  try {
+    return new URL(request.url).origin === self.location.origin;
+  } catch {
+    return false;
+  }
+}
+
+function isPdfRequest(request) {
+  return /\/BAC2025_SVT_Sujet[12]\.pdf$/.test(new URL(request.url).pathname);
+}
+
+function isRuntimeAsset(request) {
+  const pathname = new URL(request.url).pathname;
+  return /\/data\/years\/(?:se|m)\/year-\d{4}\.js$/.test(pathname) || isPdfRequest(request);
+}
+
+function isCacheableResponse(response) {
+  return response?.ok === true && response.status === 200 && ["basic", "default"].includes(response.type);
+}
+
+async function notifyClients(type, detail = {}) {
+  try {
+    const clients = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+    for (const client of clients) client.postMessage({ source: "miftah-sw", type, ...detail });
+  } catch {
+    // Observability is best-effort and must never break a resource response.
+  }
+}
+
+async function trimRuntimeCache(cache) {
+  const keys = await cache.keys();
+  const overflow = keys.length - RUNTIME_MAX_ENTRIES;
+  if (overflow > 0) await Promise.all(keys.slice(0, overflow).map((request) => cache.delete(request)));
+}
+
+async function cacheRuntimeResponse(request, response) {
+  if (!isLocalRequest(request) || !isRuntimeAsset(request) || !isCacheableResponse(response)) return false;
+  const cache = await caches.open(RUNTIME_CACHE);
+  // Delete + put refreshes insertion order and makes eviction deterministic.
+  await cache.delete(request);
+  await cache.put(request, response.clone());
+  await trimRuntimeCache(cache);
+  await notifyClients("runtime-cache-updated", {
+    resource: isPdfRequest(request) ? "pdf" : "year-data"
+  });
+  return true;
+}
+
+async function fetchNavigation(request) {
+  let response;
+  try {
+    response = await fetch(request);
+  } catch {
+    await notifyClients("offline-fallback", { resource: "navigation" });
+    return (await caches.match("./index.html")) || Response.error();
+  }
+  if (isCacheableResponse(response)) {
+    try {
+      const shell = await caches.open(SHELL_CACHE);
+      await shell.put("./index.html", response.clone());
+    } catch {
+      // A quota/cache failure must not replace a successful network navigation.
+    }
+  }
+  return response;
+}
+
+async function fetchRuntime(request) {
+  // Revision queries on manifest icons/PDFs must reuse the matching build cache offline.
+  const cached = await caches.match(request, { ignoreSearch: true });
+  if (cached) return cached;
+  let response;
+  try {
+    response = await fetch(request);
+  } catch {
+    await notifyClients("offline-miss", {
+      resource: isPdfRequest(request) ? "pdf" : "year-data"
+    });
+    return Response.error();
+  }
+  try {
+    await cacheRuntimeResponse(request, response);
+  } catch {
+    // Cache writes are opportunistic; never turn HTTP 200 into a student-visible failure.
+  }
+  return response;
+}
+
+self.addEventListener("install", (event) => {
+  event.waitUntil(
     caches
-      .open(CACHE)
-      .then((c) => c.addAll(ASSETS))
+      .open(SHELL_CACHE)
+      .then((cache) => cache.addAll(SHELL_ASSETS))
       .then(() => self.skipWaiting())
   );
 });
 
-self.addEventListener("activate", (e) => {
-  e.waitUntil(
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
     caches
       .keys()
-      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
+      .then((keys) =>
+        Promise.all(
+          keys
+            .filter((key) => key.startsWith(`${CACHE_PREFIX}-`) && !CURRENT_CACHES.has(key))
+            .map((key) => caches.delete(key))
+        )
+      )
       .then(() => self.clients.claim())
   );
 });
 
-self.addEventListener("fetch", (e) => {
-  // Cache first for local resources. Only document navigations may fall back to
-  // index.html: returning HTML for a missing JS module breaks offline startup.
-  if (e.request.method !== "GET") return;
-  e.respondWith(
-    caches.match(e.request).then((hit) => {
-      if (hit) return hit;
-      return fetch(e.request)
-        .then((res) => {
-          const copy = res.clone();
-          if (res.ok && e.request.url.startsWith(self.location.origin)) {
-            caches.open(CACHE).then((c) => c.put(e.request, copy));
-          }
-          return res;
-        })
-        .catch(() => {
-          if (e.request.mode === "navigate") return caches.match("./index.html");
-          return Response.error();
-        });
-    })
-  );
+self.addEventListener("fetch", (event) => {
+  const { request } = event;
+  if (request.method !== "GET" || !isLocalRequest(request)) return;
+  if (request.mode === "navigate") {
+    event.respondWith(fetchNavigation(request));
+    return;
+  }
+  if (request.headers.has("range")) return;
+  event.respondWith(fetchRuntime(request));
 });

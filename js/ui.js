@@ -3,9 +3,16 @@
    Facade stable : init, renderHub, notify, voiceEngine
    ============================================================ */
 
-import { APP_CONFIG, examMinutesForYear, normalizeArabic } from "../data/subjects.js";
+import {
+  APP_CONFIG,
+  examMinutesForYear,
+  getLoadedYear,
+  loadYear,
+  normalizeArabic
+} from "../data/subjects.js";
 import { BROUILLON_MODE_DATA } from "../data/brouillon.js";
 import { officialTaskInventoryFor } from "../data/official-tasks.js";
+import { createSubjectSessionStarter } from "./application/subject-session.js";
 import { buildOfficialCoverageReport } from "./domain/subjects/official-coverage.js";
 import { store, helpers } from "./store.js";
 import {
@@ -29,6 +36,7 @@ import { createDialogManager } from "./ui/dialogs.js";
 import { buildDemoDiagnostic } from "./ui/demo-diagnostic.js";
 import { node, replaceContent, setInternalHTML } from "./ui/dom.js";
 import { createScreenNavigator } from "./ui/navigation.js";
+import { mountOperationalStatus } from "./ui/operational-status.js";
 import { createGuideScreen } from "./ui/screens/guide.js";
 import { createHubScreen } from "./ui/screens/hub.js";
 import { createStrategyScreen } from "./ui/screens/strategy.js";
@@ -78,7 +86,10 @@ function debounce(fn, wait = 350) {
 }
 
 function yearObj(id) {
-  return APP_CONFIG.years.find((y) => y.id === id);
+  return getLoadedYear(id);
+}
+function yearMetadata(id) {
+  return APP_CONFIG.years.find((year) => year.id === id);
 }
 function officialCoverageForSubject(year, subject) {
   return buildOfficialCoverageReport({
@@ -135,7 +146,6 @@ function applyTheme(theme) {
 
 const openAtlas = createAtlas({ $, $$, openDrawer, normalizeArabic, bacVerbs: BROUILLON_MODE_DATA.bacVerbs });
 
-/* ---------- Voice / dictée ---------- */
 export const voiceEngine = createSpeechEngine(toast);
 
 function micButton(fieldId) {
@@ -150,7 +160,6 @@ function bindMics(root = document) {
   });
 }
 
-/* ---------- Adkar ---------- */
 const ADKAR = [
   {
     title: "دعاء بداية الامتحان",
@@ -188,7 +197,6 @@ function cycleSound(btn) {
   }
 }
 
-/* ===================== 1) HUB ===================== */
 export function renderHub() {
   return hubScreen.renderHub();
 }
@@ -203,22 +211,10 @@ function goHome() {
   if (bar) bar.classList.add("hidden");
 }
 
-/* ===================== 2) GUIDE ===================== */
-function startSession(yearId) {
-  const y = yearObj(yearId);
-  if (!y) return;
-  store.enterSession(yearId, y.sujets[0].id, examMinutesForYear(y) * 60, APP_CONFIG.strategyMinutes * 60);
-  renderGuide(y);
-  timers.startGlobal();
-  showScreen("view-guide");
-  $("#global-timer-bar")?.classList.remove("hidden");
-}
-
 function renderGuide(year) {
   return guideScreen.renderGuide(year);
 }
 
-/* ===================== 3) STRATEGY ===================== */
 function goToStrategy() {
   return strategyScreen.goToStrategy();
 }
@@ -232,7 +228,6 @@ function formatDuration(minutes) {
   return rest ? `${hours}س${String(rest).padStart(2, "0")}د` : `${hours}س`;
 }
 
-/* ===================== 5) WORKSPACE ===================== */
 let workspaceController;
 function enterExercise(exerciseNumber) {
   return workspaceController.enterExercise(exerciseNumber);
@@ -248,6 +243,16 @@ function short(text, n = 7) {
   const words = String(text || "").split(" ");
   return words.length <= n ? text : words.slice(0, n).join(" ") + "…";
 }
+
+const startSession = createSubjectSessionStarter({
+  appConfig: APP_CONFIG,
+  renderGuide,
+  showScreen,
+  store,
+  timers,
+  toast,
+  timerBar: () => $("#global-timer-bar")
+});
 
 hubScreen = createHubScreen({
   $,
@@ -333,8 +338,9 @@ workspaceController = createWorkspaceController({
   exDef
 });
 
-export function init() {
+export async function init() {
   ensureLiveRegions(document);
+  mountOperationalStatus(document, globalThis.window);
   bindDiagnosticAnnouncements(window);
   store.load();
   let savedTheme = "dark";
@@ -390,7 +396,19 @@ export function init() {
     document.body.appendChild(toastZone);
   }
 
-  const activeYear = yearObj(store.state.yearId);
+  const hasRestorableSession =
+    store.isSessionActive() ||
+    (store.state.sessionStatus === "completed" &&
+      store.state.sessionMode === "simulation" &&
+      store.state.activeScreen === "view-workspace");
+  let activeYear = yearObj(store.state.yearId);
+  if (hasRestorableSession && yearMetadata(store.state.yearId) && !activeYear) {
+    try {
+      activeYear = await loadYear(store.state.yearId);
+    } catch (error) {
+      reportDiagnostic("subjects.restore-year", error, { yearId: store.state.yearId });
+    }
+  }
   const canRestoreActive = store.isSessionActive() && activeYear && sujetObj();
   const canRestoreSimulationReview =
     store.state.sessionStatus === "completed" &&

@@ -1,4 +1,6 @@
-import { APP_CONFIG } from "../../data/subjects.js";
+import { loadFullAppConfig } from "../../data/subjects.js";
+
+const APP_CONFIG = await loadFullAppConfig();
 
 export function findPole(yearId, sujetId, exerciseNum, poleLetter) {
   const year = APP_CONFIG.years.find((y) => y.id === String(yearId));

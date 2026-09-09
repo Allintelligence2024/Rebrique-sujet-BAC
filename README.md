@@ -17,10 +17,12 @@ Parcours en 5 étapes pensé pour la **gestion du stress** et la **méthode** :
 1. **Hub** — une seule action par carte-sujet : **▶ ابدأ التدريب المنهجي**. Chaque carte annonce que le mapping est partiel et affiche la durée officielle selon la filière : 4 h 30 en Sciences expérimentales, 2 h 30 en Maths.
 2. **Sérénité** _(parcours guidé uniquement)_ — volontairement dépouillé : respiration, rappel des quatre étapes (اقرأ ← اجمع ← اربط ← اختُم), plan de session. Cet écran appartient au parcours d'entraînement, pas à une simulation certifiée de l'épreuve.
 3. **تدريب الخطوات الأربع** _(hub, section repliée)_ — outils d'entraînement formulés littéralement : décision **سند/معارف**, décision **وصف/تفسير**, exercice rapide de 12 instructions, niveau avancé après 12/12 ×3, cinq erreurs, carte imprimable, **أطلس التقنيات** et **تشخيص تجريبي**. Ils restent repliés par défaut.
-4. **Stratégie** _(optionnelle)_ — consultation des PDF, estimation personnelle et choix explicite du parcours. L'entraînement reste disponible ; le bouton de simulation est désactivé sujet par sujet tant que sa couverture officielle n'est pas de 100 %.
+4. **Stratégie** _(optionnelle)_ — téléchargement explicite des PDF locaux avec taille annoncée (aucun chargement automatique), estimation personnelle et choix explicite du parcours. L'entraînement reste disponible ; le bouton de simulation est désactivé sujet par sujet tant que sa couverture officielle n'est pas de 100 %.
 5. **Espace de travail séparé** — l'entraînement conserve les aides, modèles et diagnostics qualitatifs. La simulation utilise uniquement les tâches officielles, sans indice, modèle ni diagnostic pendant l'épreuve ; après remise, les réponses sont verrouillées et une relecture distincte devient disponible. Aucune note BAC n'est affichée : le moteur n'est pas calibré.
 
 > 📱 **Responsive** : l'interface est utilisable sur téléphone (grilles qui se replient, cibles tactiles ≥ 44 px, champs 16 px sans zoom iOS, modales scrollables). Verrouillé par `tests/e2e/responsive.spec.mjs` (3 viewports réels, zéro défilement horizontal) dans la CI.
+
+> ⚡ **Chargement progressif et mode hors-ligne maîtrisé** : le démarrage ne charge que le catalogue des 19 années. Le sujet complet d'une année est importé au clic, puis peut être conservé dans un cache runtime local borné. Le shell ne précache ni les payloads d'années ni les PDF. Un badge discret affiche la version du build et l'état hors-ligne ; les diagnostics restent des compteurs techniques agrégés sur l'appareil.
 
 L'interface propose des thèmes clair et sombre persistants. Dans l'espace de travail, toute l'aide
 méthodologique (décisions سند/معارف et وصف/تفسير, canevas, الفحص الرباعي) est regroupée dans **un seul dépliant
@@ -63,16 +65,14 @@ Le disclaimers du hard benchmark (0 copie réelle doublement annotée) reste la 
 │   ├── styles.css                    # design 100% autonome (aucun CDN)
 │   └── icon-192.png / icon-512.png   # icônes de marque (مفتاح الكنز)
 ├── data/
-│   ├── subjects.js                   # ⭐ CONFIG : 2013–2019+2020+2022–2026 SE + 2021–2026 Maths
+│   ├── subjects.js                   # catalogue léger + chargeurs dynamiques (aucun sujet complet au démarrage)
+│   ├── years/
+│   │   ├── se/year-2013.js … year-2026.js  # un payload à la demande par année Sciences
+│   │   └── m/year-2021.js … year-2026.js   # un payload à la demande par année Maths
 │   ├── calibration-policy.js         # seuils quantitatifs préalables à toute promotion de score
 │   ├── calibration-status.js         # statut public généré depuis le corpus audité
 │   ├── usability-study.js            # agrégats P2 pseudonymisés (aucune session inventée)
 │   ├── official-tasks.js             # inventaires explicites des questions BAC, séparés des étapes N/S/E/W
-│   ├── subjects-archive.js           # archive reconstruite 2013–2019 SE (2020 du fichier non branché)
-│   ├── year-2026-se.js               # BAC 2026 علوم تجريبية (énoncé + corrigé eddirasa)
-│   ├── year-2020-se.js               # BAC 2020 علوم تجريبية (énoncé + corrigé eddirasa)
-│   ├── year-2021-m.js                # BAC 2021 رياضيات (énoncé + corrigé dzexams)
-│   ├── year-2022-m.js … year-2026-m.js  # BAC 2022–2026 رياضيات (énoncé + corrigé eddirasa)
 │   ├── archive.js                    # consultation (hors cartes d'entraînement affichées)
 │   └── brouillon.js                  # canevas du brouillon méthodologique et verbes BAC
 ├── js/
@@ -82,11 +82,11 @@ Le disclaimers du hard benchmark (0 copie réelle doublement annotée) reste la 
 │   ├── store.js                      # état + persistance localStorage + timers reconciliés
 │   ├── app-version.js                # version PWA (générée par scripts/generate-pwa-version.mjs)
 │   ├── method-scripts.js             # scripts de méthode (conseils contextuels)
-│   ├── application/timers.js         # minuteurs globaux et stratégie
+│   ├── application/                  # minuteurs + démarrage après chargement de l'année demandée
 │   ├── domain/evaluation/            # règles d'analyse et d'évaluation (5 modules)
 │   ├── domain/subjects/official-coverage.js # audit de couverture et garde de simulation fermée par défaut
 │   ├── domain/method/gates.js        # décisions سند/معارف · وصف/تفسير + exercice rapide
-│   ├── services/                     # son, reconnaissance vocale et diagnostics récupérables
+│   ├── services/                     # son, dictée et observabilité locale agrégée sans données personnelles
 │   └── ui/
 │       ├── dom.js · dialogs.js · navigation.js · accessibility.js  # infrastructure UI partagée
 │       ├── atlas.js · demo-diagnostic.js                           # atlas des techniques + démo avant/après
@@ -99,22 +99,25 @@ Le disclaimers du hard benchmark (0 copie réelle doublement annotée) reste la 
 │   └── hard-benchmark/               # pipeline de copies réelles (corpus : 0 copie)
 ├── scripts/
 │   ├── generate-pwa-version.mjs      # génère js/app-version.js (appelé par `npm run build`)
-│   ├── generate-archive-years.mjs    # régénère data/subjects-archive.js (2013–2020)
+│   ├── generate-archive-years.mjs    # régénère les payloads reconstruits 2013–2019
 │   ├── report-official-coverage.mjs  # inventaire connu, couverture globale et éligibilité simulation
 │   ├── report-p1-status.mjs          # six critères P1, preuves et bloqueurs externes
 │   ├── report-p2-status.mjs          # sept critères P2, dont cinq élèves distincts
+│   ├── report-p3-status.mjs          # six critères P3 (PWA, cache, observabilité, release)
+│   ├── verify-release.mjs            # contrôle le fichier, la taille et le SHA-256 de la release
 │   ├── update-calibration-status.mjs # statut public dérivé du corpus audité
 │   └── update-doc-metrics.mjs        # régénère / vérifie les métriques du README
-├── docs/                             # protocoles (accessibilité, handoff)
+├── docs/                             # protocoles, handoff et déploiement/rollback
 ├── server.mjs                        # serveur statique avec CSP — `npm start`
 ├── playwright.config.mjs             # config e2e (lance server.mjs sur 127.0.0.1:4173)
 ├── tsconfig.services.json            # typecheck des services — `npm run typecheck`
-├── build.mjs                         # fabrique dist/boussole-4d-standalone.html
-├── sw.js                             # service worker (mode hors-ligne)
+├── build.mjs                         # produit la release web déterministe et le monofichier
+├── sw.js                             # shell précaché + runtime borné à 12 entrées
 ├── manifest.webmanifest              # PWA (installable)
-├── BAC2025_SVT_Sujet1.pdf / BAC2025_SVT_Sujet2.pdf  # seuls PDF versés dans le dépôt (scans 2025)
+├── BAC2025_SVT_Sujet1.pdf / BAC2025_SVT_Sujet2.pdf  # PDF locaux, jamais précachés
 ├── _v1_backup/                       # ancien site monolithique conservé
 ├── dist/                             # généré par `npm run build` (ignoré par git)
+│   ├── site/                         # artefact de production + release.json vérifiable
 │   └── boussole-4d-standalone.html   # version monofichier (ouvre en file://)
 └── package.json                      # npm start / npm test / npm run build
 ```
@@ -248,17 +251,18 @@ Les points N/S/E/W sont une **allocation pédagogique interne**, pas le barème 
 | **2026 Maths** | **activée** | aucun (droit d'auteur)                             | [énoncé eddirasa](https://eddirasa.com/uploads/2026/08/bac-math-sciences-2026.pdf) · [corrigé](https://eddirasa.com/uploads/2026/08/correction-bac-math-sciences-2026.pdf)                                                                                                                                                                                     | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 6+14 / 8+12                                                                                                                                         |
 
 **PDF versés dans le dépôt : uniquement les deux sujets officiels SVT 2025**
-(`BAC2025_SVT_Sujet1.pdf`, `BAC2025_SVT_Sujet2.pdf`, à la racine). Ils sont servis par
-l'écran stratégie (`data/subjects.js` → `pdf`, `pdfAvailable: true`) et pré-cachés par
-`sw.js` pour le mode hors-ligne. **Aucun PDF des autres années** (2013–2019, 2020, 2021,
-2022, 2023, 2024, 2026) n'est versé (droit d'auteur) : ces années restent en liens externes
+(`BAC2025_SVT_Sujet1.pdf`, `BAC2025_SVT_Sujet2.pdf`, à la racine). L'écran stratégie
+annonce leur taille exacte et attend un téléchargement volontaire. Ils ne sont jamais précachés ;
+une réponse locale HTTP 200 peut seulement entrer dans le cache runtime borné après la demande.
+**Aucun PDF des autres années** (2013–2019, 2020, 2021, 2022, 2023, 2024, 2026) n'est versé
+(droit d'auteur) : ces années restent en liens externes
 (dzexams / eddirasa) dans `data/archive.js` et le tableau ci-dessus.
 
 ### Contenu BAC 2026 (شعبة علوم تجريبية)
 
 Énoncé + corrigé officiels [eddirasa](https://eddirasa.com/uploads/2026/08/bac-science-2026-se.pdf)
 · [corrigé](https://eddirasa.com/uploads/2026/08/correction-bac-science-2026-se.pdf)
-(OCR, 2026-08-31). 2 sujets × 3 exercices (5+7+8). Fichier : `data/year-2026-se.js`.
+(OCR, 2026-08-31). 2 sujets × 3 exercices (5+7+8). Fichier : `data/years/se/year-2026.js`.
 
 | Sujet | Exercice | Thème                                              |
 | ----- | -------- | -------------------------------------------------- |
@@ -273,7 +277,7 @@ l'écran stratégie (`data/subjects.js` → `pdf`, `pdfAvailable: true`) et pré
 
 Énoncé + corrigé officiels [eddirasa](https://eddirasa.com/wp-content/uploads/2020/09/eddirasa.com-bac-se-science-2020.pdf)
 · [corrigé](https://eddirasa.com/wp-content/uploads/2020/09/eddirasa.com-correction-bac-sc-science-2020.pdf)
-(OCR RTL, 2026-08-31). 2 sujets × 3 exercices (5+7+8). Fichier : `data/year-2020-se.js`.
+(OCR RTL, 2026-08-31). 2 sujets × 3 exercices (5+7+8). Fichier : `data/years/se/year-2020.js`.
 
 | Sujet | Exercice | Thème                                                          |
 | ----- | -------- | -------------------------------------------------------------- |
@@ -288,19 +292,19 @@ l'écran stratégie (`data/subjects.js` → `pdf`, `pdfAvailable: true`) et pré
 
 Énoncé + corrigé officiels eddirasa (OCR, 2026-08-31). Format Maths : 2 sujets × 2 exercices. id `YYYY-m`.
 
-| Année    | Fichier               | Barème      | Thèmes                                                                         |
-| -------- | --------------------- | ----------- | ------------------------------------------------------------------------------ |
-| **2022** | `data/year-2022-m.js` | 8+12 / 8+12 | ريبوزوم (PM 844) ؛ RADT Cov19 ؛ جسم مضاد ؛ هيبسيدين **HAMP** (GCC→ACC Ala→Thr) |
-| **2023** | `data/year-2023-m.js` | 8+12 / 7+13 | إيثانول Asp-Tyr ؛ **PRF1** G→A (UAG) ؛ CPA/LB/LT ؛ هالوفوجينون / ProRS         |
-| **2024** | `data/year-2024-m.js` | 7+13 / 7+13 | كورديسبين ؛ DLBCL (β2m / HLA I) ؛ PID ؛ ألبورت **COL4A5** Gly→Glu              |
-| **2025** | `data/year-2025-m.js` | 8+12 / 8+12 | مضادان Q/D والريبوزوم ؛ TAP / HLA I ؛ **HLA-DRB1** Arg74Trp ؛ UV-C Spike ACE2  |
-| **2026** | `data/year-2026-m.js` | 6+14 / 8+12 | LTc / CMH I ؛ HCF LDLR/PCSK9 ؛ IL-2 NDNA11 ؛ غيتلمان **SLC12A3** Leu892Pro     |
+| Année    | Fichier                     | Barème      | Thèmes                                                                         |
+| -------- | --------------------------- | ----------- | ------------------------------------------------------------------------------ |
+| **2022** | `data/years/m/year-2022.js` | 8+12 / 8+12 | ريبوزوم (PM 844) ؛ RADT Cov19 ؛ جسم مضاد ؛ هيبسيدين **HAMP** (GCC→ACC Ala→Thr) |
+| **2023** | `data/years/m/year-2023.js` | 8+12 / 7+13 | إيثانول Asp-Tyr ؛ **PRF1** G→A (UAG) ؛ CPA/LB/LT ؛ هالوفوجينون / ProRS         |
+| **2024** | `data/years/m/year-2024.js` | 7+13 / 7+13 | كورديسبين ؛ DLBCL (β2m / HLA I) ؛ PID ؛ ألبورت **COL4A5** Gly→Glu              |
+| **2025** | `data/years/m/year-2025.js` | 8+12 / 8+12 | مضادان Q/D والريبوزوم ؛ TAP / HLA I ؛ **HLA-DRB1** Arg74Trp ؛ UV-C Spike ACE2  |
+| **2026** | `data/years/m/year-2026.js` | 6+14 / 8+12 | LTc / CMH I ؛ HCF LDLR/PCSK9 ؛ IL-2 NDNA11 ؛ غيتلمان **SLC12A3** Leu892Pro     |
 
 ### Contenu BAC 2021 (شعبة رياضيات)
 
 Énoncé + corrigé dzexams (viewer 12 pages, couche inversée reconstituée,
 2026-08-31). Format Maths : 2 sujets × 2 exercices (8+12). id `2021-m`.
-Fichier : `data/year-2021-m.js`.
+Fichier : `data/years/m/year-2021.js`.
 
 | Sujet | Exercice | Thème                                              |
 | ----- | -------- | -------------------------------------------------- |
@@ -324,8 +328,8 @@ Les sujets de la filière choisie remplacent la grille.
 
 Statut honnête :
 
-- **2013–2019 SE** : entraînement reconstruit (`data/subjects-archive.js`). Toutes consignes `reconstructed`. **2018** : thèmes relus OCR dzexams. **2013–2017, 2019** : thèmes pédagogiques 3AS, **non certifiables** comme énoncés officiels. Confiance UI basse.
-- **2020 et 2022–2026 SE** et **2021–2026 Maths** : entraînement (`data/subjects.js` + modules année). Le 2020 reconstruit de `subjects-archive.js` n'est **pas** branché.
+- **2013–2019 SE** : entraînement reconstruit (`data/years/se/`). Toutes consignes `reconstructed`. **2018** : thèmes relus OCR dzexams. **2013–2017, 2019** : thèmes pédagogiques 3AS, **non certifiables** comme énoncés officiels. Confiance UI basse.
+- **2020 et 2022–2026 SE** et **2021–2026 Maths** : entraînement chargé à la demande depuis `data/years/{se,m}/`, indexé par le catalogue `data/subjects.js`.
 - **Consultation** : sujet officiel + تصحيح النموذجي via dzexams. Aucun
   barème, mot-clé ou réponse modèle : le moteur ne s'applique pas.
 - **Maths 2022–2026** : viewer dzexams bloqué (`contentVerified: false`) ;
@@ -337,26 +341,35 @@ Statut honnête :
   d'épreuve SVT — elles ne sont pas ajoutées.
 - **2016 Maths exceptionnelle** : absente de l'index — `ARCHIVE.gaps`.
 - **Aucun PDF d'archive versé** (droit d'auteur) — seule exception, assumée : les deux sujets
-  officiels **SVT 2025** à la racine du dépôt, servis par l'app et pré-cachés pour le mode
-  hors-ligne (voir la note « PDF versés dans le dépôt » plus haut).
+  officiels **SVT 2025** à la racine du dépôt. Ils sont servis sur demande et non précachés
+  (voir la note « PDF versés dans le dépôt » plus haut).
 
 ---
+
+## ⚡ PWA, cache et artefact de production
+
+- `data/subjects.js` expose un catalogue léger ; `loadYear()` importe un seul module `data/years/**`, déduplique les requêtes concurrentes et ne mémorise que les payloads validés.
+- `sw.js` précache uniquement le graphe statique nécessaire au shell. Le cache runtime accepte exclusivement les modules d'années et PDF locaux répondant HTTP 200, contourne les requêtes `Range`, et évince au-delà de 12 entrées. Les caches MIFTAH d'un ancien build sont nettoyés sans toucher ceux d'autres applications.
+- `npm run build` calcule un identifiant de contenu, produit `dist/site/` et le monofichier, puis écrit `dist/site/release.json` avec la liste exacte des fichiers, octets et SHA-256. `npm run release:verify` refuse tout fichier ajouté, absent, altéré ou incohérent avec le build.
+- L'observabilité reste locale : seulement des compteurs bornés par périmètre, noms d'erreurs autorisés, changements de connectivité et événements du service worker. Ni réponse élève, ni sujet, ni texte d'erreur, ni URL ne sont enregistrés.
+- La procédure de déploiement atomique, les contrôles post-déploiement et le rollback sont documentés dans [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 
 ## 🧪 Tests
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **241** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **256** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0/2235 minimum** avant toute promotion numérique
 - Inventaires de tâches officielles commencés : **1/38 sujets** (**2 tâches connues**)
 - Sujets éligibles à la simulation : **0**
 - Critères P1 fermés : **3/6** — statut global : **incomplet**
 - Critères P2 fermés : **6/7** — élèves distincts testés : **0/5**
-- Taille de la façade UI (js/ui.js) : **431 lignes**
+- Critères P3 fermés : **6/6** — statut global : **terminé**
+- Taille de la façade UI (js/ui.js) : **449 lignes**
 
 <!-- AUTO-METRICS:END -->
 
-Ces valeurs sont régénérées par `npm run docs:update` et contrôlées localement par `npm run docs:check`. Les contrôles `docs:check`, `calibration:check` et `coverage:official` ne sont pas ajoutés au workflow : le push GitHub refuse toute modification de `.github/workflows/quality.yml` à l'App Arena dépourvue de la permission `workflows`. Un mainteneur doit ajouter ces trois commandes avant `npm test`, ou réautoriser l'intégration avec cette permission. Le workflow existant continue d'exécuter lint, typecheck, format, tests, build et E2E.
+Ces valeurs sont régénérées par `npm run docs:update` et contrôlées par `npm run docs:check`. La CI exécute aussi les gardes de calibration/couverture, les statuts P1–P3, le build déterministe et la vérification exacte de `release.json` avant d'accepter l'artefact.
 
 ```bash
 npm ci            # installe exactement le lockfile (jamais `npm install` : le lockfile est le contrat)
@@ -366,8 +379,10 @@ npm run calibration       # métriques moteur ↔ double correction humaine
 npm run calibration:check # statut public synchronisé avec le corpus audité
 npm run coverage:official # couverture connue et garde d'éligibilité simulation
 npm run p1:status         # preuve détaillée des critères P1 fermés/bloqués
-npm run p2:status         # six preuves techniques et état des cinq élèves requis
-npm run build             # génère dist/boussole-4d-standalone.html (dist/ est gitignoré)
+npm run p2:status         # preuves techniques et état des cinq élèves requis
+npm run p3:check          # ferme les six gardes P3 ou échoue
+npm run build             # génère dist/site/ + monofichier de façon déterministe
+npm run release:verify    # vérifie contenu, octets, SHA-256 et identité du build
 ```
 
 ---
@@ -426,10 +441,7 @@ Le script accepte soit un fichier JSON en argument, soit un mode interactif.
 
 ## 🔧 Ajouter une année / un sujet
 
-Pour 2013–2020 : éditer `data/subjects-archive.js` (ou le générateur
-`scripts/generate-archive-years.mjs`) puis réimporter. Pour 2022–2025 : ouvrir
-`data/subjects.js`, ajouter une entrée dans `years[]`, et (pour un exercice) déclarer
-la règle d'évaluation :
+Créer un payload `data/years/<filière>/year-<année>.js`, puis ajouter sa métadonnée et son import dynamique à la table `YEAR_CATALOG` de `data/subjects.js`. Pour les archives SE 2013–2019, `scripts/generate-archive-years.mjs` régénère directement ces payloads. Pour un exercice, déclarer notamment la règle d'évaluation :
 
 ```js
 N: { points: 1, prompt: "…", minLength: 40,

@@ -23,8 +23,10 @@ globalThis.window = dom.window;
 globalThis.document = dom.window.document;
 globalThis.localStorage = dom.window.localStorage;
 dom.window.scrollTo = () => {};
+const { loadAllYears } = await import("../data/subjects.js");
+const allYears = await loadAllYears();
 const { init } = await import("../js/ui.js");
-init();
+await init();
 
 after(async () => {
   const { timers } = await import("../js/engine.js");
@@ -63,9 +65,8 @@ test("le hub affiche les années (2025, 2024, 2023 et 2022 actives)", () => {
   assert.ok($("#btn-stream-fab"));
 });
 
-test("les données portent désormais des consignes BAC explicites sur chaque pôle", async () => {
-  const { APP_CONFIG } = await import("../data/subjects.js");
-  const enabledYears = APP_CONFIG.years.filter((y) => y.enabled);
+test("les données portent désormais des consignes BAC explicites sur chaque pôle", () => {
+  const enabledYears = allYears.filter((year) => year.enabled);
   for (const year of enabledYears) {
     for (const sujet of year.sujets) {
       for (const ex of sujet.exercises) {

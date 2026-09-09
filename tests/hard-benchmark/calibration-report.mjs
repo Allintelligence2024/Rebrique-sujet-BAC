@@ -1,5 +1,7 @@
 import { assessCalibrationPromotion } from "../../data/calibration-policy.js";
-import { APP_CONFIG } from "../../data/subjects.js";
+import { loadFullAppConfig } from "../../data/subjects.js";
+
+const APP_CONFIG = await loadFullAppConfig();
 import { evaluateText, scoreBac } from "../../js/engine.js";
 import { loadCases } from "./import-copy.mjs";
 import { findPole } from "./_find-pole.mjs";

@@ -3,10 +3,12 @@ import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { CALIBRATION_STATUS } from "../data/calibration-status.js";
 import { CALIBRATION_THRESHOLDS } from "../data/calibration-policy.js";
-import { APP_CONFIG } from "../data/subjects.js";
+import { loadFullAppConfig } from "../data/subjects.js";
 import { officialTaskInventoryFor } from "../data/official-tasks.js";
 import { buildOfficialCoverageReport } from "../js/domain/subjects/official-coverage.js";
 import { securityHeaders } from "../server.mjs";
+
+const APP_CONFIG = await loadFullAppConfig();
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const read = (path) => readFileSync(join(root, path), "utf8");

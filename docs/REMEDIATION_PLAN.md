@@ -92,6 +92,19 @@ Les données manquantes ne peuvent pas être synthétisées : il faut les sujets
 5. Ajouter observabilité sans données personnelles : erreurs techniques agrégées, version de build, état offline.
 6. Publier un artefact de production déterministe et documenter le déploiement/rollback.
 
+### Suivi P3 — 8 septembre 2026
+
+| Lot  | Preuve d’acceptation                                                                                                                                                           | État    |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- |
+| P3.1 | Catalogue initial limité aux métadonnées ; 19 payloads filière/année importés à la demande, dédupliqués et validés.                                                            | Terminé |
+| P3.2 | Shell statique exhaustif sans année/PDF ; PDF locaux chargés seulement par un lien explicite qui annonce leur taille exacte.                                                   | Terminé |
+| P3.3 | Identifiant dérivé du contenu ; manifeste, icônes et PDF portent une révision SHA-256 ; caches isolés par build, anciens caches MIFTAH nettoyés et version affichée dans l’UI. | Terminé |
+| P3.4 | Runtime limité à 12 réponses locales HTTP 200 ; erreurs, réponses partielles et requêtes `Range` exclues ; plus anciennes insertions évincées.                                 | Terminé |
+| P3.5 | Diagnostics locaux bornés à des compteurs techniques agrégés et des états connectivité/SW ; réponses, textes d’erreur, URLs et données élève interdits et testés.              | Terminé |
+| P3.6 | Build déterministe (`dist/site/`, monofichier, manifeste d’octets/SHA-256), vérification exacte, CI après E2E, déploiement atomique et rollback documentés.                    | Terminé |
+
+`npm run p3:status` expose les preuves calculées et `npm run p3:check` échoue si l’un des six lots régresse. La procédure opérationnelle complète se trouve dans [`DEPLOYMENT.md`](DEPLOYMENT.md).
+
 ## P4 — Publication responsable
 
 1. Choisir et ajouter une licence compatible avec les données et le code.
@@ -103,15 +116,11 @@ Les données manquantes ne peuvent pas être synthétisées : il faut les sujets
 
 ## Ordre d’exécution immédiat
 
-1. Fermer P0.2 et P0.3, car le serveur actuel expose le dépôt et la CSP casse le rendu.
-2. Fermer P0.4 et P0.5 avec tests unitaires sur une année Maths et une année Sciences.
-3. Fermer P0.6 avec tests de migration, démarrage, restauration et expiration.
-4. Fermer P0.1 dans tous les textes visibles et le README.
-5. Exécuter toute la matrice P0.7, corriger les régressions, puis seulement ouvrir P1.
+P0 et les six lots techniques P3 sont fermés. Les prochains travaux ne doivent pas rouvrir les limites scientifiques et humaines déjà documentées : P1.1/P1.2 attendent des sources officielles complètes, P1.5 un corpus réel et P2.7 cinq sessions élèves. La prochaine phase de code est P4 (licence, droits, confidentialité et mentions légales), après décision du responsable éditorial.
 
 ## Validation du lot
 
-Validation du 7 septembre 2026 : `lint`, `typecheck`, `format:check`, `docs:check`, les 215 tests Node et le build autonome passent. Le test HTTP confirme la liste blanche et les 404 sur les routes privées. Le téléchargement Chromium local échoue sur le CDN Playwright avec `ECONNRESET`, mais la CI Quality `34146913531` a installé Chromium et validé toute la matrice, dont les 13 tests E2E et le nouveau parcours Maths.
+Validation P3 du 8 septembre 2026 : `lint`, `typecheck`, `format:check`, `docs:check`, `calibration:check`, l’audit de couverture et les **256 tests Node** passent (255 réussis, 1 test réseau volontairement ignoré). Deux builds consécutifs donnent le même `release.json` et le même monofichier ; la release **b859abb4121e** contient 77 fichiers et son digest d’arbre est `d8fe79c15964c41a70c50b54221cbaaa196c1e08af6f7f4a90abeaaf0847a1ac`. `release:verify` et `p3:check` (6/6) sont verts. La matrice compte désormais 20 tests E2E, dont les cas hors-ligne P3 : **20/20 passent** dans le workflow Quality [`34286121476`](https://github.com/Allintelligence2024/Rebrique-sujet-BAC/actions/runs/34286121476). Leur exécution locale reste impossible car le CDN Playwright coupe le téléchargement Chromium avec `ECONNRESET` ; la CI renforcée ne publie l’artefact qu’après leur succès.
 
 ## Définition de « P0 terminé »
 

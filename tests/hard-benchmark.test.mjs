@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { APP_CONFIG } from "../data/subjects.js";
+import { APP_CONFIG } from "./helpers/full-app-config.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CASES_PATH = join(__dirname, "hard-benchmark", "cases.json");

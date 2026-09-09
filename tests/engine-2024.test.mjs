@@ -9,7 +9,7 @@
    ============================================================ */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { APP_CONFIG } from "../data/subjects.js";
+import { APP_CONFIG } from "./helpers/full-app-config.mjs";
 import { evaluateText, scoreFromFraction } from "../js/engine.js";
 
 const y2024 = APP_CONFIG.years.find((y) => y.id === "2024");

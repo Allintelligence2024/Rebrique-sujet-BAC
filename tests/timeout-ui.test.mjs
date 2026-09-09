@@ -33,7 +33,7 @@ test("l'expiration globale termine la session et verrouille la copie affichée",
   store.state.globalLastTick = Date.now();
   store.save();
 
-  init();
+  await init();
   assert.ok(!document.querySelector("#view-workspace").classList.contains("hidden"));
   await new Promise((resolve) => setTimeout(resolve, 1150));
 

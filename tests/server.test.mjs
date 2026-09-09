@@ -22,6 +22,7 @@ test("la liste blanche ne reconnaît que les routes de déploiement", () => {
   for (const route of [
     "index.html",
     "manifest.webmanifest",
+    "release.json",
     "sw.js",
     "assets/styles.css",
     "js/main.js",
@@ -68,6 +69,16 @@ test("le serveur livre le shell avec CSP et refuse les fichiers privés", async 
     const response = await globalThis.fetch(origin + path);
     assert.equal(response.status, 404, `${path} a été exposé`);
   }
+});
+
+test("les PDF annoncent leur taille sans être servis dans le shell HTML", async () => {
+  const home = await globalThis.fetch(`${origin}/index.html`);
+  assert.doesNotMatch(await home.text(), /<iframe[^>]+\.pdf/);
+  const pdf = await globalThis.fetch(`${origin}/BAC2025_SVT_Sujet1.pdf`, { method: "HEAD" });
+  assert.equal(pdf.status, 200);
+  assert.equal(pdf.headers.get("content-length"), "1099674");
+  assert.equal(pdf.headers.get("cache-control"), "public, max-age=0, must-revalidate");
+  assert.match(pdf.headers.get("x-miftah-build"), /^[a-f0-9]{12}$/);
 });
 
 test("les méthodes d'écriture sont refusées", async () => {

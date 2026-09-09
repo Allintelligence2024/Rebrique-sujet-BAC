@@ -1708,3 +1708,49 @@ html[lang="ar"]
 .hub-tools .stream-fab-kicker {
   opacity: 0.75;
 }
+
+/* Operational status: local-only build/offline observability (P3). */
+.operational-status {
+  position: fixed;
+  inset-inline-start: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 35;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  max-width: calc(100vw - 1.5rem);
+  padding: 0.4rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.25;
+  box-shadow: var(--shadow);
+  opacity: 0.82;
+  pointer-events: none;
+}
+
+.operational-status.is-offline {
+  border-color: var(--amber);
+  background: var(--panel-2);
+  color: var(--ink);
+  opacity: 1;
+}
+
+.operational-status code {
+  color: inherit;
+  font-size: inherit;
+}
+
+.operational-separator {
+  opacity: 0.7;
+}
+
+@media (max-width: 480px) {
+  .operational-status {
+    inset-inline-start: 0.4rem;
+    bottom: 0.4rem;
+    max-width: calc(100vw - 0.8rem);
+  }
+}

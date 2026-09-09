@@ -411,3 +411,5 @@ export const YEAR_2026_M = {
     }
   ]
 };
+
+export default YEAR_2026_M;

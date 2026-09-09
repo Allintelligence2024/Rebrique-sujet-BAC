@@ -1,61 +1,37 @@
+import { createHash } from "node:crypto";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
-import { join, dirname, relative, resolve, sep } from "node:path";
+import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
+import { YEAR_CATALOG } from "../data/subjects.js";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const root = join(__dirname, "..");
+const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const source = readFileSync(join(root, "sw.js"), "utf8");
-
-/* ------------------------------------------------------------------
-   La liste de precache est vérifiée contre le GRAPHE D'IMPORT réel de
-   l'app (racine : js/main.js, chargée par index.html), pas contre une
-   liste recopiée à la main.
-
-   Pourquoi : un test qui duplique la liste de sw.js ne peut pas
-   détecter la dérive — il reste vert pendant que des modules manquent
-   au cache. Conséquence côté élève : `caches.match()` rate, le fetch
-   de repli échoue hors-ligne, et comme le fallback index.html est
-   réservé aux navigations (`Response.error()` sinon), l'import du
-   module casse et l'app ne démarre pas à froid sans réseau.
-   ------------------------------------------------------------------ */
-
-// Modules présents sur le disque mais hors du graphe ESM rooted sur js/main.js.
-// Chaque entrée DOIT correspondre à une décision explicite : cette liste est la
-// seule place où un module peut se tenir sans être signalé comme code mort.
 const OUT_OF_GRAPH = {
-  // Généré par scripts/generate-pwa-version.mjs, chargé par sw.js via
-  // importScripts (pas par le graphe ESM de l'app).
-  "js/app-version.js": "chargé par sw.js via importScripts",
-  // Rapport + exports CSV/JSON/impression : retirés de la copie (épure élève,
-  // verrouillé par tests/all-buttons.test.mjs). Le contrôleur n'est plus appelé
-  // par l'UI, donc ces trois modules ne sont plus embarqués dans le bundle
-  // (~7 KB qui étaient livrés à l'élève sans être atteignables). Ils restent
-  // testés au niveau module (tests/workspace-modules.test.mjs).
-  // DÉCISION PRODUIT EN ATTENTE du propriétaire : les ré-exposer HORS de la
-  // copie (hub ou fin de session) — et alors les remettre dans le graphe — ou
-  // les supprimer. Voir docs/ANTIGRAVITY_HANDOFF.md §3.
+  "js/app-version.js": "chargé par index.html et importScripts",
   "js/ui/workspace/report-controller.js": "plus appelé par l'UI ; décision produit en attente",
   "js/ui/reports/report.js": "atteignable uniquement via report-controller",
   "js/ui/reports/exports.js": "atteignable uniquement via report-controller"
 };
 
-function toRepoPath(p) {
-  return relative(root, p).split(sep).join("/");
+function toRepoPath(path) {
+  return relative(root, path).split(sep).join("/");
 }
 
-function listFiles(dir) {
-  const out = [];
-  for (const entry of readdirSync(dir)) {
-    const full = join(dir, entry);
-    if (statSync(full).isDirectory()) out.push(...listFiles(full));
-    else if (entry.endsWith(".js")) out.push(toRepoPath(full));
-  }
-  return out;
+function listFiles(directory, suffix = ".js") {
+  return readdirSync(directory).flatMap((name) => {
+    const path = join(directory, name);
+    return statSync(path).isDirectory()
+      ? listFiles(path, suffix)
+      : name.endsWith(suffix)
+        ? [toRepoPath(path)]
+        : [];
+  });
 }
 
-function importGraph(entry) {
+/** Static imports only: import() is intentionally excluded from the shell graph. */
+function staticImportGraph(entry) {
   const seen = new Set();
   const stack = [entry];
   while (stack.length) {
@@ -63,101 +39,156 @@ function importGraph(entry) {
     if (seen.has(current)) continue;
     seen.add(current);
     const code = readFileSync(join(root, current), "utf8");
-    for (const m of code.matchAll(/(?:\bfrom\s*|\bimport\s*\(\s*|\bimport\s+)["']([^"']+)["']/g)) {
-      const spec = m[1];
-      if (!spec.startsWith(".")) continue; // aucun paquet externe dans ce dépôt
-      const target = toRepoPath(resolve(dirname(join(root, current)), spec));
+    const pattern =
+      /(?:^|\n)\s*(?:import\s+(?:[^"']*?\s+from\s+)?|export\s+[^"']*?\s+from\s+)["']([^"']+)["']/g;
+    for (const match of code.matchAll(pattern)) {
+      const specifier = match[1];
+      if (!specifier.startsWith(".")) continue;
+      const target = toRepoPath(resolve(dirname(join(root, current)), specifier));
       if (existsSync(join(root, target))) stack.push(target);
     }
   }
   return seen;
 }
 
-function precachedAssets() {
-  const block = source.match(/const ASSETS = \[([\s\S]*?)\];/);
-  assert.ok(block, "const ASSETS introuvable dans sw.js");
-  return [...block[1].matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+function shellAssets() {
+  const block = source.match(/const SHELL_ASSETS = \[([\s\S]*?)\];/);
+  assert.ok(block, "const SHELL_ASSETS introuvable dans sw.js");
+  return [...block[1].matchAll(/"([^"]+)"/g)].map((match) => match[1]);
 }
 
-const assets = precachedAssets();
-const precachedFiles = new Set(assets.map((a) => a.replace(/^\.\//, "")));
-const graph = importGraph("js/main.js");
-const dataModules = listFiles(join(root, "data"));
+const assets = shellAssets();
+const shellFiles = new Set(assets.map((asset) => asset.replace(/^\.\//, "")));
+const graph = staticImportGraph("js/main.js");
+const lazyYearFiles = YEAR_CATALOG.map((year) => year.modulePath);
 
-test("le graphe d'import de js/main.js est bien parcouru (garde-fou du test lui-même)", () => {
-  assert.ok(graph.has("js/main.js"), "racine absente du graphe : walk cassé");
-  assert.ok(graph.has("js/ui.js"), "js/ui.js absent du graphe : walk cassé");
-  assert.ok(
-    graph.size > 30,
-    `graphe suspiciously petit (${graph.size} modules) : la détection d'imports est cassée`
+test("le graphe statique du shell est parcouru sans avaler les imports d'années", () => {
+  assert.ok(graph.has("js/main.js"));
+  assert.ok(graph.has("js/ui.js"));
+  assert.ok(graph.has("data/subjects.js"));
+  assert.ok(graph.has("js/ui/operational-status.js"));
+  assert.ok(graph.size > 35, `graphe statique anormalement petit: ${graph.size}`);
+  assert.equal(
+    [...graph].some((path) => path.startsWith("data/years/")),
+    false
   );
 });
 
-test("tous les modules du graphe applicatif sont pré-cachés", () => {
-  const missing = [...graph].filter((m) => !precachedFiles.has(m));
-  assert.deepEqual(
-    missing,
-    [],
-    `modules importés par l'app mais absents du precache (démarrage hors-ligne cassé) : ${missing.join(", ")}`
-  );
-});
-
-test("tous les modules de données sont pré-cachés", () => {
-  const missing = dataModules.filter((m) => !precachedFiles.has(m));
-  assert.deepEqual(missing, [], `fichiers data/ absents du precache : ${missing.join(", ")}`);
-});
-
-test("chaque module js/ du dépôt est soit dans le graphe, soit déclaré hors-graphe", () => {
-  // Empêche un module de disparaître silencieusement de toute couverture.
-  const unaccounted = listFiles(join(root, "js")).filter((m) => !graph.has(m) && !(m in OUT_OF_GRAPH));
-  assert.deepEqual(
-    unaccounted,
-    [],
-    `modules ni importés par l'app ni déclarés dans OUT_OF_GRAPH (code mort ou graphe incomplet) : ${unaccounted.join(", ")}`
-  );
-  const ghosts = Object.keys(OUT_OF_GRAPH).filter((m) => !existsSync(join(root, m)));
-  assert.deepEqual(ghosts, [], `entrées OUT_OF_GRAPH devenues fantômes : ${ghosts.join(", ")}`);
-});
-
-test("toutes les entrées du precache existent sur le disque", () => {
-  // c.addAll() rejette au premier 404 : une entrée fantôme fait échouer
-  // l'installation du service worker, donc aucun controller, donc pas de PWA.
-  const ghost = assets
-    .filter((a) => a !== "./")
-    .map((a) => a.replace(/^\.\//, ""))
-    .filter((p) => !existsSync(join(root, p)));
-  assert.deepEqual(ghost, [], `entrées de precache inexistantes : ${ghost.join(", ")}`);
-});
-
-test("les ressources non-modules de l'app sont pré-cachées", () => {
+test("tout le graphe statique et uniquement le shell nécessaire sont précachés", () => {
+  const missing = [...graph].filter((path) => !shellFiles.has(path));
+  assert.deepEqual(missing, [], `modules statiques absents du shell: ${missing.join(", ")}`);
   for (const asset of [
     "./",
     "./index.html",
     "./manifest.webmanifest",
     "./assets/styles.css",
     "./assets/icon-192.png",
-    "./assets/icon-512.png"
+    "./assets/icon-512.png",
+    "./js/app-version.js"
   ]) {
-    assert.ok(assets.includes(asset), `${asset} manque au precache`);
+    assert.ok(assets.includes(asset), `${asset} manque au shell`);
   }
 });
 
-test("les PDF réellement servis par l'app sont pré-cachés", () => {
-  const data = readFileSync(join(root, "data", "subjects.js"), "utf8");
-  const served = new Set([...data.matchAll(/pdf:\s*"([^"]+\.pdf)"/g)].map((m) => m[1]));
-  assert.ok(served.size > 0, "aucun PDF local trouvé dans data/subjects.js : regex cassée ?");
-  for (const pdf of served) {
-    assert.ok(precachedFiles.has(pdf), `${pdf} servi par l'app mais absent du precache`);
-    assert.ok(existsSync(join(root, pdf)), `${pdf} référencé mais absent du dépôt`);
-  }
+test("aucun payload d'année ni PDF n'est précaché", () => {
+  for (const path of lazyYearFiles)
+    assert.equal(shellFiles.has(path), false, `${path} ne doit pas être précaché`);
+  assert.equal(
+    assets.some((asset) => asset.endsWith(".pdf")),
+    false
+  );
+  assert.equal(
+    assets.some((asset) => asset.includes("data/years/")),
+    false
+  );
 });
 
-test("le cache PWA est versionné par le build", () => {
+test("chaque entrée du shell existe et chaque module JS est justifié", () => {
+  const ghosts = assets
+    .filter((asset) => asset !== "./")
+    .map((asset) => asset.replace(/^\.\//, ""))
+    .filter((path) => !existsSync(join(root, path)));
+  assert.deepEqual(ghosts, []);
+
+  const unaccounted = listFiles(join(root, "js")).filter(
+    (path) => !graph.has(path) && !(path in OUT_OF_GRAPH) && path !== "js/app-version.js"
+  );
+  assert.deepEqual(unaccounted, [], `modules JS sans justification: ${unaccounted.join(", ")}`);
+});
+
+test("tous les payloads d'année sont découpés, catalogués et importés dynamiquement", () => {
+  assert.equal(lazyYearFiles.length, 19);
+  assert.equal(new Set(lazyYearFiles).size, lazyYearFiles.length);
+  const subjectsSource = readFileSync(join(root, "data/subjects.js"), "utf8");
+  for (const path of lazyYearFiles) {
+    assert.ok(existsSync(join(root, path)), `${path} absent`);
+    const relativeSpecifier = `./${path.replace(/^data\//, "")}`;
+    assert.ok(subjectsSource.includes(`import("${relativeSpecifier}")`), `import dynamique absent: ${path}`);
+  }
+  assert.doesNotMatch(subjectsSource, /^import .*years\//m, "un payload est importé statiquement");
+});
+
+test("le runtime est borné et évince les insertions les plus anciennes", () => {
+  const maximum = Number(source.match(/const RUNTIME_MAX_ENTRIES = (\d+);/)?.[1]);
+  assert.ok(Number.isInteger(maximum) && maximum >= 1 && maximum <= 32, `borne invalide: ${maximum}`);
+  assert.match(source, /keys\.slice\(0, overflow\)/);
+  assert.match(source, /cache\.delete\(request\)/);
+  assert.match(source, /trimRuntimeCache\(cache\)/);
+});
+
+test("seuls les payloads/PDF locaux réussis HTTP 200 peuvent entrer au runtime", () => {
+  assert.match(source, /isRuntimeAsset\(request\)/);
+  assert.match(source, /response\?\.ok === true/);
+  assert.match(source, /response\.status === 200/);
+  assert.match(source, /\["basic", "default"\]\.includes\(response\.type\)/);
+  assert.match(
+    source,
+    /!isLocalRequest\(request\) \|\| !isRuntimeAsset\(request\) \|\| !isCacheableResponse\(response\)/
+  );
+  assert.match(source, /request\.method !== "GET" \|\| !isLocalRequest\(request\)/);
+});
+
+test("les caches sont isolés par build et l'activation ne supprime pas les caches voisins", () => {
   assert.match(source, /importScripts\("\.\/js\/app-version\.js"\)/);
-  assert.match(source, /boussole4d-\$\{self\.APP_BUILD_ID/);
+  assert.match(source, /miftah-kanz/);
+  assert.match(source, /CURRENT_CACHES/);
+  assert.match(source, /key\.startsWith\(`\$\{CACHE_PREFIX\}-`\)/);
+  assert.doesNotMatch(source, /keys\.filter\(\(key\) => key !==/);
 });
 
-test("le fallback index.html est réservé aux navigations", () => {
-  assert.match(source, /e\.request\.mode === "navigate"/);
+test("le fallback HTML reste réservé aux navigations", () => {
+  assert.match(source, /request\.mode === "navigate"/);
+  assert.match(source, /caches\.match\(request, \{ ignoreSearch: true \}\)/);
+  assert.match(source, /caches\.match\("\.\/index\.html"\)/);
   assert.match(source, /return Response\.error\(\)/);
+});
+
+test("manifeste, icônes et PDF portent une révision de contenu vérifiable et consommée", () => {
+  const version = readFileSync(join(root, "js/app-version.js"), "utf8");
+  const manifest = JSON.parse(readFileSync(join(root, "manifest.webmanifest"), "utf8"));
+  const index = readFileSync(join(root, "index.html"), "utf8");
+  const strategy = readFileSync(join(root, "js/ui/screens/strategy.js"), "utf8");
+  for (const path of [
+    "manifest.webmanifest",
+    "assets/icon-192.png",
+    "assets/icon-512.png",
+    "BAC2025_SVT_Sujet1.pdf",
+    "BAC2025_SVT_Sujet2.pdf"
+  ]) {
+    const expected = createHash("sha256")
+      .update(readFileSync(join(root, path)))
+      .digest("hex");
+    assert.ok(version.includes(`"${path}"`), `révision absente: ${path}`);
+    assert.ok(version.includes(`sha256: "${expected}"`), `empreinte incorrecte: ${path}`);
+  }
+  for (const path of ["assets/icon-192.png", "assets/icon-512.png"]) {
+    const revision = createHash("sha256")
+      .update(readFileSync(join(root, path)))
+      .digest("hex")
+      .slice(0, 12);
+    assert.ok(manifest.icons.some((icon) => icon.src === `${path}?v=${revision}`));
+    if (path === "assets/icon-192.png") assert.ok(index.includes(`${path}?v=${revision}`));
+  }
+  assert.match(strategy, /APP_ASSET_REVISIONS\?\.\[subject\.pdf\]/);
+  assert.match(source, /isPdfRequest\(request\)/);
 });

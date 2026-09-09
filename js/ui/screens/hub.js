@@ -135,8 +135,19 @@ export function createHubScreen(deps) {
       }
     }
 
-    $$("#year-grid [data-year]:not([disabled])").forEach((btn) =>
-      btn.addEventListener("click", () => startSession(btn.dataset.year))
+    $$("#year-grid [data-year]:not([disabled])").forEach((button) =>
+      button.addEventListener("click", async () => {
+        const label = button.textContent;
+        button.disabled = true;
+        button.setAttribute("aria-busy", "true");
+        button.textContent = "جارٍ تحميل السنة…";
+        const loaded = await startSession(button.dataset.year);
+        if (!loaded && button.isConnected) {
+          button.disabled = false;
+          button.removeAttribute("aria-busy");
+          button.textContent = label;
+        }
+      })
     );
     $("#btn-hub-adkar").addEventListener("click", openAdkar);
     $("#btn-hub-sound").addEventListener("click", () => cycleSound($("#btn-hub-sound")));

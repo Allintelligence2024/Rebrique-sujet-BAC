@@ -20,7 +20,10 @@
     "p1:check": "node scripts/report-p1-status.mjs --check-complete",
     "p2:status": "node scripts/report-p2-status.mjs",
     "p2:check": "node scripts/report-p2-status.mjs --check-complete",
+    "p3:status": "node scripts/report-p3-status.mjs",
+    "p3:check": "node scripts/report-p3-status.mjs --check-complete",
     "pwa:version": "node scripts/generate-pwa-version.mjs",
+    "release:verify": "node scripts/verify-release.mjs",
     "test:e2e": "playwright test",
     "docs:update": "node scripts/update-doc-metrics.mjs",
     "docs:check": "node scripts/update-doc-metrics.mjs --check"

@@ -1,6 +1,8 @@
-import { APP_CONFIG } from "../data/subjects.js";
+import { loadFullAppConfig } from "../data/subjects.js";
 import { officialTaskInventoryFor } from "../data/official-tasks.js";
 import { buildOfficialCoverageReport } from "../js/domain/subjects/official-coverage.js";
+
+const APP_CONFIG = await loadFullAppConfig();
 
 const reports = APP_CONFIG.years.flatMap((year) =>
   (year.sujets || []).map((subject) =>

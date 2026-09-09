@@ -417,3 +417,5 @@ export const YEAR_2021_M = {
     }
   ]
 };
+
+export default YEAR_2021_M;

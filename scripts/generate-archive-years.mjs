@@ -1,5 +1,5 @@
-/* One-shot generator for data/subjects-archive.js — not part of the app runtime. */
-import { writeFileSync } from "node:fs";
+/* One-shot generator for the lazy data/years/se/year-2013..2019.js payloads. */
+import { mkdirSync, writeFileSync } from "node:fs";
 
 const DANGER = /[<>&`"]/;
 function check(s, path) {
@@ -1373,6 +1373,8 @@ function emitYear(entry) {
   const label = `بكالوريا الجزائر دورة ${meta.id}`;
   return `    {
       id: ${jsString(meta.id)},
+      stream: "se",
+      calendarYear: ${jsString(meta.id)},
       label: ${jsString(label)},
       badge: ${jsString("أرشيف مُعاد بناؤه")},
       theme: ${jsString(meta.theme)},
@@ -1384,16 +1386,19 @@ ${emitSujet(2, "الموضوع الثاني", meta, s2)}
     }`;
 }
 
-const header = `/* ============================================================
-   ARCHIVE BAC SVT Algérie — 2013 à 2020 (شعبة علوم تجريبية)
+const outputDirectory = new URL("../data/years/se/", import.meta.url);
+mkdirSync(outputDirectory, { recursive: true });
+
+const generated = YEARS.filter(({ meta }) => meta.id !== "2020");
+for (const entry of generated) {
+  const { id } = entry.meta;
+  const exportName = `YEAR_${id}_SE`;
+  const objectSource = emitYear(entry).replace(/^ {4}/gm, "");
+  const out = `/* ============================================================
+   BAC SVT Algérie ${id} — archive pédagogique reconstruite
    ------------------------------------------------------------
-   Contrat pédagogique :
-   - Aucune consigne n'est marquée official.
-   - 2018 et 2020/sujet 1 : thèmes relus sur couche texte dzexams
-     (OCR bruité / inversé, 2026-08-30), wording reconstructed.
-   - 2013-2017, 2019, 2020/sujet 2 : thèmes pédagogiques du
-     programme 3AS, non certifiables comme énoncés ministériels.
-   - PDF non redistribués. Liens externes dzexams uniquement.
+   Aucune consigne n'est marquée official. Les champs de provenance
+   restent attachés à chaque pôle. Chargé à la demande par le shell.
    ============================================================ */
 
 const RECON = (notes) => ({
@@ -1401,9 +1406,12 @@ const RECON = (notes) => ({
   bacPromptNotes: notes
 });
 
-export const ARCHIVE_YEARS = [
-`;
+const ${exportName} = ${objectSource};
 
-const out = header + YEARS.map(emitYear).join(",\n") + "\n];\n";
-writeFileSync(new URL("../data/subjects-archive.js", import.meta.url), out);
-console.log("wrote data/subjects-archive.js", out.length, "chars", YEARS.length, "years");
+export { ${exportName} };
+export default ${exportName};
+`;
+  writeFileSync(new URL(`year-${id}.js`, outputDirectory), out);
+  console.log(`wrote data/years/se/year-${id}.js`, out.length, "chars");
+}
+console.log("skipped reconstructed 2020: the runtime uses the verified official 2020 payload");

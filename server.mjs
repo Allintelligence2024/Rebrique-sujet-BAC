@@ -1,7 +1,7 @@
 /* Production-like static server: explicit public surface, CSP and safe MIME types. */
-import { createReadStream, existsSync, realpathSync, statSync } from "node:fs";
+import { createReadStream, existsSync, readFileSync, realpathSync, statSync } from "node:fs";
 import { createServer } from "node:http";
-import { extname, isAbsolute, join, normalize, relative } from "node:path";
+import { extname, isAbsolute, join, normalize, relative, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = fileURLToPath(new URL(".", import.meta.url));
@@ -30,6 +30,7 @@ export const securityHeaders = {
 const PUBLIC_FILES = new Set([
   "index.html",
   "manifest.webmanifest",
+  "release.json",
   "sw.js",
   "BAC2025_SVT_Sujet1.pdf",
   "BAC2025_SVT_Sujet2.pdf"
@@ -54,6 +55,13 @@ function notFound(res) {
 
 export function createStaticServer({ rootDirectory = root } = {}) {
   const canonicalRoot = realpathSync(rootDirectory);
+  let buildId = "dev";
+  try {
+    const version = readFileSync(join(canonicalRoot, "js/app-version.js"), "utf8");
+    buildId = version.match(/APP_BUILD_ID\s*=\s*"([a-f0-9]{12})"/)?.[1] || buildId;
+  } catch {
+    /* A missing version file is handled as a normal 404 by the route below. */
+  }
   return createServer((req, res) => {
     if (!["GET", "HEAD"].includes(req.method || "GET")) {
       res.writeHead(405, { ...securityHeaders, Allow: "GET, HEAD" });
@@ -97,12 +105,23 @@ export function createStaticServer({ rootDirectory = root } = {}) {
     }
 
     const extension = extname(canonicalPath);
-    const cacheControl =
-      extension === ".html" || canonicalPath.endsWith("sw.js") ? "no-cache" : "public, max-age=86400";
+    const stableEntryPoint =
+      extension === ".html" ||
+      extension === ".webmanifest" ||
+      canonicalPath.endsWith("sw.js") ||
+      canonicalPath.endsWith("app-version.js") ||
+      canonicalPath.endsWith("release.json");
+    const cacheControl = stableEntryPoint
+      ? "no-cache"
+      : extension === ".pdf"
+        ? "public, max-age=0, must-revalidate"
+        : "public, max-age=86400";
     res.writeHead(200, {
       ...securityHeaders,
       "Content-Type": types[extension] || "application/octet-stream",
-      "Cache-Control": cacheControl
+      "Content-Length": statSync(canonicalPath).size,
+      "Cache-Control": cacheControl,
+      "X-Miftah-Build": buildId
     });
     if (req.method === "HEAD") return res.end();
     createReadStream(canonicalPath).pipe(res);
@@ -111,7 +130,8 @@ export function createStaticServer({ rootDirectory = root } = {}) {
 
 const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
 if (isMain) {
-  createStaticServer().listen(port, host, () =>
-    console.log(`Miftah Kanz available at http://${host}:${port}`)
+  const rootDirectory = process.env.PUBLIC_ROOT ? resolve(root, process.env.PUBLIC_ROOT) : root;
+  createStaticServer({ rootDirectory }).listen(port, host, () =>
+    console.log(`Miftah Kanz ${rootDirectory} available at http://${host}:${port}`)
   );
 }

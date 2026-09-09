@@ -27,10 +27,12 @@ dom.window.open = () => ({
   }
 });
 
+const { loadAllYears } = await import("../data/subjects.js");
+await loadAllYears();
 const { init } = await import("../js/ui.js");
 const { store } = await import("../js/store.js");
 const { soundEngine, timers } = await import("../js/engine.js");
-init();
+await init();
 
 after(() => {
   timers.stopAll();
@@ -172,13 +174,16 @@ test("3. Stratégie : calculatrice, couverture officielle et confirmation", () =
   assert.ok(simulationButtons.every((button) => button.disabled));
   assert.match($("#view-strategy").textContent, /المحاكاة ممنوعة/);
 
-  // Preview sujet 2
+  // Les PDF ne sont plus téléchargés automatiquement : un lien explicite annonce la taille.
   click('#view-strategy [data-preview="2"]');
-  assert.ok($("#strategy-pdf").src.includes("BAC2025_SVT_Sujet2.pdf"));
+  assert.ok($("#pdf-preview-container .pdf-download").href.includes("BAC2025_SVT_Sujet2.pdf"));
+  assert.equal($("#pdf-preview-container .pdf-download").download, "BAC2025_SVT_Sujet2.pdf");
+  assert.equal($("#pdf-preview-container [data-pdf-bytes]").dataset.pdfBytes, "1158907");
 
-  // Preview sujet 1
   click('#view-strategy [data-preview="1"]');
-  assert.ok($("#strategy-pdf").src.includes("BAC2025_SVT_Sujet1.pdf"));
+  assert.ok($("#pdf-preview-container .pdf-download").href.includes("BAC2025_SVT_Sujet1.pdf"));
+  assert.equal($("#pdf-preview-container .pdf-download").download, "BAC2025_SVT_Sujet1.pdf");
+  assert.equal($("#pdf-preview-container [data-pdf-bytes]").dataset.pdfBytes, "1099674");
 
   // Calc inputs
   const input = $$("#view-strategy .calc-input")[0];

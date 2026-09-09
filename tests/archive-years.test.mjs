@@ -1,11 +1,11 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { APP_CONFIG } from "../data/subjects.js";
-import { ARCHIVE_YEARS } from "../data/subjects-archive.js";
 import { poleConfidence } from "../js/ui/workspace/feedback.js";
+import { APP_CONFIG } from "./helpers/full-app-config.mjs";
 
 const ARCHIVE_IDS = ["2020", "2019", "2018", "2017", "2016", "2015", "2014", "2013"];
 const ENABLED_RECON_SE = ["2019", "2018", "2017", "2016", "2015", "2014", "2013"];
+const ARCHIVE_YEARS = APP_CONFIG.years.filter((year) => ENABLED_RECON_SE.includes(year.id));
 
 test("l'archive 2013-2019 SE est branchée dans APP_CONFIG ; 2020 SE reste le module officiel", () => {
   const ids = APP_CONFIG.years.map((y) => y.id);
@@ -28,8 +28,8 @@ test("l'archive 2013-2019 SE est branchée dans APP_CONFIG ; 2020 SE reste le mo
   );
 });
 
-test("chaque année d'archive est activée avec 2 sujets × 3 exercices 5/7/8", () => {
-  assert.equal(ARCHIVE_YEARS.length, 8);
+test("chaque année reconstruite 2013–2019 est activée avec 2 sujets × 3 exercices 5/7/8", () => {
+  assert.equal(ARCHIVE_YEARS.length, 7);
   for (const year of ARCHIVE_YEARS) {
     assert.equal(year.enabled, true, `${year.id} doit être enabled`);
     assert.equal(year.sujets.length, 2, `${year.id} doit avoir 2 sujets`);

@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { APP_CONFIG, examMinutesForYear } from "../data/subjects.js";
+import { examMinutesForYear } from "../data/subjects.js";
+import { APP_CONFIG } from "./helpers/full-app-config.mjs";
 import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";

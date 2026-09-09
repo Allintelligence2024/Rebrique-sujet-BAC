@@ -609,3 +609,5 @@ export const YEAR_2020_SE = {
     }
   ]
 };
+
+export default YEAR_2020_SE;
