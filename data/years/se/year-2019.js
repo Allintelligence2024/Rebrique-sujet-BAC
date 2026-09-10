@@ -25,6 +25,7 @@ const YEAR_2019_SE = {
       pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-3051478.pdf",
+      pdfLocalUrl: "/subjects/SE/2019/sujet-1.pdf",
       pdfNote:
         "PDF non redistribué dans le dépôt. Page dzexams : https://www.dzexams.com/ar/annales/OHlmRldmdmdDVUNVRHBadTE5em0vdz09. PDF dzexams محمي بكلمة مرور في العارض. Thèmes reconstruits pédagogiquement, non certifiables.",
       title: "الموضوع الأول",
@@ -296,6 +297,7 @@ const YEAR_2019_SE = {
       pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-3051478.pdf",
+      pdfLocalUrl: "/subjects/SE/2019/sujet-2.pdf",
       pdfNote:
         "PDF non redistribué dans le dépôt. Page dzexams : https://www.dzexams.com/ar/annales/OHlmRldmdmdDVUNVRHBadTE5em0vdz09. PDF dzexams محمي بكلمة مرور في العارض. Thèmes reconstruits pédagogiquement, non certifiables.",
       title: "الموضوع الثاني",

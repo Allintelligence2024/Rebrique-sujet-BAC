@@ -24,6 +24,7 @@ const YEAR_2016_SE = {
       pdf: null,
       pdfAvailable: false,
       pdfExternalUrl: "https://www.dzexams.com/ar/annales/M09NK2ZYVHFzQXg3KzZHazBaTk5IUT09",
+      pdfLocalUrl: "/subjects/SE/2016/sujet-1.pdf",
       pdfNote:
         "PDF non redistribué dans le dépôt. Page dzexams : https://www.dzexams.com/ar/annales/M09NK2ZYVHFzQXg3KzZHazBaTk5IUT09. 2016 : session de remplacement retenue. Thèmes pédagogiques reconstruits.",
       title: "الموضوع الأول",
@@ -300,6 +301,7 @@ const YEAR_2016_SE = {
       pdf: null,
       pdfAvailable: false,
       pdfExternalUrl: "https://www.dzexams.com/ar/annales/M09NK2ZYVHFzQXg3KzZHazBaTk5IUT09",
+      pdfLocalUrl: "/subjects/SE/2016/sujet-2.pdf",
       pdfNote:
         "PDF non redistribué dans le dépôt. Page dzexams : https://www.dzexams.com/ar/annales/M09NK2ZYVHFzQXg3KzZHazBaTk5IUT09. 2016 : session de remplacement retenue. Thèmes pédagogiques reconstruits.",
       title: "الموضوع الثاني",

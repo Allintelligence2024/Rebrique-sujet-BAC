@@ -14,6 +14,7 @@ const YEAR_2022_SE = {
       pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2022/dzexams-bac-sciences-2311208.pdf",
+      pdfLocalUrl: "/subjects/SE/2022/sujet-1.pdf",
       pdfNote:
         "PDF officiel (ONEC, pp. 1-5 pour ce sujet) non redistribué dans le dépôt ; page : https://www.dzexams.com/ar/annales/eVlXSFRFOEJaN2ozSlE3NytzWkRHQT09 (consulté 2026-08-27). La couche texte du PDF est inversée (miroir mot à mot) ; les consignes ont été reconstituées mot à mot à partir de cette couche. Corrigé officiel (الإجابة النموذجية) joint au même PDF (pp. 11-21) et croisé avec : https://eddirasa.com/correction-bac-science-2022-se/ — textes concordants.",
       title: "الموضوع الأول",
@@ -297,6 +298,7 @@ const YEAR_2022_SE = {
       pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2022/dzexams-bac-sciences-2311208.pdf",
+      pdfLocalUrl: "/subjects/SE/2022/sujet-2.pdf",
       pdfNote:
         "PDF officiel (ONEC, pp. 6-10 pour ce sujet) non redistribué dans le dépôt ; page : https://www.dzexams.com/ar/annales/eVlXSFRFOEJaN2ozSlE3NytzWkRHQT09 (consulté 2026-08-27). La couche texte du PDF est inversée (miroir mot à mot) ; les consignes ont été reconstituées mot à mot à partir de cette couche. Corrigé officiel (الإجابة النموذجية) joint au même PDF (pp. 16-20) et croisé avec : https://eddirasa.com/correction-bac-science-2022-se/ — textes concordants.",
       title: "الموضوع الثاني",

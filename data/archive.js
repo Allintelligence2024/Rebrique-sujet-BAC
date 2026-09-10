@@ -58,6 +58,7 @@ export const ARCHIVE = {
     {
       year: "2016",
       stream: "m",
+      localPdfUrls: ["/subjects/M/2016/sujet-1.pdf", "/subjects/M/2016/sujet-2.pdf"],
       session: "exceptional",
       reason:
         "Index dzexams /ar/bac/sciences-naturelles/m : une seule ligne 2016 (session principale). 2017 y figure deux fois. Constat 2026-08-31 — aucun URL fabriqué."
@@ -98,6 +99,7 @@ export const ARCHIVE = {
       stream: "se",
       session: "main",
       url: `${ANNALES}/alFTTFJIRFZuTFd4QnAvelFTQWRqUT09`,
+      localPdfUrls: ["/subjects/SE/2021/sujet-1.pdf", "/subjects/SE/2021/sujet-2.pdf"],
       pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2021/dzexams-bac-sciences-2728849.pdf",
       page: "access_confirmed",
       contentVerified: false,
@@ -113,6 +115,7 @@ export const ARCHIVE = {
       stream: "m",
       session: "main",
       url: `${ANNALES}/bHJKeCsxNEVvOVNCYm5jODBpVktjQT09`,
+      localPdfUrls: ["/subjects/M/2026/sujet-1.pdf", "/subjects/M/2026/sujet-2.pdf"],
       pdfUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2026/dzexams-bac-sciences-naturelles-1343688.pdf",
       page: "access_confirmed",
@@ -127,6 +130,7 @@ export const ARCHIVE = {
       stream: "m",
       session: "main",
       url: `${ANNALES}/VUc5WWNPWjNiTHUwQko3cTVmNnNnZz09`,
+      localPdfUrls: ["/subjects/M/2025/sujet-1.pdf", "/subjects/M/2025/sujet-2.pdf"],
       pdfUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2025/dzexams-bac-sciences-naturelles-1554243.pdf",
       page: "access_confirmed",
@@ -141,6 +145,7 @@ export const ARCHIVE = {
       stream: "m",
       session: "main",
       url: `${ANNALES}/Y200ZkJ4b092OS9JZ0w3ck4zemNJZz09`,
+      localPdfUrls: ["/subjects/M/2024/sujet-1.pdf", "/subjects/M/2024/sujet-2.pdf"],
       pdfUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2024/dzexams-bac-sciences-naturelles-1482576.pdf",
       page: "access_confirmed",
@@ -155,6 +160,7 @@ export const ARCHIVE = {
       stream: "m",
       session: "main",
       url: `${ANNALES}/RHdQRjNWUTg5b1VwaGVlKzIxT01EUT09`,
+      localPdfUrls: ["/subjects/M/2023/sujet-1.pdf", "/subjects/M/2023/sujet-2.pdf"],
       pdfUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1077342.pdf",
       page: "access_confirmed",
@@ -169,6 +175,7 @@ export const ARCHIVE = {
       stream: "m",
       session: "main",
       url: `${ANNALES}/bFpLK2JlVmpzUzMzYTFTSnpjcDZGZz09`,
+      localPdfUrls: ["/subjects/M/2022/sujet-1.pdf", "/subjects/M/2022/sujet-2.pdf"],
       pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2022/dzexams-bac-sciences-1777391.pdf",
       page: "access_confirmed",
       contentVerified: false,
@@ -180,6 +187,7 @@ export const ARCHIVE = {
     {
       year: "2021",
       stream: "m",
+      localPdfUrls: ["/subjects/M/2021/sujet-1.pdf", "/subjects/M/2021/sujet-2.pdf"],
       session: "main",
       url: `${ANNALES}/T2tYS3FTcFRwWCtCbXV2QmFyRTcydz09`,
       page: "consulted",
@@ -192,6 +200,7 @@ export const ARCHIVE = {
     {
       year: "2020",
       stream: "m",
+      localPdfUrls: ["/subjects/M/2020/sujet-1.pdf", "/subjects/M/2020/sujet-2.pdf"],
       session: "main",
       url: `${ANNALES}/dlFvUnNHKzlTdm5xZHJHMm4vL2hYZz09`,
       page: "consulted",
@@ -206,6 +215,7 @@ export const ARCHIVE = {
       stream: "m",
       session: "main",
       url: `${ANNALES}/b2w2cDdSYTdOK05FMjNEMnNGeUlsdz09`,
+      localPdfUrls: ["/subjects/M/2019/sujet-1.pdf", "/subjects/M/2019/sujet-2.pdf"],
       pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-2280992.pdf",
       page: "access_confirmed",
       contentVerified: true,
@@ -219,6 +229,7 @@ export const ARCHIVE = {
       stream: "m",
       session: "main",
       url: `${ANNALES}/aDMxL2FtWlZwZ3NmeThCMG5WNk50UT09`,
+      localPdfUrls: ["/subjects/M/2018/sujet-1.pdf", "/subjects/M/2018/sujet-2.pdf"],
       pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2018/dzexams-bac-sciences-1967487.pdf",
       page: "access_confirmed",
       contentVerified: true,
@@ -230,6 +241,7 @@ export const ARCHIVE = {
     {
       year: "2017",
       stream: "m",
+      localPdfUrls: ["/subjects/M/2017/sujet-1.pdf", "/subjects/M/2017/sujet-2.pdf"],
       session: "exceptional",
       url: `${ANNALES}/eU1zMTNYMTJTLzROeWhLTkxaajRWZz09`,
       page: "consulted",
@@ -244,6 +256,7 @@ export const ARCHIVE = {
       stream: "m",
       session: "main",
       url: `${ANNALES}/bEdWa2IycjEzcUY1S3FmUnpxdzhrQT09`,
+      localPdfUrls: ["/subjects/M/2017/sujet-1.pdf", "/subjects/M/2017/sujet-2.pdf"],
       pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2017/dzexams-bac-sciences-2275712.pdf",
       page: "access_confirmed",
       contentVerified: true,
@@ -255,6 +268,7 @@ export const ARCHIVE = {
     {
       year: "2016",
       stream: "m",
+      localPdfUrls: ["/subjects/M/2016/sujet-1.pdf", "/subjects/M/2016/sujet-2.pdf"],
       session: "main",
       url: `${ANNALES}/TW9GY3FMeVdkeFBBNGIwMmppdi9xQT09`,
       page: "consulted",
@@ -269,6 +283,7 @@ export const ARCHIVE = {
       stream: "m",
       session: "main",
       url: `${ANNALES}/QjZpdDhZUjhQOXhSMzZvQnFvVlFjQT09`,
+      localPdfUrls: ["/subjects/M/2015/sujet-1.pdf", "/subjects/M/2015/sujet-2.pdf"],
       pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2015/dzexams-bac-sciences-2723927.pdf",
       page: "access_confirmed",
       contentVerified: true,
@@ -282,6 +297,7 @@ export const ARCHIVE = {
       stream: "m",
       session: "main",
       url: `${ANNALES}/MXlQMjVhL2ZLK25mcEpTWnI5N3JtQT09`,
+      localPdfUrls: ["/subjects/M/2014/sujet-1.pdf", "/subjects/M/2014/sujet-2.pdf"],
       pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-2369148.pdf",
       page: "access_confirmed",
       contentVerified: true,
@@ -295,6 +311,7 @@ export const ARCHIVE = {
       stream: "m",
       session: "main",
       url: `${ANNALES}/UmdYdlc3em1RWmJQWEJCbW52Vm12dz09`,
+      localPdfUrls: ["/subjects/M/2013/sujet-1.pdf", "/subjects/M/2013/sujet-2.pdf"],
       pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-2770867.pdf",
       page: "access_confirmed",
       contentVerified: true,

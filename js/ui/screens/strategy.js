@@ -30,15 +30,15 @@ export function createStrategyScreen(deps) {
   }
 
   function pdfFallbackHTML(subject) {
-    if (subject?.pdfExternalUrl) {
-      return `<div class="center stack preview-empty">
-      <p class="small text-muted">الملف غير مرفق بالتطبيق وحجمه غير متاح؛ افتح صفحة المصدر للتحقق منه.</p>
-      <a class="btn btn-indigo" href="${subject.pdfExternalUrl}" target="_blank" rel="noopener noreferrer">📄 فتح المصدر الخارجي</a>
-    </div>`;
+    if (subject?.pdfLocalUrl) {
+      return `<div class="stack pdf-reader">
+        <iframe class="pdf-reader-frame" title="قراءة الموضوع المختار" src="${subject.pdfLocalUrl}"></iframe>
+        <a class="btn btn-indigo" href="${subject.pdfLocalUrl}" target="_blank" rel="noopener noreferrer">📄 فتح PDF في نافذة مستقلة</a>
+      </div>`;
     }
     return `<div class="center stack preview-empty">
-    <p class="small text-muted">لا يوجد ملف موضوع متاح لهذه الدورة في التطبيق.</p>
-  </div>`;
+      <p class="small text-muted">ملف الموضوع المحلي غير متاح لهذه الدورة.</p>
+    </div>`;
   }
 
   function renderStrategy(sujetNum) {

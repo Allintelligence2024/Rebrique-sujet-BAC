@@ -25,6 +25,7 @@ const YEAR_2013_SE = {
       pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-4463279.pdf",
+      pdfLocalUrl: "/subjects/SE/2013/sujet-1.pdf",
       pdfNote:
         "PDF non redistribué dans le dépôt. Page dzexams : https://www.dzexams.com/ar/annales/bjdJbVBZMHFKeUZTcExKSEw4REVNQT09. 2013 : PDF dzexams محمي في العارض. Thèmes pédagogiques reconstruits.",
       title: "الموضوع الأول",
@@ -301,6 +302,7 @@ const YEAR_2013_SE = {
       pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-4463279.pdf",
+      pdfLocalUrl: "/subjects/SE/2013/sujet-2.pdf",
       pdfNote:
         "PDF non redistribué dans le dépôt. Page dzexams : https://www.dzexams.com/ar/annales/bjdJbVBZMHFKeUZTcExKSEw4REVNQT09. 2013 : PDF dzexams محمي في العارض. Thèmes pédagogiques reconstruits.",
       title: "الموضوع الثاني",

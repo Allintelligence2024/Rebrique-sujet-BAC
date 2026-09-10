@@ -3,7 +3,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 
 export const PUBLIC_ROOT_FILES = Object.freeze(["index.html", "manifest.webmanifest", "sw.js"]);
-export const PUBLIC_DIRECTORIES = Object.freeze(["assets", "js", "data", "legal"]);
+export const PUBLIC_DIRECTORIES = Object.freeze(["assets", "js", "data", "legal", "subjects"]);
 export const GENERATED_VERSION_FILE = "js/app-version.js";
 
 const repoPath = (root, path) => relative(root, path).split(sep).join("/");

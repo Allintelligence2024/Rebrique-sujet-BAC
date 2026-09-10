@@ -14,6 +14,7 @@ const YEAR_2025_SE = {
       pdfFilename: null,
       pdfAvailable: false,
       pdfExternalUrl: "https://www.dzexams.com/ar/annales/S3VKb3UrRU9MUnJHVG5ndENaV1FIdz09",
+      pdfLocalUrl: "/subjects/SE/2025/sujet-1.pdf",
       pdfNote: "Source externe DzExams 2025 ; le dépôt ne redistribue pas le PDF tiers.",
       title: "الموضوع الأول",
       exercises: [
@@ -429,6 +430,7 @@ const YEAR_2025_SE = {
       pdfFilename: null,
       pdfAvailable: false,
       pdfExternalUrl: "https://www.dzexams.com/ar/annales/S3VKb3UrRU9MUnJHVG5ndENaV1FIdz09",
+      pdfLocalUrl: "/subjects/SE/2025/sujet-2.pdf",
       pdfNote: "Source externe DzExams 2025 ; le dépôt ne redistribue pas le PDF tiers.",
       title: "الموضوع الثاني",
       exercises: [

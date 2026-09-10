@@ -14,6 +14,7 @@ const YEAR_2023_SE = {
       pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf",
+      pdfLocalUrl: "/subjects/SE/2023/sujet-1.pdf",
       pdfNote:
         "PDF non redistribué dans le dépôt ; source : https://www.dzexams.com/ar/annales/STRDZEowcCtwN0JmT1NwS3p4cEVmdz09 (consulté 2026-08-25). La couche texte du PDF est inversée (miroir mot à mot) ; les consignes ont été reconstituées mot à mot à partir de cette couche. Session de remplacement non localisée.",
       title: "الموضوع الأول",
@@ -336,6 +337,7 @@ const YEAR_2023_SE = {
       pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf",
+      pdfLocalUrl: "/subjects/SE/2023/sujet-2.pdf",
       pdfNote:
         "PDF non redistribué dans le dépôt ; même fichier que le sujet 1 (session normale, sujets 1 et 2 réunis). Couche texte inversée reconstituée mot à mot (2026-08-25).",
       title: "الموضوع الثاني",

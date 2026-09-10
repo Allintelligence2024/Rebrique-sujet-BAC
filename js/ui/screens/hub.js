@@ -280,27 +280,22 @@ export function createHubScreen(deps) {
     for (const entry of item.entries) {
       const session = ARCHIVE.sessions[entry.session] || entry.session;
       const label = item.entries.length > 1 ? `📄 ${session}` : "📄 الموضوع والتصحيح النموذجي";
-      actions.append(
-        node("a", {
-          className: "btn btn-block btn-indigo",
-          text: label,
-          attrs: {
-            href: entry.url,
-            target: "_blank",
-            rel: "noopener noreferrer"
-          }
-        })
-      );
-      if (entry.pdfUrl) {
+      if (entry.localPdfUrls?.length) {
+        entry.localPdfUrls.forEach((href, index) => {
+          actions.append(
+            node("a", {
+              className: "btn btn-block btn-indigo",
+              text: `📄 الموضوع ${index + 1} — قراءة PDF محلي`,
+              attrs: { href, target: "_blank", rel: "noopener noreferrer" }
+            })
+          );
+        });
+      } else {
         actions.append(
           node("a", {
-            className: "btn btn-block btn-ghost btn-sm",
-            text: "⬇️ PDF مباشر",
-            attrs: {
-              href: entry.pdfUrl,
-              target: "_blank",
-              rel: "noopener noreferrer"
-            }
+            className: "btn btn-block btn-indigo",
+            text: label,
+            attrs: { href: entry.url, target: "_blank", rel: "noopener noreferrer" }
           })
         );
       }

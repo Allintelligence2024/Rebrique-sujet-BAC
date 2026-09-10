@@ -1754,3 +1754,7 @@ html[lang="ar"]
     max-width: calc(100vw - 0.8rem);
   }
 }
+
+.pdf-reader { min-height: 32rem; }
+.pdf-reader-frame { width: 100%; min-height: 30rem; border: 1px solid var(--line); border-radius: 0.75rem; background: #fff; }
+@media (max-width: 700px) { .pdf-reader-frame { min-height: 24rem; } }

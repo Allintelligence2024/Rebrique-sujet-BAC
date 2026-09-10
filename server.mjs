@@ -28,7 +28,7 @@ export const securityHeaders = {
 };
 
 const PUBLIC_FILES = new Set(["index.html", "manifest.webmanifest", "release.json", "sw.js"]);
-const PUBLIC_DIRECTORIES = ["assets/", "js/", "data/", "legal/"];
+const PUBLIC_DIRECTORIES = ["assets/", "js/", "data/", "legal/", "subjects/"];
 
 /** Public URL allowlist. Build files, tests, docs, patches and dotfiles are never deployable assets. */
 export function isPublicRoute(requested) {
