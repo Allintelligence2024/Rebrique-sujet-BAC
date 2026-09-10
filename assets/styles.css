@@ -1755,6 +1755,7 @@ html[lang="ar"]
   }
 }
 
-.pdf-reader { min-height: 32rem; }
-.pdf-reader-frame { width: 100%; min-height: 30rem; border: 1px solid var(--line); border-radius: 0.75rem; background: #fff; }
-@media (max-width: 700px) { .pdf-reader-frame { min-height: 24rem; } }
+.pdf-reader { min-height: 16rem; justify-content: center; }
+.pdf-reader-cover { min-height: 10rem; display: grid; place-items: center; gap: .45rem; padding: 1.5rem; text-align: center; border: 1px solid var(--line); border-radius: .75rem; background: rgba(255,255,255,.04); }
+.pdf-reader-icon { font-size: 3rem; }
+.pdf-open { min-height: 3.5rem; }

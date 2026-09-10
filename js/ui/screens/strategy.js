@@ -31,9 +31,14 @@ export function createStrategyScreen(deps) {
 
   function pdfFallbackHTML(subject) {
     if (subject?.pdfLocalUrl) {
-      return `<div class="stack pdf-reader">
-        <iframe class="pdf-reader-frame" title="قراءة الموضوع المختار" src="${subject.pdfLocalUrl}"></iframe>
-        <a class="btn btn-indigo" href="${subject.pdfLocalUrl}" target="_blank" rel="noopener noreferrer">📄 فتح PDF في نافذة مستقلة</a>
+      return `<div class="pdf-reader stack">
+        <div class="pdf-reader-cover" role="status">
+          <span class="pdf-reader-icon" aria-hidden="true">📄</span>
+          <strong>ملف الموضوع جاهز للقراءة</strong>
+          <p class="small text-muted">يفتح PDF في نافذة مستقلة لتجنب حجب Opera للـ PDF داخل الإطار.</p>
+        </div>
+        <a class="btn btn-indigo btn-block pdf-open" href="${subject.pdfLocalUrl}" target="_blank" rel="noopener noreferrer">📄 فتح الموضوع المختار وقراءته</a>
+        <a class="small center" href="${subject.pdfLocalUrl}" download>⬇️ تنزيل نسخة للقراءة دون اتصال</a>
       </div>`;
     }
     return `<div class="center stack preview-empty">
