@@ -13,8 +13,8 @@ const YEAR_2025_SE = {
       pdf: null,
       pdfFilename: null,
       pdfAvailable: false,
-      pdfExternalUrl: "https://www.dzexams.com/ar/bac/sciences-naturelles",
-      pdfNote: "PDF tiers non redistribué dans le dépôt ; consulter la source externe.",
+      pdfExternalUrl: "https://www.dzexams.com/ar/annales/S3VKb3UrRU9MUnJHVG5ndENaV1FIdz09",
+      pdfNote: "Source externe DzExams 2025 ; le dépôt ne redistribue pas le PDF tiers.",
       title: "الموضوع الأول",
       exercises: [
         {
@@ -428,8 +428,8 @@ const YEAR_2025_SE = {
       pdf: null,
       pdfFilename: null,
       pdfAvailable: false,
-      pdfExternalUrl: "https://www.dzexams.com/ar/bac/sciences-naturelles",
-      pdfNote: "PDF tiers non redistribué dans le dépôt ; consulter la source externe.",
+      pdfExternalUrl: "https://www.dzexams.com/ar/annales/S3VKb3UrRU9MUnJHVG5ndENaV1FIdz09",
+      pdfNote: "Source externe DzExams 2025 ; le dépôt ne redistribue pas le PDF tiers.",
       title: "الموضوع الثاني",
       exercises: [
         {
