@@ -90,7 +90,6 @@ export function createSimulationController(deps) {
     officialTaskInventoryFor,
     openDrawer,
     openModal,
-    pdfFallbackHTML,
     showScreen,
     store,
     timers,
@@ -156,10 +155,9 @@ export function createSimulationController(deps) {
           </div>
           <span class="badge ${completed ? "badge-emerald" : "badge-rose"}">${completed ? "مُسلَّم" : "محاكاة"}</span>
         </header>
-        <div class="workspace-tools" aria-label="أدوات المحاكاة">
-          <button class="btn btn-indigo btn-sm" id="simulation-pdf">📄 الموضوع الرسمي</button>
-          ${completed ? "" : `<button class="btn btn-rose btn-sm" id="simulation-finish">✓ تسليم النسخة</button>`}
-        </div>
+            <div class="workspace-tools" aria-label="أدوات المحاكاة">
+              ${completed ? "" : `<button class="btn btn-rose btn-sm" id="simulation-finish">✓ تسليم النسخة</button>`}
+            </div>
         ${simulationExamHTML({
           subject,
           inventory,
@@ -174,9 +172,8 @@ export function createSimulationController(deps) {
   }
 
   function bind(completed) {
-    $("#simulation-home")?.addEventListener("click", goHome);
-    $("#simulation-pdf")?.addEventListener("click", openPdf);
-    $("#simulation-finish")?.addEventListener("click", confirmFinish);
+        $("#simulation-home")?.addEventListener("click", goHome);
+        $("#simulation-finish")?.addEventListener("click", confirmFinish);
     $$("#view-workspace [data-simulation-exercise]").forEach((button) =>
       button.addEventListener("click", () => {
         if (!completed) persistAnswers();
@@ -196,11 +193,6 @@ export function createSimulationController(deps) {
     if (store.isSessionActive()) store.leaveSession();
     toast(`المحاكاة مرفوضة: ${simulationBlockersArabic(report?.blockers)}`, "error");
     goHome();
-  }
-
-  function openPdf() {
-    const subject = sujetObj();
-    openDrawer("right", "📄 الموضوع الرسمي المختار", pdfFallbackHTML(subject));
   }
 
   function confirmFinish() {
