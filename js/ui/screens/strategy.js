@@ -1,5 +1,3 @@
-import { assertSimulationEligible } from "../../domain/subjects/official-coverage.js";
-import { simulationBlockersArabic } from "../coverage-messages.js";
 import { setInternalHTML } from "../dom.js";
 
 export function createStrategyScreen(deps) {
@@ -13,7 +11,6 @@ export function createStrategyScreen(deps) {
     showScreen,
     store,
     timers,
-    toast,
     yearObj
   } = deps;
 
@@ -148,7 +145,7 @@ export function createStrategyScreen(deps) {
       </div>
       <div class="stack subject-mode-actions">
         <button class="btn btn-block btn-${theme}" data-confirm="${subject.id}" data-session-mode="training">ابدأ التدريب الموجّه</button>
-        <button class="btn btn-block btn-ghost" data-confirm="${subject.id}" data-session-mode="simulation"${coverage.simulationEligible ? "" : " disabled"} aria-describedby="coverage-s${subject.id}">ابدأ المحاكاة الرسمية</button>
+        <button class="btn btn-block btn-ghost" data-confirm="${subject.id}" data-session-mode="simulation" aria-describedby="coverage-s${subject.id}">${coverage.simulationEligible ? "ابدأ المحاكاة الرسمية" : "ابدأ وضع BAC — قراءة الموضوع"}</button>
       </div>
     </div>`;
   }
@@ -211,15 +208,8 @@ export function createStrategyScreen(deps) {
     const year = yearObj(store.state.yearId);
     const subject = year?.sujets.find((item) => item.id === sujetNum);
     if (!subject) return;
-    if (mode === "simulation") {
-      const report = officialCoverageForSubject(year, subject);
-      try {
-        assertSimulationEligible(report);
-      } catch {
-        toast(`المحاكاة مرفوضة: ${simulationBlockersArabic(report.blockers)}`, "error");
-        return;
-      }
-    }
+    // If the official task inventory is incomplete, the button still opens
+    // the selected local PDF in BAC reading mode instead of blocking the user.
     store.activateSubjectMode(sujetNum, mode);
     timers.stopStrategy();
     enterExercise(1);

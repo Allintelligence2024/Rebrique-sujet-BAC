@@ -88,7 +88,6 @@ export function createSimulationController(deps) {
     goHome,
     officialCoverageForSubject,
     officialTaskInventoryFor,
-    openDrawer,
     openModal,
     showScreen,
     store,
@@ -129,16 +128,46 @@ export function createSimulationController(deps) {
     store.save();
   }
 
+  function renderBacReadingMode(subject) {
+    const pdf = subject?.pdfLocalUrl;
+    setInternalHTML(
+      $("#view-workspace"),
+      `<div class="app app-wide bac-reading-mode" data-session-mode="simulation">
+        <header class="screen-head">
+          <div class="brand">
+            <button class="btn btn-rose btn-sm" id="bac-reading-home">الرئيسية</button>
+            <div>
+              <h2>وضع BAC · الموضوع ${subject.id === 1 ? "الأول" : "الثاني"}</h2>
+              <p>قراءة الموضوع المختار فقط — بدون تصحيح أو إجابة نموذجية</p>
+            </div>
+          </div>
+          <span class="badge badge-indigo">PDF محلي</span>
+        </header>
+        <div class="feedback mid mb-2" role="note">هذا الموضوع منفصل عن الموضوع الثاني. لا توجد حلول أو إجابات نموذجية في هذا الوضع.</div>
+        <section class="card center stack bac-reading-card">
+          <div class="pdf-reader-cover"><span class="pdf-reader-icon" aria-hidden="true">📄</span><strong>موضوع البكالوريا جاهز</strong><p class="small text-muted">اضغط لفتحه وقراءته مباشرة من الموقع.</p></div>
+          ${pdf ? `<a class="btn btn-indigo btn-block pdf-open" href="${pdf}" target="_blank" rel="noopener noreferrer">📄 فتح الموضوع المختار</a><a class="small" href="${pdf}" download>⬇️ تنزيل PDF</a>` : `<p class="feedback bad">لا يوجد PDF محلي لهذا الموضوع.</p>`}
+        </section>
+      </div>`
+    );
+    $("#bac-reading-home")?.addEventListener("click", goHome);
+    showScreen("view-workspace");
+  }
+
   function renderSimulation() {
     const { subject, inventory, report } = context();
-    if (!subject || !inventory) {
+    if (!subject) {
       denyInvalidSimulation(report);
+      return;
+    }
+    if (!inventory || !report.simulationEligible) {
+      renderBacReadingMode(subject);
       return;
     }
     try {
       assertSimulationEligible(report);
     } catch {
-      denyInvalidSimulation(report);
+      renderBacReadingMode(subject);
       return;
     }
     const completed = store.state.sessionStatus === "completed";
