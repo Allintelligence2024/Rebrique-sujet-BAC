@@ -131,10 +131,10 @@ export function createSimulationController(deps) {
 
   function qualitativeLabel(value) {
     const length = String(value || "").trim().length;
-    if (!length) return "ضعيف — ابدأ بكتابة إجابتك.";
-    if (length < 80) return "يحتاج إلى تطوير — أضف الملاحظة والشرح والنتيجة.";
-    if (length < 220) return "جيد — إجابة مفهومة وقابلة للتحسين.";
-    return "ممتاز — إجابة مفصلة ومنظمة.";
+    if (!length) return "ضعيف — C — ابدأ بكتابة إجابتك.";
+    if (length < 80) return "يحتاج إلى تطوير — C — أضف الملاحظة والشرح والنتيجة.";
+    if (length < 220) return "جيد — B — إجابة مفهومة وقابلة للتحسين.";
+    return "ممتاز — A — إجابة مفصلة ومنظمة.";
   }
 
   function bindQualitativeChecks() {
