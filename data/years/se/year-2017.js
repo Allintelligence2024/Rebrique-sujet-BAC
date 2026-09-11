@@ -25,6 +25,7 @@ const YEAR_2017_SE = {
       pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2017/dzexams-bac-sciences-2581269.pdf",
+      pdfLocalUrl: "/subjects/SE/2017/sujet-1.pdf",
       pdfNote:
         "PDF non redistribué dans le dépôt. Page dzexams : https://www.dzexams.com/ar/annales/dFRNWk1JWkt2aC8vdFZtZVNMWGRwZz09. Session normale 2017. PDF dzexams محمي في العارض. Thèmes pédagogiques reconstruits.",
       title: "الموضوع الأول",
@@ -302,6 +303,7 @@ const YEAR_2017_SE = {
       pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2017/dzexams-bac-sciences-2581269.pdf",
+      pdfLocalUrl: "/subjects/SE/2017/sujet-2.pdf",
       pdfNote:
         "PDF non redistribué dans le dépôt. Page dzexams : https://www.dzexams.com/ar/annales/dFRNWk1JWkt2aC8vdFZtZVNMWGRwZz09. Session normale 2017. PDF dzexams محمي في العارض. Thèmes pédagogiques reconstruits.",
       title: "الموضوع الثاني",

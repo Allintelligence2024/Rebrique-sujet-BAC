@@ -20,11 +20,10 @@ function build() {
 
 before(build);
 
-test("le monofichier embarque le shell et les PDF sans dépendance externe", () => {
+test("le monofichier embarque le shell sans redistribuer de PDF tiers", () => {
   const output = readFileSync(standalonePath, "utf8");
-  assert.ok(Buffer.byteLength(output) < 5.5 * 1024 * 1024, "les PDF ne doivent pas être embarqués en double");
+  assert.ok(Buffer.byteLength(output) < 3 * 1024 * 1024, "aucun PDF tiers ne doit être embarqué");
   assert.match(output, /<style>/);
-  assert.match(output, /data:application\/pdf;base64,/);
   assert.match(output, /location\?\.protocol !== "file:"/);
   assert.match(output, /APP_BUILD_ID/);
   assert.doesNotMatch(output, /href="assets\/styles\.css"/);
@@ -42,9 +41,7 @@ test("dist/site est un artefact vérifiable qui n'expose aucun fichier de dével
     "sw.js",
     "manifest.webmanifest",
     "data/years/se/year-2025.js",
-    "data/years/m/year-2026.js",
-    "BAC2025_SVT_Sujet1.pdf",
-    "BAC2025_SVT_Sujet2.pdf"
+    "data/years/m/year-2026.js"
   ]) {
     assert.ok(existsSync(join(sitePath, path)), `${path} absent de la release`);
   }

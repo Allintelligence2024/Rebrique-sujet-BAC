@@ -2,14 +2,8 @@ import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 
-export const PUBLIC_ROOT_FILES = Object.freeze([
-  "index.html",
-  "manifest.webmanifest",
-  "sw.js",
-  "BAC2025_SVT_Sujet1.pdf",
-  "BAC2025_SVT_Sujet2.pdf"
-]);
-export const PUBLIC_DIRECTORIES = Object.freeze(["assets", "js", "data"]);
+export const PUBLIC_ROOT_FILES = Object.freeze(["index.html", "manifest.webmanifest", "sw.js"]);
+export const PUBLIC_DIRECTORIES = Object.freeze(["assets", "js", "data", "legal", "subjects"]);
 export const GENERATED_VERSION_FILE = "js/app-version.js";
 
 const repoPath = (root, path) => relative(root, path).split(sep).join("/");

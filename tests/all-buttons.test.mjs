@@ -174,16 +174,14 @@ test("3. Stratégie : calculatrice, couverture officielle et confirmation", () =
   assert.ok(simulationButtons.every((button) => button.disabled));
   assert.match($("#view-strategy").textContent, /المحاكاة ممنوعة/);
 
-  // Les PDF ne sont plus téléchargés automatiquement : un lien explicite annonce la taille.
+  // Third-party PDFs are not redistributed: the strategy links to the external source.
   click('#view-strategy [data-preview="2"]');
-  assert.ok($("#pdf-preview-container .pdf-download").href.includes("BAC2025_SVT_Sujet2.pdf"));
-  assert.equal($("#pdf-preview-container .pdf-download").download, "BAC2025_SVT_Sujet2.pdf");
-  assert.equal($("#pdf-preview-container [data-pdf-bytes]").dataset.pdfBytes, "1158907");
+  assert.ok($("#pdf-preview-container a").href.includes("dzexams.com"));
+  assert.equal($("#pdf-preview-container .pdf-download"), null);
 
   click('#view-strategy [data-preview="1"]');
-  assert.ok($("#pdf-preview-container .pdf-download").href.includes("BAC2025_SVT_Sujet1.pdf"));
-  assert.equal($("#pdf-preview-container .pdf-download").download, "BAC2025_SVT_Sujet1.pdf");
-  assert.equal($("#pdf-preview-container [data-pdf-bytes]").dataset.pdfBytes, "1099674");
+  assert.ok($("#pdf-preview-container a").href.includes("dzexams.com"));
+  assert.equal($("#pdf-preview-container .pdf-download"), null);
 
   // Calc inputs
   const input = $$("#view-strategy .calc-input")[0];

@@ -24,6 +24,7 @@ const YEAR_2018_SE = {
       pdf: null,
       pdfAvailable: false,
       pdfExternalUrl: "https://www.dzexams.com/ar/annales/RGZmd0lTRW0xNmZTRUFjR0F5QzMwZz09",
+      pdfLocalUrl: "/subjects/SE/2018/sujet-1.pdf",
       pdfNote:
         "PDF non redistribué dans le dépôt. Page dzexams : https://www.dzexams.com/ar/annales/RGZmd0lTRW0xNmZTRUFjR0F5QzMwZz09. Thèmes relus sur la couche texte dzexams (OCR inversé, 2026-08-30). Wording reconstructed.",
       title: "الموضوع الأول",
@@ -297,6 +298,7 @@ const YEAR_2018_SE = {
       pdf: null,
       pdfAvailable: false,
       pdfExternalUrl: "https://www.dzexams.com/ar/annales/RGZmd0lTRW0xNmZTRUFjR0F5QzMwZz09",
+      pdfLocalUrl: "/subjects/SE/2018/sujet-2.pdf",
       pdfNote:
         "PDF non redistribué dans le dépôt. Page dzexams : https://www.dzexams.com/ar/annales/RGZmd0lTRW0xNmZTRUFjR0F5QzMwZz09. Thèmes relus sur la couche texte dzexams (OCR inversé, 2026-08-30). Wording reconstructed.",
       title: "الموضوع الثاني",

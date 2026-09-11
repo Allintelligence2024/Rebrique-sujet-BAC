@@ -37,6 +37,7 @@ export const YEAR_2021_M = {
       pdf: null,
       pdfAvailable: false,
       pdfExternalUrl: "https://www.dzexams.com/ar/annales/T2tYS3FTcFRwWCtCbXV2QmFyRTcydz09",
+      pdfLocalUrl: "/subjects/M/2021/sujet-1.pdf",
       pdfNote: PDF_NOTE,
       title: "الموضوع الأول",
       exercises: [
@@ -232,6 +233,7 @@ export const YEAR_2021_M = {
       pdf: null,
       pdfAvailable: false,
       pdfExternalUrl: "https://www.dzexams.com/ar/annales/T2tYS3FTcFRwWCtCbXV2QmFyRTcydz09",
+      pdfLocalUrl: "/subjects/M/2021/sujet-2.pdf",
       pdfNote: PDF_NOTE,
       title: "الموضوع الثاني",
       exercises: [

@@ -13,6 +13,7 @@ const YEAR_2024_SE = {
       pdf: null,
       pdfAvailable: false,
       pdfExternalUrl: "https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf",
+      pdfLocalUrl: "/subjects/SE/2024/sujet-1.pdf",
       pdfNote:
         "PDF non redistribué dans le dépôt ; source: https://eddirasa.com/bac-science-2024-se/ (consulté 2026-08-25). Miroir dzexams: https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09 · PDF: https://www.dzexams.com/uploads/sujets/officiels/bac/2024/dzexams-bac-sciences-naturelles-1751784.pdf. Pages 2, 6, 7 et 10 relues sur photos du sujet officiel (2026-08-31). Viewer dzexams bloqué (0 pages) dans la sandbox. Session de remplacement non localisée.",
       title: "الموضوع الأول",
@@ -303,6 +304,7 @@ const YEAR_2024_SE = {
       pdf: null,
       pdfAvailable: false,
       pdfExternalUrl: "https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf",
+      pdfLocalUrl: "/subjects/SE/2024/sujet-2.pdf",
       pdfNote:
         "PDF non redistribué dans le dépôt ; même fichier que le sujet 1 (session normale, sujets 1 et 2). Pages 6, 7 et 10 relues sur photos du sujet officiel (2026-08-31). Viewer dzexams bloqué dans la sandbox.",
       title: "الموضوع الثاني",

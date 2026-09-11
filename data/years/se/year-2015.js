@@ -25,6 +25,7 @@ const YEAR_2015_SE = {
       pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2015/dzexams-bac-sciences-5906014.pdf",
+      pdfLocalUrl: "/subjects/SE/2015/sujet-1.pdf",
       pdfNote:
         "PDF non redistribué dans le dépôt. Page dzexams : https://www.dzexams.com/ar/annales/aTlRWGREbDN3Qit2cVdRaHNmK0FYQT09. 2015 : PDF dzexams دون طبقة نص قابلة للشهادة هنا. Thèmes pédagogiques reconstruits.",
       title: "الموضوع الأول",
@@ -303,6 +304,7 @@ const YEAR_2015_SE = {
       pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2015/dzexams-bac-sciences-5906014.pdf",
+      pdfLocalUrl: "/subjects/SE/2015/sujet-2.pdf",
       pdfNote:
         "PDF non redistribué dans le dépôt. Page dzexams : https://www.dzexams.com/ar/annales/aTlRWGREbDN3Qit2cVdRaHNmK0FYQT09. 2015 : PDF dzexams دون طبقة نص قابلة للشهادة هنا. Thèmes pédagogiques reconstruits.",
       title: "الموضوع الثاني",

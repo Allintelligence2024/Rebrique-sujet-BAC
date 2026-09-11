@@ -27,15 +27,8 @@ export const securityHeaders = {
   "Cross-Origin-Resource-Policy": "same-origin"
 };
 
-const PUBLIC_FILES = new Set([
-  "index.html",
-  "manifest.webmanifest",
-  "release.json",
-  "sw.js",
-  "BAC2025_SVT_Sujet1.pdf",
-  "BAC2025_SVT_Sujet2.pdf"
-]);
-const PUBLIC_DIRECTORIES = ["assets/", "js/", "data/"];
+const PUBLIC_FILES = new Set(["index.html", "manifest.webmanifest", "release.json", "sw.js"]);
+const PUBLIC_DIRECTORIES = ["assets/", "js/", "data/", "legal/", "subjects/"];
 
 /** Public URL allowlist. Build files, tests, docs, patches and dotfiles are never deployable assets. */
 export function isPublicRoute(requested) {

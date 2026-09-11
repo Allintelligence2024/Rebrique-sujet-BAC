@@ -19,7 +19,7 @@ const BAC_2025_S1 = {
   status: "partial",
   source: {
     kind: "local-pdf",
-    locator: "BAC2025_SVT_Sujet1.pdf",
+    locator: "https://www.dzexams.com/ar/bac/sciences-naturelles",
     verifiedAt: "2026-08-23",
     notes:
       "Questions relues visuellement sur la page 1 du scan local. Inventaire P1 limité au premier exercice."

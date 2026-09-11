@@ -114,11 +114,11 @@ test("une réponse locale 200 est stockée et l'éviction respecte strictement l
 
 test("une réponse 500 ne remplace jamais une entrée saine déjà mise en cache", async () => {
   const { api, caches } = harness();
-  const request = new globalThis.Request("https://app.test/BAC2025_SVT_Sujet1.pdf?v=2f81965e9afd");
-  assert.equal(await api.cacheRuntimeResponse(request, new Response("pdf-ok")), true);
+  const request = new globalThis.Request("https://app.test/data/years/se/year-2025.js");
+  assert.equal(await api.cacheRuntimeResponse(request, new Response("year-ok")), true);
   assert.equal(await api.cacheRuntimeResponse(request, new Response("server-error", { status: 500 })), false);
   const cached = await (await caches.open(api.RUNTIME_CACHE)).match(request);
-  assert.equal(await cached.text(), "pdf-ok");
+  assert.equal(await cached.text(), "year-ok");
 });
 
 test("un échec d’écriture du cache ne masque jamais une réponse réseau réussie", async () => {

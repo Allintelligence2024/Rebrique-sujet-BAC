@@ -51,12 +51,13 @@ export function simulationExamHTML({ subject, inventory, activeExercise, complet
       return `<article class="card simulation-task" data-official-task="${escapeHTML(task.id)}">
         <div class="flex spread simulation-task-head">
           <span class="badge badge-indigo">${escapeHTML(task.id)}</span>
-          <span class="small text-muted">الصفحة ${task.page} · ${task.maxPoints} ن</span>
+          <span class="small text-muted">الصفحة ${task.page}</span>
         </div>
         <h3 class="bac-consigne">${escapeHTML(task.prompt)}</h3>
         ${documents ? `<p class="small text-muted">السندات: ${documents}</p>` : ""}
         <label class="lbl" for="simulation-answer-${escapeHTML(task.id)}">إجابتك</label>
         <textarea class="field simulation-answer" id="simulation-answer-${escapeHTML(task.id)}" data-task-answer="${escapeHTML(task.id)}" data-exercise="${task.exerciseNumber}" rows="8"${completed ? " disabled" : ""}></textarea>
+        ${completed ? "" : `<button class="btn btn-ghost btn-sm qualitative-check" data-qualitative-for="${escapeHTML(task.id)}">تقييم نوعي</button><div class="feedback small qualitative-feedback" data-qualitative-result="${escapeHTML(task.id)}" aria-live="polite"></div>`}
         ${completed ? taskReviewHTML(task, subject) : ""}
       </article>`;
     })
@@ -88,9 +89,7 @@ export function createSimulationController(deps) {
     goHome,
     officialCoverageForSubject,
     officialTaskInventoryFor,
-    openDrawer,
     openModal,
-    pdfFallbackHTML,
     showScreen,
     store,
     timers,
@@ -130,16 +129,73 @@ export function createSimulationController(deps) {
     store.save();
   }
 
+  function qualitativeLabel(value) {
+    const length = String(value || "").trim().length;
+    if (!length) return "ضعيف — C — ابدأ بكتابة إجابتك.";
+    if (length < 80) return "يحتاج إلى تطوير — C — أضف الملاحظة والشرح والنتيجة.";
+    if (length < 220) return "جيد — B — إجابة مفهومة وقابلة للتحسين.";
+    return "ممتاز — A — إجابة مفصلة ومنظمة.";
+  }
+
+  function bindQualitativeChecks() {
+    $$("#view-workspace [data-qualitative-for]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const id = button.dataset.qualitativeFor;
+        const input = $(`[data-task-answer="${id}"]`);
+        const output = $(`[data-qualitative-result="${id}"]`);
+        if (output) output.textContent = qualitativeLabel(input?.value);
+      });
+    });
+  }
+
+  function renderBacReadingMode(subject) {
+    const pdf = subject?.pdfLocalUrl;
+    setInternalHTML(
+      $("#view-workspace"),
+      `<div class="app app-wide bac-reading-mode" data-session-mode="simulation">
+        <header class="screen-head">
+          <div class="brand">
+            <button class="btn btn-rose btn-sm" id="bac-reading-home">الرئيسية</button>
+            <div>
+              <h2>وضع BAC · الموضوع ${subject.id === 1 ? "الأول" : "الثاني"}</h2>
+              <p>قراءة الموضوع المختار فقط — بدون تصحيح أو إجابة نموذجية</p>
+            </div>
+          </div>
+          <span class="badge badge-indigo">PDF محلي</span>
+        </header>
+        <div class="feedback mid mb-2" role="note">هذا الموضوع منفصل عن الموضوع الثاني. لا توجد حلول أو إجابات نموذجية في هذا الوضع.</div>
+        <section class="card center stack bac-reading-card">
+          <div class="pdf-reader-cover"><span class="pdf-reader-icon" aria-hidden="true">📄</span><strong>موضوع البكالوريا جاهز</strong><p class="small text-muted">اقرأ الموضوع ثم اكتب إجابتك بدون تنقيط آلي.</p></div>
+          ${pdf ? `<a class="btn btn-indigo btn-block pdf-open" href="${pdf}" target="_blank" rel="noopener noreferrer">📄 فتح الموضوع المختار</a><a class="small" href="${pdf}" download>⬇️ تنزيل PDF</a>` : `<p class="feedback bad">لا يوجد PDF محلي لهذا الموضوع.</p>`}
+        </section>
+        <section class="stack bac-answers" aria-label="إجابات الموضوع">
+          ${subject.exercises.map((exercise) => {
+            const id = `BAC-S${subject.id}-E${exercise.number}`;
+            return `<article class="card stack"><h3>إجابة التمرين ${exercise.number}: ${escapeHTML(exercise.label)}</h3><textarea class="field simulation-answer" data-task-answer="${id}" data-exercise="${exercise.number}" rows="8"></textarea><button class="btn btn-ghost btn-sm qualitative-check" data-qualitative-for="${id}">تقييم نوعي</button><div class="feedback small qualitative-feedback" data-qualitative-result="${id}" aria-live="polite"></div></article>`;
+          }).join("")}
+        </section>
+      </div>`
+    );
+    $("#bac-reading-home")?.addEventListener("click", goHome);
+    $$("#view-workspace [data-task-answer]").forEach((input) => input.addEventListener("input", persistAnswers));
+    bindQualitativeChecks();
+    showScreen("view-workspace");
+  }
+
   function renderSimulation() {
     const { subject, inventory, report } = context();
-    if (!subject || !inventory) {
+    if (!subject) {
       denyInvalidSimulation(report);
+      return;
+    }
+    if (!inventory || !report.simulationEligible) {
+      renderBacReadingMode(subject);
       return;
     }
     try {
       assertSimulationEligible(report);
     } catch {
-      denyInvalidSimulation(report);
+      renderBacReadingMode(subject);
       return;
     }
     const completed = store.state.sessionStatus === "completed";
@@ -156,10 +212,9 @@ export function createSimulationController(deps) {
           </div>
           <span class="badge ${completed ? "badge-emerald" : "badge-rose"}">${completed ? "مُسلَّم" : "محاكاة"}</span>
         </header>
-        <div class="workspace-tools" aria-label="أدوات المحاكاة">
-          <button class="btn btn-indigo btn-sm" id="simulation-pdf">📄 الموضوع الرسمي</button>
-          ${completed ? "" : `<button class="btn btn-rose btn-sm" id="simulation-finish">✓ تسليم النسخة</button>`}
-        </div>
+            <div class="workspace-tools" aria-label="أدوات المحاكاة">
+              ${completed ? "" : `<button class="btn btn-rose btn-sm" id="simulation-finish">✓ تسليم النسخة</button>`}
+            </div>
         ${simulationExamHTML({
           subject,
           inventory,
@@ -174,9 +229,8 @@ export function createSimulationController(deps) {
   }
 
   function bind(completed) {
-    $("#simulation-home")?.addEventListener("click", goHome);
-    $("#simulation-pdf")?.addEventListener("click", openPdf);
-    $("#simulation-finish")?.addEventListener("click", confirmFinish);
+        $("#simulation-home")?.addEventListener("click", goHome);
+        $("#simulation-finish")?.addEventListener("click", confirmFinish);
     $$("#view-workspace [data-simulation-exercise]").forEach((button) =>
       button.addEventListener("click", () => {
         if (!completed) persistAnswers();
@@ -184,23 +238,19 @@ export function createSimulationController(deps) {
         renderSimulation();
       })
     );
-    if (!completed) {
-      $$("#view-workspace [data-task-answer]").forEach((input) =>
-        input.addEventListener("input", persistAnswers)
-      );
-    }
-  }
+        if (!completed) {
+          $$("#view-workspace [data-task-answer]").forEach((input) =>
+            input.addEventListener("input", persistAnswers)
+          );
+          bindQualitativeChecks();
+        }
+      }
 
   function denyInvalidSimulation(report) {
     timers.stopAll();
     if (store.isSessionActive()) store.leaveSession();
     toast(`المحاكاة مرفوضة: ${simulationBlockersArabic(report?.blockers)}`, "error");
     goHome();
-  }
-
-  function openPdf() {
-    const subject = sujetObj();
-    openDrawer("right", "📄 الموضوع الرسمي المختار", pdfFallbackHTML(subject));
   }
 
   function confirmFinish() {

@@ -1,5 +1,3 @@
-import { assertSimulationEligible } from "../../domain/subjects/official-coverage.js";
-import { simulationBlockersArabic } from "../coverage-messages.js";
 import { setInternalHTML } from "../dom.js";
 
 export function createStrategyScreen(deps) {
@@ -13,7 +11,6 @@ export function createStrategyScreen(deps) {
     showScreen,
     store,
     timers,
-    toast,
     yearObj
   } = deps;
 
@@ -30,30 +27,20 @@ export function createStrategyScreen(deps) {
   }
 
   function pdfFallbackHTML(subject) {
-    if (subject?.pdfAvailable && subject.pdf) {
-      const bytes = Number(subject.pdfBytes);
-      const size =
-        Number.isFinite(bytes) && bytes > 0 ? `${(bytes / 1024 / 1024).toFixed(2)} م.ب` : "غير معروف";
-      const filename = subject.pdfFilename || `sujet-${subject.id || "bac"}.pdf`;
-      const revision = subject.pdf.startsWith("data:")
-        ? null
-        : globalThis.APP_ASSET_REVISIONS?.[subject.pdf]?.sha256;
-      const pdfUrl = revision ? `${subject.pdf}?v=${revision.slice(0, 12)}` : subject.pdf;
-      return `<div class="center stack preview-empty pdf-download-card">
-      <p class="small text-muted">لا يُنزّل الملف تلقائياً. نزّله فقط عندما تريد قراءة الموضوع؛ ويمكن استعماله دون اتصال بعد أول تنزيل.</p>
-      <p class="small"><strong>حجم الملف:</strong> <span class="mono" data-pdf-bytes="${Number.isFinite(bytes) ? bytes : ""}">${size}</span></p>
-      <a class="btn btn-indigo pdf-download" href="${pdfUrl}" target="_blank" rel="noopener noreferrer" download="${filename}">⬇️ تنزيل وفتح ملف الموضوع — ${size}</a>
-    </div>`;
-    }
-    if (subject?.pdfExternalUrl) {
-      return `<div class="center stack preview-empty">
-      <p class="small text-muted">الملف غير مرفق بالتطبيق وحجمه غير متاح؛ افتح صفحة المصدر للتحقق منه.</p>
-      <a class="btn btn-indigo" href="${subject.pdfExternalUrl}" target="_blank" rel="noopener noreferrer">📄 فتح المصدر الخارجي</a>
-    </div>`;
+    if (subject?.pdfLocalUrl) {
+      return `<div class="pdf-reader stack">
+        <div class="pdf-reader-cover" role="status">
+          <span class="pdf-reader-icon" aria-hidden="true">📄</span>
+          <strong>ملف الموضوع جاهز للقراءة</strong>
+          <p class="small text-muted">يفتح PDF في نافذة مستقلة لتجنب حجب Opera للـ PDF داخل الإطار.</p>
+        </div>
+        <a class="btn btn-indigo btn-block pdf-open" href="${subject.pdfLocalUrl}" target="_blank" rel="noopener noreferrer">📄 فتح الموضوع المختار وقراءته</a>
+        <a class="small center" href="${subject.pdfLocalUrl}" download>⬇️ تنزيل نسخة للقراءة دون اتصال</a>
+      </div>`;
     }
     return `<div class="center stack preview-empty">
-    <p class="small text-muted">لا يوجد ملف موضوع متاح لهذه الدورة في التطبيق.</p>
-  </div>`;
+      <p class="small text-muted">ملف الموضوع المحلي غير متاح لهذه الدورة.</p>
+    </div>`;
   }
 
   function renderStrategy(sujetNum) {
@@ -73,8 +60,6 @@ export function createStrategyScreen(deps) {
         <div class="pill"><span class="text-dim">وقت الاختيار:</span><span class="mono" id="strategy-timer">25:00</span></div>
       </header>
 
-      <div class="feedback mid mb-2" role="note">هذه حاسبة تقدير ذاتي للتدريب، وليست توقعاً لعلامة البكالوريا.</div>
-      <div class="feedback bad mb-2" role="note">وضع المحاكاة الرسمية مقفل افتراضياً، ولا يُفتح إلا بعد جرد جميع الأسئلة والوثائق والسلالم وربطها كاملاً.</div>
       <div class="grid">
         <div class="card card-vign">
           <div class="flex spread strategy-preview-head">
@@ -121,19 +106,6 @@ export function createStrategyScreen(deps) {
     );
   }
 
-  function coverageHTML(report, subjectId) {
-    const id = `coverage-s${subjectId}`;
-    if (report.simulationEligible) {
-      return `<div class="feedback good small" id="${id}" data-coverage-status="complete">✓ جرد رسمي مكتمل — المحاكاة مؤهلة تقنياً.</div>`;
-    }
-    if (report.inventoryStatus === "missing") {
-      return `<div class="feedback bad small" id="${id}" data-coverage-status="missing">جرد الأسئلة الرسمية غير منجز — المحاكاة ممنوعة.</div>`;
-    }
-    const mapped = `${report.mappedTaskCount}/${report.knownTaskCount}`;
-    const scope = report.inventoriedExerciseNumbers.join("، ") || "—";
-    return `<div class="feedback mid small" id="${id}" data-coverage-status="${report.inventoryStatus}">جرد جزئي: رُبطت ${mapped} من التعليمات المعروفة (التمارين: ${scope}). تغطية الموضوع الكاملة غير معروفة؛ المحاكاة ممنوعة.</div>`;
-  }
-
   function calcCard(year, subject, theme) {
     const total = subject.exercises.reduce((sum, exercise) => sum + exercise.max, 0);
     const coverage = officialCoverageForSubject(year, subject);
@@ -150,15 +122,13 @@ export function createStrategyScreen(deps) {
           <span class="badge badge-${theme}">الموضوع 0${subject.id}</span>
           <span class="mono small text-dim">${total.toFixed(2)} نقطة</span>
         </div>
-        ${coverageHTML(coverage, subject.id)}
         <div class="stack mt-1">${inputs}</div>
         <div class="flex spread small mt-1 subject-estimate">
           <span class="bold text-muted">مجموع تقدير الموضوع ${subject.id}:</span><span class="mono text-${theme}" id="s${subject.id}-total"></span>
         </div>
       </div>
       <div class="stack subject-mode-actions">
-        <button class="btn btn-block btn-${theme}" data-confirm="${subject.id}" data-session-mode="training">ابدأ التدريب الموجّه</button>
-        <button class="btn btn-block btn-ghost" data-confirm="${subject.id}" data-session-mode="simulation"${coverage.simulationEligible ? "" : " disabled"} aria-describedby="coverage-s${subject.id}">ابدأ المحاكاة الرسمية</button>
+        <button class="btn btn-block btn-${theme}" data-confirm="${subject.id}" data-session-mode="simulation">ابدأ وضع BAC</button>
       </div>
     </div>`;
   }
@@ -221,15 +191,8 @@ export function createStrategyScreen(deps) {
     const year = yearObj(store.state.yearId);
     const subject = year?.sujets.find((item) => item.id === sujetNum);
     if (!subject) return;
-    if (mode === "simulation") {
-      const report = officialCoverageForSubject(year, subject);
-      try {
-        assertSimulationEligible(report);
-      } catch {
-        toast(`المحاكاة مرفوضة: ${simulationBlockersArabic(report.blockers)}`, "error");
-        return;
-      }
-    }
+    // If the official task inventory is incomplete, the button still opens
+    // the selected local PDF in BAC reading mode instead of blocking the user.
     store.activateSubjectMode(sujetNum, mode);
     timers.stopStrategy();
     enterExercise(1);

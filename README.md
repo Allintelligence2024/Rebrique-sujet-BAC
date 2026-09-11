@@ -17,7 +17,7 @@ Parcours en 5 étapes pensé pour la **gestion du stress** et la **méthode** :
 1. **Hub** — une seule action par carte-sujet : **▶ ابدأ التدريب المنهجي**. Chaque carte annonce que le mapping est partiel et affiche la durée officielle selon la filière : 4 h 30 en Sciences expérimentales, 2 h 30 en Maths.
 2. **Sérénité** _(parcours guidé uniquement)_ — volontairement dépouillé : respiration, rappel des quatre étapes (اقرأ ← اجمع ← اربط ← اختُم), plan de session. Cet écran appartient au parcours d'entraînement, pas à une simulation certifiée de l'épreuve.
 3. **تدريب الخطوات الأربع** _(hub, section repliée)_ — outils d'entraînement formulés littéralement : décision **سند/معارف**, décision **وصف/تفسير**, exercice rapide de 12 instructions, niveau avancé après 12/12 ×3, cinq erreurs, carte imprimable, **أطلس التقنيات** et **تشخيص تجريبي**. Ils restent repliés par défaut.
-4. **Stratégie** _(optionnelle)_ — téléchargement explicite des PDF locaux avec taille annoncée (aucun chargement automatique), estimation personnelle et choix explicite du parcours. L'entraînement reste disponible ; le bouton de simulation est désactivé sujet par sujet tant que sa couverture officielle n'est pas de 100 %.
+4. **Stratégie** _(optionnelle)_ — ouverture explicite des sources PDF externes (aucune redistribution ni chargement automatique), estimation personnelle et choix explicite du parcours. L'entraînement reste disponible ; le bouton de simulation est désactivé sujet par sujet tant que sa couverture officielle n'est pas de 100 %.
 5. **Espace de travail séparé** — l'entraînement conserve les aides, modèles et diagnostics qualitatifs. La simulation utilise uniquement les tâches officielles, sans indice, modèle ni diagnostic pendant l'épreuve ; après remise, les réponses sont verrouillées et une relecture distincte devient disponible. Aucune note BAC n'est affichée : le moteur n'est pas calibré.
 
 > 📱 **Responsive** : l'interface est utilisable sur téléphone (grilles qui se replient, cibles tactiles ≥ 44 px, champs 16 px sans zoom iOS, modales scrollables). Verrouillé par `tests/e2e/responsive.spec.mjs` (3 viewports réels, zéro défilement horizontal) dans la CI.
@@ -114,7 +114,6 @@ Le disclaimers du hard benchmark (0 copie réelle doublement annotée) reste la 
 ├── build.mjs                         # produit la release web déterministe et le monofichier
 ├── sw.js                             # shell précaché + runtime borné à 12 entrées
 ├── manifest.webmanifest              # PWA (installable)
-├── BAC2025_SVT_Sujet1.pdf / BAC2025_SVT_Sujet2.pdf  # PDF locaux, jamais précachés
 ├── _v1_backup/                       # ancien site monolithique conservé
 ├── dist/                             # généré par `npm run build` (ignoré par git)
 │   ├── site/                         # artefact de production + release.json vérifiable
@@ -148,6 +147,12 @@ npm run p2:check  # échoue tant que cinq sessions réelles ne sont pas auditée
 Le protocole et le format d’agrégats pseudonymisés, sans identifiant direct, sont définis dans [`docs/P2_USABILITY_PROTOCOL.md`](docs/P2_USABILITY_PROTOCOL.md). Une session synthétique ne peut pas fermer P2.7.
 
 ---
+
+## ⚖️ Publication responsable
+
+Le code original et la documentation sont sous Apache-2.0 (`LICENSE`). Les droits des sujets, corrigés et scans tiers ne sont pas transférés par cette licence : consultez [`docs/CONTENT_RIGHTS.md`](docs/CONTENT_RIGHTS.md) avant toute redistribution. La politique de confidentialité locale, l’effacement et l’usage du microphone sont décrits dans [`docs/PRIVACY.md`](docs/PRIVACY.md) ; les mentions légales et le signalement d’erreur dans [`docs/LEGAL_NOTICE.md`](docs/LEGAL_NOTICE.md).
+
+La revue P4 reste bloquée pour une mise en production tant qu’une revue juridique du contenu externe n’est pas maintenue et qu’une revue scientifique indépendante n’est pas attestée. Voir [`docs/P4_PUBLICATION.md`](docs/P4_PUBLICATION.md).
 
 ## 🌐 Lancer l'application
 
@@ -184,7 +189,7 @@ Le contenu a été reconstitué à partir du sujet officiel **et de son corrigé
 | **2** | ت2 (7ن)  | أنزيم **SOD** و**التصلب الجانبي الضموري (ALS)**                               |
 | **2** | ت3 (8ن)  | **زمر الدم ABO** و**التسامح المناعي** (نقل بين الزمرتين A / O)                |
 
-> ⚠️ Les PDF 2025 du dépôt sont **scannés**. Les `bacPrompt` marqués `official`
+> ⚠️ Les PDF d’examen ne sont pas redistribués par le dépôt. Les `bacPrompt` marqués `official`
 > ont été relus visuellement page par page (2026-08-23). Le reste reste `reconstructed`.
 
 ### Contenu BAC 2024 (شعبة علوم تجريبية)
@@ -237,7 +242,7 @@ Les points N/S/E/W sont une **allocation pédagogique interne**, pas le barème 
 
 | Année          | État        | PDF local                                          | Source externe                                                                                                                                                                                                                                                                                                                                                 | Consignes                                                                                                                                                                                                         |
 | -------------- | ----------- | -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **2025**       | activée     | `BAC2025_SVT_Sujet1.pdf`, `BAC2025_SVT_Sujet2.pdf` | —                                                                                                                                                                                                                                                                                                                                                              | Pôles `official` relus sur le scan ; autres `reconstructed`                                                                                                                                                       |
+| **2025**       | activée     | aucun PDF local ; liens externes uniquement | —                                                                                                                                                                                                                                                                                                                                                              | Pôles `official` relus sur le scan ; autres `reconstructed`                                                                                                                                                       |
 | **2024**       | activée     | aucun (droit d'auteur)                             | [eddirasa sujet](https://eddirasa.com/bac-science-2024-se/) · [PDF eddirasa](https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf) · [dzexams](https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09) · [PDF dzexams](https://www.dzexams.com/uploads/sujets/officiels/bac/2024/dzexams-bac-sciences-naturelles-1751784.pdf) | Mixte : 8 pôles `official` recopiés mot à mot sur photos des pages 2, 6, 7, 10 (2026-08-31) ; le reste `reconstructed`. Viewer dzexams bloqué dans la sandbox. Session de remplacement non localisée.             |
 | **2023**       | **activée** | aucun (droit d'auteur)                             | [dzexams 2023](https://www.dzexams.com/ar/annales/STRDZEowcCtwN0JmT1NwS3p4cEVmdz09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf)                                                                                                                                                             | Consignes `official` relues sur la couche texte du PDF (inversée, reconstituée mot à mot, 2026-08-25) ; pôles sans question autonome en `reconstructed`                                                           |
 | **2022**       | **activée** | aucun (droit d'auteur)                             | [dzexams 2022](https://www.dzexams.com/ar/annales/eVlXSFRFOEJaN2ozSlE3NytzWkRHQT09) · [PDF ONEC](https://www.dzexams.com/uploads/sujets/officiels/bac/2022/dzexams-bac-sciences-2311208.pdf) · [corrigé eddirasa](https://eddirasa.com/correction-bac-science-2022-se/)                                                                                        | Consignes `official` relues sur la couche texte du PDF ONEC (inversée, reconstituée mot à mot, 2026-08-27) ; corrigé officiel croisé sur 2 sources concordantes ; pôles sans question autonome en `reconstructed` |
@@ -250,8 +255,8 @@ Les points N/S/E/W sont une **allocation pédagogique interne**, pas le barème 
 | **2025 Maths** | **activée** | aucun (droit d'auteur)                             | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2025/06/bac-math-science-2025.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2025/06/correction-bac-math-science-2025.pdf)                                                                                                                                                                 | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 8+12 / 8+12                                                                                                                                         |
 | **2026 Maths** | **activée** | aucun (droit d'auteur)                             | [énoncé eddirasa](https://eddirasa.com/uploads/2026/08/bac-math-sciences-2026.pdf) · [corrigé](https://eddirasa.com/uploads/2026/08/correction-bac-math-sciences-2026.pdf)                                                                                                                                                                                     | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 6+14 / 8+12                                                                                                                                         |
 
-**PDF versés dans le dépôt : uniquement les deux sujets officiels SVT 2025**
-(`BAC2025_SVT_Sujet1.pdf`, `BAC2025_SVT_Sujet2.pdf`, à la racine). L'écran stratégie
+**PDF versés dans le dépôt : aucun**
+(aucun PDF local ; liens externes uniquement, à la racine). L'écran stratégie
 annonce leur taille exacte et attend un téléchargement volontaire. Ils ne sont jamais précachés ;
 une réponse locale HTTP 200 peut seulement entrer dans le cache runtime borné après la demande.
 **Aucun PDF des autres années** (2013–2019, 2020, 2021, 2022, 2023, 2024, 2026) n'est versé
@@ -349,7 +354,7 @@ Statut honnête :
 ## ⚡ PWA, cache et artefact de production
 
 - `data/subjects.js` expose un catalogue léger ; `loadYear()` importe un seul module `data/years/**`, déduplique les requêtes concurrentes et ne mémorise que les payloads validés.
-- `sw.js` précache uniquement le graphe statique nécessaire au shell. Le cache runtime accepte exclusivement les modules d'années et PDF locaux répondant HTTP 200, contourne les requêtes `Range`, et évince au-delà de 12 entrées. Les caches MIFTAH d'un ancien build sont nettoyés sans toucher ceux d'autres applications.
+- `sw.js` précache uniquement le graphe statique nécessaire au shell. Le cache runtime accepte exclusivement les modules d'années répondant HTTP 200 et contourne les requêtes `Range`, et évince au-delà de 12 entrées. Les caches MIFTAH d'un ancien build sont nettoyés sans toucher ceux d'autres applications.
 - `npm run build` calcule un identifiant de contenu, produit `dist/site/` et le monofichier, puis écrit `dist/site/release.json` avec la liste exacte des fichiers, octets et SHA-256. `npm run release:verify` refuse tout fichier ajouté, absent, altéré ou incohérent avec le build.
 - L'observabilité reste locale : seulement des compteurs bornés par périmètre, noms d'erreurs autorisés, changements de connectivité et événements du service worker. Ni réponse élève, ni sujet, ni texte d'erreur, ni URL ne sont enregistrés.
 - La procédure de déploiement atomique, les contrôles post-déploiement et le rollback sont documentés dans [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
@@ -365,7 +370,7 @@ Statut honnête :
 - Critères P1 fermés : **3/6** — statut global : **incomplet**
 - Critères P2 fermés : **6/7** — élèves distincts testés : **0/5**
 - Critères P3 fermés : **6/6** — statut global : **terminé**
-- Taille de la façade UI (js/ui.js) : **449 lignes**
+- Taille de la façade UI (js/ui.js) : **459 lignes**
 
 <!-- AUTO-METRICS:END -->
 
@@ -452,5 +457,5 @@ N: { points: 1, prompt: "…", minLength: 40,
 
 ## 🧭 Version monofichier
 
-`dist/boussole-4d-standalone.html` embarque le CSS, le bundle JS et les deux PDF locaux 2025.
+`dist/boussole-4d-standalone.html` embarque le CSS et le bundle JS ; aucun PDF tiers n’est embarqué.
 Il s'ouvre via `file://` sans enregistrer de service worker. Les PDF des autres années restent des liens externes optionnels, puisqu'ils ne sont pas redistribués dans le dépôt. Régénérer avec `npm run build`.

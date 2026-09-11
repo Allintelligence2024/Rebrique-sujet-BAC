@@ -6,7 +6,7 @@ const STREAM_ORDER = ["se", "m", "tm"];
 const STREAMS = {
   se: { id: "se", label: "علوم تجريبية" },
   m: { id: "m", label: "رياضيات" },
-  tm: { id: "tm", label: "تقني رياضي" }
+  tm: { id: "tm", label: "باك أجنبي" }
 };
 
 function readStream() {
@@ -110,7 +110,7 @@ export function createHubScreen(deps) {
       </div>
       <div class="grid grid-cards" id="year-grid"></div>
       ${training.html()}
-      <footer class="screen-foot">منصة تدريب منهجي لامتحانات بكالوريا علوم الطبيعة والحياة.</footer>
+      <footer class="screen-foot">منصة تدريب منهجي لامتحانات بكالوريا علوم الطبيعة والحياة. <a href="legal/privacy.html">الخصوصية</a> · <a href="legal/legal-notice.html">المعلومات القانونية</a></footer>
     </div>`
     );
 
@@ -280,27 +280,22 @@ export function createHubScreen(deps) {
     for (const entry of item.entries) {
       const session = ARCHIVE.sessions[entry.session] || entry.session;
       const label = item.entries.length > 1 ? `📄 ${session}` : "📄 الموضوع والتصحيح النموذجي";
-      actions.append(
-        node("a", {
-          className: "btn btn-block btn-indigo",
-          text: label,
-          attrs: {
-            href: entry.url,
-            target: "_blank",
-            rel: "noopener noreferrer"
-          }
-        })
-      );
-      if (entry.pdfUrl) {
+      if (entry.localPdfUrls?.length) {
+        entry.localPdfUrls.forEach((href, index) => {
+          actions.append(
+            node("a", {
+              className: "btn btn-block btn-indigo",
+              text: `📄 الموضوع ${index + 1} — قراءة PDF محلي`,
+              attrs: { href, target: "_blank", rel: "noopener noreferrer" }
+            })
+          );
+        });
+      } else {
         actions.append(
           node("a", {
-            className: "btn btn-block btn-ghost btn-sm",
-            text: "⬇️ PDF مباشر",
-            attrs: {
-              href: entry.pdfUrl,
-              target: "_blank",
-              rel: "noopener noreferrer"
-            }
+            className: "btn btn-block btn-indigo",
+            text: label,
+            attrs: { href: entry.url, target: "_blank", rel: "noopener noreferrer" }
           })
         );
       }

@@ -30,8 +30,9 @@ test("loadYear ne charge que l'année demandée, la valide et la mémorise", asy
   assert.deepEqual(loadedYearIds(), ["2025"]);
   assert.equal(getLoadedYear("2025"), year);
   assert.equal(getLoadedYear("2024"), null);
-  assert.equal(year.sujets[0].pdfBytes, 1099674);
-  assert.match(year.sujets[0].pdfSha256, /^[a-f0-9]{64}$/);
+  assert.equal(year.sujets[0].pdfAvailable, false);
+  assert.equal(year.sujets[0].pdf, null);
+  assert.match(year.sujets[0].pdfExternalUrl, /^https:\/\/www\.dzexams\.com\//);
 });
 
 test("une année inconnue est refusée sans modifier le cache", async () => {
