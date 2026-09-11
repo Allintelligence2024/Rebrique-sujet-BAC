@@ -60,8 +60,6 @@ export function createStrategyScreen(deps) {
         <div class="pill"><span class="text-dim">وقت الاختيار:</span><span class="mono" id="strategy-timer">25:00</span></div>
       </header>
 
-      <div class="feedback mid mb-2" role="note">هذه حاسبة تقدير ذاتي للتدريب، وليست توقعاً لعلامة البكالوريا.</div>
-      <div class="feedback bad mb-2" role="note">وضع المحاكاة الرسمية مقفل افتراضياً، ولا يُفتح إلا بعد جرد جميع الأسئلة والوثائق والسلالم وربطها كاملاً.</div>
       <div class="grid">
         <div class="card card-vign">
           <div class="flex spread strategy-preview-head">
@@ -108,19 +106,6 @@ export function createStrategyScreen(deps) {
     );
   }
 
-  function coverageHTML(report, subjectId) {
-    const id = `coverage-s${subjectId}`;
-    if (report.simulationEligible) {
-      return `<div class="feedback good small" id="${id}" data-coverage-status="complete">✓ جرد رسمي مكتمل — المحاكاة مؤهلة تقنياً.</div>`;
-    }
-    if (report.inventoryStatus === "missing") {
-      return `<div class="feedback bad small" id="${id}" data-coverage-status="missing">جرد الأسئلة الرسمية غير منجز — المحاكاة ممنوعة.</div>`;
-    }
-    const mapped = `${report.mappedTaskCount}/${report.knownTaskCount}`;
-    const scope = report.inventoriedExerciseNumbers.join("، ") || "—";
-    return `<div class="feedback mid small" id="${id}" data-coverage-status="${report.inventoryStatus}">جرد جزئي: رُبطت ${mapped} من التعليمات المعروفة (التمارين: ${scope}). تغطية الموضوع الكاملة غير معروفة؛ المحاكاة ممنوعة.</div>`;
-  }
-
   function calcCard(year, subject, theme) {
     const total = subject.exercises.reduce((sum, exercise) => sum + exercise.max, 0);
     const coverage = officialCoverageForSubject(year, subject);
@@ -137,15 +122,13 @@ export function createStrategyScreen(deps) {
           <span class="badge badge-${theme}">الموضوع 0${subject.id}</span>
           <span class="mono small text-dim">${total.toFixed(2)} نقطة</span>
         </div>
-        ${coverageHTML(coverage, subject.id)}
         <div class="stack mt-1">${inputs}</div>
         <div class="flex spread small mt-1 subject-estimate">
           <span class="bold text-muted">مجموع تقدير الموضوع ${subject.id}:</span><span class="mono text-${theme}" id="s${subject.id}-total"></span>
         </div>
       </div>
       <div class="stack subject-mode-actions">
-        <button class="btn btn-block btn-${theme}" data-confirm="${subject.id}" data-session-mode="training">ابدأ التدريب الموجّه</button>
-        <button class="btn btn-block btn-ghost" data-confirm="${subject.id}" data-session-mode="simulation" aria-describedby="coverage-s${subject.id}">${coverage.simulationEligible ? "ابدأ المحاكاة الرسمية" : "ابدأ وضع BAC — قراءة الموضوع"}</button>
+        <button class="btn btn-block btn-${theme}" data-confirm="${subject.id}" data-session-mode="simulation">ابدأ وضع BAC</button>
       </div>
     </div>`;
   }

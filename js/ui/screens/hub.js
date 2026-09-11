@@ -6,7 +6,7 @@ const STREAM_ORDER = ["se", "m", "tm"];
 const STREAMS = {
   se: { id: "se", label: "علوم تجريبية" },
   m: { id: "m", label: "رياضيات" },
-  tm: { id: "tm", label: "تقني رياضي" }
+  tm: { id: "tm", label: "باك أجنبي" }
 };
 
 function readStream() {

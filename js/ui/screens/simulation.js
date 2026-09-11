@@ -51,12 +51,13 @@ export function simulationExamHTML({ subject, inventory, activeExercise, complet
       return `<article class="card simulation-task" data-official-task="${escapeHTML(task.id)}">
         <div class="flex spread simulation-task-head">
           <span class="badge badge-indigo">${escapeHTML(task.id)}</span>
-          <span class="small text-muted">الصفحة ${task.page} · ${task.maxPoints} ن</span>
+          <span class="small text-muted">الصفحة ${task.page}</span>
         </div>
         <h3 class="bac-consigne">${escapeHTML(task.prompt)}</h3>
         ${documents ? `<p class="small text-muted">السندات: ${documents}</p>` : ""}
         <label class="lbl" for="simulation-answer-${escapeHTML(task.id)}">إجابتك</label>
         <textarea class="field simulation-answer" id="simulation-answer-${escapeHTML(task.id)}" data-task-answer="${escapeHTML(task.id)}" data-exercise="${task.exerciseNumber}" rows="8"${completed ? " disabled" : ""}></textarea>
+        ${completed ? "" : `<button class="btn btn-ghost btn-sm qualitative-check" data-qualitative-for="${escapeHTML(task.id)}">تقييم نوعي</button><div class="feedback small qualitative-feedback" data-qualitative-result="${escapeHTML(task.id)}" aria-live="polite"></div>`}
         ${completed ? taskReviewHTML(task, subject) : ""}
       </article>`;
     })
@@ -128,6 +129,25 @@ export function createSimulationController(deps) {
     store.save();
   }
 
+  function qualitativeLabel(value) {
+    const length = String(value || "").trim().length;
+    if (!length) return "ضعيف — ابدأ بكتابة إجابتك.";
+    if (length < 80) return "يحتاج إلى تطوير — أضف الملاحظة والشرح والنتيجة.";
+    if (length < 220) return "جيد — إجابة مفهومة وقابلة للتحسين.";
+    return "ممتاز — إجابة مفصلة ومنظمة.";
+  }
+
+  function bindQualitativeChecks() {
+    $$("#view-workspace [data-qualitative-for]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const id = button.dataset.qualitativeFor;
+        const input = $(`[data-task-answer="${id}"]`);
+        const output = $(`[data-qualitative-result="${id}"]`);
+        if (output) output.textContent = qualitativeLabel(input?.value);
+      });
+    });
+  }
+
   function renderBacReadingMode(subject) {
     const pdf = subject?.pdfLocalUrl;
     setInternalHTML(
@@ -145,12 +165,20 @@ export function createSimulationController(deps) {
         </header>
         <div class="feedback mid mb-2" role="note">هذا الموضوع منفصل عن الموضوع الثاني. لا توجد حلول أو إجابات نموذجية في هذا الوضع.</div>
         <section class="card center stack bac-reading-card">
-          <div class="pdf-reader-cover"><span class="pdf-reader-icon" aria-hidden="true">📄</span><strong>موضوع البكالوريا جاهز</strong><p class="small text-muted">اضغط لفتحه وقراءته مباشرة من الموقع.</p></div>
+          <div class="pdf-reader-cover"><span class="pdf-reader-icon" aria-hidden="true">📄</span><strong>موضوع البكالوريا جاهز</strong><p class="small text-muted">اقرأ الموضوع ثم اكتب إجابتك بدون تنقيط آلي.</p></div>
           ${pdf ? `<a class="btn btn-indigo btn-block pdf-open" href="${pdf}" target="_blank" rel="noopener noreferrer">📄 فتح الموضوع المختار</a><a class="small" href="${pdf}" download>⬇️ تنزيل PDF</a>` : `<p class="feedback bad">لا يوجد PDF محلي لهذا الموضوع.</p>`}
+        </section>
+        <section class="stack bac-answers" aria-label="إجابات الموضوع">
+          ${subject.exercises.map((exercise) => {
+            const id = `BAC-S${subject.id}-E${exercise.number}`;
+            return `<article class="card stack"><h3>إجابة التمرين ${exercise.number}: ${escapeHTML(exercise.label)}</h3><textarea class="field simulation-answer" data-task-answer="${id}" data-exercise="${exercise.number}" rows="8"></textarea><button class="btn btn-ghost btn-sm qualitative-check" data-qualitative-for="${id}">تقييم نوعي</button><div class="feedback small qualitative-feedback" data-qualitative-result="${id}" aria-live="polite"></div></article>`;
+          }).join("")}
         </section>
       </div>`
     );
     $("#bac-reading-home")?.addEventListener("click", goHome);
+    $$("#view-workspace [data-task-answer]").forEach((input) => input.addEventListener("input", persistAnswers));
+    bindQualitativeChecks();
     showScreen("view-workspace");
   }
 
@@ -210,12 +238,13 @@ export function createSimulationController(deps) {
         renderSimulation();
       })
     );
-    if (!completed) {
-      $$("#view-workspace [data-task-answer]").forEach((input) =>
-        input.addEventListener("input", persistAnswers)
-      );
-    }
-  }
+        if (!completed) {
+          $$("#view-workspace [data-task-answer]").forEach((input) =>
+            input.addEventListener("input", persistAnswers)
+          );
+          bindQualitativeChecks();
+        }
+      }
 
   function denyInvalidSimulation(report) {
     timers.stopAll();
