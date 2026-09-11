@@ -117,6 +117,11 @@ function setOnline(nextOnline) {
   dispatchOperationalUpdate();
 }
 
+/** @param {MessageEvent} event */
+function onServiceWorkerMessage(event) {
+  if (event.data?.source === "miftah-sw") recordServiceWorkerEvent(event.data.type);
+}
+
 /** @param {string} type */
 function recordServiceWorkerEvent(type) {
   const allowed = new Set(["runtime-cache-updated", "offline-fallback", "offline-miss"]);
@@ -128,6 +133,17 @@ function recordServiceWorkerEvent(type) {
   } else dispatchOperationalUpdate();
 }
 
+function cleanupOldObservability() {
+  const old = initializedWindow;
+  if (!old || !old.removeEventListener) return;
+  try { old.removeEventListener("online", setOnlineTrue); } catch { /* noop */ }
+  try { old.removeEventListener("offline", setOnlineFalse); } catch { /* noop */ }
+  try { old.navigator?.serviceWorker?.removeEventListener?.("message", onServiceWorkerMessage); } catch { /* noop */ }
+}
+
+function setOnlineTrue() { setOnline(true); }
+function setOnlineFalse() { setOnline(false); }
+
 /**
  * Idempotently observes online/offline and allowlisted service-worker events.
  * @param {OperationalWindow | null} [target]
@@ -135,17 +151,14 @@ function recordServiceWorkerEvent(type) {
 export function initializeOperationalObservability(
   target = typeof window === "undefined" ? null : /** @type {OperationalWindow} */ (window)
 ) {
-  if (!target || initializedWindow === target) return getOperationalSnapshot();
+  if (!target) return getOperationalSnapshot();
+  if (initializedWindow === target) return getOperationalSnapshot();
+  cleanupOldObservability();
   initializedWindow = target;
   online = target.navigator?.onLine !== false;
-  target.addEventListener?.("online", () => setOnline(true));
-  target.addEventListener?.("offline", () => setOnline(false));
-  target.navigator?.serviceWorker?.addEventListener?.(
-    "message",
-    /** @param {MessageEvent} event */ (event) => {
-      if (event.data?.source === "miftah-sw") recordServiceWorkerEvent(event.data.type);
-    }
-  );
+  target.addEventListener?.("online", setOnlineTrue);
+  target.addEventListener?.("offline", setOnlineFalse);
+  target.navigator?.serviceWorker?.addEventListener?.("message", onServiceWorkerMessage);
   dispatchOperationalUpdate(target);
   return getOperationalSnapshot();
 }

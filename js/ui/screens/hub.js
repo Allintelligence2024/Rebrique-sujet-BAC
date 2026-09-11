@@ -6,7 +6,7 @@ const STREAM_ORDER = ["se", "m", "tm"];
 const STREAMS = {
   se: { id: "se", label: "علوم تجريبية" },
   m: { id: "m", label: "رياضيات" },
-  tm: { id: "tm", label: "باك أجنبي" }
+  tm: { id: "tm", label: "تقني رياضي" }
 };
 
 function readStream() {
@@ -280,7 +280,17 @@ export function createHubScreen(deps) {
     for (const entry of item.entries) {
       const session = ARCHIVE.sessions[entry.session] || entry.session;
       const label = item.entries.length > 1 ? `📄 ${session}` : "📄 الموضوع والتصحيح النموذجي";
-      if (entry.localPdfUrls?.length) {
+      // Les cartes de consultation renvoient vers la source dzexams (les PDFs locaux
+      // sont réservés à l'entraînement 4D via les cartes d'entraînement).
+      if (entry.url) {
+        actions.append(
+          node("a", {
+            className: "btn btn-block btn-indigo",
+            text: label,
+            attrs: { href: entry.url, target: "_blank", rel: "noopener noreferrer" }
+          })
+        );
+      } else if (entry.localPdfUrls?.length) {
         entry.localPdfUrls.forEach((href, index) => {
           actions.append(
             node("a", {
@@ -290,14 +300,6 @@ export function createHubScreen(deps) {
             })
           );
         });
-      } else {
-        actions.append(
-          node("a", {
-            className: "btn btn-block btn-indigo",
-            text: label,
-            attrs: { href: entry.url, target: "_blank", rel: "noopener noreferrer" }
-          })
-        );
       }
     }
     card.append(stack, actions);

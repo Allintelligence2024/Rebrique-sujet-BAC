@@ -30,15 +30,48 @@ export function normalizeArabic(text) {
   // avec ما (particule) et créerait des faux positifs.
 }
 
-/** Retire les préfixes / clitiques arabes les plus fréquents. */
+/** Termes scientifiques/communs SVT où la 1re lettre (ب/ك/ف/و/ل) fait partie
+ * du radical et ne doit JAMAIS être amputée comme si c'était un clitique.
+ * Liste non exhaustive mais couvre l'essentiel du vocabulaire rencontré dans
+ * les sujets BAC SVT (protéines, bactéries, organes, termes descriptifs). */
+const PROTECTED_STEMS = new Set([
+  "بروتين", "بكتيريا", "بكتيريا", "بكتيري", "بذره", "بذرة", "بيضه", "بيضة",
+  "كبد", "كليه", "كلية", "كريه", "كريات", "كروموسوم", "كربون", "كالسيوم", "كتيريا",
+  "فرضيه", "فرضية", "فحص", "فجوه", "فجوة", "فيروس", "فضاء", "فجائي",
+  "وراثه", "وراثة", "وراثي", "ورم", "وسط", "وزن", "وجه", "وحده", "وحدة", "وردي", "وريدي", "ولادي",
+  "لهب", "لون", "لبن", "لحاء", "ليف", "ليمف", "لاقحه", "لقاح", "لزوج", "لسان"
+]);
+
+function isProtectedStem(normalized) {
+  if (PROTECTED_STEMS.has(normalized)) return true;
+  // Accepte les formes avec suffixes (بروتينات، بكتيريا…) si la racine est protégée.
+  for (const stem of PROTECTED_STEMS) {
+    if (normalized.startsWith(stem) && normalized.length <= stem.length + 3) return true;
+  }
+  return false;
+}
+
+/** Retire les préfixes / clitiques arabes les plus fréquents.
+ *
+ * Ordre :
+ *  1. كال / بال / فال / وال / لل → retrait clitique + article.
+ *  2. ال → retrait de l'article défini.
+ *  3. Préfixes monogrammés و/ف/ب/ك/ل. Ce retrait n'est appliqué que si le mot
+ *     ne correspond PAS à un terme protégé (radicaux scientifiques dont la
+ *     première lettre est structurelle). Cela corrige l'ancienne règle
+ *     `/^[كبفول]/` qui amputer systématiquement بروتين→روتين، بكتيريا→كتيريا،
+ *     كبد→بد، فرضية→رضية، وراثة→راثة — détruisant les correspondances.
+ */
 export function stripArabicClitics(word) {
   if (!word) return "";
   const normalized = normalizeArabic(word);
-  if (/^(كال|بال|فال|وال|لل)/.test(normalized)) {
-    return normalized.replace(/^(كال|بال|فال|وال|لل)/, "");
-  }
-  if (/^ال/.test(normalized)) return normalized.replace(/^ال/, "");
-  return normalized.replace(/^[كبفول]/, "");
+  let w = normalized;
+  if (/^(كال|بال|فال|وال|لل)/.test(w)) w = w.replace(/^(كال|بال|فال|وال|لل)/, "");
+  if (/^ال/.test(w)) w = w.replace(/^ال/, "");
+  if (isProtectedStem(w)) return w;
+  // Retrait d'un seul clitique monogrammé en tête. On applique dans l'ordre
+  // conjonction (و/ف) puis prépositions (ب/ك/ل), une seule fois par mot.
+  return w.replace(/^[وفبكل]/, "");
 }
 
 export const EXAM_MINUTES_BY_STREAM = Object.freeze({

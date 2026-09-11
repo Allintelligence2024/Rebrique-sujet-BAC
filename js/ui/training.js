@@ -181,8 +181,16 @@ export function createTrainingController({ $, $$, store, openModal }) {
     drill = createDrillEngine();
     drill.start();
     drillRemaining = DRILL_ROUND_SECONDS;
+    // Anchor to wall-clock to avoid drift under tab-throttling (same pattern
+    // used by the global/strategy session timers).
+    let drillLastTick = Date.now();
     drillTimer = setInterval(() => {
-      drillRemaining -= 1;
+      const now = Date.now();
+      const elapsed = Math.max(0, Math.floor((now - drillLastTick) / 1000));
+      if (elapsed > 0) {
+        drillLastTick += elapsed * 1000;
+        drillRemaining = Math.max(0, drillRemaining - elapsed);
+      }
       const label = $("#drill-timer");
       if (label)
         label.textContent =

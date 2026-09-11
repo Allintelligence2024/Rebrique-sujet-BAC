@@ -363,14 +363,14 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **256** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **257** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0/2235 minimum** avant toute promotion numérique
 - Inventaires de tâches officielles commencés : **1/38 sujets** (**2 tâches connues**)
 - Sujets éligibles à la simulation : **0**
 - Critères P1 fermés : **3/6** — statut global : **incomplet**
 - Critères P2 fermés : **6/7** — élèves distincts testés : **0/5**
 - Critères P3 fermés : **6/6** — statut global : **terminé**
-- Taille de la façade UI (js/ui.js) : **459 lignes**
+- Taille de la façade UI (js/ui.js) : **462 lignes**
 
 <!-- AUTO-METRICS:END -->
 
