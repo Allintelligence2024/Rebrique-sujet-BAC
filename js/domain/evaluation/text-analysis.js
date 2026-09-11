@@ -254,7 +254,10 @@ const CONCEPT_ALIASES = {
     "بنية فراغية"
   ],
   رسول: ["مرنا", "mrna", "arnm", "arn رسول"],
-  ناقل: ["ارنت", "arnt", "trna", "arn ناقل", "نواقل"],
+  ناقل: ["ارنت", "arnt", "trna", "arn ناقل", "نواقل", "محمول", "حامل", "الحامل"],
+  ارنت: ["arnt", "trna", "arn ناقل", "محمول", "حامل", "الحامل"],
+  "arnt": ["ناقل", "محمول"],
+  ترجمه: ["ترجمة", "البروتين", "الاستطالة", "الببتيد", "بيبتيديه"],
   ريبوزوم: ["ريبوزومي", "ريبوزومات", "تحت وحدة"],
   طبيعي: ["الشاهد", "سليم"],
   طافر: ["طفرة", "الطافر"],
@@ -314,9 +317,19 @@ export function matchConcept(text, conceptDef) {
 
     const strippedSyn = stemArabicToken(normSyn);
     // Stems trop courts (لأن → ان) collent à أنه / أن — faux positifs méthodologiques.
+    // On autorise un préfixe sur le mot candidat SEULEMENT si celui-ci prolonge le
+    // stem de 1 ou 2 caractères (typiquement flexion féminine ة, plural ون/ات,
+    // suffixe possessif ي). Un préfixe de 4+ caractères qui match n'importe quel
+    // mot commençant par le radical fait des faux positifs (بروت ي attrape
+    // بروتوكول, بروتون au lieu de seulement بروتين/بروتينات).
     if (
       strippedSyn.length >= 3 &&
-      strippedWords.some((w) => w === strippedSyn || (strippedSyn.length >= 4 && w.startsWith(strippedSyn)))
+      strippedWords.some((w) => {
+        if (w === strippedSyn) return true;
+        if (!w.startsWith(strippedSyn)) return false;
+        const extra = w.length - strippedSyn.length;
+        return extra >= 1 && extra <= 3;
+      })
     ) {
       return true;
     }
@@ -342,10 +355,25 @@ export function analyzeSentenceStructure(normText, poleType) {
   const wordCount = words.length;
   const informativeWords = extractInformativeTokens(normText).length;
   const connectorHits = CONNECTORS.filter((c) => normText.includes(c)).length;
-  const sentenceSignals = ["ي", "ت", "ن", "س"].reduce(
-    (count, prefix) => count + words.filter((w) => w.startsWith(prefix) && w.length >= 4).length,
-    0
-  );
+  // Heuristique verbe arabe : mot qui commence par une marque du présent
+  // (أ/ي/ت/ن) ET dont la fin n'est PAS une marque nominale typique (ة/ى/ا
+  // final de nom : نواة، تركيب، سنة، تلميذ، سائل، سطح). Les suffixes verbaux
+  // (ون/ان/ات/وا/ين/تم/تن/نا/تما) renforcent le signal. On accepte les verbes
+  // 3-radicaux nus (يقوم، تدرس، نكتب : 4 lettres) en excluant les noms 3-lettres
+  // (qui finissent quasi tous par ة/ى/ا dans le lexique SVT).
+  const VERB_PREFIX_RE = /^[أيتن]/;
+  const VERB_SUFFIX_RE = /(ون|ان|ات|وا|ين|تم|تن|نا|تما)$/;
+  const NOMINAL_ENDING_RE = /[ةىا]$/;
+  const sentenceSignals = words.filter(
+    (w) => {
+      if (!VERB_PREFIX_RE.test(w) || w.length < 4) return false;
+      if (VERB_SUFFIX_RE.test(w)) return true;
+      // 4 lettres : radical 3 consonnes après la marque. Les noms 3-radicaux
+      // débutant par ces lettres sont quasi tous féminins en ة (نواة، سنة)
+      // ou emprunts/adverbes qui finissent par ا/ى (سما، تلا).
+      return w.length >= 4 && !NOMINAL_ENDING_RE.test(w);
+    }
+  ).length;
   const hasConnectors = connectorHits > 0;
   const lexicalDensity = wordCount ? informativeWords / wordCount : 0;
   const isKeywordDump =

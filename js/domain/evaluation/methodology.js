@@ -441,7 +441,14 @@ export function evaluateMethodology(
   }
 
   if (resolvedTaskProfile.id === "distinction") {
-    const hasTwoSides = (normText.match(/و/g) || []).length >= 1 || structure.wordCount >= 8;
+    // Détecter deux côtés par la présence d'un marqueur de contraste (بينما/
+    // في حين/على عكس/مقابل/أما) OU d'au moins deux "et" (و) de coordination
+    // séparant des blocs lexicaux distincts ET une longueur minimale. Le
+    // simple "و" ou un nombre de mots suffisant n'est pas une preuve fiable
+    // (la conjonction و est la plus fréquente en arabe).
+    const hasContrastMarker = /(بينما|في حين|على عكس|مقابل|أما|بعكس)/.test(normText);
+    const multipleCoordination = (normText.match(/\sو\s/g) || []).length >= 2;
+    const hasTwoSides = hasContrastMarker || (multipleCoordination && structure.wordCount >= 12);
     check(
       hasDifference || usesComparison,
       "استُعملت عبارات تمييز أو مقابلة",
@@ -556,7 +563,9 @@ export function evaluateMethodology(
       "بالمقابل",
       "يقابله"
     ]);
-    const hasTwoSides = (normText.match(/و/g) || []).length >= 1 || structure.wordCount >= 10;
+    const hasContrastMarker = /(بينما|في حين|على عكس|مقابل|أما|بعكس|كذلك|مثل|يشبه|يتشابه)/.test(normText);
+    const multipleCoordination = (normText.match(/\sو\s/g) || []).length >= 2;
+    const hasTwoSides = hasContrastMarker || (multipleCoordination && structure.wordCount >= 14);
     check(
       hasContrast || usesComparison,
       "استُعملت عبارات مقارنة صريحة",

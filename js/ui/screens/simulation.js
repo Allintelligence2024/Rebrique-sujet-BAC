@@ -116,6 +116,15 @@ export function createSimulationController(deps) {
     }
   }
 
+  function restoreFreeAnswers(subject) {
+    for (const exercise of subject.exercises) {
+      const input = $(`[data-exercise-free="${exercise.number}"]`);
+      if (!input) continue;
+      const progress = store.exercise(store.state.yearId, store.state.sujetId, exercise.number);
+      input.value = progress.freeAnswer || "";
+    }
+  }
+
   function persistAnswers() {
     $$("#view-workspace [data-task-answer]").forEach((input) => {
       const progress = store.exercise(
@@ -124,6 +133,15 @@ export function createSimulationController(deps) {
         Number(input.dataset.exercise)
       );
       progress.officialTaskAnswers[input.dataset.taskAnswer] = input.value;
+      if (input.value.trim()) progress.answeredAny = true;
+    });
+    $$("#view-workspace [data-exercise-free]").forEach((input) => {
+      const progress = store.exercise(
+        store.state.yearId,
+        store.state.sujetId,
+        Number(input.dataset.exercise)
+      );
+      progress.freeAnswer = input.value;
       if (input.value.trim()) progress.answeredAny = true;
     });
     store.save();
@@ -137,12 +155,20 @@ export function createSimulationController(deps) {
     return "ممتاز — A — إجابة مفصلة ومنظمة.";
   }
 
-  function bindQualitativeChecks() {
+  function bindQualitativeChecks(freeMode = false) {
     $$("#view-workspace [data-qualitative-for]").forEach((button) => {
       button.addEventListener("click", () => {
         const id = button.dataset.qualitativeFor;
         const input = $(`[data-task-answer="${id}"]`);
         const output = $(`[data-qualitative-result="${id}"]`);
+        if (output) output.textContent = qualitativeLabel(input?.value);
+      });
+    });
+    $$("#view-workspace [data-qualitative-free]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const exNum = Number(button.dataset.qualitativeFree);
+        const input = $(`[data-exercise-free="${exNum}"]`);
+        const output = $(`[data-qualitative-result-free="${exNum}"]`);
         if (output) output.textContent = qualitativeLabel(input?.value);
       });
     });
@@ -163,22 +189,26 @@ export function createSimulationController(deps) {
           </div>
           <span class="badge badge-indigo">PDF محلي</span>
         </header>
-        <div class="feedback mid mb-2" role="note">هذا الموضوع منفصل عن الموضوع الثاني. لا توجد حلول أو إجابات نموذجية في هذا الوضع.</div>
+        <div class="feedback mid mb-2" role="note">هذا الموضوع منفصل عن الموضوع الثاني. لا توجد حلول أو إجابات نموذجية في هذا الوضع. إجاباتك تُحفظ محلياً لكل تمرين.</div>
         <section class="card center stack bac-reading-card">
           <div class="pdf-reader-cover"><span class="pdf-reader-icon" aria-hidden="true">📄</span><strong>موضوع البكالوريا جاهز</strong><p class="small text-muted">اقرأ الموضوع ثم اكتب إجابتك بدون تنقيط آلي.</p></div>
           ${pdf ? `<a class="btn btn-indigo btn-block pdf-open" href="${pdf}" target="_blank" rel="noopener noreferrer">📄 فتح الموضوع المختار</a><a class="small" href="${pdf}" download>⬇️ تنزيل PDF</a>` : `<p class="feedback bad">لا يوجد PDF محلي لهذا الموضوع.</p>`}
         </section>
         <section class="stack bac-answers" aria-label="إجابات الموضوع">
-          ${subject.exercises.map((exercise) => {
-            const id = `BAC-S${subject.id}-E${exercise.number}`;
-            return `<article class="card stack"><h3>إجابة التمرين ${exercise.number}: ${escapeHTML(exercise.label)}</h3><textarea class="field simulation-answer" data-task-answer="${id}" data-exercise="${exercise.number}" rows="8"></textarea><button class="btn btn-ghost btn-sm qualitative-check" data-qualitative-for="${id}">تقييم نوعي</button><div class="feedback small qualitative-feedback" data-qualitative-result="${id}" aria-live="polite"></div></article>`;
-          }).join("")}
+          ${subject.exercises
+            .map((exercise) => {
+              return `<article class="card stack"><h3>إجابة التمرين ${exercise.number}: ${escapeHTML(exercise.label)}</h3><textarea class="field simulation-answer" data-exercise-free="${exercise.number}" data-exercise="${exercise.number}" rows="8"></textarea><button class="btn btn-ghost btn-sm qualitative-check" data-qualitative-free="${exercise.number}">تقييم نوعي</button><div class="feedback small qualitative-feedback" data-qualitative-result-free="${exercise.number}" aria-live="polite"></div></article>`;
+            })
+            .join("")}
         </section>
       </div>`
     );
     $("#bac-reading-home")?.addEventListener("click", goHome);
-    $$("#view-workspace [data-task-answer]").forEach((input) => input.addEventListener("input", persistAnswers));
-    bindQualitativeChecks();
+    restoreFreeAnswers(subject);
+    $$("#view-workspace [data-task-answer], #view-workspace [data-exercise-free]").forEach((input) =>
+      input.addEventListener("input", persistAnswers)
+    );
+    bindQualitativeChecks(true);
     showScreen("view-workspace");
   }
 
@@ -229,8 +259,8 @@ export function createSimulationController(deps) {
   }
 
   function bind(completed) {
-        $("#simulation-home")?.addEventListener("click", goHome);
-        $("#simulation-finish")?.addEventListener("click", confirmFinish);
+    $("#simulation-home")?.addEventListener("click", goHome);
+    $("#simulation-finish")?.addEventListener("click", confirmFinish);
     $$("#view-workspace [data-simulation-exercise]").forEach((button) =>
       button.addEventListener("click", () => {
         if (!completed) persistAnswers();
@@ -238,13 +268,13 @@ export function createSimulationController(deps) {
         renderSimulation();
       })
     );
-        if (!completed) {
-          $$("#view-workspace [data-task-answer]").forEach((input) =>
-            input.addEventListener("input", persistAnswers)
-          );
-          bindQualitativeChecks();
-        }
-      }
+    if (!completed) {
+      $$("#view-workspace [data-task-answer]").forEach((input) =>
+        input.addEventListener("input", persistAnswers)
+      );
+      bindQualitativeChecks();
+    }
+  }
 
   function denyInvalidSimulation(report) {
     timers.stopAll();

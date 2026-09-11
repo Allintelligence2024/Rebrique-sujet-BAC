@@ -107,6 +107,26 @@ export function createBrouillonController({
       if (node) node.addEventListener("input", persist);
     });
 
+    const doInsert = (target, draft, mode) => {
+      const existing = target.value;
+      if (mode === "append") {
+        const glue = existing && !/\s$/.test(existing) ? "\n" : "";
+        target.value = existing + glue + draft;
+      } else if (mode === "caret") {
+        const start = typeof target.selectionStart === "number" ? target.selectionStart : target.value.length;
+        const end = typeof target.selectionEnd === "number" ? target.selectionEnd : target.value.length;
+        target.value = target.value.slice(0, start) + draft + target.value.slice(end);
+        try { target.setSelectionRange(start + draft.length, start + draft.length); } catch { /* noop */ }
+      } else {
+        target.value = draft;
+      }
+      st.text[activePole] = target.value;
+      st.answeredAny = Boolean(target.value.trim()) || st.answeredAny;
+      store.save();
+      closeModal?.();
+      target.focus();
+      toast?.("أُدرجت المسودة في الإجابة وحُفظت محلياً.", "success");
+    };
     const insert = (which) => {
       persist();
       const scope = which === "full" ? "full" : activePole;
@@ -123,13 +143,12 @@ export function createBrouillonController({
       const target = $("#fld-" + activePole);
       if (!target) return false;
       const d = buildDrafts(st);
-      target.value = which === "full" ? d.full : d.current;
-      st.text[activePole] = target.value;
-      st.answeredAny = Boolean(target.value.trim()) || st.answeredAny;
-      store.save();
-      closeModal?.();
-      target.focus();
-      toast?.("أُدرجت المسودة في الإجابة وحُفظت محلياً.", "success");
+      const draft = which === "full" ? d.full : d.current;
+      // Default to "append at end" when there is already text — avoids silently
+      // destroying student work. A full replace is available via select-all + paste,
+      // never via an accidental tap.
+      const mode = target.value.trim() ? "append" : "replace";
+      doInsert(target, draft, mode);
       return true;
     };
     $("#brouillon-insert-current")?.addEventListener("click", () => insert("current"));

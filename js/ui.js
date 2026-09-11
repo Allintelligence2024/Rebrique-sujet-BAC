@@ -15,15 +15,7 @@ import { officialTaskInventoryFor } from "../data/official-tasks.js";
 import { createSubjectSessionStarter } from "./application/subject-session.js";
 import { buildOfficialCoverageReport } from "./domain/subjects/official-coverage.js";
 import { store, helpers } from "./store.js";
-import {
-  timers,
-  evaluateText,
-  evaluatePipeline,
-  scoreFromFraction,
-  scoreBac,
-  soundEngine,
-  METHOD_SCRIPTS
-} from "./engine.js";
+import { timers, evaluateText, evaluatePipeline, scoreBac, soundEngine, METHOD_SCRIPTS } from "./engine.js";
 import { createSpeechEngine } from "./services/speech-recognition.js";
 import { createAtlas } from "./ui/atlas.js";
 import {
@@ -153,6 +145,8 @@ function micButton(fieldId) {
 }
 function bindMics(root = document) {
   $$("[data-mic]", root).forEach((btn) => {
+    if (btn.dataset.micBound === "1") return;
+    btn.dataset.micBound = "1";
     btn.addEventListener("click", () => {
       const input = $("#" + btn.dataset.mic);
       // Explain the privacy boundary before the browser permission prompt. The
@@ -217,14 +211,12 @@ function goHome() {
   if (store.isSessionActive()) store.leaveSession();
   renderHub();
   showScreen("view-hub");
-  const bar = $("#global-timer-bar");
-  if (bar) bar.classList.add("hidden");
+  $("#global-timer-bar")?.classList.add("hidden");
 }
 
 function renderGuide(year) {
   return guideScreen.renderGuide(year);
 }
-
 function goToStrategy() {
   return strategyScreen.goToStrategy();
 }
@@ -261,7 +253,9 @@ const startSession = createSubjectSessionStarter({
   store,
   timers,
   toast,
-  timerBar: () => $("#global-timer-bar")
+  timerBar: () => $("#global-timer-bar"),
+  helpers,
+  $
 });
 
 hubScreen = createHubScreen({
@@ -302,6 +296,7 @@ strategyScreen = createStrategyScreen({
   goHome,
   helpers,
   officialCoverageForSubject,
+  openModal,
   showScreen,
   store,
   timers,
@@ -427,7 +422,13 @@ export async function init() {
     activeYear &&
     sujetObj();
   if (canRestoreActive || canRestoreSimulationReview) {
-    if (canRestoreActive) {
+    // The global exam clock only ticks during the writing phase (workspace).
+    // Guide and strategy are planning/reading phases that must not debit
+    // official exam time after reload either.
+    const onWorkspace =
+      canRestoreSimulationReview ||
+      store.state.activeScreen === "view-workspace";
+    if (canRestoreActive && onWorkspace) {
       timers.startGlobal();
       bar.classList.remove("hidden");
     } else {
@@ -440,8 +441,9 @@ export async function init() {
       renderGuide(activeYear);
       showScreen("view-guide");
     } else if (store.state.activeScreen === "view-strategy") {
+      // On reload during strategy, keep the strategy timer only — global stays paused.
       strategyScreen.restoreStrategy();
-    } else if (store.state.activeScreen === "view-workspace" && exDef(store.state.activeExercise)) {
+    } else if (onWorkspace) {
       renderWorkspace();
       showScreen("view-workspace");
     } else {

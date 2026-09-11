@@ -9,7 +9,9 @@ export function createSubjectSessionStarter({
   store,
   timers,
   toast,
-  timerBar
+  timerBar,
+  helpers,
+  $
 }) {
   function begin(year) {
     store.enterSession(
@@ -19,9 +21,15 @@ export function createSubjectSessionStarter({
       appConfig.strategyMinutes * 60
     );
     renderGuide(year);
-    timers.startGlobal();
+    // Global exam clock starts only after the student confirms subject + mode
+    // in strategy screen. The 25-minute strategy phase and breathing guide
+    // must not debit the official BAC duration (fixes premature timer drain).
+    // Keep the timer bar hidden on guide/strategy, but refresh its value to
+    // the chosen year's duration so any reveal shows the correct starting time.
+    const t = $("#global-timer");
+    if (t) t.textContent = helpers.fmt(store.state.globalRemaining);
     showScreen("view-guide");
-    timerBar()?.classList.remove("hidden");
+    timerBar()?.classList.add("hidden");
     return year;
   }
 

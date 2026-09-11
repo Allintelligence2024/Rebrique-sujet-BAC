@@ -26,7 +26,7 @@ export const soundEngine = {
   stop() {
     this.nodes.forEach((n) => {
       try {
-        n.stop();
+        n.stop?.();
       } catch (error) {
         reportDiagnostic("sound.stop-node", error);
       }
@@ -37,6 +37,12 @@ export const soundEngine = {
       }
     });
     this.nodes = [];
+    // Disconnect the master GainNode from destination so mode switches don't
+    // leave parallel gain chains permanently connected (audio leak fix).
+    if (this.gainNode) {
+      try { this.gainNode.disconnect(); } catch (error) { reportDiagnostic("sound.disconnect-node", error); }
+      this.gainNode = null;
+    }
     this.currentMode = "off";
   },
 

@@ -7,7 +7,7 @@ import { reportDiagnostic } from "./services/diagnostics.js";
 const KEY = "boussole4d.v4";
 const LEGACY_KEY = "boussole4d.v3";
 const AMBIGUOUS_LEGACY_KEY = "boussole4d.v2";
-export const CURRENT_SCHEMA_VERSION = 4;
+export const CURRENT_SCHEMA_VERSION = 5;
 export const YEAR_ID_PATTERN = /^\d{4}(?:-[a-z]{1,3})?$/;
 export const SESSION_MODES = Object.freeze(["training", "simulation"]);
 const POLES = ["N", "S", "E", "W"];
@@ -27,6 +27,10 @@ function emptyExercise() {
     scratch: { N: "", S: "", E: "", W: "", free: "" },
     fields: {},
     officialTaskAnswers: {},
+    // Free-form answer used by bac-reading-mode when no official inventory
+    // exists for the exercise (no per-task decomposition yet). Persisted
+    // separately from officialTaskAnswers which is strictly Q-pattern keyed.
+    freeAnswer: "",
     pipeline: { stream1: [null, null, null, null], stream2: [null, null, null, null] }
   };
 }
@@ -50,6 +54,7 @@ function defaultState() {
     globalDuration: 270 * 60,
     globalRemaining: 270 * 60,
     globalLastTick: null,
+    strategyDuration: 25 * 60,
     strategyRemaining: 25 * 60,
     strategyLastTick: null,
     strategyRunning: false,
@@ -82,6 +87,8 @@ function sanitizeExercise(value) {
       }
     }
   }
+  // Free-form exercise-level answer (bac-reading-mode) — plain string, length-capped.
+  safe.freeAnswer = typeof raw.freeAnswer === "string" ? raw.freeAnswer.slice(0, 60000) : "";
   for (const stream of ["stream1", "stream2"]) {
     const values = Array.isArray(raw.pipeline?.[stream]) ? raw.pipeline[stream] : [];
     safe.pipeline[stream] = Array.from({ length: 4 }, (_, index) => {
@@ -133,6 +140,54 @@ export function migrateState(candidate) {
       sessionStatus: candidate.sessionActive === true ? "active" : candidate.sessionStatus || "idle"
     };
   }
+  if (version === 4) {
+    // v4 → v5 : convert legacy bac-reading-mode keys BAC-S?-E? qui étaient
+    // stockés dans officialTaskAnswers (ancien bug #73) en freeAnswer concaténé.
+    // Ces clés étaient rejetées par le TASK_ID_PATTERN strict et donc perdues
+    // au rechargement ; on les récupère pour ne pas détruire le travail
+    // d'élèves ayant utilisé le mode lecture pendant la période buggée.
+    const out = { ...candidate, schemaVersion: CURRENT_SCHEMA_VERSION };
+    if (isRecord(out.progress)) {
+      out.progress = Object.fromEntries(
+        Object.entries(out.progress).map(([yearId, subjects]) => {
+          if (!YEAR_ID_PATTERN.test(yearId) || !isRecord(subjects)) return [yearId, subjects];
+          return [
+            yearId,
+            Object.fromEntries(
+              Object.entries(subjects).map(([sujetId, exercises]) => {
+                if (!/^[1-9]\d*$/.test(sujetId) || !isRecord(exercises)) return [sujetId, exercises];
+                return [
+                  sujetId,
+                  Object.fromEntries(
+                    Object.entries(exercises).map(([exId, ex]) => {
+                      if (!/^[1-9]\d*$/.test(exId) || !isRecord(ex)) return [exId, ex];
+                      const legacyPattern = /^BAC-S\d+-E\d+$/;
+                      const legacy = [];
+                      const official = {};
+                      const raw = isRecord(ex.officialTaskAnswers) ? ex.officialTaskAnswers : {};
+                      for (const [k, v] of Object.entries(raw)) {
+                        if (legacyPattern.test(k) && typeof v === "string" && v.trim()) {
+                          legacy.push(v.trim());
+                        } else if (/^\d{4}(?:-[a-z]{1,3})?-S\d+-E\d+-Q\d+$/.test(k) && typeof v === "string") {
+                          official[k] = v;
+                        }
+                      }
+                      if (!legacy.length) return [exId, ex];
+                      const existing = typeof ex.freeAnswer === "string" ? ex.freeAnswer : "";
+                      const merged = legacy.join("\n\n");
+                      const freeAnswer = existing && !existing.includes(merged) ? existing + "\n\n" + merged : existing || merged;
+                      return [exId, { ...ex, officialTaskAnswers: official, freeAnswer: freeAnswer.slice(0, 60000) }];
+                    })
+                  )
+                ];
+              })
+            )
+          ];
+        })
+      );
+    }
+    return out;
+  }
   if (version === CURRENT_SCHEMA_VERSION) return candidate;
   if (typeof version === "number" && version > CURRENT_SCHEMA_VERSION) {
     throw new Error(`unsupported future schema ${version}`);
@@ -183,11 +238,17 @@ export function validateState(candidate) {
     state.globalDuration
   );
   state.globalLastTick = asFiniteNumber(candidate.globalLastTick, null, 0);
+  state.strategyDuration = asFiniteNumber(
+    candidate.strategyDuration,
+    state.strategyDuration || 25 * 60,
+    0,
+    60 * 60
+  );
   state.strategyRemaining = asFiniteNumber(
     candidate.strategyRemaining,
     state.strategyRemaining,
     0,
-    24 * 60 * 60
+    state.strategyDuration
   );
   state.strategyLastTick = asFiniteNumber(candidate.strategyLastTick, null, 0);
   state.strategyRunning = candidate.strategyRunning === true;
@@ -342,6 +403,7 @@ export const store = {
     this.state.globalDuration = duration;
     this.state.globalRemaining = duration;
     this.state.globalLastTick = now;
+    this.state.strategyDuration = strategyDuration;
     this.state.strategyRemaining = strategyDuration;
     this.state.strategyLastTick = null;
     this.state.strategyRunning = false;

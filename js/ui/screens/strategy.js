@@ -1,4 +1,6 @@
 import { setInternalHTML } from "../dom.js";
+import { assertSimulationEligible } from "../../domain/subjects/official-coverage.js";
+import { simulationBlockersArabic } from "../coverage-messages.js";
 
 export function createStrategyScreen(deps) {
   const {
@@ -8,9 +10,11 @@ export function createStrategyScreen(deps) {
     goHome,
     helpers,
     officialCoverageForSubject,
+    openModal,
     showScreen,
     store,
     timers,
+    toast,
     yearObj
   } = deps;
 
@@ -27,19 +31,30 @@ export function createStrategyScreen(deps) {
   }
 
   function pdfFallbackHTML(subject) {
+    // L'aperçu stratégique renvoie à la source externe (dzexams) afin de ne pas
+    // redistribuer de PDF tiers dans le shell ; un lien de téléchargement direct
+    // n'est jamais présenté à cet endroit.
+    if (subject?.pdfExternalUrl) {
+      return `<div class="pdf-reader stack">
+        <div class="pdf-reader-cover" role="status">
+          <span class="pdf-reader-icon" aria-hidden="true">📄</span>
+          <strong>الموضوع متاح على المصدر الخارجي</strong>
+          <p class="small text-muted">تُفتح صفحة الموضوع على dzexams في نافذة مستقلة — فتح المصدر الخارجي.</p>
+        </div>
+        <a class="btn btn-indigo btn-block pdf-open" href="${subject.pdfExternalUrl}" target="_blank" rel="noopener noreferrer">📄 فتح المصدر الخارجي (dzexams)</a>
+      </div>`;
+    }
     if (subject?.pdfLocalUrl) {
       return `<div class="pdf-reader stack">
         <div class="pdf-reader-cover" role="status">
           <span class="pdf-reader-icon" aria-hidden="true">📄</span>
           <strong>ملف الموضوع جاهز للقراءة</strong>
-          <p class="small text-muted">يفتح PDF في نافذة مستقلة لتجنب حجب Opera للـ PDF داخل الإطار.</p>
         </div>
         <a class="btn btn-indigo btn-block pdf-open" href="${subject.pdfLocalUrl}" target="_blank" rel="noopener noreferrer">📄 فتح الموضوع المختار وقراءته</a>
-        <a class="small center" href="${subject.pdfLocalUrl}" download>⬇️ تنزيل نسخة للقراءة دون اتصال</a>
       </div>`;
     }
     return `<div class="center stack preview-empty">
-      <p class="small text-muted">ملف الموضوع المحلي غير متاح لهذه الدورة.</p>
+      <p class="small text-muted">لا يوجد ملف موضوع متاح لهذه الدورة في التطبيق.</p>
     </div>`;
   }
 
@@ -115,6 +130,10 @@ export function createStrategyScreen(deps) {
         return `<div class="flex spread"><label class="small" for="strategy-s${subject.id}-e${exercise.number}">ت${exercise.number}: ${exercise.label} (${exercise.max}ن)</label><input class="field calc-input" id="strategy-s${subject.id}-e${exercise.number}" data-subject="${subject.id}" data-exercise="${exercise.number}" data-max="${exercise.max}" type="number" min="0" max="${exercise.max}" step="0.25" value="${initial}"></div>`;
       })
       .join("");
+    const simDisabled = coverage.simulationEligible ? "" : "disabled";
+    const guardMsg = coverage.simulationEligible
+      ? ""
+      : `<p class="small text-muted simulation-guard-note" id="simulation-guard-${subject.id}">المحاكاة ممنوعة: ${simulationGuardArabic(coverage.blockers)}</p>`;
     return `
     <div class="card stack subject-card" data-subject-coverage="${coverage.inventoryStatus}" data-simulation-eligible="${coverage.simulationEligible}">
       <div>
@@ -128,9 +147,27 @@ export function createStrategyScreen(deps) {
         </div>
       </div>
       <div class="stack subject-mode-actions">
-        <button class="btn btn-block btn-${theme}" data-confirm="${subject.id}" data-session-mode="simulation">ابدأ وضع BAC</button>
+        <button class="btn btn-block btn-${theme}" data-confirm="${subject.id}" data-session-mode="training">ابدأ التدريب المنهجي</button>
+        <button class="btn btn-block btn-ghost btn-sm" data-confirm="${subject.id}" data-session-mode="simulation" ${simDisabled}>ابدأ وضع BAC</button>
+        ${guardMsg}
       </div>
     </div>`;
+  }
+
+  function simulationGuardArabic(blockers = []) {
+    const labels = {
+      "inventory-missing": "جرد المهام الرسمية غير موجود",
+      "inventory-partial": "جرد المهام الرسمية غير مكتمل",
+      "exercise-inventory-incomplete": "بعض التمارين غير مجرودة",
+      "task-mapping-incomplete": "ربط المهام بخطوات التدريب غير مكتمل",
+      "scoring-unverified": "سلم التنقيط غير متحقق منه",
+      "documents-unreviewed": "بعض الوثائق أو الصفحات غير مراجعة",
+      "points-incomplete": "مجموع النقاط غير مكتمل",
+      "metadata-invalid": "بيانات الجرد غير صالحة",
+      "coverage-unknown": "نسبة التغطية الرسمية غير معروفة"
+    };
+    const values = blockers.length ? blockers : ["coverage-unknown"];
+    return values.map((b) => labels[b] || "دليل الأهلية غير مكتمل").join("؛ ");
   }
 
   function setPdfPreview(subjectId) {
@@ -191,10 +228,22 @@ export function createStrategyScreen(deps) {
     const year = yearObj(store.state.yearId);
     const subject = year?.sujets.find((item) => item.id === sujetNum);
     if (!subject) return;
-    // If the official task inventory is incomplete, the button still opens
-    // the selected local PDF in BAC reading mode instead of blocking the user.
+    if (mode === "simulation") {
+      const coverage = officialCoverageForSubject(year, subject);
+      try {
+        assertSimulationEligible(coverage);
+      } catch {
+        toast(`المحاكاة ممنوعة: ${simulationBlockersArabic(coverage.blockers)}`, "error");
+        return;
+      }
+    }
     store.activateSubjectMode(sujetNum, mode);
     timers.stopStrategy();
+    // In training mode, start the session clock when writing begins.
+    // Simulation mode activates the clock inside activateSubjectMode (reset to full duration).
+    if (mode === "training" || mode === "simulation") {
+      timers.startGlobal();
+    }
     enterExercise(1);
     $("#global-timer-bar")?.classList.remove("hidden");
   }

@@ -54,9 +54,12 @@ export function evaluateScience(text, rule = {}) {
       }
     }
   }
+  // Pénalité douce : une erreur coûte 0,25 (barème BAC classique), deux 0,50
+  // etc. avec plancher à 0,10 (contre 0,5 * n → zéro pour 2 erreurs qui
+  // annulait tout le pôle même quand l'étudiant avait raison sur l'essentiel).
   return {
     errors,
-    score: errors.length ? Math.max(0, 1 - 0.5 * errors.length) : 1
+    score: errors.length ? Math.max(0.1, 1 - 0.25 * errors.length) : 1
   };
 }
 

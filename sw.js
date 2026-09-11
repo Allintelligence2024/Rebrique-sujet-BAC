@@ -183,6 +183,26 @@ self.addEventListener("activate", (event) => {
   );
 });
 
+async function fetchShellOrAsset(request) {
+  const cached = await caches.match(request, { ignoreSearch: true });
+  if (cached) return cached;
+  let response;
+  try {
+    response = await fetch(request);
+  } catch {
+    return Response.error();
+  }
+  if (isCacheableResponse(response)) {
+    try {
+      const cache = await caches.open(SHELL_CACHE);
+      await cache.put(request, response.clone());
+    } catch {
+      // Cache failures are opportunistic.
+    }
+  }
+  return response;
+}
+
 self.addEventListener("fetch", (event) => {
   const { request } = event;
   if (request.method !== "GET" || !isLocalRequest(request)) return;
@@ -190,6 +210,17 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(fetchNavigation(request));
     return;
   }
-  if (request.headers.has("range")) return;
-  event.respondWith(fetchRuntime(request));
+  if (request.headers.has("range")) {
+    // Let the network serve 206 Partial Content responses natively. Returning
+    // undefined here leaves Chromium/Safari PDF viewers unable to resume or
+    // seek; feeding fetch(request) through keeps the SW transparent for range
+    // requests without breaking the cache-first strategy for the shell.
+    event.respondWith(fetch(request));
+    return;
+  }
+  if (isRuntimeAsset(request)) {
+    event.respondWith(fetchRuntime(request));
+    return;
+  }
+  event.respondWith(fetchShellOrAsset(request));
 });

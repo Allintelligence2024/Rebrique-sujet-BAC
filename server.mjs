@@ -98,6 +98,7 @@ export function createStaticServer({ rootDirectory = root } = {}) {
     }
 
     const extension = extname(canonicalPath);
+    const stat = statSync(canonicalPath);
     const stableEntryPoint =
       extension === ".html" ||
       extension === ".webmanifest" ||
@@ -109,15 +110,38 @@ export function createStaticServer({ rootDirectory = root } = {}) {
       : extension === ".pdf"
         ? "public, max-age=0, must-revalidate"
         : "public, max-age=86400";
-    res.writeHead(200, {
+
+    // Minimal Range support so PDF viewers can seek and first-page rendering
+    // doesn't have to wait for a full multi-megabyte download. Only a single
+    // bytes=start-end range is supported (no multi-range).
+    let start = 0;
+    let end = stat.size - 1;
+    let status = 200;
+    const rangeHeader = req.headers.range;
+    if (extension === ".pdf" && rangeHeader) {
+      const match = /^bytes=(\d*)-(\d*)$/.exec(rangeHeader.trim());
+      if (match) {
+        const s = match[1] === "" ? null : Number(match[1]);
+        const e = match[2] === "" ? null : Number(match[2]);
+        if (s != null && Number.isFinite(s)) start = Math.max(0, Math.min(stat.size - 1, s));
+        if (e != null && Number.isFinite(e)) end = Math.max(start, Math.min(stat.size - 1, e));
+        if (s != null && e == null) end = stat.size - 1;
+        if (start > 0 || end < stat.size - 1) status = 206;
+      }
+    }
+    res.writeHead(status, {
       ...securityHeaders,
       "Content-Type": types[extension] || "application/octet-stream",
-      "Content-Length": statSync(canonicalPath).size,
+      "Content-Length": end - start + 1,
+      "Accept-Ranges": "bytes",
+      ...(status === 206
+        ? { "Content-Range": `bytes ${start}-${end}/${stat.size}` }
+        : {}),
       "Cache-Control": cacheControl,
       "X-Miftah-Build": buildId
     });
     if (req.method === "HEAD") return res.end();
-    createReadStream(canonicalPath).pipe(res);
+    createReadStream(canonicalPath, { start, end }).pipe(res);
   });
 }
 
