@@ -127,11 +127,15 @@ export function buildP2Status() {
     dialogs.includes("isolateDialog") &&
     dialogs.includes("returnFocus.focus()");
 
-  const attemptSwitchSource = workspace.match(/function attemptSwitch\(target\) \{[\s\S]*?\n  \}/)?.[0] || "";
+  // P2.2 — l'ordre des exercices est libre. La preuve vit maintenant dans
+  // l'écran d'épreuve (js/ui/screens/simulation.js), seul écran de session
+  // depuis la suppression du mode entraînement.
+  const switchExerciseSource =
+    simulation.match(/\$\$\("#view-workspace \[data-simulation-exercise\]"\)[\s\S]*?\n    \);/)?.[0] || "";
   const exerciseOrderFree =
-    workspace.includes("يمكنك الانتقال بحرية بين التمارين") &&
-    attemptSwitchSource.includes("store.setActiveExercise(target)") &&
-    !/(locked|answeredAny|openModal)/.test(attemptSwitchSource);
+    simulation.includes("data-simulation-exercise") &&
+    switchExerciseSource.includes("store.setActiveExercise(Number(button.dataset.simulationExercise))") &&
+    !/(locked|answeredAny|openModal)/.test(switchExerciseSource);
 
   const competingMetaphors = [
     "السنّ",

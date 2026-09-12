@@ -76,7 +76,10 @@ test("le shell fournit un lien d’évitement arabe vers le contenu principal", 
 
 test("les contrôles interactifs personnalisés restent des éléments clavier natifs", async () => {
   const atlas = await import("../js/ui/atlas.js");
-  const workspace = await import("../js/ui/screens/workspace.js");
+  const simulation = await import("../js/ui/screens/simulation.js");
   assert.match(atlas.createAtlas.toString(), /type=\\?"button\\?" class=\\?"flashcard/);
-  assert.match(workspace.createWorkspaceController.toString(), /type=\\?"button\\?" class=\\?"slot/);
+  // Les commandes de l'épreuve (changement d'exercice, contrôle qualité) sont
+  // des <button> natifs : atteignables au clavier, sans gestionnaire maison.
+  assert.match(simulation.simulationExamHTML.toString(), /<button class=\\?"btn/);
+  assert.doesNotMatch(simulation.simulationExamHTML.toString(), /<div class=\\?"btn/);
 });

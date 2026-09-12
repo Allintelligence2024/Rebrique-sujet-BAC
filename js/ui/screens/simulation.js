@@ -1,6 +1,8 @@
 import { assertSimulationEligible } from "../../domain/subjects/official-coverage.js";
 import { simulationBlockersArabic } from "../coverage-messages.js";
 import { setInternalHTML } from "../dom.js";
+import { pdfViewerHTML } from "../pdf-viewer.js";
+import { BAC_MODE_NOTICES } from "../../../data/bac-mode-policy.js";
 
 const escapeHTML = (value = "") =>
   String(value).replace(
@@ -12,6 +14,13 @@ function tasksForExercise(inventory, exerciseNumber) {
   return (inventory?.tasks || [])
     .filter((task) => task.exerciseNumber === exerciseNumber)
     .sort((left, right) => left.order - right.order);
+}
+
+function taskProvenanceHTML(task) {
+  if (task.promptSource === "reconstructed") {
+    return `<span class="badge badge-amber" data-task-source="reconstructed">⚠️ ${escapeHTML(BAC_MODE_NOTICES.reconstructed)}</span>`;
+  }
+  return `<span class="badge badge-emerald" data-task-source="official">✓ تعليمة رسمية</span>`;
 }
 
 function taskReviewHTML(task, subject) {
@@ -37,12 +46,27 @@ function taskReviewHTML(task, subject) {
 }
 
 /** Pure renderer used by browser code and regression tests. */
-export function simulationExamHTML({ subject, inventory, activeExercise, completed = false }) {
+export function simulationExamHTML({
+  subject,
+  inventory,
+  activeExercise,
+  completed = false,
+  micButton = () => ""
+}) {
   const exercise = subject.exercises.find((item) => item.number === activeExercise) || subject.exercises[0];
   const tasks = tasksForExercise(inventory, exercise.number);
+  const provisional = tasks.some((task) => task.scoringReviewStatus !== "verified");
+  const reconstructed = tasks.filter((task) => task.promptSource === "reconstructed").length;
+  const reconstructedNotice =
+    reconstructed > 0
+      ? `<div class="feedback mid mb-2" role="note">${reconstructed} من ${tasks.length} مهام معروضة خطوات مُعاد بناؤها (⚠️) وليست نصّ التعليمات الرسمية.</div>`
+      : "";
+  const provisionalNotice = provisional
+    ? `<div class="feedback mid mb-2" role="note">${escapeHTML(BAC_MODE_NOTICES.provisionalScoring)}</div>`
+    : "";
   const modeNotice = completed
     ? `<div class="feedback good mb-2" id="simulation-review-notice" role="status">تم التسليم. هذه شاشة إعادة القراءة؛ الإجابات مقفلة والمراجع لا تعرض أي نقطة آلية.</div>`
-    : `<div class="feedback bad mb-2" id="simulation-active-notice" role="note">محاكاة صامتة: لا تلميح، لا إجابة نموذجية، لا تشخيص ولا نقطة أثناء الاختبار.</div>`;
+    : `<div class="feedback bad mb-2" id="simulation-active-notice" role="note">اختبار صامت: لا تلميح، لا إجابة نموذجية، لا تشخيص ولا نقطة أثناء الاختبار.</div>`;
   const taskCards = tasks
     .map((task) => {
       const documents = (task.documentRefs || [])
@@ -51,18 +75,20 @@ export function simulationExamHTML({ subject, inventory, activeExercise, complet
       return `<article class="card simulation-task" data-official-task="${escapeHTML(task.id)}">
         <div class="flex spread simulation-task-head">
           <span class="badge badge-indigo">${escapeHTML(task.id)}</span>
-          <span class="small text-muted">الصفحة ${task.page}</span>
+          <span class="small text-muted">${Number.isInteger(task.page) ? `الصفحة ${task.page}` : "صفحة غير موثّقة"}</span>
         </div>
+        <div class="flex">${taskProvenanceHTML(task)}</div>
         <h3 class="bac-consigne">${escapeHTML(task.prompt)}</h3>
         ${documents ? `<p class="small text-muted">السندات: ${documents}</p>` : ""}
         <label class="lbl" for="simulation-answer-${escapeHTML(task.id)}">إجابتك</label>
         <textarea class="field simulation-answer" id="simulation-answer-${escapeHTML(task.id)}" data-task-answer="${escapeHTML(task.id)}" data-exercise="${task.exerciseNumber}" rows="8"${completed ? " disabled" : ""}></textarea>
+        ${completed ? "" : micButton(`simulation-answer-${task.id}`)}
         ${completed ? "" : `<button class="btn btn-ghost btn-sm qualitative-check" data-qualitative-for="${escapeHTML(task.id)}">تقييم نوعي</button><div class="feedback small qualitative-feedback" data-qualitative-result="${escapeHTML(task.id)}" aria-live="polite"></div>`}
         ${completed ? taskReviewHTML(task, subject) : ""}
       </article>`;
     })
     .join("");
-  return `${modeNotice}
+  return `${modeNotice}${reconstructedNotice}${provisionalNotice}
     <div class="grid workspace-layout simulation-layout">
       <aside class="card stack">
         <span class="small bold text-muted">تمارين الموضوع الرسمي:</span>
@@ -85,10 +111,13 @@ export function createSimulationController(deps) {
   const {
     $,
     $$,
+    bindMics,
     closeModal,
     goHome,
+    micButton,
     officialCoverageForSubject,
     officialTaskInventoryFor,
+    openDrawer,
     openModal,
     showScreen,
     store,
@@ -187,18 +216,20 @@ export function createSimulationController(deps) {
   };
 
   function renderBacReadingMode(subject, fallbackReason = "") {
-    const pdf = subject?.pdfLocalUrl;
     const fallbackNotice = FALLBACK_NOTICE[fallbackReason]
       ? `<div class="feedback mid mb-2" role="status">${FALLBACK_NOTICE[fallbackReason]}</div>`
       : "";
+    const screen = $("#view-workspace");
+    screen?.setAttribute("data-session-mode", "bac");
+    screen?.setAttribute("data-review-mode", "false");
     setInternalHTML(
-      $("#view-workspace"),
-      `<div class="app app-wide bac-reading-mode" data-session-mode="simulation">
+      screen,
+      `<div class="app app-wide bac-reading-mode">
         <header class="screen-head">
           <div class="brand">
             <button class="btn btn-rose btn-sm" id="bac-reading-home">الرئيسية</button>
             <div>
-              <h2>وضع BAC · الموضوع ${subject.id === 1 ? "الأول" : "الثاني"}</h2>
+              <h2>قراءة الموضوع · الموضوع ${subject.id === 1 ? "الأول" : "الثاني"}</h2>
               <p>قراءة الموضوع المختار فقط — بدون تصحيح أو إجابة نموذجية</p>
             </div>
           </div>
@@ -207,8 +238,7 @@ export function createSimulationController(deps) {
         ${fallbackNotice}
         <div class="feedback mid mb-2" role="note">هذا الموضوع منفصل عن الموضوع الثاني. لا توجد حلول أو إجابات نموذجية في هذا الوضع. إجاباتك تُحفظ محلياً لكل تمرين.</div>
         <section class="card center stack bac-reading-card">
-          <div class="pdf-reader-cover"><span class="pdf-reader-icon" aria-hidden="true">📄</span><strong>موضوع البكالوريا جاهز</strong><p class="small text-muted">اقرأ الموضوع ثم اكتب إجابتك بدون تنقيط آلي.</p></div>
-          ${pdf ? `<a class="btn btn-indigo btn-block pdf-open" href="${pdf}" target="_blank" rel="noopener noreferrer">📄 فتح الموضوع المختار</a><a class="small" href="${pdf}" download>⬇️ تنزيل PDF</a>` : `<p class="feedback bad">لا يوجد PDF محلي لهذا الموضوع.</p>`}
+          ${pdfViewerHTML(subject, { showCover: false })}
         </section>
         <section class="stack bac-answers" aria-label="إجابات الموضوع">
           ${subject.exercises
@@ -245,27 +275,34 @@ export function createSimulationController(deps) {
       return;
     }
     const completed = store.state.sessionStatus === "completed";
+    const screen = $("#view-workspace");
+    // L'état de l'épreuve est porté par l'écran : un seul endroit, lisible
+    // par les tests et par les feuilles de style.
+    screen?.setAttribute("data-session-mode", "bac");
+    screen?.setAttribute("data-review-mode", String(completed));
     setInternalHTML(
-      $("#view-workspace"),
-      `<div class="app app-wide" data-session-mode="simulation" data-review-mode="${completed}">
+      screen,
+      `<div class="app app-wide">
         <header class="screen-head">
           <div class="brand">
             <button class="btn btn-rose btn-sm" id="simulation-home">الرئيسية</button>
             <div>
-              <h2>المحاكاة الرسمية · الموضوع ${subject.id === 1 ? "الأول" : "الثاني"}</h2>
-              <p>${completed ? "إعادة القراءة بعد التسليم" : "اختبار جارٍ — الأدوات التعليمية محجوبة"}</p>
+              <h2>الإمتحان · الموضوع ${subject.id === 1 ? "الأول" : "الثاني"}</h2>
+              <p>${completed ? "إعادة القراءة بعد التسليم" : "الإمتحان جارٍ — لا تلميح ولا إجابة نموذجية"}</p>
             </div>
           </div>
-          <span class="badge ${completed ? "badge-emerald" : "badge-rose"}">${completed ? "مُسلَّم" : "محاكاة"}</span>
+          <span class="badge ${completed ? "badge-emerald" : "badge-rose"}">${completed ? "مُسلَّم" : "إمتحان"}</span>
         </header>
-            <div class="workspace-tools" aria-label="أدوات المحاكاة">
+            <div class="workspace-tools" aria-label="أدوات الاختبار">
+              <button class="btn btn-indigo btn-sm" id="simulation-pdf">📄 الموضوع</button>
               ${completed ? "" : `<button class="btn btn-rose btn-sm" id="simulation-finish">✓ تسليم النسخة</button>`}
             </div>
         ${simulationExamHTML({
           subject,
           inventory,
           activeExercise: store.state.activeExercise,
-          completed
+          completed,
+          micButton
         })}
       </div>`
     );
@@ -276,6 +313,7 @@ export function createSimulationController(deps) {
 
   function bind(completed) {
     $("#simulation-home")?.addEventListener("click", goHome);
+    $("#simulation-pdf")?.addEventListener("click", openSubjectPdf);
     $("#simulation-finish")?.addEventListener("click", confirmFinish);
     $$("#view-workspace [data-simulation-exercise]").forEach((button) =>
       button.addEventListener("click", () => {
@@ -289,7 +327,18 @@ export function createSimulationController(deps) {
         input.addEventListener("input", persistAnswers)
       );
       bindQualitativeChecks();
+      bindMics($("#view-workspace"));
     }
+  }
+
+  function openSubjectPdf() {
+    const subject = sujetObj();
+    if (!subject) return;
+    openDrawer(
+      "right",
+      `📄 وثيقة الموضوع ${subject.id === 1 ? "الأول" : "الثاني"}`,
+      pdfViewerHTML(subject, { showCover: false })
+    );
   }
 
   function denyInvalidSimulation(report) {
@@ -302,9 +351,10 @@ export function createSimulationController(deps) {
   function confirmFinish() {
     if (!store.isSessionActive()) return;
     openModal(
-      "تسليم المحاكاة",
+      "تسليم الورقة",
       "بعد التسليم تُقفل الإجابات نهائياً وتبدأ إعادة القراءة. لا توجد نقطة آلية.",
-      `<button class="btn btn-rose" id="simulation-finish-yes">نعم، سلّم النسخة</button>`
+      `<button class="btn btn-rose" id="simulation-finish-yes">نعم، سلّم الورقة</button>
+       <button class="btn btn-ghost" id="simulation-finish-no" data-close="btn">لا، أكمل الإمتحان</button>`
     );
     $("#simulation-finish-yes")?.addEventListener("click", () => {
       persistAnswers();
@@ -321,7 +371,7 @@ export function createSimulationController(deps) {
     if (completionNoticeShown) return;
     completionNoticeShown = true;
     openModal(
-      reason === "time-expired" ? "انتهى وقت المحاكاة" : "تم تسليم المحاكاة",
+      reason === "time-expired" ? "انتهى وقت الإمتحان" : "تم تسليم الورقة",
       `<p>حُفظت الإجابات محلياً وأُغلقت الكتابة.</p>
        <p class="feedback mid">تبدأ الآن إعادة القراءة دون نقطة آلية. المراجع المعروضة تدريبية وليست تصحيحاً وزارياً.</p>`
     );

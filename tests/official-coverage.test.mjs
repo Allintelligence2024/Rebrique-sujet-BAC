@@ -33,24 +33,29 @@ function completeFixture() {
   };
 }
 
-test("le pilote 2025/S1 sépare deux tâches officielles des quatre étapes N/S/E/W", () => {
+test("le pilote 2025/S1 inventorie les douze pôles et marque leur provenance", () => {
   const inventory = officialTaskInventoryFor("2025", 1);
   const report = buildOfficialCoverageReport({ yearId: "2025", subject: subject2025S1, inventory });
 
-  assert.equal(inventory.tasks.length, 2);
-  assert.deepEqual(
-    inventory.tasks.map((task) => task.id),
-    ["2025-S1-E1-Q1", "2025-S1-E1-Q2"]
-  );
-  assert.equal(inventory.tasks[1].trainingMappings.length, 3);
+  // Un pôle = une tâche inventoriée : les trois exercices du sujet sont couverts.
+  assert.equal(inventory.tasks.length, 12);
+  assert.deepEqual(inventory.scope.inventoriedExerciseNumbers, [1, 2, 3]);
+  assert.deepEqual(inventory.tasks[0].id, "2025-S1-E1-Q1");
+  // Provenance réelle : seules les consignes officielles portent une page.
+  const official = inventory.tasks.filter((task) => task.promptSource === "official");
+  const reconstructed = inventory.tasks.filter((task) => task.promptSource === "reconstructed");
+  assert.equal(official.length, 8);
+  assert.equal(reconstructed.length, 4);
+  assert.ok(official.every((task) => Number.isInteger(task.page)));
+  assert.ok(reconstructed.every((task) => task.page === null));
+  // Le barème reste provisoire : rien n'est marqué vérifié.
+  assert.ok(inventory.tasks.every((task) => task.scoringReviewStatus === "provisional"));
+  assert.equal(inventory.source.humanVerified, false);
   assert.equal(report.inventoryStatus, "partial");
-  assert.equal(report.knownTaskCount, 2);
-  assert.equal(report.mappedTaskCount, 2);
+  assert.equal(report.knownTaskCount, 12);
+  assert.equal(report.mappedTaskCount, 12);
   assert.equal(report.knownTaskMappingPercent, 100);
   assert.equal(report.overallTaskCoveragePercent, null);
-  assert.equal(report.simulationEligible, false);
-  assert.ok(report.blockers.includes("inventory-partial"));
-  assert.ok(report.blockers.includes("scoring-unverified"));
   assert.deepEqual(report.errors, []);
 });
 
@@ -86,15 +91,30 @@ test("une tâche non mappée ou un total de points incohérent bloque la simulat
   assert.ok(report.errors.some((error) => error.includes("task points do not match")));
 });
 
-test("aucun sujet réel n'est promu en simulation tant que son inventaire n'est pas complet", () => {
+test("les inventaires réels ouvrent l'épreuve sans jamais se prétendre complets", () => {
+  // Décision produit (data/bac-mode-policy.js) : l'épreuve est ouverte sur un
+  // inventaire partiel, à condition que le partiel soit dit explicitement.
   for (const year of APP_CONFIG.years) {
     for (const subject of year.sujets || []) {
-      const report = buildOfficialCoverageReport({
-        yearId: year.id,
-        subject,
-        inventory: officialTaskInventoryFor(year.id, subject.id)
-      });
-      assert.equal(report.simulationEligible, false, `${year.id}/S${subject.id} promu prématurément`);
+      const inventory = officialTaskInventoryFor(year.id, subject.id);
+      const label = `${year.id}/S${subject.id}`;
+      assert.ok(inventory, `${label} sans inventaire`);
+      assert.equal(
+        buildOfficialCoverageReport({
+          yearId: year.id,
+          subject,
+          inventory
+        }).simulationEligible,
+        true,
+        `${label} devrait être ouvert à l'épreuve`
+      );
+      // Ce qui ne bouge pas : aucun inventaire ne se déclare complet ni vérifié.
+      assert.notEqual(inventory.status, "complete", `${label} se déclare complet`);
+      assert.ok(
+        inventory.tasks.every((task) => task.scoringReviewStatus !== "verified"),
+        `${label} annonce un barème vérifié`
+      );
+      assert.equal(inventory.source.humanVerified, false, `${label} annonce une relecture humaine`);
     }
   }
 });

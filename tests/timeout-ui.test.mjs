@@ -39,7 +39,20 @@ test("l'expiration globale termine la session et verrouille la copie affichée",
 
   assert.equal(store.state.sessionStatus, "completed");
   assert.equal(store.state.sessionEndReason, "time-expired");
-  assert.equal(document.querySelector("#fld-N").disabled, true);
-  assert.ok(document.querySelector("#session-complete-notice"));
+  // La copie est verrouillée : les champs de réponse de l'épreuve sont désactivés.
+  const answers = [...document.querySelectorAll("#view-workspace [data-task-answer]")];
+  assert.ok(answers.length > 0, "aucun champ de réponse rendu après expiration");
+  assert.ok(
+    answers.every((input) => input.disabled),
+    "les réponses doivent être verrouillées"
+  );
+  assert.equal(document.querySelector("#simulation-finish"), null, "plus de remise après expiration");
+  assert.ok(document.querySelector("#view-workspace").dataset.reviewMode === "true");
+  // L'élève est prévenu : relecture autorisée, aucune note affichée.
+  assert.ok(document.querySelector("#simulation-review-notice"));
+  assert.match(document.querySelector("#view-workspace").textContent, /لا تُعرض أي علامة رقمية/);
+  // Le motif de fin est annoncé dans une boîte de dialogue, pas dans un toast.
+  assert.match(document.querySelector(".modal").textContent, /انتهى وقت الإمتحان/);
+  assert.match(document.querySelector(".modal").textContent, /راجع الإجابات/);
   assert.ok(document.querySelector("#global-timer-bar").classList.contains("hidden"));
 });

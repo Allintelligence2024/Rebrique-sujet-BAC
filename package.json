@@ -17,6 +17,8 @@
     "calibration:update": "node scripts/update-calibration-status.mjs",
     "calibration:check": "node scripts/update-calibration-status.mjs --check",
     "coverage:official": "node scripts/report-official-coverage.mjs",
+  "inventory:generate": "node scripts/generate-official-inventories.mjs",
+  "inventory:check": "node scripts/generate-official-inventories.mjs --check",
     "p1:status": "node scripts/report-p1-status.mjs",
     "p1:check": "node scripts/report-p1-status.mjs --check-complete",
     "p2:status": "node scripts/report-p2-status.mjs",

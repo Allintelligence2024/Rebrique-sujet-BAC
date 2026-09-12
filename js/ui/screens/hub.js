@@ -43,7 +43,7 @@ function yearCardId(year) {
 function buildHubCatalog(appConfig, streamId) {
   const training = trainingYearsForStream(appConfig, streamId).map((year) => ({
     id: yearCardId(year),
-    kind: "training",
+    kind: "exam",
     year
   }));
   const consult = catalogYearsForStream(streamId)
@@ -131,7 +131,7 @@ export function createHubScreen(deps) {
       grid.appendChild(gapCard(stream));
     } else {
       for (const item of catalog) {
-        grid.appendChild(item.kind === "training" ? trainingCard(item.year) : consultCard(item));
+        grid.appendChild(item.kind === "exam" ? examCard(item.year) : consultCard(item));
       }
     }
 
@@ -218,18 +218,18 @@ export function createHubScreen(deps) {
     return card;
   }
 
-  function trainingCard(y) {
+  function examCard(y) {
     const disabled = !y.enabled;
     const note = disabled
       ? y.loadingNote || "لم تُرفق وثائق PDF لهذه الدورة بعد — قريباً."
-      : `تدريب منهجي جزئي — لا يمثل جميع تعليمات الموضوع. مدة الاختبار الرسمية: ${formatDuration(
+      : `إمتحان الموضوع — جرد المهام جزئي: بعض التعليمات مُعاد بناؤها. مدة الاختبار الرسمية: ${formatDuration(
           examMinutesForYear(y)
         )}.`;
     const cardId = yearCardId(y);
     const card = node("div", {
       className: `card year-card ${disabled ? "dim" : ""}`,
       attrs: { title: note },
-      dataset: { hubYear: cardId, kind: "training" }
+      dataset: { hubYear: cardId, kind: "exam" }
     });
     const stack = node("div", { className: "stack" });
     const header = node("div", { className: "flex spread" });
@@ -247,7 +247,7 @@ export function createHubScreen(deps) {
       y.theme === "emerald" ? "btn-emerald" : y.theme === "indigo" ? "btn-indigo" : "btn-amber";
     const button = node("button", {
       className: `btn btn-block ${buttonTheme}`,
-      text: disabled ? "غير متاح بعد" : "▶ ابدأ التدريب المنهجي",
+      text: disabled ? "غير متاح بعد" : "▶ ابدأ الإمتحان",
       attrs: disabled ? { disabled: "" } : {},
       dataset: { year: y.id }
     });

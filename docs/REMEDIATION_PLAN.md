@@ -37,17 +37,17 @@
 | P1.1 — Inventaire des tâches officielles | Bloqué  | 0/38 inventaires complets. Pilote 2025/S1/E1 : 2 tâches reliées à 4 étapes ; les autres ne seront pas inventés sans sources vérifiables. |
 | P1.2 — Mesure de couverture              | Bloqué  | Moteur et rapport terminés, mais 0/38 sujets à 100 % ; un inventaire partiel reste `unknown`.                                            |
 | P1.3 — Garde de simulation               | Terminé | Contrôle à la sélection et au rendu ; restauration altérée refusée ; 0 sujet réel éligible.                                              |
-| P1.4 — Parcours séparés                  | Terminé | Entraînement guidé, simulation silencieuse par tâches officielles, puis relecture verrouillée après remise.                              |
+| P1.4 — Parcours séparés                  | Terminé | Épreuve unique : entraînement retiré de la copie, épreuve silencieuse par tâches inventoriées, relecture verrouillée après remise.     |
 | P1.5 — Corpus réel et calibration        | Bloqué  | Seuils et statut généré terminés ; 0/2 235 copies minimales réelles, consenties et doublement corrigées. Notes numériques masquées.      |
 | P1.6 — CSP stricte et découpage UI       | Terminé | 0 style inline, `style-src 'self'`, simulation et présentation extraites du contrôleur workspace.                                        |
 
 1. Modéliser les **questions officielles** indépendamment des quatre gestes méthodologiques N/S/E/W.
 2. Mapper toutes les sous-questions, barèmes, documents et pages ; calculer automatiquement un taux de couverture par sujet.
-3. Refuser le mode simulation si la couverture officielle n’atteint pas 100 %.
-4. Séparer les écrans :
-   - entraînement guidé avec indices et modèles ;
-   - simulation sans indice, sans réponse modèle et sans diagnostic pendant l’épreuve ;
-   - relecture après remise.
+3. Refuser l’épreuve si la couverture officielle n’atteint pas 100 % — **assoupli le 2026-09-12** : l’épreuve est ouverte sur un inventaire partiel à condition que le partiel soit annoncé (`data/bac-mode-policy.js`) ; la règle stricte reste implémentée et reprendra la main dès que les preuves humaines existeront.
+4. Séparer les écrans — **arbitrage du 2026-09-12** : un seul mode est livré, l’épreuve.
+   - l’ancien entraînement guidé (indices, modèles, diagnostic par pôle) est retiré de la copie ;
+   - l’épreuve reste sans indice, sans réponse modèle et sans diagnostic pendant l’épreuve ;
+   - la relecture n’existe qu’après remise (`✓ تسليم الورقة`).
 5. Construire un corpus réel, consenti et anonymisé : deux correcteurs indépendants, bornes de score contextuelles, arbitrage documenté.
 6. Définir avant promotion : MAE maximale, biais maximal, taux de faux positifs/négatifs et couverture minimale par catégorie/pôle.
 7. Supprimer les notes numériques heuristiques tant que ces seuils ne sont pas satisfaits.

@@ -66,7 +66,8 @@ test("une sauvegarde v3 sans schemaVersion migre explicitement puis est normalis
   assert.equal(store.exercise("2024", 1, 1).text.N, "réponse");
   assert.equal(localStorage.getItem("boussole4d.v3"), null);
   assert.equal(JSON.parse(localStorage.getItem("boussole4d.v4")).schemaVersion, CURRENT_SCHEMA_VERSION);
-  assert.equal(store.state.sessionMode, "training");
+  // L'ancienne session d'entraînement est ramenée à l'unique mode : l'épreuve.
+  assert.equal(store.state.sessionMode, "bac");
 });
 
 test("un état stocké invalide est remis à zéro et sauvegardé dans une copie de secours", () => {
@@ -84,7 +85,7 @@ test("la migration v1 ajoute le mode révision désactivé", () => {
   const migrated = migrateState({ schemaVersion: 1, progress: {} });
   assert.equal(migrated.schemaVersion, CURRENT_SCHEMA_VERSION);
   assert.equal(migrated.reviewMode, false);
-  assert.equal(migrated.sessionMode, "training");
+  assert.equal(migrated.sessionMode, "bac");
 });
 
 test("la validation rejette les futures versions et élimine les champs incohérents", () => {
@@ -136,14 +137,23 @@ test("le cycle de session démarre frais puis se termine sans effacer les répon
   assert.equal(store.finishSession("manual"), false);
 });
 
-test("le mode simulation démarre son horloge au choix du sujet et interdit la relecture anticipée", () => {
+test("l'épreuve démarre son horloge au choix du sujet et interdit la relecture anticipée", () => {
   store.enterSession("2025", 1, 270 * 60, 25 * 60);
   store.state.globalRemaining = 123;
-  assert.equal(store.activateSubjectMode(2, "simulation"), true);
-  assert.equal(store.state.sessionMode, "simulation");
+  assert.equal(store.activateSubjectMode(2, "bac"), true);
+  assert.equal(store.state.sessionMode, "bac");
   assert.equal(store.state.sujetId, 2);
   assert.equal(store.state.globalRemaining, 270 * 60);
   assert.throws(() => store.setReviewMode(true), /relecture est interdite/);
+  // Les anciens modes ("training", "simulation") sont normalisés, jamais rejetés.
+  store.state.globalRemaining = 123;
+  assert.equal(store.activateSubjectMode(2, "simulation"), true);
+  assert.equal(store.state.sessionMode, "bac");
+  assert.equal(store.state.globalRemaining, 270 * 60);
+  store.state.globalRemaining = 123;
+  assert.equal(store.activateSubjectMode(2, "training"), true);
+  assert.equal(store.state.sessionMode, "bac");
+  assert.equal(store.state.globalRemaining, 270 * 60);
 
   const answer = store.exercise("2025", 2, 1);
   answer.officialTaskAnswers["2025-S2-E1-Q1"] = "إجابة محفوظة";

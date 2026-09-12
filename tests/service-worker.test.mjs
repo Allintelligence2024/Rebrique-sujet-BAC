@@ -10,9 +10,16 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const source = readFileSync(join(root, "sw.js"), "utf8");
 const OUT_OF_GRAPH = {
   "js/app-version.js": "chargé par index.html et importScripts",
-  "js/ui/workspace/report-controller.js": "plus appelé par l'UI ; décision produit en attente",
-  "js/ui/reports/report.js": "atteignable uniquement via report-controller",
-  "js/ui/reports/exports.js": "atteignable uniquement via report-controller"
+  // Écran d'entraînement retiré du produit (mode BAC unique) : ces modules ne
+  // sont plus dans le graphe d'imports de l'application. Ils restent versionnés
+  // et couverts par leurs tests (méthode des quatre étapes), en attendant une
+  // décision explicite de suppression.
+  "js/ui/workspace/brouillon.js": " écran d'entraînement retiré — conservé pour les tests",
+  "js/ui/workspace/feedback.js": " écran d'entraînement retiré — conservé pour les tests",
+  "js/ui/workspace/pipeline-exercise.js": " écran d'entraînement retiré — conservé pour les tests",
+  "js/ui/workspace/presentation.js": " écran d'entraînement retiré — conservé pour les tests",
+  "js/ui/workspace/scratchpad.js": " écran d'entraînement retiré — conservé pour les tests",
+  "js/ui/workspace/text-exercise.js": " écran d'entraînement retiré — conservé pour les tests"
 };
 
 function toRepoPath(path) {

@@ -17,16 +17,6 @@ export function replaceContent(element, children = []) {
   return element;
 }
 
-/**
- * Ajoute un nœud texte, jamais interprété comme du HTML. À utiliser pour toute
- * valeur dynamique (horodatage, compteur, libellé calculé) : c'est le pendant
- * en lecture seule de setInternalHTML, qui garde les données hors du parseur.
- */
-export function appendText(element, text) {
-  element.append(document.createTextNode(String(text)));
-  return element;
-}
-
 /** Central boundary for application-owned templates. Never pass raw user input. */
 export function setInternalHTML(element, html) {
   element.innerHTML = String(html);

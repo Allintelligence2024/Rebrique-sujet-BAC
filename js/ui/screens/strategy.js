@@ -1,4 +1,6 @@
 import { setInternalHTML } from "../dom.js";
+import { officialTaskInventoryFor } from "../../../data/official-tasks.js";
+import { pdfViewerHTML } from "../pdf-viewer.js";
 import { assertSimulationEligible } from "../../domain/subjects/official-coverage.js";
 import { simulationBlockersArabic } from "../coverage-messages.js";
 
@@ -30,34 +32,11 @@ export function createStrategyScreen(deps) {
     showScreen("view-strategy");
   }
 
+  /* Le sujet s'affiche dans l'application : les PDF sont suivis dans le dépôt
+     (subjects/**) et servis par la même origine, ce que la CSP autorise
+     (frame-src 'self'). Le lien externe ne reste qu'en source de repli. */
   function pdfFallbackHTML(subject) {
-    // L'aperçu stratégique renvoie à la source externe (dzexams) : pendant la
-    // phase de choix, aucun téléchargement n'est proposé, l'élève doit ouvrir
-    // le sujet sans l'archiver. Le seul lien « ⬇️ تنزيل » de l'application vit
-    // dans le mode lecture BAC (screens/simulation.js), où l'élève a précisément
-    // besoin du PDF pour travailler hors ligne.
-    if (subject?.pdfExternalUrl) {
-      return `<div class="pdf-reader stack">
-        <div class="pdf-reader-cover" role="status">
-          <span class="pdf-reader-icon" aria-hidden="true">📄</span>
-          <strong>الموضوع متاح على المصدر الخارجي</strong>
-          <p class="small text-muted">تُفتح صفحة الموضوع على dzexams في نافذة مستقلة — فتح المصدر الخارجي.</p>
-        </div>
-        <a class="btn btn-indigo btn-block pdf-open" href="${subject.pdfExternalUrl}" target="_blank" rel="noopener noreferrer">📄 فتح المصدر الخارجي (dzexams)</a>
-      </div>`;
-    }
-    if (subject?.pdfLocalUrl) {
-      return `<div class="pdf-reader stack">
-        <div class="pdf-reader-cover" role="status">
-          <span class="pdf-reader-icon" aria-hidden="true">📄</span>
-          <strong>ملف الموضوع جاهز للقراءة</strong>
-        </div>
-        <a class="btn btn-indigo btn-block pdf-open" href="${subject.pdfLocalUrl}" target="_blank" rel="noopener noreferrer">📄 فتح الموضوع المختار وقراءته</a>
-      </div>`;
-    }
-    return `<div class="center stack preview-empty">
-      <p class="small text-muted">لا يوجد ملف موضوع متاح لهذه الدورة في التطبيق.</p>
-    </div>`;
+    return pdfViewerHTML(subject);
   }
 
   function renderStrategy(sujetNum) {
@@ -132,10 +111,10 @@ export function createStrategyScreen(deps) {
         return `<div class="flex spread"><label class="small" for="strategy-s${subject.id}-e${exercise.number}">ت${exercise.number}: ${exercise.label} (${exercise.max}ن)</label><input class="field calc-input" id="strategy-s${subject.id}-e${exercise.number}" data-subject="${subject.id}" data-exercise="${exercise.number}" data-max="${exercise.max}" type="number" min="0" max="${exercise.max}" step="0.25" value="${initial}"></div>`;
       })
       .join("");
-    const simDisabled = coverage.simulationEligible ? "" : "disabled";
-    const guardMsg = coverage.simulationEligible
-      ? ""
-      : `<p class="small text-muted simulation-guard-note" id="simulation-guard-${subject.id}">المحاكاة ممنوعة: ${simulationBlockersArabic(coverage.blockers)}</p>`;
+    const officialTasks = (officialTaskInventoryFor(store.state.yearId, subject.id)?.tasks || []).filter(
+      (task) => task.promptSource === "official"
+    ).length;
+    const inventoryNote = `<p class="small text-muted inventory-note" id="inventory-note-${subject.id}">جرد المهام: ${coverage.knownTaskCount} مهمة، منها ${officialTasks} تعليمة رسمية موثّقة.</p>`;
     return `
     <div class="card stack subject-card" data-subject-coverage="${coverage.inventoryStatus}" data-simulation-eligible="${coverage.simulationEligible}">
       <div>
@@ -149,9 +128,8 @@ export function createStrategyScreen(deps) {
         </div>
       </div>
       <div class="stack subject-mode-actions">
-        <button class="btn btn-block btn-${theme}" data-confirm="${subject.id}" data-session-mode="training">ابدأ التدريب المنهجي</button>
-        <button class="btn btn-block btn-ghost btn-sm" data-confirm="${subject.id}" data-session-mode="simulation" ${simDisabled}>ابدأ وضع BAC</button>
-        ${guardMsg}
+        <button class="btn btn-block btn-${theme}" data-confirm="${subject.id}" data-session-mode="bac">ابدأ الإمتحان</button>
+        ${inventoryNote}
       </div>
     </div>`;
   }
@@ -209,19 +187,18 @@ export function createStrategyScreen(deps) {
     gain.textContent = `${(best.fraction * 100).toFixed(1)}% ثقة ذاتية`;
   }
 
-  function confirmChoice(sujetNum, mode = "training") {
+  function confirmChoice(sujetNum, mode = "bac") {
     if (!store.isSessionActive()) return;
     const year = yearObj(store.state.yearId);
     const subject = year?.sujets.find((item) => item.id === sujetNum);
     if (!subject) return;
-    if (mode === "simulation") {
-      const coverage = officialCoverageForSubject(year, subject);
-      try {
-        assertSimulationEligible(coverage);
-      } catch {
-        toast(`المحاكاة ممنوعة: ${simulationBlockersArabic(coverage.blockers)}`, "error");
-        return;
-      }
+    // Filet de sécurité : un sujet sans inventaire exploitable reste fermé.
+    const coverage = officialCoverageForSubject(year, subject);
+    try {
+      assertSimulationEligible(coverage);
+    } catch {
+      toast(`الإمتحان مرفوض: ${simulationBlockersArabic(coverage.blockers)}`, "error");
+      return;
     }
     store.activateSubjectMode(sujetNum, mode);
     timers.stopStrategy();

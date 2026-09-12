@@ -9,7 +9,12 @@ const LEGACY_KEY = "boussole4d.v3";
 const AMBIGUOUS_LEGACY_KEY = "boussole4d.v2";
 export const CURRENT_SCHEMA_VERSION = 5;
 export const YEAR_ID_PATTERN = /^\d{4}(?:-[a-z]{1,3})?$/;
-export const SESSION_MODES = Object.freeze(["training", "simulation"]);
+/* Un seul mode : l'épreuve. L'ancien « mode entraînement » (N/S/E/W avec
+   aides, modèles et diagnostics) a été retiré du produit ; les sessions
+   enregistrées avec "training" ou "simulation" sont ramenées à "bac". */
+export const SESSION_MODES = Object.freeze(["bac"]);
+const LEGACY_SESSION_MODES = new Set(["training", "simulation"]);
+export const normalizeSessionMode = (value) => (LEGACY_SESSION_MODES.has(value) ? "bac" : value);
 const POLES = ["N", "S", "E", "W"];
 const SCREENS = new Set(["view-hub", "view-guide", "view-strategy", "view-workspace"]);
 const SESSION_STATUSES = new Set(["idle", "active", "completed"]);
@@ -45,7 +50,7 @@ function defaultState() {
     sessionStartedAt: null,
     sessionCompletedAt: null,
     sessionEndReason: null,
-    sessionMode: "training",
+    sessionMode: "bac",
     reviewMode: false,
     yearId: "2025",
     sujetId: 1,
@@ -126,7 +131,7 @@ export function migrateState(candidate) {
     return {
       ...candidate,
       schemaVersion: CURRENT_SCHEMA_VERSION,
-      sessionMode: "training",
+      sessionMode: "bac",
       reviewMode: false,
       sessionStatus: candidate.sessionActive === true ? "active" : "idle"
     };
@@ -135,7 +140,9 @@ export function migrateState(candidate) {
     return {
       ...candidate,
       schemaVersion: CURRENT_SCHEMA_VERSION,
-      sessionMode: SESSION_MODES.includes(candidate.sessionMode) ? candidate.sessionMode : "training",
+      sessionMode: SESSION_MODES.includes(normalizeSessionMode(candidate.sessionMode))
+        ? normalizeSessionMode(candidate.sessionMode)
+        : "bac",
       reviewMode: candidate.reviewMode === true,
       sessionStatus: candidate.sessionActive === true ? "active" : candidate.sessionStatus || "idle"
     };
@@ -232,7 +239,8 @@ export function validateState(candidate) {
   state.sessionEndReason = ["manual", "time-expired", "left"].includes(candidate.sessionEndReason)
     ? candidate.sessionEndReason
     : null;
-  state.sessionMode = SESSION_MODES.includes(candidate.sessionMode) ? candidate.sessionMode : "training";
+  const requestedMode = normalizeSessionMode(candidate.sessionMode);
+  state.sessionMode = SESSION_MODES.includes(requestedMode) ? requestedMode : "bac";
   state.reviewMode = candidate.reviewMode === true || state.sessionStatus === "completed";
   state.yearId = YEAR_ID_PATTERN.test(candidate.yearId) ? candidate.yearId : state.yearId;
   state.sujetId = asFiniteNumber(candidate.sujetId, state.sujetId, 1, 9);
@@ -394,7 +402,7 @@ export const store = {
     if (!YEAR_ID_PATTERN.test(yearId)) throw new Error(`yearId invalide: ${String(yearId)}`);
     const duration = asFiniteNumber(durationSeconds, 270 * 60, 60, 24 * 60 * 60);
     const strategyDuration = asFiniteNumber(strategySeconds, 25 * 60, 0, 60 * 60);
-    const requestedMode = options?.mode || "training";
+    const requestedMode = normalizeSessionMode(options?.mode) || "bac";
     if (!SESSION_MODES.includes(requestedMode)) throw new Error(`mode de session invalide: ${requestedMode}`);
     const now = Date.now();
     this.state.yearId = yearId;
@@ -418,20 +426,20 @@ export const store = {
     this.state.strategyRunning = false;
     this.save();
   },
-  activateSubjectMode(sujetId, mode = "training") {
+  activateSubjectMode(sujetId, mode = "bac") {
     if (!this.isSessionActive()) return false;
-    if (!SESSION_MODES.includes(mode)) throw new Error(`mode de session invalide: ${String(mode)}`);
+    const requestedMode = normalizeSessionMode(mode);
+    if (!SESSION_MODES.includes(requestedMode)) throw new Error(`mode de session invalide: ${String(mode)}`);
     this.state.sujetId = sujetId || 1;
-    this.state.sessionMode = mode;
+    this.state.sessionMode = requestedMode;
     this.state.reviewMode = false;
     this.state.activeExercise = 1;
     this.state.activeStep = 1;
     this.state.activeScreen = "view-workspace";
-    if (mode === "simulation") {
-      // Strategy and breathing happen before the official clock starts.
-      this.state.globalRemaining = this.state.globalDuration;
-      this.state.globalLastTick = Date.now();
-    }
+    // Stratégie et respiration ont lieu avant le début de l'épreuve : le
+    // chrono officiel repart donc de la durée complète du sujet.
+    this.state.globalRemaining = this.state.globalDuration;
+    this.state.globalLastTick = Date.now();
     this.save();
     return true;
   },
@@ -454,8 +462,8 @@ export const store = {
     return this.state.sessionStatus === "active" && this.state.sessionActive === true;
   },
   setReviewMode(enabled) {
-    if (enabled === true && this.state.sessionMode === "simulation" && this.isSessionActive()) {
-      throw new Error("la relecture est interdite pendant une simulation active");
+    if (enabled === true && this.isSessionActive()) {
+      throw new Error("la relecture est interdite pendant une épreuve active");
     }
     this.state.reviewMode = enabled === true;
     this.save();

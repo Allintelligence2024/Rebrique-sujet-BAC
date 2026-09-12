@@ -54,11 +54,11 @@ test("le hub affiche les années (2025, 2024, 2023 et 2022 actives)", () => {
   assert.ok($('#year-grid [data-hub-year="2020"]'));
   assert.ok($('#year-grid [data-hub-year="2021"]'));
   assert.ok($('#year-grid [data-hub-year="2026"]'));
-  assert.equal($('#year-grid [data-hub-year="2013"]').dataset.kind, "training");
-  assert.equal($('#year-grid [data-hub-year="2019"]').dataset.kind, "training");
+  assert.equal($('#year-grid [data-hub-year="2013"]').dataset.kind, "exam");
+  assert.equal($('#year-grid [data-hub-year="2019"]').dataset.kind, "exam");
   assert.equal($('#year-grid [data-hub-year="2021"]').dataset.kind, "consult");
-  assert.equal($('#year-grid [data-hub-year="2020"]').dataset.kind, "training");
-  assert.equal($('#year-grid [data-hub-year="2026"]').dataset.kind, "training");
+  assert.equal($('#year-grid [data-hub-year="2020"]').dataset.kind, "exam");
+  assert.equal($('#year-grid [data-hub-year="2026"]').dataset.kind, "exam");
   assert.equal($('#year-grid [data-year="2013"]').disabled, false);
   assert.equal($('#year-grid [data-year="2020"]').disabled, false);
   assert.equal($('#year-grid [data-year="2026"]').disabled, false);
@@ -133,220 +133,60 @@ test("l'ouverture des أدعية وأذكار الامتحان affiche les invoc
   assert.equal($(".modal"), null);
 });
 
-test("après تثبيت du sujet, entrée directe au workspace (aucun écran qui spoiler)", () => {
+test("après تثبيت du sujet, entrée directe dans l'épreuve (aucun écran qui spoiler)", () => {
   click('#year-grid [data-year="2025"]');
   assert.ok($(".adkar-section"));
   assert.ok($$(".adkar-card").length >= 6);
   click("#guide-next");
-  click('#view-strategy [data-confirm="1"][data-session-mode="training"]');
-  // Vrai examen : plus d'écran intermédiaire — le workspace s'ouvre sur ت1.
+  // Un seul mode : plus de choix entraînement/BAC sur l'écran de stratégie.
+  assert.equal($('#view-strategy [data-session-mode="training"]'), null);
+  assert.ok($('#view-strategy [data-confirm="1"][data-session-mode="bac"]'));
+  click('#view-strategy [data-confirm="1"][data-session-mode="bac"]');
   assert.ok(!$("#view-workspace").classList.contains("hidden"));
   assert.equal($("#view-onboarding"), null, "l'écran onboarding n'existe plus");
-  // L'ordre est libre : le pipeline (ت3) reste accessible sans réponse préalable.
-  click('#view-workspace [data-switch="3"]');
-  assert.equal($$("#blocks-bank [data-block]").length, 8);
+  assert.equal($("#view-workspace").dataset.sessionMode, "bac");
+  // L'épreuve s'ouvre sur les tâches du sujet, pas sur un exercice d'entraînement.
+  assert.ok($$("#view-workspace .simulation-task").length > 0);
+  assert.equal($("#stepnav"), null, "la navigation par étapes d'entraînement a disparu");
 });
 
-test("le brouillon en quatre étapes s'ouvre, nomme ses champs et persiste les notes", () => {
-  assert.ok($("#method-scratch-card"));
-  click("#ws-brouillon");
-  assert.ok($(".drawer.open"));
-  assert.match($(".drawer").textContent, /ورقة المسودة · الخطوات الأربع: اقرأ \/ اجمع \/ اربط \/ اختُم/);
-  assert.match($(".drawer").textContent, /الفعل المكتشف/);
-  assert.match($(".drawer").textContent, /تعليمة البكالوريا/);
-  assert.match($(".drawer").textContent, /صياغة التدريب/);
-  assert.match($(".drawer").textContent, /الخطوة الأنسب: اقرأ/);
-  assert.ok($("#scratch-N"));
-  assert.ok($("#scratch-S"));
-  assert.equal($("label[for='scratch-N']").textContent, "اقرأ");
-  assert.equal($("#brouillon-draft-current").readOnly, true);
-  assert.equal($("#brouillon-draft-full").readOnly, true);
+test("l'épreuve affiche les consignes avec leur provenance réelle", () => {
+  const tasks = $$("#view-workspace .simulation-task");
+  assert.equal(tasks.length, 4, "quatre tâches pour le ت1 de 2025/S1");
+  const badges = $$("#view-workspace [data-task-source]");
+  assert.equal(badges.length, 4, "chaque tâche porte sa provenance");
+  const sources = badges.map((badge) => badge.dataset.taskSource);
+  assert.deepEqual(sources, ["reconstructed", "official", "official", "reconstructed"]);
+  // Les étapes reconstruites le disent ; les pages ne sont pas inventées.
+  assert.match(badges[0].textContent, /مُعاد بناؤها/);
+  assert.match(tasks[0].textContent, /صفحة غير موثّقة/);
+  assert.match(tasks[1].textContent, /الصفحة 1/);
+  // Aucune note, aucun pourcentage dans l'écran d'épreuve.
+  assert.doesNotMatch($("#view-workspace").textContent, /\d+[.,]\d+\s*\/\s*\d+/);
+});
 
-  const scratchN = $("#scratch-N");
-  scratchN.value = "المشكل العلمي: كيف يؤثر المنبه على الاستجابة؟";
-  scratchN.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
-
+test("le sujet s'ouvre dans l'application (PDF local) et non sur un lien externe", () => {
+  click("#simulation-pdf");
+  const frame = $(".drawer.open iframe.pdf-frame");
+  assert.ok(frame, "le sujet doit s'afficher en visionneuse intégrée");
+  assert.match(frame.getAttribute("src"), /^\/subjects\/SE\/2025\/sujet-1\.pdf/);
+  assert.ok($(".drawer.open a[download]"), "le téléchargement hors ligne reste proposé");
   click(".drawer [data-close]");
   assert.equal($(".drawer"), null);
-
-  click("#ws-brouillon");
-  assert.equal($("#scratch-N").value, "المشكل العلمي: كيف يؤثر المنبه على الاستجابة؟");
-  click(".drawer [data-close]");
 });
 
-test("la copie finale du brouillon génère un texte rédigé puis peut l'injecter dans la réponse texte", () => {
-  $("#pipeline-var-indep").value = "تركيز الأدينوزين والكافيين";
-  $("#pipeline-var-dep").value = "شدة النشاط العصبي";
-  click('#ex-content [data-polo-check="N"]');
-  click('#view-workspace [data-switch="1"]');
-  assert.ok($("#fld-N"));
-  click("#ws-brouillon");
-
-  $("#scratch-N").value = "المشكل العلمي: كيف تتدخل مختلف أنواع ARN في تركيب البروتين؟";
-  $("#scratch-N").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
-  $("#scratch-S").value = "نلاحظ وجود ARN رسول وناقل وريبوزومي في الهيولى مع تكامل أدوارها.";
-  $("#scratch-S").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
-  $("#scratch-E").value =
-    "يفسر ذلك بأن ARNm يحمل المعلومة وARNt ينقل الأحماض الأمينية وARNr يضمن الترجمة داخل الريبوزوم.";
-  $("#scratch-E").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
-  $("#scratch-W").value =
-    "في الختام يجيب ذلك عن المشكل العلمي ويؤدي تعطل هذه العناصر إلى توقف تركيب البروتين.";
-  $("#scratch-W").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
-
-  assert.match($("#brouillon-draft-current").value, /المشكل العلمي/);
-  assert.match($("#brouillon-draft-full").value, /وتبين المعطيات أن/);
-
-  click("#brouillon-insert-current");
-  assert.match($("#fld-N").value, /المشكل العلمي/);
-  assert.equal($(".drawer"), null, "l’insertion ferme le brouillon et revient dans la copie");
-  assert.equal(document.activeElement, $("#fld-N"));
-
-  click("#ws-brouillon");
-  click("#brouillon-insert-full");
-  assert.match($("#fld-N").value, /وتبين المعطيات أن/);
-  assert.equal($(".drawer"), null);
-});
-
-test("le mini-contrôle du brouillon signale l'absence de comparaison avant injection", () => {
-  click('#stepnav [data-step="1"]');
-  click('#ex-content [data-check="N"]');
-  click('#view-workspace [data-switch="2"]');
-  click('#stepnav [data-step="2"]');
-  click("#ws-brouillon");
-  $("#scratch-S").value = "النمط الطبيعي ينمو جيداً.";
-  $("#scratch-S").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
-  assert.match($("#brouillon-preflight-current").textContent, /لم تكتب مقارنة واضحة/);
-  click("#brouillon-insert-current");
-  assert.equal($(".modal"), null, "le contrôle reste dans le brouillon au lieu d’ouvrir une seconde fenêtre");
-  assert.ok($(".drawer"));
-  assert.equal($("#brouillon-preflight-current").getAttribute("role"), "alert");
-  assert.equal(document.activeElement, $("#brouillon-preflight-current"));
-  click(".drawer [data-close]");
-});
-
-test("le mini-contrôle du brouillon signale une explication sans observation", () => {
-  click('#stepnav [data-step="3"]');
-  click("#ws-brouillon");
-  $("#scratch-S").value = "";
-  $("#scratch-S").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
-  $("#scratch-E").value = "يعود ذلك إلى خلل في الموقع الفعال للإنزيم.";
-  $("#scratch-E").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
-  assert.match($("#brouillon-preflight-current").textContent, /فسّرت النتيجة قبل تسجيل الملاحظة/);
-  click(".drawer [data-close]");
-});
-
-test("le mini-contrôle du brouillon signale une conclusion hors problème", () => {
-  click('#stepnav [data-step="4"]');
-  click("#ws-brouillon");
-  $("#scratch-N").value = "المشكل العلمي: كيف تساهم البنية النسيجية للصانعة الخضراء في استغلال CO2؟";
-  $("#scratch-N").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
-  $("#scratch-W").value = "في الختام هذه الظاهرة مهمة للكائنات الحية.";
-  $("#scratch-W").dispatchEvent(new dom.window.Event("input", { bubbles: true }));
-  assert.match($("#brouillon-preflight-full").textContent, /الخاتمة لا تجيب عن المشكل العلمي/);
-  click(".drawer [data-close]");
-});
-
-test("le pipeline parfait reçoit le verdict ممتاز (sans chiffre en copie)", () => {
-  click('#stepnav [data-step="1"]');
-  $("#fld-N").value = "البيرينويد يرفع كفاءة استغلال CO2 عند الطحالب الطبيعية";
-  click('#ex-content [data-check="N"]');
-  click('#view-workspace [data-switch="3"]');
-  for (const id of ["b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8"])
-    click(`#blocks-bank [data-block="${id}"]`);
-  click('#ex-content [data-polo-check="W"]');
-  const fb = $("#fb-W").textContent.trim();
-  assert.match(fb, /8\/8/);
-  assert.match(fb, /ممتاز/);
-  assert.doesNotMatch(fb, /1\.50/);
-});
-
-test("l'évaluation texte renvoie un feedback d'entraînement et l'accordéon de réponse modèle", () => {
-  click('#view-workspace [data-switch="1"]');
-  $("#fld-N").value = "الأدينوزين يثبط اليقظة عبر الارتباط بالمستقبلات الغشائية";
-  click('#ex-content [data-check="N"]');
-  assert.match($("#fb-N").textContent.trim(), /مراجعة منهجية فقط/);
-  const modelBox = $("#fb-N details.model-box");
-  assert.ok(modelBox, "L'accordéon de réponse modèle doit être présent");
-  assert.match(modelBox.textContent, /إجابة نموذجية للتدريب/);
-});
-
-test("التقرير est exposé dans la copie et n'affiche aucun chiffre tant que la calibration bloque", async () => {
-  const { CALIBRATION_STATUS } = await import("../data/calibration-status.js");
-  const report = $("#ws-report");
-  assert.ok(report, "le bouton تقرير doit être présent dans la barre d'outils");
-  click("#ws-report");
-  const modal = $(".modal");
-  assert.ok(modal, "le rapport doit s'ouvrir");
-  const text = modal.textContent;
-  assert.match(text, /تقرير التدريب/);
-  assert.match(text, /ما الذي تفحصه المنصة/, "la limite de l'outil est rappelée");
-  assert.match(text, /تشخيص نوعي فقط/, "l'entête qualitative remplace le total chiffré");
-  // Garde-fou produit : aucune note ni pourcentage ne doit transparaître.
-  assert.equal($(".modal .report-score"), null);
-  assert.equal($("#dl-csv"), null);
-  assert.equal($("#dl-json"), null);
-  if (CALIBRATION_STATUS.scorePromotionAllowed === false) {
-    assert.doesNotMatch(text, /\d+[.,]\d+\s*\/\s*\d+/, `total chiffré visible: ${text}`);
-  }
-  // L'horodatage est ajouté en nœud texte (appendText), jamais dans le gabarit.
-  assert.match(text, /أُنشئ آلياً/);
-  click('.modal [data-close="btn"]');
-  assert.equal($(".modal"), null);
-});
-
-test("تصفير demande une confirmation explicite avant d'effacer la copie", async () => {
+test("la réponse est enregistrée automatiquement, sans confirmation", async () => {
   const { store } = await import("../js/store.js");
-  const reset = $("#ws-reset");
-  assert.ok(reset, "le bouton إعادة التعيين doit être présent");
-  // Une réponse en mémoire : la réinitialisation doit la faire disparaître.
-  store.enterSession("2025", 1);
-  const field = $("#fld-N");
-  if (field) {
-    field.value = "نص يجب أن يُمحى";
-    field.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
-    await new Promise((resolve) => setTimeout(resolve, 400));
-  }
-  click("#ws-reset");
-  assert.ok($(".modal"), "une confirmation est exigée");
-  assert.match($(".modal").textContent, /لا يمكن التراجع/);
-  assert.equal($("#reset-yes")?.tagName, "BUTTON");
-  // Annuler ne doit rien effacer.
-  click('.modal [data-close="ok"]');
-  assert.equal($(".modal"), null);
-  if (field) {
-    assert.equal(store.exercise("2025", 1, 1).text.N, "نص يجب أن يُمحى", "l'annulation n'efface rien");
-  }
-});
-
-test("rechargement : restauration exacte de l'écran et de la session", async () => {
-  const { store } = await import("../js/store.js");
-  // Simule une session active en cours sur l'espace de travail
-  store.enterSession("2025", 1);
-  store.setActiveExercise(2);
-  store.setActiveStep(3);
-  store.setActiveScreen("view-workspace");
-  store.save();
-
-  // Relance init (simulation F5 / reload)
-  const { init } = await import("../js/ui.js");
-  init();
-
-  assert.ok(!$("#view-workspace").classList.contains("hidden"));
-  assert.ok(!$("#global-timer-bar").classList.contains("hidden"));
-  assert.equal(store.state.activeExercise, 2);
-  assert.equal(store.state.activeStep, 3);
-});
-
-test("l'autosave debounced conserve une réponse sans confirmation", async () => {
-  const { store } = await import("../js/store.js");
-  const field = $("#fld-N");
-  field.value = "brouillon sauvegardé automatiquement";
-  field.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
+  const input = $("#view-workspace [data-task-answer]");
+  input.value = "إجابة محفوظة آلياً";
+  input.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
   await new Promise((resolve) => setTimeout(resolve, 400));
-  assert.equal(store.exercise("2025", 1, 2).text.N, "brouillon sauvegardé automatiquement");
+  const taskId = input.dataset.taskAnswer;
+  const progress = store.exercise("2025", 1, 1);
+  assert.equal(progress.officialTaskAnswers[taskId], "إجابة محفوظة آلياً");
 });
 
-test("la dictée vocale instancie Web Speech et insère la transcription", async () => {
+test("la dictée vocale reste disponible sur les champs de réponse", async () => {
   class FakeRecognition {
     start() {
       this.onresult({ resultIndex: 0, results: [[{ transcript: "نص مملى" }]] });
@@ -354,46 +194,56 @@ test("la dictée vocale instancie Web Speech et insère la transcription", async
     }
     abort() {}
   }
-  window.SpeechRecognition = FakeRecognition;
+  dom.window.SpeechRecognition = FakeRecognition;
   const { voiceEngine } = await import("../js/ui.js");
-  const field = $("#fld-N");
+  const mics = $$("#view-workspace .btn-mic");
+  assert.ok(mics.length > 0, "un bouton de dictée par champ de réponse");
+  const field = $("#" + mics[0].dataset.mic);
   field.value = "";
   assert.equal(voiceEngine.start(field), true);
   assert.equal(field.value, "نص مملى");
   assert.equal(voiceEngine.listening, false);
-  delete window.SpeechRecognition;
+  delete dom.window.SpeechRecognition;
 });
 
-test("les boutons d'إملاء صوتي (dictée vocale) sont bien présents sur les champs", () => {
-  const micBtns = $$(".btn-mic");
-  assert.ok(micBtns.length > 0);
-  // Clic sans Web Speech API : avertissement gracieux, sans crash.
-  micBtns[0].dispatchEvent(new dom.window.MouseEvent("click", { bubbles: true }));
-  assert.ok($("#toast-zone").children.length > 0);
+test("rechargement : l'épreuve est restaurée à l'identique", async () => {
+  const { store } = await import("../js/store.js");
+  store.setActiveExercise(2);
+  store.setActiveScreen("view-workspace");
+  store.save();
+  const { init } = await import("../js/ui.js");
+  await init();
+  assert.ok(!$("#view-workspace").classList.contains("hidden"));
+  assert.equal($("#view-workspace").dataset.sessionMode, "bac");
+  assert.equal(store.state.activeExercise, 2);
+  assert.equal(store.state.sessionMode, "bac");
+  assert.ok($$("#view-workspace .simulation-task").length > 0);
 });
 
-test("chaque étape affiche ses deux décisions littérales avant la réponse", () => {
-  // Exercice 1 (texte) du même sujet : bascule via l'onglet du workspace.
-  click('#view-workspace [data-switch="1"]');
-  const chips = $$("#ex-content .gate-chip");
-  assert.equal(chips.length, 4, "4 puces de décision attendues (une par étape)");
-  for (const chip of chips) {
-    assert.match(
-      chip.textContent,
-      /تعليمة بسند|تعليمة معرفية/,
-      `décision de source manquante: ${chip.textContent}`
-    );
+test("l'épreuve n'expose ni rapport, ni réinitialisation, ni indices", () => {
+  for (const id of ["#ws-report", "#ws-reset", "#ws-panic", "#ws-brouillon", "#ws-finish", "#ws-review"]) {
+    assert.equal($(id), null, `${id} ne doit plus exister dans la copie`);
   }
-  // Données réelles 2025 S1 E1 : aucune consigne ne cite de سند documentaire.
-  const provenance = $$("#ex-content .provenance-note");
-  assert.equal(provenance.length, 4, "la provenance doit être visible pour chaque étape");
-  assert.ok(provenance.some((note) => /معاد بناؤها|مفككة/.test(note.textContent)));
-  const chipN = chips.find((chip) => chip.dataset.gateChip === "N");
-  assert.ok(chipN, "puce de l’étape N manquante");
-  assert.match(chipN.textContent, /تعليمة معرفية/);
-  assert.match(chipN.textContent, /الخطوات 1 → 4/);
-  // Provenance affichée une seule fois (provenanceBadge), jamais dupliquée dans la puce.
-  assert.doesNotMatch(chipN.textContent, /معاد بناؤه/, "la puce ne duplique pas le badge de provenance");
+  // Restent : la sortie, le sujet et la remise de copie.
+  for (const id of ["#simulation-home", "#simulation-pdf", "#simulation-finish"]) {
+    assert.ok($(id), `outil d'épreuve manquant: ${id}`);
+  }
+});
+
+test("la remise verrouille la copie et ouvre la relecture", async () => {
+  const { store } = await import("../js/store.js");
+  click("#simulation-finish");
+  assert.ok($("#simulation-finish-yes"), "une confirmation est exigée");
+  click("#simulation-finish-yes");
+  assert.equal(store.state.sessionStatus, "completed");
+  assert.equal(store.state.sessionEndReason, "manual");
+  assert.equal($("#view-workspace").dataset.reviewMode, "true");
+  // Réponses conservées mais verrouillées.
+  assert.equal($("#view-workspace [data-task-answer]").disabled, true);
+  assert.equal($("#simulation-finish"), null, "plus de remise après remise");
+  // Aucune note : le barème reste provisoire.
+  assert.match($("#view-workspace").textContent, /التنقيط غير معاير/);
+  assert.doesNotMatch($("#view-workspace").textContent, /\d+[.,]\d+\s*\/\s*\d+/);
 });
 
 test("أطلس والتشخيص التجريبي vivrent dans la section repliée تدريب المفتاح (hub épuré)", () => {
@@ -405,39 +255,4 @@ test("أطلس والتشخيص التجريبي vivrent dans la section replié
   assert.ok(atlas.closest("#training-details"), "أطلس doit être dans تدريب المفتاح");
   assert.ok(demo.closest("#training-details"), "la démo doit être dans تدريب المفتاح");
   assert.equal($(".hub-tools #btn-atlas"), null, "l'en-tête du hub ne doit plus contenir أطلس");
-});
-
-test("l'en-tête de la copie reste dépouillé : ni son, ni أذكار, ni أطلس, ni spoiler", () => {
-  // Ré-ouvrir une session examen (hub → parcours guidé → stratégie → تثبيت).
-  click("#ws-home");
-  click('#year-grid [data-year="2024"]');
-  click("#guide-next");
-  click('#view-strategy [data-confirm="1"][data-session-mode="training"]');
-  assert.ok(!$("#view-workspace").classList.contains("hidden"));
-  // Les outils de calme vivent au hub/guide, pas dans la copie.
-  assert.equal($("#ws-sound"), null, "pas de bouton son pendant la copie");
-  assert.equal($("#ws-adkar"), null, "pas d'أذكار pendant la copie");
-  assert.equal($("#ws-atlas"), null, "pas d'أطلس pendant la copie (déjà dans تدريب المفتاح)");
-  // Le résumé de l'exercice ne s'affiche pas en tête de copie (vrai examen).
-  assert.equal($("#ws-desc"), null, "pas de spoiler du contenu en haut de la copie");
-  // L'essentiel reste : sortie, tlmih (valve anti-stress), مسودة, موضوع PDF.
-  for (const id of ["#ws-home", "#ws-panic", "#ws-brouillon", "#ws-pdf", "#ws-finish"]) {
-    assert.ok($(id), `outil essentiel manquant: ${id}`);
-  }
-});
-
-test("la fin manuelle sauvegarde puis verrouille les contrôles de réponse", async () => {
-  const { store } = await import("../js/store.js");
-  $("#fld-N").value = "réponse conservée à la remise";
-  click("#ws-finish");
-  assert.ok($("#finish-session-yes"));
-  click("#finish-session-yes");
-
-  assert.equal(store.state.sessionStatus, "completed");
-  assert.equal(store.state.sessionEndReason, "manual");
-  assert.equal(store.exercise("2024", 1, 1).text.N, "réponse conservée à la remise");
-  assert.equal($("#fld-N").disabled, true);
-  assert.ok($("#global-timer-bar").classList.contains("hidden"));
-  assert.ok($("#session-complete-notice"));
-  assert.match($(".modal").textContent, /لا تُعرض علامة بكالوريا/);
 });
