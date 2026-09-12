@@ -136,7 +136,14 @@ function applyTheme(theme) {
   }
 }
 
-const openAtlas = createAtlas({ $, $$, openDrawer, normalizeArabic, bacVerbs: BROUILLON_MODE_DATA.bacVerbs });
+const openAtlas = createAtlas({
+  $,
+  $$,
+  openDrawer,
+  normalizeArabic,
+  bacVerbs: BROUILLON_MODE_DATA.bacVerbs,
+  setInternalHTML
+});
 
 export const voiceEngine = createSpeechEngine(toast);
 
@@ -334,7 +341,6 @@ workspaceController = createWorkspaceController({
   scoreBac,
   short,
   showScreen,
-  soundEngine,
   store,
   timers,
   toast,
@@ -425,9 +431,7 @@ export async function init() {
     // The global exam clock only ticks during the writing phase (workspace).
     // Guide and strategy are planning/reading phases that must not debit
     // official exam time after reload either.
-    const onWorkspace =
-      canRestoreSimulationReview ||
-      store.state.activeScreen === "view-workspace";
+    const onWorkspace = canRestoreSimulationReview || store.state.activeScreen === "view-workspace";
     if (canRestoreActive && onWorkspace) {
       timers.startGlobal();
       bar.classList.remove("hidden");

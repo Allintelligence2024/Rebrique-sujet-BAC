@@ -120,9 +120,21 @@ export function createTrainingController({ $, $$, store, openModal }) {
     }
   }
 
+  /* Le DOM du hub est re-rendu à chaque navigation, et #drill-start est lié à
+     la fois par mount() et par renderDrillIdle() : sans garde-fou, le même
+     nœud pouvait recevoir deux écouteurs et lancer deux drills d'un clic.
+     On mémorise donc ce qui a déjà été lié, par nœud (WeakMap : pas de fuite
+     quand le nœud est remplacé par un re-rendu). */
+  const boundClicks = new WeakMap();
+
   function bindOnce(id, fn) {
     const el = $(id);
-    if (el) el.addEventListener("click", fn);
+    if (!el) return;
+    let handlers = boundClicks.get(el);
+    if (!handlers) boundClicks.set(el, (handlers = new Set()));
+    if (handlers.has(fn)) return;
+    handlers.add(fn);
+    el.addEventListener("click", fn);
   }
 
   /* ---------------- البوابتان ---------------- */
@@ -133,7 +145,7 @@ export function createTrainingController({ $, $$, store, openModal }) {
     if (!input || !verdict) return;
     const text = input.value || "";
     if (!text.trim()) {
-      verdict.innerHTML = `اكتب تعليمة أعلاه ليظهر الحكم فوراً.`;
+      setInternalHTML(verdict, "اكتب تعليمة أعلاه ليظهر الحكم فوراً.");
       return;
     }
     const c = classifyInstruction(text);
@@ -152,7 +164,7 @@ export function createTrainingController({ $, $$, store, openModal }) {
               : `<b class="text-indigo">وصف أو استخراج</b>${c.verbMatched ? "" : " (الفعل غير مصنف؛ ابدأ بالاستخراج)"} — دون تعليل سببي.`
           } الخطوات: <span class="path">${c.pathLabel}</span>.</div>`
         : "";
-    verdict.innerHTML = `${step1}${twoColumns}${step2}`;
+    setInternalHTML(verdict, `${step1}${twoColumns}${step2}`);
   }
 
   function bindGatesCard() {
@@ -249,10 +261,13 @@ export function createTrainingController({ $, $$, store, openModal }) {
           : step.expected === "film"
             ? "تفسير أو استنتاج"
             : "وصف أو استخراج";
-    feedback.innerHTML = `
+    setInternalHTML(
+      feedback,
+      `
       <div class="${step.ok ? "text-emerald" : "text-rose"}">${step.ok ? "✅ صحيح" : `❌ خطأ — الصواب: ${expectedLabel}`}</div>
       <div>${step.note || ""}</div>
-      <button class="btn btn-ghost btn-sm" id="drill-next">${drill.view().stage === "done" ? "عرض النتيجة ←" : "التالي ←"}</button>`;
+      <button class="btn btn-ghost btn-sm" id="drill-next">${drill.view().stage === "done" ? "عرض النتيجة ←" : "التالي ←"}</button>`
+    );
     bindOnce("#drill-next", () => {
       const after = drill.next();
       if (after.stage === "done") renderDrillSummary();

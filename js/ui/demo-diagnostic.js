@@ -4,18 +4,25 @@ export const DEMO_COPY = {
     "نلاحظ أن نشاط الإنزيم يرتفع من 20 إلى 80 وحدة عند الانتقال من 10 إلى 30 درجة، بينما ينخفض إلى 25 وحدة عند 50 درجة. نستنتج أن للإنزيم درجة حرارة مثلى تقارب 30 درجة، وأن الحرارة المرتفعة تغيّر بنيته فتخفض نشاطه."
 };
 
+/**
+ * Rule written against the schema actually consumed by `evaluateText`
+ * (`keywords`, `minLength`, `modelAnswer`, `document`). The previous
+ * `taskType/groups/required/document.requiresValues` fields were legacy
+ * leftovers: the evaluator ignored them, so the "after" example could reach a
+ * perfect fraction without matching a single concept.
+ */
 export const DEMO_RULE = {
-  taskType: "analysis",
   minLength: 35,
-  groups: [
+  keywords: [
     ["نشاط", "فعالية"],
     ["درجة حرارة", "حرارة"],
     ["يرتفع", "يزداد"],
     ["ينخفض", "يتناقص"],
     ["بنية", "شكل فراغي"]
   ],
-  required: ["نشاط", "حرارة"],
-  document: { requiresValues: true, requiresComparison: true },
+  minHits: 3,
+  // Les valeurs attendues dans le « après » : le « avant » n'en cite aucune.
+  document: { values: ["20", "80", "25"], strictValues: false },
   modelAnswer: DEMO_COPY.after
 };
 

@@ -1,5 +1,5 @@
 /* Atlas UI feature, isolated from the application screen renderer. */
-export function createAtlas({ $, $$, openDrawer, normalizeArabic, bacVerbs }) {
+export function createAtlas({ $, $$, openDrawer, normalizeArabic, bacVerbs, setInternalHTML }) {
   const atlas = {
     techniques: [
       ["التصوير الإشعاعي الذاتي", "تتبع مسار الجزيئات بعد وسمها بنظير مشع.", "emerald"],
@@ -76,7 +76,7 @@ export function createAtlas({ $, $$, openDrawer, normalizeArabic, bacVerbs }) {
     );
     let category = "techniques";
     const refresh = () => {
-      $("#atlas-body").innerHTML = renderBody(category, $("#atlas-search-input")?.value || "");
+      setInternalHTML($("#atlas-body"), renderBody(category, $("#atlas-search-input")?.value || ""));
       bindCards();
     };
     $("#atlas-search-input")?.addEventListener("input", refresh);

@@ -50,8 +50,11 @@ export function createBrouillonController({
     const activePole = POLE_ORDER[(store.state.activeStep || 1) - 1];
     const pole = ex.poles[activePole];
     const st = store.exercise(store.state.yearId, store.state.sujetId, ex.number);
-    const verb = detectVerb(pole.prompt) || detectVerb(pole.bacPrompt);
-    const recommended = activePole || verb.recommendedPole;
+    // detectVerb() résout toujours une route (fallback verbRouting[0] côté presentation.js) :
+    // inutile de retenter sur bacPrompt, le second opérande était mort.
+    const verb = detectVerb(pole.prompt);
+    // activePole vient de POLE_ORDER : ?? couvre un activeStep hors bornes sans masquer "" .
+    const recommended = activePole ?? verb.recommendedPole;
     const drafts = buildDrafts(st);
     const preC = brouillonPreflight(st, activePole);
     const preF = brouillonPreflight(st, "full");
@@ -116,7 +119,11 @@ export function createBrouillonController({
         const start = typeof target.selectionStart === "number" ? target.selectionStart : target.value.length;
         const end = typeof target.selectionEnd === "number" ? target.selectionEnd : target.value.length;
         target.value = target.value.slice(0, start) + draft + target.value.slice(end);
-        try { target.setSelectionRange(start + draft.length, start + draft.length); } catch { /* noop */ }
+        try {
+          target.setSelectionRange(start + draft.length, start + draft.length);
+        } catch {
+          /* noop */
+        }
       } else {
         target.value = draft;
       }

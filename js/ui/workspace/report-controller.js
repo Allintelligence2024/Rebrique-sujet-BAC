@@ -1,3 +1,17 @@
+/* ============================================================
+   Rapport d'entraînement : module VOLONTAIREMENT non câblé.
+   ------------------------------------------------------------
+   Depuis le retrait des notes chiffrées de l'interface (voir
+   data/calibration-policy.js), aucun écran n'expose de bouton
+   « تقرير » : createReportController n'est instancié nulle part dans
+   js/ui.js, et l'absence des identifiants #ws-report / #ws-reset est
+   verrouillée par tests/ui.test.mjs. Ce module et ses dépendances
+   (reports/report.js, reports/exports.js) sont donc couverts par les
+   tests uniquement (tests/workspace-modules.test.mjs).
+   Ne pas le recâbler sans rouvrir la question des notes : le rapport
+   n'affiche des scores numériques que si CALIBRATION_STATUS
+   .scorePromotionAllowed est vrai.
+   ============================================================ */
 import { CALIBRATION_STATUS } from "../../../data/calibration-status.js";
 import { downloadFile, printCurrentExercise, reportToCSV } from "../reports/exports.js";
 import { buildTrainingReport } from "../reports/report.js";

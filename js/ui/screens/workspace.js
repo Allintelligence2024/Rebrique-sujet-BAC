@@ -3,7 +3,7 @@ import { renderStepNavigation } from "../navigation.js";
 import { createBrouillonController } from "../workspace/brouillon.js";
 import { mayScorePole } from "../workspace/feedback.js";
 import { firstEmptyPipelineSlot, PIPELINE_FIELDS } from "../workspace/pipeline-exercise.js";
-import { textEvaluationRule } from "../workspace/text-exercise.js";
+import { restoreTextDrafts, textEvaluationRule } from "../workspace/text-exercise.js";
 import { composeDrafts, hasObservationBeforeExplanation } from "../workspace/scratchpad.js";
 import { quickCheckHTML } from "../workspace/quick-check.js";
 import { createWorkspacePresentation } from "../workspace/presentation.js";
@@ -37,7 +37,6 @@ export function createWorkspaceController(deps) {
     scoreBac,
     short,
     showScreen,
-    soundEngine,
     store,
     timers,
     toast,
@@ -164,7 +163,6 @@ export function createWorkspaceController(deps) {
     renderStepnav(ex);
     renderExercise(ex);
     goToStep(store.state.activeStep || 1);
-    updateLiveScore();
     applySessionLock();
   }
 
@@ -241,10 +239,10 @@ export function createWorkspaceController(deps) {
       b.addEventListener("click", () => goToStep(+b.dataset.goto + 1))
     );
     const st = store.exercise(store.state.yearId, store.state.sujetId, ex.number);
+    restoreTextDrafts(POLE_ORDER, st, (id) => $("#" + id));
     POLE_ORDER.forEach((p) => {
       const input = $("#fld-" + p);
       if (!input) return;
-      if (st.text[p]) input.value = st.text[p];
       const saveDraft = debounce(() => {
         st.text[p] = input.value;
         if (input.value.trim()) st.answeredAny = true;
@@ -275,16 +273,15 @@ export function createWorkspaceController(deps) {
     if (!st.answeredAny && text.trim()) st.answeredAny = true;
     store.save();
 
-    updateLiveScore();
     const fb = $("#fb-" + p);
     fb.classList.remove("hidden");
     const grade = res.fraction >= 0.75 ? "good" : res.fraction >= 0.45 ? "mid" : "bad";
     fb.className = `feedback ${grade} mt-2`;
     setFeedback(fb, res, pole, scoreAllowed);
-    if (!res.empty) goToSuccessStep(exNum);
+    if (!res.empty) goToNextStep();
   }
 
-  function goToSuccessStep() {
+  function goToNextStep() {
     const idx = POLE_ORDER.indexOf(activePole);
     if (idx < 3) goToStep(idx + 2);
   }
@@ -479,7 +476,6 @@ export function createWorkspaceController(deps) {
         (res.wrongSlots.length ? `\n⚠️ عناصر في غير موضعها: ${res.wrongSlots.length}` : "");
     }
     store.save();
-    updateLiveScore();
   }
 
   let activePole = "N";
@@ -512,11 +508,6 @@ export function createWorkspaceController(deps) {
   function levelWord(fraction) {
     const f = Number(fraction) || 0;
     return LEVEL_WORDS.find(([min]) => f >= min)[1];
-  }
-
-  function updateLiveScore() {
-    // Le score reste calculé pour le rapport et l'export ; plus d'affichage chiffré en tête de copie.
-    exDef(store.state.activeExercise);
   }
 
   function persistVisibleDraft() {
@@ -626,23 +617,10 @@ export function createWorkspaceController(deps) {
     showScreen("view-workspace");
   }
 
-  function confirmReset() {
-    openModal(
-      "↺ إعادة تعيين الجلسة",
-      "سيتم مسح كل التقدم (النتائج والنصوص والاختيارات) لهذه الدورة. هل أنت متأكد؟",
-      `<button class="btn btn-rose" id="reset-yes">نعم، امسح الكل</button>`
-    );
-    $("#reset-yes")?.addEventListener("click", () => {
-      store.reset();
-      timers.stopAll();
-      soundEngine.stop();
-      closeModal();
-      renderHub();
-      showScreen("view-hub");
-      $("#global-timer-bar")?.classList.add("hidden");
-      toast("تمت إعادة التعيين.", "success");
-    });
-  }
+  /* Le bouton « ↺ إعادة تعيين » a été retiré volontairement de la copie :
+     aucune destruction du travail d'un élève ne doit être offerte depuis
+     l'en-tête de l'épreuve. `store.reset()` reste couvert par
+     tests/store.test.mjs ; voir aussi tests/ui.test.mjs (#ws-reset absent). */
 
   function showPanic() {
     const ex = exDef(store.state.activeExercise);

@@ -304,5 +304,3 @@ export function buildProfessorVerdict(fraction, methodologyScore, overlapRatio) 
       : "الجواب مقبول تدريبياً، لكنه يحتاج صياغة أكثر دقة وموضوعية.";
   return "الجواب ناقص وفق شبكة التقييم الآلية: راجع الكلمات المفتاحية والهيكلة المنهجية.";
 }
-
-/* ---------- Évaluation d'un champ de texte (pôles N/S/E/W) ---------- */

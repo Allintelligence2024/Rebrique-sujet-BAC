@@ -134,9 +134,7 @@ export function createStaticServer({ rootDirectory = root } = {}) {
       "Content-Type": types[extension] || "application/octet-stream",
       "Content-Length": end - start + 1,
       "Accept-Ranges": "bytes",
-      ...(status === 206
-        ? { "Content-Range": `bytes ${start}-${end}/${stat.size}` }
-        : {}),
+      ...(status === 206 ? { "Content-Range": `bytes ${start}-${end}/${stat.size}` } : {}),
       "Cache-Control": cacheControl,
       "X-Miftah-Build": buildId
     });

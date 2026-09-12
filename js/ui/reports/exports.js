@@ -1,3 +1,6 @@
+/* Export CSV / impression du rapport d'entraînement — consommé par
+   workspace/report-controller.js, volontairement non câblé dans l'UI :
+   voir l'en-tête de report-controller.js. */
 export function printCurrentExercise() {
   const popup = window.open("", "_blank");
   if (!popup) return false;

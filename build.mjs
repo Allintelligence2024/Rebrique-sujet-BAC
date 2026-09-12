@@ -2,7 +2,12 @@
    Builds two deterministic, offline-capable deliverables:
    1. dist/site/ — exact production static surface + release.json;
    2. dist/boussole-4d-standalone.html — single file for file://.
-   PDFs are never bundled or redistributed; students use external source links.
+
+   Weight note: dist/site mirrors the repository's `subjects/` directory, so it
+   ships the official PDFs tracked here (~42 MB — see docs/CONTENT_RIGHTS.md and
+   LICENSE-CONTENT). The standalone file, by contrast, contains no PDF at all:
+   it only keeps external source links. Both totals are printed at the end of
+   the build so a sudden weight change is visible in CI logs.
    ============================================================ */
 import { copyFileSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -103,15 +108,22 @@ function buildProductionSite(metadata) {
     files
   };
   writeFileSync(join(targetRoot, "release.json"), `${JSON.stringify(release, null, 2)}\n`);
-  return { targetRoot, release };
+  const bytes = files.reduce((total, file) => total + file.bytes, 0);
+  const pdfBytes = files
+    .filter((file) => file.path.startsWith("subjects/"))
+    .reduce((total, file) => total + file.bytes, 0);
+  return { targetRoot, release, bytes, pdfBytes };
 }
 
 mkdirSync(join(root, "dist"), { recursive: true });
 const metadata = verifiedBuildMetadata();
 const standalone = buildStandalone();
 const production = buildProductionSite(metadata);
+const mb = (bytes) => `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 console.log(
-  `✅ production: ${production.targetRoot} (${production.release.fileCount} files, build ${metadata.buildId})`
+  `✅ production: ${production.targetRoot} (${production.release.fileCount} files, ` +
+    `${mb(production.bytes)} dont ${mb(production.pdfBytes)} de PDF sous subjects/, ` +
+    `build ${metadata.buildId})`
 );
 console.log(
   `✅ standalone: ${standalone.target} (${Math.round(standalone.bytes / 1024)} KB, sha256 ${standalone.sha256.slice(0, 12)})`

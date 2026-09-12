@@ -40,7 +40,11 @@ export const soundEngine = {
     // Disconnect the master GainNode from destination so mode switches don't
     // leave parallel gain chains permanently connected (audio leak fix).
     if (this.gainNode) {
-      try { this.gainNode.disconnect(); } catch (error) { reportDiagnostic("sound.disconnect-node", error); }
+      try {
+        this.gainNode.disconnect();
+      } catch (error) {
+        reportDiagnostic("sound.disconnect-node", error);
+      }
       this.gainNode = null;
     }
     this.currentMode = "off";
@@ -152,14 +156,33 @@ export const soundEngine = {
     const oscR = this.ctx.createOscillator();
     oscL.frequency.setValueAtTime(210, this.ctx.currentTime);
     oscR.frequency.setValueAtTime(250, this.ctx.currentTime);
+    oscL.start();
+    oscR.start();
+
+    // Le battement binaural n'existe que si chaque oreille ne reçoit QU'UNE
+    // fréquence. Deux chemins, du plus explicite au plus compatible :
+    //  1. StereoPannerNode (±1) : la séparation ne dépend pas de l'indexation
+    //     des canaux en aval — c'est le chemin qui tient sur Safari (bug #51) ;
+    //  2. ChannelMerger : repli pour les moteurs sans createStereoPanner.
+    // NB : non vérifiable dans cette sandbox (jsdom n'a pas WebAudio) — le
+    // comportement réel reste à confirmer sur Safari.
+    if (typeof this.ctx.createStereoPanner === "function") {
+      const panL = this.ctx.createStereoPanner();
+      const panR = this.ctx.createStereoPanner();
+      panL.pan.setValueAtTime(-1, this.ctx.currentTime);
+      panR.pan.setValueAtTime(1, this.ctx.currentTime);
+      oscL.connect(panL);
+      oscR.connect(panR);
+      panL.connect(this.gainNode);
+      panR.connect(this.gainNode);
+      this.nodes.push(oscL, oscR, panL, panR);
+      return;
+    }
 
     const merger = this.ctx.createChannelMerger(2);
     oscL.connect(merger, 0, 0);
     oscR.connect(merger, 0, 1);
     merger.connect(this.gainNode);
-
-    oscL.start();
-    oscR.start();
     this.nodes.push(oscL, oscR, merger);
   }
 };

@@ -22,7 +22,8 @@ import { readdirSync } from "node:fs";
 const outRoot = join(__dirname, "extracted");
 mkdirSync(outRoot, { recursive: true });
 
-let native = 0, skipped = 0;
+let native = 0,
+  skipped = 0;
 for (const dir of ["subjects/SE", "subjects/M"]) {
   for (const pdfPath of walk(join(root, dir))) {
     const rel = pdfPath.replace(root + "/", "");

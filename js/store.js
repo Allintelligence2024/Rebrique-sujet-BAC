@@ -168,15 +168,24 @@ export function migrateState(candidate) {
                       for (const [k, v] of Object.entries(raw)) {
                         if (legacyPattern.test(k) && typeof v === "string" && v.trim()) {
                           legacy.push(v.trim());
-                        } else if (/^\d{4}(?:-[a-z]{1,3})?-S\d+-E\d+-Q\d+$/.test(k) && typeof v === "string") {
+                        } else if (
+                          /^\d{4}(?:-[a-z]{1,3})?-S\d+-E\d+-Q\d+$/.test(k) &&
+                          typeof v === "string"
+                        ) {
                           official[k] = v;
                         }
                       }
                       if (!legacy.length) return [exId, ex];
                       const existing = typeof ex.freeAnswer === "string" ? ex.freeAnswer : "";
                       const merged = legacy.join("\n\n");
-                      const freeAnswer = existing && !existing.includes(merged) ? existing + "\n\n" + merged : existing || merged;
-                      return [exId, { ...ex, officialTaskAnswers: official, freeAnswer: freeAnswer.slice(0, 60000) }];
+                      const freeAnswer =
+                        existing && !existing.includes(merged)
+                          ? existing + "\n\n" + merged
+                          : existing || merged;
+                      return [
+                        exId,
+                        { ...ex, officialTaskAnswers: official, freeAnswer: freeAnswer.slice(0, 60000) }
+                      ];
                     })
                   )
                 ];

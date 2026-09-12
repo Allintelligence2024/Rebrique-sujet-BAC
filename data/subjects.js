@@ -34,12 +34,55 @@ export function normalizeArabic(text) {
  * du radical et ne doit JAMAIS être amputée comme si c'était un clitique.
  * Liste non exhaustive mais couvre l'essentiel du vocabulaire rencontré dans
  * les sujets BAC SVT (protéines, bactéries, organes, termes descriptifs). */
+// prettier-ignore : table de mots maintenue à la main, groupée par initiale
+// (une entrée par ligne la rendrait illisible).
 const PROTECTED_STEMS = new Set([
-  "بروتين", "بكتيريا", "بكتيريا", "بكتيري", "بذره", "بذرة", "بيضه", "بيضة",
-  "كبد", "كليه", "كلية", "كريه", "كريات", "كروموسوم", "كربون", "كالسيوم", "كتيريا",
-  "فرضيه", "فرضية", "فحص", "فجوه", "فجوة", "فيروس", "فضاء", "فجائي",
-  "وراثه", "وراثة", "وراثي", "ورم", "وسط", "وزن", "وجه", "وحده", "وحدة", "وردي", "وريدي", "ولادي",
-  "لهب", "لون", "لبن", "لحاء", "ليف", "ليمف", "لاقحه", "لقاح", "لزوج", "لسان"
+  "بروتين",
+  "بكتيريا",
+  "بكتيري",
+  "بذره",
+  "بذرة",
+  "بيضه",
+  "بيضة",
+  "كبد",
+  "كليه",
+  "كلية",
+  "كريه",
+  "كريات",
+  "كروموسوم",
+  "كربون",
+  "كالسيوم",
+  "كتيريا",
+  "فرضيه",
+  "فرضية",
+  "فحص",
+  "فجوه",
+  "فجوة",
+  "فيروس",
+  "فضاء",
+  "فجائي",
+  "وراثه",
+  "وراثة",
+  "وراثي",
+  "ورم",
+  "وسط",
+  "وزن",
+  "وجه",
+  "وحده",
+  "وحدة",
+  "وردي",
+  "وريدي",
+  "ولادي",
+  "لهب",
+  "لون",
+  "لبن",
+  "لحاء",
+  "ليف",
+  "ليمف",
+  "لاقحه",
+  "لقاح",
+  "لزوج",
+  "لسان"
 ]);
 
 function isProtectedStem(normalized) {

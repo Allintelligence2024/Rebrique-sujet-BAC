@@ -1,32 +1,40 @@
 # Continuation Brief — مفتاح الكنز (Rebrique-sujet-BAC)
 
-Session branch: `arena/01a08ed2-rebrique-sujet-bac`
+Session branch: `arena/01a08ed2-rebrique-sujet-bac` (this document is continued on `arena/01a096cc-rebrique-sujet-bac`)
 Last commit message: `fix: critical data-loss, timer, scoring and HTTP range bugs (batch 3)`
 Test status at handoff: **256 pass / 0 fail / 1 skipped** (`npm test`).
-PWA build id: `f54ac619b7a2`.
+PWA build id: `f54ac619b7a2` (stale as soon as any source file changes — regenerate with `npm run pwa:version`).
 Production build: `dist/site` 136 files, standalone `dist/boussole-4d-standalone.html` 1.80 MB (reproducible sha256).
+
+> **2026-09-12 — batch « analyse ligne par ligne »** (branch `arena/01a096cc-rebrique-sujet-bac`, rapport complet dans `ANALYSE_LIGNE_PAR_LIGNE.md`):
+> fixed S1.1 (JSDoc `@param {string} lang` → `npm run typecheck` vert), S2.1 (`hits > 0` avant le palier parfait), S2.2 (condition tautologique de l'horloge en stratégie + suppression du doublon de libellés arabes au profit de `js/ui/coverage-messages.js`), S2.3 (le repli de simulation annonce désormais `missing`/`partial`/`blocked`), S3.9 (opérande mort dans `brouillon.js`), S3.6 (commentaire orphelin), `methodology.js` refactoré (28 blocs de retour → 1, −235 lignes, **0 différence sur 2448 couples échantillon/pôle**), démo « avant/après » recalée sur le schéma réel de `evaluateText`, frontière `setInternalHTML` restaurée partout, `build.mjs` n'affirme plus que les PDF ne sont pas distribués (et affiche leur poids dans le log), en-têtes périmés de `data/archive.js` corrigés, modules de rapport documentés comme volontairement non câblés.
 
 ## Bugs already fixed this session (committed)
 
 Catastrophic/data-loss:
+
 - **#73** bac-reading-mode `BAC-S?-E?` answers stripped on reload — added `freeAnswer` per-exercise field, rewrote `renderBacReadingMode` to use `data-exercise-free`, wired persist/restore. Schema v4→v5 migration rescues orphaned pre-fix keys.
 - **#71** brouillon "إدراج الحالي" silently overwrites existing answer — now appends when non-empty.
 - **#50** sound-engine master GainNode never disconnected on mode switch → audio leak. Now disconnects/nulls master gain.
 
 Timing:
+
 - **#60** global BAC timer drained during guide/breathing/strategy screens — startGlobal moved from `begin()` to strategy `confirmChoice()`; init restore only resumes timer in workspace; guide sets timer text to chosen year so Math-stream shows 2h30 not 4h30.
 - **#63** drill timer used naive `setInterval(,1000)` → drift — switched to Date.now() delta pattern.
 - **#64** `strategyMinutes` config not persisted across reload — added `strategyDuration` field.
 
 Locale/speech:
+
 - **#52** SpeechRecognition `lang="ar-DZ"` unsupported → now `ar-SA` with ar-EG→ar fallback loop.
 - **#53** dictation replaced text / jumped caret → inserts at selectionStart/End with proper space glue.
 
 Network/PDF:
+
 - **#61** sw.js returned undefined for Range requests (Chromium PDF breakage) → now `respondWith(fetch(request))`.
 - **#62** server.mjs always returned 200 full body, no Range support → added 206 Partial Content with `Accept-Ranges: bytes` and sliced createReadStream (verified: PDF 0-999 returns 206/1000 bytes).
 
 Scoring heuristics:
+
 - **#65** science wrong-concept penalty zeroed any answer with 2 errors (`1-0.5*n`) → softened to `max(0.1, 1-0.25*n)` (BAC-style deduction).
 - **#66** `matchConcept` prefix match (≥4 chars and startsWith) over-matched e.g. بروت→بروتوكول/بروتون → ±1-3 char inflection window only.
 - **#67** verb detection counted any word ≥4 chars starting with ي/ت/ن/س (destroyed نواة/تركيب/نسيج/سنة/تلميذ/سطح/سائل) → prefix + (verbal-suffix OR no-nominal-ending) rule.
@@ -60,29 +68,33 @@ Scoring heuristics:
 
 4. **After pilot verification**, generalize OCR/native extraction to other missing years (2013–2019 currently reconstructed; 2021 SE needs full authoring; 2022–2026 already 4D-encoded but prompts should be re-verified against native text).
 
-### P1 — Bugs still on the list NOT yet fixed
+### P1 — Bugs still on the list
 
-- **#51** Sound engine: binaural beats collapse to mono on Safari because the OscillatorNode is routed to both channels identically. Fix: use StereoPannerNode per oscillator with slight L/R detune for binaural separation.
-- **#54** Speech recognition race: `recognition.start()` called immediately after `.stop()` can throw "InvalidStateError" because the internal state hasn't settled. Fix: gate start() behind `recognizing === false` and listen to `onend` before restarting; currently there's a toast but the state guard is racy.
+- ~~**#51** Sound engine binaural on Safari~~ **corrigé le 2026-09-12** (`js/services/sound-engine.js`, `_playBinaural`) : le code utilisait déjà un `ChannelMerger`, auquel s'ajoute désormais un chemin explicite `StereoPannerNode` (pan ∓1) quand le moteur l'expose, le merger restant le repli. **Non vérifié dans un vrai navigateur** (jsdom n'a pas WebAudio) : à confirmer sur Safari.
+- ~~**#54** Speech recognition `InvalidStateError`~~ **corrigé le 2026-09-12** (`js/services/speech-recognition.js`) : la boucle `ar-SA → ar-EG → ar` rappelait `start()` sur l'objet qui venait d'échouer. Chaque tentative construit désormais une instance neuve, une locale refusée de façon asynchrone (`language-not-supported`) retente la suivante, et un seul message est affiché par action. Couvert par `tests/speech-recognition.test.mjs` (5 tests, moteur fictif).
 - **Diagnostics**: `reportDiagnostic` still has an edge case where it can double-count if same error fires synchronously during reporting (low severity).
 
 ### P2 — Scoring/rubric/hypotheses/technique deep audit (not yet done)
 
 I patched the most damaging scoring heuristics (#65–#69) but did NOT fully audit:
-- `js/domain/evaluation/rubric.js` — grid rubric alignment.
-- `js/domain/evaluation/hypotheses.js` — hypothesis detection counts.
-- `js/domain/evaluation/technique.js` — experimental-technique extraction.
-- `js/domain/evaluation/{graph,table,genetics}-*.js` — domain-specific scorers.
+
+- `js/domain/evaluation/text-analysis.js` — `matchConcept`, `aliasesFor`, `stripArabicClitics`, overlap ratios.
+- `js/domain/evaluation/quality-checks.js` — `evaluateScience` (causal order), `evaluateDocument` (grids/curves/tables).
+- `js/domain/evaluation/methodology.js` — pole N/S/E/W grids (now one single return — see batch below).
+- `js/domain/evaluation/pipeline-evaluator.js` — domain-specific pipelines (graph / table / genetics) live here, **not** in per-domain files: the paths `js/domain/evaluation/{rubric,hypotheses,technique}.js` and `{graph,table,genetics}-*.js` cited in earlier handoffs **do not exist** (verified 2026-09-12).
 - `js/domain/subjects/official-coverage.js` — TASK_ID_PATTERN strictness should probably also accept a future "unverified-ocr" suffix instead of silently dropping freeform keys (current v5 migration covers historical orphans, but future inventories may need a softer key path).
 
-### P3 — XSS surface audit (not done)
+### P3 — XSS surface audit (partially done 2026-09-12)
 
-- `js/ui/drawers/adkar.js`, `js/ui/drawers/atlas.js`: check that user-injected content (adhkar, atlas labels) is never interpolated via `innerHTML` without sanitization. Current code uses `setInternalHTML` which is in `js/ui/dom.js` — verify it sanitizes against `<script>` and `on*=` attributes.
-- `js/ui/workspace/brouillon.js` buildDrafts/brouillonPreflight: check that draft content rendered into the preview is escaped.
+- `setInternalHTML` (`js/ui/dom.js`) is the **only** HTML-writing boundary. It does **not** sanitize: it is a marker for "application-owned template, never user input", enforced by `scripts/report-p1-status.mjs` P1.6 / `tests/security-baseline.test.mjs` (CSP forbids inline styles, no `innerHTML` outside `dom.js`).
+- Remaining direct writes found by the audit and fixed in the batch below: `js/ui/training.js` (3), `js/ui/atlas.js` (1), `js/ui/screens/hub.js` (1 `insertAdjacentHTML`). Only `js/ui/reports/exports.js` still reads `.innerHTML` — a read, for print output.
+- `js/ui/atlas.js` and `js/ui/keycard.js` are **not** in `js/ui/drawers/` (that directory does not exist); the adhkar drawer is `js/ui/dialogs.js`.
+- Still to check: `js/ui/workspace/brouillon.js` `buildDrafts`/`brouillonPreflight` — draft content rendered into the preview is escaped through `elementFromInternalHTML` templates, worth a dedicated test.
 
 ### P4 — SE 2021 (content, not code)
 
 When OCR is usable AND the Arabic text has been manually verified line-by-line against the PDF:
+
 1. Create `data/years/se/year-2021.js` following the 2020/2022 templates: 2 sujets × 3 exercises, N/S/E/W poles per exercise.
 2. Add `"2021": () => import("./years/se/year-2021.js")` to `YEAR_LOADERS` in `data/subjects.js`.
 3. Add a `catalogEntry` for 2021 SE in `YEAR_CATALOG` (with `enabled: true`, `subjectCount: 2`, `exerciseCounts: [3, 3]`).

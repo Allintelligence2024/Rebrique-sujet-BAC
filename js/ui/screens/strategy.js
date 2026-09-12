@@ -31,9 +31,11 @@ export function createStrategyScreen(deps) {
   }
 
   function pdfFallbackHTML(subject) {
-    // L'aperçu stratégique renvoie à la source externe (dzexams) afin de ne pas
-    // redistribuer de PDF tiers dans le shell ; un lien de téléchargement direct
-    // n'est jamais présenté à cet endroit.
+    // L'aperçu stratégique renvoie à la source externe (dzexams) : pendant la
+    // phase de choix, aucun téléchargement n'est proposé, l'élève doit ouvrir
+    // le sujet sans l'archiver. Le seul lien « ⬇️ تنزيل » de l'application vit
+    // dans le mode lecture BAC (screens/simulation.js), où l'élève a précisément
+    // besoin du PDF pour travailler hors ligne.
     if (subject?.pdfExternalUrl) {
       return `<div class="pdf-reader stack">
         <div class="pdf-reader-cover" role="status">
@@ -133,7 +135,7 @@ export function createStrategyScreen(deps) {
     const simDisabled = coverage.simulationEligible ? "" : "disabled";
     const guardMsg = coverage.simulationEligible
       ? ""
-      : `<p class="small text-muted simulation-guard-note" id="simulation-guard-${subject.id}">المحاكاة ممنوعة: ${simulationGuardArabic(coverage.blockers)}</p>`;
+      : `<p class="small text-muted simulation-guard-note" id="simulation-guard-${subject.id}">المحاكاة ممنوعة: ${simulationBlockersArabic(coverage.blockers)}</p>`;
     return `
     <div class="card stack subject-card" data-subject-coverage="${coverage.inventoryStatus}" data-simulation-eligible="${coverage.simulationEligible}">
       <div>
@@ -152,22 +154,6 @@ export function createStrategyScreen(deps) {
         ${guardMsg}
       </div>
     </div>`;
-  }
-
-  function simulationGuardArabic(blockers = []) {
-    const labels = {
-      "inventory-missing": "جرد المهام الرسمية غير موجود",
-      "inventory-partial": "جرد المهام الرسمية غير مكتمل",
-      "exercise-inventory-incomplete": "بعض التمارين غير مجرودة",
-      "task-mapping-incomplete": "ربط المهام بخطوات التدريب غير مكتمل",
-      "scoring-unverified": "سلم التنقيط غير متحقق منه",
-      "documents-unreviewed": "بعض الوثائق أو الصفحات غير مراجعة",
-      "points-incomplete": "مجموع النقاط غير مكتمل",
-      "metadata-invalid": "بيانات الجرد غير صالحة",
-      "coverage-unknown": "نسبة التغطية الرسمية غير معروفة"
-    };
-    const values = blockers.length ? blockers : ["coverage-unknown"];
-    return values.map((b) => labels[b] || "دليل الأهلية غير مكتمل").join("؛ ");
   }
 
   function setPdfPreview(subjectId) {
@@ -239,11 +225,10 @@ export function createStrategyScreen(deps) {
     }
     store.activateSubjectMode(sujetNum, mode);
     timers.stopStrategy();
-    // In training mode, start the session clock when writing begins.
-    // Simulation mode activates the clock inside activateSubjectMode (reset to full duration).
-    if (mode === "training" || mode === "simulation") {
-      timers.startGlobal();
-    }
+    // Writing starts here, in both modes: the official clock begins. In
+    // simulation, activateSubjectMode has just reset the remaining time to the
+    // full duration, so the strategy/breathing phase is never debited.
+    timers.startGlobal();
     enterExercise(1);
     $("#global-timer-bar")?.classList.remove("hidden");
   }

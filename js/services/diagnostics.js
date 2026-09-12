@@ -136,13 +136,29 @@ function recordServiceWorkerEvent(type) {
 function cleanupOldObservability() {
   const old = initializedWindow;
   if (!old || !old.removeEventListener) return;
-  try { old.removeEventListener("online", setOnlineTrue); } catch { /* noop */ }
-  try { old.removeEventListener("offline", setOnlineFalse); } catch { /* noop */ }
-  try { old.navigator?.serviceWorker?.removeEventListener?.("message", onServiceWorkerMessage); } catch { /* noop */ }
+  try {
+    old.removeEventListener("online", setOnlineTrue);
+  } catch {
+    /* noop */
+  }
+  try {
+    old.removeEventListener("offline", setOnlineFalse);
+  } catch {
+    /* noop */
+  }
+  try {
+    old.navigator?.serviceWorker?.removeEventListener?.("message", onServiceWorkerMessage);
+  } catch {
+    /* noop */
+  }
 }
 
-function setOnlineTrue() { setOnline(true); }
-function setOnlineFalse() { setOnline(false); }
+function setOnlineTrue() {
+  setOnline(true);
+}
+function setOnlineFalse() {
+  setOnline(false);
+}
 
 /**
  * Idempotently observes online/offline and allowlisted service-worker events.

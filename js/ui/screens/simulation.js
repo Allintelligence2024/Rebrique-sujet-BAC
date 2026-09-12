@@ -174,8 +174,23 @@ export function createSimulationController(deps) {
     });
   }
 
-  function renderBacReadingMode(subject) {
+  /* Filet de sécurité : si l'inventaire officiel est absent, partiel ou non
+     éligible, la simulation « silencieuse » est impossible. On bascule sur le
+     mode lecture — en l'annonçant explicitement, jamais à l'insu de l'élève. */
+  const FALLBACK_NOTICE = {
+    missing:
+      "لا يوجد جرد رسمي لمهام هذا الموضوع: وضع المحاكاة غير متاح. تعرض هذه الشاشة الموضوع للقراءة وكتابة إجابات حرة فقط.",
+    partial:
+      "جرد المهام الرسمية لهذا الموضوع غير مكتمل: وضع المحاكاة غير متاح حتى اكتماله. تعرض هذه الشاشة الموضوع للقراءة وكتابة إجابات حرة فقط.",
+    blocked:
+      "لم يستوفِ هذا الموضوع شروط الأهلية للمحاكاة. تعرض هذه الشاشة الموضوع للقراءة وكتابة إجابات حرة فقط."
+  };
+
+  function renderBacReadingMode(subject, fallbackReason = "") {
     const pdf = subject?.pdfLocalUrl;
+    const fallbackNotice = FALLBACK_NOTICE[fallbackReason]
+      ? `<div class="feedback mid mb-2" role="status">${FALLBACK_NOTICE[fallbackReason]}</div>`
+      : "";
     setInternalHTML(
       $("#view-workspace"),
       `<div class="app app-wide bac-reading-mode" data-session-mode="simulation">
@@ -189,6 +204,7 @@ export function createSimulationController(deps) {
           </div>
           <span class="badge badge-indigo">PDF محلي</span>
         </header>
+        ${fallbackNotice}
         <div class="feedback mid mb-2" role="note">هذا الموضوع منفصل عن الموضوع الثاني. لا توجد حلول أو إجابات نموذجية في هذا الوضع. إجاباتك تُحفظ محلياً لكل تمرين.</div>
         <section class="card center stack bac-reading-card">
           <div class="pdf-reader-cover"><span class="pdf-reader-icon" aria-hidden="true">📄</span><strong>موضوع البكالوريا جاهز</strong><p class="small text-muted">اقرأ الموضوع ثم اكتب إجابتك بدون تنقيط آلي.</p></div>
@@ -219,13 +235,13 @@ export function createSimulationController(deps) {
       return;
     }
     if (!inventory || !report.simulationEligible) {
-      renderBacReadingMode(subject);
+      renderBacReadingMode(subject, inventory ? "partial" : "missing");
       return;
     }
     try {
       assertSimulationEligible(report);
     } catch {
-      renderBacReadingMode(subject);
+      renderBacReadingMode(subject, "blocked");
       return;
     }
     const completed = store.state.sessionStatus === "completed";
