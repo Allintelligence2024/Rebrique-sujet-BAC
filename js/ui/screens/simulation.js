@@ -295,7 +295,7 @@ export function createSimulationController(deps) {
         </header>
             <div class="workspace-tools" aria-label="أدوات الاختبار">
               <button class="btn btn-indigo btn-sm" id="simulation-pdf">📄 الموضوع</button>
-              ${completed ? "" : `<button class="btn btn-rose btn-sm" id="simulation-finish">✓ تسليم النسخة</button>`}
+              ${completed ? "" : `<button class="btn btn-rose btn-sm" id="simulation-finish">✓ تسليم الورقة</button>`}
             </div>
         ${simulationExamHTML({
           subject,
