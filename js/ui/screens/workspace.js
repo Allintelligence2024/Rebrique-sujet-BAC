@@ -8,11 +8,13 @@ import { composeDrafts, hasObservationBeforeExplanation } from "../workspace/scr
 import { quickCheckHTML } from "../workspace/quick-check.js";
 import { createWorkspacePresentation } from "../workspace/presentation.js";
 import { createSimulationController } from "./simulation.js";
+import { createReportController } from "../workspace/report-controller.js";
 
 export function createWorkspaceController(deps) {
   const {
     $,
     $$,
+    APP_CONFIG,
     METHOD_SCRIPTS,
     POLE,
     POLE_ORDER,
@@ -37,6 +39,7 @@ export function createWorkspaceController(deps) {
     scoreBac,
     short,
     showScreen,
+    soundEngine,
     store,
     timers,
     toast,
@@ -67,6 +70,15 @@ export function createWorkspaceController(deps) {
     POLE_ORDER,
     exDef,
     detectVerb
+  });
+  const reportController = createReportController({
+    $,
+    APP_CONFIG,
+    POLE_ORDER,
+    openModal,
+    store,
+    yearObj,
+    sujetObj
   });
   const simulationController = createSimulationController({
     $,
@@ -115,6 +127,8 @@ export function createWorkspaceController(deps) {
         <button class="btn btn-amber btn-sm" id="ws-panic">✨ أحتاج تلميحاً</button>
         <button class="btn btn-ghost btn-sm" id="ws-brouillon">📝 المسودة</button>
         <button class="btn btn-indigo btn-sm" id="ws-pdf">📄 الموضوع</button>
+        <button class="btn btn-emerald btn-sm" id="ws-report">📊 تقرير التدريب</button>
+        <button class="btn btn-ghost btn-sm" id="ws-reset">↺ إعادة التعيين</button>
         <button class="btn btn-rose btn-sm" id="ws-finish">✓ إنهاء التدريب</button>
       </div>
 
@@ -155,6 +169,8 @@ export function createWorkspaceController(deps) {
     $("#method-open-scratch").addEventListener("click", () => brouillonController.openBrouillon());
     $("#ws-pdf").addEventListener("click", openPdfDrawer);
     $("#ws-finish").addEventListener("click", confirmFinishSession);
+    $("#ws-report").addEventListener("click", () => reportController.showReport());
+    $("#ws-reset").addEventListener("click", confirmReset);
     applyTheme(document.documentElement.dataset.theme);
     $$("#view-workspace [data-switch]").forEach((b) =>
       b.addEventListener("click", () => attemptSwitch(+b.dataset.switch))
@@ -539,7 +555,7 @@ export function createWorkspaceController(deps) {
     ).forEach((control) => {
       control.disabled = locked;
     });
-    for (const id of ["#ws-panic", "#ws-brouillon", "#method-open-scratch", "#ws-finish"]) {
+    for (const id of ["#ws-panic", "#ws-brouillon", "#method-open-scratch", "#ws-finish", "#ws-reset"]) {
       const control = $(id);
       if (control) control.disabled = locked;
     }
@@ -617,10 +633,30 @@ export function createWorkspaceController(deps) {
     showScreen("view-workspace");
   }
 
-  /* Le bouton « ↺ إعادة تعيين » a été retiré volontairement de la copie :
-     aucune destruction du travail d'un élève ne doit être offerte depuis
-     l'en-tête de l'épreuve. `store.reset()` reste couvert par
-     tests/store.test.mjs ; voir aussi tests/ui.test.mjs (#ws-reset absent). */
+  /* Réinitialisation : action destructrice, donc derrière une confirmation
+     explicite. Elle n'est rendue disponible que dans l'espace d'entraînement —
+     l'écran de simulation est rendu par simulationController et n'affiche pas
+     #ws-reset — et elle est désactivée dès que la session est verrouilée. */
+  function confirmReset() {
+    openModal(
+      "↺ إعادة تعيين الجلسة",
+      "سيُمحى كل ما كتبته في هذا الموضوع (النصوص والاختيارات والمسودات)، وسيعود البرنامج إلى الصفحة الرئيسية. لا يمكن التراجع.",
+      `<button class="btn btn-rose" id="reset-yes">نعم، امسح ما كتبته</button>`
+    );
+    const cancelButton = $("[data-close='ok']");
+    if (cancelButton) cancelButton.textContent = "إلغاء";
+    $("#reset-yes")?.addEventListener("click", () => {
+      store.reset();
+      timers.stopAll();
+      soundEngine.stop();
+      closeModal();
+      completionNoticeShown = false;
+      renderHub();
+      showScreen("view-hub");
+      $("#global-timer-bar")?.classList.add("hidden");
+      toast("تمت إعادة التعيين.", "success");
+    });
+  }
 
   function showPanic() {
     const ex = exDef(store.state.activeExercise);

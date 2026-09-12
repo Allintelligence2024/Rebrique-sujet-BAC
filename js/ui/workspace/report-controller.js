@@ -1,31 +1,22 @@
 /* ============================================================
-   Rapport d'entraînement : module VOLONTAIREMENT non câblé.
+   Rapport d'entraînement — câblé depuis l'espace de travail
+   (bouton « 📊 تقرير », #ws-report, instancié dans js/ui.js).
    ------------------------------------------------------------
-   Depuis le retrait des notes chiffrées de l'interface (voir
-   data/calibration-policy.js), aucun écran n'expose de bouton
-   « تقرير » : createReportController n'est instancié nulle part dans
-   js/ui.js, et l'absence des identifiants #ws-report / #ws-reset est
-   verrouillée par tests/ui.test.mjs. Ce module et ses dépendances
-   (reports/report.js, reports/exports.js) sont donc couverts par les
-   tests uniquement (tests/workspace-modules.test.mjs).
-   Ne pas le recâbler sans rouvrir la question des notes : le rapport
-   n'affiche des scores numériques que si CALIBRATION_STATUS
-   .scorePromotionAllowed est vrai.
+   Garde-fou produit : tant que CALIBRATION_STATUS.scorePromotionAllowed
+   est faux, le rapport n'affiche AUCUNE valeur chiffrée et les exports
+   CSV/JSON (qui contiennent les notes par pôle) ne sont pas proposés.
+   Seules restent visibles : la limite de l'outil (trainingLimitHTML),
+   le diagnostic qualitatif par exercice et l'impression de la copie.
+   Le déblocage des notes passe par la calibration humaine, pas par ici
+   (voir data/calibration-policy.js).
    ============================================================ */
 import { CALIBRATION_STATUS } from "../../../data/calibration-status.js";
+import { appendText } from "../dom.js";
+import { trainingLimitHTML } from "../training-limit.js";
 import { downloadFile, printCurrentExercise, reportToCSV } from "../reports/exports.js";
 import { buildTrainingReport } from "../reports/report.js";
 
-export function createReportController({
-  $,
-  APP_CONFIG,
-  POLE_ORDER,
-  openModal,
-  store,
-  trainingLimitHTML,
-  yearObj,
-  sujetObj
-}) {
+export function createReportController({ $, APP_CONFIG, POLE_ORDER, openModal, store, yearObj, sujetObj }) {
   function computeReport() {
     return buildTrainingReport({
       appConfig: APP_CONFIG,
@@ -64,7 +55,14 @@ export function createReportController({
         ${numericAllowed ? `<button class="btn btn-emerald btn-sm" id="dl-csv">⬇️ تنزيل CSV</button><button class="btn btn-ghost btn-sm" id="dl-json">⬇️ تنزيل JSON</button>` : ""}
         <button class="btn btn-indigo btn-sm" id="btn-print-exam">🖨️ طباعة</button>
       </div>`;
-    openModal(`📊 تقرير التدريب — ${rep.rows.length} تمارين`, body);
+    const overlay = openModal(`📊 تقرير التدريب — ${rep.rows.length} تمارين`, body);
+    // Valeur dynamique : elle n'entre jamais dans le gabarit HTML, elle est
+    // ajoutée comme nœud texte après coup (format ISO court, stable partout).
+    const reportBody = $(".modal .small", overlay);
+    if (reportBody) {
+      const stamp = rep.generatedAt.replace("T", " ").slice(0, 16);
+      appendText(reportBody, ` — أُنشئ آلياً ${stamp}`);
+    }
     if (numericAllowed) {
       $("#dl-csv")?.addEventListener("click", () =>
         downloadFile(`boussole4d_${rep.year}_sujet${rep.sujet}.csv`, reportToCSV(rep))

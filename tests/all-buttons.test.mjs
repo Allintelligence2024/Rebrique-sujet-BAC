@@ -296,11 +296,50 @@ test("7. Workspace : transition vers l'exercice 3 (Pipeline) et résolution comp
   assert.ok(!$("#fb-W").classList.contains("hidden"));
 });
 
-test("8-9. La copie n'expose plus rapport, export ni réinitialisation (épure élève)", () => {
-  assert.equal($("#ws-report"), null, "التقرير retiré de la copie");
-  assert.equal($("#ws-reset"), null, "تصفير retiré de la copie");
-  assert.equal($("#ws-review"), null, "المؤشر retiré de la copie");
-  // Le rapport reste testé au niveau module (report-controller) pour les exports.
-  click("#ws-home");
-  assert.ok(!$("#view-hub").classList.contains("hidden"));
+test("8-9. Rapport et réinitialisation sont exposés dans la copie, derrière garde-fous", () => {
+  // Rapport : ouvert, qualitatif uniquement (aucune note avant calibration).
+  click("#ws-report");
+  assert.ok($(".modal"), "le rapport s'ouvre");
+  assert.match($(".modal").textContent, /تشخيص نوعي فقط/);
+  assert.equal($(".modal .report-score"), null, "aucun total chiffré");
+  assert.equal($("#dl-csv"), null, "l'export CSV reste verrouillé par la calibration");
+  assert.ok($("#btn-print-exam"), "l'impression de la copie reste disponible");
+  click("#btn-print-exam");
+  click('.modal [data-close="btn"]');
+  assert.equal($(".modal"), null);
+
+  // Réinitialisation : jamais sans confirmation.
+  click("#ws-reset");
+  assert.ok($(".modal"), "une confirmation est exigée");
+  assert.ok($("#reset-yes"));
+  click('.modal [data-close="btn"]');
+  assert.equal($(".modal"), null);
+
+  // Confirmée : la copie est effacée et l'élève revient au hub.
+  const savedBefore = JSON.stringify(store.state.progress);
+  assert.notEqual(savedBefore, "{}", "une copie est en cours avant la réinitialisation");
+  click("#ws-reset");
+  click("#reset-yes");
+  assert.equal($(".modal"), null);
+  assert.deepEqual(store.state.progress, {}, "toute la copie est effacée");
+  assert.equal(store.state.sessionActive, false, "la session est fermée");
+  assert.ok(!$("#view-hub").classList.contains("hidden"), "retour à la page principale");
+  assert.ok($("#view-workspace").classList.contains("hidden"));
+
+  assert.equal($("#ws-review"), null, "المؤشر reste retiré de la copie");
+});
+
+test("10. Chaque étape affiche un indice de confiance (poleConfidence)", () => {
+  click('#year-grid [data-year="2025"]');
+  click("#guide-next");
+  click('#view-strategy [data-confirm="1"][data-session-mode="training"]');
+  const chips = $$("#ex-content .confidence-chip");
+  assert.equal(chips.length, 4, "un indice par étape");
+  for (const chip of chips) {
+    assert.ok(
+      ["high", "medium", "low"].includes(chip.dataset.confidence),
+      `niveau inattendu: ${chip.dataset.confidence}`
+    );
+    assert.match(chip.textContent, /ثقة (مرتفعة|متوسطة|منخفضة)/);
+  }
 });

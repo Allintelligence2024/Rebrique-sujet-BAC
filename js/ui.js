@@ -116,15 +116,6 @@ function iconFor(type) {
   return map[type] || "ℹ️";
 }
 
-// The scorer is a training heuristic. It must never be presented as a ministry
-// correction or a substitute for a human BAC marker.
-function trainingLimitHTML(compact = false) {
-  const detail = compact
-    ? "نفحص تغطية العناصر العلمية والمنهجية نوعياً؛ لا نعرض نقطة آلية قبل اكتمال المعايرة البشرية."
-    : "تتحقق المنصة نوعياً من تغطية العناصر العلمية والمنهجية المنتظرة. لا تصحح نسختك ولا تستبدل الأستاذ؛ حُجبت النقاط الآلية حتى تنجح المعايرة على نسخ حقيقية مزدوجة التصحيح، وبعض التعليمات معاد بناؤها.";
-  return `<div class="feedback mid ${compact ? "small" : "mb-2"}" role="note"><b>🔎 ما الذي تفحصه المنصة؟</b> — ${detail}</div>`;
-}
-
 const THEME_KEY = "boussole4d.theme";
 function applyTheme(theme) {
   const value = ["dark", "light", "contrast"].includes(theme) ? theme : "dark";
@@ -341,6 +332,7 @@ workspaceController = createWorkspaceController({
   scoreBac,
   short,
   showScreen,
+  soundEngine,
   store,
   timers,
   toast,

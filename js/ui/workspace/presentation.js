@@ -1,5 +1,6 @@
 import { BROUILLON_MODE_DATA } from "../../../data/brouillon.js";
 import { classifyInstruction } from "../../domain/method/gates.js";
+import { poleConfidence } from "./feedback.js";
 
 export function createWorkspacePresentation({
   METHOD_SCRIPTS,
@@ -10,6 +11,15 @@ export function createWorkspacePresentation({
   store,
   levelWord
 }) {
+  /* Indice de confiance affiché à côté de la provenance : dit à l'élève si la
+     consigne est celle du sujet officiel ou une reconstruction d'entraînement. */
+  function confidenceHTML(pole) {
+    const confidence = poleConfidence(pole, store.state.yearId);
+    const cls =
+      confidence.level === "high" ? "text-emerald" : confidence.level === "low" ? "text-rose" : "text-amber";
+    return `<span class="confidence-chip ${cls}" data-confidence="${confidence.level}"> · ${confidence.label}</span>`;
+  }
+
   function provenanceHTML(pole, exerciseNumber, poleType) {
     const inventory = officialTaskInventoryFor(store.state.yearId, store.state.sujetId);
     const mappedTasks = (inventory?.tasks || []).filter((task) =>
@@ -21,12 +31,13 @@ export function createWorkspacePresentation({
     const taskLink = taskIds ? ` — المهمة: ${taskIds}` : "";
     if (pole.bacPromptSource === "official") {
       const page = pole.bacPromptPage ? ` — الصفحة ${pole.bacPromptPage}` : "";
-      return `<p class="small text-emerald provenance-note">✓ تعليمة رسمية من الموضوع${page}${taskLink}</p>`;
+      const confidence = confidenceHTML(pole);
+      return `<p class="small text-emerald provenance-note">✓ تعليمة رسمية من الموضوع${page}${taskLink}${confidence}</p>`;
     }
     if (mappedTasks.length) {
-      return `<p class="small text-amber provenance-note">⚠ خطوة تدريبية مفككة من ${taskIds} — ليست تعليمة مستقلة في الموضوع الرسمي.</p>`;
+      return `<p class="small text-amber provenance-note">⚠ خطوة تدريبية مفككة من ${taskIds} — ليست تعليمة مستقلة في الموضوع الرسمي.${confidenceHTML(pole)}</p>`;
     }
-    return `<p class="small text-amber provenance-note">⚠ خطوة تدريبية معاد بناؤها — ليست تعليمة مستقلة في الموضوع الرسمي.</p>`;
+    return `<p class="small text-amber provenance-note">⚠ خطوة تدريبية معاد بناؤها — ليست تعليمة مستقلة في الموضوع الرسمي.${confidenceHTML(pole)}</p>`;
   }
 
   function formatEvalFeedback(result) {

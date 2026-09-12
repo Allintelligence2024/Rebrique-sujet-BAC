@@ -1,6 +1,7 @@
 /* Rapport d'entraînement — consommé par workspace/report-controller.js,
-   lui-même volontairement non câblé dans l'UI (aucune note affichée
-   avant calibration) : voir l'en-tête de report-controller.js. */
+   câblé sur le bouton #ws-report de l'espace de travail. Les totaux restent
+   calculés ici (ils alimentent l'export), mais le contrôleur décide seul de
+   les afficher : voir l'en-tête de report-controller.js. */
 export function buildTrainingReport({ appConfig, year, sujet, store, poles }) {
   const rows = sujet.exercises.map((exercise) => {
     const progress = store.exercise(store.state.yearId, store.state.sujetId, exercise.number);

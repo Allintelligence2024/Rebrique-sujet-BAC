@@ -270,12 +270,52 @@ test("l'évaluation texte renvoie un feedback d'entraînement et l'accordéon de
   assert.match(modelBox.textContent, /إجابة نموذجية للتدريب/);
 });
 
-test("التقرير et exports ne sont plus exposés dans la copie (logique testée au niveau module)", () => {
-  assert.equal($("#ws-report"), null);
+test("التقرير est exposé dans la copie et n'affiche aucun chiffre tant que la calibration bloque", async () => {
+  const { CALIBRATION_STATUS } = await import("../data/calibration-status.js");
+  const report = $("#ws-report");
+  assert.ok(report, "le bouton تقرير doit être présent dans la barre d'outils");
+  click("#ws-report");
+  const modal = $(".modal");
+  assert.ok(modal, "le rapport doit s'ouvrir");
+  const text = modal.textContent;
+  assert.match(text, /تقرير التدريب/);
+  assert.match(text, /ما الذي تفحصه المنصة/, "la limite de l'outil est rappelée");
+  assert.match(text, /تشخيص نوعي فقط/, "l'entête qualitative remplace le total chiffré");
+  // Garde-fou produit : aucune note ni pourcentage ne doit transparaître.
+  assert.equal($(".modal .report-score"), null);
+  assert.equal($("#dl-csv"), null);
+  assert.equal($("#dl-json"), null);
+  if (CALIBRATION_STATUS.scorePromotionAllowed === false) {
+    assert.doesNotMatch(text, /\d+[.,]\d+\s*\/\s*\d+/, `total chiffré visible: ${text}`);
+  }
+  // L'horodatage est ajouté en nœud texte (appendText), jamais dans le gabarit.
+  assert.match(text, /أُنشئ آلياً/);
+  click('.modal [data-close="btn"]');
+  assert.equal($(".modal"), null);
 });
 
-test("تصفير n'est plus exposé dans la copie ; le reset reste couvert au niveau store", () => {
-  assert.equal($("#ws-reset"), null);
+test("تصفير demande une confirmation explicite avant d'effacer la copie", async () => {
+  const { store } = await import("../js/store.js");
+  const reset = $("#ws-reset");
+  assert.ok(reset, "le bouton إعادة التعيين doit être présent");
+  // Une réponse en mémoire : la réinitialisation doit la faire disparaître.
+  store.enterSession("2025", 1);
+  const field = $("#fld-N");
+  if (field) {
+    field.value = "نص يجب أن يُمحى";
+    field.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
+    await new Promise((resolve) => setTimeout(resolve, 400));
+  }
+  click("#ws-reset");
+  assert.ok($(".modal"), "une confirmation est exigée");
+  assert.match($(".modal").textContent, /لا يمكن التراجع/);
+  assert.equal($("#reset-yes")?.tagName, "BUTTON");
+  // Annuler ne doit rien effacer.
+  click('.modal [data-close="ok"]');
+  assert.equal($(".modal"), null);
+  if (field) {
+    assert.equal(store.exercise("2025", 1, 1).text.N, "نص يجب أن يُمحى", "l'annulation n'efface rien");
+  }
 });
 
 test("rechargement : restauration exacte de l'écran et de la session", async () => {

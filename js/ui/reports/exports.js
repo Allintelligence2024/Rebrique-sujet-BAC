@@ -1,6 +1,7 @@
-/* Export CSV / impression du rapport d'entraînement — consommé par
-   workspace/report-controller.js, volontairement non câblé dans l'UI :
-   voir l'en-tête de report-controller.js. */
+/* Export CSV / impression de la copie — consommé par
+   workspace/report-controller.js. Le CSV et le JSON contiennent les notes par
+   pôle : le contrôleur ne les propose que si la calibration l'autorise.
+   Voir l'en-tête de report-controller.js. */
 export function printCurrentExercise() {
   const popup = window.open("", "_blank");
   if (!popup) return false;
