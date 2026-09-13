@@ -36,6 +36,9 @@ if (!file) {
 mkdirSync("rendered", { recursive: true });
 const doc = await pdfjs.getDocument({
   data: new Uint8Array(readFileSync(file)),
+  // Les polices standard doivent être fournies : sans elles, pdf.js n'arrive
+  // pas à dessiner certains mots (pages à trous) alors que le texte existe.
+  standardFontDataUrl: new URL("../node_modules/pdfjs-dist/standard_fonts/", import.meta.url).href,
   disableFontFace: true
 }).promise;
 console.log("pages du document :", doc.numPages);

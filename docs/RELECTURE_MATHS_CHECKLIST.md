@@ -40,6 +40,9 @@ Audit d'un sujet (pôles, points, provenance, page) :
 | 2020-m S2                   | 4                  | ت1 (8ن) جزيئات HLA                          | S = Q1+Q2+Q3, E = Q4 ; N/W reconstruits                                          |
 | 2020-m S2                   | 5                  | ت2 (12ن) الأنيميا المنجلية HbS              | N = « أبرز المشكلة المطروحة », S = فرضية+قارن, E = تحقق+نص علمي                  |
 | 2020-m corrigé              | 6-10               | corrigé officiel complet                    | réponses modèle rédigées depuis l'image (رابطة شاردية، (س)=R2…، T→A position 20) |
+| 2019-m S1                   | 1                  | ت1 (6ن) بنية البروتين / الرابطة الببتيدية   | Q1–Q4 mot à mot (بيانات، صيغة + كتلة مولية، تعليل، نص علمي)                      |
+| 2019-m S1                   | 2, 3               | ت2 (14ن) الخلايا المناعية / الغرفتان        | N, S, E mot à mot ; W reconstruit                                                |
+| 2019-m S2                   | 4, 5               | ت1 (6ن) البالعة ; ت2 (14ن) الشفرة الوراثية  | consignes mot à mot                                                              |
 
 ## Consignes corrigées ou ajoutées (cette passe)
 
@@ -58,7 +61,7 @@ Audit d'un sujet (pôles, points, provenance, page) :
 - Notes de provenance : elles citaient « corrigé page N » alors que la consigne
   a été relue sur le **scan** ; chaque note porte désormais la page relue.
 
-Bilan maths 2020–2026 : **73 tâches officielles sur 112** (la session 2020 ajoute 10
+Bilan maths 2019–2026 : **87 tâches officielles sur 128** (la session 2020 ajoute 10
 consignes officielles : les questions de cadrage « صُغ المشكل العلمي » et « أبرز
 المشكلة المطروحة » existent réellement dans le sujet).
 
@@ -72,16 +75,21 @@ consignes officielles : les questions de cadrage « صُغ المشكل العل
    - 2026-m : برّر تثبيط PCSK9 ; قدّم نصيحة.
 2. **2022-m S2-E1-Q2** : recouvrement 0 % lors de la vérification automatique
    (`probe-verify`) — à relire sur l'image avant de la déclarer officielle.
-3. **Années maths 2013–2019** : les PDF sont présents
-   (`subjects/M/2013…2019`, listés dans `subjects/manifest.json`) mais aucune
-   donnée n'existe dans `data/years/m/` → ces années restent en consultation
-   externe, sans mode BAC. **2020 est désormais encodée**
-   (`data/years/m/year-2020.js`, test dédié `tests/maths-2020.test.mjs`).
-   Encoder 2019 puis 2018… demande la même relecture page à page et ne doit pas
-   être fait à l'aveugle.
-4. Corrections officielles maths non relues :
+3. **Années maths 2013–2018** : les PDF sont présents
+   (`subjects/M/2013…2018`, listés dans `subjects/manifest.json`) mais aucune
+   donnée n'existe encore dans `data/years/m/` → ces années restent en
+   consultation externe, sans mode BAC. **2020 et 2019 sont désormais encodées**
+   (`data/years/m/year-2020.js`, `year-2019.js`). Encoder 2018 puis 2017…
+   demande la même relecture page à page et ne doit pas être fait à l'aveugle.
+   Le scan 2019 a une police incomplète : quelques séries de mots ne sont pas
+   dessinées. Elles sont signalées dans `bacPromptNotes` et jamais complétées
+   au hasard (la couche texte, lue par `scripts/dump-pdf-text.mjs`, tranche les
+   cas lisibles par fragments).
+4. Corrections officielles maths restant à relire :
    `M/dzexams-bac-sciences-1967487.pdf` (2018), `-2280992.pdf` (2019),
-   `-2273619.pdf` (2020), `-2068087.pdf` (2021), `-1777391.pdf` (2022).
+   `-2068087.pdf` (2021), `-1777391.pdf` (2022). Celle de **2020**
+   (`-2273619.pdf`, pp. 6–10) a été relue le 2026-09-13 : c'est elle qui
+   fonde les réponses modèle de `year-2020.js`.
 
 ## Vérifications
 

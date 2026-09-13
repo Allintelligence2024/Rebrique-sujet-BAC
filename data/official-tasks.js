@@ -7642,6 +7642,465 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       }
     ]
   },
+  "2019-m/S1": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/ar/annales/b2w2cDdSYTdOK05FMjNEMnNGeUlsdz09",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2019/sujet-1.pdf",
+      pages: 3,
+      pageOffset: 0
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: [1]
+    },
+    tasks: [
+      {
+        id: "2019-m-S1-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: 1,
+        prompt: "اكتب البيانات المرقمة، ثم حدّد المستوى البنائي لهذا البروتين.",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2019-m-S1-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 1,
+        prompt:
+          "تنشأ بين الحمضين الأمينيين المؤطرين رابطة تُساهم في ثبات البنية الفراغية لهذا البروتين. مَثِّل الصيغة الكيميائية للجزء المؤطر ثم احسب كتلته المولية إذا علمت أن: R_Glu → -(CH2)2-COOH ، R_Lys → -(CH2)4-NH2 ، الكتلة المولية لـ Lys = 146 غ/مول ، الكتلة المولية لـ Glu = 147 غ/مول.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2019-m-S1-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 1,
+        prompt: "علّل مستوى البنية الفراغية لهذا البروتين معتمدا على الشكلين (أ) و(ب) ومعلوماتك.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2019-m-S1-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: 1,
+        prompt:
+          "اكتب نصا علميا تُبيّن فيه العلاقة بين بنية ووظيفة البروتين من خلال ما توصلت إليه في هذه الدراسة ومعلوماتك.",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2019-m-S1-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: 2,
+        prompt:
+          "تعرّف على الخلايا (س)، (ع)، (ص)، (ل) مع ذكر الأسس المعتمدة في ذلك. استنتج العلاقة الوظيفية بين الخليتين (س) و(ل).",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2019-m-S1-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 3,
+        prompt:
+          "أنجز تحليلا مقارنا للمنحنيات المحصل عليها في الغرفتين (1) و(3)، ثم فسّر النتائج المحصل عليها.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      },
+      {
+        id: "2019-m-S1-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 3,
+        prompt:
+          "استخلص مع التعليل نمط الاستجابة المناعية التي حرّض المستضد على حدوثها في كل من الغرفتين (1) و(3). اكتب نصا علميا تُبيّن فيه دور مختلف الجزيئات البروتينية المتدخلة في التعرّف وإقصاء اللاذات انطلاقا من النتائج المتوصل إليها ومكتسباتك.",
+        promptSource: "official",
+        maxPoints: 6,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      },
+      {
+        id: "2019-m-S1-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: null,
+        prompt: "ما الذي يحدث للاذات بعد إقصائها من طرف الجهاز المناعي؟",
+        promptSource: "reconstructed",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      }
+    ]
+  },
+  "2019-m/S2": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/ar/annales/b2w2cDdSYTdOK05FMjNEMnNGeUlsdz09",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2019/sujet-2.pdf",
+      pages: 2,
+      pageOffset: 3
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: [2]
+    },
+    tasks: [
+      {
+        id: "2019-m-S2-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: 4,
+        prompt: "تعرّف على مختلف الجزيئات الغشائية السطحية للبالعة.",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2019-m-S2-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 4,
+        prompt: "استخرج من الوثيقة النشاطات التي تقوم بها البالعة.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2019-m-S2-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 4,
+        prompt: "اشرح في نص علمي دور مختلف الجزيئات الغشائية في قيام البالعة بوظائفها المختلفة.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2019-m-S2-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: null,
+        prompt: "لماذا تُعدّ البالعة حلقة وصل بين الاستجابة غير النوعية والنوعية؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2019-m-S2-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: 4,
+        prompt:
+          "إنّ أيّ حمض أميني يتحدد في السلسلة الببتيدية بـ ( ) نيكليوتيدة من الـ ( ) حيث ( ) عدد طبيعي. حدّد أصغر قيمة لـ ( ) تسمح بتعيين مختلف الأحماض الأمينية في الببتيد المركّب من طرف الخلية، برّر إجابتك. أعد صياغة الفرضية على ضوء ذلك.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2019-m-S2-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 4,
+        prompt:
+          "أثبت باستدلال منطقي صحة الفرضية المقترحة باستغلال النتائج التجريبية السابقة (جدول الوثيقة 1): تغيير عدد نيكليوتيدات الفيروسي وترجمته إلى متتالية الأحماض الأمينية.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2019-m-S2-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 5,
+        prompt:
+          "من تجارب Niremberg وMatthaei: أ) بيّن العلاقة بين النيكليوتيدات في ARNm والأحماض الأمينية في البروتين. ب) عيّن الرامزات التي تحدّد الأحماض الأمينية في التجربة. توقّع عدد أنواع الأحماض الأمينية التي يمكن الكشف عن رامزاتها وفقا لشروط تجربة Khorana وHar Gobin. فسّر نتائج تجارب Khorana وHar Gobin.",
+        promptSource: "official",
+        maxPoints: 6,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2019-m-S2-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: 5,
+        prompt:
+          "باستغلال المعلومات التي توصلت إليها في الجزء الأول والجزء الثاني وجدول الشفرة الوراثية، وضّح كيف تتحكم الشفرة الوراثية في مجموع الرامزات الممكنة في استعمال الأحماض الأمينية المعروفة والمستعملة في تركيب البروتينات.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      }
+    ]
+  },
   "2020-m/S1": {
     schemaVersion: 1,
     status: "partial",

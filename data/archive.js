@@ -229,7 +229,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet)."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet). Encodé 4D sous l id 2019-m le 2026-09-13 (consignes recopiées page à page sur l image des PDF locaux) : le hub Maths affiche la carte épreuve, la carte de consultation correspondante est masquée."
     },
     {
       year: "2018",

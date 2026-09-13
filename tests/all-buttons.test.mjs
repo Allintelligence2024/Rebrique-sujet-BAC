@@ -106,8 +106,8 @@ test("1c. Le bouton filière affiche Maths puis le trou تقني رياضي", ()
   assert.match($("#stream-fab-label").textContent, /رياضيات/);
   assert.equal(
     $$("#year-grid [data-year]").length,
-    7,
-    "sept entraînements 4D Maths (2020–2026) ; 2013–2019 restent consultables"
+    8,
+    "huit entraînements 4D Maths (2019–2026) ; 2013–2018 restent consultables"
   );
   assert.equal($('#year-grid [data-hub-year="2021"]').dataset.kind, "exam");
   assert.equal($('#year-grid [data-year="2021-m"]').disabled, false);
@@ -119,10 +119,16 @@ test("1c. Le bouton filière affiche Maths puis le trou تقني رياضي", ()
   const links = $$('#year-grid [data-kind="consult"] a[href*="dzexams.com/ar/annales/"]');
   assert.equal(
     links.length,
-    8,
-    "filière Maths : 7 principales 2013–2019 + 2017 exceptionnelle ; 2020 est une épreuve"
+    7,
+    "filière Maths : 6 principales 2013–2018 + 2017 exceptionnelle ; 2019 et 2020 sont des épreuves"
   );
   assert.equal($('#year-grid [data-hub-year="2020"]').dataset.kind, "exam", "2020-m ouvre une épreuve");
+  assert.equal($('#year-grid [data-year="2019-m"]').disabled, false, "2019-m ouvre une épreuve");
+  assert.equal(
+    $('#year-grid [data-hub-year="2019"]').dataset.kind,
+    "exam",
+    "la carte 2019 est celle de l'épreuve"
+  );
 
   click('#year-grid [data-year="2026-m"]');
   assert.match($("#view-guide").textContent, /2س30د/);
