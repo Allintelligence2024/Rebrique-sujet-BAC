@@ -49,7 +49,7 @@ export const YEAR_2025_M = {
           ui: "text",
           label: "المضادان الحيويان Q/D والريبوزوم",
           max: 8,
-          desc: "تثبيط الاستطالة بـ Quinupristin/Dalfopristin بين الموقعين P و A للوحدة الكبرى",
+          desc: "تثبيط الاستطالة بـ Quinupristin/Dalfopristin بين الموقعين P و A للوحدة الكبرى، مع تمثيل الجزء المؤطر (م) وصيغ الأحماض الأمينية الحرة",
           poles: {
             N: {
               points: 1,
@@ -70,17 +70,20 @@ export const YEAR_2025_M = {
             },
             S: {
               points: 2,
-              prompt: "تسمية المرحلة والعناصر المرقمة من 1 إلى 6",
+              prompt: "تسمية المرحلة والعناصر المرقمة، تمثيل الجزء المؤطر (م) وصيغ الأحماض الأمينية الحرة",
+              // Les trois questions courtes de la page 1 (scan relu en image), recopiées
+              // mot à mot : Q1 حدّد/تعرّف, Q2 مثّل الجزء المؤطر (م), Q3 أعطِ الصيغة… وسط حامضي.
               bacPrompt:
-                "سمّ بدقة المرحلة الممثلة في الوثيقة في وجود Q/D وتعرّف على العناصر المرقمة من 1 إلى 6.",
+                "حدّد بدقة المرحلة الممثلة في الوثيقة في وجود Q/D وتعرّف على العناصر المرقمة من 1 إلى 6. مثّل الجزء المؤطر (م) من البروتين المتشكل بصيغة كيميائية مُفصّلة. أعطِ الصيغة الكيميائية للأحماض الأمينية (Lys, Asp, Ala) في حالتها الحرة في وسط حامضي قوي.",
               ...OFFICIAL(
                 1,
-                "Relecture du PDF eddirasa 2025 Maths (page 1) et du corrigé (page 1). Verbe officiel : سمّ / تعرّف. Question 1 du التمرين الأول."
+                "Relecture du scan 2025 Maths (page 1, relu en image) et du corrigé (page 1). Verbes officiels : حدّد / تعرّف / مثّل / أعطِ. Questions 1, 2 et 3 du التمرين الأول."
               ),
-              placeholder: "المرحلة: الاستطالة. 1 رابطة، 2 حمض أميني...",
+              placeholder:
+                "المرحلة: الاستطالة. 1 رابطة ببتيدية، 2 نهاية أمينية... (م): Ala–Asp–Lys بروابط ببتيدية. في وسط حامضي: NH3+ و COOH.",
               minLength: 40,
               modelAnswer:
-                "المرحلة الممثلة: الاستطالة (في وجود Q/D). 1 رابطة ببتيدية. 2 حمض أميني (سلسلة ببتيدية). 3 تحت الوحدة الكبرى للريبوزوم. 4 تحت الوحدة الصغرى. 5 ARNm. 6 معقد (حمض أميني–ARNt).",
+                "المرحلة الممثلة: الاستطالة (في وجود Q/D). 1 رابطة ببتيدية. 2 النهاية الأمينية NH2 للسلسلة الببتيدية. 3 تحت الوحدة الكبرى للريبوزوم. 4 رامزة الانطلاق AUG على ARNm. 5 تحت الوحدة الصغرى للريبوزوم. 6 معقد حمض أميني–ARNt. (م): الجزء المؤطر ثلاثي الببتيد Ala–Asp–Lys بروابط ببتيدية: H2N–CH(CH3)–CO–NH–CH(CH2–COOH)–CO–NH–CH((CH2)4–NH2)–COOH. في وسط حامضي قوي توجد الأحماض الأمينية الحرة بصيغة NH3+–CH(R)–COOH، وتُؤمّن Lys الشحنة الموجبة في سلسلتها الجانبية (NH3+).",
               rule: {
                 prompt: "سم المرحلة والعناصر المرقمة",
                 keywords: ["استطاله", "ريبوزوم", "ببتيديه"],
@@ -95,7 +98,7 @@ export const YEAR_2025_M = {
                 "اشرح في نص علمي دور الريبوزوم في تركيب البروتين مبرزا تأثير المضادين الحيويين Q/D على نمو البكتيريا (النص العلمي مهيكل بمقدمة وعرض وخاتمة).",
               ...OFFICIAL(
                 1,
-                "Relecture du PDF eddirasa 2025 Maths (page 1) et du corrigé (page 1). Verbe officiel : اشرح في نص علمي. Question 4 du التمرين الأول. Consignes الصيغة المفصلة و الصيغة في وسط حامضي non mappées."
+                "Relecture du PDF eddirasa 2025 Maths (page 1) et du corrigé (page 1). Verbe officiel : اشرح في نص علمي. Question 4 du التمرين الأول ; les questions 2 et 3 sont désormais portées par la tâche S."
               ),
               placeholder: "مقدمة، عرض: مواقع A و P، تأثير Q/D، خاتمة...",
               minLength: 120,

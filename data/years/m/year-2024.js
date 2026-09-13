@@ -96,7 +96,7 @@ export const YEAR_2024_M = {
                 "اشرح في نص علمي خطوات الاستنساخ وتأثير (COR) على تركيب البروتين باستغلال الوثيقة ومعلوماتك.",
               ...OFFICIAL(
                 1,
-                "Relecture du PDF eddirasa 2024 Maths (page 1) et du corrigé (page 1). Verbe officiel : اشرح في نص علمي. Question 3 du التمرين الأول. Consigne أكمل التتابع النيكليوتيدي non mappée."
+                "Relecture du scan 2024 Maths (page 1, relu en image) et du corrigé (page 1). Verbe officiel : اشرح في نص علمي. Question 3 du التمرين الأول ; la consigne أكمل التتابع النيكليوتيدي (question 2) est portée par la tâche S."
               ),
               placeholder: "مقدمة، عرض: بداية واستطالة ونهاية، وجود COR، خاتمة...",
               minLength: 120,
@@ -262,17 +262,19 @@ export const YEAR_2024_M = {
             },
             S: {
               points: 2,
-              prompt: "التعرف على نوع الخلايا المناعية التي يفتقدها النسيج وذكر دورها",
+              prompt: "التعرف على الخلايا المفتقدة ودورها، وجدول منشأ الخلايا اللمفاوية ومقر اكتساب الكفاءة",
+              // Questions 1 et 2 de la page 4 (scan relu en image), recopiées mot à mot.
               bacPrompt:
-                "تعرّف على نوع الخلايا المناعية التي يفتقدها نسيج المولود المصاب (PID) مع ذكر دورها.",
+                "تعرّف على نوع الخلايا المناعية التي يفتقدُها نسيج المولود المصاب بـ(PID) مع ذكر دورها. حدِّد في جدول منشأ الخلايا اللمفاوية ومقر اكتسابها لكفاءتها المناعية.",
               ...OFFICIAL(
                 4,
-                "Relecture du PDF eddirasa 2024 Maths (page 4) et du corrigé (page 4). Verbe officiel : تعرّف. Question 1 du التمرين الأول (Sujet 2). Consigne جدول المنشأ ومقر اكتساب الكفاءة non mappée."
+                "Relecture du scan 2024 Maths (Sujet 2, page 4, relu en image) et du corrigé (page 4). Verbes officiels : تعرّف / حدِّد. Questions 1 et 2 du التمرين الأول."
               ),
-              placeholder: "الخلايا LT: التعرف على محدد المستضد وتنشيط الاستجابة...",
+              placeholder:
+                "الخلايا LT... الجدول: المنشأ نقي العظم، مقر الاكتساب الغدة التيموسية لـ LT ونقي العظم لـ LB...",
               minLength: 40,
               modelAnswer:
-                "يفتقد النسيج الخلايا LT. دورها: التعرف على محدد المستضد وتنشيط الاستجابة المناعية النوعية. الخلايا LTh مصدر IL المحفز للرد الخلطي، والخلايا LTc مصدر الخلايا المتدخلة في الاستجابة الخلوية.",
+                "يفتقد النسيج الخلايا LT. دورها: التعرف على محدد المستضد وتنشيط الاستجابة المناعية النوعية. الخلايا LTh مصدر IL المحفز للرد الخلطي، والخلايا LTc مصدر الخلايا المتدخلة في الاستجابة الخلوية. الجدول: منشأ الخلايا اللمفاوية نقي العظم؛ مقر اكتساب الكفاءة المناعية: الغدة التيموسية بالنسبة إلى الخلايا اللمفاوية LT ونقي العظم بالنسبة إلى الخلايا اللمفاوية LB.",
               rule: {
                 prompt: "تعرف على الخلايا المفتقدة ودورها",
                 keywords: ["LT", "مستضد", "تنشيط"],
@@ -287,7 +289,7 @@ export const YEAR_2024_M = {
                 "بيّن في نص علمي دور الخلايا المناعية في الرد المناعي الخلطي وتأثير العوز المناعي الخلقي (PID).",
               ...OFFICIAL(
                 4,
-                "Relecture du PDF eddirasa 2024 Maths (page 4) et du corrigé (page 4). Verbe officiel : بيّن في نص علمي. Question 3 du التمرين الأول (Sujet 2)."
+                "Relecture du scan 2024 Maths (Sujet 2, page 4, relu en image) et du corrigé (page 4). Verbe officiel : بيّن في نص علمي. Question 3 du التمرين الأول (Sujet 2), recopiée mot à mot."
               ),
               placeholder: "مقدمة، عرض: بالعات، LT4، LB، تأثير غياب LT4، خاتمة...",
               minLength: 120,

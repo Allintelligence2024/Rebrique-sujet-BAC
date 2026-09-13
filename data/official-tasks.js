@@ -8651,7 +8651,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 1,
         pole: "N",
         page: 2,
-        prompt: "اقترح فرضيتين توضحان سبب القصور المناعي.",
+        prompt: "اقترح فرضيتين توضّح بهما سبب القصور المناعي الحادّ باستغلالك لنتائج الوثيقة 1.",
         promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
@@ -8699,7 +8699,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "E",
         page: 3,
         prompt:
-          "بيّن سبب مرض القصور المناعي بما يسمح لك بالمصادقة على صحة إحدى الفرضيتين باستغلالك لأشكال الوثيقة 2 ومعارفك.",
+          "بيّن سبب مرض القصور المناعي بما يسمح لك بالمصادقة على صحة إحدى الفرضيتين باستغلالك لمعارفك وأشكال الوثيقة 2.",
         promptSource: "official",
         maxPoints: 6,
         scoringReviewStatus: "provisional",
@@ -8920,7 +8920,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "E",
         page: 6,
         prompt:
-          "بيّن آلية تأثير دواء Halofuginone على الطفيلي مما يسمح لك بالمصادقة على صحة إحدى الفرضيتين المقترحتين سابقا باستغلال معلوماتك وأشكال الوثيقة 2.",
+          "بيّن آلية تأثير دواء Halofuginone على الطفيلي مما يسمح لك بالمصادقة على صحة إحدى الفرضيتين المقترحتين سابقا باستغلال معلوماتك وأشكال الوثيقة 2. يتناول بعض المرضى أحيانا الأدوية دون احترام المقادير المحدّدة في الوصفات الطبية، قدّم نصيحة مُبرَّرة لتفادي ذلك.",
         promptSource: "official",
         maxPoints: 6,
         scoringReviewStatus: "provisional",
@@ -9229,7 +9229,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 2,
         pole: "S",
         page: 4,
-        prompt: "تعرّف على نوع الخلايا المناعية التي يفتقدها نسيج المولود المصاب (PID) مع ذكر دورها.",
+        prompt:
+          "تعرّف على نوع الخلايا المناعية التي يفتقدُها نسيج المولود المصاب بـ(PID) مع ذكر دورها. حدِّد في جدول منشأ الخلايا اللمفاوية ومقر اكتسابها لكفاءتها المناعية.",
         promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
@@ -9446,7 +9447,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 2,
         pole: "S",
         page: 1,
-        prompt: "سمّ بدقة المرحلة الممثلة في الوثيقة في وجود Q/D وتعرّف على العناصر المرقمة من 1 إلى 6.",
+        prompt:
+          "حدّد بدقة المرحلة الممثلة في الوثيقة في وجود Q/D وتعرّف على العناصر المرقمة من 1 إلى 6. مثّل الجزء المؤطر (م) من البروتين المتشكل بصيغة كيميائية مُفصّلة. أعطِ الصيغة الكيميائية للأحماض الأمينية (Lys, Asp, Ala) في حالتها الحرة في وسط حامضي قوي.",
         promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
