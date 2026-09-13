@@ -11,9 +11,9 @@
    - 1 entrée شعبة علوم تجريبية : 2021 uniquement.
    Les autres années SE (2013–2020 et 2022–2026) ne sont plus des cartes
    d'archive : elles sont encodées en entraînement 4D dans
-   data/years/se/year-*.js. Les années Maths 2021–2026 sont à la fois
+   data/years/se/year-*.js. Les années Maths 2020–2026 sont à la fois
    cataloguées ici et encodées dans data/years/m/year-*.js, et le hub
-   les affiche en 4D (identifiants 2021-m … 2026-m).
+   les affiche en 4D (identifiants 2020-m … 2026-m).
    2021 SE reste en consultation : son PDF officiel est chiffré, sans
    couche texte exploitable — aucun énoncé n'a été fabriqué pour combler
    ce trou, et le champ `notes` de l'entrée le rappelle.
@@ -215,7 +215,7 @@ export const ARCHIVE = {
       attachments: true,
       viewer: "ok",
       notes:
-        "Page ouverte (2026-08-30) : 10 pages ; pièces jointes sciences-m-bac2020 + sciences-m-bac2020-correction ; sujet : structure des protéines/électrophorèse, cancer de la peau (Ras/p53), CMH et rejet de greffe."
+        "Page ouverte (2026-08-30) : 10 pages ; pièces jointes sciences-m-bac2020 + sciences-m-bac2020-correction ; sujet : structure des protéines/électrophorèse, cancer de la peau (Ras/p53), CMH et rejet de greffe. Relu page à page (2026-09-13) et encodé 4D sous l'id 2020-m : le hub Maths affiche une carte épreuve, plus une consultation."
     },
     {
       year: "2019",

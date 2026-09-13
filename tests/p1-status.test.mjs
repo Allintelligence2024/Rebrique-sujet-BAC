@@ -9,8 +9,8 @@ test("le statut P1 refuse un faux 100 % tant que les inventaires et copies manqu
   assert.equal(status.completedGates, 3);
   assert.equal(status.totalGates, 6);
   assert.equal(byId["P1.1"].complete, false);
-  assert.match(byId["P1.1"].evidence, /\/40 inventaires complets/);
-  assert.match(byId["P1.5"].evidence, /0\/2235 copies/);
+  assert.match(byId["P1.1"].evidence, /\/42 inventaires complets/);
+  assert.match(byId["P1.5"].evidence, /0\/2385 copies/);
   assert.equal(byId["P1.2"].complete, false);
   assert.equal(byId["P1.3"].complete, true);
   assert.equal(byId["P1.4"].complete, true);

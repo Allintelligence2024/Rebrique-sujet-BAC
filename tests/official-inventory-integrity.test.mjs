@@ -63,7 +63,7 @@ test("une armature « copie libre » n'invente aucune tâche et n'ouvre aucune n
 
 test("chaque sujet chargé possède un inventaire, et inversement", () => {
   const rows = eachSubject();
-  assert.equal(rows.length, 38);
+  assert.equal(rows.length, 40);
   for (const { yearId, subject, inventory } of rows) {
     assert.ok(inventory, `${yearId}/S${subject.id} sans inventaire`);
     assert.equal(inventory.schemaVersion, 1);
@@ -123,7 +123,7 @@ test("les identifiants de tâches sont uniques et dérivés de l'ordre réel", (
       seen.add(task.id);
     }
   }
-  assert.equal(seen.size, 408);
+  assert.equal(seen.size, 424);
 });
 
 test("aucune provenance n'est survendue : official ⇒ page connue, barème toujours provisoire", () => {
@@ -158,7 +158,7 @@ test("les pages annoncées restent utilisables dans le PDF livré", () => {
   }
   // Le générateur rattache la très grande majorité des consignes à une page du
   // fichier ; les autres restent annotées « (الأصل) » plutôt que d'être devinées.
-  assert.equal(declared, 149);
+  assert.equal(declared, 159);
   assert.ok(located / declared > 0.8, `trop de pages non locables: ${declared - located}`);
 });
 
@@ -177,7 +177,7 @@ test("la pagination déclarée n'est jamais silencieusement fausse", () => {
   }
 });
 
-test("les 38 sujets restent éligibles à l'épreuve sans inventaire invalide", () => {
+test("les 40 sujets restent éligibles à l'épreuve sans inventaire invalide", () => {
   let invalid = 0;
   for (const { yearId, subject, inventory } of eachSubject()) {
     const report = buildOfficialCoverageReport({ yearId, subject, inventory });

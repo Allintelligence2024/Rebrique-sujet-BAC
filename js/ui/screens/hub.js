@@ -109,7 +109,7 @@ export function createHubScreen(deps) {
         <p class="small text-muted mt-0 mb-1" id="hub-stream-caption"></p>
       </div>
       <div class="grid grid-cards" id="year-grid"></div>
-      <footer class="screen-foot">منصة امتحان بكالوريا علوم الطبيعة والحياة. <a href="legal/privacy.html">الخصوصية</a> · <a href="legal/legal-notice.html">المعلومات القانونية</a></footer>
+      <footer class="screen-foot">منصة امتحان بكالوريا علوم الطبيعة والحياة ورياضيات. <a href="legal/privacy.html">الخصوصية</a> · <a href="legal/legal-notice.html">المعلومات القانونية</a></footer>
     </div>`
     );
 
@@ -118,7 +118,7 @@ export function createHubScreen(deps) {
       streamId === "se"
         ? `الشعبة: ${stream.label} — مواضيع 2013–2026.`
         : streamId === "m"
-          ? `الشعبة: ${stream.label} — مواضيع 2021–2026 + رسمية 2013–2020.`
+          ? `الشعبة: ${stream.label} — مواضيع 2020–2026 + مواضيع رسمية للقراءة 2013–2019.`
           : `الشعبة: ${stream.label} — لا موضوع SVT رسمي على المصادر المتاحة.`;
 
     const fab = $("#btn-stream-fab");

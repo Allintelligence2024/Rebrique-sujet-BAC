@@ -7642,6 +7642,446 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       }
     ]
   },
+  "2020-m/S1": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/ar/annales/SUFqL0VzRjNzdmd6ek1EekpsOTFMdz09",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2020/sujet-1.pdf",
+      pages: 3,
+      pageOffset: 0
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: []
+    },
+    tasks: [
+      {
+        id: "2020-m-S1-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "كيف تحدد السلاسل الجانبية للأحماض الأمينية الخصائص الكهربائية للبروتين، وما علاقة ذلك باستقرار بنيته الفراغية؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2020-m-S1-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 1,
+        prompt:
+          "تعرّف على البيانات المرقمة. تم فصل أربع وحدات بنائية لأحد البروتينات، سلاسلها الجانبية كما يلي: R1 = -CH3 ، R2 = -(CH2)2-COOH ، R3 = -CH2-SH ، R4 = -(CH2)4-NH2. صنّف الوحدات الأربعة حسب السلسلة الجانبية. يُظهر الشكل (ب) من الوثيقة نتيجة فصل خليط من الوحدات السابقة باستعمال تقنية الهجرة الكهربائية في وسط ذي pH = 6.11. أنسب البقع (س، ع، ص، ي) إلى الوحدات ذات الجذور R1, R2, R3, R4 مع التعليل. إذا علمت أن الوحدة ذات الجذر R1 لها pHi = 6.11.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2020-m-S1-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 1,
+        prompt:
+          "اكتب نصا علميا تبيّن فيه تأثير درجة pH الوسط على استقرار البنية الفراغية للبروتينات انطلاقا من نتائج هذه الدراسة ومعلوماتك.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2020-m-S1-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: null,
+        prompt: "ما العلاقة بين الخصائص الكهربائية للبروتين وبنائه الفراغي ووظيفته؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2020-m-S1-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: 2,
+        prompt: "صُغ المشكل العلمي الذي تطرحه هذه الأبحاث العلمية.",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2020-m-S1-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 3,
+        prompt:
+          "اقترح فرضية تفسر بها سبب حدوث سرطان الجلد. بيّن أن النتائج المحصل عليها في الوثيقة (1) تسمح باختبار صحة الفرضية. ترجم جزء المورثة Ras الموضحة بالوثيقة (1) إلى تتالي أحماض أمينية مستغلا قاموس الشفرة الوراثية الموضح بالشكل (ج) من الوثيقة (1).",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      },
+      {
+        id: "2020-m-S1-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 3,
+        prompt:
+          "يبيّن جدول الوثيقة (2) جزء من المورثة المسؤولة عن تركيب البروتين (p53) من خلية عادية والجزء نفسه من خلية سرطانية. اشرح النتائج المحصل عليها بالوثيقة (2) لتأكيد صحة الفرضية. اكتب نصا علميا تبرز من خلاله مخاطر التعرض المستمر لأشعة الشمس على عضوية الإنسان مستعينا بالمعارف المبنية في هذه الدراسة ومكتسباتك.",
+        promptSource: "official",
+        maxPoints: 6,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      },
+      {
+        id: "2020-m-S1-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: null,
+        prompt: "لخّص في مخطط العلاقة بين الطفرة الوراثية والبنية الفراغية للبروتين ووظيفته.",
+        promptSource: "reconstructed",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      }
+    ]
+  },
+  "2020-m/S2": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/ar/annales/SUFqL0VzRjNzdmd6ek1EekpsOTFMdz09",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2020/sujet-2.pdf",
+      pages: 2,
+      pageOffset: 3
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: []
+    },
+    tasks: [
+      {
+        id: "2020-m-S2-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt: "كيف تميّز العضوية بين الذات واللاذات، وما دور جزيئات HLA في هذا التمييز؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2020-m-S2-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 4,
+        prompt:
+          "تعرّف على البيانات المرقمة من 1 إلى 8. اذكر نوع الخلايا التي تحمل البنية (3) وتلك التي تحمل البنية (4). حدّد المنشأ الوراثي لكل من البنيتين (3) و(4).",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2020-m-S2-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 4,
+        prompt:
+          "اكتب نصا علميا تبرز من خلاله دور البنيتين (3) و(4) في التمييز بين الذات واللاذات مما سبق ومعلوماتك.",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2020-m-S2-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: null,
+        prompt: "ما الذي يمنح كل فرد هويته البيولوجية الخاصة؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2020-m-S2-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: 5,
+        prompt:
+          "حدّد مستوى البنية الفراغية للبروتينين الممثلين بالشكلين (أ) و(ب) مع التعليل ثم أبرز المشكلة المطروحة.",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2020-m-S2-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 5,
+        prompt:
+          "اقترح فرضية تفسر بها سبب الاختلال الوظيفي لبروتين (HbS). قارن بين النتائج المحصل عليها عند الشخصين.",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2020-m-S2-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 5,
+        prompt:
+          "تحقّق من صحة الفرضية المقترحة. وضّح في نص علمي العلاقة بين بنية ووظيفة البروتين انطلاقا مما توصلت إليه ومعلوماتك.",
+        promptSource: "official",
+        maxPoints: 6,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2020-m-S2-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: null,
+        prompt: "لخّص في مخطط العلاقة بين بنية البروتين الفراغية ووظيفته.",
+        promptSource: "reconstructed",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      }
+    ]
+  },
   "2021-m/S1": {
     schemaVersion: 1,
     status: "partial",

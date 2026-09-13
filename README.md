@@ -22,7 +22,7 @@ Parcours en cinq temps pensé pour la **gestion du stress** et la **méthode** �
 
 > 📱 **Responsive** : l'interface est utilisable sur téléphone (grilles qui se replient, cibles tactiles ≥ 44 px, champs 16 px sans zoom iOS, modales scrollables). Verrouillé par `tests/e2e/responsive.spec.mjs` (3 viewports réels, zéro défilement horizontal) dans la CI.
 
-> ⚡ **Chargement progressif et mode hors-ligne maîtrisé** : le démarrage ne charge que le catalogue des 19 années. Le sujet complet d'une année est importé au clic, puis peut être conservé dans un cache runtime local borné. Le shell ne précache ni les payloads d'années ni les PDF. Un badge discret affiche la version du build et l'état hors-ligne ; les diagnostics restent des compteurs techniques agrégés sur l'appareil.
+> ⚡ **Chargement progressif et mode hors-ligne maîtrisé** : le démarrage ne charge que le catalogue des 21 années. Le sujet complet d'une année est importé au clic, puis peut être conservé dans un cache runtime local borné. Le shell ne précache ni les payloads d'années ni les PDF. Un badge discret affiche la version du build et l'état hors-ligne ; les diagnostics restent des compteurs techniques agrégés sur l'appareil.
 
 L'interface propose des thèmes clair et sombre persistants. Dans l'espace de travail, toute l'aide
 méthodologique (décisions سند/معارف et وصف/تفسير, canevas, الفحص الرباعي) est regroupée dans **un seul dépliant
@@ -162,8 +162,8 @@ Le serveur applique une liste blanche d'assets publics. Ne pas remplacer cette c
 
 ## 📄 Contenu réel — épreuve
 
-**19 années** dans `APP_CONFIG.years` : 2013–2019 et 2020+2022–2026 علوم تجريبية + 2021–2026 رياضيات.
-Le hub SE affiche 2013–2020 et 2022–2026 en cartes d'épreuve ; le hub Maths affiche 2021–2026.
+**21 années** dans `APP_CONFIG.years` : 2013–2019 et 2020+2022–2026 علوم تجريبية + 2020–2026 رياضيات.
+Le hub SE affiche 2013–2020 et 2022–2026 en cartes d'épreuve ; le hub Maths affiche 2020–2026.
 **2021 SE est volontairement absente des cartes d'épreuve.** L'archive 2013–2019 n'est pas un énoncé ministériel.
 
 ### Contenu BAC 2025 (شعبة علوم تجريبية)
@@ -319,17 +319,21 @@ Les sujets de la filière choisie remplacent la grille.
 | Filière                  | Épreuve               | Consultation (sujet + تصحيح)                    |
 | ------------------------ | --------------------- | ----------------------------------------------- |
 | شعبة علوم تجريبية (`se`) | 2013–2020 و 2022–2026 | 2021                                            |
-| شعبة رياضيات (`m`)       | 2021–2026             | 2013–2020 (+ 2017 exceptionnelle)               |
+| شعبة رياضيات (`m`)       | 2020–2026             | 2013–2019 (+ 2017 exceptionnelle)               |
 | شعبة تقني رياضي (`tm`)   | —                     | **absente de la source** (trou affiché, 0 lien) |
 
 Statut honnête :
 
 - **2013–2019 SE** : sujets reconstruits (`data/years/se/`). Toutes consignes `reconstructed`. **2018** : thèmes relus OCR dzexams. **2013–2017, 2019** : thèmes pédagogiques 3AS, **non certifiables** comme énoncés officiels. Confiance UI basse.
-- **2020 et 2022–2026 SE** et **2021–2026 Maths** : sujets chargés à la demande depuis `data/years/{se,m}/`, indexés par le catalogue `data/subjects.js`.
+- **2020 et 2022–2026 SE** et **2020–2026 Maths** : sujets chargés à la demande depuis `data/years/{se,m}/`, indexés par le catalogue `data/subjects.js`.
 - **Consultation** : sujet officiel + تصحيح النموذجي via dzexams. Aucun
   barème, mot-clé ou réponse modèle : le moteur ne s'applique pas.
 - **Maths 2022–2026** : viewer dzexams bloqué (`contentVerified: false`) ;
   Cartes encodées depuis les PDF officiels eddirasa (même papier ONEC).
+- **2020 Maths** : relu page à page sur le dossier dzexams local (sujet pp. 1–5, corrigé
+  pp. 6–10), consignes recopiées mot à mot depuis l'image des pages ; les questions de
+  cadrage officielles (« صُغ المشكل العلمي », « أبرز المشكلة المطروحة ») sont marquées
+  `official`, les étapes pédagogiques restent badgées ⚠️.
 - **SE 2021** : pas de carte d'épreuve — couche texte / corrigé mot à mot absents sur dzexams.
 - **شعبة تقني رياضي** : pas d'épreuve SVT au BAC ; l'index dzexams n'a que
   `se` et `m` (revérifié 2026-08-31). Le hub affiche le trou, **aucun lien
@@ -354,10 +358,10 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **245** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
-- Copies vérifiées dans le hard benchmark : **0/2235 minimum** avant toute promotion numérique
-- Inventaires de tâches officielles commencés : **38/40 sujets** (**408 tâches connues**)
-- Sujets éligibles à la simulation : **38**
+- Tests exécutés par `npm test` : **251** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Copies vérifiées dans le hard benchmark : **0/2385 minimum** avant toute promotion numérique
+- Inventaires de tâches officielles commencés : **40/42 sujets** (**424 tâches connues**)
+- Sujets éligibles à la simulation : **40**
 - Critères P1 fermés : **3/6** — statut global : **incomplet**
 - Critères P2 fermés : **6/7** — élèves distincts testés : **0/5**
 - Critères P3 fermés : **5/6** — statut global : **incomplet**

@@ -245,7 +245,10 @@ export const YEAR_CATALOG = Object.freeze([
       modulePath: `data/years/se/year-${id}.js`
     })
   ),
-  ...["2021", "2022", "2023", "2024", "2025", "2026"].map((calendarYear) =>
+  // La filière maths ouvre en 2020 (les PDF 2013–2019 sont présents dans
+  // subjects/M/ mais sans payload : les encoder demande la même relecture
+  // page à page, année par année).
+  ...["2020", "2021", "2022", "2023", "2024", "2025", "2026"].map((calendarYear) =>
     catalogEntry({
       id: `${calendarYear}-m`,
       stream: "m",
@@ -279,6 +282,7 @@ const YEAR_LOADERS = Object.freeze({
   2024: () => import("./years/se/year-2024.js"),
   2025: () => import("./years/se/year-2025.js"),
   2026: () => import("./years/se/year-2026.js"),
+  "2020-m": () => import("./years/m/year-2020.js"),
   "2021-m": () => import("./years/m/year-2021.js"),
   "2022-m": () => import("./years/m/year-2022.js"),
   "2023-m": () => import("./years/m/year-2023.js"),

@@ -24,17 +24,22 @@ Audit d'un sujet (pôles, points, provenance, page) :
 
 ## Pages relues en image
 
-| Sujet                       | Page               | Contenu                                     | Décision                              |
-| --------------------------- | ------------------ | ------------------------------------------- | ------------------------------------- |
-| 2023-m S1 (scan `-1077342`) | 1                  | ت1 (8ن) الإيثانول / بنية البروتين           | S = Q1+Q2 mot à mot, E = Q3 (نص علمي) |
-| 2023-m S1                   | 2                  | ت2 (12ن) القصور المناعي / PRF1, الجزء الأول | N = consigne officielle mot à mot     |
-| 2023-m S1                   | 3                  | ت2, الجزء الثاني + الثالث                   | E et W alignés sur le scan            |
-| 2023-m S1                   | 4                  | S2 ت1 : التعاون الخلوي                      | S, E confirmés                        |
-| 2023-m S2                   | 5                  | ت2 (13ن) Halofuginone / ملاريا, الجزء الأول | N confirmé                            |
-| 2023-m S2                   | 6                  | ت2, الجزء الثاني + الثالث                   | E = Q1+Q2 (نصيحة), W confirmé         |
-| 2024-m S1                   | 1                  | ت1 (7ن) الكورديسبين                         | S = Q1+Q2, E = Q3                     |
-| 2024-m S2                   | 1 (page 4 du scan) | ت1 (7ن) PID / الرد الخلطي                   | S = Q1+Q2 (جدول المنشأ), E = Q3       |
-| 2025-m S1                   | 1                  | ت1 (8ن) Q/D / الريبوزوم                     | S = Q1+Q2+Q3, E = Q4                  |
+| Sujet                       | Page               | Contenu                                     | Décision                                                                         |
+| --------------------------- | ------------------ | ------------------------------------------- | -------------------------------------------------------------------------------- |
+| 2023-m S1 (scan `-1077342`) | 1                  | ت1 (8ن) الإيثانول / بنية البروتين           | S = Q1+Q2 mot à mot, E = Q3 (نص علمي)                                            |
+| 2023-m S1                   | 2                  | ت2 (12ن) القصور المناعي / PRF1, الجزء الأول | N = consigne officielle mot à mot                                                |
+| 2023-m S1                   | 3                  | ت2, الجزء الثاني + الثالث                   | E et W alignés sur le scan                                                       |
+| 2023-m S1                   | 4                  | S2 ت1 : التعاون الخلوي                      | S, E confirmés                                                                   |
+| 2023-m S2                   | 5                  | ت2 (13ن) Halofuginone / ملاريا, الجزء الأول | N confirmé                                                                       |
+| 2023-m S2                   | 6                  | ت2, الجزء الثاني + الثالث                   | E = Q1+Q2 (نصيحة), W confirmé                                                    |
+| 2024-m S1                   | 1                  | ت1 (7ن) الكورديسبين                         | S = Q1+Q2, E = Q3                                                                |
+| 2024-m S2                   | 1 (page 4 du scan) | ت1 (7ن) PID / الرد الخلطي                   | S = Q1+Q2 (جدول المنشأ), E = Q3                                                  |
+| 2025-m S1                   | 1                  | ت1 (8ن) Q/D / الريبوزوم                     | S = Q1+Q2+Q3, E = Q4                                                             |
+| 2020-m S1 (scan `-2273619`) | 1                  | ت1 (8ن) بنية البروتين / هجرة كهربائية       | S = Q1+Q2+Q3, E = Q4 ; N/W reconstruits                                          |
+| 2020-m S1                   | 2-3                | ت2 (12ن) Ras / p53 / سرطان الجلد            | N = « صُغ المشكل العلمي », S = فرضية+بيّن+ترجم, E = اشرح+نص علمي                 |
+| 2020-m S2                   | 4                  | ت1 (8ن) جزيئات HLA                          | S = Q1+Q2+Q3, E = Q4 ; N/W reconstruits                                          |
+| 2020-m S2                   | 5                  | ت2 (12ن) الأنيميا المنجلية HbS              | N = « أبرز المشكلة المطروحة », S = فرضية+قارن, E = تحقق+نص علمي                  |
+| 2020-m corrigé              | 6-10               | corrigé officiel complet                    | réponses modèle rédigées depuis l'image (رابطة شاردية، (س)=R2…، T→A position 20) |
 
 ## Consignes corrigées ou ajoutées (cette passe)
 
@@ -53,7 +58,9 @@ Audit d'un sujet (pôles, points, provenance, page) :
 - Notes de provenance : elles citaient « corrigé page N » alors que la consigne
   a été relue sur le **scan** ; chaque note porte désormais la page relue.
 
-Bilan maths 2021–2026 : **63 tâches officielles sur 96**.
+Bilan maths 2020–2026 : **73 tâches officielles sur 112** (la session 2020 ajoute 10
+consignes officielles : les questions de cadrage « صُغ المشكل العلمي » et « أبرز
+المشكلة المطروحة » existent réellement dans le sujet).
 
 ## Reste à faire (assumé)
 
@@ -65,13 +72,13 @@ Bilan maths 2021–2026 : **63 tâches officielles sur 96**.
    - 2026-m : برّر تثبيط PCSK9 ; قدّم نصيحة.
 2. **2022-m S2-E1-Q2** : recouvrement 0 % lors de la vérification automatique
    (`probe-verify`) — à relire sur l'image avant de la déclarer officielle.
-3. **Années maths 2013–2020** : les PDF sont présents
-   (`subjects/M/2013…2020`, listés dans `subjects/manifest.json`) mais aucune
-   donnée n'existe dans `data/years/m/` → ces années n'apparaissent pas dans le
-   hub et n'ont donc **pas de mode BAC**, contrairement aux sciences
-   expérimentales (2013–2026). C'est le principal écart de parité restant ;
-   l'encoder demande une relecture page à page (2 sujets × 2 à 3 exercices par
-   année) et ne doit pas être fait à l'aveugle.
+3. **Années maths 2013–2019** : les PDF sont présents
+   (`subjects/M/2013…2019`, listés dans `subjects/manifest.json`) mais aucune
+   donnée n'existe dans `data/years/m/` → ces années restent en consultation
+   externe, sans mode BAC. **2020 est désormais encodée**
+   (`data/years/m/year-2020.js`, test dédié `tests/maths-2020.test.mjs`).
+   Encoder 2019 puis 2018… demande la même relecture page à page et ne doit pas
+   être fait à l'aveugle.
 4. Corrections officielles maths non relues :
    `M/dzexams-bac-sciences-1967487.pdf` (2018), `-2280992.pdf` (2019),
    `-2273619.pdf` (2020), `-2068087.pdf` (2021), `-1777391.pdf` (2022).
