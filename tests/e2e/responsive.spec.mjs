@@ -4,6 +4,8 @@ import { expect, test } from "@playwright/test";
    Validation mobile réelle (chromium, viewport téléphone).
    NOTE: ces tests tournent dans la CI (playwright install chromium)
    ; localement le sandbox ne peut pas télécharger le navigateur.
+   Ils suivent le produit : une seule session, l'épreuve, terminée
+   par « ✓ تسليم الورقة » — l'ancien mode entraînement n'existe plus.
    ------------------------------------------------------------------ */
 
 const PHONES = [
@@ -27,7 +29,7 @@ for (const phone of PHONES) {
     await expectNoHorizontalOverflow(page);
   });
 
-  test(`[${phone.name}] parcours guide → stratégie → workspace sans débordement`, async ({ page }) => {
+  test(`[${phone.name}] parcours guide → stratégie → épreuve sans débordement`, async ({ page }) => {
     await page.setViewportSize({ width: phone.width, height: phone.height });
     await page.goto("/");
     await page.locator('#year-grid [data-year="2025"]').click();
@@ -36,31 +38,34 @@ for (const phone of PHONES) {
     await page.locator("#guide-next").click();
     await expect(page.locator("#view-strategy")).toBeVisible();
     await expectNoHorizontalOverflow(page);
-    await page.locator('#view-strategy [data-confirm="1"][data-session-mode="training"]').click();
+    await page.locator('#view-strategy [data-confirm="1"][data-session-mode="bac"]').click();
     await expect(page.locator("#view-workspace")).toBeVisible();
     await expectNoHorizontalOverflow(page);
   });
 
-  test(`[${phone.name}] parcours carte-sujet → copie utilisable au doigt`, async ({ page }) => {
+  test(`[${phone.name}] la copie est utilisable au doigt`, async ({ page }) => {
     await page.setViewportSize({ width: phone.width, height: phone.height });
     await page.goto("/");
     await page.locator('#year-grid [data-year="2025"]').click();
     await page.locator("#guide-next").click();
-    await page.locator('#view-strategy [data-confirm="1"][data-session-mode="training"]').click();
+    await page.locator('#view-strategy [data-confirm="1"][data-session-mode="bac"]').click();
     await expect(page.locator("#view-workspace")).toBeVisible();
     await expectNoHorizontalOverflow(page);
-    const field = page.locator("#ex-content textarea, #ex-content input.field").first();
+    const field = page.locator("#view-workspace textarea").first();
     await expect(field).toBeVisible();
+    await field.fill("إجابة التجربة على الهاتف");
+    await expect(field).toHaveValue("إجابة التجربة على الهاتف");
   });
 }
 
-test("[phone] la couverture partielle garde la simulation verrouillée", async ({ page }) => {
+test("[phone] les deux sujets restent ouverts à l'épreuve malgré un inventaire partiel", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
   await page.goto("/");
   await page.locator('#year-grid [data-year="2025"]').click();
   await page.locator("#guide-next").click();
-  await expect(page.locator('[data-subject-coverage="partial"]')).toHaveCount(1);
-  await expect(page.locator('[data-simulation-eligible="true"]')).toHaveCount(0);
+  await expect(page.locator('[data-subject-coverage="partial"]')).toHaveCount(2);
+  await expect(page.locator('[data-exam-openable="true"]')).toHaveCount(2);
+  // Le partiel est dit : le nombre de tâches inventoriées est affiché.
   await expect(page.locator("#view-strategy")).toContainText("جرد المهام");
 });
 
@@ -73,55 +78,40 @@ test("[phone] parcours Maths : durée 2 h 30 et deux exercices", async ({ page }
   await expect(page.locator("#global-timer")).toHaveText("02:30:00");
   await expect(page.locator("#view-guide")).toContainText("2س30د");
   await page.locator("#guide-next").click();
-  await page.locator('#view-strategy [data-confirm="1"][data-session-mode="training"]').click();
-  await expect(page.locator("#view-workspace [data-switch]")).toHaveCount(2);
+  await page.locator('#view-strategy [data-confirm="1"][data-session-mode="bac"]').click();
+  await expect(page.locator("#view-workspace [data-simulation-exercise]")).toHaveCount(2);
   await expectNoHorizontalOverflow(page);
 });
 
-test("[phone] tous les états de pages sans débordement (tiroirs, détails, modale)", async ({ page }) => {
+test("[phone] tous les états d'écran sans débordement (tiroir du sujet, modale)", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
   await page.goto("/");
   await expect(page.locator("#year-grid")).toBeVisible();
 
-  // Section تدريب المفتاح ouverte + carte البوابتان
-  await page.locator("#training-details summary").click();
-  await expect(page.locator("#gates-card")).toBeVisible();
-  let overflow = await page.evaluate(
-    () => document.documentElement.scrollWidth - document.documentElement.clientWidth
-  );
-  expect(overflow).toBeLessThanOrEqual(1);
-
   // Parcours complet jusqu'à la copie
   await page.locator('#year-grid [data-year="2025"]').click();
   await page.locator("#guide-next").click();
-  await page.locator('#view-strategy [data-confirm="1"][data-session-mode="training"]').click();
+  await page.locator('#view-strategy [data-confirm="1"][data-session-mode="bac"]').click();
   await expect(page.locator("#view-workspace")).toBeVisible();
 
-  // Aide de pôle dépliée (portes + canevas + فحص رباعي)
-  await page.locator(".pole-help summary").first().click();
-  overflow = await page.evaluate(
-    () => document.documentElement.scrollWidth - document.documentElement.clientWidth
-  );
-  expect(overflow).toBeLessThanOrEqual(1);
-
-  // Tiroir المسودة ouvert
-  await page.locator("#ws-brouillon").click();
+  // Tiroir du sujet ouvert (le PDF est rendu dans l'application)
+  await page.locator("#simulation-pdf").click();
   await expect(page.locator(".drawer.open")).toBeVisible();
-  overflow = await page.evaluate(
+  let overflow = await page.evaluate(
     () => document.documentElement.scrollWidth - document.documentElement.clientWidth
   );
   expect(overflow).toBeLessThanOrEqual(1);
   await page.locator(".drawer [data-close]").click();
 
-  // Modale التلميح (valve anti-stress). Le rapport a été retiré de la copie
+  // Modale de remise de copie. Le rapport a été retiré de la copie
   // (épure élève — verrouillé par tests/all-buttons.test.mjs), la modale
-  // réellement atteignable pendant la copie est donc celle du تلميح.
-  await page.locator("#ws-panic").click();
+  // réellement atteignable pendant l'épreuve est donc celle de la remise.
+  await page.locator("#simulation-finish").click();
   await expect(page.locator(".modal")).toBeVisible();
   overflow = await page.evaluate(
     () => document.documentElement.scrollWidth - document.documentElement.clientWidth
   );
   expect(overflow).toBeLessThanOrEqual(1);
-  await page.locator(".modal [data-close='btn']").click();
+  await page.locator("#simulation-finish-no").click();
   await expect(page.locator(".modal")).toHaveCount(0);
 });

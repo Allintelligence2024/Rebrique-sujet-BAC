@@ -31,14 +31,29 @@ test("les exercices restent accessibles dans n’importe quel ordre sans répons
   await page.goto("/");
   await page.locator('#year-grid [data-year="2025"]').click();
   await page.locator("#guide-next").click();
-  await page.locator('#view-strategy [data-confirm="1"][data-session-mode="training"]').click();
-  const switches = page.locator("#view-workspace [data-switch]");
-  await expect(switches).toHaveCount(3);
-  await expect(switches.nth(2)).toBeEnabled();
-  await switches.nth(2).click();
-  await expect(page.locator("#ws-banner")).toContainText("التمرين 03");
-  await page.locator('#view-workspace [data-switch="1"]').click();
-  await expect(page.locator("#ws-banner")).toContainText("التمرين 01");
+  await page.locator('#view-strategy [data-confirm="1"][data-session-mode="bac"]').click();
+  const exercises = page.locator("#view-workspace [data-simulation-exercise]");
+  await expect(exercises).toHaveCount(3);
+  await expect(exercises.nth(2)).toBeEnabled();
+  // Le troisième exercice s'ouvre directement : aucune réponse préalable exigée.
+  await exercises.nth(2).click();
+  await expect(page.locator('[data-official-task^="2025-S1-E3-"]').first()).toBeVisible();
+  await page.locator('#view-workspace [data-simulation-exercise="1"]').click();
+  await expect(page.locator('[data-official-task^="2025-S1-E1-"]').first()).toBeVisible();
+});
+
+test("la remise de copie est confirmée par une boîte de dialogue accessible", async ({ page }) => {
+  await page.goto("/");
+  await page.locator('#year-grid [data-year="2025"]').click();
+  await page.locator("#guide-next").click();
+  await page.locator('#view-strategy [data-confirm="1"][data-session-mode="bac"]').click();
+  await page.locator("#simulation-finish").click();
+  const modal = page.locator(".modal");
+  await expect(modal).toBeVisible();
+  await expect(modal.locator("#simulation-finish-yes")).toBeVisible();
+  await page.locator("#simulation-finish-no").click();
+  await expect(modal).toHaveCount(0);
+  await expect(page.locator("#view-workspace")).toBeVisible();
 });
 
 test("reflow équivalent à un zoom de 200 % sur un écran de 1280 px", async ({ page }) => {
@@ -49,10 +64,11 @@ test("reflow équivalent à un zoom de 200 % sur un écran de 1280 px", async ({
   await expectNoHorizontalOverflow(page);
   await page.locator('#year-grid [data-year="2025"]').click();
   await page.locator("#guide-next").click();
-  await page.locator('#view-strategy [data-confirm="1"][data-session-mode="training"]').click();
+  await page.locator('#view-strategy [data-confirm="1"][data-session-mode="bac"]').click();
   await expect(page.locator("#view-workspace")).toBeVisible();
   await expectNoHorizontalOverflow(page);
-  await page.locator("#ws-brouillon").click();
+  // Le sujet s'ouvre dans un tiroir : lui aussi doit tenir sans débordement.
+  await page.locator("#simulation-pdf").click();
   await expect(page.locator(".drawer.open")).toBeVisible();
   await expectNoHorizontalOverflow(page);
 });
