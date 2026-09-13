@@ -25,6 +25,30 @@ const DEFAULT_ZOOM_INDEX = 1;
 const states = new WeakMap();
 let libraryPromise = null;
 
+/* Erreurs qui ne justifient pas de second essai : le fichier est absent ou
+   injoignable, le worker n'y est pour rien et relancer le téléchargement ne
+   ferait que doubler l'attente de l'élève. */
+const FETCH_FAILURE =
+  /Unexpected server response|NetworkError|Failed to fetch|Missing PDF|InvalidPDFException|PasswordException/i;
+/**
+ * Ouvre le PDF. pdf.js v3 exige un worker : s'il ne démarre pas (navigateur
+ * ancien, worker-src restreint, application ouverte en file://), on rejoue
+ * l'ouverture en demandant à pdf.js d'analyser le fichier sur le fil
+ * principal. Plus lent, mais le sujet reste lisible dans l'application au
+ * lieu de retomber sur l'iframe, que Chromium n'affiche pas sous notre CSP.
+ * @param {any} pdfjs
+ * @param {string} src
+ */
+async function openDocument(pdfjs, src) {
+  pdfjs.GlobalWorkerOptions.workerSrc = vendorUrl("pdf.worker.min.js");
+  try {
+    return await pdfjs.getDocument({ url: src, isEvalSupported: false }).promise;
+  } catch (workerError) {
+    if (FETCH_FAILURE.test(String(workerError?.message || ""))) throw workerError;
+    return await pdfjs.getDocument({ url: src, isEvalSupported: false, disableWorker: true }).promise;
+  }
+}
+
 function vendorUrl(file) {
   // document.baseURI : l'application peut être servie depuis une racine
   // différente (dépôt, dist, sous-dossier) sans casser le chemin.
@@ -234,8 +258,7 @@ export async function mountPdfViewer(host, options = {}) {
 
   try {
     const pdfjs = await loadLibrary();
-    pdfjs.GlobalWorkerOptions.workerSrc = vendorUrl("pdf.worker.min.js");
-    const pdf = await pdfjs.getDocument({ url: src, isEvalSupported: false }).promise;
+    const pdf = await openDocument(pdfjs, src);
     state.pdf = pdf;
     state.pages = pdf.numPages;
     buildCanvases(state, pdf.numPages);

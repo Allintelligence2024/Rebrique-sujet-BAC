@@ -44,26 +44,57 @@ function scaffold() {
   };
 }
 
+function fakePage(rendered, index) {
+  return {
+    getViewport: ({ scale }) => ({ width: 600 * scale, height: 800 * scale }),
+    render: async () => {
+      rendered.push(index);
+      return { promise: Promise.resolve() };
+    },
+    cleanup: () => {}
+  };
+}
 function fakeLibrary(pages = 3) {
   const rendered = [];
+  const calls = [];
   return {
     rendered,
+    calls,
     lib: {
       GlobalWorkerOptions: {},
       getDocument(options) {
+        calls.push(options);
         assert.equal(options.url, "/subjects/SE/2021/sujet-1.pdf");
         return {
           promise: Promise.resolve({
             numPages: pages,
             async getPage(index) {
-              return {
-                getViewport: ({ scale }) => ({ width: 600 * scale, height: 800 * scale }),
-                render: async () => {
-                  rendered.push(index);
-                  return { promise: Promise.resolve() };
-                },
-                cleanup: () => {}
-              };
+              return fakePage(rendered, index);
+            },
+            destroy: () => {}
+          })
+        };
+      }
+    }
+  };
+}
+/** pdf.js dont le worker refuse de démarrer : seul le repli sans worker aboutit. */
+function workerlessLibrary(pages = 2, message = "Setting up fake worker failed: no Worker") {
+  const rendered = [];
+  const calls = [];
+  return {
+    rendered,
+    calls,
+    lib: {
+      GlobalWorkerOptions: {},
+      getDocument(options) {
+        calls.push(options);
+        if (!options.disableWorker) return { promise: Promise.reject(new Error(message)) };
+        return {
+          promise: Promise.resolve({
+            numPages: pages,
+            async getPage(index) {
+              return fakePage(rendered, index);
             },
             destroy: () => {}
           })
@@ -146,6 +177,36 @@ test("si pdf.js échoue, l'iframe de repli est révélée et expliquée", async 
   assert.match(container().textContent, /تعذّر عرض الموضوع داخل التطبيق/);
 });
 
+test("si le worker pdf.js échoue, le sujet est relu sans worker plutôt qu'en iframe", async () => {
+  const { host, frame } = scaffold();
+  const { lib, rendered, calls } = workerlessLibrary(2);
+  globalThis.pdfjsLib = lib;
+  await mountPdfViewer(host);
+  assert.equal(calls.length, 2, "une tentative avec worker, puis une sans");
+  assert.equal(calls[0].disableWorker, undefined);
+  assert.equal(calls[1].disableWorker, true);
+  assert.equal(host.dataset.pdfState, "ready");
+  assert.equal(rendered.length, 2, "les pages doivent être dessinées malgré l'absence de worker");
+  assert.equal(host.hidden, false, "le rendu direct reste la voie normale");
+  assert.equal(frame.hidden, true, "pas de repli iframe quand le sujet s'affiche");
+  assert.match(host.textContent, /2 صفحة/);
+});
+test("un fichier introuvable n'est pas retéléchargé pour rien", async () => {
+  const { host, frame } = scaffold();
+  const calls = [];
+  globalThis.pdfjsLib = {
+    GlobalWorkerOptions: {},
+    getDocument(options) {
+      calls.push(options);
+      return { promise: Promise.reject(new Error("Unexpected server response (404) while retrieving PDF")) };
+    }
+  };
+  await mountPdfViewer(host);
+  assert.equal(calls.length, 1, "une erreur réseau ne doit pas déclencher de second essai");
+  assert.equal(host.hidden, true);
+  assert.equal(frame.hidden, false, "l'élève garde une sortie de secours");
+  assert.match(container().textContent, /تعذّر عرض الموضوع داخل التطبيق/);
+});
 test("un sujet sans fichier local garde le lien source, sans cadre vide", () => {
   const html = pdfViewerHTML({ id: 1, pdfExternalUrl: "https://www.dzexams.com/x.pdf" });
   assert.doesNotMatch(html, /<iframe/);
