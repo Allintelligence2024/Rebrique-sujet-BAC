@@ -96,22 +96,17 @@ test("les données portent désormais des consignes BAC explicites sur chaque p�
   }
 });
 
-test("l'ouverture de l'Atlas 4D affiche les onglets, la recherche et les flashcards interactives", () => {
-  click("#btn-atlas");
-  assert.ok($(".drawer.open"));
-  assert.ok($("#atlas-search-input"));
-  assert.ok($$(".atlas-tab-btn").length >= 4);
-
-  // Switch to flashcards
-  const flashcardTab = $('[data-cat="flashcards"]');
-  assert.ok(flashcardTab);
-  flashcardTab.dispatchEvent(new dom.window.MouseEvent("click", { bubbles: true }));
-  assert.ok($$(".flashcard").length > 0);
-
-  // Click on a flashcard to reveal
-  const firstCard = $(".flashcard");
-  firstCard.dispatchEvent(new dom.window.MouseEvent("click", { bubbles: true }));
-  assert.ok(firstCard.classList.contains("revealed"));
+test("le hub ne propose que l'épreuve et la consultation (plus d'outils d'entraînement)", () => {
+  // La section repliée تدريب المفتاح (exercice rapide, أطلس, تشخيص تجريبي) a été retirée.
+  for (const id of ["#btn-atlas", "#btn-demo", "#drill-start", "#training-details", "#training-section"]) {
+    assert.equal($(id), null, `${id} ne doit plus exister dans le hub`);
+  }
+  assert.doesNotMatch($("#view-hub").textContent, /ابدأ التدريب/);
+  // Ce qui reste : les cartes d'épreuve, la bascule de filière, le son et les أدعية.
+  for (const id of ["#btn-hub-sound", "#btn-hub-adkar", "#btn-stream-fab"]) {
+    assert.ok($(id), `bouton de hub manquant: ${id}`);
+  }
+  assert.ok($$('#year-grid [data-kind="exam"]').length > 0, "aucune carte d'épreuve");
 });
 
 test("le bouton d'ambiance sonore permet de cycler entre les modes de relaxation", async () => {
@@ -244,15 +239,4 @@ test("la remise verrouille la copie et ouvre la relecture", async () => {
   // Aucune note : le barème reste provisoire.
   assert.match($("#view-workspace").textContent, /التنقيط غير معاير/);
   assert.doesNotMatch($("#view-workspace").textContent, /\d+[.,]\d+\s*\/\s*\d+/);
-});
-
-test("أطلس والتشخيص التجريبي vivrent dans la section repliée تدريب المفتاح (hub épuré)", () => {
-  click("[data-hub-year]") && null; // no-op: s'assure seulement qu'on est sur le hub
-  const atlas = $("#btn-atlas");
-  const demo = $("#btn-demo");
-  assert.ok(atlas, "bouton أطلس introuvable");
-  assert.ok(demo, "bouton démo introuvable");
-  assert.ok(atlas.closest("#training-details"), "أطلس doit être dans تدريب المفتاح");
-  assert.ok(demo.closest("#training-details"), "la démo doit être dans تدريب المفتاح");
-  assert.equal($(".hub-tools #btn-atlas"), null, "l'en-tête du hub ne doit plus contenir أطلس");
 });

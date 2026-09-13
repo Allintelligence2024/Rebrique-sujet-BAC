@@ -10,14 +10,12 @@ import {
   loadYear,
   normalizeArabic
 } from "../data/subjects.js";
-import { BROUILLON_MODE_DATA } from "../data/brouillon.js";
 import { officialTaskInventoryFor } from "../data/official-tasks.js";
 import { createSubjectSessionStarter } from "./application/subject-session.js";
 import { buildOfficialCoverageReport } from "./domain/subjects/official-coverage.js";
 import { store, helpers } from "./store.js";
 import { timers, evaluateText, evaluatePipeline, scoreBac, soundEngine, METHOD_SCRIPTS } from "./engine.js";
 import { createSpeechEngine } from "./services/speech-recognition.js";
-import { createAtlas } from "./ui/atlas.js";
 import {
   announceScreen,
   associateFieldsWithInstructions,
@@ -25,14 +23,12 @@ import {
   ensureLiveRegions
 } from "./ui/accessibility.js";
 import { createDialogManager } from "./ui/dialogs.js";
-import { buildDemoDiagnostic } from "./ui/demo-diagnostic.js";
 import { node, replaceContent, setInternalHTML } from "./ui/dom.js";
 import { createScreenNavigator } from "./ui/navigation.js";
 import { mountOperationalStatus } from "./ui/operational-status.js";
 import { createGuideScreen } from "./ui/screens/guide.js";
 import { createHubScreen } from "./ui/screens/hub.js";
 import { createStrategyScreen } from "./ui/screens/strategy.js";
-import { createTrainingController } from "./ui/training.js";
 import { createWorkspaceController } from "./ui/screens/workspace.js";
 import { reportDiagnostic } from "./services/diagnostics.js";
 
@@ -126,15 +122,6 @@ function applyTheme(theme) {
     reportDiagnostic("theme.save", error, { value });
   }
 }
-
-const openAtlas = createAtlas({
-  $,
-  $$,
-  openDrawer,
-  normalizeArabic,
-  bacVerbs: BROUILLON_MODE_DATA.bacVerbs,
-  setInternalHTML
-});
 
 export const voiceEngine = createSpeechEngine(toast);
 
@@ -261,19 +248,16 @@ hubScreen = createHubScreen({
   $$,
   APP_CONFIG,
   applyTheme,
-  buildDemo: () => buildDemoDiagnostic(evaluateText),
   closeModal,
   cycleSound,
   enterExercise,
   examMinutesForYear,
   formatDuration,
   openAdkar,
-  openAtlas,
   openModal,
   startSession,
   store,
   timers,
-  training: createTrainingController({ $, $$, store, openModal }),
   yearObj
 });
 guideScreen = createGuideScreen({

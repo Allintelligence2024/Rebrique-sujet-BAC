@@ -78,12 +78,12 @@
   `js/ui/workspace/report-controller.js`, `js/ui/reports/{report,exports}.js` et
   `js/ui/training-limit.js` ont donc été supprimés, avec `tests/workspace-modules.test.mjs`.
   Aucune note, aucun export CSV/JSON n'est distribué : la calibration humaine reste à faire.
-- **Sept modules de l'ancien écran d'entraînement sont hors du graphe applicatif** :
-  `js/ui/workspace/{presentation,text-exercise,pipeline-exercise,quick-check,brouillon,scratchpad,feedback}.js`.
-  Ils ne sont plus importés par l'application (l'écran d'épreuvre les remplace) mais restent
-  versionnés, couverts par leurs tests et déclarés dans `OUT_OF_GRAPH`
-  (`tests/service-worker.test.mjs`). **Décision à prendre** : les supprimer avec leurs tests,
-  ou les garder en vue d'un retour de la méthode des quatre étapes. Ne pas trancher seul.
+- **L'ancien écran d'entraînement a été supprimé** (décision produit du 2026-09-13) : modules
+  `js/ui/workspace/*`, `js/ui/{training,atlas,demo-diagnostic,keycard}.js`,
+  `js/domain/method/gates.js`, `data/brouillon.js` et leurs tests. Le seul mode livré est
+  l'épreuve, servie par `js/ui/screens/simulation.js`. La méthode des quatre étapes ne survit
+  que dans l'écran **Sérénité** (guide) et dans les scripts d'évaluation
+  (`js/method-scripts.js`) — elle n'est plus un parcours.
 - **`tests/archive.test.mjs`** contient un test réseau désactivé. Le `skip` était
   `process.env.SKIP_NETWORK_TESTS === "true" || true` : le `|| true` rendait le commentaire
   « pour l'activer, passer SKIP_NETWORK_TESTS=false » faux. Corrigé en

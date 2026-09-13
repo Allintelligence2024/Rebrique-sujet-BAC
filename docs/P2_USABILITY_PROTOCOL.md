@@ -21,7 +21,7 @@ Utiliser le téléphone quotidien de l’élève s’il est considéré bas de g
 2. Atteindre une consigne d’exercice sans aide de l’observateur.
 3. Passer librement à un autre exercice.
 4. Ouvrir la fiche d’aide d’une étape.
-5. Ouvrir la feuille de brouillon, écrire dans au moins deux étapes, insérer une version valide dans la copie et vérifier son retour.
+5. Ouvrir le sujet depuis la copie, répondre à au moins deux tâches, remettre la copie puis vérifier la relecture verrouillée.
 6. Ouvrir puis fermer une fenêtre au clavier si un clavier externe ou une technologie d’assistance est utilisée.
 
 L’observateur ne doit expliquer un terme qu’après que l’élève a signalé le blocage. Toute aide est comptée.
@@ -53,7 +53,7 @@ Mesurer ensuite :
 - médiane du temps d’accès à une première question ; utiliser `null` si une session abandonnée n’atteint jamais de question ;
 - nombre d’interventions de l’observateur ;
 - fréquence de chaque terme incompris ;
-- réussite de l’insertion et du retour du brouillon.
+- réussite de la remise et de l’ouverture de la relecture.
 
 ## Règle de fermeture
 

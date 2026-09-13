@@ -1,4 +1,4 @@
-import { elementFromInternalHTML, node, setInternalHTML } from "../dom.js";
+import { node, setInternalHTML } from "../dom.js";
 import { ARCHIVE, catalogYearsForStream } from "../../../data/archive.js";
 
 const STREAM_KEY = "boussole4d.stream";
@@ -62,24 +62,20 @@ export function createHubScreen(deps) {
     $$,
     APP_CONFIG,
     applyTheme,
-    buildDemo,
     closeModal,
     cycleSound,
     enterExercise,
     examMinutesForYear,
     formatDuration,
     openAdkar,
-    openAtlas,
     openModal,
     startSession,
     store,
     timers,
-    training,
     yearObj
   } = deps;
 
   function renderHub() {
-    training?.teardown?.();
     const streamId = readStream();
     const stream = STREAMS[streamId];
     const other = STREAMS[nextStreamId(streamId)];
@@ -109,8 +105,7 @@ export function createHubScreen(deps) {
         <p class="small text-muted mt-0 mb-1" id="hub-stream-caption"></p>
       </div>
       <div class="grid grid-cards" id="year-grid"></div>
-      ${training.html()}
-      <footer class="screen-foot">منصة تدريب منهجي لامتحانات بكالوريا علوم الطبيعة والحياة. <a href="legal/privacy.html">الخصوصية</a> · <a href="legal/legal-notice.html">المعلومات القانونية</a></footer>
+      <footer class="screen-foot">منصة إمتحان بكالوريا علوم الطبيعة والحياة. <a href="legal/privacy.html">الخصوصية</a> · <a href="legal/legal-notice.html">المعلومات القانونية</a></footer>
     </div>`
     );
 
@@ -152,28 +147,6 @@ export function createHubScreen(deps) {
     $("#btn-hub-adkar").addEventListener("click", openAdkar);
     $("#btn-hub-sound").addEventListener("click", () => cycleSound($("#btn-hub-sound")));
     fab.addEventListener("click", cycleStream);
-    training.mount();
-    // Démo et أطلس : outils secondaires, dans la section repliée تدريب الخطوات الأربع.
-    const trainingSection = $("#training-section");
-    if (trainingSection) {
-      // Frontière DOM : on fabrique les deux blocs via elementFromInternalHTML
-      // (templates applicatifs uniquement) plutôt qu'un insertAdjacentHTML direct.
-      const demoCard = elementFromInternalHTML(`
-        <section class="card" id="demo-card">
-          <div class="flex spread">
-            <div><h3 class="mt-0 mb-1">تشخيص تجريبي في 60 ثانية</h3>
-            <p class="small text-muted mt-0">مثال توضيحي للمنتج — ليس نتيجة تلميذ.</p></div>
-            <button class="btn btn-emerald" id="btn-demo">ابدأ المثال قبل / بعد</button>
-          </div>
-        </section>`);
-      const atlasEntry = elementFromInternalHTML(`
-        <div class="flex justify-center">
-          <button class="btn btn-ghost btn-sm" id="btn-atlas">🔬 أطلس التقنيات</button>
-        </div>`);
-      trainingSection.append(demoCard, atlasEntry);
-      $("#btn-demo").addEventListener("click", openDemo);
-      $("#btn-atlas").addEventListener("click", openAtlas);
-    }
     applyTheme(document.documentElement.dataset.theme);
   }
 
@@ -305,24 +278,6 @@ export function createHubScreen(deps) {
     }
     card.append(stack, actions);
     return card;
-  }
-
-  function openDemo() {
-    const demo = buildDemo();
-    const list = (items, empty) =>
-      items.length ? `<ul>${items.map((item) => `<li>${item}</li>`).join("")}</ul>` : `<p>${empty}</p>`;
-    const panel = (title, result) => `<article class="card">
-      <h3 class="mt-0">${title}</h3>
-      <blockquote class="demo-copy">${result.text}</blockquote>
-      <strong>ما رصده المحرك</strong>${list(result.detected, "لا توجد مؤشرات كافية.")}
-      <strong>ما بقي ناقصاً</strong>${list(result.missing, "لم يرصد نقصاً ضمن هذه القاعدة المحدودة.")}
-    </article>`;
-    openModal(
-      "⏱️ تشخيص توضيحي في 60 ثانية",
-      `<p class="feedback mid">هذا مثال مصطنع ومعلن للشرح فقط؛ ليس نتيجة طالب حقيقي ولا دليلاً على الدقة.</p>
-       <div class="grid grid-2">${panel("قبل: عبارة عامة", demo.before)}${panel("بعد: ملاحظة ثم تفسير", demo.after)}</div>
-       <section class="mt-2"><h3>ما لا يضمنه المحرك</h3>${list(demo.limits, "")}</section>`
-    );
   }
 
   return { renderHub };

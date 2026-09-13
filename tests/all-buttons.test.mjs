@@ -50,7 +50,7 @@ function click(sel) {
   e.dispatchEvent(new dom.window.MouseEvent("click", { bubbles: true }));
 }
 
-test("1. Hub : test des boutons d'accueil, adkar, atlas, sons et années", () => {
+test("1. Hub : test des boutons d'accueil, adkar, sons et années", () => {
   // Sound button
   click("#btn-hub-sound");
   assert.notEqual(soundEngine.currentMode, "off");
@@ -62,28 +62,17 @@ test("1. Hub : test des boutons d'accueil, adkar, atlas, sons et années", () =>
   click('[data-close="ok"]');
   assert.equal($(".modal"), null);
 
-  // Atlas drawer
-  click("#btn-atlas");
-  assert.ok($(".drawer.open"));
-  // Test tabs
-  click('[data-cat="verbs"]');
-  assert.ok($$(".atlas-card").length > 0);
-  click('[data-cat="hypotheses"]');
-  assert.ok($$(".atlas-card").length > 0);
-  click('[data-cat="flashcards"]');
-  assert.ok($$(".flashcard").length > 0);
-  click(".flashcard");
-  assert.ok($(".flashcard").classList.contains("revealed"));
-  // Close drawer
-  click(".drawer [data-close]");
-  assert.equal($(".drawer"), null);
+  // Plus d'outils d'entraînement dans le hub : ni أطلس, ni تشخيص تجريبي, ni exercice rapide.
+  for (const id of ["#btn-atlas", "#btn-demo", "#drill-start"]) {
+    assert.equal($(id), null, `${id} ne doit plus exister`);
+  }
 
   // Years verification
   assert.equal($('#year-grid [data-year="2025"]').disabled, false);
   assert.equal($('#year-grid [data-year="2024"]').disabled, false);
   assert.equal($('#year-grid [data-year="2023"]').disabled, false);
 
-  // Une seule action par carte-sujet : démarrer l'entraînement (pas de double bouton).
+  // Une seule action par carte-sujet : démarrer l'épreuve (pas de double bouton).
   assert.equal($('#year-grid [data-hub-year="2025"]').querySelectorAll("button").length, 1);
   assert.equal($("#year-grid [data-quick-year]"), null, "l'accès rapide séparé est supprimé");
   click('#year-grid [data-year="2025"]');

@@ -37,7 +37,7 @@
 | P1.1 — Inventaire des tâches officielles | Bloqué  | 0/38 inventaires complets. Pilote 2025/S1/E1 : 2 tâches reliées à 4 étapes ; les autres ne seront pas inventés sans sources vérifiables. |
 | P1.2 — Mesure de couverture              | Bloqué  | Moteur et rapport terminés, mais 0/38 sujets à 100 % ; un inventaire partiel reste `unknown`.                                            |
 | P1.3 — Garde de simulation               | Terminé | Contrôle à la sélection et au rendu ; restauration altérée refusée ; 0 sujet réel éligible.                                              |
-| P1.4 — Parcours séparés                  | Terminé | Épreuve unique : entraînement retiré de la copie, épreuve silencieuse par tâches inventoriées, relecture verrouillée après remise.     |
+| P1.4 — Parcours séparés                  | Terminé | Épreuve unique : entraînement retiré de la copie, épreuve silencieuse par tâches inventoriées, relecture verrouillée après remise.       |
 | P1.5 — Corpus réel et calibration        | Bloqué  | Seuils et statut généré terminés ; 0/2 235 copies minimales réelles, consenties et doublement corrigées. Notes numériques masquées.      |
 | P1.6 — CSP stricte et découpage UI       | Terminé | 0 style inline, `style-src 'self'`, simulation et présentation extraites du contrôleur workspace.                                        |
 

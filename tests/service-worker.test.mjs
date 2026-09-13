@@ -9,17 +9,7 @@ import { YEAR_CATALOG } from "../data/subjects.js";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const source = readFileSync(join(root, "sw.js"), "utf8");
 const OUT_OF_GRAPH = {
-  "js/app-version.js": "chargé par index.html et importScripts",
-  // Écran d'entraînement retiré du produit (mode BAC unique) : ces modules ne
-  // sont plus dans le graphe d'imports de l'application. Ils restent versionnés
-  // et couverts par leurs tests (méthode des quatre étapes), en attendant une
-  // décision explicite de suppression.
-  "js/ui/workspace/brouillon.js": " écran d'entraînement retiré — conservé pour les tests",
-  "js/ui/workspace/feedback.js": " écran d'entraînement retiré — conservé pour les tests",
-  "js/ui/workspace/pipeline-exercise.js": " écran d'entraînement retiré — conservé pour les tests",
-  "js/ui/workspace/presentation.js": " écran d'entraînement retiré — conservé pour les tests",
-  "js/ui/workspace/scratchpad.js": " écran d'entraînement retiré — conservé pour les tests",
-  "js/ui/workspace/text-exercise.js": " écran d'entraînement retiré — conservé pour les tests"
+  "js/app-version.js": "chargé par index.html et importScripts"
 };
 
 function toRepoPath(path) {
@@ -74,7 +64,9 @@ test("le graphe statique du shell est parcouru sans avaler les imports d'années
   assert.ok(graph.has("js/ui.js"));
   assert.ok(graph.has("data/subjects.js"));
   assert.ok(graph.has("js/ui/operational-status.js"));
-  assert.ok(graph.size > 35, `graphe statique anormalement petit: ${graph.size}`);
+  // Le seuil protège contre un parcours cassé (graphe vide ou tronqué) : il a
+  // été ajusté après la suppression des modules d'entraînement (2026-09-13).
+  assert.ok(graph.size > 25, `graphe statique anormalement petit: ${graph.size}`);
   assert.equal(
     [...graph].some((path) => path.startsWith("data/years/")),
     false

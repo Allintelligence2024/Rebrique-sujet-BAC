@@ -11,12 +11,7 @@ const visibleUi = [
   "js/ui/screens/hub.js",
   "js/ui/screens/simulation.js",
   "js/ui/pdf-viewer.js",
-  "js/ui/atlas.js",
-  "js/ui/training.js",
-  "js/ui/keycard.js",
-  "js/method-scripts.js",
-  "data/bac-mode-policy.js",
-  "data/brouillon.js"
+  "data/bac-mode-policy.js"
 ]
   .map(source)
   .join("\n");
