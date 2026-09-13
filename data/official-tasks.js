@@ -7642,6 +7642,469 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       }
     ]
   },
+  "2018-m/S1": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/ar/annales/aDMxL2FtWlZwZ3NmeThCMG5WNk50UT09",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2018/sujet-1.pdf",
+      pages: 3,
+      pageOffset: 0
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: [2]
+    },
+    tasks: [
+      {
+        id: "2018-m-S1-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: 2,
+        prompt: "اكتب البيانات المرقمة من 1 إلى 10 ثم سمِّ الظاهرتين (س) و (ص) وحدّد مقرهما في الخلية.",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2018-m-S1-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 2,
+        prompt:
+          "تعرّف على مرحلتي الظاهرة (ص) المشار إليهما في الشكلين (أ) و (ب). قدّم تفسيرا لاختلاف نتائج الهجرة الكهربائية للعنصرين 5 و 8.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2018-m-S1-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 2,
+        prompt: "ممّا سبق ومعلوماتك وضّح العلاقة بين المورثة والبروتين.",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2018-m-S1-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: null,
+        prompt: "لماذا يُقال إنّ الخلل في المورثة يُترجم إلى خلل في النمط الظاهري؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2018-m-S1-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: 2,
+        prompt:
+          "أنجز منحنى بياني يمثل تطور عدد الخلايا اللمفاوية بدلالة الزمن. ضع على المنحنى مراحل تطور الإصابة بالفيروس.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2018-m-S1-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 2,
+        prompt: "قارن بين تطور شحنة الفيروس وعدد الخلايا اللمفاوية في الأسابيع الستة الأولى، ماذا تستنتج؟",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2018-m-S1-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 3,
+        prompt:
+          "تعرّف على العنصرين (a) و (b) من الوثيقة (3). اشرح الأهمية البيولوجية للشكل (ب) من الوثيقة (3) انطلاقا من نتائج الوثيقة (2). حلّل الوثيقة (4)، ماذا تستنتج؟",
+        promptSource: "official",
+        maxPoints: 5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      },
+      {
+        id: "2018-m-S1-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: 3,
+        prompt:
+          "ممّا سبق ومعلوماتك، اكتب نصّا علميا توضّح فيه سبب العجز المناعي الذي يحدثه فيروس الـ ( ) في العضوية.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      }
+    ]
+  },
+  "2018-m/S2": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/ar/annales/aDMxL2FtWlZwZ3NmeThCMG5WNk50UT09",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2018/sujet-2.pdf",
+      pages: 3,
+      pageOffset: 3
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: [1, 2]
+    },
+    tasks: [
+      {
+        id: "2018-m-S2-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: 4,
+        prompt: "تعرّف على الجزيئة الممثلة في الشكل (أ)، ثم مثّلها برسم تخطيطي عليه كافة البيانات.",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2018-m-S2-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 4,
+        prompt: "سمِّ الظاهرة الناتجة عن ارتباط جزيئات الشكل (أ) بعصيات الكزاز ثم حدّد أهمية هذا الارتباط.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2018-m-S2-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 4,
+        prompt: "حدّد ما يميز الاستجابة الثانوية من الشكل (ب).",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2018-m-S2-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: 4,
+        prompt:
+          "بيّن في نصّ علمي كيف يؤدي اللقاح إلى مساعدة العضوية في التصدي للمستضدات المميتة كعصيات الكزاز، انطلاقا من الوثيقة ومعلوماتك.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2018-m-S2-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: 5,
+        prompt:
+          "تعرّف على البيانات المرقمة من 1 إلى 3 محدّدا مستوى البنية الفراغية لهذا البروتين مع التّعليل. مثّل الصيغة الكيميائية للجزء (س) الممثّل في الشكل (أ)، مبرزا باقي الروابط الكيميائية المساهمة في تشكيل واستقرار هذه البنية.",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2018-m-S2-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 6,
+        prompt:
+          "أكمل جدول الشكل (أ) بعد نقله على ورقة الإجابة (اعتمادا على جدول الشفرة الوراثية). استخرج جزء المورثة المسؤول عن تركيب متتالية الأحماض الأمينية.",
+        promptSource: "official",
+        maxPoints: 5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [6]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      },
+      {
+        id: "2018-m-S2-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 6,
+        prompt:
+          "مثّل متتالية الأحماض الأمينية الموافقة للجزء الممثّل في الشّكل (ب). حدّد بدقة سبب تركيب ريبونوكلياز غير عادي، مبيّنا النتيجة المترتبة عن ذلك على المستوى الجزيئي.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [6]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      },
+      {
+        id: "2018-m-S2-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: 6,
+        prompt: "وضّح في نصّ علمي العلاقة بين المورثة ووظيفة البروتين، من خلال ما توصلت إليه ومعلوماتك.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [6]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      }
+    ]
+  },
   "2019-m/S1": {
     schemaVersion: 1,
     status: "partial",

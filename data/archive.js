@@ -243,7 +243,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien تحميل présent. PDF dzexams validé mécaniquement. Corrigé eddirasa OCR RTL (2026-09-01) : https://eddirasa.com/wp-content/uploads/2018/07/eddirasa-com-correction-bac-math-science-2018.pdf (6 p., 7+13/6+14 ; VIH/LT4/IL-2 ; Ac/tétanos ; ribonucléase). Énoncé 2018 M non lu ici. 4D non encodé."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien تحميل présent. PDF dzexams validé mécaniquement. Corrigé eddirasa OCR RTL (2026-09-01) : https://eddirasa.com/wp-content/uploads/2018/07/eddirasa-com-correction-bac-math-science-2018.pdf (6 p., 7+13/6+14 ; VIH/LT4/IL-2 ; Ac/tétanos ; ribonucléase). Encodé 4D sous l id 2018-m le 2026-09-13 : les six pages des deux PDF locaux ont été rendues en image et les consignes recopiées mot à mot (15 officielles, 1 reconstruite) ; le corrigé 2018 n'est pas dans le dépôt, les réponses modèle sont rédigées depuis le programme et la note d archive eddirasa ci-dessus sert de recoupement thématique (VIH/LT4/IL-2, Ac/tétanos, ribonucléase). Le hub Maths affiche la carte épreuve, la carte de consultation correspondante est masquée."
     },
     {
       year: "2017",

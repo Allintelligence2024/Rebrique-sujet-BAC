@@ -11,7 +11,7 @@ test("le statut P1 refuse un faux 100 % tant que les inventaires et copies manqu
   assert.equal(status.completedGates, 3);
   assert.equal(status.totalGates, 6);
   assert.equal(byId["P1.1"].complete, false);
-  assert.match(byId["P1.1"].evidence, /\/44 inventaires complets/);
+  assert.match(byId["P1.1"].evidence, /\/46 inventaires complets/);
   // Le minimum dépend du nombre de pôles actifs : on le calcule au lieu de le figer.
   const requiredCopies = CALIBRATION_STATUS.activePoles * CALIBRATION_THRESHOLDS.minimumCopiesPerPole;
   assert.match(byId["P1.5"].evidence, new RegExp(`0/${requiredCopies} copies`));
