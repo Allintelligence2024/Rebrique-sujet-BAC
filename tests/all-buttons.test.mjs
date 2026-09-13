@@ -106,12 +106,21 @@ test("1c. Le bouton filière affiche Maths puis le trou تقني رياضي", ()
   assert.match($("#stream-fab-label").textContent, /رياضيات/);
   assert.equal(
     $$("#year-grid [data-year]").length,
-    9,
-    "neuf entraînements 4D Maths (2018–2026) ; 2013–2017 restent consultables"
+    10,
+    "dix entraînements 4D Maths (2017–2026) ; 2013–2016 restent consultables"
   );
   assert.equal($('#year-grid [data-hub-year="2021"]').dataset.kind, "exam");
   assert.equal($('#year-grid [data-year="2021-m"]').disabled, false);
-  assert.equal($$("#year-grid .year-card").length, 14);
+  // 10 cartes-épreuve (2017-m … 2026-m) + 5 cartes de consultation
+  // (2013–2016 + la session exceptionnelle 2017) : la carte 2017 principale
+  // devient celle de l'épreuve, la consultation reste attachée à la session
+  // exceptionnelle, jamais supprimée par l'encodage de la session principale.
+  assert.equal($$("#year-grid .year-card").length, 15);
+  assert.equal(
+    $('#year-grid [data-hub-year="2017-exceptionnelle"]').dataset.kind,
+    "consult",
+    "la session exceptionnelle 2017 reste consultable"
+  );
   assert.ok($('#year-grid [data-hub-year="2026"]'));
   assert.ok($('#year-grid [data-hub-year="2022"]'));
   assert.ok($('#year-grid [data-hub-year="2021"]'));
@@ -119,10 +128,11 @@ test("1c. Le bouton filière affiche Maths puis le trou تقني رياضي", ()
   const links = $$('#year-grid [data-kind="consult"] a[href*="dzexams.com/ar/annales/"]');
   assert.equal(
     links.length,
-    6,
-    "filière Maths : 5 principales 2013–2017 + 2017 exceptionnelle ; 2018, 2019 et 2020 sont des épreuves"
+    5,
+    "filière Maths : 4 principales 2013–2016 + 2017 exceptionnelle ; 2017 à 2020 sont des épreuves"
   );
   assert.equal($('#year-grid [data-hub-year="2020"]').dataset.kind, "exam", "2020-m ouvre une épreuve");
+  assert.equal($('#year-grid [data-year="2017-m"]').disabled, false, "2017-m ouvre une épreuve");
   assert.equal($('#year-grid [data-year="2018-m"]').disabled, false, "2018-m ouvre une épreuve");
   assert.equal($('#year-grid [data-year="2019-m"]').disabled, false, "2019-m ouvre une épreuve");
   assert.equal(

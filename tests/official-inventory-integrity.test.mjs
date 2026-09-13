@@ -63,7 +63,7 @@ test("une armature « copie libre » n'invente aucune tâche et n'ouvre aucune n
 
 test("chaque sujet chargé possède un inventaire, et inversement", () => {
   const rows = eachSubject();
-  assert.equal(rows.length, 44);
+  assert.equal(rows.length, 46);
   for (const { yearId, subject, inventory } of rows) {
     assert.ok(inventory, `${yearId}/S${subject.id} sans inventaire`);
     assert.equal(inventory.schemaVersion, 1);
@@ -123,7 +123,7 @@ test("les identifiants de tâches sont uniques et dérivés de l'ordre réel", (
       seen.add(task.id);
     }
   }
-  assert.equal(seen.size, 456);
+  assert.equal(seen.size, 472);
 });
 
 test("aucune provenance n'est survendue : official ⇒ page connue, barème toujours provisoire", () => {
@@ -158,7 +158,7 @@ test("les pages annoncées restent utilisables dans le PDF livré", () => {
   }
   // Le générateur rattache la très grande majorité des consignes à une page du
   // fichier ; les autres restent annotées « (الأصل) » plutôt que d'être devinées.
-  assert.equal(declared, 188);
+  assert.equal(declared, 204);
   assert.ok(located / declared > 0.8, `trop de pages non locables: ${declared - located}`);
 });
 

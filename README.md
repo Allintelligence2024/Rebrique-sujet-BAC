@@ -162,8 +162,8 @@ Le serveur applique une liste blanche d'assets publics. Ne pas remplacer cette c
 
 ## 📄 Contenu réel — épreuve
 
-**22 années** dans `APP_CONFIG.years` : 2013–2019 et 2020+2022–2026 علوم تجريبية + 2018–2026 رياضيات.
-Le hub SE affiche 2013–2020 et 2022–2026 en cartes d'épreuve ; le hub Maths affiche 2018–2026 (2018, 2019 et 2020 ont rejoint les cartes d'épreuve ; leurs cartes de consultation sont masquées au profit de l'épreuve).
+**22 années** dans `APP_CONFIG.years` : 2013–2019 et 2020+2022–2026 علوم تجريبية + 2017–2026 رياضيات.
+Le hub SE affiche 2013–2020 et 2022–2026 en cartes d'épreuve ; le hub Maths affiche 2017–2026 (2017 à 2020 ont rejoint les cartes d'épreuve ; leurs cartes de consultation sont masquées au profit de l'épreuve, sauf la session exceptionnelle 2017 qui reste consultable).
 **2021 SE est volontairement absente des cartes d'épreuve.** L'archive 2013–2019 n'est pas un énoncé ministériel.
 
 ### Contenu BAC 2025 (شعبة علوم تجريبية)
@@ -284,26 +284,29 @@ une réponse locale HTTP 200 peut seulement entrer dans le cache runtime borné 
 | **2** | ت2 (7ن)  | مادة **الريسين** وتثبيط تركيب البروتين (ARNr 28s)              |
 | **2** | ت3 (8ن)  | المشبك المثبط ونضج **GABA** (NKCC1 → KCC2)                     |
 
-### Contenu BAC 2018–2026 (شعبة رياضيات)
+### Contenu BAC 2017–2026 (شعبة رياضيات)
 
 Énoncé + corrigé officiels eddirasa (OCR, 2026-08-31) pour 2021–2026 ; **2020**,
-**2019** et **2018** ont été encodées le 2026-09-13 depuis les PDF locaux
-(`subjects/M/2020/`, `subjects/M/2019/`, `subjects/M/2018/`), relues page à page
-en image — avec le corrigé local pour 2020, **sans corrigé dans le dépôt pour
-2019 et 2018** (les réponses modèle y sont rédigées depuis le programme et les
-données du sujet, jamais présentées comme un corrigé officiel). Format Maths :
+**2019**, **2018** et **2017** ont été encodées le 2026-09-13 depuis les PDF
+locaux (`subjects/M/2020/`, `subjects/M/2019/`, `subjects/M/2018/`,
+`subjects/M/2017/`), relues page à page en image. Les dossiers dzexams locaux de
+2017 (`M/dzexams-bac-sciences-2275712.pdf`, « عناصر الإجابة » pp. 5–9) et de 2020
+portent aussi la correction officielle, qui fonde alors les réponses modèle ;
+pour 2018 et 2019 les réponses modèle sont rédigées depuis le programme et les
+données du sujet, jamais présentées comme un corrigé officiel. Format Maths :
 2 sujets × 2 exercices. id `YYYY-m`.
 
-| Année    | Fichier                     | Barème      | Thèmes                                                                                                                                                                  |
-| -------- | --------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **2018** | `data/years/m/year-2018.js` | 7+13 / 6+14 | المورثة والبروتين والنمط الظاهري ؛ العجز المناعي (المنحنى، CMH II، الأنترلوكين 2) ؛ اللقاح والجسم المضاد والاستجابة الثانوية ؛ مورثة الريبونوكلياز والبروتين غير العادي |
-| **2019** | `data/years/m/year-2019.js` | 6+14 / 6+14 | بنية البروتين والرابطة الببتيدية (كتلة مولية) ؛ الخلايا المناعية والغرفتان ؛ البالعة وجزيئاتها الغشائية ؛ الشفرة الوراثية (Nirenberg/Matthaei/Khorana)                  |
-| **2020** | `data/years/m/year-2020.js` | 8+12 / 8+12 | بنية البروتينات والهجرة الكهربائية ؛ Ras/p53 وسرطان الجلد ؛ جزيئات HLA والذات/اللاذات ؛ الدريبانوسيتوز HbA/HbS                                                          |
-| **2022** | `data/years/m/year-2022.js` | 8+12 / 8+12 | ريبوزوم (PM 844) ؛ RADT Cov19 ؛ جسم مضاد ؛ هيبسيدين **HAMP** (GCC→ACC Ala→Thr)                                                                                          |
-| **2023** | `data/years/m/year-2023.js` | 8+12 / 7+13 | إيثانول Asp-Tyr ؛ **PRF1** G→A (UAG) ؛ CPA/LB/LT ؛ هالوفوجينون / ProRS                                                                                                  |
-| **2024** | `data/years/m/year-2024.js` | 7+13 / 7+13 | كورديسبين ؛ DLBCL (β2m / HLA I) ؛ PID ؛ ألبورت **COL4A5** Gly→Glu                                                                                                       |
-| **2025** | `data/years/m/year-2025.js` | 8+12 / 8+12 | مضادان Q/D والريبوزوم ؛ TAP / HLA I ؛ **HLA-DRB1** Arg74Trp ؛ UV-C Spike ACE2                                                                                           |
-| **2026** | `data/years/m/year-2026.js` | 6+14 / 8+12 | LTc / CMH I ؛ HCF LDLR/PCSK9 ؛ IL-2 NDNA11 ؛ غيتلمان **SLC12A3** Leu892Pro                                                                                              |
+| Année    | Fichier                     | Barème      | Thèmes                                                                                                                                                                                                                                                    |
+| -------- | --------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **2017** | `data/years/m/year-2017.js` | 6+14 / 6+14 | الرد المناعي الخلطي والمعقد المناعي ؛ من المورثة إلى البروتين (سلسلة الـ ADN، اتجاه الترجمة، تسلسل الأحماض الأمينية) ؛ الأحماض الأمينية والهجرة الكهربائية (pH = 3.2، Lys–Glu–Gly) ؛ شروط إنتاج الجزيئات الدفاعية (الخلية البلاسمية، تجربة الغرفتين، IL2) |
+| **2018** | `data/years/m/year-2018.js` | 7+13 / 6+14 | المورثة والبروتين والنمط الظاهري ؛ العجز المناعي (المنحنى، CMH II، الأنترلوكين 2) ؛ اللقاح والجسم المضاد والاستجابة الثانوية ؛ مورثة الريبونوكلياز والبروتين غير العادي                                                                                   |
+| **2019** | `data/years/m/year-2019.js` | 6+14 / 6+14 | بنية البروتين والرابطة الببتيدية (كتلة مولية) ؛ الخلايا المناعية والغرفتان ؛ البالعة وجزيئاتها الغشائية ؛ الشفرة الوراثية (Nirenberg/Matthaei/Khorana)                                                                                                    |
+| **2020** | `data/years/m/year-2020.js` | 8+12 / 8+12 | بنية البروتينات والهجرة الكهربائية ؛ Ras/p53 وسرطان الجلد ؛ جزيئات HLA والذات/اللاذات ؛ الدريبانوسيتوز HbA/HbS                                                                                                                                            |
+| **2022** | `data/years/m/year-2022.js` | 8+12 / 8+12 | ريبوزوم (PM 844) ؛ RADT Cov19 ؛ جسم مضاد ؛ هيبسيدين **HAMP** (GCC→ACC Ala→Thr)                                                                                                                                                                            |
+| **2023** | `data/years/m/year-2023.js` | 8+12 / 7+13 | إيثانول Asp-Tyr ؛ **PRF1** G→A (UAG) ؛ CPA/LB/LT ؛ هالوفوجينون / ProRS                                                                                                                                                                                    |
+| **2024** | `data/years/m/year-2024.js` | 7+13 / 7+13 | كورديسبين ؛ DLBCL (β2m / HLA I) ؛ PID ؛ ألبورت **COL4A5** Gly→Glu                                                                                                                                                                                         |
+| **2025** | `data/years/m/year-2025.js` | 8+12 / 8+12 | مضادان Q/D والريبوزوم ؛ TAP / HLA I ؛ **HLA-DRB1** Arg74Trp ؛ UV-C Spike ACE2                                                                                                                                                                             |
+| **2026** | `data/years/m/year-2026.js` | 6+14 / 8+12 | LTc / CMH I ؛ HCF LDLR/PCSK9 ؛ IL-2 NDNA11 ؛ غيتلمان **SLC12A3** Leu892Pro                                                                                                                                                                                |
 
 ### Contenu BAC 2021 (شعبة رياضيات)
 
@@ -328,13 +331,13 @@ Les sujets de la filière choisie remplacent la grille.
 | Filière                  | Épreuve               | Consultation (sujet + تصحيح)                    |
 | ------------------------ | --------------------- | ----------------------------------------------- |
 | شعبة علوم تجريبية (`se`) | 2013–2020 و 2022–2026 | 2021                                            |
-| شعبة رياضيات (`m`)       | 2018–2026             | 2013–2017 (+ 2017 exceptionnelle)               |
+| شعبة رياضيات (`m`)       | 2017–2026             | 2013–2016 (+ 2017 exceptionnelle)               |
 | شعبة تقني رياضي (`tm`)   | —                     | **absente de la source** (trou affiché, 0 lien) |
 
 Statut honnête :
 
 - **2013–2019 SE** : sujets reconstruits (`data/years/se/`). Toutes consignes `reconstructed`. **2018** : thèmes relus OCR dzexams. **2013–2017, 2019** : thèmes pédagogiques 3AS, **non certifiables** comme énoncés officiels. Confiance UI basse.
-- **2020 et 2022–2026 SE** et **2018–2026 Maths** : sujets chargés à la demande depuis `data/years/{se,m}/`, indexés par le catalogue `data/subjects.js`.
+- **2020 et 2022–2026 SE** et **2017–2026 Maths** : sujets chargés à la demande depuis `data/years/{se,m}/`, indexés par le catalogue `data/subjects.js`.
 - **Consultation** : sujet officiel + تصحيح النموذجي via dzexams. Aucun
   barème, mot-clé ou réponse modèle : le moteur ne s'applique pas.
 - **Maths 2022–2026** : viewer dzexams bloqué (`contentVerified: false`) ;
@@ -368,9 +371,9 @@ Statut honnête :
 <!-- AUTO-METRICS:START -->
 
 - Tests exécutés par `npm test` : **251** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
-- Copies vérifiées dans le hard benchmark : **0/2820 minimum** avant toute promotion numérique
-- Inventaires de tâches officielles commencés : **44/46 sujets** (**456 tâches connues**)
-- Sujets éligibles à la simulation : **44**
+- Copies vérifiées dans le hard benchmark : **0/3060 minimum** avant toute promotion numérique
+- Inventaires de tâches officielles commencés : **46/48 sujets** (**472 tâches connues**)
+- Sujets éligibles à la simulation : **46**
 - Critères P1 fermés : **3/6** — statut global : **incomplet**
 - Critères P2 fermés : **6/7** — élèves distincts testés : **0/5**
 - Critères P3 fermés : **5/6** — statut global : **incomplet**

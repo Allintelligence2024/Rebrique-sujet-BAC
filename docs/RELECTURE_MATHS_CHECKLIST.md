@@ -40,6 +40,8 @@ Audit d'un sujet (pôles, points, provenance, page) :
 | 2020-m S2                   | 4                  | ت1 (8ن) جزيئات HLA                                          | S = Q1+Q2+Q3, E = Q4 ; N/W reconstruits                                                                                                                                     |
 | 2020-m S2                   | 5                  | ت2 (12ن) الأنيميا المنجلية HbS                              | N = « أبرز المشكلة المطروحة », S = فرضية+قارن, E = تحقق+نص علمي                                                                                                             |
 | 2020-m corrigé              | 6-10               | corrigé officiel complet                                    | réponses modèle rédigées depuis l'image (رابطة شاردية، (س)=R2…، T→A position 20)                                                                                            |
+| 2017-m S1                   | 1, 2               | ت1 (6ن) المعقد المناعي ; ت2 (14ن) النسخ والترجمة            | quatre consignes mot à mot par exercice ; réponses modèle = corrigé officiel (`-2275712` pp. 5-7)                                                                           |
+| 2017-m S2                   | 3, 4               | ت1 (6ن) الأحماض الأمينية ; ت2 (14ن) الجزيئات الدفاعية       | huit consignes mot à mot ; réponses modèle = corrigé officiel (pp. 7-9)                                                                                                     |
 | 2018-m S1                   | 1, 2, 3            | ت1 (7ن) المورثة والبروتين ; ت2 (13ن) العجز المناعي          | Q1–Q4 mot à mot (بيانات+الظاهرتان، مرحلتا (ص)، هجرة كهربائية، نص علمي) ; W reconstruit ; ت2 : كل السلم mot à mot (منحنى، مقارنة، (a)/(b) وCMH II، تحليل الوثيقة 4، نص علمي) |
 | 2018-m S2                   | 4, 5, 6            | ت1 (6ن) اللقاح والجسم المضاد ; ت2 (14ن) مورثة الريبونوكلياز | huit consignes mot à mot (تعرّف/مثّل، الظاهرة، الاستجابة الثانوية، نص علمي، البيانات 1–3، جدول الشفرة، متتالية الأحماض، سبب RNas غير عادي)                                  |
 | 2019-m S1                   | 1                  | ت1 (6ن) بنية البروتين / الرابطة الببتيدية                   | Q1–Q4 mot à mot (بيانات، صيغة + كتلة مولية، تعليل، نص علمي)                                                                                                                 |
@@ -86,10 +88,11 @@ durée imprimée 02 سا و30 د. Le corrigé 2018 n'est pas dans le dépôt : l
 réponses modèle sont rédigées depuis les figures, les données du sujet et le
 programme, sans jamais se réclamer d'un corrigé officiel.
 
-Bilan maths 2018–2026 : **102 tâches officielles sur 144** (la relecture 2018
+Bilan maths 2017–2026 : **118 tâches officielles sur 160** (la relecture 2018
 ajoute 15 consignes officielles sur 16 ; la session 2020 avait ajouté 10 consignes
 officielles : les questions de cadrage « صُغ المشكل العلمي » et « أبرز المشكلة
-المطروحة » existent réellement dans le sujet).
+المطروحة » existent réellement dans le sujet ; 2017 est intégralement officielle,
+corrigé local à l'appui).
 
 ## Reste à faire (assumé)
 
@@ -101,22 +104,29 @@ officielles : les questions de cadrage « صُغ المشكل العلمي » et
    - 2026-m : برّر تثبيط PCSK9 ; قدّم نصيحة.
 2. **2022-m S2-E1-Q2** : recouvrement 0 % lors de la vérification automatique
    (`probe-verify`) — à relire sur l'image avant de la déclarer officielle.
-3. **Années maths 2013–2017** : les PDF sont présents
-   (`subjects/M/2013…2017`, listés dans `subjects/manifest.json`) mais aucune
+3. **Années maths 2013–2016** : les PDF sont présents
+   (`subjects/M/2013…2016`, listés dans `subjects/manifest.json`) mais aucune
    donnée n'existe encore dans `data/years/m/` → ces années restent en
-   consultation externe, sans mode BAC. **2020, 2019 et 2018 sont désormais
-   encodées** (`data/years/m/year-2020.js`, `year-2019.js`, `year-2018.js`).
-   Encoder 2017 puis 2016… demande la même relecture page à page et ne doit pas
-   être fait à l'aveugle. Deux scans ont une police incomplète : 2019 (quelques
-   séries de mots non dessinées) et 2018 (le nom du virus dans « فيروس الـ ( ) »
-   n'est pas dessiné). Ils sont signalés dans `bacPromptNotes` et jamais
-   complétés au hasard (la couche texte, lue par `scripts/dump-pdf-text.mjs`,
-   tranche les cas lisibles par fragments).
-4. Corrections officielles maths restant à relire :
-   `M/dzexams-bac-sciences-1967487.pdf` (2018), `-2280992.pdf` (2019),
-   `-2068087.pdf` (2021), `-1777391.pdf` (2022). Celle de **2020**
-   (`-2273619.pdf`, pp. 6–10) a été relue le 2026-09-13 : c'est elle qui
-   fonde les réponses modèle de `year-2020.js`.
+   consultation externe, sans mode BAC. **2020, 2019, 2018 et 2017 sont
+   désormais encodées** (`year-2020.js`, `year-2019.js`, `year-2018.js`,
+   `year-2017.js`). Encoder 2016 puis 2015… demande la même relecture page à
+   page et ne doit pas être fait à l'aveugle. Deux scans ont une police
+   incomplète : 2019 (quelques séries de mots non dessinées) et 2018 (le nom du
+   virus dans « فيروس الـ ( ) » n'est pas dessiné). Ils sont signalés dans
+   `bacPromptNotes` et jamais complétés au hasard (la couche texte, lue par
+   `scripts/dump-pdf-text.mjs`, tranche les cas lisibles par fragments).
+4. Corrections officielles maths : **le corrigé est dans le même dossier
+   dzexams que le sujet**. Déjà relus et exploités : 2017
+   (`-2275712.pdf`, عناصر الإجابة pp. 5–9) et 2020 (`-2273619.pdf`, pp. 6–10).
+   Restent à relire et à réinjecter dans les réponses modèle : 2018
+   (`-1967487.pdf`, pp. 7–12), 2019 (`-2280992.pdf`, pp. 6–10), 2021
+   (`-2068087.pdf`), 2022 (`-1777391.pdf`), 2023 (`-2275712`… voir
+   `data/archive.js`). Les réponses modèle de 2018 et 2019 ont été rédigées
+   sans lui : elles sont à confronter au corrigé.
+5. Cohérence mots-clés / réponses modèle (audit du 2026-09-13) : 42 pôles des
+   années maths portent au moins un mot-clé absent de la réponse modèle
+   (formes ة/ه, synonymes) — la sonde `evaluateText(réponse modèle, règle)` doit
+   rendre `hits >= req` pour chacun.
 
 ## Vérifications
 

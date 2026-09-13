@@ -7642,6 +7642,474 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       }
     ]
   },
+  "2017-m/S1": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/ar/annales/bEdWa2IycjEzcUY1S3FmUnpxdzhrQT09",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2017/sujet-1.pdf",
+      pages: 2,
+      pageOffset: 0
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: [1, 2]
+    },
+    tasks: [
+      {
+        id: "2017-m-S1-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: 1,
+        prompt: "سمِّ الجزيئتين (س) و (ع)، ضع عنوانا مناسبا للوثيقة.",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2017-m-S1-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 1,
+        prompt: "قدّم رسما تفسيريا لما تمثله الوثيقة يحمل كافة البيانات.",
+        promptSource: "official",
+        maxPoints: 2.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2017-m-S1-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 1,
+        prompt: "حدّد نمط الرد المناعي المقصود، علّل.",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2017-m-S1-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: 1,
+        prompt:
+          "باستغلالك للوثيقة وتوظيفا لمعلوماتك وضّح أنّ التخصص النوعي للجزيئات (ع) مرتبط بتنوع الجزيئات (س)، مبرزا دور الجزيئات (ع).",
+        promptSource: "official",
+        maxPoints: 1.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2017-m-S1-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: 2,
+        prompt:
+          "من الشكل (أ) في الوثيقة (1): أ) تعرّف على سلسلة الـ ADN المقترحة. علل إجابتك. ب) حدّد اتجاه سير الترجمة. برّر ذلك. ج) أوجد العلاقة بين قطعة سلسلة الـ ADN المقترحة وجزيئة الـ ARNm الناتجة. استنتج دور الـ ARNm.",
+        promptSource: "official",
+        maxPoints: 2.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2017-m-S1-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 2,
+        prompt:
+          "إذا علمت أن: ــ المورثة المشفرة للبروتين (G) مكونة من قطعة الـ ADN المقترحة. ــ قطعة الـ ADN المقترحة تتوافق تماما مع الأحماض الأمينية المشكلة للبروتين (X). أ) قدّم استدلالا علميا لذلك. استنتج العلاقة بين (G) و (X). ب) عرّف إذا المورثة.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2017-m-S1-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 2,
+        prompt:
+          "من الوثيقة (2): أ) تعرّف على الجزيئات (س)، (ع) و(ص) والبيانات المرقمة من 1 إلى 6. ب) للجزيئة (س) تخصصا وظيفيا مزدوجا مرتبطا ببنيتها الفراغية، وضّح ذلك. ج) سمِّ آلية ارتباط العنصر (س) بالعنصر (ص) مبينا عناصرها الضرورية.",
+        promptSource: "official",
+        maxPoints: 4.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2017-m-S1-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: 2,
+        prompt:
+          "2- أ) تعرّف بدقة على المرحلة الموضحة في الشكل (ب) من الوثيقة (2). ب) انطلاقا من العنصر «6» استخرج: α- تسلسل الأحماض الأمينية الثمانية الأولى المشكلة للببتيد. β- تسلسل نكليوتيدات المورثة المشفرة لهذه الأحماض الأمينية الثمانية. 3) اكتب معادلة تشكل العنصر «1» بين الحمضين الأمينيين (A3) و (A4) إذا علمت أنّ جذريهما كما يلي: R4 = -CH3 و R3 = -CH(CH3)2. - اعتمادا على معلوماتك وما توصلت إليه من معالجتك للوثائق المقترحة بيّن في نص علمي أنّ تركيب البروتين يتم وفق آليات منظمة وتدخل عناصر حيوية.",
+        promptSource: "official",
+        maxPoints: 5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      }
+    ]
+  },
+  "2017-m/S2": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/ar/annales/bEdWa2IycjEzcUY1S3FmUnpxdzhrQT09",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2017/sujet-2.pdf",
+      pages: 2,
+      pageOffset: 2
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: [1, 2]
+    },
+    tasks: [
+      {
+        id: "2017-m-S2-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: 3,
+        prompt: "اكتب الصيغة المفصلة لكل حمض أميني عند pH = 3.2، مبرزا سلوكه في هذا الوسط.",
+        promptSource: "official",
+        maxPoints: 1.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2017-m-S2-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 3,
+        prompt: "قدّم تعريفا لـ pH الحمض الأميني (س) بالنسبة لـ pH الوسط = 3.2.",
+        promptSource: "official",
+        maxPoints: 0.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2017-m-S2-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 3,
+        prompt: "اكتب معادلة ارتباط الأحماض الأمينية حسب الترتيب التالي: Lys–Glu–Gly.",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2017-m-S2-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: 3,
+        prompt: "بيّن في نص علمي علاقة تنوع الأحماض الأمينية وسلوكها في تحديد بنية البروتين ووظيفته.",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2017-m-S2-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: 4,
+        prompt:
+          "1) أ) تعرّف على العناصر (A،B،C) والبيانات الموافقة للأرقام. ب) رتّب الملاحظات المسجلة في وسط الزرع وفق تسلسلها الزمني. 2) أ) بيّن برسم تخطيطي عليه البيانات بنية العنصر (C).",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2017-m-S2-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 4,
+        prompt: "2) ب) حدّد الخلية المنتجة للعنصر (C)، علّل ذلك.",
+        promptSource: "official",
+        maxPoints: 3.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2017-m-S2-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 4,
+        prompt:
+          "علّل استئصال الغدة التيموسية وتخريب النخاع العظمي للفئران. فسّر النتائج التجريبية المحصل عليها في الشكل (أ)، استنتج العلاقة بين الخلايا اللمفاوية.",
+        promptSource: "official",
+        maxPoints: 2.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2017-m-S2-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: 4,
+        prompt:
+          "3) أ) تأكد من العلاقة بين الخلايا اللمفاوية بتفسيرك للنتائج الممثلة في الشكل (ب). ب) استنتج معلومة إضافية تدعّم تلك العلاقة. - انطلاقا مما توصلت إليه ومكتسباتك ووضّح برسم تخطيطي وظيفي شروط إنتاج الجزيئات الدفاعية.",
+        promptSource: "official",
+        maxPoints: 5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      }
+    ]
+  },
   "2018-m/S1": {
     schemaVersion: 1,
     status: "partial",

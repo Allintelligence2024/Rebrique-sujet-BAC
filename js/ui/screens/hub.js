@@ -47,13 +47,27 @@ function buildHubCatalog(appConfig, streamId) {
     kind: "exam",
     year
   }));
+  const trainingIds = new Set(training.map((item) => item.id));
   const consult = catalogYearsForStream(streamId)
-    .filter((group) => !training.some((item) => item.id === group.year))
-    .map((group) => ({
-      id: group.year,
-      kind: "consult",
-      entries: group.entries
-    }));
+    .map((group) => {
+      // Une année encodée en épreuve masque sa carte de consultation de
+      // session principale — jamais une autre session : la copie 2017
+      // exceptionnelle (شعبة رياضيات) reste consultable même quand la
+      // session principale 2017 ouvre l'épreuve.
+      const entries = trainingIds.has(group.year)
+        ? group.entries.filter((entry) => entry.session !== "main")
+        : group.entries;
+      if (!entries.length) return null;
+      return {
+        id: group.year,
+        // La carte-épreuve porte déjà l'année : le reliquat reçoit une clé
+        // DOM distincte sans changer le titre affiché.
+        key: entries.length === group.entries.length ? group.year : `${group.year}-exceptionnelle`,
+        kind: "consult",
+        entries
+      };
+    })
+    .filter(Boolean);
   return [...training, ...consult].sort((a, b) => (a.id < b.id ? 1 : -1));
 }
 
@@ -242,7 +256,7 @@ export function createHubScreen(deps) {
   function consultCard(item) {
     const card = node("div", {
       className: "card year-card",
-      dataset: { hubYear: item.id, kind: "consult" }
+      dataset: { hubYear: item.key || item.id, kind: "consult" }
     });
     const stack = node("div", { className: "stack" });
     const header = node("div", { className: "flex spread" });
@@ -285,7 +299,8 @@ export function createHubScreen(deps) {
     }
     for (const entry of item.entries) {
       const session = ARCHIVE.sessions[entry.session] || entry.session;
-      const label = item.entries.length > 1 ? `🔗 ${session} (المصدر)` : "🔗 المصدر والتصحيح";
+      const label =
+        item.entries.length > 1 || entry.session !== "main" ? `🔗 ${session} (المصدر)` : "🔗 المصدر والتصحيح";
       if (entry.url) {
         actions.append(
           node("a", {

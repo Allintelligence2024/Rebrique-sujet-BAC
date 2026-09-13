@@ -270,7 +270,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent (chemin /2017/, session 1). Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet)."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent (chemin /2017/, session 1). Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet). Encodé 4D sous l id 2017-m le 2026-09-13 : les 4 pages du sujet et les 5 pages de l « عناصر الإجابة » officielle (pp. 5-9 du même dossier local) ont été rendues en image, consignes recopiées mot à mot et réponses modèle reprises du corrigé. La carte de consultation de la session principale est masquée au profit de l épreuve ; celle de la session exceptionnelle 2017 (شعبة رياضيات) reste affichée."
     },
     {
       year: "2016",
