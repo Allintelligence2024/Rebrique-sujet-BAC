@@ -1755,13 +1755,119 @@ html[lang="ar"]
   }
 }
 
-.pdf-reader { min-height: 16rem; justify-content: center; }
-.pdf-reader-cover { min-height: 10rem; display: grid; place-items: center; gap: .45rem; padding: 1.5rem; text-align: center; border: 1px solid var(--line); border-radius: .75rem; background: rgba(255,255,255,.04); }
-.pdf-reader-icon { font-size: 3rem; }
-.pdf-open { min-height: 3.5rem; }
-.pdf-frame { width: 100%; height: 70vh; min-height: 24rem; border: 1px solid var(--line); border-radius: .75rem; background: #fff; }
-.pdf-viewer-head { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; flex-wrap: wrap; }
-.pdf-viewer-actions { gap: .5rem; align-items: center; }
+.pdf-reader {
+  min-height: 16rem;
+  justify-content: center;
+}
+.pdf-reader-cover {
+  min-height: 10rem;
+  display: grid;
+  place-items: center;
+  gap: 0.45rem;
+  padding: 1.5rem;
+  text-align: center;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+.pdf-reader-icon {
+  font-size: 3rem;
+}
+.pdf-open {
+  min-height: 3.5rem;
+}
+.pdf-frame {
+  width: 100%;
+  height: 70vh;
+  min-height: 24rem;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: #fff;
+}
+/* Rendu pdf.js : le sujet est dessiné sur <canvas>, pas remis au lecteur du
+   navigateur (incompatible object-src 'none' et inexistant sur mobile). */
+.pdf-canvas-host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  max-height: 70vh;
+  min-height: 16rem;
+  overflow: auto;
+  padding: 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: #fff;
+}
+.pdf-canvas-host[hidden] {
+  display: none;
+}
+.pdf-page-canvas {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 4px rgba(2, 6, 23, 0.35);
+}
+/* Le zoom est porté par un attribut, pas par element.style (CSP stricte). */
+.pdf-canvas-host[data-pdf-zoom="80"] .pdf-page-canvas {
+  width: 80%;
+}
+.pdf-canvas-host[data-pdf-zoom="125"] .pdf-page-canvas {
+  width: 125%;
+}
+.pdf-canvas-host[data-pdf-zoom="150"] .pdf-page-canvas {
+  width: 150%;
+}
+.pdf-canvas-host[data-pdf-zoom="175"] .pdf-page-canvas {
+  width: 175%;
+}
+.pdf-canvas-host[data-pdf-zoom="200"] .pdf-page-canvas {
+  width: 200%;
+}
+.pdf-viewer-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+}
+.pdf-viewer-toolbar .pill {
+  padding: 0.15rem 0.5rem;
+}
+.pdf-viewer-status {
+  margin: 0.25rem 0 0;
+  text-align: center;
+}
+.pdf-viewer-fallback {
+  margin-top: 0.5rem;
+}
+.pdf-viewer-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.pdf-viewer-actions {
+  gap: 0.5rem;
+  align-items: center;
+}
 
-.bac-reading-card { max-width: 44rem; margin: 0 auto; }
-.bac-reading-mode .pdf-reader-cover { min-height: 13rem; }
+.bac-reading-card {
+  max-width: 44rem;
+  margin: 0 auto;
+}
+.bac-reading-mode .pdf-reader-cover {
+  min-height: 13rem;
+}

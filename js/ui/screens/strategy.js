@@ -1,6 +1,6 @@
 import { setInternalHTML } from "../dom.js";
 import { officialTaskInventoryFor } from "../../../data/official-tasks.js";
-import { pdfViewerHTML } from "../pdf-viewer.js";
+import { mountPdfViewers, pdfViewerHTML } from "../pdf-viewer.js";
 import { assertSimulationEligible, examOpenable } from "../../domain/subjects/official-coverage.js";
 import { simulationBlockersArabic } from "../coverage-messages.js";
 
@@ -140,7 +140,10 @@ export function createStrategyScreen(deps) {
     const year = yearObj(store.state.yearId);
     const subject = year?.sujets.find((item) => item.id === subjectId) || year?.sujets[0];
     const box = $("#pdf-preview-container");
-    if (box && subject) setInternalHTML(box, pdfFallbackHTML(subject));
+    if (box && subject) {
+      setInternalHTML(box, pdfFallbackHTML(subject));
+      mountPdfViewers(box);
+    }
     $$("#view-strategy [data-preview]").forEach((button, index) => {
       const active = +button.dataset.preview === subject?.id;
       const color = active ? (index === 0 ? "btn-indigo" : "btn-purple") : "btn-ghost";

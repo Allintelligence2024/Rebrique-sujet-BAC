@@ -51,6 +51,7 @@ const SHELL_ASSETS = [
   "./js/ui/screens/workspace.js",
   "./js/ui/screens/simulation.js",
   "./js/ui/pdf-viewer.js",
+  "./js/ui/pdf-renderer.js",
   "./js/ui/accessibility.js",
   "./data/subjects.js",
   "./data/archive.js",

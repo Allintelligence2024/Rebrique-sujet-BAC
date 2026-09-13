@@ -1,10 +1,13 @@
 /* ============================================================
    Visionneuse du sujet — un seul point de construction.
    ------------------------------------------------------------
-   Le PDF local (subjects/**) est servi par le même origine : la CSP
-   autorise frame-src 'self', l'iframe affiche donc le sujet sans
-   quitter l'application. Le lien dzexams reste disponible en source,
-   et le téléchargement permet de travailler hors ligne.
+   Le PDF local (subjects/**) est servi par la même origine : la CSP
+   autorise frame-src 'self'. Mais le lecteur PDF du navigateur, lui,
+   n'est pas fiable — bloqué par object-src 'none' sur Chromium,
+   inexistant sur mobile. Le sujet est donc rendu sur <canvas> par
+   pdf.js (js/ui/pdf-renderer.js) dans `[data-pdf-canvas]` ; l'iframe
+   reste présente, masquée, uniquement comme repli si ce rendu
+   échoue. Le lien dzexams et le téléchargement complètent l'ensemble.
    ============================================================ */
 
 const escapeHTML = (value = "") =>
@@ -23,7 +26,8 @@ export function pdfViewerHTML(subject, { showCover = true, page = null } = {}) {
   if (local) {
     return `<div class="pdf-reader stack">
       ${showCover ? `<div class="pdf-viewer-head"><strong>📄 ${escapeHTML(label)}</strong><span class="small text-muted">الملف المحلي — يُعرض داخل التطبيق</span></div>` : ""}
-      <iframe class="pdf-frame" title="${escapeHTML(label)}" src="${escapeHTML(local)}${anchor}"></iframe>
+      <div class="pdf-canvas-host" data-pdf-canvas data-pdf-src="${escapeHTML(local)}" data-pdf-page="${Number.isInteger(page) && page > 0 ? page : 1}" role="group" aria-label="${escapeHTML(label)}"></div>
+      <iframe class="pdf-frame" title="${escapeHTML(label)}" src="${escapeHTML(local)}${anchor}" hidden></iframe>
       <div class="flex wrap pdf-viewer-actions">
         <a class="btn btn-indigo btn-sm" href="${escapeHTML(local)}${anchor}" target="_blank" rel="noopener noreferrer">📄 فتح في نافذة مستقلة</a>
         <a class="btn btn-ghost btn-sm" href="${escapeHTML(local)}" download>⬇️ تنزيل PDF</a>
@@ -43,3 +47,5 @@ export function pdfViewerHTML(subject, { showCover = true, page = null } = {}) {
   }
   return `<div class="center stack preview-empty"><p class="small text-muted">لا يوجد ملف موضوع متاح لهذه الدورة في التطبيق.</p></div>`;
 }
+
+export { mountPdfViewer, mountPdfViewers } from "./pdf-renderer.js";

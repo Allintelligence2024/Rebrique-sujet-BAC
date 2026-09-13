@@ -1,5 +1,5 @@
 import { node, setInternalHTML } from "../dom.js";
-import { pdfViewerHTML } from "../pdf-viewer.js";
+import { mountPdfViewers, pdfViewerHTML } from "../pdf-viewer.js";
 import { ARCHIVE, catalogYearsForStream } from "../../../data/archive.js";
 
 const STREAM_KEY = "boussole4d.stream";
@@ -63,6 +63,7 @@ export function createHubScreen(deps) {
     $$,
     APP_CONFIG,
     applyTheme,
+    mountPdfViewers,
     pdfViewerHTML,
     closeModal,
     cycleSound,
@@ -271,13 +272,14 @@ export function createHubScreen(deps) {
           text: `📄 قراءة الموضوع ${index + 1} في التطبيق`,
           dataset: { consultPdf: href }
         });
-        button.addEventListener("click", () =>
-          openDrawer(
+        button.addEventListener("click", () => {
+          const drawer = openDrawer(
             "right",
             `📄 وثيقة الموضوع ${index + 1}`,
             pdfViewerHTML({ id: index + 1, pdfLocalUrl: href })
-          )
-        );
+          );
+          mountPdfViewers(drawer);
+        });
         actions.append(button);
       });
     }

@@ -29,7 +29,8 @@
     "release:verify": "node scripts/verify-release.mjs",
     "test:e2e": "playwright test",
     "docs:update": "node scripts/update-doc-metrics.mjs",
-    "docs:check": "node scripts/update-doc-metrics.mjs --check"
+    "docs:check": "node scripts/update-doc-metrics.mjs --check",
+    "vendor:pdfjs": "node scripts/vendor-pdfjs.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.62.1",

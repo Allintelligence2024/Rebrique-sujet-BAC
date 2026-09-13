@@ -1,7 +1,7 @@
 import { assertSimulationEligible } from "../../domain/subjects/official-coverage.js";
 import { simulationBlockersArabic } from "../coverage-messages.js";
 import { setInternalHTML } from "../dom.js";
-import { pdfViewerHTML } from "../pdf-viewer.js";
+import { mountPdfViewers, pdfViewerHTML } from "../pdf-viewer.js";
 import { BAC_MODE_NOTICES } from "../../../data/bac-mode-policy.js";
 
 const escapeHTML = (value = "") =>
@@ -268,6 +268,8 @@ export function createSimulationController(deps) {
     );
     bindQualitativeChecks(true);
     showScreen("view-workspace");
+    // Après l'affichage : le conteneur a sa largeur réelle, le rendu est net.
+    mountPdfViewers(screen);
   }
 
   /* Épreuve « copie libre » : session dont les consignes ne sont pas
@@ -345,6 +347,8 @@ export function createSimulationController(deps) {
     );
     bindQualitativeChecks(true);
     showScreen("view-workspace");
+    // Après l'affichage : le conteneur a sa largeur réelle, le rendu est net.
+    mountPdfViewers(screen);
   }
 
   function renderSimulation() {
@@ -402,6 +406,8 @@ export function createSimulationController(deps) {
     restoreAnswers(inventory);
     bind(completed);
     showScreen("view-workspace");
+    // Après l'affichage : le conteneur a sa largeur réelle, le rendu est net.
+    mountPdfViewers(screen);
   }
 
   function bind(completed) {
@@ -432,11 +438,12 @@ export function createSimulationController(deps) {
       .filter((task) => task.exerciseNumber === store.state.activeExercise)
       .map((task) => task.pageInPdf)
       .find((page) => Number.isInteger(page));
-    openDrawer(
+    const drawer = openDrawer(
       "right",
       `📄 وثيقة الموضوع ${subject.id === 1 ? "الأول" : "الثاني"}`,
       pdfViewerHTML(subject, { showCover: false, page: firstPage ?? null })
     );
+    mountPdfViewers(drawer);
   }
 
   function denyInvalidSimulation(report) {
