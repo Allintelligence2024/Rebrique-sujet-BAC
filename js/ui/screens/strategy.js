@@ -50,7 +50,7 @@ export function createStrategyScreen(deps) {
         <div class="brand">
           <button class="btn btn-rose btn-sm" id="strategy-exit">✕ إلغاء وخروج</button>
           <div class="brand-icon" aria-hidden="true">٤</div>
-          <div><h2>اختر موضوع التدريب</h2>
+          <div><h2>اختر موضوع الإمتحان</h2>
           <p class="small text-muted">تصفّح وقدّر ثقتك في كل تمرين — 25 د.</p></div>
         </div>
         <div class="pill"><span class="text-dim">وقت الاختيار:</span><span class="mono" id="strategy-timer">25:00</span></div>
@@ -97,7 +97,7 @@ export function createStrategyScreen(deps) {
     );
     $$("#view-strategy [data-confirm]").forEach((button) =>
       button.addEventListener("click", () =>
-        confirmChoice(+button.dataset.confirm, button.dataset.sessionMode || "training")
+        confirmChoice(+button.dataset.confirm, button.dataset.sessionMode || "bac")
       )
     );
   }

@@ -33,7 +33,7 @@ function writeStream(id) {
   }
 }
 
-function trainingYearsForStream(appConfig, streamId) {
+function examYearsForStream(appConfig, streamId) {
   return appConfig.years.filter((year) => year.enabled && (year.stream || "se") === streamId);
 }
 
@@ -42,7 +42,7 @@ function yearCardId(year) {
 }
 
 function buildHubCatalog(appConfig, streamId) {
-  const training = trainingYearsForStream(appConfig, streamId).map((year) => ({
+  const training = examYearsForStream(appConfig, streamId).map((year) => ({
     id: yearCardId(year),
     kind: "exam",
     year

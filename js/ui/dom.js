@@ -22,9 +22,3 @@ export function setInternalHTML(element, html) {
   element.innerHTML = String(html);
   return element;
 }
-
-export function elementFromInternalHTML(html) {
-  const template = document.createElement("template");
-  setInternalHTML(template, String(html).trim());
-  return template.content.firstElementChild;
-}

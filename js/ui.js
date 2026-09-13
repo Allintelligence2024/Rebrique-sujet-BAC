@@ -14,7 +14,16 @@ import { officialTaskInventoryFor } from "../data/official-tasks.js";
 import { createSubjectSessionStarter } from "./application/subject-session.js";
 import { buildOfficialCoverageReport } from "./domain/subjects/official-coverage.js";
 import { store, helpers } from "./store.js";
-import { timers, evaluateText, evaluatePipeline, scoreBac, soundEngine, METHOD_SCRIPTS } from "./engine.js";
+/* Le moteur d'évaluation (evaluateText, scoreBac, METHOD_SCRIPTS…) n'est plus
+   branché sur l'épreuve : aucune note n'est affichée à l'élève. Il reste
+   exporté par js/engine.js pour les outils d'audit et de calibration, mais
+   l'application ne doit plus le charger au démarrage. */
+/* On importe les modules réels, pas la façade js/engine.js : celle-ci
+   ré-exporte aussi le moteur d'évaluation (text-analysis, methodology,
+   quality-checks — 2 500 lignes) qui n'est plus branché sur l'épreuve. Un
+   import indirect suffisait à le faire charger et analyser au démarrage. */
+import { timers } from "./application/timers.js";
+import { soundEngine } from "./services/sound-engine.js";
 import { createSpeechEngine } from "./services/speech-recognition.js";
 import {
   announceScreen,
@@ -366,11 +375,14 @@ export async function init() {
     document.body.appendChild(toastZone);
   }
 
-  const hasRestorableSession =
-    store.isSessionActive() ||
-    (store.state.sessionStatus === "completed" &&
-      store.state.sessionMode === "simulation" &&
-      store.state.activeScreen === "view-workspace");
+  /* Une copie rendue reste relisible après rechargement : la relecture est
+     restaurée comme une session active. La condition exigeait autrefois
+     sessionMode === "simulation" — un mode qui n'existe plus depuis que
+     l'épreuve est le seul mode : elle ne pouvait donc plus jamais être vraie,
+     et l'élève qui rechargait après تسليم الورقة perdait l'accès à sa copie. */
+  const completedOnWorkspace =
+    store.state.sessionStatus === "completed" && store.state.activeScreen === "view-workspace";
+  const hasRestorableSession = store.isSessionActive() || completedOnWorkspace;
   let activeYear = yearObj(store.state.yearId);
   if (hasRestorableSession && yearMetadata(store.state.yearId) && !activeYear) {
     try {
@@ -380,24 +392,19 @@ export async function init() {
     }
   }
   const canRestoreActive = store.isSessionActive() && activeYear && sujetObj();
-  const canRestoreSimulationReview =
-    store.state.sessionStatus === "completed" &&
-    store.state.sessionMode === "simulation" &&
-    store.state.activeScreen === "view-workspace" &&
-    activeYear &&
-    sujetObj();
-  if (canRestoreActive || canRestoreSimulationReview) {
+  const canRestoreReview = completedOnWorkspace && activeYear && sujetObj();
+  if (canRestoreActive || canRestoreReview) {
     // The global exam clock only ticks during the writing phase (workspace).
     // Guide and strategy are planning/reading phases that must not debit
     // official exam time after reload either.
-    const onWorkspace = canRestoreSimulationReview || store.state.activeScreen === "view-workspace";
+    const onWorkspace = store.state.activeScreen === "view-workspace";
     if (canRestoreActive && onWorkspace) {
       timers.startGlobal();
       bar.classList.remove("hidden");
     } else {
       bar.classList.add("hidden");
     }
-    if (canRestoreSimulationReview) {
+    if (canRestoreReview) {
       renderWorkspace();
       showScreen("view-workspace");
     } else if (store.state.activeScreen === "view-guide") {

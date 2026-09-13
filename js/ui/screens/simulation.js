@@ -114,7 +114,7 @@ export function simulationExamHTML({
           .join("")}</div>
       </aside>
       <section class="stack" id="simulation-task-list" aria-label="المهام الرسمية">
-        ${taskCards || `<div class="feedback bad">لا توجد مهمة رسمية لهذا التمرين؛ بيانات المحاكاة غير صالحة.</div>`}
+        ${taskCards || `<div class="feedback bad">لا توجد مهمة رسمية لهذا التمرين؛ بيانات هذا الموضوع غير صالحة.</div>`}
       </section>
     </div>`;
 }
@@ -220,11 +220,11 @@ export function createSimulationController(deps) {
      mode lecture — en l'annonçant explicitement, jamais à l'insu de l'élève. */
   const FALLBACK_NOTICE = {
     missing:
-      "لا يوجد جرد رسمي لمهام هذا الموضوع: وضع المحاكاة غير متاح. تعرض هذه الشاشة الموضوع للقراءة وكتابة إجابات حرة فقط.",
+      "لا يوجد جرد رسمي لمهام هذا الموضوع: وضع الإمتحان غير متاح. تعرض هذه الشاشة الموضوع للقراءة وكتابة إجابات حرة فقط.",
     partial:
-      "جرد المهام الرسمية لهذا الموضوع غير مكتمل: وضع المحاكاة غير متاح حتى اكتماله. تعرض هذه الشاشة الموضوع للقراءة وكتابة إجابات حرة فقط.",
+      "جرد المهام الرسمية لهذا الموضوع غير مكتمل: وضع الإمتحان غير متاح حتى اكتماله. تعرض هذه الشاشة الموضوع للقراءة وكتابة إجابات حرة فقط.",
     blocked:
-      "لم يستوفِ هذا الموضوع شروط الأهلية للمحاكاة. تعرض هذه الشاشة الموضوع للقراءة وكتابة إجابات حرة فقط."
+      "لم يستوفِ هذا الموضوع شروط الأهلية للإمتحان. تعرض هذه الشاشة الموضوع للقراءة وكتابة إجابات حرة فقط."
   };
 
   function renderBacReadingMode(subject, fallbackReason = "") {
@@ -442,7 +442,7 @@ export function createSimulationController(deps) {
   function denyInvalidSimulation(report) {
     timers.stopAll();
     if (store.isSessionActive()) store.leaveSession();
-    toast(`المحاكاة مرفوضة: ${simulationBlockersArabic(report?.blockers)}`, "error");
+    toast(`الإمتحان مرفوض: ${simulationBlockersArabic(report?.blockers)}`, "error");
     goHome();
   }
 
