@@ -353,7 +353,10 @@ export function loadedYearIds() {
 
 export const APP_CONFIG = Object.freeze({
   appTitle: "مفتاح الكنز",
-  appSubtitle: "منهجية الإجابة — بكالوريا علوم الطبيعة والحياة",
+  // Le sous-titre ne nomme aucune filière : l'application couvre les
+  // sciences expérimentales ET les mathématiques (l'ancien libellé « SVT »
+  // affiché sur les cartes Maths était trompeur).
+  appSubtitle: "منهجية الإجابة — بكالوريا علوم الطبيعة والحياة ورياضيات",
   examMinutesByStream: EXAM_MINUTES_BY_STREAM,
   strategyMinutes: 25,
   dataLoading: "on-demand",

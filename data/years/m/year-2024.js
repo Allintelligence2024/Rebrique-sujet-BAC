@@ -69,11 +69,14 @@ export const YEAR_2024_M = {
             },
             S: {
               points: 2,
-              prompt: "التعرف على العناصر من 1 إلى 4 وتسمية العنصر (س) ومكوناته",
-              bacPrompt: "تعرّف على العناصر المشار إليها بالأرقام من 1 إلى 4 مع تسمية العنصر (س) ومكوناته.",
+              prompt: "التعرف على العناصر وتسمية العنصر (س) ثم إكمال التتابع في غياب الكورديسبين",
+              // Les deux questions officielles de la page 1 (scan relu en image) :
+              // Q1 تعرّف/سمّ + Q2 أكمل التتابع النيكليوتيدي في حالة غياب (COR).
+              bacPrompt:
+                "تعرّف على العناصر المشار إليها بالأرقام من 1 إلى 4 مع تسمية العنصر (س) ومكوناته. أكمل التتابع النيكليوتيدي للعنصر 4 في حالة غياب (COR).",
               ...OFFICIAL(
                 1,
-                "Relecture du PDF eddirasa 2024 Maths (page 1) et du corrigé (page 1). Verbe officiel : تعرّف. Question 1 du التمرين الأول."
+                "Relecture du PDF eddirasa 2024 Maths (page 1, scan relu en image) et du corrigé (page 1). Questions 1 et 2 du التمرين الأول, recopiées mot à mot."
               ),
               placeholder: "1 أنزيم ARN بوليميراز، 2 السلسلة المستنسخة...",
               minLength: 40,

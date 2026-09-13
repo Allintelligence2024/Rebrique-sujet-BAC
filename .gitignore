@@ -6,3 +6,7 @@ Thumbs.db
 image-search/
 test-results/
 playwright-report/
+
+# Sorties locales de relecture (rendus PNG des PDF officiels + couches texte)
+rendered/
+extracted/

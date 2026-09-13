@@ -109,7 +109,7 @@ export function createHubScreen(deps) {
         <p class="small text-muted mt-0 mb-1" id="hub-stream-caption"></p>
       </div>
       <div class="grid grid-cards" id="year-grid"></div>
-      <footer class="screen-foot">منصة إمتحان بكالوريا علوم الطبيعة والحياة. <a href="legal/privacy.html">الخصوصية</a> · <a href="legal/legal-notice.html">المعلومات القانونية</a></footer>
+      <footer class="screen-foot">منصة امتحان بكالوريا علوم الطبيعة والحياة. <a href="legal/privacy.html">الخصوصية</a> · <a href="legal/legal-notice.html">المعلومات القانونية</a></footer>
     </div>`
     );
 
@@ -200,8 +200,8 @@ export function createHubScreen(deps) {
   function examCardNote(y) {
     const duration = formatDuration(examMinutesForYear(y));
     return y.answerMode === "free"
-      ? `إمتحان الموضوع — وضع «الورقة الحرة»: تعليمات هذه الدورة غير مُشفَّرة، تقرأ الموضوع من الملف وتكتب إجابتك. مدة الاختبار الرسمية: ${duration}.`
-      : `إمتحان الموضوع — جرد المهام جزئي: بعض التعليمات مُعاد بناؤها. مدة الاختبار الرسمية: ${duration}.`;
+      ? `امتحان الموضوع — وضع «الورقة الحرة»: تعليمات هذه الدورة غير مُشفَّرة، تقرأ الموضوع من الملف وتكتب إجابتك. مدة الاختبار الرسمية: ${duration}.`
+      : `امتحان الموضوع — جرد المهام جزئي: بعض تعليمات الموضوع الرسمية غير مُدرجة بعد، وبعض الخطوات مُعاد بناؤها. مدة الاختبار الرسمية: ${duration}.`;
   }
 
   function examCard(y) {
@@ -229,7 +229,7 @@ export function createHubScreen(deps) {
       y.theme === "emerald" ? "btn-emerald" : y.theme === "indigo" ? "btn-indigo" : "btn-amber";
     const button = node("button", {
       className: `btn btn-block ${buttonTheme}`,
-      text: disabled ? "غير متاح بعد" : "▶ ابدأ الإمتحان",
+      text: disabled ? "غير متاح بعد" : "▶ ابدأ الامتحان",
       attrs: disabled ? { disabled: "" } : {},
       dataset: { year: y.id }
     });
@@ -259,7 +259,7 @@ export function createHubScreen(deps) {
       node("p", {
         className: "small text-muted mt-0",
         text: localPdfs.length
-          ? "يُقرأ الموضوعان داخل التطبيق. وضع الإمتحان غير متاح: لم تُشفَّر تعليمات هذه الدورة بعد."
+          ? "يُقرأ الموضوعان داخل التطبيق. وضع الامتحان غير متاح: لم تُشفَّر تعليمات هذه الدورة بعد."
           : "الموضوعان والتصحيح النموذجي — للاستشارة فقط."
       })
     );

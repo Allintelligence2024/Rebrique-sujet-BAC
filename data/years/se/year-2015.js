@@ -48,6 +48,7 @@ const YEAR_2015_SE = {
               minLength: 40,
               modelAnswer:
                 "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ الترجمة في الهيولى في الظاهرة المدروسة؟",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "تأطير الإشكالية حول: الترجمة في الهيولى",
                 keywords: ["هيولي", "ريبوزوم"],
@@ -66,6 +67,7 @@ const YEAR_2015_SE = {
               minLength: 40,
               modelAnswer:
                 "تمثل الوثيقة تغيرات هيولي بدلالة الزمن مقارنة بـ ريبوزوم. نلاحظ تغيرا واضحا في هيولي مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع ريبوزوم.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "استغلال الوثيقة المتعلقة بـ الترجمة في الهيولى",
                 keywords: ["هيولي", "ريبوزوم", "نلاحظ"],
@@ -92,6 +94,7 @@ const YEAR_2015_SE = {
               minLength: 120,
               modelAnswer:
                 "يعود ذلك إلى تدخل هيولي وريبوزوم عبر آلية دقيقة تؤدي إلى ARNt، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ الترجمة في الهيولى",
                 keywords: ["هيولي", "ريبوزوم", "ARNt"],
@@ -109,6 +112,7 @@ const YEAR_2015_SE = {
               placeholder: "في الختام...",
               minLength: 40,
               modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ هيولي وريبوزوم فتُغلق الظاهرة على ARNt.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول الترجمة في الهيولى",
                 keywords: ["هيولي", "ARNt", "ختام"],
@@ -136,6 +140,7 @@ const YEAR_2015_SE = {
               minLength: 40,
               modelAnswer:
                 "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ الكربوكسي بيبتيداز والموقع الفعال في الظاهرة المدروسة؟",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "تأطير الإشكالية حول: الكربوكسي بيبتيداز والموقع الفعال",
                 keywords: ["بيبتيداز", "موقع"],
@@ -154,6 +159,7 @@ const YEAR_2015_SE = {
               minLength: 90,
               modelAnswer:
                 "تمثل الوثيقة تغيرات بيبتيداز بدلالة الزمن مقارنة بـ موقع. نلاحظ تغيرا واضحا في بيبتيداز مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع موقع.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "استغلال الوثيقة المتعلقة بـ الكربوكسي بيبتيداز والموقع الفعال",
                 keywords: ["بيبتيداز", "موقع", "نلاحظ"],
@@ -181,6 +187,7 @@ const YEAR_2015_SE = {
               minLength: 110,
               modelAnswer:
                 "يعود ذلك إلى تدخل بيبتيداز وموقع عبر آلية دقيقة تؤدي إلى فعال، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ الكربوكسي بيبتيداز والموقع الفعال",
                 keywords: ["بيبتيداز", "موقع", "فعال"],
@@ -198,6 +205,7 @@ const YEAR_2015_SE = {
               placeholder: "في الختام...",
               minLength: 40,
               modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ بيبتيداز وموقع فتُغلق الظاهرة على فعال.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول الكربوكسي بيبتيداز والموقع الفعال",
                 keywords: ["بيبتيداز", "فعال", "ختام"],
@@ -225,6 +233,7 @@ const YEAR_2015_SE = {
               minLength: 30,
               modelAnswer:
                 "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ الاستجابة ضد VIH في الظاهرة المدروسة؟",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "تأطير الإشكالية حول: الاستجابة ضد VIH",
                 keywords: ["VIH", "LT4"],
@@ -243,6 +252,7 @@ const YEAR_2015_SE = {
               minLength: 60,
               modelAnswer:
                 "تمثل الوثيقة تغيرات VIH بدلالة الزمن مقارنة بـ LT4. نلاحظ تغيرا واضحا في VIH مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع LT4.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "استغلال الوثيقة المتعلقة بـ الاستجابة ضد VIH",
                 keywords: ["VIH", "LT4", "نلاحظ"],
@@ -269,6 +279,7 @@ const YEAR_2015_SE = {
               minLength: 110,
               modelAnswer:
                 "يعود ذلك إلى تدخل VIH وLT4 عبر آلية دقيقة تؤدي إلى مراقبه، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ الاستجابة ضد VIH",
                 keywords: ["VIH", "LT4", "مراقبه"],
@@ -286,6 +297,7 @@ const YEAR_2015_SE = {
               placeholder: "VIH → LT4 → مراقبه",
               minLength: 40,
               modelAnswer: "عنوان المخطط: VIH. VIH → LT4 → مراقبه.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول الاستجابة ضد VIH",
                 keywords: ["مخطط", "VIH", "مراقبه"],
@@ -326,6 +338,7 @@ const YEAR_2015_SE = {
               placeholder: "صياغة المشكل العلمي...",
               minLength: 40,
               modelAnswer: "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ النقل المشبكي في الظاهرة المدروسة؟",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "تأطير الإشكالية حول: النقل المشبكي",
                 keywords: ["مشبك", "تاخير"],
@@ -344,6 +357,7 @@ const YEAR_2015_SE = {
               minLength: 40,
               modelAnswer:
                 "تمثل الوثيقة تغيرات مشبك بدلالة الزمن مقارنة بـ تاخير. نلاحظ تغيرا واضحا في مشبك مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع تاخير.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "استغلال الوثيقة المتعلقة بـ النقل المشبكي",
                 keywords: ["مشبك", "تاخير", "نلاحظ"],
@@ -370,6 +384,7 @@ const YEAR_2015_SE = {
               minLength: 120,
               modelAnswer:
                 "يعود ذلك إلى تدخل مشبك وتاخير عبر آلية دقيقة تؤدي إلى مبلغ، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ النقل المشبكي",
                 keywords: ["مشبك", "تاخير", "مبلغ"],
@@ -387,6 +402,7 @@ const YEAR_2015_SE = {
               placeholder: "في الختام...",
               minLength: 40,
               modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ مشبك وتاخير فتُغلق الظاهرة على مبلغ.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول النقل المشبكي",
                 keywords: ["مشبك", "مبلغ", "ختام"],
@@ -414,6 +430,7 @@ const YEAR_2015_SE = {
               minLength: 40,
               modelAnswer:
                 "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ أنزيم RUBISCO وتثبيت CO2 في الظاهرة المدروسة؟",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "تأطير الإشكالية حول: أنزيم RUBISCO وتثبيت CO2",
                 keywords: ["RUBISCO", "تثبيت"],
@@ -432,6 +449,7 @@ const YEAR_2015_SE = {
               minLength: 90,
               modelAnswer:
                 "تمثل الوثيقة تغيرات RUBISCO بدلالة الزمن مقارنة بـ تثبيت. نلاحظ تغيرا واضحا في RUBISCO مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع تثبيت.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "استغلال الوثيقة المتعلقة بـ أنزيم RUBISCO وتثبيت CO2",
                 keywords: ["RUBISCO", "تثبيت", "نلاحظ"],
@@ -458,6 +476,7 @@ const YEAR_2015_SE = {
               minLength: 110,
               modelAnswer:
                 "يعود ذلك إلى تدخل RUBISCO وتثبيت عبر آلية دقيقة تؤدي إلى CO2، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ أنزيم RUBISCO وتثبيت CO2",
                 keywords: ["RUBISCO", "تثبيت", "CO2"],
@@ -475,6 +494,7 @@ const YEAR_2015_SE = {
               placeholder: "في الختام...",
               minLength: 40,
               modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ RUBISCO وتثبيت فتُغلق الظاهرة على CO2.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول أنزيم RUBISCO وتثبيت CO2",
                 keywords: ["RUBISCO", "CO2", "ختام"],
@@ -502,6 +522,7 @@ const YEAR_2015_SE = {
               minLength: 30,
               modelAnswer:
                 "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ الصفائح التكتونية في الظاهرة المدروسة؟",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "تأطير الإشكالية حول: الصفائح التكتونية",
                 keywords: ["صفائح", "ظهره"],
@@ -520,6 +541,7 @@ const YEAR_2015_SE = {
               minLength: 60,
               modelAnswer:
                 "تمثل الوثيقة تغيرات صفائح بدلالة الزمن مقارنة بـ ظهره. نلاحظ تغيرا واضحا في صفائح مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع ظهره.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "استغلال الوثيقة المتعلقة بـ الصفائح التكتونية",
                 keywords: ["صفائح", "ظهره", "نلاحظ"],
@@ -546,6 +568,7 @@ const YEAR_2015_SE = {
               minLength: 110,
               modelAnswer:
                 "يعود ذلك إلى تدخل صفائح وظهره عبر آلية دقيقة تؤدي إلى غوص، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ الصفائح التكتونية",
                 keywords: ["صفائح", "ظهره", "غوص"],
@@ -563,6 +586,7 @@ const YEAR_2015_SE = {
               placeholder: "صفائح → ظهره → غوص",
               minLength: 40,
               modelAnswer: "عنوان المخطط: صفائح. صفائح → ظهره → غوص.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول الصفائح التكتونية",
                 keywords: ["مخطط", "صفائح", "غوص"],

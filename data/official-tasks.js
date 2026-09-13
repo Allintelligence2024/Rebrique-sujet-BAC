@@ -8577,7 +8577,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "S",
         page: 1,
         prompt:
-          "تعرّف على البيانات المرقمة من 1 إلى 4 وحدّد من الوثيقة نوع الرابطة المستهدفة من طرف الإيثانول.",
+          "تعرّف على البيانات المرقّمة من 1 إلى 4 وحدّد من الوثيقة نوع الرابطة المستهدفة من طرف الإيثانول. أكتب الصِّيغة الكيميائية للحمضين الأمينيين ( ) و ( ) ضمن السلسلة الببتيدية الممثلة في العنصر (ع).",
         promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
@@ -8604,7 +8604,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "E",
         page: 1,
         prompt:
-          "اكتب الصيغة الكيميائية للحمضين الأمينيين (Asp و Tyr) ضمن السلسلة الببتيدية الممثلة في العنصر (ع).",
+          "بيّن في نص علمي كيفية تأمين استقرار البنية الفراغية للبروتين ووظيفته وتأثير الكحول على ذلك مستعينا بالوثيقة ومكتسباتك.",
         promptSource: "official",
         maxPoints: 4,
         scoringReviewStatus: "provisional",
@@ -8823,7 +8823,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "E",
         page: 4,
         prompt:
-          "بيّن في نص علمي دور البروتينات في مختلف أنماط التعاون بين الخلايا المناعية أثناء الاستجابة المناعية مستغلا معارفك ومعطيات الوثيقة (النص العلمي مهيكل في مقدمة وعرض وخاتمة).",
+          "بيّن في نص علمي دور البروتينات في مختلف أنماط التعاون بين الخلايا المناعية أثناء الاستجابة المناعية. (النص العلمي مُهيكل في مقدّمة، عرض وخاتمة).",
         promptSource: "official",
         maxPoints: 3,
         scoringReviewStatus: "provisional",
@@ -9016,7 +9016,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 2,
         pole: "S",
         page: 1,
-        prompt: "تعرّف على العناصر المشار إليها بالأرقام من 1 إلى 4 مع تسمية العنصر (س) ومكوناته.",
+        prompt:
+          "تعرّف على العناصر المشار إليها بالأرقام من 1 إلى 4 مع تسمية العنصر (س) ومكوناته. أكمل التتابع النيكليوتيدي للعنصر 4 في حالة غياب (COR).",
         promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",

@@ -1,5 +1,5 @@
 /* ============================================================
-   GUIDE SCREEN — ساس الهدوء (écran de calme, flux examen)
+   GUIDE SCREEN — أساس الهدوء (écran de calme, flux examen)
    ------------------------------------------------------------
    Règle de simplicité : cet écran appartient au flux d'examen.
    Trois éléments maximum : respiration, plan de session, suite.
@@ -21,7 +21,7 @@ export function createGuideScreen(deps) {
         <div class="brand">
           <button class="btn btn-rose btn-sm" id="guide-exit">✕ إلغاء والعودة</button>
           <div class="brand-icon">🌿</div>
-          <div><h2 id="guide-title">ساس الهدوء والتركيز المنهجي</h2>
+          <div><h2 id="guide-title">أساس الهدوء والتركيز المنهجي</h2>
           <p class="small text-emerald">جلسة التأطير النفسي والتنفس الموجه — بكالوريا ${y.calendarYear || y.id}</p></div>
         </div>
       </header>

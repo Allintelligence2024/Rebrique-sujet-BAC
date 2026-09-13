@@ -188,6 +188,9 @@ test("3. Stratégie : calculatrice, inventaire officiel et confirmation", () => 
   click('#view-strategy [data-confirm="1"][data-session-mode="bac"]');
   assert.equal(store.state.sessionMode, "bac");
   assert.ok(!$("#view-workspace").classList.contains("hidden"));
+  // Régression : l'écran gardait le « data-answer-mode » de la session
+  // précédente (un sujet inventorié s'affichait comme une copie libre).
+  assert.equal($("#view-workspace").dataset.answerMode, "inventory");
 });
 
 test("4. L'écran onboarding n'existe plus et les exercices restent librement accessibles", () => {
