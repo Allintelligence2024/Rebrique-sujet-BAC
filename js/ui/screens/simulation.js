@@ -16,6 +16,18 @@ function tasksForExercise(inventory, exerciseNumber) {
     .sort((left, right) => left.order - right.order);
 }
 
+/* La page enregistrée est celle du document officiel ; le PDF local ne
+   contient souvent qu'un sujet, d'où un décalage calculé à la génération
+   (pageInPdf). Quand les deux diffèrent, on montre les deux plutôt que
+   d'envoyer l'élève chercher une page absente de son fichier. */
+function taskPageHTML(task) {
+  const local = Number.isInteger(task.pageInPdf) ? task.pageInPdf : null;
+  if (local !== null && local === task.page) return `الصفحة ${task.page}`;
+  if (local !== null) return `ص ${local} في الملف · ${task.page} في الأصل`;
+  if (Number.isInteger(task.page)) return `الصفحة ${task.page} (الأصل)`;
+  return "صفحة غير موثّقة";
+}
+
 function taskProvenanceHTML(task) {
   if (task.promptSource === "reconstructed") {
     return `<span class="badge badge-amber" data-task-source="reconstructed">⚠️ ${escapeHTML(BAC_MODE_NOTICES.reconstructed)}</span>`;
@@ -75,7 +87,7 @@ export function simulationExamHTML({
       return `<article class="card simulation-task" data-official-task="${escapeHTML(task.id)}">
         <div class="flex spread simulation-task-head">
           <span class="badge badge-indigo">${escapeHTML(task.id)}</span>
-          <span class="small text-muted">${Number.isInteger(task.page) ? `الصفحة ${task.page}` : "صفحة غير موثّقة"}</span>
+          <span class="small text-muted">${taskPageHTML(task)}</span>
         </div>
         <div class="flex">${taskProvenanceHTML(task)}</div>
         <h3 class="bac-consigne">${escapeHTML(task.prompt)}</h3>
@@ -334,10 +346,15 @@ export function createSimulationController(deps) {
   function openSubjectPdf() {
     const subject = sujetObj();
     if (!subject) return;
+    const { inventory } = context();
+    const firstPage = (inventory?.tasks || [])
+      .filter((task) => task.exerciseNumber === store.state.activeExercise)
+      .map((task) => task.pageInPdf)
+      .find((page) => Number.isInteger(page));
     openDrawer(
       "right",
       `📄 وثيقة الموضوع ${subject.id === 1 ? "الأول" : "الثاني"}`,
-      pdfViewerHTML(subject, { showCover: false })
+      pdfViewerHTML(subject, { showCover: false, page: firstPage ?? null })
     );
   }
 

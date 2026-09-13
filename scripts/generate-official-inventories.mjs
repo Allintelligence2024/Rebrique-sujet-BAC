@@ -9,13 +9,16 @@
    Le barème reste "provisional" partout : aucune copie doublement annotée
    n'existe, donc rien ne peut être marqué "verified" sans mentir.
    ============================================================ */
-import { writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createRequire } from "node:module";
 import prettier from "prettier";
 import { YEAR_CATALOG, loadYear } from "../data/subjects.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
+const require = createRequire(import.meta.url);
+const pdfjs = require("pdfjs-dist/legacy/build/pdf.js");
 const outputPath = join(root, "data", "official-tasks.js");
 const POLES = ["N", "S", "E", "W"];
 
@@ -26,6 +29,42 @@ const HUMAN_NOTES = new Map([
     "Exercice 1 relu visuellement sur le scan local par un humain (2026-08-23). Les autres exercices et années sont inventoriés mécaniquement depuis les données 4D, sans relecture humaine : voir promptSource de chaque tâche."
   ]
 ]);
+
+/* ------------------------------------------------------------
+   Pagination : les pages enregistrées (bacPromptPage) sont celles du
+   document officiel complet. Or subjects/<année>/sujet-N.pdf ne
+   contient souvent qu'un seul sujet : annoncer « ص 9 » sur un fichier
+   de 5 pages est faux. On lit le nombre de pages réel et on déduit le
+   décalage quand il est certain (sinon : null, aucune page inventée).
+   ------------------------------------------------------------ */
+const pageCounts = new Map();
+async function pdfPageCount(file) {
+  if (pageCounts.has(file)) return pageCounts.get(file);
+  let count = null;
+  if (existsSync(file)) {
+    try {
+      const doc = await pdfjs.getDocument({
+        data: new Uint8Array(readFileSync(file)),
+        isEvalSupported: false
+      }).promise;
+      count = doc.numPages;
+    } catch {
+      count = null; // PDF illisible : on n'affirme rien
+    }
+  }
+  pageCounts.set(file, count);
+  return count;
+}
+
+/** Décalage entre la page du document officiel et celle du PDF local. */
+function computePageOffset(pages, pdfPages) {
+  if (!pages.length || !pdfPages) return null;
+  const min = Math.min(...pages);
+  const max = Math.max(...pages);
+  if (max <= pdfPages && min >= 1) return 0; // le fichier suit la numérotation du document
+  if (max - min + 1 === pdfPages) return min - 1; // le fichier commence à la 1re page du sujet
+  return null; // ambigu : on n'invente pas de correspondance
+}
 
 function buildTasks(yearId, subject, exercise) {
   const tasks = [];
@@ -55,8 +94,19 @@ function buildTasks(yearId, subject, exercise) {
   return tasks;
 }
 
-function buildInventory(yearId, year, subject) {
+async function buildInventory(yearId, year, subject) {
   const tasks = (subject.exercises || []).flatMap((exercise) => buildTasks(yearId, subject, exercise));
+  const documentPath = subject.pdfLocalUrl || null;
+  const documentPages = documentPath ? await pdfPageCount(join(root, documentPath.replace(/^\//, ""))) : null;
+  const offset = computePageOffset(
+    tasks.map((task) => task.page).filter((page) => Number.isInteger(page)),
+    documentPages
+  );
+  // pageInPdf : la page à ouvrir dans le fichier local, uniquement si certaine.
+  for (const task of tasks) {
+    const local = Number.isInteger(task.page) && offset !== null ? task.page - offset : null;
+    task.pageInPdf = local !== null && local >= 1 && local <= documentPages ? local : null;
+  }
   const inventoriedExerciseNumbers = [...new Set(tasks.map((task) => task.exerciseNumber))].sort(
     (a, b) => a - b
   );
@@ -85,6 +135,11 @@ function buildInventory(yearId, year, subject) {
       verifiedAt: null,
       notes: HUMAN_NOTES.get(`${yearId}/S${subject.id}`) || null
     },
+    document: {
+      localPath: documentPath,
+      pages: documentPages,
+      pageOffset: offset
+    },
     scope: { inventoriedExerciseNumbers, taskCompleteExerciseNumbers },
     tasks
   };
@@ -100,7 +155,7 @@ for (const { entry, year } of years) {
   if (!year) continue;
   for (const subject of year.sujets || []) {
     const key = `${year.id}/S${subject.id}`;
-    inventories[key] = buildInventory(year.id, year, subject);
+    inventories[key] = await buildInventory(year.id, year, subject);
     const tasks = inventories[key].tasks;
     summary.push({
       key,
@@ -108,6 +163,8 @@ for (const { entry, year } of years) {
       tasks: tasks.length,
       official: tasks.filter((task) => task.promptSource === "official").length,
       reconstructed: tasks.filter((task) => task.promptSource === "reconstructed").length,
+      pageInPdf: tasks.filter((task) => Number.isInteger(task.pageInPdf)).length,
+      pageOffset: inventories[key].document.pageOffset,
       complete: inventories[key].scope.taskCompleteExerciseNumbers.length
     });
   }
@@ -165,6 +222,20 @@ if (process.argv.includes("--check")) {
   console.log(
     `  statut "complete"     : ${summary.filter((row) => row.status === "complete").length}/${summary.length}`
   );
+  const located = summary.reduce((total, row) => total + row.pageInPdf, 0);
+  console.log(`  pages rattachées au fichier : ${located}/${official}`);
+  const shifted = summary.filter((row) => row.pageOffset);
+  if (shifted.length) {
+    console.log(
+      `  décalage de pagination : ${shifted.map((row) => `${row.key} (+${row.pageOffset})`).join(", ")}`
+    );
+  }
+  const orphans = summary.filter((row) => row.official > row.pageInPdf);
+  if (orphans.length) {
+    console.log(
+      `  ⚠️ page non locable dans le fichier : ${orphans.map((row) => `${row.key} (${row.official - row.pageInPdf})`).join(", ")}`
+    );
+  }
   const without = summary.filter((row) => row.tasks === 0);
   if (without.length) console.log(`  ⚠️ sans tâche: ${without.map((row) => row.key).join(", ")}`);
 }

@@ -13,16 +13,19 @@ const escapeHTML = (value = "") =>
     (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[character]
   );
 
-export function pdfViewerHTML(subject, { showCover = true } = {}) {
+export function pdfViewerHTML(subject, { showCover = true, page = null } = {}) {
   const local = subject?.pdfLocalUrl;
   const external = subject?.pdfExternalUrl;
   const label = `موضوع البكالوريا ${subject?.id === 1 ? "الأول" : "الثاني"}`;
+  // #page=N ouvre directement la page du fichier (N = page du PDF local, jamais
+  // la page du document officiel quand les deux diffèrent).
+  const anchor = Number.isInteger(page) && page > 0 ? `#page=${page}` : "#view=FitH";
   if (local) {
     return `<div class="pdf-reader stack">
       ${showCover ? `<div class="pdf-viewer-head"><strong>📄 ${escapeHTML(label)}</strong><span class="small text-muted">الملف المحلي — يُعرض داخل التطبيق</span></div>` : ""}
-      <iframe class="pdf-frame" title="${escapeHTML(label)}" src="${escapeHTML(local)}#view=FitH"></iframe>
+      <iframe class="pdf-frame" title="${escapeHTML(label)}" src="${escapeHTML(local)}${anchor}"></iframe>
       <div class="flex wrap pdf-viewer-actions">
-        <a class="btn btn-indigo btn-sm" href="${escapeHTML(local)}" target="_blank" rel="noopener noreferrer">📄 فتح في نافذة مستقلة</a>
+        <a class="btn btn-indigo btn-sm" href="${escapeHTML(local)}${anchor}" target="_blank" rel="noopener noreferrer">📄 فتح في نافذة مستقلة</a>
         <a class="btn btn-ghost btn-sm" href="${escapeHTML(local)}" download>⬇️ تنزيل PDF</a>
         ${external ? `<a class="small" href="${escapeHTML(external)}" target="_blank" rel="noopener noreferrer">المصدر الخارجي</a>` : ""}
       </div>

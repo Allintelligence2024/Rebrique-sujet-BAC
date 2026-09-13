@@ -1,5 +1,5 @@
 // Generated deterministically by scripts/generate-pwa-version.mjs
-globalThis.APP_BUILD_ID = "95f1bd726b0d";
+globalThis.APP_BUILD_ID = "c175825548f2";
 globalThis.APP_ASSET_REVISIONS = Object.freeze({
   "assets/icon-192.png": {
     bytes: 37017,

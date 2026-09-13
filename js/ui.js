@@ -30,6 +30,7 @@ import { createGuideScreen } from "./ui/screens/guide.js";
 import { createHubScreen } from "./ui/screens/hub.js";
 import { createStrategyScreen } from "./ui/screens/strategy.js";
 import { createWorkspaceController } from "./ui/screens/workspace.js";
+import { pdfViewerHTML } from "./ui/pdf-viewer.js";
 import { reportDiagnostic } from "./services/diagnostics.js";
 
 const POLE = {
@@ -254,7 +255,9 @@ hubScreen = createHubScreen({
   examMinutesForYear,
   formatDuration,
   openAdkar,
+  openDrawer,
   openModal,
+  pdfViewerHTML,
   startSession,
   store,
   timers,

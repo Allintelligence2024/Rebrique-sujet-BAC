@@ -1,4 +1,5 @@
 import { node, setInternalHTML } from "../dom.js";
+import { pdfViewerHTML } from "../pdf-viewer.js";
 import { ARCHIVE, catalogYearsForStream } from "../../../data/archive.js";
 
 const STREAM_KEY = "boussole4d.stream";
@@ -62,12 +63,14 @@ export function createHubScreen(deps) {
     $$,
     APP_CONFIG,
     applyTheme,
+    pdfViewerHTML,
     closeModal,
     cycleSound,
     enterExercise,
     examMinutesForYear,
     formatDuration,
     openAdkar,
+    openDrawer,
     openModal,
     startSession,
     store,
@@ -241,39 +244,49 @@ export function createHubScreen(deps) {
       node("span", { className: "badge badge-indigo", text: "موضوع رسمي" }),
       node("span", { className: "mono bold year-number", text: item.id })
     );
+    // Le sujet est lu dans l'application dès qu'un PDF local existe ; le lien
+    // dzexams ne sert plus que de source de repli.
+    const localPdfs = item.entries.flatMap((entry) => entry.localPdfUrls || []);
     const copy = node("div");
     copy.append(
       node("h3", { className: "mt-0 mb-1", text: `بكالوريا الجزائر دورة ${item.id}` }),
       node("p", {
         className: "small text-muted mt-0",
-        text: "الموضوعان والتصحيح النموذجي — للاستشارة فقط."
+        text: localPdfs.length
+          ? "يُقرأ الموضوعان داخل التطبيق. وضع الإمتحان غير متاح: لم تُشفَّر تعليمات هذه الدورة بعد."
+          : "الموضوعان والتصحيح النموذجي — للاستشارة فقط."
       })
     );
     stack.append(header, copy);
     const actions = node("div", { className: "stack" });
+    if (localPdfs.length) {
+      localPdfs.forEach((href, index) => {
+        const button = node("button", {
+          className: "btn btn-block btn-indigo",
+          text: `📄 قراءة الموضوع ${index + 1} في التطبيق`,
+          dataset: { consultPdf: href }
+        });
+        button.addEventListener("click", () =>
+          openDrawer(
+            "right",
+            `📄 وثيقة الموضوع ${index + 1}`,
+            pdfViewerHTML({ id: index + 1, pdfLocalUrl: href })
+          )
+        );
+        actions.append(button);
+      });
+    }
     for (const entry of item.entries) {
       const session = ARCHIVE.sessions[entry.session] || entry.session;
-      const label = item.entries.length > 1 ? `📄 ${session}` : "📄 الموضوع والتصحيح النموذجي";
-      // Les cartes de consultation renvoient vers la source dzexams (les PDFs locaux
-      // sont réservés à l'entraînement 4D via les cartes d'entraînement).
+      const label = item.entries.length > 1 ? `🔗 ${session} (المصدر)` : "🔗 المصدر والتصحيح";
       if (entry.url) {
         actions.append(
           node("a", {
-            className: "btn btn-block btn-indigo",
+            className: "btn btn-block btn-ghost btn-sm",
             text: label,
             attrs: { href: entry.url, target: "_blank", rel: "noopener noreferrer" }
           })
         );
-      } else if (entry.localPdfUrls?.length) {
-        entry.localPdfUrls.forEach((href, index) => {
-          actions.append(
-            node("a", {
-              className: "btn btn-block btn-indigo",
-              text: `📄 الموضوع ${index + 1} — قراءة PDF محلي`,
-              attrs: { href, target: "_blank", rel: "noopener noreferrer" }
-            })
-          );
-        });
       }
     }
     card.append(stack, actions);

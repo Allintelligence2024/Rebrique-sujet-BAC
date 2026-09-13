@@ -24,6 +24,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       notes:
         "Exercice 1 relu visuellement sur le scan local par un humain (2026-08-23). Les autres exercices et années sont inventoriés mécaniquement depuis les données 4D, sans relecture humaine : voir promptSource de chaque tâche."
     },
+    document: {
+      localPath: "/subjects/SE/2025/sujet-1.pdf",
+      pages: 11,
+      pageOffset: 0
+    },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
       taskCompleteExerciseNumbers: []
@@ -47,7 +52,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2025-S1-E1-Q2",
@@ -72,7 +78,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2025-S1-E1-Q3",
@@ -98,7 +105,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2025-S1-E1-Q4",
@@ -119,7 +127,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2025-S1-E2-Q1",
@@ -139,7 +148,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2025-S1-E2-Q2",
@@ -164,7 +174,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2025-S1-E2-Q3",
@@ -190,7 +201,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       },
       {
         id: "2025-S1-E2-Q4",
@@ -216,7 +228,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       },
       {
         id: "2025-S1-E3-Q1",
@@ -242,7 +255,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 4
       },
       {
         id: "2025-S1-E3-Q2",
@@ -263,7 +277,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2025-S1-E3-Q3",
@@ -288,7 +303,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 5
       },
       {
         id: "2025-S1-E3-Q4",
@@ -314,7 +330,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 5
       }
     ]
   },
@@ -327,6 +344,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2025/sujet-2.pdf",
+      pages: 11,
+      pageOffset: 0
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -351,7 +373,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2025-S2-E1-Q2",
@@ -376,7 +399,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 6
       },
       {
         id: "2025-S2-E1-Q3",
@@ -402,7 +426,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 6
       },
       {
         id: "2025-S2-E1-Q4",
@@ -422,7 +447,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2025-S2-E2-Q1",
@@ -442,7 +468,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2025-S2-E2-Q2",
@@ -467,7 +494,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 7
       },
       {
         id: "2025-S2-E2-Q3",
@@ -493,7 +521,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 7
       },
       {
         id: "2025-S2-E2-Q4",
@@ -519,7 +548,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 8
       },
       {
         id: "2025-S2-E3-Q1",
@@ -545,7 +575,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 9
       },
       {
         id: "2025-S2-E3-Q2",
@@ -566,7 +597,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2025-S2-E3-Q3",
@@ -591,7 +623,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 10
       },
       {
         id: "2025-S2-E3-Q4",
@@ -617,7 +650,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 10
       }
     ]
   },
@@ -630,6 +664,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2024/sujet-1.pdf",
+      pages: 5,
+      pageOffset: 0
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -655,7 +694,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-S1-E1-Q2",
@@ -675,7 +715,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-S1-E1-Q3",
@@ -695,7 +736,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-S1-E1-Q4",
@@ -715,7 +757,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-S1-E2-Q1",
@@ -736,7 +779,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-S1-E2-Q2",
@@ -761,7 +805,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2024-S1-E2-Q3",
@@ -787,7 +832,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2024-S1-E2-Q4",
@@ -807,7 +853,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-S1-E3-Q1",
@@ -827,7 +874,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-S1-E3-Q2",
@@ -848,7 +896,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-S1-E3-Q3",
@@ -868,7 +917,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-S1-E3-Q4",
@@ -888,7 +938,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       }
     ]
   },
@@ -901,6 +952,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2024/sujet-2.pdf",
+      pages: 5,
+      pageOffset: 5
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -926,7 +982,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-S2-E1-Q2",
@@ -951,7 +1008,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2024-S2-E1-Q3",
@@ -977,7 +1035,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2024-S2-E1-Q4",
@@ -997,7 +1056,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-S2-E2-Q1",
@@ -1017,7 +1077,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-S2-E2-Q2",
@@ -1042,7 +1103,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2024-S2-E2-Q3",
@@ -1068,7 +1130,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2024-S2-E2-Q4",
@@ -1088,7 +1151,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-S2-E3-Q1",
@@ -1109,7 +1173,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-S2-E3-Q2",
@@ -1130,7 +1195,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-S2-E3-Q3",
@@ -1155,7 +1221,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 5
       },
       {
         id: "2024-S2-E3-Q4",
@@ -1181,7 +1248,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 5
       }
     ]
   },
@@ -1195,6 +1263,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2023/sujet-1.pdf",
+      pages: 5,
+      pageOffset: 0
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -1219,7 +1292,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2023-S1-E1-Q2",
@@ -1245,7 +1319,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2023-S1-E1-Q3",
@@ -1271,7 +1346,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2023-S1-E1-Q4",
@@ -1291,7 +1367,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2023-S1-E2-Q1",
@@ -1311,7 +1388,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2023-S1-E2-Q2",
@@ -1336,7 +1414,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2023-S1-E2-Q3",
@@ -1361,7 +1440,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2023-S1-E2-Q4",
@@ -1381,7 +1461,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2023-S1-E3-Q1",
@@ -1406,7 +1487,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       },
       {
         id: "2023-S1-E3-Q2",
@@ -1427,7 +1509,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2023-S1-E3-Q3",
@@ -1453,7 +1536,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 4
       },
       {
         id: "2023-S1-E3-Q4",
@@ -1479,7 +1563,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 4
       }
     ]
   },
@@ -1493,6 +1578,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2023/sujet-2.pdf",
+      pages: 5,
+      pageOffset: null
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -1518,7 +1608,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2023-S2-E1-Q2",
@@ -1544,7 +1635,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2023-S2-E1-Q3",
@@ -1570,7 +1662,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2023-S2-E1-Q4",
@@ -1590,7 +1683,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2023-S2-E2-Q1",
@@ -1611,7 +1705,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2023-S2-E2-Q2",
@@ -1637,7 +1732,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2023-S2-E2-Q3",
@@ -1663,7 +1759,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2023-S2-E2-Q4",
@@ -1683,7 +1780,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2023-S2-E3-Q1",
@@ -1709,7 +1807,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2023-S2-E3-Q2",
@@ -1730,7 +1829,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2023-S2-E3-Q3",
@@ -1755,7 +1855,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2023-S2-E3-Q4",
@@ -1781,7 +1882,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       }
     ]
   },
@@ -1794,6 +1896,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2022/sujet-1.pdf",
+      pages: 5,
+      pageOffset: 0
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -1819,7 +1926,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2022-S1-E1-Q2",
@@ -1844,7 +1952,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2022-S1-E1-Q3",
@@ -1870,7 +1979,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2022-S1-E1-Q4",
@@ -1890,7 +2000,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2022-S1-E2-Q1",
@@ -1911,7 +2022,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2022-S1-E2-Q2",
@@ -1937,7 +2049,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2022-S1-E2-Q3",
@@ -1963,7 +2076,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2022-S1-E2-Q4",
@@ -1984,7 +2098,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2022-S1-E3-Q1",
@@ -2010,7 +2125,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 4
       },
       {
         id: "2022-S1-E3-Q2",
@@ -2036,7 +2152,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       },
       {
         id: "2022-S1-E3-Q3",
@@ -2061,7 +2178,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 5
       },
       {
         id: "2022-S1-E3-Q4",
@@ -2087,7 +2205,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 5
       }
     ]
   },
@@ -2100,6 +2219,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2022/sujet-2.pdf",
+      pages: 5,
+      pageOffset: 5
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -2125,7 +2249,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2022-S2-E1-Q2",
@@ -2150,7 +2275,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2022-S2-E1-Q3",
@@ -2176,7 +2302,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2022-S2-E1-Q4",
@@ -2196,7 +2323,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2022-S2-E2-Q1",
@@ -2217,7 +2345,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2022-S2-E2-Q2",
@@ -2242,7 +2371,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2022-S2-E2-Q3",
@@ -2268,7 +2398,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2022-S2-E2-Q4",
@@ -2288,7 +2419,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2022-S2-E3-Q1",
@@ -2309,7 +2441,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2022-S2-E3-Q2",
@@ -2330,7 +2463,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2022-S2-E3-Q3",
@@ -2356,7 +2490,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 4
       },
       {
         id: "2022-S2-E3-Q4",
@@ -2382,7 +2517,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 5
       }
     ]
   },
@@ -2395,6 +2531,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2026/sujet-1.pdf",
+      pages: 5,
+      pageOffset: null
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -2420,7 +2561,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2026-S1-E1-Q2",
@@ -2446,7 +2588,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2026-S1-E1-Q3",
@@ -2471,7 +2614,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2026-S1-E1-Q4",
@@ -2491,7 +2635,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2026-S1-E2-Q1",
@@ -2511,7 +2656,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2026-S1-E2-Q2",
@@ -2536,7 +2682,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2026-S1-E2-Q3",
@@ -2561,7 +2708,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2026-S1-E2-Q4",
@@ -2586,7 +2734,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2026-S1-E3-Q1",
@@ -2611,7 +2760,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2026-S1-E3-Q2",
@@ -2637,7 +2787,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2026-S1-E3-Q3",
@@ -2662,7 +2813,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2026-S1-E3-Q4",
@@ -2688,7 +2840,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       }
     ]
   },
@@ -2701,6 +2854,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2026/sujet-2.pdf",
+      pages: 5,
+      pageOffset: 5
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -2725,7 +2883,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2026-S2-E1-Q2",
@@ -2750,7 +2909,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2026-S2-E1-Q3",
@@ -2776,7 +2936,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2026-S2-E1-Q4",
@@ -2796,7 +2957,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2026-S2-E2-Q1",
@@ -2816,7 +2978,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2026-S2-E2-Q2",
@@ -2841,7 +3004,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2026-S2-E2-Q3",
@@ -2866,7 +3030,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2026-S2-E2-Q4",
@@ -2892,7 +3057,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       },
       {
         id: "2026-S2-E3-Q1",
@@ -2918,7 +3084,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       },
       {
         id: "2026-S2-E3-Q2",
@@ -2939,7 +3106,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2026-S2-E3-Q3",
@@ -2964,7 +3132,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 4
       },
       {
         id: "2026-S2-E3-Q4",
@@ -2990,7 +3159,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 5
       }
     ]
   },
@@ -3003,6 +3173,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2020/sujet-1.pdf",
+      pages: 4,
+      pageOffset: 0
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -3028,7 +3203,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2020-S1-E1-Q2",
@@ -3053,7 +3229,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2020-S1-E1-Q3",
@@ -3079,7 +3256,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2020-S1-E1-Q4",
@@ -3099,7 +3277,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2020-S1-E2-Q1",
@@ -3119,7 +3298,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2020-S1-E2-Q2",
@@ -3144,7 +3324,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2020-S1-E2-Q3",
@@ -3169,7 +3350,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2020-S1-E2-Q4",
@@ -3194,7 +3376,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2020-S1-E3-Q1",
@@ -3219,7 +3402,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       },
       {
         id: "2020-S1-E3-Q2",
@@ -3244,7 +3428,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 4
       },
       {
         id: "2020-S1-E3-Q3",
@@ -3270,7 +3455,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 4
       },
       {
         id: "2020-S1-E3-Q4",
@@ -3295,7 +3481,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 4
       }
     ]
   },
@@ -3308,6 +3495,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2020/sujet-2.pdf",
+      pages: 5,
+      pageOffset: 4
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -3333,7 +3525,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2020-S2-E1-Q2",
@@ -3358,7 +3551,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2020-S2-E1-Q3",
@@ -3384,7 +3578,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2020-S2-E1-Q4",
@@ -3404,7 +3599,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2020-S2-E2-Q1",
@@ -3424,7 +3620,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2020-S2-E2-Q2",
@@ -3450,7 +3647,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2020-S2-E2-Q3",
@@ -3475,7 +3673,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       },
       {
         id: "2020-S2-E2-Q4",
@@ -3495,7 +3694,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2020-S2-E3-Q1",
@@ -3520,7 +3720,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 4
       },
       {
         id: "2020-S2-E3-Q2",
@@ -3545,7 +3746,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 5
       },
       {
         id: "2020-S2-E3-Q3",
@@ -3570,7 +3772,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 5
       },
       {
         id: "2020-S2-E3-Q4",
@@ -3596,7 +3799,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 5
       }
     ]
   },
@@ -3609,6 +3813,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2019/sujet-1.pdf",
+      pages: 5,
+      pageOffset: null
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -3633,7 +3842,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2019-S1-E1-Q2",
@@ -3653,7 +3863,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2019-S1-E1-Q3",
@@ -3673,7 +3884,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2019-S1-E1-Q4",
@@ -3693,7 +3905,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2019-S1-E2-Q1",
@@ -3713,7 +3926,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2019-S1-E2-Q2",
@@ -3733,7 +3947,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2019-S1-E2-Q3",
@@ -3753,7 +3968,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2019-S1-E2-Q4",
@@ -3773,7 +3989,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2019-S1-E3-Q1",
@@ -3793,7 +4010,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2019-S1-E3-Q2",
@@ -3813,7 +4031,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2019-S1-E3-Q3",
@@ -3833,7 +4052,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2019-S1-E3-Q4",
@@ -3853,7 +4073,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       }
     ]
   },
@@ -3866,6 +4087,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2019/sujet-2.pdf",
+      pages: 4,
+      pageOffset: null
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -3890,7 +4116,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2019-S2-E1-Q2",
@@ -3910,7 +4137,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2019-S2-E1-Q3",
@@ -3930,7 +4158,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2019-S2-E1-Q4",
@@ -3950,7 +4179,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2019-S2-E2-Q1",
@@ -3970,7 +4200,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2019-S2-E2-Q2",
@@ -3990,7 +4221,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2019-S2-E2-Q3",
@@ -4010,7 +4242,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2019-S2-E2-Q4",
@@ -4030,7 +4263,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2019-S2-E3-Q1",
@@ -4050,7 +4284,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2019-S2-E3-Q2",
@@ -4070,7 +4305,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2019-S2-E3-Q3",
@@ -4090,7 +4326,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2019-S2-E3-Q4",
@@ -4110,7 +4347,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       }
     ]
   },
@@ -4123,6 +4361,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2018/sujet-1.pdf",
+      pages: 4,
+      pageOffset: null
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -4147,7 +4390,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2018-S1-E1-Q2",
@@ -4168,7 +4412,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2018-S1-E1-Q3",
@@ -4188,7 +4433,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2018-S1-E1-Q4",
@@ -4208,7 +4454,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2018-S1-E2-Q1",
@@ -4228,7 +4475,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2018-S1-E2-Q2",
@@ -4249,7 +4497,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2018-S1-E2-Q3",
@@ -4269,7 +4518,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2018-S1-E2-Q4",
@@ -4289,7 +4539,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2018-S1-E3-Q1",
@@ -4309,7 +4560,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2018-S1-E3-Q2",
@@ -4329,7 +4581,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2018-S1-E3-Q3",
@@ -4349,7 +4602,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2018-S1-E3-Q4",
@@ -4369,7 +4623,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       }
     ]
   },
@@ -4382,6 +4637,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2018/sujet-2.pdf",
+      pages: 5,
+      pageOffset: null
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -4406,7 +4666,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2018-S2-E1-Q2",
@@ -4426,7 +4687,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2018-S2-E1-Q3",
@@ -4446,7 +4708,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2018-S2-E1-Q4",
@@ -4466,7 +4729,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2018-S2-E2-Q1",
@@ -4486,7 +4750,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2018-S2-E2-Q2",
@@ -4506,7 +4771,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2018-S2-E2-Q3",
@@ -4526,7 +4792,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2018-S2-E2-Q4",
@@ -4546,7 +4813,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2018-S2-E3-Q1",
@@ -4566,7 +4834,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2018-S2-E3-Q2",
@@ -4586,7 +4855,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2018-S2-E3-Q3",
@@ -4606,7 +4876,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2018-S2-E3-Q4",
@@ -4626,7 +4897,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       }
     ]
   },
@@ -4639,6 +4911,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2017/sujet-1.pdf",
+      pages: 4,
+      pageOffset: null
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -4663,7 +4940,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2017-S1-E1-Q2",
@@ -4683,7 +4961,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2017-S1-E1-Q3",
@@ -4703,7 +4982,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2017-S1-E1-Q4",
@@ -4723,7 +5003,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2017-S1-E2-Q1",
@@ -4743,7 +5024,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2017-S1-E2-Q2",
@@ -4763,7 +5045,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2017-S1-E2-Q3",
@@ -4783,7 +5066,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2017-S1-E2-Q4",
@@ -4803,7 +5087,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2017-S1-E3-Q1",
@@ -4823,7 +5108,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2017-S1-E3-Q2",
@@ -4843,7 +5129,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2017-S1-E3-Q3",
@@ -4863,7 +5150,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2017-S1-E3-Q4",
@@ -4883,7 +5171,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       }
     ]
   },
@@ -4896,6 +5185,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2017/sujet-2.pdf",
+      pages: 4,
+      pageOffset: null
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -4920,7 +5214,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2017-S2-E1-Q2",
@@ -4940,7 +5235,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2017-S2-E1-Q3",
@@ -4960,7 +5256,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2017-S2-E1-Q4",
@@ -4980,7 +5277,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2017-S2-E2-Q1",
@@ -5000,7 +5298,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2017-S2-E2-Q2",
@@ -5020,7 +5319,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2017-S2-E2-Q3",
@@ -5040,7 +5340,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2017-S2-E2-Q4",
@@ -5060,7 +5361,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2017-S2-E3-Q1",
@@ -5080,7 +5382,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2017-S2-E3-Q2",
@@ -5100,7 +5403,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2017-S2-E3-Q3",
@@ -5120,7 +5424,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2017-S2-E3-Q4",
@@ -5140,7 +5445,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       }
     ]
   },
@@ -5153,6 +5459,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2016/sujet-1.pdf",
+      pages: 5,
+      pageOffset: null
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -5177,7 +5488,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2016-S1-E1-Q2",
@@ -5197,7 +5509,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2016-S1-E1-Q3",
@@ -5217,7 +5530,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2016-S1-E1-Q4",
@@ -5237,7 +5551,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2016-S1-E2-Q1",
@@ -5257,7 +5572,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2016-S1-E2-Q2",
@@ -5277,7 +5593,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2016-S1-E2-Q3",
@@ -5297,7 +5614,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2016-S1-E2-Q4",
@@ -5317,7 +5635,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2016-S1-E3-Q1",
@@ -5337,7 +5656,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2016-S1-E3-Q2",
@@ -5357,7 +5677,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2016-S1-E3-Q3",
@@ -5377,7 +5698,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2016-S1-E3-Q4",
@@ -5397,7 +5719,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       }
     ]
   },
@@ -5410,6 +5733,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2016/sujet-2.pdf",
+      pages: 5,
+      pageOffset: null
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -5434,7 +5762,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2016-S2-E1-Q2",
@@ -5454,7 +5783,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2016-S2-E1-Q3",
@@ -5474,7 +5804,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2016-S2-E1-Q4",
@@ -5494,7 +5825,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2016-S2-E2-Q1",
@@ -5514,7 +5846,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2016-S2-E2-Q2",
@@ -5534,7 +5867,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2016-S2-E2-Q3",
@@ -5554,7 +5888,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2016-S2-E2-Q4",
@@ -5574,7 +5909,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2016-S2-E3-Q1",
@@ -5594,7 +5930,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2016-S2-E3-Q2",
@@ -5614,7 +5951,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2016-S2-E3-Q3",
@@ -5634,7 +5972,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2016-S2-E3-Q4",
@@ -5654,7 +5993,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       }
     ]
   },
@@ -5667,6 +6007,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2015/sujet-1.pdf",
+      pages: 5,
+      pageOffset: null
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -5691,7 +6036,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2015-S1-E1-Q2",
@@ -5711,7 +6057,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2015-S1-E1-Q3",
@@ -5731,7 +6078,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2015-S1-E1-Q4",
@@ -5751,7 +6099,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2015-S1-E2-Q1",
@@ -5771,7 +6120,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2015-S1-E2-Q2",
@@ -5791,7 +6141,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2015-S1-E2-Q3",
@@ -5811,7 +6162,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2015-S1-E2-Q4",
@@ -5831,7 +6183,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2015-S1-E3-Q1",
@@ -5851,7 +6204,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2015-S1-E3-Q2",
@@ -5871,7 +6225,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2015-S1-E3-Q3",
@@ -5891,7 +6246,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2015-S1-E3-Q4",
@@ -5911,7 +6267,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       }
     ]
   },
@@ -5924,6 +6281,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2015/sujet-2.pdf",
+      pages: 5,
+      pageOffset: null
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -5948,7 +6310,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2015-S2-E1-Q2",
@@ -5968,7 +6331,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2015-S2-E1-Q3",
@@ -5988,7 +6352,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2015-S2-E1-Q4",
@@ -6008,7 +6373,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2015-S2-E2-Q1",
@@ -6028,7 +6394,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2015-S2-E2-Q2",
@@ -6048,7 +6415,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2015-S2-E2-Q3",
@@ -6068,7 +6436,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2015-S2-E2-Q4",
@@ -6088,7 +6457,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2015-S2-E3-Q1",
@@ -6108,7 +6478,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2015-S2-E3-Q2",
@@ -6128,7 +6499,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2015-S2-E3-Q3",
@@ -6148,7 +6520,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2015-S2-E3-Q4",
@@ -6168,7 +6541,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       }
     ]
   },
@@ -6181,6 +6555,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2014/sujet-1.pdf",
+      pages: 5,
+      pageOffset: null
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -6205,7 +6584,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2014-S1-E1-Q2",
@@ -6225,7 +6605,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2014-S1-E1-Q3",
@@ -6245,7 +6626,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2014-S1-E1-Q4",
@@ -6265,7 +6647,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2014-S1-E2-Q1",
@@ -6285,7 +6668,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2014-S1-E2-Q2",
@@ -6305,7 +6689,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2014-S1-E2-Q3",
@@ -6325,7 +6710,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2014-S1-E2-Q4",
@@ -6345,7 +6731,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2014-S1-E3-Q1",
@@ -6365,7 +6752,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2014-S1-E3-Q2",
@@ -6385,7 +6773,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2014-S1-E3-Q3",
@@ -6405,7 +6794,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2014-S1-E3-Q4",
@@ -6425,7 +6815,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       }
     ]
   },
@@ -6438,6 +6829,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2014/sujet-2.pdf",
+      pages: 5,
+      pageOffset: null
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -6462,7 +6858,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2014-S2-E1-Q2",
@@ -6482,7 +6879,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2014-S2-E1-Q3",
@@ -6502,7 +6900,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2014-S2-E1-Q4",
@@ -6522,7 +6921,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2014-S2-E2-Q1",
@@ -6542,7 +6942,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2014-S2-E2-Q2",
@@ -6562,7 +6963,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2014-S2-E2-Q3",
@@ -6582,7 +6984,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2014-S2-E2-Q4",
@@ -6602,7 +7005,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2014-S2-E3-Q1",
@@ -6622,7 +7026,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2014-S2-E3-Q2",
@@ -6642,7 +7047,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2014-S2-E3-Q3",
@@ -6662,7 +7068,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2014-S2-E3-Q4",
@@ -6682,7 +7089,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       }
     ]
   },
@@ -6695,6 +7103,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2013/sujet-1.pdf",
+      pages: 4,
+      pageOffset: null
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -6719,7 +7132,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2013-S1-E1-Q2",
@@ -6739,7 +7153,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2013-S1-E1-Q3",
@@ -6759,7 +7174,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2013-S1-E1-Q4",
@@ -6779,7 +7195,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2013-S1-E2-Q1",
@@ -6799,7 +7216,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2013-S1-E2-Q2",
@@ -6819,7 +7237,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2013-S1-E2-Q3",
@@ -6839,7 +7258,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2013-S1-E2-Q4",
@@ -6859,7 +7279,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2013-S1-E3-Q1",
@@ -6879,7 +7300,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2013-S1-E3-Q2",
@@ -6899,7 +7321,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2013-S1-E3-Q3",
@@ -6919,7 +7342,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2013-S1-E3-Q4",
@@ -6939,7 +7363,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       }
     ]
   },
@@ -6952,6 +7377,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2013/sujet-2.pdf",
+      pages: 4,
+      pageOffset: null
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -6976,7 +7406,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2013-S2-E1-Q2",
@@ -6996,7 +7427,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2013-S2-E1-Q3",
@@ -7016,7 +7448,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2013-S2-E1-Q4",
@@ -7036,7 +7469,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2013-S2-E2-Q1",
@@ -7056,7 +7490,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2013-S2-E2-Q2",
@@ -7076,7 +7511,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2013-S2-E2-Q3",
@@ -7096,7 +7532,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2013-S2-E2-Q4",
@@ -7116,7 +7553,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2013-S2-E3-Q1",
@@ -7136,7 +7574,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2013-S2-E3-Q2",
@@ -7156,7 +7595,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2013-S2-E3-Q3",
@@ -7176,7 +7616,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2013-S2-E3-Q4",
@@ -7196,7 +7637,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       }
     ]
   },
@@ -7209,6 +7651,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2021/sujet-1.pdf",
+      pages: 3,
+      pageOffset: 0
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2],
@@ -7234,7 +7681,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2021-m-S1-E1-Q2",
@@ -7259,7 +7707,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2021-m-S1-E1-Q3",
@@ -7285,7 +7734,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2021-m-S1-E1-Q4",
@@ -7305,7 +7755,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2021-m-S1-E2-Q1",
@@ -7330,7 +7781,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2021-m-S1-E2-Q2",
@@ -7355,7 +7807,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2021-m-S1-E2-Q3",
@@ -7380,7 +7833,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       },
       {
         id: "2021-m-S1-E2-Q4",
@@ -7406,7 +7860,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       }
     ]
   },
@@ -7419,6 +7874,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2021/sujet-2.pdf",
+      pages: 3,
+      pageOffset: 3
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2],
@@ -7443,7 +7903,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2021-m-S2-E1-Q2",
@@ -7468,7 +7929,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2021-m-S2-E1-Q3",
@@ -7493,7 +7955,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2021-m-S2-E1-Q4",
@@ -7513,7 +7976,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2021-m-S2-E2-Q1",
@@ -7538,7 +8002,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2021-m-S2-E2-Q2",
@@ -7563,7 +8028,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2021-m-S2-E2-Q3",
@@ -7588,7 +8054,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       },
       {
         id: "2021-m-S2-E2-Q4",
@@ -7613,7 +8080,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       }
     ]
   },
@@ -7626,6 +8094,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2022/sujet-1.pdf",
+      pages: 3,
+      pageOffset: 0
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2],
@@ -7651,7 +8124,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2022-m-S1-E1-Q2",
@@ -7676,7 +8150,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2022-m-S1-E1-Q3",
@@ -7702,7 +8177,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2022-m-S1-E1-Q4",
@@ -7728,7 +8204,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2022-m-S1-E2-Q1",
@@ -7753,7 +8230,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2022-m-S1-E2-Q2",
@@ -7774,7 +8252,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2022-m-S1-E2-Q3",
@@ -7800,7 +8279,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       },
       {
         id: "2022-m-S1-E2-Q4",
@@ -7825,7 +8305,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       }
     ]
   },
@@ -7838,6 +8319,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2022/sujet-2.pdf",
+      pages: 3,
+      pageOffset: 3
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2],
@@ -7862,7 +8348,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2022-m-S2-E1-Q2",
@@ -7887,7 +8374,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2022-m-S2-E1-Q3",
@@ -7913,7 +8401,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2022-m-S2-E1-Q4",
@@ -7933,7 +8422,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2022-m-S2-E2-Q1",
@@ -7958,7 +8448,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2022-m-S2-E2-Q2",
@@ -7978,7 +8469,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2022-m-S2-E2-Q3",
@@ -8004,7 +8496,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       },
       {
         id: "2022-m-S2-E2-Q4",
@@ -8030,7 +8523,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       }
     ]
   },
@@ -8043,6 +8537,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2023/sujet-1.pdf",
+      pages: 3,
+      pageOffset: 0
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2],
@@ -8068,7 +8567,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2023-m-S1-E1-Q2",
@@ -8094,7 +8594,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2023-m-S1-E1-Q3",
@@ -8120,7 +8621,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2023-m-S1-E1-Q4",
@@ -8140,7 +8642,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2023-m-S1-E2-Q1",
@@ -8165,7 +8668,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2023-m-S1-E2-Q2",
@@ -8185,7 +8689,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2023-m-S1-E2-Q3",
@@ -8211,7 +8716,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       },
       {
         id: "2023-m-S1-E2-Q4",
@@ -8237,7 +8743,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       }
     ]
   },
@@ -8250,6 +8757,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2023/sujet-2.pdf",
+      pages: 3,
+      pageOffset: 3
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2],
@@ -8274,7 +8786,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2023-m-S2-E1-Q2",
@@ -8300,7 +8813,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2023-m-S2-E1-Q3",
@@ -8326,7 +8840,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2023-m-S2-E1-Q4",
@@ -8346,7 +8861,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2023-m-S2-E2-Q1",
@@ -8372,7 +8888,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2023-m-S2-E2-Q2",
@@ -8393,7 +8910,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2023-m-S2-E2-Q3",
@@ -8419,7 +8937,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       },
       {
         id: "2023-m-S2-E2-Q4",
@@ -8445,7 +8964,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       }
     ]
   },
@@ -8458,6 +8978,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2024/sujet-1.pdf",
+      pages: 3,
+      pageOffset: 0
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2],
@@ -8482,7 +9007,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-m-S1-E1-Q2",
@@ -8507,7 +9033,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2024-m-S1-E1-Q3",
@@ -8532,7 +9059,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2024-m-S1-E1-Q4",
@@ -8552,7 +9080,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-m-S1-E2-Q1",
@@ -8578,7 +9107,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2024-m-S1-E2-Q2",
@@ -8598,7 +9128,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-m-S1-E2-Q3",
@@ -8623,7 +9154,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       },
       {
         id: "2024-m-S1-E2-Q4",
@@ -8644,7 +9176,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       }
     ]
   },
@@ -8657,6 +9190,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2024/sujet-2.pdf",
+      pages: 3,
+      pageOffset: null
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2],
@@ -8681,7 +9219,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-m-S2-E1-Q2",
@@ -8706,7 +9245,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-m-S2-E1-Q3",
@@ -8732,7 +9272,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-m-S2-E1-Q4",
@@ -8752,7 +9293,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-m-S2-E2-Q1",
@@ -8777,7 +9319,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-m-S2-E2-Q2",
@@ -8802,7 +9345,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-m-S2-E2-Q3",
@@ -8828,7 +9372,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2024-m-S2-E2-Q4",
@@ -8848,7 +9393,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       }
     ]
   },
@@ -8861,6 +9407,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2025/sujet-1.pdf",
+      pages: 3,
+      pageOffset: 0
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2],
@@ -8885,7 +9436,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2025-m-S1-E1-Q2",
@@ -8910,7 +9462,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2025-m-S1-E1-Q3",
@@ -8936,7 +9489,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2025-m-S1-E1-Q4",
@@ -8956,7 +9510,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2025-m-S1-E2-Q1",
@@ -8981,7 +9536,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2025-m-S1-E2-Q2",
@@ -9001,7 +9557,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2025-m-S1-E2-Q3",
@@ -9026,7 +9583,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       },
       {
         id: "2025-m-S1-E2-Q4",
@@ -9052,7 +9610,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       }
     ]
   },
@@ -9065,6 +9624,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2025/sujet-2.pdf",
+      pages: 3,
+      pageOffset: 3
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2],
@@ -9089,7 +9653,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2025-m-S2-E1-Q2",
@@ -9115,7 +9680,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2025-m-S2-E1-Q3",
@@ -9141,7 +9707,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2025-m-S2-E1-Q4",
@@ -9161,7 +9728,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2025-m-S2-E2-Q1",
@@ -9186,7 +9754,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2025-m-S2-E2-Q2",
@@ -9206,7 +9775,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2025-m-S2-E2-Q3",
@@ -9231,7 +9801,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       },
       {
         id: "2025-m-S2-E2-Q4",
@@ -9257,7 +9828,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       }
     ]
   },
@@ -9270,6 +9842,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2026/sujet-1.pdf",
+      pages: 3,
+      pageOffset: 0
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2],
@@ -9294,7 +9871,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2026-m-S1-E1-Q2",
@@ -9319,7 +9897,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2026-m-S1-E1-Q3",
@@ -9345,7 +9924,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2026-m-S1-E1-Q4",
@@ -9365,7 +9945,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2026-m-S1-E2-Q1",
@@ -9390,7 +9971,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2026-m-S1-E2-Q2",
@@ -9411,7 +9993,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2026-m-S1-E2-Q3",
@@ -9436,7 +10019,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       },
       {
         id: "2026-m-S1-E2-Q4",
@@ -9462,7 +10046,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       }
     ]
   },
@@ -9475,6 +10060,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       humanVerified: false,
       verifiedAt: null,
       notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2026/sujet-2.pdf",
+      pages: 3,
+      pageOffset: 3
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2],
@@ -9504,7 +10094,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2026-m-S2-E1-Q2",
@@ -9529,7 +10120,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2026-m-S2-E1-Q3",
@@ -9555,7 +10147,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 1
       },
       {
         id: "2026-m-S2-E1-Q4",
@@ -9575,7 +10168,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2026-m-S2-E2-Q1",
@@ -9600,7 +10194,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "N",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 2
       },
       {
         id: "2026-m-S2-E2-Q2",
@@ -9620,7 +10215,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "S",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: null
       },
       {
         id: "2026-m-S2-E2-Q3",
@@ -9645,7 +10241,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "E",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       },
       {
         id: "2026-m-S2-E2-Q4",
@@ -9671,7 +10268,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             pole: "W",
             kind: "direct"
           }
-        ]
+        ],
+        pageInPdf: 3
       }
     ]
   }
