@@ -64,11 +64,18 @@ Audit d'un sujet (pôles, points, provenance, page) :
   للأحماض الأمينية (Lys, Asp, Ala)… » (Q2, Q3) manquaient.
 - Notes de provenance : elles citaient « corrigé page N » alors que la consigne
   a été relue sur le **scan** ; chaque note porte désormais la page relue.
-- **2018-m** : deux réponses modèle ont été réécrites pendant la relecture pour
-  ne rien inventer — (1) la الوثيقة (4) compte les **خلايا بلازمية** (et non des
-  بلاعم) ; (2) le tableau du الشكل (أ) n'étant pas lisible cellule par cellule,
-  la réponse décrit la méthode (lecture par ثلاثيات + جدول الشفرة المرفق) au
-  lieu de recopier une séquence de رامزات déduite sans preuve.
+- **2018-m** : réponses modèle **réécrites depuis le corrigé officiel** (le
+  dossier local `M/dzexams-bac-sciences-1967487.pdf` porte l'« الإجابة
+  النموذجية » pp. 7–12). Les hypothèses de la première passe étaient fausses :
+  (س) = الاستنساخ (النواة) et (ص) = الترجمة (الهيولى) — et non « تضاعف ADN /
+  تعبير مورثي » ; les stades des figures du ت2 sont **مرحلة النهاية / مرحلة
+  الاستطالة** ; (a) = CD4 et (b) = TCR (et non CMH II) ; les phases de
+  l'infection sont **الإصابة الأولية / الكمون / العجز المناعي** (seuil
+  numérique : 200 خلية/مم³, fenêtre 9–12 شهرا) ; le tableau du الشكل (أ) donne
+  **His–Phe–Asp–Pro–Ser–Val** et **His–Tyr–Asp–Pro–Ser–Val**, avec les
+  séquences GTA AAA CTA GGA AGT CAG ATT / CAT TTT GAT CCT TCA GTC TAA ; la
+  mutation est l'**استبدال النيكليوتيد A رقم 362 → T** (حمض أميني 120 :
+  Phe → Tyr).
 - **2018-m S1-E1-Q4** et **S1-E2-W** : le pôle W de ت1 est signalé `reconstructed`
   (simple clôture) ; les huit consignes du sujet 2 sont toutes imprimées dans le
   sujet, donc `official`.
@@ -118,11 +125,10 @@ corrigé local à l'appui).
 4. Corrections officielles maths : **le corrigé est dans le même dossier
    dzexams que le sujet**. Déjà relus et exploités : 2017
    (`-2275712.pdf`, عناصر الإجابة pp. 5–9) et 2020 (`-2273619.pdf`, pp. 6–10).
-   Restent à relire et à réinjecter dans les réponses modèle : 2018
-   (`-1967487.pdf`, pp. 7–12), 2019 (`-2280992.pdf`, pp. 6–10), 2021
-   (`-2068087.pdf`), 2022 (`-1777391.pdf`), 2023 (`-2275712`… voir
-   `data/archive.js`). Les réponses modèle de 2018 et 2019 ont été rédigées
-   sans lui : elles sont à confronter au corrigé.
+   Restent à relire et à réinjecter dans les réponses modèle : 2019
+   (`-2280992.pdf`, pp. 6–10), 2021 (`-2068087.pdf`), 2022 (`-1777391.pdf`),
+   puis 2023–2026 (`data/archive.js`). Les réponses modèle de 2019 ont été
+   rédigées sans corrigé : elles sont à confronter aux pages 6–10.
 5. Cohérence mots-clés / réponses modèle (audit du 2026-09-13) : 42 pôles des
    années maths portent au moins un mot-clé absent de la réponse modèle
    (formes ة/ه, synonymes) — la sonde `evaluateText(réponse modèle, règle)` doit
