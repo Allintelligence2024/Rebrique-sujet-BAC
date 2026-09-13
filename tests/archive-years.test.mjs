@@ -22,10 +22,11 @@ test("l'archive 2013-2019 SE est branchée dans APP_CONFIG ; 2020 SE reste le mo
     const year = APP_CONFIG.years.find((y) => y.id === id);
     assert.ok(year && year.enabled && (year.stream || "se") === "se", `${id} SE 4D manquant`);
   }
-  assert.equal(
-    APP_CONFIG.years.some((y) => y.id === "2021" && y.enabled),
-    false
-  );
+  /* 2021 n'est pas une année 4D : c'est une armature « copie libre »
+     (épreuve ouverte, aucune consigne encodée). */
+  const se2021 = APP_CONFIG.years.find((y) => y.id === "2021");
+  assert.ok(se2021 && se2021.enabled, "2021 ouvre une épreuve");
+  assert.equal(se2021.answerMode, "free");
 });
 
 test("chaque année reconstruite 2013–2019 est activée avec 2 sujets × 3 exercices 5/7/8", () => {

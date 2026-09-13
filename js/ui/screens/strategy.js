@@ -1,7 +1,7 @@
 import { setInternalHTML } from "../dom.js";
 import { officialTaskInventoryFor } from "../../../data/official-tasks.js";
 import { pdfViewerHTML } from "../pdf-viewer.js";
-import { assertSimulationEligible } from "../../domain/subjects/official-coverage.js";
+import { assertSimulationEligible, examOpenable } from "../../domain/subjects/official-coverage.js";
 import { simulationBlockersArabic } from "../coverage-messages.js";
 
 export function createStrategyScreen(deps) {
@@ -114,9 +114,11 @@ export function createStrategyScreen(deps) {
     const officialTasks = (officialTaskInventoryFor(store.state.yearId, subject.id)?.tasks || []).filter(
       (task) => task.promptSource === "official"
     ).length;
-    const inventoryNote = `<p class="small text-muted inventory-note" id="inventory-note-${subject.id}">جرد المهام: ${coverage.knownTaskCount} مهمة، منها ${officialTasks} تعليمة رسمية موثّقة.</p>`;
+    const inventoryNote = coverage.freeAnswerEligible
+      ? `<p class="small text-muted inventory-note" id="inventory-note-${subject.id}">وضع الإجابة الحرة: تعليمات هذه الدورة غير مُشفَّرة (ملفها غير قابل للاستخراج). الإمتحان مفتوح — اقرأ الموضوع واكتب إجابتك — بلا تصحيح ولا نقطة.</p>`
+      : `<p class="small text-muted inventory-note" id="inventory-note-${subject.id}">جرد المهام: ${coverage.knownTaskCount} مهمة، منها ${officialTasks} تعليمة رسمية موثّقة.</p>`;
     return `
-    <div class="card stack subject-card" data-subject-coverage="${coverage.inventoryStatus}" data-simulation-eligible="${coverage.simulationEligible}">
+    <div class="card stack subject-card" data-subject-coverage="${coverage.inventoryStatus}" data-simulation-eligible="${coverage.simulationEligible}" data-exam-openable="${examOpenable(coverage)}" data-answer-mode="${coverage.freeAnswerEligible ? "free" : "inventory"}">
       <div>
         <div class="flex spread subject-card-head">
           <span class="badge badge-${theme}">الموضوع 0${subject.id}</span>
@@ -192,11 +194,18 @@ export function createStrategyScreen(deps) {
     const year = yearObj(store.state.yearId);
     const subject = year?.sujets.find((item) => item.id === sujetNum);
     if (!subject) return;
-    // Filet de sécurité : un sujet sans inventaire exploitable reste fermé.
+    // Filet de sécurité : un sujet sans inventaire exploitable reste fermé,
+    // sauf armature « copie libre » — là, rien n'est noté mais l'épreuve est
+    // réelle : le sujet se lit dans l'application et l'élève rédige.
     const coverage = officialCoverageForSubject(year, subject);
-    try {
-      assertSimulationEligible(coverage);
-    } catch {
+    if (coverage.simulationEligible) {
+      try {
+        assertSimulationEligible(coverage);
+      } catch {
+        toast(`الإمتحان مرفوض: ${simulationBlockersArabic(coverage.blockers)}`, "error");
+        return;
+      }
+    } else if (!coverage.freeAnswerEligible) {
       toast(`الإمتحان مرفوض: ${simulationBlockersArabic(coverage.blockers)}`, "error");
       return;
     }

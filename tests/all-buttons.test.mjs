@@ -81,22 +81,22 @@ test("1. Hub : test des boutons d'accueil, adkar, sons et années", () => {
   assert.ok(!$("#view-hub").classList.contains("hidden"));
 });
 
-test("1b. SE 2013–2020 et 2022–2026 en 4D ; 2021 en consultation", () => {
+test('1b. SE 2013–2026 en épreuve : 4D partout, 2021 en armature "copie libre"', () => {
   assert.equal($$("#year-grid .year-card").length, 14);
   const training2013 = $('#year-grid [data-hub-year="2013"]');
   assert.ok(training2013);
   assert.equal(training2013.dataset.kind, "exam");
   assert.ok(training2013.querySelector("[data-year]"));
   assert.equal($('#year-grid [data-hub-year="2019"]').dataset.kind, "exam");
-  assert.equal($('#year-grid [data-hub-year="2021"]').dataset.kind, "consult");
-  assert.equal($('#year-grid [data-hub-year="2021"]').querySelector("[data-year]"), null);
+  assert.equal($('#year-grid [data-hub-year="2021"]').dataset.kind, "exam");
+  assert.ok($('#year-grid [data-hub-year="2021"]').querySelector("[data-year]"), "2021 ouvre une épreuve");
   assert.equal($('#year-grid [data-hub-year="2020"]').dataset.kind, "exam");
   assert.equal($('#year-grid [data-hub-year="2026"]').dataset.kind, "exam");
   assert.ok($('#year-grid [data-year="2026"]'));
   assert.ok($('#year-grid [data-year="2020"]'));
   assert.ok($('#year-grid [data-year="2013"]'));
   const links = $$('#year-grid [data-kind="consult"] a[href*="dzexams.com/ar/annales/"]');
-  assert.equal(links.length, 1, "filière SE : 2021 seule en consultation");
+  assert.equal(links.length, 0, "filière SE : chaque année ouvre une épreuve dans l'application");
   assert.ok(!$(".modal"));
   assert.ok(!$("#view-hub").classList.contains("hidden"));
 });

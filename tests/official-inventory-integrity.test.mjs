@@ -2,7 +2,11 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { YEAR_CATALOG, loadYear } from "../data/subjects.js";
 import { OFFICIAL_TASK_INVENTORIES, officialTaskInventoryFor } from "../data/official-tasks.js";
-import { buildOfficialCoverageReport } from "../js/domain/subjects/official-coverage.js";
+import {
+  buildOfficialCoverageReport,
+  examOpenable,
+  isFreeAnswerSubject
+} from "../js/domain/subjects/official-coverage.js";
 
 /* ============================================================
    Intégrité des inventaires de tâches officielles.
@@ -17,15 +21,45 @@ const years = await Promise.all(
 );
 const loaded = years.filter((item) => item.year);
 
+/* Les armatures « copie libre » (années dont les consignes ne sont pas
+   encodées) n'ont, par construction, aucun inventaire : elles sont vérifiées
+   par leur propre test, plus bas. */
 function eachSubject() {
   const rows = [];
   for (const { year } of loaded) {
+    if (year.answerMode === "free") continue;
     for (const subject of year.sujets || []) {
       rows.push({ yearId: year.id, subject, inventory: officialTaskInventoryFor(year.id, subject.id) });
     }
   }
   return rows;
 }
+
+test("une armature « copie libre » n'invente aucune tâche et n'ouvre aucune note", () => {
+  const freeYears = loaded.filter(({ year }) => year.answerMode === "free");
+  assert.ok(freeYears.length >= 1, "aucune année en copie libre");
+  for (const { year } of freeYears) {
+    for (const subject of year.sujets) {
+      assert.equal(isFreeAnswerSubject(subject), true, `${year.id}/S${subject.id}`);
+      assert.equal(
+        officialTaskInventoryFor(year.id, subject.id),
+        null,
+        `${year.id}/S${subject.id} ne doit pas avoir d'inventaire inventé`
+      );
+      const report = buildOfficialCoverageReport({ yearId: year.id, subject, inventory: null });
+      assert.equal(report.freeAnswerEligible, true);
+      assert.equal(report.simulationEligible, false, "aucune note ne peut être calculée");
+      assert.equal(examOpenable(report), true, "l'épreuve reste ouverte");
+      for (const exercise of subject.exercises) {
+        assert.deepEqual(
+          Object.keys(exercise.poles || {}),
+          [],
+          `${year.id}/S${subject.id}/E${exercise.number} encode une consigne`
+        );
+      }
+    }
+  }
+});
 
 test("chaque sujet chargé possède un inventaire, et inversement", () => {
   const rows = eachSubject();

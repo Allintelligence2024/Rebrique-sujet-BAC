@@ -29,6 +29,26 @@ function taskIsMapped(task, exerciseByNumber) {
  * Audit an explicit official-task inventory against one training subject.
  * Unknown coverage is represented by null, never by a misleading zero or 100%.
  */
+/* Un sujet « copie libre » ne porte aucune consigne : la couche texte du
+   PDF officiel est illisible, l'armature (thème + barème) seule est encodée.
+   L'épreuve reste ouverte — le sujet se lit dans l'application et l'élève
+   rédige — mais rien n'y est noté, faute de quoi corriger. */
+export function isFreeAnswerSubject(subject) {
+  const exercises = subjectExercises(subject);
+  return (
+    subject?.answerMode === "free" &&
+    exercises.length > 0 &&
+    exercises.every((exercise) => (Number(exercise.max) || 0) > 0) &&
+    Boolean(subject?.pdfLocalUrl || subject?.pdfExternalUrl)
+  );
+}
+
+/** L'épreuve peut-elle s'ouvrir ? Oui pour un sujet inventorié, ou pour une
+    armature « copie libre » — jamais pour un sujet sans rien à faire. */
+export function examOpenable(report) {
+  return Boolean(report?.simulationEligible || report?.freeAnswerEligible);
+}
+
 export function buildOfficialCoverageReport({ yearId, subject, inventory }) {
   const exercises = subjectExercises(subject);
   const exerciseByNumber = new Map(exercises.map((exercise) => [exercise.number, exercise]));
@@ -52,7 +72,8 @@ export function buildOfficialCoverageReport({ yearId, subject, inventory }) {
       taskCompleteExerciseNumbers: [],
       errors,
       blockers: ["inventory-missing"],
-      simulationEligible: false
+      simulationEligible: false,
+      freeAnswerEligible: isFreeAnswerSubject(subject)
     };
   }
 
@@ -229,7 +250,8 @@ export function buildOfficialCoverageReport({ yearId, subject, inventory }) {
     taskCompleteExerciseNumbers: [...taskCompleteExerciseNumbers],
     errors,
     blockers: [...new Set(blockers)],
-    simulationEligible
+    simulationEligible,
+    freeAnswerEligible: false
   };
 }
 

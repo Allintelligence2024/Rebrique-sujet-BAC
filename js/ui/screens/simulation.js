@@ -270,10 +270,91 @@ export function createSimulationController(deps) {
     showScreen("view-workspace");
   }
 
+  /* Épreuve « copie libre » : session dont les consignes ne sont pas
+     encodées (couche texte du PDF illisible, rien n'a pu être recopié mot à
+     mot ni reconstitué sans inventer). Plutôt que de fermer la session, on
+     ouvre une épreuve honnête : le sujet officiel s'affiche dans la
+     visionneuse, un champ de rédaction par exercice, le chronomètre officiel
+     et « ✓ تسليم الورقة ». Aucune note, aucun corrigé : il n'y a ici rien à
+     corriger — seulement l'armature (thème + barème) lue dans le fichier. */
+  const FREE_MODE_NOTICE =
+    "وضع «الورقة الحرة»: تعليمات هذه الدورة غير مُشفَّرة لأن ملفها الرسمي غير قابل للاستخراج. " +
+    "اقرأ الموضوع من الملف أعلاه واكتب إجابتك الكاملة لكل تمرين في الخانة المخصصة. " +
+    "لا يوجد تصحيح ولا نقطة في هذا الوضع.";
+
+  function renderFreeAnswerExam(subject) {
+    const completed = store.state.sessionStatus === "completed";
+    const screen = $("#view-workspace");
+    screen?.setAttribute("data-session-mode", "bac");
+    screen?.setAttribute("data-answer-mode", "free");
+    screen?.setAttribute("data-review-mode", String(completed));
+    setInternalHTML(
+      screen,
+      `<div class="app app-wide">
+        <header class="screen-head">
+          <div class="brand">
+            <button class="btn btn-rose btn-sm" id="simulation-home">الرئيسية</button>
+            <div>
+              <h2>الإمتحان · الموضوع ${subject.id === 1 ? "الأول" : "الثاني"}</h2>
+              <p>${completed ? "إعادة القراءة بعد التسليم" : "الإمتحان جارٍ — إجابة حرة انطلاقاً من الموضوع الرسمي"}</p>
+            </div>
+          </div>
+          <span class="badge ${completed ? "badge-emerald" : "badge-rose"}">${completed ? "مُسلَّم" : "إمتحان"}</span>
+        </header>
+        ${
+          completed
+            ? `<div class="feedback good mb-2" id="simulation-review-notice" role="status">تم التسليم. هذه شاشة إعادة القراءة؛ الإجابات مقفلة ولا تعرض أي نقطة آلية.</div>`
+            : ""
+        }
+        <div class="feedback mid mb-2" id="free-mode-notice" role="note">${escapeHTML(FREE_MODE_NOTICE)}</div>
+        <div class="workspace-tools" aria-label="أدوات الاختبار">
+          <button class="btn btn-indigo btn-sm" id="simulation-pdf">📄 الموضوع</button>
+          ${completed ? "" : `<button class="btn btn-rose btn-sm" id="simulation-finish">✓ تسليم الورقة</button>`}
+        </div>
+        <section class="card center stack bac-reading-card">
+          ${pdfViewerHTML(subject, { showCover: false })}
+        </section>
+        <section class="stack bac-answers" aria-label="إجابات الموضوع">
+          ${subject.exercises
+            .map(
+              (
+                exercise
+              ) => `<article class="card stack simulation-task" data-free-exercise="${exercise.number}">
+            <div class="flex spread simulation-task-head">
+              <span class="badge badge-indigo">التمرين ${exercise.number}</span>
+              <span class="small text-muted">${Number(exercise.max) || 0} نقطة</span>
+            </div>
+            <h3>${escapeHTML(exercise.label)}</h3>
+            <p class="small text-muted">${escapeHTML(exercise.desc || "")}</p>
+            <label class="lbl" for="free-answer-${exercise.number}">إجابتك</label>
+            <textarea class="field simulation-answer" id="free-answer-${exercise.number}" data-exercise-free="${exercise.number}" data-exercise="${exercise.number}" rows="10"${completed ? " disabled" : ""}></textarea>
+            ${completed ? "" : micButton(`free-answer-${exercise.number}`)}
+            ${completed ? "" : `<button class="btn btn-ghost btn-sm qualitative-check" data-qualitative-free="${exercise.number}">تقييم نوعي</button><div class="feedback small qualitative-feedback" data-qualitative-result-free="${exercise.number}" aria-live="polite"></div>`}
+          </article>`
+            )
+            .join("")}
+        </section>
+      </div>`
+    );
+    $("#simulation-home")?.addEventListener("click", goHome);
+    $("#simulation-pdf")?.addEventListener("click", openSubjectPdf);
+    $("#simulation-finish")?.addEventListener("click", confirmFinish);
+    restoreFreeAnswers(subject);
+    $$("#view-workspace [data-task-answer], #view-workspace [data-exercise-free]").forEach((input) =>
+      input.addEventListener("input", persistAnswers)
+    );
+    bindQualitativeChecks(true);
+    showScreen("view-workspace");
+  }
+
   function renderSimulation() {
     const { subject, inventory, report } = context();
     if (!subject) {
       denyInvalidSimulation(report);
+      return;
+    }
+    if (report?.freeAnswerEligible) {
+      renderFreeAnswerExam(subject);
       return;
     }
     if (!inventory || !report.simulationEligible) {
@@ -377,6 +458,8 @@ export function createSimulationController(deps) {
       persistAnswers();
       store.finishSession("manual");
       timers.stopAll();
+      // Le chronomètre s'efface avec la remise : il ne doit plus rien décompter.
+      $("#global-timer-bar")?.classList.add("hidden");
       closeModal();
       completionNoticeShown = false;
       renderSimulation();

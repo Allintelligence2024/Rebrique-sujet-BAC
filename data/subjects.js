@@ -185,6 +185,21 @@ export const YEAR_CATALOG = Object.freeze([
     modulePath: "data/years/se/year-2022.js"
   }),
   catalogEntry({
+    id: "2021",
+    stream: "se",
+    calendarYear: "2021",
+    label: "بكالوريا الجزائر دورة 2021",
+    badge: "دورة رسمية",
+    theme: "emerald",
+    enabled: true,
+    // Armature « copie libre » : aucune consigne encodée (couche texte du PDF
+    // illisible). Doit rester identique au champ du payload (test de cohérence).
+    answerMode: "free",
+    subjectCount: 2,
+    exerciseCounts: [3, 3],
+    modulePath: "data/years/se/year-2021.js"
+  }),
+  catalogEntry({
     id: "2026",
     stream: "se",
     calendarYear: "2026",
@@ -258,6 +273,7 @@ const YEAR_LOADERS = Object.freeze({
   2018: () => import("./years/se/year-2018.js"),
   2019: () => import("./years/se/year-2019.js"),
   2020: () => import("./years/se/year-2020.js"),
+  2021: () => import("./years/se/year-2021.js"),
   2022: () => import("./years/se/year-2022.js"),
   2023: () => import("./years/se/year-2023.js"),
   2024: () => import("./years/se/year-2024.js"),

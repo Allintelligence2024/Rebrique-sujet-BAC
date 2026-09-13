@@ -148,6 +148,8 @@ test("un même bacPrompt certifié officiel ne peut pas être partagé par deux 
 
 test("la somme des points N/S/E/W égale ex.max pour chaque exercice", () => {
   for (const year of APP_CONFIG.years) {
+    // Armature « copie libre » : aucun pôle encodé, donc rien à sommer.
+    if (year.answerMode === "free") continue;
     for (const sujet of year.sujets || []) {
       for (const ex of sujet.exercises || []) {
         const sum = ["N", "S", "E", "W"].reduce((a, p) => a + (ex.poles[p]?.points || 0), 0);
@@ -163,6 +165,18 @@ test("la somme des points N/S/E/W égale ex.max pour chaque exercice", () => {
 test("toute année enabled=true a au moins un sujet, chaque sujet un exercice, chaque exercice 4 pôles N/S/E/W", () => {
   for (const year of APP_CONFIG.years) {
     if (!year.enabled) continue;
+    // Une armature « copie libre » n'a pas de pôles : c'est précisément ce qui
+    // la distingue d'une année 4D — elle n'encode aucune consigne.
+    if (year.answerMode === "free") {
+      for (const sujet of year.sujets) {
+        assert.ok(sujet.exercises.length > 0, `sujet ${year.id}/S${sujet.id} sans exercice`);
+        for (const ex of sujet.exercises) {
+          assert.deepEqual(ex.poles, {}, `${year.id}/S${sujet.id}/E${ex.number} ne doit rien encoder`);
+          assert.ok((Number(ex.max) || 0) > 0, `${year.id}/S${sujet.id}/E${ex.number} sans barème`);
+        }
+      }
+      continue;
+    }
     assert.ok(year.sujets.length > 0, `année ${year.id} activée mais sans sujet`);
     for (const sujet of year.sujets) {
       assert.ok(sujet.exercises.length > 0, `sujet ${year.id}/S${sujet.id} sans exercice`);

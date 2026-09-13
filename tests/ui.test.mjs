@@ -56,7 +56,8 @@ test("le hub affiche les années (2025, 2024, 2023 et 2022 actives)", () => {
   assert.ok($('#year-grid [data-hub-year="2026"]'));
   assert.equal($('#year-grid [data-hub-year="2013"]').dataset.kind, "exam");
   assert.equal($('#year-grid [data-hub-year="2019"]').dataset.kind, "exam");
-  assert.equal($('#year-grid [data-hub-year="2021"]').dataset.kind, "consult");
+  assert.equal($('#year-grid [data-hub-year="2021"]').dataset.kind, "exam");
+  assert.ok($('#year-grid [data-year="2021"]'), "2021 ouvre une épreuve");
   assert.equal($('#year-grid [data-hub-year="2020"]').dataset.kind, "exam");
   assert.equal($('#year-grid [data-hub-year="2026"]').dataset.kind, "exam");
   assert.equal($('#year-grid [data-year="2013"]').disabled, false);
@@ -68,6 +69,8 @@ test("le hub affiche les années (2025, 2024, 2023 et 2022 actives)", () => {
 test("les données portent désormais des consignes BAC explicites sur chaque pôle", () => {
   const enabledYears = allYears.filter((year) => year.enabled);
   for (const year of enabledYears) {
+    // Armature « copie libre » : aucune consigne encodée, donc aucun pôle.
+    if (year.answerMode === "free") continue;
     for (const sujet of year.sujets) {
       for (const ex of sujet.exercises) {
         for (const pole of ["N", "S", "E", "W"]) {

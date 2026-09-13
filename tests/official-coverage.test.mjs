@@ -4,7 +4,9 @@ import { APP_CONFIG } from "./helpers/full-app-config.mjs";
 import { officialTaskInventoryFor } from "../data/official-tasks.js";
 import {
   assertSimulationEligible,
-  buildOfficialCoverageReport
+  buildOfficialCoverageReport,
+  examOpenable,
+  isFreeAnswerSubject
 } from "../js/domain/subjects/official-coverage.js";
 
 const year2025 = APP_CONFIG.years.find((year) => year.id === "2025");
@@ -95,6 +97,9 @@ test("les inventaires réels ouvrent l'épreuve sans jamais se prétendre comple
   // Décision produit (data/bac-mode-policy.js) : l'épreuve est ouverte sur un
   // inventaire partiel, à condition que le partiel soit dit explicitement.
   for (const year of APP_CONFIG.years) {
+    // L'armature « copie libre » n'a, par construction, aucun inventaire :
+    // c'est une autre porte d'entrée vers l'épreuve (voir ci-dessous).
+    if (year.answerMode === "free") continue;
     for (const subject of year.sujets || []) {
       const inventory = officialTaskInventoryFor(year.id, subject.id);
       const label = `${year.id}/S${subject.id}`;
@@ -117,4 +122,37 @@ test("les inventaires réels ouvrent l'épreuve sans jamais se prétendre comple
       assert.equal(inventory.source.humanVerified, false, `${label} annonce une relecture humaine`);
     }
   }
+});
+
+test("l'armature « copie libre » ouvre l'épreuve sans rien inventer", () => {
+  const freeYear = APP_CONFIG.years.find((year) => year.answerMode === "free");
+  assert.ok(freeYear, "aucune année en copie libre");
+  for (const subject of freeYear.sujets) {
+    assert.equal(isFreeAnswerSubject(subject), true, `S${subject.id} devrait être en copie libre`);
+    const report = buildOfficialCoverageReport({ yearId: freeYear.id, subject, inventory: null });
+    assert.equal(report.simulationEligible, false, "aucune note sans inventaire");
+    assert.equal(report.freeAnswerEligible, true, "l'épreuve doit rester ouverte");
+    assert.equal(examOpenable(report), true);
+    // Rien n'est inventé : ni tâche, ni pôle, ni consigne.
+    assert.equal(officialTaskInventoryFor(freeYear.id, subject.id), null);
+    for (const exercise of subject.exercises) {
+      assert.deepEqual(exercise.poles, {}, `S${subject.id}/E${exercise.number} encode une consigne`);
+    }
+  }
+});
+
+test("une armature sans PDF ni barème ne peut pas ouvrir d'épreuve", () => {
+  const freeYear = APP_CONFIG.years.find((year) => year.answerMode === "free");
+  const subject = { ...freeYear.sujets[0] };
+  assert.equal(isFreeAnswerSubject({ ...subject, pdfLocalUrl: null, pdfExternalUrl: null }), false);
+  assert.equal(isFreeAnswerSubject({ ...subject, answerMode: undefined }), false);
+  assert.equal(isFreeAnswerSubject({ ...subject, exercises: [] }), false);
+  assert.equal(
+    isFreeAnswerSubject({ ...subject, exercises: [{ number: 1, max: 0 }] }),
+    false,
+    "un exercice sans barème ne fait pas une épreuve"
+  );
+  // Et un sujet inventorié reste évalué par son inventaire, jamais par ce mode.
+  const inventoried = APP_CONFIG.years.find((year) => year.answerMode !== "free").sujets[0];
+  assert.equal(isFreeAnswerSubject(inventoried), false);
 });

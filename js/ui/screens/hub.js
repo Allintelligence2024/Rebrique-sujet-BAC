@@ -194,13 +194,18 @@ export function createHubScreen(deps) {
     return card;
   }
 
+  /* Une année « copie libre » n'a aucune consigne encodée : la carte ne peut
+     pas annoncer un جرد المهام qu'elle n'a pas. Elle le dit à la place. */
+  function examCardNote(y) {
+    const duration = formatDuration(examMinutesForYear(y));
+    return y.answerMode === "free"
+      ? `إمتحان الموضوع — وضع «الورقة الحرة»: تعليمات هذه الدورة غير مُشفَّرة، تقرأ الموضوع من الملف وتكتب إجابتك. مدة الاختبار الرسمية: ${duration}.`
+      : `إمتحان الموضوع — جرد المهام جزئي: بعض التعليمات مُعاد بناؤها. مدة الاختبار الرسمية: ${duration}.`;
+  }
+
   function examCard(y) {
     const disabled = !y.enabled;
-    const note = disabled
-      ? y.loadingNote || "لم تُرفق وثائق PDF لهذه الدورة بعد — قريباً."
-      : `إمتحان الموضوع — جرد المهام جزئي: بعض التعليمات مُعاد بناؤها. مدة الاختبار الرسمية: ${formatDuration(
-          examMinutesForYear(y)
-        )}.`;
+    const note = disabled ? y.loadingNote || "لم تُرفق وثائق PDF لهذه الدورة بعد — قريباً." : examCardNote(y);
     const cardId = yearCardId(y);
     const card = node("div", {
       className: `card year-card ${disabled ? "dim" : ""}`,

@@ -153,6 +153,10 @@ const inventories = {};
 const summary = [];
 for (const { entry, year } of years) {
   if (!year) continue;
+  /* Une armature « copie libre » n'encode aucune consigne : elle n'a donc
+     AUCUN inventaire à générer. En fabriquer un vide reviendrait à prétendre
+     que le sujet a été inventorié — ce qu'aucune donnée ne permet d'affirmer. */
+  if (year.answerMode === "free") continue;
   for (const subject of year.sujets || []) {
     const key = `${year.id}/S${subject.id}`;
     inventories[key] = await buildInventory(year.id, year, subject);
