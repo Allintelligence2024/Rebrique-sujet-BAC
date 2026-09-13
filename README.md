@@ -12,13 +12,13 @@ N = اقرأ — تأطير المسألة، S = اجمع — استغلال ا�
 
 ## ✨ Ce que propose l'application
 
-Parcours en 5 étapes pensé pour la **gestion du stress** et la **méthode** :
+Parcours en cinq temps pensé pour la **gestion du stress** et la **méthode** — soit quatre écrans (`view-hub`, `view-guide`, `view-strategy`, `view-workspace` dans `index.html`) plus une section d'outils repliée :
 
-1. **Hub** — une seule action par carte-sujet : **▶ ابدأ التدريب المنهجي**. Chaque carte annonce que le mapping est partiel et affiche la durée officielle selon la filière : 4 h 30 en Sciences expérimentales, 2 h 30 en Maths.
-2. **Sérénité** _(parcours guidé uniquement)_ — volontairement dépouillé : respiration, rappel des quatre étapes (اقرأ ← اجمع ← اربط ← اختُم), plan de session. Cet écran appartient au parcours d'entraînement, pas à une simulation certifiée de l'épreuve.
-3. **تدريب الخطوات الأربع** _(hub, section repliée)_ — outils d'entraînement formulés littéralement : décision **سند/معارف**, décision **وصف/تفسير**, exercice rapide de 12 instructions, niveau avancé après 12/12 ×3, cinq erreurs, carte imprimable, **أطلس التقنيات** et **تشخيص تجريبي**. Ils restent repliés par défaut.
-4. **Stratégie** _(optionnelle)_ — ouverture explicite des sources PDF externes (aucune redistribution ni chargement automatique), estimation personnelle et choix explicite du parcours. L'entraînement reste disponible ; le bouton de simulation est désactivé sujet par sujet tant que sa couverture officielle n'est pas de 100 %.
-5. **Espace de travail séparé** — l'entraînement conserve les aides, modèles et diagnostics qualitatifs. La simulation utilise uniquement les tâches officielles, sans indice, modèle ni diagnostic pendant l'épreuve ; après remise, les réponses sont verrouillées et une relecture distincte devient disponible. Aucune note BAC n'est affichée : le moteur n'est pas calibré.
+1. **Hub** — une seule action par carte-sujet : **▶ ابدأ الإمتحان**. Chaque carte annonce la durée officielle selon la filière (4 h 30 en Sciences expérimentales, 2 h 30 en Maths) et rappelle que le jumeau numérique du sujet est partiel : certaines consignes sont reconstruites.
+2. **Sérénité** _(parcours guidé uniquement)_ — volontairement dépouillé : respiration, rappel des quatre étapes (اقرأ ← اجمع ← اربط ← اختُم), plan de session. Cet écran prépare à l'épreuve, il n'est pas une simulation certifiée.
+3. ~~**تدريب الخطوات الأربع**~~ _(retiré le 2026-09-13)_ — l'exercice rapide, l'أطلس التقنيات et le تشخيص تجريبي ont été supprimés avec le mode entraînement. Le hub ne garde que les cartes d'épreuve et la consultation des annales.
+4. **Stratégie** _(optionnelle)_ — le sujet s'affiche **dans l'application** (visionneuse PDF intégrée, les fichiers suivis dans `subjects/**` étant servis par la même origine), avec estimation personnelle et choix du sujet. Chaque carte rappelle l'état réel de l'inventaire : `جرد المهام: N مهمة، منها M تعليمة رسمية موثّقة`. Le lien dzexams ne reste qu'en source de repli, et `⬇️ تنزيل PDF` permet de travailler hors ligne.
+5. **Épreuve — le seul mode** — l'application propose uniquement l'épreuve : les tâches inventoriées du sujet, un champ de réponse par tâche, le chronomètre officiel et **✓ تسليم الورقة** pour rendre la copie avant la fin. Aucune aide, aucun modèle, aucun diagnostic pendant l'épreuve ; après remise, les réponses sont verrouillées et une relecture distincte devient disponible. Aucune note BAC n'est affichée : le moteur n'est pas calibré, et l'écran le dit (`التنقيط غير معاير`).
 
 > 📱 **Responsive** : l'interface est utilisable sur téléphone (grilles qui se replient, cibles tactiles ≥ 44 px, champs 16 px sans zoom iOS, modales scrollables). Verrouillé par `tests/e2e/responsive.spec.mjs` (3 viewports réels, zéro défilement horizontal) dans la CI.
 
@@ -32,22 +32,16 @@ fermé** « توجيه هذه الخطوة » : la consigne et la zone de répon
 
 ## 🔑 Correspondance fiche MIFTAH ↔ application (cartographie complète)
 
-La fiche élève **MIFTAH v3.1** (recto المفتاح / verso المفتاح+) est intégrée section par section.
-Le contenu méthode vit dans les modules testés ; la vue imprimable (`js/ui/keycard.js`,
-bouton 🖨️ de l'écran guide) est générée à partir des **mêmes sources** (quick-check.js, gates.js).
+La fiche élève **MIFTAH v3.1** (recto المفتاح / verso المفتاح+) a longtemps servi de référence.
+Depuis le 2026-09-13, le produit ne propose plus qu'un mode — l'épreuve — et les outils de la
+fiche (décisions سند/معارف · وصف/تفسير, exercice rapide 12/12, keycard imprimable, brouillon en
+quatre étapes) ont été retirés avec lui. Ce qui reste de la méthode :
 
-| Section de la fiche                                                            | Où elle vit dans l'app                                                                                                  | Test                                             |
-| ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| الخطوات 1-4 (اقرأ/اجمع/اربط/اختُم)                                             | parcours linéaire et tiroir brouillon — IDs internes N/S/E/W inchangés                                                  | `ui.test.mjs`                                    |
-| قرارا البداية (سند/معارف · وصف/تفسير)                                          | classifieur `js/domain/method/gates.js` : carte interactive, exercice rapide et décision littérale sous chaque consigne | `gates-drill.test.mjs`, `ui.test.mjs`            |
-| تدريب القرار (12/12 ×3)                                                        | exercice du hub, série persistée qui ouvre le niveau avancé                                                             | `gates-drill.test.mjs`                           |
-| المستوى المتقدم (افتح، قالب التركيب، حساب، شجرة النسب، عامّ/خاصّ، جملة النجاة) | carte dédiée déverrouillable + gradation متوسط/امتياز                                                                   | `gates-drill.test.mjs`                           |
-| وضع الحفظ (عرّف / اذكر)                                                        | canevas `definition`/`listing` de `js/method-scripts.js`                                                                | `method-coach.test.mjs`                          |
-| الجمل الثلاث الجاهزة                                                           | `sentenceModels` de `data/brouillon.js`                                                                                 | `brouillon.test.mjs`                             |
-| الفحص الرباعي المعكوس                                                          | `js/ui/workspace/quick-check.js`, dépliable dans chaque pôle du workspace + keycard                                     | `workspace-modules.test.mjs`, `keycard.test.mjs` |
-| خمسة أخطاء تكلّف أكثر من الجهل                                                 | carte de l'écran guide + keycard (reformulés **sans** pourcentages de barème)                                           | `gates-drill.test.mjs`                           |
-| التصنيف حسب المستوى (متعثر/متوسط/امتياز)                                       | badges 🟦/🟨 dans le niveau avancé                                                                                      | `gates-drill.test.mjs`                           |
-| بطاقة imprimable                                                               | vue générée par `js/ui/keycard.js` (impression A4 isolée), pas de fichier statique dupliqué                             | `keycard.test.mjs`                               |
+| Élément                            | Où il vit dans l'app aujourd'hui                                                    | Test                         |
+| ---------------------------------- | ----------------------------------------------------------------------------------- | ---------------------------- |
+| الخطوات 1-4 (اقرأ/اجمع/اربط/اختُم) | écran **Sérénité** (guide) : rappel des quatre étapes avant l'épreuve               | `ui.test.mjs`                |
+| وضع الحفظ (عرّف / اذكر)            | canevas `definition`/`listing` de `js/method-scripts.js`, utilisés par l'évaluation | `method-coach.test.mjs`      |
+| Provenance des consignes           | inventaires `data/official-tasks.js` + badge ⚠️/✓ dans chaque tâche de l'épreuve    | `official-coverage.test.mjs` |
 
 **Hors périmètre, volontairement :** la colonne « 📝 المصحح » de la fiche (pourcentages, « نصف النقطة
 دائما », « إجابة بلا رقم = 0 »…) : aucune source officielle (`عناصر الإجابة والعلامة المترتبة`) ne
@@ -73,8 +67,7 @@ Le disclaimers du hard benchmark (0 copie réelle doublement annotée) reste la 
 │   ├── calibration-status.js         # statut public généré depuis le corpus audité
 │   ├── usability-study.js            # agrégats P2 pseudonymisés (aucune session inventée)
 │   ├── official-tasks.js             # inventaires explicites des questions BAC, séparés des étapes N/S/E/W
-│   ├── archive.js                    # consultation (hors cartes d'entraînement affichées)
-│   └── brouillon.js                  # canevas du brouillon méthodologique et verbes BAC
+│   └── archive.js                    # consultation (hors cartes d'épreuve affichées)
 ├── js/
 │   ├── main.js                       # point d'entrée
 │   ├── ui.js                         # façade d'orchestration (taille mesurée dans le bloc « Tests »)
@@ -85,14 +78,11 @@ Le disclaimers du hard benchmark (0 copie réelle doublement annotée) reste la 
 │   ├── application/                  # minuteurs + démarrage après chargement de l'année demandée
 │   ├── domain/evaluation/            # règles d'analyse et d'évaluation (5 modules)
 │   ├── domain/subjects/official-coverage.js # audit de couverture et garde de simulation fermée par défaut
-│   ├── domain/method/gates.js        # décisions سند/معارف · وصف/تفسير + exercice rapide
 │   ├── services/                     # son, dictée et observabilité locale agrégée sans données personnelles
 │   └── ui/
 │       ├── dom.js · dialogs.js · navigation.js · accessibility.js  # infrastructure UI partagée
-│       ├── atlas.js · demo-diagnostic.js                           # atlas des techniques + démo avant/après
-│       ├── screens/            # hub, guide, stratégie, entraînement et simulation/relecture
-│       ├── workspace/          # texte, pipeline, brouillon, présentation, feedback, rapport
-│       └── reports/            # calcul du rapport, exports CSV/JSON et impression
+│       ├── screens/            # hub, guide, stratégie, épreuve et relecture après remise
+│       └── pdf-viewer.js       # visionneuse du sujet: PDF local en iframe + repli externe + téléchargement
 ├── tests/                            # tests automatisés (moteur, données, UI, sécurité) — `npm test`
 │   ├── *.test.mjs                    # exécutés par `node --test` (compte dans le bloc « Tests »)
 │   ├── e2e/                          # Playwright : mode hors-ligne PWA + responsive mobile (3 viewports) — `npm run test:e2e`
@@ -123,21 +113,22 @@ Le disclaimers du hard benchmark (0 copie réelle doublement annotée) reste la 
 
 ### Statut P1 mesuré — incomplet tant que les preuves manquent
 
-Les questions BAC ne sont plus supposées équivalentes aux quatre étapes N/S/E/W. Un inventaire indépendant déclare désormais chaque tâche officielle, sa page, ses références documentaires, son maximum provisoire ou vérifié et ses liens vers les étapes d'entraînement.
+Les questions BAC ne sont plus supposées équivalentes aux quatre étapes N/S/E/W. Un inventaire indépendant déclare désormais chaque tâche : sa provenance (`official` quand le texte vient de l'énoncé, `reconstructed` quand il s'agit d'une étape pédagogique), sa page quand elle est connue, ses références documentaires et son maximum — **provisoire** partout, puisqu'aucun barème n'a été relu par un humain.
 
 ```bash
-npm run coverage:official # détail des 38 sujets
+npm run coverage:official # détail des 38 sujets (tous ouverts à l'épreuve)
+npm run inventory:check    # data/official-tasks.js doit être régénéré, jamais édité à la main
 npm run p1:status         # verdict des six critères P1
 npm run p1:check          # échoue tant que P1 n'est pas réellement terminé
 ```
 
-La couverture globale vaut `unknown` tant que l'inventaire d'un sujet est partiel. Elle n'est jamais transformée artificiellement en 0 % ou 100 %. La simulation est refusée à la sélection **et** au rendu ; elle ne pourra être autorisée que si tous les exercices, tâches, documents et barèmes sont inventoriés, vérifiés, correctement bornés et mappés. Le premier lot ne couvre que **2025 / sujet 1 / exercice 1** et ne rend donc aucun sujet éligible.
+Les inventaires couvrent les **38 sujets** et **408 tâches** : **149** consignes officielles (avec page) et **259** étapes reconstruites (sans page — on n'invente pas un numéro de page). Les 38 sujets sont ouverts à l'épreuve, conformément à la décision produit consignée dans `data/bac-mode-policy.js` : le contenu doit être inventorié, mappé et borné (règle stricte), mais les certifications humaines — relecture des documents, barème vérifié — peuvent manquer, à condition que l'écran le dise. La règle stricte reste implémentée (`strictEligible`) et continuera de décider seule dès que les preuves humaines existeront. La couverture globale vaut `unknown` tant que l'inventaire d'un sujet est partiel : elle n'est jamais transformée en 0 % ou 100 %. Les exports chiffrés restent interdits tant que la calibration humaine n'est pas faite.
 
-Le code des parcours séparés est présent : entraînement guidé, simulation silencieuse fondée sur les tâches officielles, puis relecture verrouillée après remise. La CSP n'autorise plus `unsafe-inline` et les sources publiques ne contiennent plus de style inline. Cela ne clôt pas P1 : les inventaires complets et le corpus humain sont des preuves externes absentes, pas des cases que le code peut cocher seul. Le volume et le format des apports nécessaires sont détaillés dans [`docs/P1_EVIDENCE_REQUIREMENTS.md`](docs/P1_EVIDENCE_REQUIREMENTS.md).
+Le code du parcours est en place : une épreuve silencieuse fondée sur les tâches inventoriées, puis une relecture verrouillée après remise. La CSP n'autorise plus `unsafe-inline` et les sources publiques ne contiennent plus de style inline. Cela ne clôt pas P1 : les inventaires complets et le corpus humain sont des preuves externes absentes, pas des cases que le code peut cocher seul. Le volume et le format des apports nécessaires sont détaillés dans [`docs/P1_EVIDENCE_REQUIREMENTS.md`](docs/P1_EVIDENCE_REQUIREMENTS.md).
 
 ### Statut P2 mesuré — validation humaine encore requise
 
-La première tranche P2 ferme les six critères techniques : navigation clavier et focus de route, dialogues isolés, ordre libre des exercices, vocabulaire recentré sur les quatre étapes, interface élève en arabe, contraste et petites tailles, ainsi que le cycle complet du brouillon. Le septième critère reste externe : cinq élèves doivent tester le parcours sur leur téléphone bas de gamme.
+La première tranche P2 ferme six critères techniques : navigation clavier et focus de route, dialogues isolés, ordre libre des exercices, vocabulaire recentré sur les quatre étapes, interface élève en arabe, contraste et petites tailles, ainsi que le cycle complet de la copie (sujet lisible dans l'app, réponse enregistrée, remise confirmée, relecture verrouillée). Le septième critère reste externe : cinq élèves doivent tester le parcours sur leur téléphone bas de gamme.
 
 ```bash
 npm run p2:status # verdict des sept critères P2
@@ -169,11 +160,11 @@ Le serveur applique une liste blanche d'assets publics. Ne pas remplacer cette c
 
 ---
 
-## 📄 Contenu réel — entraînement
+## 📄 Contenu réel — épreuve
 
 **19 années** dans `APP_CONFIG.years` : 2013–2019 et 2020+2022–2026 علوم تجريبية + 2021–2026 رياضيات.
-Le hub SE affiche 2013–2020 et 2022–2026 en cartes d'entraînement ; le hub Maths affiche 2021–2026.
-**2021 SE est volontairement absente des cartes d'entraînement.** L'archive 2013–2019 n'est pas un énoncé ministériel.
+Le hub SE affiche 2013–2020 et 2022–2026 en cartes d'épreuve ; le hub Maths affiche 2021–2026.
+**2021 SE est volontairement absente des cartes d'épreuve.** L'archive 2013–2019 n'est pas un énoncé ministériel.
 
 ### Contenu BAC 2025 (شعبة علوم تجريبية)
 
@@ -240,20 +231,20 @@ Les points N/S/E/W sont une **allocation pédagogique interne**, pas le barème 
 
 ### Provenance des consignes
 
-| Année          | État        | PDF local                                          | Source externe                                                                                                                                                                                                                                                                                                                                                 | Consignes                                                                                                                                                                                                         |
-| -------------- | ----------- | -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Année          | État        | PDF local                                   | Source externe                                                                                                                                                                                                                                                                                                                                                 | Consignes                                                                                                                                                                                                         |
+| -------------- | ----------- | ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **2025**       | activée     | aucun PDF local ; liens externes uniquement | —                                                                                                                                                                                                                                                                                                                                                              | Pôles `official` relus sur le scan ; autres `reconstructed`                                                                                                                                                       |
-| **2024**       | activée     | aucun (droit d'auteur)                             | [eddirasa sujet](https://eddirasa.com/bac-science-2024-se/) · [PDF eddirasa](https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf) · [dzexams](https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09) · [PDF dzexams](https://www.dzexams.com/uploads/sujets/officiels/bac/2024/dzexams-bac-sciences-naturelles-1751784.pdf) | Mixte : 8 pôles `official` recopiés mot à mot sur photos des pages 2, 6, 7, 10 (2026-08-31) ; le reste `reconstructed`. Viewer dzexams bloqué dans la sandbox. Session de remplacement non localisée.             |
-| **2023**       | **activée** | aucun (droit d'auteur)                             | [dzexams 2023](https://www.dzexams.com/ar/annales/STRDZEowcCtwN0JmT1NwS3p4cEVmdz09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf)                                                                                                                                                             | Consignes `official` relues sur la couche texte du PDF (inversée, reconstituée mot à mot, 2026-08-25) ; pôles sans question autonome en `reconstructed`                                                           |
-| **2022**       | **activée** | aucun (droit d'auteur)                             | [dzexams 2022](https://www.dzexams.com/ar/annales/eVlXSFRFOEJaN2ozSlE3NytzWkRHQT09) · [PDF ONEC](https://www.dzexams.com/uploads/sujets/officiels/bac/2022/dzexams-bac-sciences-2311208.pdf) · [corrigé eddirasa](https://eddirasa.com/correction-bac-science-2022-se/)                                                                                        | Consignes `official` relues sur la couche texte du PDF ONEC (inversée, reconstituée mot à mot, 2026-08-27) ; corrigé officiel croisé sur 2 sources concordantes ; pôles sans question autonome en `reconstructed` |
-| **2026 SE**    | **activée** | aucun (droit d'auteur)                             | [énoncé eddirasa](https://eddirasa.com/uploads/2026/08/bac-science-2026-se.pdf) · [corrigé](https://eddirasa.com/uploads/2026/08/correction-bac-science-2026-se.pdf)                                                                                                                                                                                           | `official` / `reconstructed` depuis OCR du PDF officiel (2026-08-31)                                                                                                                                              |
-| **2020 SE**    | **activée** | aucun (droit d'auteur)                             | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2020/09/eddirasa.com-bac-se-science-2020.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2020/09/eddirasa.com-correction-bac-sc-science-2020.pdf)                                                                                                                                           | `official` / `reconstructed` depuis OCR RTL (2026-08-31)                                                                                                                                                          |
-| **2021 Maths** | **activée** | aucun (droit d'auteur)                             | [dzexams 2021 m](https://www.dzexams.com/ar/annales/T2tYS3FTcFRwWCtCbXV2QmFyRTcydz09)                                                                                                                                                                                                                                                                          | `official` / `reconstructed` depuis viewer 12 pages (couche inversée, 2026-08-31)                                                                                                                                 |
-| **2022 Maths** | **activée** | aucun (droit d'auteur)                             | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2022/06/eddirasa.com-bac-math-science-2022.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2022/06/eddirasa.com-correction-bac-math-science-2022.pdf)                                                                                                                                       | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 8+12 / 8+12                                                                                                                                         |
-| **2023 Maths** | **activée** | aucun (droit d'auteur)                             | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2023/07/eddirasa.com-bac-sciences-math-2023.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2023/07/eddirasa.com-correction-bac-sciences-math-2023.pdf)                                                                                                                                     | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 8+12 / 7+13                                                                                                                                         |
-| **2024 Maths** | **activée** | aucun (droit d'auteur)                             | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2024/06/bac-math-sciences-2024.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2024/05/correction-bac-math-sciences-2024.pdf)                                                                                                                                                               | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 7+13 / 7+13                                                                                                                                         |
-| **2025 Maths** | **activée** | aucun (droit d'auteur)                             | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2025/06/bac-math-science-2025.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2025/06/correction-bac-math-science-2025.pdf)                                                                                                                                                                 | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 8+12 / 8+12                                                                                                                                         |
-| **2026 Maths** | **activée** | aucun (droit d'auteur)                             | [énoncé eddirasa](https://eddirasa.com/uploads/2026/08/bac-math-sciences-2026.pdf) · [corrigé](https://eddirasa.com/uploads/2026/08/correction-bac-math-sciences-2026.pdf)                                                                                                                                                                                     | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 6+14 / 8+12                                                                                                                                         |
+| **2024**       | activée     | aucun (droit d'auteur)                      | [eddirasa sujet](https://eddirasa.com/bac-science-2024-se/) · [PDF eddirasa](https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf) · [dzexams](https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09) · [PDF dzexams](https://www.dzexams.com/uploads/sujets/officiels/bac/2024/dzexams-bac-sciences-naturelles-1751784.pdf) | Mixte : 8 pôles `official` recopiés mot à mot sur photos des pages 2, 6, 7, 10 (2026-08-31) ; le reste `reconstructed`. Viewer dzexams bloqué dans la sandbox. Session de remplacement non localisée.             |
+| **2023**       | **activée** | aucun (droit d'auteur)                      | [dzexams 2023](https://www.dzexams.com/ar/annales/STRDZEowcCtwN0JmT1NwS3p4cEVmdz09) · [PDF](https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf)                                                                                                                                                             | Consignes `official` relues sur la couche texte du PDF (inversée, reconstituée mot à mot, 2026-08-25) ; pôles sans question autonome en `reconstructed`                                                           |
+| **2022**       | **activée** | aucun (droit d'auteur)                      | [dzexams 2022](https://www.dzexams.com/ar/annales/eVlXSFRFOEJaN2ozSlE3NytzWkRHQT09) · [PDF ONEC](https://www.dzexams.com/uploads/sujets/officiels/bac/2022/dzexams-bac-sciences-2311208.pdf) · [corrigé eddirasa](https://eddirasa.com/correction-bac-science-2022-se/)                                                                                        | Consignes `official` relues sur la couche texte du PDF ONEC (inversée, reconstituée mot à mot, 2026-08-27) ; corrigé officiel croisé sur 2 sources concordantes ; pôles sans question autonome en `reconstructed` |
+| **2026 SE**    | **activée** | aucun (droit d'auteur)                      | [énoncé eddirasa](https://eddirasa.com/uploads/2026/08/bac-science-2026-se.pdf) · [corrigé](https://eddirasa.com/uploads/2026/08/correction-bac-science-2026-se.pdf)                                                                                                                                                                                           | `official` / `reconstructed` depuis OCR du PDF officiel (2026-08-31)                                                                                                                                              |
+| **2020 SE**    | **activée** | aucun (droit d'auteur)                      | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2020/09/eddirasa.com-bac-se-science-2020.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2020/09/eddirasa.com-correction-bac-sc-science-2020.pdf)                                                                                                                                           | `official` / `reconstructed` depuis OCR RTL (2026-08-31)                                                                                                                                                          |
+| **2021 Maths** | **activée** | aucun (droit d'auteur)                      | [dzexams 2021 m](https://www.dzexams.com/ar/annales/T2tYS3FTcFRwWCtCbXV2QmFyRTcydz09)                                                                                                                                                                                                                                                                          | `official` / `reconstructed` depuis viewer 12 pages (couche inversée, 2026-08-31)                                                                                                                                 |
+| **2022 Maths** | **activée** | aucun (droit d'auteur)                      | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2022/06/eddirasa.com-bac-math-science-2022.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2022/06/eddirasa.com-correction-bac-math-science-2022.pdf)                                                                                                                                       | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 8+12 / 8+12                                                                                                                                         |
+| **2023 Maths** | **activée** | aucun (droit d'auteur)                      | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2023/07/eddirasa.com-bac-sciences-math-2023.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2023/07/eddirasa.com-correction-bac-sciences-math-2023.pdf)                                                                                                                                     | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 8+12 / 7+13                                                                                                                                         |
+| **2024 Maths** | **activée** | aucun (droit d'auteur)                      | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2024/06/bac-math-sciences-2024.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2024/05/correction-bac-math-sciences-2024.pdf)                                                                                                                                                               | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 7+13 / 7+13                                                                                                                                         |
+| **2025 Maths** | **activée** | aucun (droit d'auteur)                      | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2025/06/bac-math-science-2025.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2025/06/correction-bac-math-science-2025.pdf)                                                                                                                                                                 | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 8+12 / 8+12                                                                                                                                         |
+| **2026 Maths** | **activée** | aucun (droit d'auteur)                      | [énoncé eddirasa](https://eddirasa.com/uploads/2026/08/bac-math-sciences-2026.pdf) · [corrigé](https://eddirasa.com/uploads/2026/08/correction-bac-math-sciences-2026.pdf)                                                                                                                                                                                     | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 6+14 / 8+12                                                                                                                                         |
 
 **PDF versés dans le dépôt : aucun**
 (aucun PDF local ; liens externes uniquement, à la racine). L'écran stratégie
@@ -320,12 +311,12 @@ Fichier : `data/years/m/year-2021.js`.
 
 ---
 
-## 📚 Sujets officiels (consultation, hors cartes d'entraînement)
+## 📚 Sujets officiels (consultation, hors cartes d'épreuve)
 
 Le bouton coin **تغيير الشعبة** cycle **علوم تجريبية → رياضيات → تقني رياضي**.
 Les sujets de la filière choisie remplacent la grille.
 
-| Filière                  | Entraînement          | Consultation (sujet + تصحيح)                    |
+| Filière                  | Épreuve               | Consultation (sujet + تصحيح)                    |
 | ------------------------ | --------------------- | ----------------------------------------------- |
 | شعبة علوم تجريبية (`se`) | 2013–2020 و 2022–2026 | 2021                                            |
 | شعبة رياضيات (`m`)       | 2021–2026             | 2013–2020 (+ 2017 exceptionnelle)               |
@@ -333,13 +324,13 @@ Les sujets de la filière choisie remplacent la grille.
 
 Statut honnête :
 
-- **2013–2019 SE** : entraînement reconstruit (`data/years/se/`). Toutes consignes `reconstructed`. **2018** : thèmes relus OCR dzexams. **2013–2017, 2019** : thèmes pédagogiques 3AS, **non certifiables** comme énoncés officiels. Confiance UI basse.
-- **2020 et 2022–2026 SE** et **2021–2026 Maths** : entraînement chargé à la demande depuis `data/years/{se,m}/`, indexé par le catalogue `data/subjects.js`.
+- **2013–2019 SE** : sujets reconstruits (`data/years/se/`). Toutes consignes `reconstructed`. **2018** : thèmes relus OCR dzexams. **2013–2017, 2019** : thèmes pédagogiques 3AS, **non certifiables** comme énoncés officiels. Confiance UI basse.
+- **2020 et 2022–2026 SE** et **2021–2026 Maths** : sujets chargés à la demande depuis `data/years/{se,m}/`, indexés par le catalogue `data/subjects.js`.
 - **Consultation** : sujet officiel + تصحيح النموذجي via dzexams. Aucun
   barème, mot-clé ou réponse modèle : le moteur ne s'applique pas.
 - **Maths 2022–2026** : viewer dzexams bloqué (`contentVerified: false`) ;
   Cartes encodées depuis les PDF officiels eddirasa (même papier ONEC).
-- **SE 2021** : pas de carte d'entraînement — couche texte / corrigé mot à mot absents sur dzexams.
+- **SE 2021** : pas de carte d'épreuve — couche texte / corrigé mot à mot absents sur dzexams.
 - **شعبة تقني رياضي** : pas d'épreuve SVT au BAC ; l'index dzexams n'a que
   `se` et `m` (revérifié 2026-08-31). Le hub affiche le trou, **aucun lien
   inventé**. Les filières Lettres / Langues / Gestion n'ont pas non plus
@@ -363,14 +354,14 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **257** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **240** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0/2235 minimum** avant toute promotion numérique
-- Inventaires de tâches officielles commencés : **1/38 sujets** (**2 tâches connues**)
-- Sujets éligibles à la simulation : **0**
+- Inventaires de tâches officielles commencés : **38/40 sujets** (**408 tâches connues**)
+- Sujets éligibles à la simulation : **38**
 - Critères P1 fermés : **3/6** — statut global : **incomplet**
 - Critères P2 fermés : **6/7** — élèves distincts testés : **0/5**
-- Critères P3 fermés : **6/6** — statut global : **terminé**
-- Taille de la façade UI (js/ui.js) : **462 lignes**
+- Critères P3 fermés : **5/6** — statut global : **incomplet**
+- Taille de la façade UI (js/ui.js) : **432 lignes**
 
 <!-- AUTO-METRICS:END -->
 
@@ -440,7 +431,7 @@ Le script accepte soit un fichier JSON en argument, soit un mode interactif.
 - **Fin manuelle ou expiration** : sauvegarde immédiate, passage de la session à `completed` et verrouillage de la saisie.
 - **Progression sauvegardée** (`localStorage`) : réponses, année/sujet, écran, étape et chronomètres sont validés avant restauration.
 - Les identifiants de sessions Maths (`YYYY-m`) sont conservés sans collision avec Sciences expérimentales.
-- Les anciens modules de rapport chiffré/CSV ne sont pas exposés : ils restent hors du parcours tant que l'évaluation n'est pas calibrée.
+- Le rapport chiffré et les exports CSV/JSON ont été **supprimés** du produit : l'épreuve est le seul mode, et aucune note n'est affichée tant que la calibration humaine n'est pas faite.
 
 ---
 

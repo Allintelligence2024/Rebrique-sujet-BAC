@@ -10,9 +10,16 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const source = readFileSync(join(root, "sw.js"), "utf8");
 const OUT_OF_GRAPH = {
   "js/app-version.js": "chargé par index.html et importScripts",
-  "js/ui/workspace/report-controller.js": "plus appelé par l'UI ; décision produit en attente",
-  "js/ui/reports/report.js": "atteignable uniquement via report-controller",
-  "js/ui/reports/exports.js": "atteignable uniquement via report-controller"
+  /* Moteur d'évaluation automatique : aucune note n'est affichée à l'élève,
+     l'application ne le charge plus. Il reste utilisé par les outils d'audit
+     et de calibration (tests, scripts) — jamais par le navigateur. */
+  "js/engine.js": "façade réservée aux outils d'audit et de calibration",
+  "js/method-scripts.js": "scripts méthodologiques consommés par le moteur d'évaluation",
+  "js/domain/evaluation/text-analysis.js": "moteur d'évaluation — outils d'audit",
+  "js/domain/evaluation/text-evaluator.js": "moteur d'évaluation — outils d'audit",
+  "js/domain/evaluation/pipeline-evaluator.js": "moteur d'évaluation — outils d'audit",
+  "js/domain/evaluation/methodology.js": "moteur d'évaluation — outils d'audit",
+  "js/domain/evaluation/quality-checks.js": "moteur d'évaluation — outils d'audit"
 };
 
 function toRepoPath(path) {
@@ -67,7 +74,10 @@ test("le graphe statique du shell est parcouru sans avaler les imports d'années
   assert.ok(graph.has("js/ui.js"));
   assert.ok(graph.has("data/subjects.js"));
   assert.ok(graph.has("js/ui/operational-status.js"));
-  assert.ok(graph.size > 35, `graphe statique anormalement petit: ${graph.size}`);
+  // Le seuil protège contre un parcours cassé (graphe vide ou tronqué) : il a
+  // été ajusté après la suppression des modules d'entraînement, puis après le
+  // retrait du moteur d'évaluation du graphe de démarrage (2026-09-13).
+  assert.ok(graph.size >= 20, `graphe statique anormalement petit: ${graph.size}`);
   assert.equal(
     [...graph].some((path) => path.startsWith("data/years/")),
     false
@@ -117,7 +127,7 @@ test("chaque entrée du shell existe et chaque module JS est justifié", () => {
 });
 
 test("tous les payloads d'année sont découpés, catalogués et importés dynamiquement", () => {
-  assert.equal(lazyYearFiles.length, 19);
+  assert.equal(lazyYearFiles.length, 20);
   assert.equal(new Set(lazyYearFiles).size, lazyYearFiles.length);
   const subjectsSource = readFileSync(join(root, "data/subjects.js"), "utf8");
   for (const path of lazyYearFiles) {
@@ -185,4 +195,39 @@ test("manifeste et icônes portent une révision de contenu vérifiable et conso
   }
   assert.doesNotMatch(strategy, /APP_ASSET_REVISIONS\?\.\[subject\.pdf\]/);
   assert.doesNotMatch(source, /isPdfRequest\(request\)/);
+});
+
+/* Le shell doit refléter exactement ce que l'application charge au démarrage :
+   ni module oublié (casse hors ligne), ni module mort (installation plus
+   lourde qu'elle ne doit l'être). */
+function staticImportClosure(entry) {
+  const seen = new Set();
+  const stack = [entry];
+  while (stack.length) {
+    const file = stack.pop();
+    if (seen.has(file) || !existsSync(file)) continue;
+    seen.add(file);
+    for (const specifier of readFileSync(file, "utf8").matchAll(/from\s+"(\.[^"]+)"/g)) {
+      stack.push(resolve(dirname(file), specifier[1]));
+    }
+  }
+  return [...seen];
+}
+
+test("le shell précache tout le graphe de démarrage et rien de plus", () => {
+  const shell = [...source.match(/const SHELL_ASSETS = \[([\s\S]*?)\];/)[1].matchAll(/"(\.[^"]+)"/g)].map(
+    (match) => match[1]
+  );
+  const startup = staticImportClosure(join(root, "js/main.js")).map(
+    (file) => "./" + file.slice(root.length + 1)
+  );
+  assert.ok(startup.length > 10, "le graphe de démarrage doit être détecté");
+  for (const file of startup) {
+    assert.ok(shell.includes(file), `${file} est chargé au démarrage sans être précaché`);
+  }
+  // Le moteur d'évaluation automatique n'est plus branché sur l'épreuve.
+  const dead = shell.filter((path) =>
+    /domain\/evaluation\/|js\/engine\.js|js\/method-scripts\.js/.test(path)
+  );
+  assert.deepEqual(dead, [], `modules morts précachés: ${dead.join(", ")}`);
 });

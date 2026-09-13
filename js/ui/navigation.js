@@ -1,4 +1,4 @@
-import { node, replaceContent } from "./dom.js";
+import { replaceContent } from "./dom.js";
 
 export function createScreenNavigator({ screens, onNavigate }) {
   let navigationCount = 0;
@@ -11,14 +11,4 @@ export function createScreenNavigator({ screens, onNavigate }) {
     navigationCount += 1;
     window.scrollTo({ top: 0, behavior: "auto" });
   };
-}
-
-export function renderStepNavigation(container, steps, onSelect) {
-  const buttons = steps.map((step) => {
-    const button = node("button", { dataset: { step: step.index } });
-    button.append(node("span", { className: "pole", text: step.pole }), node("span", { text: step.label }));
-    button.addEventListener("click", () => onSelect(step.index));
-    return button;
-  });
-  replaceContent(container, buttons);
 }

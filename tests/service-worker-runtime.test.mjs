@@ -139,3 +139,21 @@ test("un échec d’écriture du cache ne masque jamais une réponse réseau ré
   assert.equal(navigation.status, 200);
   assert.equal(await navigation.text(), networkBody);
 });
+
+test("les PDF de sujet sont évictables : runtime borné, jamais le cache shell sans borne", async () => {
+  const { api, caches } = harness();
+  const pdf = new globalThis.Request("https://app.test/subjects/SE/2025/sujet-1.pdf");
+  const pdfMaths = new globalThis.Request("https://app.test/subjects/M/2021/sujet-2.pdf");
+  const payload = new globalThis.Request("https://app.test/data/years/se/year-2025.js");
+  assert.equal(api.isRuntimeAsset(pdf), true, "un PDF de sujet doit passer par le cache borné");
+  assert.equal(api.isRuntimeAsset(pdfMaths), true);
+  assert.equal(api.isRuntimeAsset(payload), true);
+  assert.equal(api.isRuntimeAsset(new globalThis.Request("https://app.test/assets/styles.css")), false);
+  assert.equal(api.isRuntimeAsset(new globalThis.Request("https://app.test/index.html")), false);
+
+  assert.equal(await api.cacheRuntimeResponse(pdf, new Response("pdf", { status: 200 })), true);
+  const runtime = await caches.open(api.RUNTIME_CACHE);
+  const shell = await caches.open(api.SHELL_CACHE);
+  assert.ok(await runtime.match(pdf), "le PDF doit être dans le runtime");
+  assert.equal(await shell.match(pdf), undefined, "le PDF ne doit pas gonfler le cache shell");
+});

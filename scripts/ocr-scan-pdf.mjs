@@ -13,7 +13,10 @@ const pdfjsLib = require("pdfjs-dist/legacy/build/pdf.js");
 const { createCanvas } = require("@napi-rs/canvas");
 
 const pdfPath = process.argv[2];
-if (!pdfPath) { console.error("usage: node scripts/ocr-scan-pdf.mjs <path>"); process.exit(1); }
+if (!pdfPath) {
+  console.error("usage: node scripts/ocr-scan-pdf.mjs <path>");
+  process.exit(1);
+}
 
 // Tell pdfjs how to create canvases
 class NodeCanvasFactory {
@@ -23,7 +26,8 @@ class NodeCanvasFactory {
     return { canvas, context: ctx };
   }
   reset({ canvas }, w, h) {
-    canvas.width = w; canvas.height = h;
+    canvas.width = w;
+    canvas.height = h;
   }
   destroy() {}
 }
@@ -34,7 +38,7 @@ const doc = await pdfjsLib.getDocument({
   data,
   disableWorker: true,
   isEvalSupported: false,
-  canvasFactory: new NodeCanvasFactory(),
+  canvasFactory: new NodeCanvasFactory()
 }).promise;
 console.log(`PDF ${pdfPath}: ${doc.numPages} pages`);
 
@@ -47,7 +51,9 @@ const worker = await Tesseract.createWorker(["ara", "eng"], 1, {
   workerPath: tjsRoot,
   corePath: corePath,
   cachePath: "/tmp/tesscache",
-  logger: (m) => { if (m.status === "recognizing text") process.stderr.write(`\r  ${m.status} ${(m.progress*100|0)}%`); }
+  logger: (m) => {
+    if (m.status === "recognizing text") process.stderr.write(`\r  ${m.status} ${(m.progress * 100) | 0}%`);
+  }
 });
 
 let full = "";
@@ -62,7 +68,9 @@ for (let i = 1; i <= doc.numPages; i++) {
   const ctx = canvas.getContext("2d");
   await page.render({ canvasContext: ctx, viewport, canvasFactory: new NodeCanvasFactory() }).promise;
   const png = canvas.toBuffer("image/png");
-  const { data: { text, confidence } } = await worker.recognize(png);
+  const {
+    data: { text, confidence }
+  } = await worker.recognize(png);
   full += `\n\n===== PAGE ${i} (confiance ${confidence.toFixed(0)}%) =====\n${text}`;
 }
 await worker.terminate();

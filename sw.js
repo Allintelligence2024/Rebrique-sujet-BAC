@@ -14,10 +14,15 @@ const BUILD_ID = self.APP_BUILD_ID || "dev";
 const SHELL_CACHE = `${CACHE_PREFIX}-shell-${BUILD_ID}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}-runtime-${BUILD_ID}`;
 const CURRENT_CACHES = new Set([SHELL_CACHE, RUNTIME_CACHE]);
-const RUNTIME_MAX_ENTRIES = 12;
+// Charge utile d'une année + PDF du sujet : compter large, mais rester sous
+// la borne de 32 validée par P3.4 (≈ 24 Mo au pire, jamais le dépôt entier).
+const RUNTIME_MAX_ENTRIES = 20;
 
 // Shell = document, apparence, manifeste et graphe d'imports STATIQUES de
 // js/main.js. Les data/years/** et les PDF sont volontairement absents.
+// Le moteur d'évaluation (engine.js + domain/evaluation/**) n'en fait plus
+// partie : aucune note n'est affichée à l'élève, l'application ne le charge
+// donc plus au démarrage (un test verrouille cette cohérence).
 const SHELL_ASSETS = [
   "./",
   "./index.html",
@@ -29,22 +34,12 @@ const SHELL_ASSETS = [
   "./js/main.js",
   "./js/ui.js",
   "./js/store.js",
-  "./js/engine.js",
-  "./js/method-scripts.js",
   "./js/application/timers.js",
   "./js/application/subject-session.js",
   "./js/domain/subjects/official-coverage.js",
-  "./js/domain/method/gates.js",
-  "./js/domain/evaluation/text-analysis.js",
-  "./js/domain/evaluation/text-evaluator.js",
-  "./js/domain/evaluation/pipeline-evaluator.js",
-  "./js/domain/evaluation/methodology.js",
-  "./js/domain/evaluation/quality-checks.js",
   "./js/services/sound-engine.js",
   "./js/services/speech-recognition.js",
   "./js/services/diagnostics.js",
-  "./js/ui/training.js",
-  "./js/ui/atlas.js",
   "./js/ui/dialogs.js",
   "./js/ui/coverage-messages.js",
   "./js/ui/dom.js",
@@ -55,19 +50,12 @@ const SHELL_ASSETS = [
   "./js/ui/screens/strategy.js",
   "./js/ui/screens/workspace.js",
   "./js/ui/screens/simulation.js",
-  "./js/ui/workspace/feedback.js",
-  "./js/ui/workspace/text-exercise.js",
-  "./js/ui/workspace/pipeline-exercise.js",
-  "./js/ui/workspace/scratchpad.js",
-  "./js/ui/workspace/brouillon.js",
-  "./js/ui/workspace/presentation.js",
-  "./js/ui/workspace/quick-check.js",
+  "./js/ui/pdf-viewer.js",
+  "./js/ui/pdf-renderer.js",
   "./js/ui/accessibility.js",
-  "./js/ui/demo-diagnostic.js",
-  "./js/ui/keycard.js",
   "./data/subjects.js",
   "./data/archive.js",
-  "./data/brouillon.js",
+  "./data/bac-mode-policy.js",
   "./data/calibration-status.js",
   "./data/official-tasks.js",
   "./legal/privacy.html",
@@ -82,9 +70,16 @@ function isLocalRequest(request) {
   }
 }
 
+/* Le cache runtime est le seul cache borné du service worker : tout ce qui y
+   entre est évictable. Les PDF de sujet y sont donc délibérément inclus —
+   sinon ils tombaient dans le cache shell, qui n'a aucune borne, et 42 Mo de
+   sujets pouvaient s'y accumuler sans jamais être libérés. */
 function isRuntimeAsset(request) {
   const pathname = new URL(request.url).pathname;
-  return /\/data\/years\/(?:se|m)\/year-\d{4}\.js$/.test(pathname);
+  return (
+    /\/data\/years\/(?:se|m)\/year-\d{4}(?:-[a-z]{1,3})?\.js$/.test(pathname) ||
+    /\/subjects\/(?:SE|M|TM)\/(?:\d{4}|\d{4}-[a-z]{1,3})\/sujet-\d+\.pdf$/.test(pathname)
+  );
 }
 
 function isCacheableResponse(response) {
@@ -114,7 +109,7 @@ async function cacheRuntimeResponse(request, response) {
   await cache.put(request, response.clone());
   await trimRuntimeCache(cache);
   await notifyClients("runtime-cache-updated", {
-    resource: "year-data"
+    resource: new URL(request.url).pathname.endsWith(".pdf") ? "subject-pdf" : "year-data"
   });
   return true;
 }
@@ -147,7 +142,7 @@ async function fetchRuntime(request) {
     response = await fetch(request);
   } catch {
     await notifyClients("offline-miss", {
-      resource: "year-data"
+      resource: new URL(request.url).pathname.endsWith(".pdf") ? "subject-pdf" : "year-data"
     });
     return Response.error();
   }

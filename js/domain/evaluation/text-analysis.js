@@ -256,7 +256,7 @@ const CONCEPT_ALIASES = {
   رسول: ["مرنا", "mrna", "arnm", "arn رسول"],
   ناقل: ["ارنت", "arnt", "trna", "arn ناقل", "نواقل", "محمول", "حامل", "الحامل"],
   ارنت: ["arnt", "trna", "arn ناقل", "محمول", "حامل", "الحامل"],
-  "arnt": ["ناقل", "محمول"],
+  arnt: ["ناقل", "محمول"],
   ترجمه: ["ترجمة", "البروتين", "الاستطالة", "الببتيد", "بيبتيديه"],
   ريبوزوم: ["ريبوزومي", "ريبوزومات", "تحت وحدة"],
   طبيعي: ["الشاهد", "سليم"],
@@ -364,16 +364,14 @@ export function analyzeSentenceStructure(normText, poleType) {
   const VERB_PREFIX_RE = /^[أيتن]/;
   const VERB_SUFFIX_RE = /(ون|ان|ات|وا|ين|تم|تن|نا|تما)$/;
   const NOMINAL_ENDING_RE = /[ةىا]$/;
-  const sentenceSignals = words.filter(
-    (w) => {
-      if (!VERB_PREFIX_RE.test(w) || w.length < 4) return false;
-      if (VERB_SUFFIX_RE.test(w)) return true;
-      // 4 lettres : radical 3 consonnes après la marque. Les noms 3-radicaux
-      // débutant par ces lettres sont quasi tous féminins en ة (نواة، سنة)
-      // ou emprunts/adverbes qui finissent par ا/ى (سما، تلا).
-      return w.length >= 4 && !NOMINAL_ENDING_RE.test(w);
-    }
-  ).length;
+  const sentenceSignals = words.filter((w) => {
+    if (!VERB_PREFIX_RE.test(w) || w.length < 4) return false;
+    if (VERB_SUFFIX_RE.test(w)) return true;
+    // 4 lettres : radical 3 consonnes après la marque. Les noms 3-radicaux
+    // débutant par ces lettres sont quasi tous féminins en ة (نواة، سنة)
+    // ou emprunts/adverbes qui finissent par ا/ى (سما، تلا).
+    return w.length >= 4 && !NOMINAL_ENDING_RE.test(w);
+  }).length;
   const hasConnectors = connectorHits > 0;
   const lexicalDensity = wordCount ? informativeWords / wordCount : 0;
   const isKeywordDump =

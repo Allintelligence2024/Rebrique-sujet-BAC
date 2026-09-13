@@ -50,7 +50,7 @@ function click(sel) {
   e.dispatchEvent(new dom.window.MouseEvent("click", { bubbles: true }));
 }
 
-test("1. Hub : test des boutons d'accueil, adkar, atlas, sons et années", () => {
+test("1. Hub : test des boutons d'accueil, adkar, sons et années", () => {
   // Sound button
   click("#btn-hub-sound");
   assert.notEqual(soundEngine.currentMode, "off");
@@ -62,28 +62,17 @@ test("1. Hub : test des boutons d'accueil, adkar, atlas, sons et années", () =>
   click('[data-close="ok"]');
   assert.equal($(".modal"), null);
 
-  // Atlas drawer
-  click("#btn-atlas");
-  assert.ok($(".drawer.open"));
-  // Test tabs
-  click('[data-cat="verbs"]');
-  assert.ok($$(".atlas-card").length > 0);
-  click('[data-cat="hypotheses"]');
-  assert.ok($$(".atlas-card").length > 0);
-  click('[data-cat="flashcards"]');
-  assert.ok($$(".flashcard").length > 0);
-  click(".flashcard");
-  assert.ok($(".flashcard").classList.contains("revealed"));
-  // Close drawer
-  click(".drawer [data-close]");
-  assert.equal($(".drawer"), null);
+  // Plus d'outils d'entraînement dans le hub : ni أطلس, ni تشخيص تجريبي, ni exercice rapide.
+  for (const id of ["#btn-atlas", "#btn-demo", "#drill-start"]) {
+    assert.equal($(id), null, `${id} ne doit plus exister`);
+  }
 
   // Years verification
   assert.equal($('#year-grid [data-year="2025"]').disabled, false);
   assert.equal($('#year-grid [data-year="2024"]').disabled, false);
   assert.equal($('#year-grid [data-year="2023"]').disabled, false);
 
-  // Une seule action par carte-sujet : démarrer l'entraînement (pas de double bouton).
+  // Une seule action par carte-sujet : démarrer l'épreuve (pas de double bouton).
   assert.equal($('#year-grid [data-hub-year="2025"]').querySelectorAll("button").length, 1);
   assert.equal($("#year-grid [data-quick-year]"), null, "l'accès rapide séparé est supprimé");
   click('#year-grid [data-year="2025"]');
@@ -92,22 +81,22 @@ test("1. Hub : test des boutons d'accueil, adkar, atlas, sons et années", () =>
   assert.ok(!$("#view-hub").classList.contains("hidden"));
 });
 
-test("1b. SE 2013–2020 et 2022–2026 en 4D ; 2021 en consultation", () => {
+test('1b. SE 2013–2026 en épreuve : 4D partout, 2021 en armature "copie libre"', () => {
   assert.equal($$("#year-grid .year-card").length, 14);
   const training2013 = $('#year-grid [data-hub-year="2013"]');
   assert.ok(training2013);
-  assert.equal(training2013.dataset.kind, "training");
+  assert.equal(training2013.dataset.kind, "exam");
   assert.ok(training2013.querySelector("[data-year]"));
-  assert.equal($('#year-grid [data-hub-year="2019"]').dataset.kind, "training");
-  assert.equal($('#year-grid [data-hub-year="2021"]').dataset.kind, "consult");
-  assert.equal($('#year-grid [data-hub-year="2021"]').querySelector("[data-year]"), null);
-  assert.equal($('#year-grid [data-hub-year="2020"]').dataset.kind, "training");
-  assert.equal($('#year-grid [data-hub-year="2026"]').dataset.kind, "training");
+  assert.equal($('#year-grid [data-hub-year="2019"]').dataset.kind, "exam");
+  assert.equal($('#year-grid [data-hub-year="2021"]').dataset.kind, "exam");
+  assert.ok($('#year-grid [data-hub-year="2021"]').querySelector("[data-year]"), "2021 ouvre une épreuve");
+  assert.equal($('#year-grid [data-hub-year="2020"]').dataset.kind, "exam");
+  assert.equal($('#year-grid [data-hub-year="2026"]').dataset.kind, "exam");
   assert.ok($('#year-grid [data-year="2026"]'));
   assert.ok($('#year-grid [data-year="2020"]'));
   assert.ok($('#year-grid [data-year="2013"]'));
   const links = $$('#year-grid [data-kind="consult"] a[href*="dzexams.com/ar/annales/"]');
-  assert.equal(links.length, 1, "filière SE : 2021 seule en consultation");
+  assert.equal(links.length, 0, "filière SE : chaque année ouvre une épreuve dans l'application");
   assert.ok(!$(".modal"));
   assert.ok(!$("#view-hub").classList.contains("hidden"));
 });
@@ -116,7 +105,7 @@ test("1c. Le bouton filière affiche Maths puis le trou تقني رياضي", ()
   click("#btn-stream-fab");
   assert.match($("#stream-fab-label").textContent, /رياضيات/);
   assert.equal($$("#year-grid [data-year]").length, 6, "six entraînements 4D Maths (2021–2026)");
-  assert.equal($('#year-grid [data-hub-year="2021"]').dataset.kind, "training");
+  assert.equal($('#year-grid [data-hub-year="2021"]').dataset.kind, "exam");
   assert.equal($('#year-grid [data-year="2021-m"]').disabled, false);
   assert.equal($$("#year-grid .year-card").length, 14);
   assert.ok($('#year-grid [data-hub-year="2026"]'));
@@ -163,25 +152,30 @@ test("2. Guide : respiration, adkar intégrés et navigation", () => {
   assert.ok(!$("#view-strategy").classList.contains("hidden"));
 });
 
-test("3. Stratégie : calculatrice, couverture officielle et confirmation", () => {
+test("3. Stratégie : calculatrice, inventaire officiel et confirmation", () => {
   const coverageCards = $$("#view-strategy [data-subject-coverage]");
   assert.equal(coverageCards.length, 2);
   assert.equal(coverageCards[0].dataset.subjectCoverage, "partial");
-  assert.equal(coverageCards[0].dataset.simulationEligible, "false");
-  assert.equal(coverageCards[1].dataset.subjectCoverage, "missing");
-  const simulationButtons = $$('#view-strategy [data-session-mode="simulation"]');
-  assert.equal(simulationButtons.length, 2);
-  assert.ok(simulationButtons.every((button) => button.disabled));
-  assert.match($("#view-strategy").textContent, /المحاكاة ممنوعة/);
+  assert.equal(coverageCards[1].dataset.subjectCoverage, "partial");
+  // Un seul mode : les deux sujets sont ouverts, sans message d'interdiction.
+  const examButtons = $$('#view-strategy [data-session-mode="bac"]');
+  assert.equal(examButtons.length, 2);
+  assert.ok(examButtons.every((button) => !button.disabled));
+  assert.doesNotMatch($("#view-strategy").textContent, /المحاكاة ممنوعة/);
+  assert.match($("#view-strategy").textContent, /جرد المهام/);
 
-  // Third-party PDFs are not redistributed: the strategy links to the external source.
+  // Le sujet s'affiche dans l'application : plus de renvoi externe.
   click('#view-strategy [data-preview="2"]');
-  assert.ok($("#pdf-preview-container a").href.includes("dzexams.com"));
-  assert.equal($("#pdf-preview-container .pdf-download"), null);
-
+  assert.equal(
+    $("#pdf-preview-container iframe.pdf-frame").getAttribute("src").split("#")[0],
+    "/subjects/SE/2025/sujet-2.pdf"
+  );
+  assert.ok($("#pdf-preview-container a[download]"), "le téléchargement hors ligne est proposé");
   click('#view-strategy [data-preview="1"]');
-  assert.ok($("#pdf-preview-container a").href.includes("dzexams.com"));
-  assert.equal($("#pdf-preview-container .pdf-download"), null);
+  assert.equal(
+    $("#pdf-preview-container iframe.pdf-frame").getAttribute("src").split("#")[0],
+    "/subjects/SE/2025/sujet-1.pdf"
+  );
 
   // Calc inputs
   const input = $$("#view-strategy .calc-input")[0];
@@ -190,117 +184,111 @@ test("3. Stratégie : calculatrice, couverture officielle et confirmation", () =
     input.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
   }
 
-  // Confirm sujet 1 → entrée directe au workspace (examen, pas de spoiler)
-  click('#view-strategy [data-confirm="1"][data-session-mode="training"]');
-  assert.equal(store.state.sessionMode, "training");
+  // Confirm sujet 1 → entrée directe dans l'épreuve
+  click('#view-strategy [data-confirm="1"][data-session-mode="bac"]');
+  assert.equal(store.state.sessionMode, "bac");
   assert.ok(!$("#view-workspace").classList.contains("hidden"));
 });
 
 test("4. L'écran onboarding n'existe plus et les exercices restent librement accessibles", () => {
   assert.equal($("#view-onboarding"), null, "view-onboarding supprimé du DOM");
-  assert.equal($("#ws-onb"), null, "le bouton vers l'ancien écran est retiré du workspace");
-  click('#view-workspace [data-switch="2"]');
+  assert.equal($("#ws-onb"), null, "le bouton vers l'ancien écran est retiré de la copie");
+  click('#view-workspace [data-simulation-exercise="2"]');
   assert.equal(
     store.state.activeExercise,
     2,
     "le changement d'exercice ne doit pas être artificiellement verrouillé"
   );
   assert.ok(!$("#view-workspace").classList.contains("hidden"));
-  click('#view-workspace [data-switch="1"]');
+  click('#view-workspace [data-simulation-exercise="1"]');
   assert.equal(store.state.activeExercise, 1);
 });
 
-test("5. Workspace : test de tous les boutons du header et navigation", () => {
-  // Panic button
-  click("#ws-panic");
-  assert.ok($(".modal"));
-  click('[data-close="ok"]');
+test("5. Épreuve : les seuls outils sont le sujet, la sortie et la remise", () => {
+  // Aucun outil d'entraînement dans la copie.
+  for (const id of ["#ws-panic", "#ws-brouillon", "#ws-pdf", "#ws-report", "#ws-reset", "#ws-finish"]) {
+    assert.equal($(id), null, `${id} ne doit plus exister dans la copie`);
+  }
+  // Sujet : visionneuse intégrée dans le tiroir.
+  click("#simulation-pdf");
+  assert.ok($(".drawer.open"));
+  assert.ok($(".drawer.open iframe.pdf-frame"));
+  click(".drawer [data-close]");
+  assert.equal($(".drawer"), null);
+  // Remise : jamais sans confirmation.
+  click("#simulation-finish");
+  assert.ok($(".modal"), "une confirmation est exigée");
+  assert.ok($("#simulation-finish-no"));
+  click("#simulation-finish-no");
   assert.equal($(".modal"), null);
-
-  // Boussole brouillon in workspace
-  click("#ws-brouillon");
-  assert.ok($(".drawer.open"));
-  assert.ok($("#scratch-N"));
-  click(".drawer [data-close]");
-  assert.equal($(".drawer"), null);
-
-  // PDF drawer
-  click("#ws-pdf");
-  assert.ok($(".drawer.open"));
-  click(".drawer [data-close]");
-  assert.equal($(".drawer"), null);
+  assert.equal(store.state.sessionStatus, "active", "la session continue si l'élève refuse");
 });
 
-test("6. Workspace : tâches officielles visibles et résolution de l'exercice 1", () => {
-  const provenanceText = $$("#ex-content .provenance-note")
-    .map((note) => note.textContent)
+test("6. Épreuve : les tâches du sujet sont visibles et peuvent être rédigées", () => {
+  const taskText = $$("#view-workspace .simulation-task")
+    .map((task) => task.textContent)
     .join(" ");
-  assert.match(provenanceText, /2025-S1-E1-Q1/);
-  assert.match(provenanceText, /2025-S1-E1-Q2/);
-
-  // Pôle N
-  $("#fld-N").value = "يلعب ARN دورا في تركيب البروتين";
-  click('#ex-content [data-check="N"]');
-  assert.ok(!$("#fb-N").classList.contains("hidden"));
-  assert.ok($("#fb-N details.model-box"));
-
-  // Pôle S
-  click('#stepnav [data-step="2"]');
-  $("#fld-S").value = "تتزايد نسبة الإشعاع في وجود النمط الطبيعي وتتناقص في الطافر";
-  click('#ex-content [data-check="S"]');
-  assert.ok(!$("#fb-S").classList.contains("hidden"));
-  assert.ok($("#fb-S details.model-box"));
-
-  // Pôle E
-  click('#stepnav [data-step="3"]');
-  $("#fld-E").value = "يعود ذلك إلى تفكك الرابطة بين الأدنين والريبوز مما يمنع استطالة السلسلة";
-  click('#ex-content [data-check="E"]');
-  assert.ok(!$("#fb-E").classList.contains("hidden"));
-
-  // Pôle W
-  click('#stepnav [data-step="4"]');
-  $("#fld-W").value = "الخلاصة: يؤدي تخريب بنية النكليوتيدات إلى توقف الاصطناع الحيوي للبروتينات";
-  click('#ex-content [data-check="W"]');
-  assert.ok(!$("#fb-W").classList.contains("hidden"));
+  assert.match(taskText, /2025-S1-E1-Q1/);
+  assert.match(taskText, /2025-S1-E1-Q2/);
+  // Chaque tâche porte sa provenance ; aucune n'affiche de note.
+  assert.equal(
+    $$("#view-workspace [data-task-source]").length,
+    $$("#view-workspace .simulation-task").length
+  );
+  assert.doesNotMatch($("#view-workspace").textContent, /\d+[.,]\d+\s*\/\s*\d+/);
+  // Rédaction libre : le texte est conservé, sans validation de note.
+  const input = $('#view-workspace [data-task-answer="2025-S1-E1-Q1"]');
+  input.value = "إجابة الطالب في الإمتحان";
+  input.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
+  assert.equal(store.exercise("2025", 1, 1).officialTaskAnswers["2025-S1-E1-Q1"], "إجابة الطالب في الإمتحان");
+  // Le contrôle qualité n'est pas un corrigé : il ne rend pas de note.
+  click('#view-workspace [data-qualitative-for="2025-S1-E1-Q1"]');
+  const result = $('#view-workspace [data-qualitative-result="2025-S1-E1-Q1"]');
+  assert.notEqual(result.textContent.trim(), "");
+  assert.doesNotMatch(result.textContent, /\d+[.,]\d+\s*\/\s*\d+/);
 });
 
-test("7. Workspace : transition vers l'exercice 3 (Pipeline) et résolution complète", () => {
-  click('#view-workspace [data-switch="3"]');
+test("7. Épreuve : transition vers l'exercice 3 et rédaction complète", () => {
+  click('#view-workspace [data-simulation-exercise="3"]');
   assert.equal(store.state.activeExercise, 3);
-
-  // Pôle N
-  $("#pipeline-var-indep").value = "تركيز الأدينوزين";
-  $("#pipeline-var-dep").value = "مستوى النشاط العصبي واليقظة";
-  click('#ex-content [data-polo-check="N"]');
-  assert.ok(!$("#fb-N").classList.contains("hidden"));
-
-  // Pôle S
-  $("#pipeline-doc1a").value = "التحليل المقارن في وجود الكافيين وغيابه";
-  $("#pipeline-doc1a-ded").value = "الكافيين ينشط اليقظة";
-  $("#pipeline-doc1b").value = "شدة الارتباط بالمستقبلات";
-  $("#pipeline-doc1b-ded").value = "تنافس على مستقبلات A1R";
-  click('#ex-content [data-polo-check="S"]');
-  assert.ok(!$("#fb-S").classList.contains("hidden"));
-
-  // Pôle E
-  $("#pipeline-hyp1").value = "يرتبط الكافيين بمستقبل A1R";
-  $("#pipeline-hyp2").value = "يرتبط الكافيين بالأدينوزين";
-  $("#pipeline-doc2").value = "التتبع الجزيئي لآلية النقل المشبكي";
-  click('#ex-content [data-polo-check="E"]');
-  assert.ok(!$("#fb-E").classList.contains("hidden"));
-
-  // Pôle W : arrangement des blocs
-  for (const id of ["b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8"])
-    click(`#blocks-bank [data-block="${id}"]`);
-  click('#ex-content [data-polo-check="W"]');
-  assert.ok(!$("#fb-W").classList.contains("hidden"));
+  const tasks = $$("#view-workspace .simulation-task");
+  assert.ok(tasks.length > 0, "l'exercice 3 propose ses tâches");
+  for (const input of $$("#view-workspace [data-task-answer]")) {
+    input.value = "إجابة كاملة";
+    input.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
+  }
+  const progress = store.exercise("2025", 1, 3);
+  assert.equal(Object.keys(progress.officialTaskAnswers).length, tasks.length);
+  assert.ok(
+    Object.values(progress.officialTaskAnswers).every((answer) => answer === "إجابة كاملة"),
+    "toutes les réponses de l'exercice sont conservées"
+  );
 });
 
-test("8-9. La copie n'expose plus rapport, export ni réinitialisation (épure élève)", () => {
-  assert.equal($("#ws-report"), null, "التقرير retiré de la copie");
-  assert.equal($("#ws-reset"), null, "تصفير retiré de la copie");
-  assert.equal($("#ws-review"), null, "المؤشر retiré de la copie");
-  // Le rapport reste testé au niveau module (report-controller) pour les exports.
-  click("#ws-home");
+test("8-9. Ni rapport, ni réinitialisation : la remise est la seule sortie", () => {
+  // Les garde-fous de l'ancien écran d'entraînement n'existent plus du tout.
+  for (const id of ["#ws-report", "#reset-yes", "#dl-csv", "#btn-print-exam"]) {
+    assert.equal($(id), null, `${id} ne doit plus exister`);
+  }
+  // Remise confirmée : la copie est verrouillée, les réponses conservées.
+  click("#simulation-finish");
+  click("#simulation-finish-yes");
+  assert.equal(store.state.sessionStatus, "completed");
+  assert.equal(store.state.sessionEndReason, "manual");
+  assert.equal($("#view-workspace").dataset.reviewMode, "true");
+  assert.equal($("#view-workspace [data-task-answer]").disabled, true);
+  assert.equal($("#simulation-finish"), null, "plus de remise après remise");
+  // Retour au hub.
+  click("#simulation-home");
   assert.ok(!$("#view-hub").classList.contains("hidden"));
+  assert.ok($("#view-workspace").classList.contains("hidden"));
+});
+
+test("10. La copie n'affiche aucun indice de confiance ni barème", () => {
+  click('#year-grid [data-year="2025"]');
+  click("#guide-next");
+  click('#view-strategy [data-confirm="1"][data-session-mode="bac"]');
+  assert.equal($$("#view-workspace .confidence-chip").length, 0, "aucun indice de confiance en épreuve");
+  assert.doesNotMatch($("#view-workspace").textContent, /ثقة (مرتفعة|متوسطة|منخفضة)/);
+  assert.match($("#view-workspace").textContent, /اختبار صامت/);
 });

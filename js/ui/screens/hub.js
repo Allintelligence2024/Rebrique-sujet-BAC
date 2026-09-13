@@ -1,4 +1,5 @@
 import { node, setInternalHTML } from "../dom.js";
+import { mountPdfViewers, pdfViewerHTML } from "../pdf-viewer.js";
 import { ARCHIVE, catalogYearsForStream } from "../../../data/archive.js";
 
 const STREAM_KEY = "boussole4d.stream";
@@ -32,7 +33,7 @@ function writeStream(id) {
   }
 }
 
-function trainingYearsForStream(appConfig, streamId) {
+function examYearsForStream(appConfig, streamId) {
   return appConfig.years.filter((year) => year.enabled && (year.stream || "se") === streamId);
 }
 
@@ -41,9 +42,9 @@ function yearCardId(year) {
 }
 
 function buildHubCatalog(appConfig, streamId) {
-  const training = trainingYearsForStream(appConfig, streamId).map((year) => ({
+  const training = examYearsForStream(appConfig, streamId).map((year) => ({
     id: yearCardId(year),
-    kind: "training",
+    kind: "exam",
     year
   }));
   const consult = catalogYearsForStream(streamId)
@@ -62,24 +63,23 @@ export function createHubScreen(deps) {
     $$,
     APP_CONFIG,
     applyTheme,
-    buildDemo,
+    mountPdfViewers,
+    pdfViewerHTML,
     closeModal,
     cycleSound,
     enterExercise,
     examMinutesForYear,
     formatDuration,
     openAdkar,
-    openAtlas,
+    openDrawer,
     openModal,
     startSession,
     store,
     timers,
-    training,
     yearObj
   } = deps;
 
   function renderHub() {
-    training?.teardown?.();
     const streamId = readStream();
     const stream = STREAMS[streamId];
     const other = STREAMS[nextStreamId(streamId)];
@@ -109,8 +109,7 @@ export function createHubScreen(deps) {
         <p class="small text-muted mt-0 mb-1" id="hub-stream-caption"></p>
       </div>
       <div class="grid grid-cards" id="year-grid"></div>
-      ${training.html()}
-      <footer class="screen-foot">منصة تدريب منهجي لامتحانات بكالوريا علوم الطبيعة والحياة. <a href="legal/privacy.html">الخصوصية</a> · <a href="legal/legal-notice.html">المعلومات القانونية</a></footer>
+      <footer class="screen-foot">منصة إمتحان بكالوريا علوم الطبيعة والحياة. <a href="legal/privacy.html">الخصوصية</a> · <a href="legal/legal-notice.html">المعلومات القانونية</a></footer>
     </div>`
     );
 
@@ -131,7 +130,7 @@ export function createHubScreen(deps) {
       grid.appendChild(gapCard(stream));
     } else {
       for (const item of catalog) {
-        grid.appendChild(item.kind === "training" ? trainingCard(item.year) : consultCard(item));
+        grid.appendChild(item.kind === "exam" ? examCard(item.year) : consultCard(item));
       }
     }
 
@@ -152,27 +151,6 @@ export function createHubScreen(deps) {
     $("#btn-hub-adkar").addEventListener("click", openAdkar);
     $("#btn-hub-sound").addEventListener("click", () => cycleSound($("#btn-hub-sound")));
     fab.addEventListener("click", cycleStream);
-    training.mount();
-    // Démo et أطلس : outils secondaires, dans la section repliée تدريب الخطوات الأربع.
-    const trainingSection = $("#training-section");
-    if (trainingSection) {
-      trainingSection.insertAdjacentHTML(
-        "beforeend",
-        `
-        <section class="card" id="demo-card">
-          <div class="flex spread">
-            <div><h3 class="mt-0 mb-1">تشخيص تجريبي في 60 ثانية</h3>
-            <p class="small text-muted mt-0">مثال توضيحي للمنتج — ليس نتيجة تلميذ.</p></div>
-            <button class="btn btn-emerald" id="btn-demo">ابدأ المثال قبل / بعد</button>
-          </div>
-        </section>
-        <div class="flex justify-center">
-          <button class="btn btn-ghost btn-sm" id="btn-atlas">🔬 أطلس التقنيات</button>
-        </div>`
-      );
-      $("#btn-demo").addEventListener("click", openDemo);
-      $("#btn-atlas").addEventListener("click", openAtlas);
-    }
     applyTheme(document.documentElement.dataset.theme);
   }
 
@@ -217,18 +195,23 @@ export function createHubScreen(deps) {
     return card;
   }
 
-  function trainingCard(y) {
+  /* Une année « copie libre » n'a aucune consigne encodée : la carte ne peut
+     pas annoncer un جرد المهام qu'elle n'a pas. Elle le dit à la place. */
+  function examCardNote(y) {
+    const duration = formatDuration(examMinutesForYear(y));
+    return y.answerMode === "free"
+      ? `إمتحان الموضوع — وضع «الورقة الحرة»: تعليمات هذه الدورة غير مُشفَّرة، تقرأ الموضوع من الملف وتكتب إجابتك. مدة الاختبار الرسمية: ${duration}.`
+      : `إمتحان الموضوع — جرد المهام جزئي: بعض التعليمات مُعاد بناؤها. مدة الاختبار الرسمية: ${duration}.`;
+  }
+
+  function examCard(y) {
     const disabled = !y.enabled;
-    const note = disabled
-      ? y.loadingNote || "لم تُرفق وثائق PDF لهذه الدورة بعد — قريباً."
-      : `تدريب منهجي جزئي — لا يمثل جميع تعليمات الموضوع. مدة الاختبار الرسمية: ${formatDuration(
-          examMinutesForYear(y)
-        )}.`;
+    const note = disabled ? y.loadingNote || "لم تُرفق وثائق PDF لهذه الدورة بعد — قريباً." : examCardNote(y);
     const cardId = yearCardId(y);
     const card = node("div", {
       className: `card year-card ${disabled ? "dim" : ""}`,
       attrs: { title: note },
-      dataset: { hubYear: cardId, kind: "training" }
+      dataset: { hubYear: cardId, kind: "exam" }
     });
     const stack = node("div", { className: "stack" });
     const header = node("div", { className: "flex spread" });
@@ -246,7 +229,7 @@ export function createHubScreen(deps) {
       y.theme === "emerald" ? "btn-emerald" : y.theme === "indigo" ? "btn-indigo" : "btn-amber";
     const button = node("button", {
       className: `btn btn-block ${buttonTheme}`,
-      text: disabled ? "غير متاح بعد" : "▶ ابدأ التدريب المنهجي",
+      text: disabled ? "غير متاح بعد" : "▶ ابدأ الإمتحان",
       attrs: disabled ? { disabled: "" } : {},
       dataset: { year: y.id }
     });
@@ -267,61 +250,54 @@ export function createHubScreen(deps) {
       node("span", { className: "badge badge-indigo", text: "موضوع رسمي" }),
       node("span", { className: "mono bold year-number", text: item.id })
     );
+    // Le sujet est lu dans l'application dès qu'un PDF local existe ; le lien
+    // dzexams ne sert plus que de source de repli.
+    const localPdfs = item.entries.flatMap((entry) => entry.localPdfUrls || []);
     const copy = node("div");
     copy.append(
       node("h3", { className: "mt-0 mb-1", text: `بكالوريا الجزائر دورة ${item.id}` }),
       node("p", {
         className: "small text-muted mt-0",
-        text: "الموضوعان والتصحيح النموذجي — للاستشارة فقط."
+        text: localPdfs.length
+          ? "يُقرأ الموضوعان داخل التطبيق. وضع الإمتحان غير متاح: لم تُشفَّر تعليمات هذه الدورة بعد."
+          : "الموضوعان والتصحيح النموذجي — للاستشارة فقط."
       })
     );
     stack.append(header, copy);
     const actions = node("div", { className: "stack" });
+    if (localPdfs.length) {
+      localPdfs.forEach((href, index) => {
+        const button = node("button", {
+          className: "btn btn-block btn-indigo",
+          text: `📄 قراءة الموضوع ${index + 1} في التطبيق`,
+          dataset: { consultPdf: href }
+        });
+        button.addEventListener("click", () => {
+          const drawer = openDrawer(
+            "right",
+            `📄 وثيقة الموضوع ${index + 1}`,
+            pdfViewerHTML({ id: index + 1, pdfLocalUrl: href })
+          );
+          mountPdfViewers(drawer);
+        });
+        actions.append(button);
+      });
+    }
     for (const entry of item.entries) {
       const session = ARCHIVE.sessions[entry.session] || entry.session;
-      const label = item.entries.length > 1 ? `📄 ${session}` : "📄 الموضوع والتصحيح النموذجي";
-      // Les cartes de consultation renvoient vers la source dzexams (les PDFs locaux
-      // sont réservés à l'entraînement 4D via les cartes d'entraînement).
+      const label = item.entries.length > 1 ? `🔗 ${session} (المصدر)` : "🔗 المصدر والتصحيح";
       if (entry.url) {
         actions.append(
           node("a", {
-            className: "btn btn-block btn-indigo",
+            className: "btn btn-block btn-ghost btn-sm",
             text: label,
             attrs: { href: entry.url, target: "_blank", rel: "noopener noreferrer" }
           })
         );
-      } else if (entry.localPdfUrls?.length) {
-        entry.localPdfUrls.forEach((href, index) => {
-          actions.append(
-            node("a", {
-              className: "btn btn-block btn-indigo",
-              text: `📄 الموضوع ${index + 1} — قراءة PDF محلي`,
-              attrs: { href, target: "_blank", rel: "noopener noreferrer" }
-            })
-          );
-        });
       }
     }
     card.append(stack, actions);
     return card;
-  }
-
-  function openDemo() {
-    const demo = buildDemo();
-    const list = (items, empty) =>
-      items.length ? `<ul>${items.map((item) => `<li>${item}</li>`).join("")}</ul>` : `<p>${empty}</p>`;
-    const panel = (title, result) => `<article class="card">
-      <h3 class="mt-0">${title}</h3>
-      <blockquote class="demo-copy">${result.text}</blockquote>
-      <strong>ما رصده المحرك</strong>${list(result.detected, "لا توجد مؤشرات كافية.")}
-      <strong>ما بقي ناقصاً</strong>${list(result.missing, "لم يرصد نقصاً ضمن هذه القاعدة المحدودة.")}
-    </article>`;
-    openModal(
-      "⏱️ تشخيص توضيحي في 60 ثانية",
-      `<p class="feedback mid">هذا مثال مصطنع ومعلن للشرح فقط؛ ليس نتيجة طالب حقيقي ولا دليلاً على الدقة.</p>
-       <div class="grid grid-2">${panel("قبل: عبارة عامة", demo.before)}${panel("بعد: ملاحظة ثم تفسير", demo.after)}</div>
-       <section class="mt-2"><h3>ما لا يضمنه المحرك</h3>${list(demo.limits, "")}</section>`
-    );
   }
 
   return { renderHub };

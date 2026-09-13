@@ -50,9 +50,12 @@ export function buildP1Status() {
   const noInlineStyles = sources.every(
     (source) => !/\bstyle\s*=/i.test(source) && !/\.style\.[a-z-]+\s*=/i.test(source)
   );
+  // P1.4 — le mode épreuve est le seul mode : la copie ne porte aucun outil
+  // d'entraînement (rapport, réinitialisation, indices, brouillon), et la
+  // relecture n'existe qu'après remise.
   const sessionModeSource = read("js/store.js") + read("js/ui/screens/simulation.js");
   const separateModes =
-    sessionModeSource.includes('"training", "simulation"') &&
+    sessionModeSource.includes('SESSION_MODES = Object.freeze(["bac"])') &&
     sessionModeSource.includes("simulation-active-notice") &&
     sessionModeSource.includes("simulation-review-notice");
   const coverageGuard =
@@ -84,7 +87,7 @@ export function buildP1Status() {
     {
       id: "P1.4",
       complete: separateModes,
-      evidence: "entraînement, simulation silencieuse et relecture après remise séparés"
+      evidence: "épreuve unique : entraînement retiré de la copie, relecture seulement après remise"
     },
     {
       id: "P1.5",

@@ -32,9 +32,22 @@ for (const dir of ["subjects/SE", "subjects/M"]) {
       const pages = data.numpages || 0;
       const arabic = (data.text.match(/[\u0600-\u06FF]/g) || []).length;
       const total = (data.text || "").replace(/\s+/g, "").length;
-      out.push({ path: path.replace(root + "/", ""), pages, totalChars: total, arabicChars: arabic, ...classify(total, pages) });
+      out.push({
+        path: path.replace(root + "/", ""),
+        pages,
+        totalChars: total,
+        arabicChars: arabic,
+        ...classify(total, pages)
+      });
     } catch (err) {
-      out.push({ path: path.replace(root + "/", ""), pages: 0, totalChars: 0, arabicChars: 0, kind: "error", note: String(err.message).slice(0, 80) });
+      out.push({
+        path: path.replace(root + "/", ""),
+        pages: 0,
+        totalChars: 0,
+        arabicChars: 0,
+        kind: "error",
+        note: String(err.message).slice(0, 80)
+      });
     }
   }
 }
@@ -48,5 +61,7 @@ console.log("\n=== DÉTAIL ===");
 console.log("stream\tyear\tsujet\tpages\tchars\tarabic\tclassification");
 for (const r of out.sort((a, b) => a.path.localeCompare(b.path))) {
   const m = r.path.match(/subjects\/(SE|M)\/(\d{4})(?:\/exceptional)?\/sujet-(\d)\.pdf/);
-  console.log(`${m?.[1] ?? "?"}\t${m?.[2] ?? "?"}\tS${m?.[3] ?? "?"}\t${r.pages}\t${r.totalChars}\t${r.arabicChars}\t${r.kind}\t${r.note}`);
+  console.log(
+    `${m?.[1] ?? "?"}\t${m?.[2] ?? "?"}\tS${m?.[3] ?? "?"}\t${r.pages}\t${r.totalChars}\t${r.arabicChars}\t${r.kind}\t${r.note}`
+  );
 }

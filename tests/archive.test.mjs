@@ -22,7 +22,7 @@ import { ARCHIVE } from "../data/archive.js";
 
 const BAD_KEYWORDS = ["synthetic", "généré", "LLM", "GPT", "Claude", "Gemini", "chatbot", "fabriqué"];
 
-test("2021 SE est cataloguée en consultation, sans 4D et sans faux contentVerified", async () => {
+test("2021 SE reste cataloguée, sans contenu 4D inventé ni faux contentVerified", async () => {
   const se = ARCHIVE.entries.find((e) => e.year === "2021" && e.stream === "se");
   const maths = ARCHIVE.entries.find((e) => e.year === "2021" && e.stream === "m");
   assert.ok(se && maths, "2021 se et m doivent exister");
@@ -32,12 +32,29 @@ test("2021 SE est cataloguée en consultation, sans 4D et sans faux contentVerif
   assert.ok(se.pdfUrl.includes("2021/dzexams-bac-sciences-2728849.pdf"));
   assert.equal(maths.viewer, "ok");
   assert.equal(maths.contentVerified, true);
-  const { APP_CONFIG } = await import("../data/subjects.js");
-  assert.equal(
-    APP_CONFIG.years.some((y) => y.id === "2021" && y.enabled),
-    false,
-    "2021 ne doit pas être une année 4D activée"
-  );
+  /* 2021 est désormais une épreuve « copie libre » : le sujet officiel est lu
+     dans l'application, mais AUCUNE consigne n'est encodée (couche texte
+     illisible). Ce n'est pas du 4D : aucun pôle, aucun inventaire, aucune note. */
+  const { APP_CONFIG, loadYear } = await import("../data/subjects.js");
+  const se2021 = APP_CONFIG.years.find((y) => y.id === "2021" && (y.stream || "se") === "se");
+  assert.ok(se2021 && se2021.enabled, "2021 ouvre une épreuve");
+  const year2021 = await loadYear("2021");
+  assert.equal(year2021.answerMode, "free");
+  assert.ok(year2021.answerModeNote.length > 20);
+  for (const sujet of year2021.sujets) {
+    assert.deepEqual(
+      sujet.exercises.map((ex) => ex.max),
+      [5, 7, 8]
+    );
+    for (const ex of sujet.exercises) {
+      assert.deepEqual(ex.poles, {}, `${sujet.id}/E${ex.number} ne doit encoder aucune consigne`);
+    }
+    assert.ok(sujet.pdfLocalUrl.startsWith("/subjects/SE/2021/"));
+  }
+  const { officialTaskInventoryFor } = await import("../data/official-tasks.js");
+  for (const sujet of year2021.sujets) {
+    assert.equal(officialTaskInventoryFor("2021", sujet.id), null, "aucun inventaire inventé pour 2021");
+  }
 });
 
 test("la session exceptionnelle 2016 Maths n'est pas inventée", () => {
@@ -126,13 +143,23 @@ test("aucun mot-clé synthétique dans les provenances", () => {
 });
 
 test("une année 4D SE n'a pas d'entrée d'archive SE (pas de confusion de produits)", async () => {
-  const { APP_CONFIG } = await import("../data/subjects.js");
+  const { APP_CONFIG, loadYear } = await import("../data/subjects.js");
   const enabledIds = APP_CONFIG.years.filter((y) => y.enabled).map((y) => y.id);
   for (const e of ARCHIVE.entries.filter((entry) => entry.stream === "se")) {
-    assert.ok(
-      !enabledIds.includes(e.year),
+    if (!enabledIds.includes(e.year)) continue;
+    /* Seule exception documentée : l'armature « copie libre ». Elle ouvre une
+       épreuve (sujet lu dans l'application) mais n'encode aucun contenu 4D. */
+    const year = await loadYear(e.year);
+    assert.equal(
+      year.answerMode,
+      "free",
       `${e.year}/se est à la fois archive et entraînement 4D activé — confusion de produits`
     );
+    for (const sujet of year.sujets) {
+      for (const ex of sujet.exercises) {
+        assert.deepEqual(ex.poles, {}, `${e.year}/S${sujet.id}/E${ex.number} ne doit pas porter de pôle 4D`);
+      }
+    }
   }
 });
 

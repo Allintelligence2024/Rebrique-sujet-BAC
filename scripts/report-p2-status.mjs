@@ -90,33 +90,18 @@ export function buildP2Status() {
   const accessibility = read("js/ui/accessibility.js");
   const dialogs = read("js/ui/dialogs.js");
   const workspace = read("js/ui/screens/workspace.js");
-  const brouillon = read("js/ui/workspace/brouillon.js");
   const strategy = read("js/ui/screens/strategy.js");
   const guide = read("js/ui/screens/guide.js");
   const hub = read("js/ui/screens/hub.js");
   const simulation = read("js/ui/screens/simulation.js");
-  const atlas = read("js/ui/atlas.js");
-  const training = read("js/ui/training.js");
-  const keycard = read("js/ui/keycard.js");
-  const presentation = read("js/ui/workspace/presentation.js");
-  const methodScripts = read("js/method-scripts.js");
-  const draftData = read("data/brouillon.js");
+  const pdfViewer = read("js/ui/pdf-viewer.js");
+  const bacPolicy = read("data/bac-mode-policy.js");
   const styles = read("assets/styles.css");
   const e2e = read("tests/e2e/accessibility.spec.mjs");
-  const visibleUiSources = [
-    workspace,
-    brouillon,
-    strategy,
-    guide,
-    hub,
-    simulation,
-    atlas,
-    training,
-    keycard,
-    presentation,
-    methodScripts,
-    draftData
-  ].join("\n");
+  // Ce que l'élève voit réellement : les quatre écrans du parcours, l'épreuve,
+  // la visionneuse du sujet et les avis produit. Les modules de l'ancien écran
+  // d'entraînement ont été supprimés le 2026-09-13 (décision produit).
+  const visibleUiSources = [workspace, strategy, guide, hub, simulation, pdfViewer, bacPolicy].join("\n");
 
   const accessibilityComplete =
     shell.includes('class="skip-link" href="#main-content"') &&
@@ -127,11 +112,15 @@ export function buildP2Status() {
     dialogs.includes("isolateDialog") &&
     dialogs.includes("returnFocus.focus()");
 
-  const attemptSwitchSource = workspace.match(/function attemptSwitch\(target\) \{[\s\S]*?\n  \}/)?.[0] || "";
+  // P2.2 — l'ordre des exercices est libre. La preuve vit maintenant dans
+  // l'écran d'épreuve (js/ui/screens/simulation.js), seul écran de session
+  // depuis la suppression du mode entraînement.
+  const switchExerciseSource =
+    simulation.match(/\$\$\("#view-workspace \[data-simulation-exercise\]"\)[\s\S]*?\n    \);/)?.[0] || "";
   const exerciseOrderFree =
-    workspace.includes("يمكنك الانتقال بحرية بين التمارين") &&
-    attemptSwitchSource.includes("store.setActiveExercise(target)") &&
-    !/(locked|answeredAny|openModal)/.test(attemptSwitchSource);
+    simulation.includes("data-simulation-exercise") &&
+    switchExerciseSource.includes("store.setActiveExercise(Number(button.dataset.simulationExercise))") &&
+    !/(locked|answeredAny|openModal)/.test(switchExerciseSource);
 
   const competingMetaphors = [
     "السنّ",
@@ -169,12 +158,18 @@ export function buildP2Status() {
     e2e.includes("zoom de 200 %") &&
     e2e.includes("width: 640");
 
-  const draftFlowComplete =
-    brouillon.includes("st.scratch[p] =") &&
-    brouillon.includes("st.text[activePole] = target.value") &&
-    brouillon.includes("closeModal?.()") &&
-    brouillon.includes("target.focus()") &&
-    brouillon.includes("أُدرجت المسودة في الإجابة وحُفظت محلياً");
+  // P2.6 — le brouillon en quatre étapes a été retiré du produit avec l'écran
+  // d'entraînement. Le critère porte désormais sur le cycle de la copie : sujet
+  // lisible dans l'application, réponse enregistrée, remise confirmée, relecture
+  // verrouillée et retour de focus.
+  const examPaperComplete =
+    pdfViewer.includes('<iframe class="pdf-frame"') &&
+    pdfViewer.includes("download") &&
+    simulation.includes("input.value = progress.officialTaskAnswers[task.id]") &&
+    simulation.includes('id="simulation-finish-yes"') &&
+    simulation.includes('id="simulation-finish-no"') &&
+    simulation.includes('id="simulation-review-notice"') &&
+    simulation.includes("showCompletionNotice");
 
   const usability = summarizeUsabilityStudy(P2_USABILITY_STUDY);
   const { uniqueParticipants, requiredParticipants } = usability;
@@ -208,8 +203,9 @@ export function buildP2Status() {
     },
     {
       id: "P2.6",
-      complete: draftFlowComplete,
-      evidence: "édition, contrôle, sauvegarde, insertion, fermeture et retour de focus vers la copie"
+      complete: examPaperComplete,
+      evidence:
+        "sujet lisible dans l'app, réponse restaurée et enregistrée, remise confirmée (oui/non), relecture verrouillée"
     },
     {
       id: "P2.7",

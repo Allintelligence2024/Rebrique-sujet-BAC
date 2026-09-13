@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { poleConfidence } from "../js/ui/workspace/feedback.js";
 import { APP_CONFIG } from "./helpers/full-app-config.mjs";
+import { officialTaskInventoryFor } from "../data/official-tasks.js";
 
 const ARCHIVE_IDS = ["2020", "2019", "2018", "2017", "2016", "2015", "2014", "2013"];
 const ENABLED_RECON_SE = ["2019", "2018", "2017", "2016", "2015", "2014", "2013"];
@@ -22,10 +22,11 @@ test("l'archive 2013-2019 SE est branchée dans APP_CONFIG ; 2020 SE reste le mo
     const year = APP_CONFIG.years.find((y) => y.id === id);
     assert.ok(year && year.enabled && (year.stream || "se") === "se", `${id} SE 4D manquant`);
   }
-  assert.equal(
-    APP_CONFIG.years.some((y) => y.id === "2021" && y.enabled),
-    false
-  );
+  /* 2021 n'est pas une année 4D : c'est une armature « copie libre »
+     (épreuve ouverte, aucune consigne encodée). */
+  const se2021 = APP_CONFIG.years.find((y) => y.id === "2021");
+  assert.ok(se2021 && se2021.enabled, "2021 ouvre une épreuve");
+  assert.equal(se2021.answerMode, "free");
 });
 
 test("chaque année reconstruite 2013–2019 est activée avec 2 sujets × 3 exercices 5/7/8", () => {
@@ -47,14 +48,19 @@ test("chaque année reconstruite 2013–2019 est activée avec 2 sujets × 3 exe
   }
 });
 
-test("la confiance UI de l'archive 2013-2020 est basse", () => {
-  const pole = { bacPromptSource: "reconstructed" };
-  for (const id of ARCHIVE_IDS) {
-    assert.equal(poleConfidence(pole, id).level, "low", `${id} doit être low`);
+test("les consignes de l'archive 2013-2019 sont toutes marquées reconstructed", () => {
+  // L'indice de confiance par pôle appartenait à l'écran d'entraînement supprimé :
+  // la provenance est désormais portée par les inventaires (tests/official-coverage.test.mjs).
+  for (const id of ENABLED_RECON_SE) {
+    for (const sujet of [1, 2]) {
+      const inventory = officialTaskInventoryFor(id, sujet);
+      assert.ok(inventory, `${id}/S${sujet} sans inventaire`);
+      assert.ok(
+        inventory.tasks.every((task) => task.promptSource === "reconstructed"),
+        `${id}/S${sujet} déclare une consigne officielle`
+      );
+    }
   }
-  assert.equal(poleConfidence(pole, "2024").level, "low");
-  assert.equal(poleConfidence(pole, "2023").level, "medium");
-  assert.equal(poleConfidence({ bacPromptSource: "official" }, "2018").level, "high");
 });
 
 test("aucune consigne d'archive n'est marquée official", () => {

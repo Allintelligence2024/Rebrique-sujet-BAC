@@ -284,7 +284,7 @@ test("rapport de calibration : la couverture seule ne franchit pas les seuils de
   const categories = ["strong", "weak", "scientifically-wrong", "off-topic"];
   const synthetic = [];
   let index = 0;
-  for (const year of APP_CONFIG.years.filter((item) => item.enabled)) {
+  for (const year of APP_CONFIG.years.filter((item) => item.enabled && item.answerMode !== "free")) {
     for (const sujet of year.sujets) {
       for (const exercise of sujet.exercises) {
         for (const pole of ["N", "S", "E", "W"]) {

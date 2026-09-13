@@ -1,5 +1,7 @@
 import { setInternalHTML } from "../dom.js";
-import { assertSimulationEligible } from "../../domain/subjects/official-coverage.js";
+import { officialTaskInventoryFor } from "../../../data/official-tasks.js";
+import { mountPdfViewers, pdfViewerHTML } from "../pdf-viewer.js";
+import { assertSimulationEligible, examOpenable } from "../../domain/subjects/official-coverage.js";
 import { simulationBlockersArabic } from "../coverage-messages.js";
 
 export function createStrategyScreen(deps) {
@@ -30,32 +32,11 @@ export function createStrategyScreen(deps) {
     showScreen("view-strategy");
   }
 
+  /* Le sujet s'affiche dans l'application : les PDF sont suivis dans le dépôt
+     (subjects/**) et servis par la même origine, ce que la CSP autorise
+     (frame-src 'self'). Le lien externe ne reste qu'en source de repli. */
   function pdfFallbackHTML(subject) {
-    // L'aperçu stratégique renvoie à la source externe (dzexams) afin de ne pas
-    // redistribuer de PDF tiers dans le shell ; un lien de téléchargement direct
-    // n'est jamais présenté à cet endroit.
-    if (subject?.pdfExternalUrl) {
-      return `<div class="pdf-reader stack">
-        <div class="pdf-reader-cover" role="status">
-          <span class="pdf-reader-icon" aria-hidden="true">📄</span>
-          <strong>الموضوع متاح على المصدر الخارجي</strong>
-          <p class="small text-muted">تُفتح صفحة الموضوع على dzexams في نافذة مستقلة — فتح المصدر الخارجي.</p>
-        </div>
-        <a class="btn btn-indigo btn-block pdf-open" href="${subject.pdfExternalUrl}" target="_blank" rel="noopener noreferrer">📄 فتح المصدر الخارجي (dzexams)</a>
-      </div>`;
-    }
-    if (subject?.pdfLocalUrl) {
-      return `<div class="pdf-reader stack">
-        <div class="pdf-reader-cover" role="status">
-          <span class="pdf-reader-icon" aria-hidden="true">📄</span>
-          <strong>ملف الموضوع جاهز للقراءة</strong>
-        </div>
-        <a class="btn btn-indigo btn-block pdf-open" href="${subject.pdfLocalUrl}" target="_blank" rel="noopener noreferrer">📄 فتح الموضوع المختار وقراءته</a>
-      </div>`;
-    }
-    return `<div class="center stack preview-empty">
-      <p class="small text-muted">لا يوجد ملف موضوع متاح لهذه الدورة في التطبيق.</p>
-    </div>`;
+    return pdfViewerHTML(subject);
   }
 
   function renderStrategy(sujetNum) {
@@ -69,7 +50,7 @@ export function createStrategyScreen(deps) {
         <div class="brand">
           <button class="btn btn-rose btn-sm" id="strategy-exit">✕ إلغاء وخروج</button>
           <div class="brand-icon" aria-hidden="true">٤</div>
-          <div><h2>اختر موضوع التدريب</h2>
+          <div><h2>اختر موضوع الإمتحان</h2>
           <p class="small text-muted">تصفّح وقدّر ثقتك في كل تمرين — 25 د.</p></div>
         </div>
         <div class="pill"><span class="text-dim">وقت الاختيار:</span><span class="mono" id="strategy-timer">25:00</span></div>
@@ -116,7 +97,7 @@ export function createStrategyScreen(deps) {
     );
     $$("#view-strategy [data-confirm]").forEach((button) =>
       button.addEventListener("click", () =>
-        confirmChoice(+button.dataset.confirm, button.dataset.sessionMode || "training")
+        confirmChoice(+button.dataset.confirm, button.dataset.sessionMode || "bac")
       )
     );
   }
@@ -130,12 +111,14 @@ export function createStrategyScreen(deps) {
         return `<div class="flex spread"><label class="small" for="strategy-s${subject.id}-e${exercise.number}">ت${exercise.number}: ${exercise.label} (${exercise.max}ن)</label><input class="field calc-input" id="strategy-s${subject.id}-e${exercise.number}" data-subject="${subject.id}" data-exercise="${exercise.number}" data-max="${exercise.max}" type="number" min="0" max="${exercise.max}" step="0.25" value="${initial}"></div>`;
       })
       .join("");
-    const simDisabled = coverage.simulationEligible ? "" : "disabled";
-    const guardMsg = coverage.simulationEligible
-      ? ""
-      : `<p class="small text-muted simulation-guard-note" id="simulation-guard-${subject.id}">المحاكاة ممنوعة: ${simulationGuardArabic(coverage.blockers)}</p>`;
+    const officialTasks = (officialTaskInventoryFor(store.state.yearId, subject.id)?.tasks || []).filter(
+      (task) => task.promptSource === "official"
+    ).length;
+    const inventoryNote = coverage.freeAnswerEligible
+      ? `<p class="small text-muted inventory-note" id="inventory-note-${subject.id}">وضع الإجابة الحرة: تعليمات هذه الدورة غير مُشفَّرة (ملفها غير قابل للاستخراج). الإمتحان مفتوح — اقرأ الموضوع واكتب إجابتك — بلا تصحيح ولا نقطة.</p>`
+      : `<p class="small text-muted inventory-note" id="inventory-note-${subject.id}">جرد المهام: ${coverage.knownTaskCount} مهمة، منها ${officialTasks} تعليمة رسمية موثّقة.</p>`;
     return `
-    <div class="card stack subject-card" data-subject-coverage="${coverage.inventoryStatus}" data-simulation-eligible="${coverage.simulationEligible}">
+    <div class="card stack subject-card" data-subject-coverage="${coverage.inventoryStatus}" data-simulation-eligible="${coverage.simulationEligible}" data-exam-openable="${examOpenable(coverage)}" data-answer-mode="${coverage.freeAnswerEligible ? "free" : "inventory"}">
       <div>
         <div class="flex spread subject-card-head">
           <span class="badge badge-${theme}">الموضوع 0${subject.id}</span>
@@ -147,34 +130,20 @@ export function createStrategyScreen(deps) {
         </div>
       </div>
       <div class="stack subject-mode-actions">
-        <button class="btn btn-block btn-${theme}" data-confirm="${subject.id}" data-session-mode="training">ابدأ التدريب المنهجي</button>
-        <button class="btn btn-block btn-ghost btn-sm" data-confirm="${subject.id}" data-session-mode="simulation" ${simDisabled}>ابدأ وضع BAC</button>
-        ${guardMsg}
+        <button class="btn btn-block btn-${theme}" data-confirm="${subject.id}" data-session-mode="bac">ابدأ الإمتحان</button>
+        ${inventoryNote}
       </div>
     </div>`;
-  }
-
-  function simulationGuardArabic(blockers = []) {
-    const labels = {
-      "inventory-missing": "جرد المهام الرسمية غير موجود",
-      "inventory-partial": "جرد المهام الرسمية غير مكتمل",
-      "exercise-inventory-incomplete": "بعض التمارين غير مجرودة",
-      "task-mapping-incomplete": "ربط المهام بخطوات التدريب غير مكتمل",
-      "scoring-unverified": "سلم التنقيط غير متحقق منه",
-      "documents-unreviewed": "بعض الوثائق أو الصفحات غير مراجعة",
-      "points-incomplete": "مجموع النقاط غير مكتمل",
-      "metadata-invalid": "بيانات الجرد غير صالحة",
-      "coverage-unknown": "نسبة التغطية الرسمية غير معروفة"
-    };
-    const values = blockers.length ? blockers : ["coverage-unknown"];
-    return values.map((b) => labels[b] || "دليل الأهلية غير مكتمل").join("؛ ");
   }
 
   function setPdfPreview(subjectId) {
     const year = yearObj(store.state.yearId);
     const subject = year?.sujets.find((item) => item.id === subjectId) || year?.sujets[0];
     const box = $("#pdf-preview-container");
-    if (box && subject) setInternalHTML(box, pdfFallbackHTML(subject));
+    if (box && subject) {
+      setInternalHTML(box, pdfFallbackHTML(subject));
+      mountPdfViewers(box);
+    }
     $$("#view-strategy [data-preview]").forEach((button, index) => {
       const active = +button.dataset.preview === subject?.id;
       const color = active ? (index === 0 ? "btn-indigo" : "btn-purple") : "btn-ghost";
@@ -223,27 +192,32 @@ export function createStrategyScreen(deps) {
     gain.textContent = `${(best.fraction * 100).toFixed(1)}% ثقة ذاتية`;
   }
 
-  function confirmChoice(sujetNum, mode = "training") {
+  function confirmChoice(sujetNum, mode = "bac") {
     if (!store.isSessionActive()) return;
     const year = yearObj(store.state.yearId);
     const subject = year?.sujets.find((item) => item.id === sujetNum);
     if (!subject) return;
-    if (mode === "simulation") {
-      const coverage = officialCoverageForSubject(year, subject);
+    // Filet de sécurité : un sujet sans inventaire exploitable reste fermé,
+    // sauf armature « copie libre » — là, rien n'est noté mais l'épreuve est
+    // réelle : le sujet se lit dans l'application et l'élève rédige.
+    const coverage = officialCoverageForSubject(year, subject);
+    if (coverage.simulationEligible) {
       try {
         assertSimulationEligible(coverage);
       } catch {
-        toast(`المحاكاة ممنوعة: ${simulationBlockersArabic(coverage.blockers)}`, "error");
+        toast(`الإمتحان مرفوض: ${simulationBlockersArabic(coverage.blockers)}`, "error");
         return;
       }
+    } else if (!coverage.freeAnswerEligible) {
+      toast(`الإمتحان مرفوض: ${simulationBlockersArabic(coverage.blockers)}`, "error");
+      return;
     }
     store.activateSubjectMode(sujetNum, mode);
     timers.stopStrategy();
-    // In training mode, start the session clock when writing begins.
-    // Simulation mode activates the clock inside activateSubjectMode (reset to full duration).
-    if (mode === "training" || mode === "simulation") {
-      timers.startGlobal();
-    }
+    // Writing starts here, in both modes: the official clock begins. In
+    // simulation, activateSubjectMode has just reset the remaining time to the
+    // full duration, so the strategy/breathing phase is never debited.
+    timers.startGlobal();
     enterExercise(1);
     $("#global-timer-bar")?.classList.remove("hidden");
   }

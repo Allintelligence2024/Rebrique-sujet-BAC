@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { YEAR_CATALOG } from "../data/subjects.js";
@@ -10,6 +10,21 @@ const read = (path) => readFileSync(join(root, path), "utf8");
 function shellAssets(serviceWorker) {
   const block = serviceWorker.match(/const SHELL_ASSETS = \[([\s\S]*?)\];/);
   return block ? [...block[1].matchAll(/"([^"]+)"/g)].map((match) => match[1]) : [];
+}
+
+/* Tous les payloads paresseux présents sur le disque, toutes filières
+   confondues. Le compte est lu, jamais écrit en dur : ajouter une année ne
+   doit pas rouvrir ce critère, oublier de la cataloguer si. */
+function lazyYearFiles() {
+  const files = [];
+  for (const stream of ["se", "m"]) {
+    const dir = join(root, "data", "years", stream);
+    if (!existsSync(dir)) continue;
+    for (const file of readdirSync(dir)) {
+      if (/^year-\d{4}(-\w+)?\.js$/.test(file)) files.push(`data/years/${stream}/${file}`);
+    }
+  }
+  return files.sort();
 }
 
 function revisionMatches(versionSource, path) {
@@ -29,8 +44,13 @@ export function buildP3Status() {
   const shell = shellAssets(serviceWorker);
   const yearPaths = YEAR_CATALOG.map((year) => year.modulePath);
   const revisioned = ["manifest.webmanifest", "assets/icon-192.png", "assets/icon-512.png"];
+  const onDisk = lazyYearFiles();
+  const catalogued = YEAR_CATALOG.map((year) => year.modulePath);
   const lazyData =
-    YEAR_CATALOG.length === 19 &&
+    // Chaque payload présent est catalogué, et réciproquement : pas de fichier
+    // oublié, pas d'entrée fantôme, aucun payload embarqué dans le catalogue.
+    onDisk.length === catalogued.length &&
+    onDisk.every((path) => catalogued.includes(path)) &&
     YEAR_CATALOG.every(
       (year) =>
         !("sujets" in year) &&
@@ -72,7 +92,7 @@ export function buildP3Status() {
     {
       id: "P3.1",
       complete: lazyData,
-      evidence: `${yearPaths.length} payloads filière/année, catalogue sans sujets, imports dynamiques littéraux`
+      evidence: `${yearPaths.length} payloads filière/année (${onDisk.length} fichiers), catalogue sans sujets, imports dynamiques littéraux`
     },
     {
       id: "P3.2",

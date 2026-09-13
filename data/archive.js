@@ -6,15 +6,22 @@
    le sujet officiel (الموضوعان 1 و 2) et le تصحيح النموذجي dans
    son viewer, + le lien PDF direct quand il a été observé.
 
-   Vérification (2026-08-31) : les 19 pages 2013–2020 ont été ouvertes
-   et leurs 9 PDF au viewer « 0 pages » validés mécaniquement
-   (HTTP 200, en-tête %PDF). 2021 SE reste en consultation. SE 2013–2020
-   et SE 2026 sont encodées en entraînement 4D (data/subjects-archive.js
-   pour 2013–2019, data/year-2020-se.js, data/year-2026-se.js) et ne
-   sont plus des cartes d'archive. Maths 2021–2026 restent cataloguées
-   ici mais le hub les affiche en 4D (id 2021-m … 2026-m).
+   Contenu réel du tableau (16 entrées, constat du 2026-08-31) :
+   - 15 entrées شعبة رياضيات : 2013 → 2026 (2017 en deux sessions) ;
+   - 1 entrée شعبة علوم تجريبية : 2021 uniquement.
+   Les autres années SE (2013–2020 et 2022–2026) ne sont plus des cartes
+   d'archive : elles sont encodées en entraînement 4D dans
+   data/years/se/year-*.js. Les années Maths 2021–2026 sont à la fois
+   cataloguées ici et encodées dans data/years/m/year-*.js, et le hub
+   les affiche en 4D (identifiants 2021-m … 2026-m).
+   2021 SE reste en consultation : son PDF officiel est chiffré, sans
+   couche texte exploitable — aucun énoncé n'a été fabriqué pour combler
+   ce trou, et le champ `notes` de l'entrée le rappelle.
    Index racine : uniquement se et m — pas de catégorie تقني رياضي.
    /ar/bac/sciences-naturelles/tm redirige vers /ar/bac ; aucun URL inventé.
+
+   Répartition des contrôles au 2026-08-31 : 12 access_confirmed,
+   4 consulted, 10 contentVerified=true, 12 viewers bloqués.
 
    Métrique de contrôle par entrée :
    - page: "consulted"        -> page ouverte, viewer fonctionnel,

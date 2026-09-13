@@ -1,3 +1,5 @@
+import { BAC_MODE_POLICY } from "../../../data/bac-mode-policy.js";
+
 const POLES = new Set(["N", "S", "E", "W"]);
 const INVENTORY_STATUSES = new Set(["partial", "complete"]);
 const MAPPING_KINDS = new Set(["direct", "decomposition"]);
@@ -27,6 +29,26 @@ function taskIsMapped(task, exerciseByNumber) {
  * Audit an explicit official-task inventory against one training subject.
  * Unknown coverage is represented by null, never by a misleading zero or 100%.
  */
+/* Un sujet « copie libre » ne porte aucune consigne : la couche texte du
+   PDF officiel est illisible, l'armature (thème + barème) seule est encodée.
+   L'épreuve reste ouverte — le sujet se lit dans l'application et l'élève
+   rédige — mais rien n'y est noté, faute de quoi corriger. */
+export function isFreeAnswerSubject(subject) {
+  const exercises = subjectExercises(subject);
+  return (
+    subject?.answerMode === "free" &&
+    exercises.length > 0 &&
+    exercises.every((exercise) => (Number(exercise.max) || 0) > 0) &&
+    Boolean(subject?.pdfLocalUrl || subject?.pdfExternalUrl)
+  );
+}
+
+/** L'épreuve peut-elle s'ouvrir ? Oui pour un sujet inventorié, ou pour une
+    armature « copie libre » — jamais pour un sujet sans rien à faire. */
+export function examOpenable(report) {
+  return Boolean(report?.simulationEligible || report?.freeAnswerEligible);
+}
+
 export function buildOfficialCoverageReport({ yearId, subject, inventory }) {
   const exercises = subjectExercises(subject);
   const exerciseByNumber = new Map(exercises.map((exercise) => [exercise.number, exercise]));
@@ -50,14 +72,21 @@ export function buildOfficialCoverageReport({ yearId, subject, inventory }) {
       taskCompleteExerciseNumbers: [],
       errors,
       blockers: ["inventory-missing"],
-      simulationEligible: false
+      simulationEligible: false,
+      freeAnswerEligible: isFreeAnswerSubject(subject)
     };
   }
 
   if (inventory.schemaVersion !== 1) errors.push("inventory schemaVersion must be 1");
   if (!INVENTORY_STATUSES.has(inventory.status)) errors.push("inventory status must be partial or complete");
-  if (!inventory.source?.locator || !/^\d{4}-\d{2}-\d{2}$/.test(inventory.source?.verifiedAt || "")) {
-    errors.push("inventory source locator and ISO verifiedAt are required");
+  if (!inventory.source?.locator) errors.push("inventory source locator is required");
+  // Une date de vérification n'est exigée que d'un inventaire qui se déclare
+  // relu par un humain : un inventaire dérivé mécaniquement ne s'en invente pas.
+  if (
+    inventory.source?.humanVerified === true &&
+    !/^\d{4}-\d{2}-\d{2}$/.test(inventory.source?.verifiedAt || "")
+  ) {
+    errors.push("human-verified inventory requires an ISO verifiedAt date");
   }
 
   const inventoriedExerciseNumbers = asArray(inventory.scope?.inventoriedExerciseNumbers);
@@ -88,7 +117,10 @@ export function buildOfficialCoverageReport({ yearId, subject, inventory }) {
       errors.push(`task outside inventoried scope: ${task?.id}`);
     }
     if (!Number.isInteger(task?.order) || task.order < 1) errors.push(`invalid task order: ${task?.id}`);
-    if (!Number.isInteger(task?.page) || task.page < 1) errors.push(`invalid task page: ${task?.id}`);
+    const pageKnown = Number.isInteger(task?.page) && task.page >= 1;
+    if (!pageKnown && task?.promptSource !== "reconstructed") {
+      errors.push(`invalid task page: ${task?.id}`);
+    }
     if (typeof task?.prompt !== "string" || !task.prompt.trim())
       errors.push(`missing task prompt: ${task?.id}`);
     if (!Number.isFinite(task?.maxPoints) || task.maxPoints <= 0) {
@@ -141,6 +173,8 @@ export function buildOfficialCoverageReport({ yearId, subject, inventory }) {
   }
 
   const mappedTaskCount = tasks.filter((task) => taskIsMapped(task, exerciseByNumber)).length;
+  const everyPromptOfficial =
+    tasks.length > 0 && tasks.every((task) => task.promptSource !== "reconstructed");
   const knownTaskCount = tasks.length;
   const knownPoints = tasks.reduce((sum, task) => sum + (Number(task.maxPoints) || 0), 0);
   const everyExerciseComplete =
@@ -153,8 +187,12 @@ export function buildOfficialCoverageReport({ yearId, subject, inventory }) {
     tasks.every((task) => ["not-required", "reviewed"].includes(task.documentReviewStatus));
   const everyTaskMapped = tasks.length > 0 && mappedTaskCount === tasks.length;
   const pointsComplete = closeEnough(knownPoints, subjectPoints);
+  const everyExerciseInventoried =
+    exercises.length > 0 &&
+    exercises.every((exercise) => inventoriedExerciseNumbers.includes(exercise.number));
 
   if (inventory.status !== "complete") blockers.push("inventory-partial");
+  if (!everyExerciseInventoried) blockers.push("exercise-not-inventoried");
   if (!everyExerciseComplete) blockers.push("exercise-inventory-incomplete");
   if (!everyTaskMapped) blockers.push("task-mapping-incomplete");
   if (!everyScoreVerified) blockers.push("scoring-unverified");
@@ -163,7 +201,9 @@ export function buildOfficialCoverageReport({ yearId, subject, inventory }) {
   if (errors.length) blockers.push("metadata-invalid");
 
   const inventoryComplete = inventory.status === "complete";
-  const simulationEligible =
+  // Règle stricte : rien n'est ouvert sans inventaire complet, barème vérifié
+  // et documents relus. Elle reste la référence (et la cible) du projet.
+  const strictEligible =
     inventoryComplete &&
     everyExerciseComplete &&
     everyTaskMapped &&
@@ -171,6 +211,26 @@ export function buildOfficialCoverageReport({ yearId, subject, inventory }) {
     everyDocumentReviewed &&
     pointsComplete &&
     errors.length === 0;
+  /* Politique produit (data/bac-mode-policy.js) : le mode BAC est le seul mode
+     et il doit être fonctionnel. Les exigences de CONTENU sont conservées
+     (sujet inventorié, chaque exercice couvert, chaque tâche rattachée, points
+     concordants, aucune erreur) ; seules les certifications humaines manquantes
+     sont admises — et l'écran d'épreuve le dit à l'élève (voir
+     BAC_MODE_NOTICES), sans jamais afficher de note. */
+  const policy = BAC_MODE_POLICY;
+  const relaxedEligible =
+    policy.singleMode === true &&
+    policy.allowPartialInventory === true &&
+    (policy.allowReconstructedPrompts === true || everyPromptOfficial) &&
+    policy.allowProvisionalScoring === true &&
+    (policy.allowUnreviewedDocuments === true || everyDocumentReviewed) &&
+    policy.requireInventoriedSubject === true &&
+    knownTaskCount > 0 &&
+    everyExerciseInventoried &&
+    everyTaskMapped &&
+    pointsComplete &&
+    errors.length === 0;
+  const simulationEligible = strictEligible || relaxedEligible;
 
   return {
     yearId,
@@ -190,7 +250,8 @@ export function buildOfficialCoverageReport({ yearId, subject, inventory }) {
     taskCompleteExerciseNumbers: [...taskCompleteExerciseNumbers],
     errors,
     blockers: [...new Set(blockers)],
-    simulationEligible
+    simulationEligible,
+    freeAnswerEligible: false
   };
 }
 

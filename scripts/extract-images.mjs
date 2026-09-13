@@ -11,7 +11,10 @@ const require = createRequire(import.meta.url);
 const pdfjs = require("pdfjs-dist/legacy/build/pdf.js");
 
 const pdfPath = process.argv[2];
-if (!pdfPath) { console.error("usage: node scripts/extract-images.mjs <pdf>"); process.exit(1); }
+if (!pdfPath) {
+  console.error("usage: node scripts/extract-images.mjs <pdf>");
+  process.exit(1);
+}
 const data = new Uint8Array(readFileSync(join(root, pdfPath)));
 const doc = await pdfjs.getDocument({ data, disableWorker: true, isEvalSupported: false }).promise;
 console.log(`${pdfPath}: ${doc.numPages} pages`);
@@ -29,7 +32,7 @@ for (let i = 1; i <= doc.numPages; i++) {
   }
   // Alternative: enumerate images via page resources via objs._objs
   try {
-    await page.cleanup && page.cleanup();
+    (await page.cleanup) && page.cleanup();
   } catch {}
 }
 console.log(`Image ops found: ${extracted} (rough)`);

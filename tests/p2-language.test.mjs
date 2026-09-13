@@ -10,13 +10,8 @@ const visibleUi = [
   "js/ui/screens/guide.js",
   "js/ui/screens/hub.js",
   "js/ui/screens/simulation.js",
-  "js/ui/atlas.js",
-  "js/ui/workspace/brouillon.js",
-  "js/ui/workspace/presentation.js",
-  "js/ui/training.js",
-  "js/ui/keycard.js",
-  "js/method-scripts.js",
-  "data/brouillon.js"
+  "js/ui/pdf-viewer.js",
+  "data/bac-mode-policy.js"
 ]
   .map(source)
   .join("\n");
@@ -52,9 +47,11 @@ test("les anciens avertissements français du parcours élève ont une version a
   ]) {
     assert.doesNotMatch(visibleUi, new RegExp(term), `texte français encore visible: ${term}`);
   }
-  assert.match(visibleUi, /الهدف المنهجي/);
-  assert.match(visibleUi, /تعليمة البكالوريا/);
+  assert.match(visibleUi, /الخطوات الأربع/);
   assert.match(visibleUi, /لا يوجد ملف موضوع متاح لهذه الدورة في التطبيق/);
+  // Les avis d'épreuve sont en arabe : provenance des consignes et barème.
+  assert.match(visibleUi, /مُعاد بناؤها/);
+  assert.match(visibleUi, /التنقيط غير معاير/);
   assert.doesNotMatch(
     visibleUi,
     /subject\?\.pdfNote/,

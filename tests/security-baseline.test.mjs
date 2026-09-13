@@ -7,17 +7,20 @@ import { fileURLToPath } from "node:url";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const ui =
   readFileSync(join(root, "js", "ui.js"), "utf8") +
-  readFileSync(join(root, "js", "ui", "screens", "workspace.js"), "utf8") +
-  readFileSync(join(root, "js", "ui", "workspace", "brouillon.js"), "utf8");
+  readFileSync(join(root, "js", "ui", "screens", "simulation.js"), "utf8") +
+  readFileSync(join(root, "js", "ui", "pdf-viewer.js"), "utf8");
 const dialogs = readFileSync(join(root, "js", "ui", "dialogs.js"), "utf8");
 const server = readFileSync(join(root, "server.mjs"), "utf8");
 
-test("les brouillons persistés sont échappés avant interpolation HTML", () => {
-  assert.match(ui, /function escapeHTML/);
-  assert.match(ui, /escapeHTML\(st\.scratch\[p\]\)/);
-  assert.match(ui, /escapeHTML\(st\.scratch\.free\)/);
-  assert.match(ui, /escapeHTML\(drafts\.current\)/);
-  assert.match(ui, /escapeHTML\(drafts\.full\)/);
+test("les contenus persistés sont échappés ou posés comme valeur DOM", () => {
+  // Les réponses de l'élève reviennent par input.value (jamais parsées en HTML) ;
+  // tout ce qui est interpolé — consigne, URL du sujet, références — passe par
+  // escapeHTML avant d'entrer dans le gabarit.
+  assert.match(ui, /const escapeHTML/);
+  assert.match(ui, /input\.value = progress\.officialTaskAnswers\[task\.id\] \|\| ""/);
+  assert.match(ui, /input\.value = progress\.freeAnswer \|\| ""/);
+  assert.match(ui, /escapeHTML\(task\.prompt\)/);
+  assert.match(ui, /escapeHTML\(local\)/);
 });
 
 test("les dialogues centralisés supportent clavier, échappement et retour de focus", () => {

@@ -17,7 +17,7 @@ Pour chaque thème (`dark`, `light`, `contrast`) et chaque écran :
 1. Recharger, puis utiliser uniquement `Tab`, `Maj+Tab`, `Entrée`, `Espace` et `Échap`.
 2. Vérifier que le focus est toujours visible et suit un ordre logique.
 3. Ouvrir et fermer chaque dialogue et tiroir ; vérifier le confinement du focus et son retour au déclencheur.
-4. Parcourir le hub, le guide, la stratégie, le choix d’exercice, les quatre pôles, l’Atlas et le brouillon.
+4. Parcourir le hub, le guide, la stratégie, l’épreuve (choix d’exercice, champs de réponse), la remise de copie puis la relecture.
 5. Saisir, dicter, contrôler une réponse, changer d’exercice, ouvrir le rapport et réinitialiser.
 6. Vérifier qu’aucune action ne dépend du survol ou d’un clic de souris.
 

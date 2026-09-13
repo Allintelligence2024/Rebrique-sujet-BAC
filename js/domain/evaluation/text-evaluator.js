@@ -186,6 +186,10 @@ export function evaluateText(text, rule = {}, poleType = "") {
     allowPerfect &&
     (!structure.isKeywordDump || toleratesShortAnswer) &&
     forbiddenFound.length === 0 &&
+    // A rule without keywords has req === 0 and would satisfy `hits >= req`
+    // with zero matched concepts: a perfect score must always require at
+    // least one real concept hit.
+    hits > 0 &&
     hits >= req &&
     (poleType === "E" || methodology.score >= perfectMethodologyThreshold) &&
     (toleratesShortAnswer || poleType === "E" || overlap.ratio >= perfectOverlapThreshold) &&

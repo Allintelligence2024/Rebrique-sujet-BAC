@@ -3,8 +3,8 @@
    ------------------------------------------------------------
    Règle de simplicité : cet écran appartient au flux d'examen.
    Trois éléments maximum : respiration, plan de session, suite.
-   Toute l'aide méthodologique (بوابتان، drill، بطاقة…) vit dans
-   la section تدريب الخطوات الأربع du hub (js/ui/training.js) — jamais ici.
+   L'épreuve est le seul mode : aucune aide méthodologique n'est affichée
+   ici, seulement la préparation ( respiration + plan ) avant le sujet.
    ============================================================ */
 
 import { setInternalHTML } from "../dom.js";
@@ -45,7 +45,7 @@ export function createGuideScreen(deps) {
           <p class="small text-muted mt-0 mb-0">مدة الاختبار الرسمية لهذه الشعبة: <b>${formatDuration(
             examMinutesForYear(y)
           )}</b>. خطتك هنا: <b>25 د</b> لتصفح الموضوع وتقدير الثقة، ثم تطبيق الخطوات الأربع.</p>
-          <p class="small text-amber mt-0 mb-0">هذا التدريب جزئي ولا يعرض جميع تعليمات الموضوع الرسمي.</p>
+          <p class="small text-amber mt-0 mb-0">هذه مرحلة تحضير: اقرأ الموضوع كاملاً في الشاشة التالية قبل اختياره.</p>
         </div>
         <div class="flex justify-end">
           <button class="btn btn-emerald" id="guide-next">أنا مستعد — تصفح الموضوع واختر خلال 25 دقيقة</button>

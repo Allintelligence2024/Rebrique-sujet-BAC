@@ -26,15 +26,22 @@ const inventory = {
       prompt: "اشرح آلية تركيب البروتين.",
       maxPoints: 5,
       documentRefs: [],
+      promptSource: "official",
+      scoringReviewStatus: "provisional",
       trainingMappings: [{ exerciseNumber: 1, pole: "E", kind: "direct" }]
     }
   ]
 };
 
-test("la simulation active n'expose aucun indice, modèle, diagnostic ou action de correction", () => {
+test("l'épreuve active n'expose aucun indice, modèle, diagnostic ou action de correction", () => {
   const html = simulationExamHTML({ subject, inventory, activeExercise: 1, completed: false });
   assert.match(html, /data-official-task="2026-S1-E1-Q1"/);
-  assert.match(html, /محاكاة صامتة/);
+  assert.match(html, /اختبار صامت/);
+  // Le barème provisoire est annoncé, jamais transformé en note.
+  assert.match(html, /التنقيط غير معاير/);
+  // La provenance de la consigne est dite (ici : officielle, page connue).
+  assert.match(html, /data-task-source="official"/);
+  assert.match(html, /الصفحة 1/);
   assert.doesNotMatch(html, /مرجع تدريبي سري/);
   assert.doesNotMatch(html, /data-check|model-box|id="ws-panic"|id="ws-brouillon"/);
   assert.doesNotMatch(html, /textarea[^>]+disabled/);
@@ -84,8 +91,10 @@ test("le contrôleur persiste la copie puis bascule réellement en relecture apr
   const controller = createSimulationController({
     $,
     $$,
+    bindMics() {},
     closeModal: () => $("#test-modal")?.remove(),
     goHome() {},
+    micButton: (id) => `<button class="btn-mic" data-mic="${id}">🎙️</button>`,
     officialCoverageForSubject: () => ({ simulationEligible: true, blockers: [] }),
     officialTaskInventoryFor: () => inventory,
     openDrawer() {},

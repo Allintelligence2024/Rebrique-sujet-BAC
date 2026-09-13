@@ -40,6 +40,7 @@ export const YEAR_2025_M = {
       pdf: null,
       pdfAvailable: false,
       pdfExternalUrl: PDF,
+      pdfLocalUrl: "/subjects/M/2025/sujet-1.pdf",
       pdfNote: PDF_NOTE,
       title: "الموضوع الأول",
       exercises: [
@@ -233,6 +234,7 @@ export const YEAR_2025_M = {
       pdf: null,
       pdfAvailable: false,
       pdfExternalUrl: PDF,
+      pdfLocalUrl: "/subjects/M/2025/sujet-2.pdf",
       pdfNote: PDF_NOTE,
       title: "الموضوع الثاني",
       exercises: [
