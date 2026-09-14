@@ -139,10 +139,11 @@ export const YEAR_2025_M = {
             N: {
               points: 1,
               prompt: "اقتراح فرضيتين حول سبب هذا العوز المناعي",
-              bacPrompt: "اقترح فرضيتين حول سبب العوز المناعي في عرض المعقدات على CPA.",
+              bacPrompt:
+                "اقترح فرضيتين توضّح من خلالهما سبب فقدان الخلايا العارضة (CPA) لقدرتها على عرض الببتيد المستضدي باستغلالك للوثيقة 1 ومعلوماتك.",
               ...OFFICIAL(
                 2,
-                "Relecture du corrigé officiel eddirasa 2025 Maths (page 2). Verbe officiel : الفرضيتان. Question du الجزء الأول."
+                "Relecture du scan local subjects/M/2025/sujet-1.pdf (page 2, relue en image le 2026-09-14) et du corrigé officiel eddirasa 2025 (page 2). Verbe officiel : اقترح فرضيتين توضّح. Question du الجزء الأول ; la transcription du 2026-08-31 était un résumé, remplacée par la consigne imprimée."
               ),
               placeholder:
                 "الفرضية 1: خلل في تركيب جزيئات HLA في ش.ه.ف... الفرضية 2: خلل في نشاط الناقل TAP...",
@@ -162,11 +163,13 @@ export const YEAR_2025_M = {
               prompt: "استغلال الوثيقة 1: عرض المعقدات على CPA عند السليم والمصاب",
               bacPrompt:
                 "استغل أشكال الوثيقة 1: عرض المعقدات (ببتيد مستضدي–HLA I) على CPA عند الشخص السليم والمصاب.",
-              ...RECON("Le corrigé analyse d'abord les figures (10%→70% vs 3%) avant les hypothèses."),
+              ...RECON(
+                "Le corrigé analyse les figures avant les hypothèses. Tableau du الشكل (ب) relu sur le scan local (2026-09-14) : تركيز الببتيد المستضدي بـ (µg/mL) = 0.1 / 0.5 / 1 / 2 ; عند الشخص السليم 10 / 35 / 50 / 70 % ; عند الشخص المصاب 3 / 5 / 8 / 9 %. La transcription du 2026-08-31 ne gardait que 10→70 % et un « 3 % » constant."
+              ),
               placeholder: "عند السليم تزايد المعقدات المعروضة من 10 إلى 70%... عند المصاب من 3%...",
               minLength: 90,
               modelAnswer:
-                "يتم تركيب سلسلتين ببتيديتين داخل تجويف ش.ه.ف ويُنقل الببتيد عبر الناقل الغشائي TAP لتشكيل المعقد Ag-HLA I داخل حويصلات ويُعرض على الغشاء الهيولي فتعرف عليه الخلايا LTS. عند الشخص السليم بزيادة تركيز Ag من 0.1 إلى 2 تزداد المعقدات المعروضة على CPA من 10 إلى 70 بالمئة بينما عند المصاب تبقى المعقدات حوالي 3 بالمئة. ومنه تفقد خلايا CPA عند المصاب كفاءتها في عرض المعقدات HLA I على غشائها.",
+                "يتم تركيب سلسلتين ببتيديتين داخل تجويف ش.ه.ف ويُنقل الببتيد عبر الناقل الغشائي TAP لتشكيل المعقد Ag-HLA I داخل حويصلات ويُعرض على الغشاء الهيولي فتعرف عليه الخلايا LT8. بزيادة تركيز الببتيد المستضدي من 0.1 إلى 2 µg/mL ترتفع نسبة المعقدات المعروضة على CPA من 10% إلى 70% عند الشخص السليم، بينما ترتفع عند المصاب من 3% إلى 9% فقط. ومنه تفقد خلايا CPA عند المصاب كفاءتها في عرض المعقدات HLA I على غشائها.",
               rule: {
                 prompt: "استغل عرض المعقدات على CPA",
                 keywords: ["CPA", "HLA", "سليم", "مصاب"],
@@ -192,13 +195,13 @@ export const YEAR_2025_M = {
               bacPrompt: "تأكد من صحة إحدى الفرضيتين باستغلالك لأشكال الوثيقة 2 ومعلوماتك.",
               ...OFFICIAL(
                 3,
-                "Relecture du PDF eddirasa 2025 Maths (page 3) et du corrigé (page 3). Verbe officiel : تأكد. Question du الجزء الثاني."
+                "Relecture du scan local subjects/M/2025/sujet-1.pdf (page 3, relue en image le 2026-09-14) et du corrigé (page 3). Verbe officiel : تأكد من صحة إحدى الفرضيتين باستغلالك لأشكال الوثيقة 2 ومعلوماتك. Question du الجزء الثاني. Séquences du الشكل (ج) recopiées de l'image."
               ),
               placeholder:
                 "الإشعاع داخل ش.ه.ف 100% عند السليم و 12% عند المصاب... نشاط TAP 100% مقابل أقل من 10%... حذف نيكليوتيدات...",
               minLength: 110,
               modelAnswer:
-                "عند السليم تزايد تدريجي في نسبة الإشعاع داخل ش.ه.ف لتصل إلى 100 بالمئة بينما عند المصاب ورغم ارتفاع التركيز تبقى النسبة حوالي 12 بالمئة: الإصابة تعود إلى خلل في نقل الببتيد المستضدي. نشاط الناقل TAP أعظمي 100 بالمئة عند العادي وأقل من 10 بالمئة عند المصاب. سمحت البنية الفراغية لـ TAP عند السليم بنفاذية عالية للببتيد بينما البنية المتغيرة عند المصاب لم تسمح إلا بمرور كمية ضئيلة. يظهر عند السليم تتابع من ثمانية نيكليوتيدات بينما عند المصاب حذف. الطفرة في المورثة المشرفة على تركيب TAP غيرت بنيته فأوقف نشاطه فلا تُنقل الببتيدات المستضدية إلى ش.ه.ف ولا تتشكل المعقدات ولا تُعرض على الغشاء. تتأكد الفرضية 2.",
+                "عند السليم تزايد تدريجي في نسبة الإشعاع داخل ش.ه.ف لتصل إلى 100 بالمئة بينما عند المصاب ورغم ارتفاع التركيز تبقى النسبة حوالي 12 بالمئة: الإصابة تعود إلى خلل في نقل الببتيد المستضدي. نشاط الناقل TAP أعظمي 100 بالمئة عند العادي وأقل من 10 بالمئة عند المصاب. سمحت البنية الفراغية لـ TAP عند السليم بنفاذية عالية للببتيد بينما البنية المتغيرة عند المصاب لم تسمح إلا بمرور كمية ضئيلة. يظهر في الشكل (ج) التتابع النيكليوتيدي ...CTGACTGG... عند الشخص السليم مقابل ...CTGATGG... عند المصاب، أي حذف نيكليوتيدة C. الطفرة في المورثة المشرفة على تركيب TAP غيرت بنيته فأوقف نشاطه فلا تُنقل الببتيدات المستضدية إلى ش.ه.ف ولا تتشكل المعقدات ولا تُعرض على الغشاء. تتأكد الفرضية 2.",
               rule: {
                 prompt: "تأكد من الفرضية باستغلال الوثيقة 2",
                 keywords: ["فرضيه", "TAP", "طفره", "ببتيد"],
@@ -332,10 +335,11 @@ export const YEAR_2025_M = {
             N: {
               points: 1,
               prompt: "اقتراح فرضيتين حول تأثير أشعة UV-C على SARS-CoV-2",
-              bacPrompt: "اقترح فرضيتين حول تأثير أشعة UV-C على تضاعف فيروس SARS-CoV-2.",
+              bacPrompt:
+                "اقترح فرضيتين حول آلية تأثير شدة الأشعة UV-C على الفيروس SARS-CoV-2 باستغلالك للوثيقة 1.",
               ...OFFICIAL(
                 5,
-                "Relecture du corrigé officiel eddirasa 2025 Maths (page 6). Verbe officiel : الفرضيتان. Question du الجزء الأول."
+                "Relecture du scan local subjects/M/2025/sujet-2.pdf (page 2 du sujet 2 = page 5 du dossier, relue en image le 2026-09-14) et du corrigé officiel eddirasa 2025 (page 6). Verbe officiel : اقترح فرضيتين حول آلية تأثير شدة الأشعة UV-C. Question du الجزء الأول ; la transcription du 2026-08-31 était un résumé, remplacée par la consigne imprimée."
               ),
               placeholder:
                 "الفرضية 1: الأشعة ذات الشدة S1 تثبط التضاعف... الفرضية 2: الشدة المرتفعة تمنع الاندماج...",
@@ -383,7 +387,7 @@ export const YEAR_2025_M = {
                 "بيّن كفاية استخدام أشعة UV-C لإلغاء ارتباط SARS-CoV-2 بالمستقبلات باستغلال الوثيقة 2.",
               ...OFFICIAL(
                 6,
-                "Relecture du PDF eddirasa 2025 Maths (page 6) et du corrigé (pages 6-7). Verbe officiel : بيّن. Question du الجزء الثاني."
+                "Relecture du scan local subjects/M/2025/sujet-2.pdf (pages 2-3 du sujet 2, relues en image le 2026-09-14) et du corrigé (pages 6-7). Verbe officiel : بيّن كفاية استخدام أشعة UV-C. Question du الجزء الثاني, recopiée mot à mot."
               ),
               placeholder: "الوسط 1 روابط قوية... الوسط 2 متحور S1 Arg... الوسط 3 كسر Cys-Cys...",
               minLength: 110,

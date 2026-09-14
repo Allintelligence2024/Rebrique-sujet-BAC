@@ -76,12 +76,12 @@ export const YEAR_2024_M = {
                 "تعرّف على العناصر المشار إليها بالأرقام من 1 إلى 4 مع تسمية العنصر (س) ومكوناته. أكمل التتابع النيكليوتيدي للعنصر 4 في حالة غياب (COR).",
               ...OFFICIAL(
                 1,
-                "Relecture du PDF eddirasa 2024 Maths (page 1, scan relu en image) et du corrigé (page 1). Questions 1 et 2 du التمرين الأول, recopiées mot à mot."
+                "Relecture du scan local subjects/M/2024/sujet-1.pdf (page 1, relu en image le 2026-09-14) et du corrigé (page 1). Questions 1 et 2 du التمرين الأول, recopiées mot à mot. Trame lue sur la figure : brin matrice G A C A T C T G C A A + (س) C ; ARNm déjà dessiné C U G U, puis la cordycépine (case noire) en face du T. En son absence les nukléotides ajoutés sont donc A G A C G U U G, la séquence que donne le corrigé (OCR « AGACGUUG », le fragment C U G U étant déjà sur la figure)."
               ),
               placeholder: "1 أنزيم ARN بوليميراز، 2 السلسلة المستنسخة...",
               minLength: 40,
               modelAnswer:
-                "1 أنزيم ARN بوليميراز. 2 السلسلة المستنسخة. 3 روابط هيدروجينية. 4 سلسلة ARNm المتشكلة. العنصر (س): نيكليوتيدة مكوناتها سكر خماسي منقوص الأكسجين وقاعدة آزوتية (سيتوزين) وفوسفات.",
+                "1 أنزيم ARN بوليميراز. 2 السلسلة المستنسخة. 3 روابط هيدروجينية. 4 سلسلة ARNm المتشكلة. العنصر (س): نيكليوتيدة مكوناتها سكر خماسي منقوص الأكسجين وقاعدة آزوتية (سيتوزين) وفوسفات. إكمال التتابع النيكليوتيدي للعنصر 4 في غياب (COR): تُضاف النيكليوتيدات المكمّلة للسلسلة المستنسخة بدل إدماج الكورديسبين، أي A G A C G U U G، فيصبح تتابع الـ ARNm كاملا C U G U A G A C G U U G.",
               rule: {
                 prompt: "تعرف على عناصر الاستنساخ والعنصر س",
                 keywords: ["بوليميراز", "مستنسخه", "ARNm"],
@@ -138,10 +138,10 @@ export const YEAR_2024_M = {
               points: 1,
               prompt: "اقتراح فرضيتين تفسران سبب القصور المناعي في المرحلة المتقدمة",
               bacPrompt:
-                "اقترح فرضيتين تفسر بهما سبب القصور في الرد المناعي عند الشخص المصاب بالورم في المرحلة المتقدمة من السرطان باستغلال الوثيقة 1 ومعلوماتك.",
+                "اقترح فرضيتين تُبيّن بهما سبب القصور في الرد المناعي عند الشخص المصاب بالورم في المرحلة المتقدمة من السرطان باستغلال الوثيقة 1 ومعلوماتك.",
               ...OFFICIAL(
                 2,
-                "Relecture du PDF eddirasa 2024 Maths (page 2) et du corrigé (page 1). Verbe officiel : اقترح فرضيتين. Question du الجزء الأول."
+                "Relecture du scan local subjects/M/2024/sujet-1.pdf (page 2, relu en image le 2026-09-14) et du corrigé (page 1). Verbe officiel : اقترح فرضيتين تُبيّن بهما. Question du الجزء الأول ; la transcription du 2026-08-31 portait تفسر, corrigé sur l'image."
               ),
               placeholder: "الفرضية 1: عدم تعرف LTc (عدم تعرف مزدوج)... الفرضية 2: عدم إفراز البيرفورين...",
               minLength: 30,
@@ -160,11 +160,13 @@ export const YEAR_2024_M = {
               prompt: "استغلال الوثيقة 1: تغيرات حجم الورم في الوسطين",
               bacPrompt:
                 "استغل الوثيقة 1: تغيرات حجم الورم السرطاني في الوسط 1 (ورم حديث) والوسط 2 (ورم متقدم).",
-              ...RECON("Le corrigé analyse d'abord la courbe (250→1250 mm³) avant les hypothèses."),
+              ...RECON(
+                "Le corrigé analyse la courbe avant les hypothèses (4.00 + 0.50). Valeurs relues sur la courbe du scan local (2026-09-14) : الوسط 1 de 250 à ~330 (اليوم 6) puis ~180 ; الوسط 2 de 250 à ~1180. Le corrigé imprimé arrondit (≈100 ; 1250) et la transcription du 2026-08-31 avait gardé 1250."
+              ),
               placeholder: "الوسط 1: تزايد بطيء ثم تناقص إلى 100... الوسط 2: من 250 إلى 1250...",
               minLength: 90,
               modelAnswer:
-                "تمثل الوثيقة تغير حجم الورم بدلالة الزمن. في الوسط 1 (ورم حديث) من 0 إلى 7 أيام تزايد بطيء جدا لحجم الورم ثم من 7 إلى 12 يوما تناقص الحجم إلى حوالي 100 مم³، بينما في الوسط 2 (ورم متقدم) من 0 إلى 12 يوما يزداد حجم الورم من 250 إلى 1250 مم³. ومنه الخلايا LTc غير قادرة على القضاء على الخلايا السرطانية للورم المتقدم.",
+                "تمثل الوثيقة تغير حجم الورم السرطاني بدلالة الزمن (بالأيام). في الوسط 1 (ورم حديث): تزايد بطيء جدا لحجم الورم من 250 إلى حوالي 330 مم³ خلال الأيام السبعة الأولى، ثم تناقص ليصل إلى حوالي 180 مم³ عند اليوم 12، بينما في الوسط 2 (ورم متقدم) يتزايد حجم الورم باستمرار من 250 مم³ إلى حوالي 1180 مم³ عند اليوم 12. ومنه الخلايا LTc غير قادرة على القضاء على الخلايا السرطانية للورم المتقدم.",
               rule: {
                 prompt: "استغل تغيرات حجم الورم في الوسطين",
                 keywords: ["ورم", "1250", "حديث", "متقدم"],
@@ -176,10 +178,10 @@ export const YEAR_2024_M = {
                   comparisons: [["حديث", "متقدم"]],
                   trends: [
                     { about: "حديث", expect: ["تناقص", "100"] },
-                    { about: "متقدم", expect: ["تزايد", "1250"] }
+                    { about: "متقدم", expect: ["تزايد", "1180"] }
                   ],
                   relations: [{ type: "parallel", a: "حديث", b: "متقدم" }],
-                  values: ["1250"],
+                  values: ["1180", "250"],
                   strictValues: true
                 }
               }
@@ -268,13 +270,13 @@ export const YEAR_2024_M = {
                 "تعرّف على نوع الخلايا المناعية التي يفتقدُها نسيج المولود المصاب بـ(PID) مع ذكر دورها. حدِّد في جدول منشأ الخلايا اللمفاوية ومقر اكتسابها لكفاءتها المناعية.",
               ...OFFICIAL(
                 4,
-                "Relecture du scan 2024 Maths (Sujet 2, page 4, relu en image) et du corrigé (page 4). Verbes officiels : تعرّف / حدِّد. Questions 1 et 2 du التمرين الأول."
+                "Relecture du scan local subjects/M/2024/sujet-2.pdf (page 1 du sujet 2 = page 4 du dossier, relue en image le 2026-09-14) et du corrigé (page 4). Verbes officiels : تعرّف / حدِّد. Questions 1 et 2 du التمرين الأول. Le corrigé attribue aux الخلايا LT8 le rôle de source des LTc ; la transcription du 2026-08-31 écrivait LTh/IL et a été corrigée."
               ),
               placeholder:
                 "الخلايا LT... الجدول: المنشأ نقي العظم، مقر الاكتساب الغدة التيموسية لـ LT ونقي العظم لـ LB...",
               minLength: 40,
               modelAnswer:
-                "يفتقد النسيج الخلايا LT. دورها: التعرف على محدد المستضد وتنشيط الاستجابة المناعية النوعية. الخلايا LTh مصدر IL المحفز للرد الخلطي، والخلايا LTc مصدر الخلايا المتدخلة في الاستجابة الخلوية. الجدول: منشأ الخلايا اللمفاوية نقي العظم؛ مقر اكتساب الكفاءة المناعية: الغدة التيموسية بالنسبة إلى الخلايا اللمفاوية LT ونقي العظم بالنسبة إلى الخلايا اللمفاوية LB.",
+                "يفتقد النسيج الخلايا اللمفاوية التائية LT. دورها: التعرف على محدد المستضد وتنشيط الاستجابة المناعية النوعية. الخلايا LT8 دورها: التعرف على محدد المستضد وهي مصدر الخلايا LTc المتدخلة في الاستجابة الخلوية. الجدول: منشأ الخلايا اللمفاوية نقي العظام؛ مقر اكتساب الكفاءة المناعية: الغدة التيموسية بالنسبة إلى الخلايا اللمفاوية LT ونقي العظام بالنسبة إلى الخلايا اللمفاوية LB.",
               rule: {
                 prompt: "تعرف على الخلايا المفتقدة ودورها",
                 keywords: ["LT", "مستضد", "تنشيط"],
@@ -286,10 +288,10 @@ export const YEAR_2024_M = {
               points: 3,
               prompt: "النص العلمي: دور الخلايا المناعية في الرد الخلطي وتأثير PID",
               bacPrompt:
-                "بيّن في نص علمي دور الخلايا المناعية في الرد المناعي الخلطي وتأثير العوز المناعي الخلقي (PID).",
+                "بيّن في نص علمي دور الخلايا المناعية في الرد المناعي الخلطي وتأثير العوز المناعي الخلقي الأولي (PID) على ذلك. (النص العلمي مُهيكل بمقدّمة، عرض وخاتمة).",
               ...OFFICIAL(
                 4,
-                "Relecture du scan 2024 Maths (Sujet 2, page 4, relu en image) et du corrigé (page 4). Verbe officiel : بيّن في نص علمي. Question 3 du التمرين الأول (Sujet 2), recopiée mot à mot."
+                "Relecture du scan local subjects/M/2024/sujet-2.pdf (page 1 du sujet 2 = page 4 du dossier, relue en image le 2026-09-14) et du corrigé (page 4). Verbe officiel : بيّن في نص علمي. Question 3 du التمرين الأول (Sujet 2), recopiée mot à mot ; la transcription du 2026-08-31 avait perdu الأولي et la mention du نص علمي مُهيكل."
               ),
               placeholder: "مقدمة، عرض: بالعات، LT4، LB، تأثير غياب LT4، خاتمة...",
               minLength: 120,

@@ -10865,7 +10865,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "S",
         page: 1,
         prompt:
-          "تعرّف على البيانات المرقّمة من 1 إلى 4 وحدّد من الوثيقة نوع الرابطة المستهدفة من طرف الإيثانول. أكتب الصِّيغة الكيميائية للحمضين الأمينيين ( ) و ( ) ضمن السلسلة الببتيدية الممثلة في العنصر (ع).",
+          "تعرّف على البيانات المرقّمة من 1 إلى 4 وحدّد من الوثيقة نوع الرابطة المستهدفة من طرف الإيثانول. اُكتب الصِّيغة الكيميائية للحمضين الأمينيين (Asp و Tyr) ضمن السلسلة الببتيدية الممثلة في العنصر (ع).",
         promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
@@ -11111,7 +11111,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "E",
         page: 4,
         prompt:
-          "بيّن في نص علمي دور البروتينات في مختلف أنماط التعاون بين الخلايا المناعية أثناء الاستجابة المناعية. (النص العلمي مُهيكل في مقدّمة، عرض وخاتمة).",
+          "بيّن في نص علمي دور البروتينات في مختلف أنماط التعاون بين الخلايا المناعية أثناء الاستجابة المناعية النوعية مستغلا معارفك ومعطيات الوثيقة. (النص العلمي مُهيكل في مقدّمة، عرض وخاتمة).",
         promptSource: "official",
         maxPoints: 3,
         scoringReviewStatus: "provisional",
@@ -11379,7 +11379,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "N",
         page: 2,
         prompt:
-          "اقترح فرضيتين تفسر بهما سبب القصور في الرد المناعي عند الشخص المصاب بالورم في المرحلة المتقدمة من السرطان باستغلال الوثيقة 1 ومعلوماتك.",
+          "اقترح فرضيتين تُبيّن بهما سبب القصور في الرد المناعي عند الشخص المصاب بالورم في المرحلة المتقدمة من السرطان باستغلال الوثيقة 1 ومعلوماتك.",
         promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
@@ -11545,7 +11545,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "E",
         page: 4,
         prompt:
-          "بيّن في نص علمي دور الخلايا المناعية في الرد المناعي الخلطي وتأثير العوز المناعي الخلقي (PID).",
+          "بيّن في نص علمي دور الخلايا المناعية في الرد المناعي الخلطي وتأثير العوز المناعي الخلقي الأولي (PID) على ذلك. (النص العلمي مُهيكل بمقدّمة، عرض وخاتمة).",
         promptSource: "official",
         maxPoints: 3,
         scoringReviewStatus: "provisional",
@@ -11810,7 +11810,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 1,
         pole: "N",
         page: 2,
-        prompt: "اقترح فرضيتين حول سبب العوز المناعي في عرض المعقدات على CPA.",
+        prompt:
+          "اقترح فرضيتين توضّح من خلالهما سبب فقدان الخلايا العارضة (CPA) لقدرتها على عرض الببتيد المستضدي باستغلالك للوثيقة 1 ومعلوماتك.",
         promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
@@ -12028,7 +12029,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 1,
         pole: "N",
         page: 5,
-        prompt: "اقترح فرضيتين حول تأثير أشعة UV-C على تضاعف فيروس SARS-CoV-2.",
+        prompt: "اقترح فرضيتين حول آلية تأثير شدة الأشعة UV-C على الفيروس SARS-CoV-2 باستغلالك للوثيقة 1.",
         promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",

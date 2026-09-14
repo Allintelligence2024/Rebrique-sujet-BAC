@@ -145,7 +145,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-31) : titre BAC 2025 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2025-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation)."
+        "Page ouverte (2026-08-31) : titre BAC 2025 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2025-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation). Scans locaux relus en image le 2026-09-14 : les deux consignes de فرضيتين sont recopiées mot à mot, le tableau du الشكل (ب) donne 10/35/50/70 % contre 3/5/8/9 % (0.1 إلى 2 µg/mL) et le الشكل (ج) oppose ...CTGACTGG... à ...CTGATGG... (حذف نيكليوتيدة C ; الخلية LT8)."
     },
     {
       year: "2024",
@@ -160,7 +160,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-31) : titre BAC 2024 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2024-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation)."
+        "Page ouverte (2026-08-31) : titre BAC 2024 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2024-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation). Scans locaux relus en image le 2026-09-14 : la question 2 du ت1 a reçu sa réponse (complément A G A C G U U G lu sur la figure), le verbe تُبيّن est restauré, les courbes du الوسط 1 (250 → ≈330 → ≈180) et du الوسط 2 (250 → ≈1180) sont relues sur l image, et le corrigé attribue aux الخلايا LT8 le rôle de source des LTc."
     },
     {
       year: "2023",
@@ -175,7 +175,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-31) : titre BAC 2023 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2023-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation)."
+        "Page ouverte (2026-08-31) : titre BAC 2023 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2023-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation). La couche texte des scans locaux (relue le 2026-09-14) a tranché deux consignes : les deux acides aminés Asp et Tyr sont imprimés dans l énoncé, et la fin de la question بيّن في نص علمي du sujet 2 manquait ; les valeurs des figures ont été relues sur l image (10 %→80 % contre ~20 %, ≈3500/≈250 جزيئة, triplets AGT GTC ATA GTG / AGT ATC ATA GTG, UCA→Ser … UAG→توقف)."
     },
     {
       year: "2022",

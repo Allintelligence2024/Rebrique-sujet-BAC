@@ -4,6 +4,12 @@
    Énoncé : PDF officiel eddirasa
      https://eddirasa.com/wp-content/uploads/2023/07/eddirasa.com-bac-sciences-math-2023.pdf
      (OCR, 6 pages, 2 sujets × 2 exercices 8+12 / 7+13, 2026-08-31).
+   Les scans locaux subjects/M/2023/sujet-{1,2}.pdf portent une couche texte
+   lisible ; elle a été relue le 2026-09-14 et a corrigé deux consignes
+   (les deux acides aminés Asp/Tyr sont imprimés dans l'énoncé ; la fin de la
+   question بيّن في نص علمي du sujet 2 était tronquée). Ce scan porte aussi des
+   mots à police non dessinée (البلاسموديوم, febrifugine, Dichroa febrifuga)
+   que seule la couche texte restitue — jamais complétés au hasard.
    Corrigé : PDF officiel eddirasa
      https://eddirasa.com/wp-content/uploads/2023/07/eddirasa.com-correction-bac-sciences-math-2023.pdf
      (7 pages).
@@ -74,10 +80,10 @@ export const YEAR_2023_M = {
               // Les deux questions officielles du PDF (page 1 relue en image) :
               // Q1 تعرّف/حدّد + Q2 أكتب الصيغة. Aucun intitulé ajouté.
               bacPrompt:
-                "تعرّف على البيانات المرقّمة من 1 إلى 4 وحدّد من الوثيقة نوع الرابطة المستهدفة من طرف الإيثانول. أكتب الصِّيغة الكيميائية للحمضين الأمينيين ( ) و ( ) ضمن السلسلة الببتيدية الممثلة في العنصر (ع).",
+                "تعرّف على البيانات المرقّمة من 1 إلى 4 وحدّد من الوثيقة نوع الرابطة المستهدفة من طرف الإيثانول. اُكتب الصِّيغة الكيميائية للحمضين الأمينيين (Asp و Tyr) ضمن السلسلة الببتيدية الممثلة في العنصر (ع).",
               ...OFFICIAL(
                 1,
-                "Relecture du PDF eddirasa 2023 Maths (page 1) et du corrigé (page 1). Questions 1 et 2 du التمرين الأول, recopiées mot à mot depuis le scan (la parenthèse vide est celle de l'énoncé : l'élève doit identifier les deux acides aminés représentés)."
+                "Relecture du scan 2023 Maths (page 1) et du corrigé (page 1). Questions 1 et 2 du التمرين الأول. La couche texte du PDF local subjects/M/2023/sujet-1.pdf (2026-09-14) tranche la parenthèse : l'énoncé imprime (Asp و Tyr) — l'élève ne les identifie donc pas lui-même."
               ),
               placeholder:
                 "1 منطقة الانعطاف... الرابطة الهيدروجينية... Asp: HOOC-CH2-... Tyr: HO-C6H4-CH2-...",
@@ -146,7 +152,7 @@ export const YEAR_2023_M = {
               bacPrompt: "اقترح فرضيتين توضّح بهما سبب القصور المناعي الحادّ باستغلالك لنتائج الوثيقة 1.",
               ...OFFICIAL(
                 2,
-                "Relecture du scan 2023 Maths (page 2, relu en image). Verbe officiel : اقترح فرضيتين. Question unique du الجزء الأول, recopiée mot à mot."
+                "Relecture du scan 2023 Maths (page 2 du sujet 1, relue en image le 2026-09-13). Verbe officiel : اقترح فرضيتين. Question unique du الجزء الأول, recopiée mot à mot."
               ),
               placeholder: "الفرضية 1: خلل في إنتاج البيرفورين... الفرضية 2: عدم وجود تكامل بنيوي...",
               minLength: 30,
@@ -166,12 +172,12 @@ export const YEAR_2023_M = {
               bacPrompt:
                 "استغل الوثيقة 1: تغيرات نسبة الخلايا المصابة المخربة بدلالة نسبة الخلايا LTc في الوسطين.",
               ...RECON(
-                "Le corrigé analyse d'abord la courbe avant les hypothèses. Exploitation pédagogique."
+                "Le corrigé analyse la courbe avant les hypothèses (0.50 x2 + 3.00 au corrigé). Valeurs relues sur la courbe du scan local (2026-09-14) : abscisses 0.6 / 1.2 / 2.5 / 5 / 10, courbe du milieu 1 de ~10 % à ~80 %, celle du milieu 2 de ~10 % à ~20 %. L'OCR eddirasa du corrigé inverse les chiffres (0.6/1.6, 16/60) : elles ne sont pas reprises."
               ),
               placeholder: "الوسط 1 الطفل السليم: ارتفاع كبير من 6 إلى 16%... الوسط 2 المريض: ارتفاع طفيف...",
               minLength: 90,
               modelAnswer:
-                "في الوسط 1 عند الطفل السليم بزيادة نسبة الخلايا LTc من 0.6 إلى 16 يُلاحظ ارتفاع كبير لنسبة الخلايا المصابة المخربة من 6 إلى 16 بالمئة، بينما في الوسط 2 عند الطفل المريض بالزيادة نفسها يُلاحظ ارتفاع طفيف فقط إلى حوالي 2 بالمئة لوجود نسبة قليلة من خلايا LTc القادرة على تخريب الخلايا المصابة. ومنه يعود ظهور المرض إلى عجز الخلايا التائية السامة عن تخريب الخلايا المصابة.",
+                "تُظهر الوثيقة تغير نسبة الخلايا المصابة المخربة بدلالة نسبة الخلايا LTc إلى الخلايا المصابة. عند الطفل السليم بزيادة نسبة LTc من 0.6 إلى 10 ترتفع نسبة الخلايا المصابة المخربة من حوالي 10% إلى حوالي 80% (ارتفاع كبير)، بينما عند الطفل المريض وبنفس الزيادة ترتفع النسبة من حوالي 10% إلى حوالي 20% فقط (ارتفاع طفيف) لوجود نسبة قليلة من خلايا LTc القادرة على تخريب الخلايا المصابة. الاستنتاج: يعود تطور المرض إلى عجز الخلايا التائية السامة (LTc) عن تخريب الخلايا المصابة.",
               rule: {
                 prompt: "استغل الوثيقة 1 حول تخريب الخلايا المصابة",
                 keywords: ["LTc", "مصابه", "سليم", "مريض"],
@@ -179,14 +185,14 @@ export const YEAR_2023_M = {
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
-                  axes: ["نسبه", "LTc"],
+                  axes: ["نسبه", "LTc", "مصابه"],
                   comparisons: [["سليم", "مريض"]],
                   trends: [
                     { about: "سليم", expect: ["ارتفاع", "كبير"] },
                     { about: "مريض", expect: ["طفيف", "قليله"] }
                   ],
                   relations: [{ type: "parallel", a: "سليم", b: "مريض" }],
-                  values: ["16"],
+                  values: ["0.6", "10", "80", "20"],
                   strictValues: true
                 }
               }
@@ -198,12 +204,12 @@ export const YEAR_2023_M = {
                 "بيّن سبب مرض القصور المناعي بما يسمح لك بالمصادقة على صحة إحدى الفرضيتين باستغلالك لمعارفك وأشكال الوثيقة 2.",
               ...OFFICIAL(
                 3,
-                "Relecture du scan 2023 Maths (page 3, relu en image) et du corrigé (pages 2-3). Verbe officiel : بيّن. Question du الجزء الثاني, recopiée mot à mot."
+                "Relecture du scan 2023 Maths (page 3 du sujet 1, relue en image le 2026-09-14) et du corrigé (pages 2-3). Verbe officiel : بيّن. Question du الجزء الثاني, recopiée mot à mot. Valeurs relues sur les figures locales : barres ~3500 / ~250 جزيئة (الشكل أ) ; tableau des triplets 47-50 (AGT GTC ATA GTG sain / AGT ATC ATA GTG malade) et table des codons du الشكل (ج) (UCA→Ser, CAG→Gln, UAU→Tyr, CAC→His, UAG→توقف)."
               ),
               placeholder: "عدد جزيئات البيرفورين 3066 عند السليم و 166 عند المريض... G→A رامزة توقف UAG...",
               minLength: 110,
               modelAnswer:
-                "عدد جزيئات البيرفورين في خلية LTc أعظمي عند الطفل السليم (3066 جزيئة) وقليل جدا عند المريض (حوالي 166 جزيئة): خلايا LTc عند المريض غير قادرة على تركيب البيرفورين بكميات طبيعية. بمقارنة تتابع جزء مورثة PRF1 يظهر تماثل في الثلاثيات 47 و 49 و 50 واختلاف في الثلاثية 48 حيث استُبدلت القاعدة G بـ A فظهرت رامزة توقف UAG في ARNm فتركبت سلسلة ببتيدية غير مكتملة. سبب القصور المناعي خلل في إنتاج البيرفورين: كمية قليلة وبنية غير مكتملة. تتأكد الفرضية 1.",
+                "من الشكل (أ): عدد جزيئات البرفورين في الخلية LTc أعظمي عند الطفل السليم (حوالي 3500 جزيئة) وقليل جدا عند الطفل المريض (حوالي 250 جزيئة): خلايا LTc عند المريض غير قادرة على تركيب البرفورين بكميات طبيعية. من الشكلين (ب) و(ج): بمقارنة تتابع جزء مورثة PRF1 نلاحظ تماثل الثلاثيات 47 و49 و50 واختلافا في الثلاثية 48 حيث استُبدلت القاعدة الأزوتية G بالقاعدة A (GTC ← ATC) فصار الـ ARNm عند المريض UCA UAG UAU CAC بدل UCA CAG UAU CAC عند الطفل السليم: ظهرت رامزة التوقف UAG فيتوقف تركيب السلسلة الببتيدية عند الحمض الأميني Ser ويُركَّب برفورين غير مكتمل البنية. وهذا يؤكد صحة الفرضية 1: خلل في إنتاج البرفورين عند الطفل المريض (كمية قليلة جدا وبنية غير مكتملة).",
               rule: {
                 prompt: "بين سبب القصور المناعي وصادق على الفرضية",
                 keywords: ["بيرفورين", "فرضيه", "توقف", "PRF1"],
@@ -219,7 +225,7 @@ export const YEAR_2023_M = {
                 "لخّص بمخطط مراحل الرد المناعي النوعي الخلوي بعد إصابة العضوية بأحد أنواع الفيروسات عند طفل سليم وآخر مريض بالقصور المناعي انطلاقا مما توصلت إليه في هذه الدراسة ومكتسباتك.",
               ...OFFICIAL(
                 3,
-                "Relecture du scan 2023 Maths (page 3, relu en image) et du corrigé (page 3). Verbe officiel : لخّص بمخطط. Question du الجزء الثالث, recopiée mot à mot."
+                "Relecture du scan 2023 Maths (page 3 du sujet 1, relue en image le 2026-09-13) et du corrigé (page 3). Verbe officiel : لخّص بمخطط. Question du الجزء الثالث, recopiée mot à mot."
               ),
               placeholder: "طفل سليم: LTc → بيرفورين مكتمل → تخريب... طفل مريض: بيرفورين مبتور...",
               minLength: 0,
@@ -276,7 +282,7 @@ export const YEAR_2023_M = {
                 "تعرّف على الخلايا (A، B، C، D). سمّ مكونات العناصر (1 و 2 و 3) وحدّد العلاقة البنيوية بين مكونات كل عنصر.",
               ...OFFICIAL(
                 4,
-                "Relecture du PDF eddirasa 2023 Maths (page 4) et du corrigé (page 4). Verbes officiels : تعرّف / سمّ / حدّد. Questions 1 et 2 du التمرين الأول (Sujet 2)."
+                "Relecture du scan 2023 Maths (page 4 du dossier = page 1 du sujet 2) et du corrigé (page 4). Verbes officiels : تعرّف / سمّ / حدّد. Questions 1 et 2 du التمرين الأول (Sujet 2)."
               ),
               placeholder: "A بلعم كبير عارض، B خلية LB، C خلية LT8، D خلية LTh...",
               minLength: 40,
@@ -293,10 +299,10 @@ export const YEAR_2023_M = {
               points: 3,
               prompt: "النص العلمي: دور البروتينات في أنماط التعاون أثناء الاستجابة المناعية",
               bacPrompt:
-                "بيّن في نص علمي دور البروتينات في مختلف أنماط التعاون بين الخلايا المناعية أثناء الاستجابة المناعية. (النص العلمي مُهيكل في مقدّمة، عرض وخاتمة).",
+                "بيّن في نص علمي دور البروتينات في مختلف أنماط التعاون بين الخلايا المناعية أثناء الاستجابة المناعية النوعية مستغلا معارفك ومعطيات الوثيقة. (النص العلمي مُهيكل في مقدّمة، عرض وخاتمة).",
               ...OFFICIAL(
                 4,
-                "Relecture du PDF eddirasa 2023 Maths (page 4) et du corrigé (page 4). Verbe officiel : بيّن في نص علمي. Question 3 du التمرين الأول (Sujet 2)."
+                "Relecture du scan 2023 Maths (page 4) : question 3 du التمرين الأول (sujet 2). La couche texte du PDF local a restitué la fin de la consigne (الاستجابة المناعية النوعية مستغلا معارفك ومعطيات الوثيقة), absente de la transcription du 2026-08-31."
               ),
               placeholder: "مقدمة، عرض: التعرف، التنشيط، التنفيذ، خاتمة...",
               minLength: 120,
@@ -341,7 +347,7 @@ export const YEAR_2023_M = {
                 "اقترح فرضيتين حول تأثير هذا الدواء على الطفيلي المسبب لمرض الملاريا باستغلال الوثيقة 1 ومعلوماتك.",
               ...OFFICIAL(
                 5,
-                "Relecture du PDF eddirasa 2023 Maths (page 5) et du corrigé (page 5). Verbe officiel : اقترح فرضيتين. Question du الجزء الأول."
+                "Relecture du scan 2023 Maths (page 5 du dossier = page 2 du sujet 2) et du corrigé (page 5). Verbe officiel : اقترح فرضيتين. Question du الجزء الأول."
               ),
               placeholder: "الفرضية 1: يثبط النسخ... الفرضية 2: يثبط الترجمة...",
               minLength: 30,
@@ -360,11 +366,13 @@ export const YEAR_2023_M = {
               prompt: "استغلال الوثيقة 1: نسبة نمو الطفيلي ونسبة بروتيناته المركبة",
               bacPrompt:
                 "استغل الشكل (أ) والشكل (ب) من الوثيقة 1: نسبة نمو الطفيلي ونسبة بروتيناته المركبة بدلالة تراكيز Halofuginone.",
-              ...RECON("Le corrigé analyse les courbes avant les hypothèses. Exploitation pédagogique."),
+              ...RECON(
+                "Le corrigé analyse les courbes avant les hypothèses. Exploitation pédagogique. Valeurs relues sur les deux graphiques du scan local (2026-09-14) : croissance à 100 % jusqu'à 1.5 و.ت puis quasi nulle dès 4 و.ت ; barres des protéines 100 / 60 / 40 / ~10 % pour 1 / 2 / 3 / 4 و.ت."
+              ),
               placeholder: "في غياب الدواء تثبت نسبة النمو عند 100%... من 1.5 إلى 5 ت.و تتناقص...",
               minLength: 90,
               modelAnswer:
-                "في غياب الدواء وعند تراكيز أقل من 1.5 ت.و تثبت نسبة نمو الطفيلي عند 100 بالمئة، بينما في وجود Halofuginone من التركيز 1.5 إلى 5 ت.و تتناقص نسبة النمو من 100 بالمئة حتى تكاد تنعدم ابتداء من التركيز 5 ت.و. من التركيز 1 إلى 4 ت.و تتناقص كمية البروتينات المصنعة عند الطفيلي من 100 بالمئة حتى تكاد تنعدم. نلاحظ تناسبا عكسيا بين Halofuginone ونمو الطفيلي. ومنه يوقف Halofuginone نمو الطفيلي عند تراكيز محددة لأنه يثبط عملية تركيب البروتين.",
+                "من الشكل (أ): في غياب الدواء تثبت نسبة نمو الطفيلي عند 100% حتى التركيز 1.5 و.ت، بينما في وجود Halofuginone تتناقص نسبة النمو تدريجيا لتنعدم تقريبا ابتداء من التركيز 4 و.ت. من الشكل (ب): تتناقص نسبة البروتينات المركبة عند الطفيلي من 100% عند التركيز 1 و.ت إلى حوالي 10% عند التركيز 4 و.ت (حوالي 60% عند 2 و.ت و40% عند 3 و.ت). ومنه يثبط Halofuginone تركيب البروتينات فتتوقف سلسلة نمو الطفيلي.",
               rule: {
                 prompt: "استغل الوثيقة 1 حول نمو الطفيلي وتركيب البروتين",
                 keywords: ["نمو", "بروتين", "Halofuginone", "100"],
@@ -391,13 +399,13 @@ export const YEAR_2023_M = {
                 "بيّن آلية تأثير دواء Halofuginone على الطفيلي مما يسمح لك بالمصادقة على صحة إحدى الفرضيتين المقترحتين سابقا باستغلال معلوماتك وأشكال الوثيقة 2. يتناول بعض المرضى أحيانا الأدوية دون احترام المقادير المحدّدة في الوصفات الطبية، قدّم نصيحة مُبرَّرة لتفادي ذلك.",
               ...OFFICIAL(
                 6,
-                "Relecture du scan 2023 Maths (page 6, relu en image) et du corrigé (pages 5-6). Verbes officiels : بيّن / قدّم نصيحة. Questions 1 et 2 du الجزء الثاني, recopiées mot à mot."
+                "Relecture du scan 2023 Maths (page 3 du sujet 2 = page 6 du dossier) et du corrigé (pages 5-6). Verbes officiels : بيّن / قدّم نصيحة. Questions 1 et 2 du الجزء الثاني, recopiées mot à mot."
               ),
               placeholder:
                 "الوسط 1 تركيب البروتين... الوسط 2 لا يتركب... الوسط 3 يتركب بأحماض منشطة... يمنع ARNt-Pro...",
               minLength: 110,
               modelAnswer:
-                "في الوسط 1 بتوفر عناصر الترجمة وفي غياب الدواء يتم تركيب البروتين. في الوسط 2 بوجود الدواء بتركيز 3 ت.و لا يتم التركيب. في الوسط 3 باستبدال عناصر التنشيط بأحماض أمينية منشطة يتم التركيب رغم وجود الدواء. يثبط الدواء عملية تنشيط الأحماض الأمينية. تبقى نسبة تشكل معقدات ARNt-aa أعظمية 100 بالمئة لكل الأحماض ما عدا البرولين حيث تتناقص حتى تنعدم: يمنع تشكل معقد ARNt-Pro. يتوضع Halofuginone في موقع تثبيت البرولين وARNt على أنزيم ProRS. تتوقف الترجمة فيُثبَّط تركيب بروتين الطفيلي ويتوقف نموه. تتأكد الفرضية 2: يثبط الدواء عملية الترجمة. نصيحة مُبرَّرة: يجب احترام المقادير المحددة في الوصفات الطبية، لأن الجرعات غير الكافية لا تقضي على الطفيلي وتُهيّئ لظهور سلالات مقاومة للدواء، والجرعات المفرطة تُسبّب آثارا سامة للمريض.",
+                "في الوسط 1 بتوفر عناصر الترجمة وفي غياب الدواء يتم تركيب البروتين. في الوسط 2 بوجود الدواء بتركيز 3 ت.و لا يتم التركيب. في الوسط 3 باستبدال عناصر التنشيط بأحماض أمينية منشطة يتم التركيب رغم وجود الدواء. يثبط الدواء عملية تنشيط الأحماض الأمينية. تبقى نسبة تشكل معقدات ARNt-aa أعظمية 100 بالمئة لكل الأحماض ما عدا البرولين حيث تتناقص حتى تنعدم: يمنع تشكل معقد ARNt-Pro. يتوضع Halofuginone في موقع تثبيت البرولين وARNt على أنزيم ProRS. تتوقف الترجمة فيُثبَّط تركيب بروتين الطفيلي ويتوقف نموه. تتأكد الفرضية 2: يثبط الدواء عملية الترجمة. نصيحة مُبرَّرة: الالتزام بالمقادير المسجلة في الوصفات الطبية، لأن الجرعات الضعيفة ليس لها مفعول والجرعات العالية تؤثر سلبا على العضوية.",
               rule: {
                 prompt: "بين آلية هالوفوجينون وصادق على الفرضية",
                 keywords: ["فرضيه", "ProRS", "برولين", "ترجمه"],
@@ -413,7 +421,7 @@ export const YEAR_2023_M = {
                 "لخّص في مخطط آلية تركيب البروتين في غياب ووجود Halofuginone معتمدا على ما توصلت إليه في هذه الدراسة ومكتسباتك.",
               ...OFFICIAL(
                 6,
-                "Relecture du PDF eddirasa 2023 Maths (page 6) et du corrigé (page 7). Verbe officiel : لخّص في مخطط. Question du الجزء الثالث."
+                "Relecture du scan 2023 Maths (page 6 du dossier = page 3 du sujet 2) et du corrigé (page 7). Verbe officiel : لخّص في مخطط. Question du الجزء الثالث."
               ),
               placeholder: "غياب: ATP+ARNt+aa → ARNt-aa → ريبوزوم... وجود: لا يتشكل ARNt-Pro...",
               minLength: 0,
