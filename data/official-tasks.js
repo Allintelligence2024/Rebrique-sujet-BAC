@@ -7642,6 +7642,457 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       }
     ]
   },
+  "2016-m/S1": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/ar/annales/TW9GY3FMeVdkeFBBNGIwMmppdi9xQT09",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2016/sujet-1.pdf",
+      pages: 2,
+      pageOffset: 0
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: []
+    },
+    tasks: [
+      {
+        id: "2016-m-S1-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "كيف تنتقل المعلومة الوراثية من المورثة إلى السلسلة الببتيدية، وأين تتم كل مرحلة من مراحل تركيب البروتين؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2016-m-S1-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 1,
+        prompt:
+          "1- اكتب أسماء البيانات المرقمة. 2- سمّ كل من العمليتين (س) و(ص) وحدّد العناصر الضرورية لحدوث كل عملية.",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2016-m-S1-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 1,
+        prompt:
+          "1- معتمدا على الوثيقة: أ- وضّح في جدول القواعد الأزوتية للعنصر (7) وما يقابلها من العناصر (6). ب- مثّل بمعادلة كيميائية كيفية تشكل العنصر (3). 2- أنجز رسما تخطيطيا توضّح فيه نهاية العملية الممثلة في الشكل (ب) من الوثيقة. 3- يكتسب البروتين المتشكل تلقائيا بنية ثلاثية الأبعاد ووظيفية. وضّح كيف يتم ذلك.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2016-m-S1-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: 1,
+        prompt: "مما استخلصته ومن معلوماتك، اكتب نصا علميا بيّن فيه دور العناصر المتدخلة في تركيب البروتين.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2016-m-S1-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt: "ما دور البروتينات المتخصصة التي تفرزها خلايا الجهاز المناعي في إقصاء اللآذات؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2016-m-S1-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 2,
+        prompt:
+          "1- سمّ هذه الخلية واكتب بيانات العناصر المرقمة. 2- أ- حدّد النشاط المبين في الوثيقة (1). ب- تعرّف على المرحلتين (أ) و(ب). 3- جـ- لا يتوقف نشاط الخلية عند المرحلة (ب). علّل إجابتك.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2016-m-S1-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 2,
+        prompt:
+          "1- يمثل الجدول نتائج متابعة تطور تركيز الأجسام المضادة وعدد الخلايا البلازمية والخلايا اللمفاوية LB نتيجة دخول مستضد إلى العضوية. أ- حلّل نتائج الجدول. ب- استخرج العلاقة بين تركيز الأجسام المضادة وعدد الخلايا البلازمية والخلايا اللمفاوية LB. 2- تمثل الوثيقة (2) نتائج مقارنة بواسطة مبرمج محاكاة Anagène للسلاسل الببتيدية لجسم مضاد (ضد M) وجسم مضاد (ضد Z). أ- قارن النتائج المحصل عليها في الوثيقة (2)، ماذا تستنتج؟ ب- أنجز إذن رسما تخطيطيا للجسم المضاد (ضد M) و(ضد Z).",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2016-m-S1-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: 2,
+        prompt:
+          "مما سبق ومن معارفك، اذكر أربعة أنواع من البروتينات المتدخلة في إقصاء اللآذات مبرزا مصدرها ودورها.",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      }
+    ]
+  },
+  "2016-m/S2": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/ar/annales/TW9GY3FMeVdkeFBBNGIwMmppdi9xQT09",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2016/sujet-2.pdf",
+      pages: 2,
+      pageOffset: 2
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: []
+    },
+    tasks: [
+      {
+        id: "2016-m-S2-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt: "كيف تشرف المورثات على اصطناع البروتينات وفق آليات دقيقة؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2016-m-S2-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 3,
+        prompt:
+          "1- اعتمادا على الوثيقة (1) بيّن أهمية استعمال مبرمج Anagène. 2- تعرّف على الجزيئتين (س) و(ع). علّل إجابتك. 3- وضّح برسم تخطيطي الظاهرة المسؤولة عن الانتقال من الجزيئة (س) إلى الجزيئة (ع).",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2016-m-S2-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 3,
+        prompt:
+          "1- أ- سمّ هذه الآلية، ثم اكتب البيانات المرقمة. ب- حدّد الخطوة الممثلة معللا إجابتك. 2- بيّن بدقة دور كل من العنصر (1) والعنصر (3) في حدوث هذه الآلية. 3- باستدلال منطقي احسب عدد وحدات جزيئة العنصر (4) وعدد وحدات الجزيئة الوظيفية للعنصر (5).",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2016-m-S2-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: 3,
+        prompt: "اكتب نصا علميا تصف فيه تسلسل الأحداث التي سمحت بالانتقال من الجزيئة (س) إلى الجزيئة (ص).",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2016-m-S2-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt: "كيف تميّز العضوية بين مكوناتها (الذات) والمكونات الغريبة عنها (اللآذات)؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2016-m-S2-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 4,
+        prompt:
+          "1- اكتب بيانات العناصر المرقمة في الشكل (أ) للوثيقة (1). 2- أ- هل مادة الكونكافالين (A) ترتبط بالسطح الخارجي أم الداخلي للغشاء الهيولي؟ علّل. // 1- الشكل (1) يمثل نتائج معالجة ثلاث خلايا (خلية كبدية، كرية دم حمراء، خلية لمفاوية LB) بتقنية الوسم المناعي. - أنسب الأغشية 1، 2، 3 إلى الخلايا الثلاث مع تعليل الإجابة.",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2016-m-S2-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 4,
+        prompt:
+          "2- ب- فسّر هذه النتيجة. ماذا تستنتج؟ 3- استخرج من الوثيقة (1) مميزات الغشاء الهيولي. // 2- أ- قارن بين النمط الوراثي للأب والأم، ثم احسب نسبة التوافق بينهما.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2016-m-S2-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: 4,
+        prompt:
+          "2- ب- مثّل نمط وراثي محتمل لأحد أبناء هذه العائلة بحيث نسبة التوافق مع كل من الأب والأم تساوي 50 %. // مما سبق ومعلوماتك، اكتب نصا علميا تبرز فيه كيف تتفرد كل عضوية بهوية بيولوجية خاصة بها.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      }
+    ]
+  },
   "2017-m/S1": {
     schemaVersion: 1,
     status: "partial",

@@ -283,7 +283,7 @@ export const ARCHIVE = {
       attachments: true,
       viewer: "ok",
       notes:
-        "Page ouverte (2026-08-30) : 11 pages ; pièces jointes sciences-m-bac2016 + sciences-m-bac2016-correction ; sujet : traduction/Anagène, immunité humorale, membrane cellulaire/CMH."
+        "Page ouverte (2026-08-30) : 11 pages ; pièces jointes sciences-m-bac2016 + sciences-m-bac2016-correction ; sujet : traduction/Anagène, immunité humorale, membrane cellulaire/CMH. Encodé 4D sous l id 2016-m le 2026-09-14 : les 11 pages du dossier dzexams local (M/dzexams-bac-sciences-1413929.pdf : sujet pp. 1-4, corrigé « عناصر الإجابة » pp. 5-11) ont été rendues en image, consignes recopiées mot à mot et réponses modèle reprises du corrigé (429 = 3 × 143 ; 141 = 1 − 142 ; 16.66 % = 1 × 100 ÷ 6). La carte de consultation de 2016 est remplacée par la carte d épreuve ; 2013-2015 restent en consultation."
     },
     {
       year: "2015",

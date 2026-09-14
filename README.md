@@ -162,8 +162,8 @@ Le serveur applique une liste blanche d'assets publics. Ne pas remplacer cette c
 
 ## 📄 Contenu réel — épreuve
 
-**22 années** dans `APP_CONFIG.years` : 2013–2019 et 2020+2022–2026 علوم تجريبية + 2017–2026 رياضيات.
-Le hub SE affiche 2013–2020 et 2022–2026 en cartes d'épreuve ; le hub Maths affiche 2017–2026 (2017 à 2020 ont rejoint les cartes d'épreuve ; leurs cartes de consultation sont masquées au profit de l'épreuve, sauf la session exceptionnelle 2017 qui reste consultable).
+**23 années** dans `APP_CONFIG.years` : 2013–2019 et 2020+2022–2026 علوم تجريبية + 2016–2026 رياضيات.
+Le hub SE affiche 2013–2020 et 2022–2026 en cartes d'épreuve ; le hub Maths affiche 2016–2026 (2016 à 2020 ont rejoint les cartes d'épreuve ; leurs cartes de consultation sont masquées au profit de l'épreuve, sauf la session exceptionnelle 2017 qui reste consultable).
 **2021 SE est volontairement absente des cartes d'épreuve.** L'archive 2013–2019 n'est pas un énoncé ministériel.
 
 ### Contenu BAC 2025 (شعبة علوم تجريبية)
@@ -239,7 +239,8 @@ Les points N/S/E/W sont une **allocation pédagogique interne**, pas le barème 
 | **2022**       | **activée** | aucun (droit d'auteur)                      | [dzexams 2022](https://www.dzexams.com/ar/annales/eVlXSFRFOEJaN2ozSlE3NytzWkRHQT09) · [PDF ONEC](https://www.dzexams.com/uploads/sujets/officiels/bac/2022/dzexams-bac-sciences-2311208.pdf) · [corrigé eddirasa](https://eddirasa.com/correction-bac-science-2022-se/)                                                                                        | Consignes `official` relues sur la couche texte du PDF ONEC (inversée, reconstituée mot à mot, 2026-08-27) ; corrigé officiel croisé sur 2 sources concordantes ; pôles sans question autonome en `reconstructed` |
 | **2026 SE**    | **activée** | aucun (droit d'auteur)                      | [énoncé eddirasa](https://eddirasa.com/uploads/2026/08/bac-science-2026-se.pdf) · [corrigé](https://eddirasa.com/uploads/2026/08/correction-bac-science-2026-se.pdf)                                                                                                                                                                                           | `official` / `reconstructed` depuis OCR du PDF officiel (2026-08-31)                                                                                                                                              |
 | **2020 SE**    | **activée** | aucun (droit d'auteur)                      | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2020/09/eddirasa.com-bac-se-science-2020.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2020/09/eddirasa.com-correction-bac-sc-science-2020.pdf)                                                                                                                                           | `official` / `reconstructed` depuis OCR RTL (2026-08-31)                                                                                                                                                          |
-| **2021 Maths** | **activée** | aucun (droit d'auteur)                      | [dzexams 2021 m](https://www.dzexams.com/ar/annales/T2tYS3FTcFRwWCtCbXV2QmFyRTcydz09)                                                                                                                                                                                                                                                                          | `official` / `reconstructed` depuis viewer 12 pages (couche inversée, 2026-08-31)                                                                                                                                 |
+| **2021 Maths** | **activée** | aucun (droit d'auteur)                      | [dzexams 2021 m](https://www.dzexams.com/ar/annales/T2tYS3FTcFRwWCtCbXV2QmFyRTcydz09) ; dossier local `M/dzexams-bac-sciences-2068087.pdf`                                                                                                                                                                                                                     | `official` / `reconstructed` — corrigé officiel pp. 7–12 relu en image le 2026-09-14                                                                                                                              |
+| **2016 Maths** | **activée** | aucun (droit d'auteur)                      | [dzexams 2016 m](https://www.dzexams.com/ar/annales/TW9GY3FMeVdkeFBBNGIwMmppdi9xQT09) ; dossier local `M/dzexams-bac-sciences-1413929.pdf`                                                                                                                                                                                                                     | `official` / `reconstructed` — sujet pp. 1–4 et corrigé officiel pp. 5–11 relus en image le 2026-09-14 ; format 10+10 / 10+10                                                                                     |
 | **2022 Maths** | **activée** | aucun (droit d'auteur)                      | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2022/06/eddirasa.com-bac-math-science-2022.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2022/06/eddirasa.com-correction-bac-math-science-2022.pdf)                                                                                                                                       | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 8+12 / 8+12                                                                                                                                         |
 | **2023 Maths** | **activée** | aucun (droit d'auteur)                      | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2023/07/eddirasa.com-bac-sciences-math-2023.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2023/07/eddirasa.com-correction-bac-sciences-math-2023.pdf)                                                                                                                                     | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 8+12 / 7+13                                                                                                                                         |
 | **2024 Maths** | **activée** | aucun (droit d'auteur)                      | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2024/06/bac-math-sciences-2024.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2024/05/correction-bac-math-sciences-2024.pdf)                                                                                                                                                               | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 7+13 / 7+13                                                                                                                                         |
@@ -284,7 +285,7 @@ une réponse locale HTTP 200 peut seulement entrer dans le cache runtime borné 
 | **2** | ت2 (7ن)  | مادة **الريسين** وتثبيط تركيب البروتين (ARNr 28s)              |
 | **2** | ت3 (8ن)  | المشبك المثبط ونضج **GABA** (NKCC1 → KCC2)                     |
 
-### Contenu BAC 2017–2026 (شعبة رياضيات)
+### Contenu BAC 2016–2026 (شعبة رياضيات)
 
 Énoncé + corrigé officiels eddirasa (OCR, 2026-08-31) pour 2022–2026 ; **2021**
 a été relue en image le 2026-09-14 sur le dossier dzexams local
@@ -293,10 +294,12 @@ a été relue en image le 2026-09-14 sur le dossier dzexams local
 réécrites depuis le corrigé ; **2020**,
 **2019**, **2018** et **2017** ont été encodées le 2026-09-13 depuis les PDF
 locaux (`subjects/M/2020/`, `subjects/M/2019/`, `subjects/M/2018/`,
-`subjects/M/2017/`), relues page à page en image. Les dossiers dzexams locaux de
-2017 (`M/dzexams-bac-sciences-2275712.pdf`, « عناصر الإجابة » pp. 5–9), 2018
-(`M/dzexams-bac-sciences-1967487.pdf`, pp. 7–12), 2019
-2019
+`subjects/M/2017/`), relues page à page en image ; **2016** l'a été le
+2026-09-14 (`M/dzexams-bac-sciences-1413929.pdf` : sujet pp. 1–4, corrigé
+« عناصر الإجابة » pp. 5–11). Les dossiers dzexams locaux de
+2016 (`M/dzexams-bac-sciences-1413929.pdf`, « عناصر الإجابة » pp. 5–11, relu le
+2026-09-14), 2017 (`M/dzexams-bac-sciences-2275712.pdf`, « عناصر الإجابة »
+pp. 5–9), 2018 (`M/dzexams-bac-sciences-1967487.pdf`, pp. 7–12), 2019
 (`M/dzexams-bac-sciences-2280992.pdf`, pp. 6–10, relu le 2026-09-14), 2020 et
 2021 (`M/dzexams-bac-sciences-2068087.pdf`, pp. 7–12, relu le 2026-09-14)
 portent aussi la correction officielle, qui fonde alors les réponses modèle
@@ -304,17 +307,18 @@ portent aussi la correction officielle, qui fonde alors les réponses modèle
 س=LT4 / ع=LT8 / ص=LB / ل=بالعة, chambre (3) sans réponse immunitaire, n = 3 et
 رامزات UUU/AAA/CCC). Format Maths : 2 sujets × 2 exercices. id `YYYY-m`.
 
-| Année    | Fichier                     | Barème      | Thèmes                                                                                                                                                                                                                                                    |
-| -------- | --------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **2017** | `data/years/m/year-2017.js` | 6+14 / 6+14 | الرد المناعي الخلطي والمعقد المناعي ؛ من المورثة إلى البروتين (سلسلة الـ ADN، اتجاه الترجمة، تسلسل الأحماض الأمينية) ؛ الأحماض الأمينية والهجرة الكهربائية (pH = 3.2، Lys–Glu–Gly) ؛ شروط إنتاج الجزيئات الدفاعية (الخلية البلاسمية، تجربة الغرفتين، IL2) |
-| **2018** | `data/years/m/year-2018.js` | 7+13 / 6+14 | المورثة والبروتين والنمط الظاهري ؛ العجز المناعي (المنحنى، CMH II، الأنترلوكين 2) ؛ اللقاح والجسم المضاد والاستجابة الثانوية ؛ مورثة الريبونوكلياز والبروتين غير العادي                                                                                   |
-| **2019** | `data/years/m/year-2019.js` | 6+14 / 6+14 | بنية البروتين والرابطة الببتيدية (كتلة مولية) ؛ الخلايا المناعية والغرفتان ؛ البالعة وجزيئاتها الغشائية ؛ الشفرة الوراثية (Nirenberg/Matthaei/Khorana)                                                                                                    |
-| **2020** | `data/years/m/year-2020.js` | 8+12 / 8+12 | بنية البروتينات والهجرة الكهربائية ؛ Ras/p53 وسرطان الجلد ؛ جزيئات HLA والذات/اللاذات ؛ الدريبانوسيتوز HbA/HbS                                                                                                                                            |
-| **2022** | `data/years/m/year-2022.js` | 8+12 / 8+12 | ريبوزوم (PM 844) ؛ RADT Cov19 ؛ جسم مضاد ؛ هيبسيدين **HAMP** (GCC→ACC Ala→Thr)                                                                                                                                                                            |
-| **2023** | `data/years/m/year-2023.js` | 8+12 / 7+13 | إيثانول Asp-Tyr ؛ **PRF1** G→A (UAG) ؛ CPA/LB/LT ؛ هالوفوجينون / ProRS                                                                                                                                                                                    |
-| **2024** | `data/years/m/year-2024.js` | 7+13 / 7+13 | كورديسبين ؛ DLBCL (β2m / HLA I) ؛ PID ؛ ألبورت **COL4A5** Gly→Glu                                                                                                                                                                                         |
-| **2025** | `data/years/m/year-2025.js` | 8+12 / 8+12 | مضادان Q/D والريبوزوم ؛ TAP / HLA I ؛ **HLA-DRB1** Arg74Trp ؛ UV-C Spike ACE2                                                                                                                                                                             |
-| **2026** | `data/years/m/year-2026.js` | 6+14 / 8+12 | LTc / CMH I ؛ HCF LDLR/PCSK9 ؛ IL-2 NDNA11 ؛ غيتلمان **SLC12A3** Leu892Pro                                                                                                                                                                                |
+| Année    | Fichier                     | Barème        | Thèmes                                                                                                                                                                                                                                                                                                 |
+| -------- | --------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **2016** | `data/years/m/year-2016.js` | 10+10 / 10+10 | تركيب البروتين (النسخ والترجمة، جدول الرامزات المضادة، معادلة الرابطة الببتيدية، البنية الثلاثية الأبعاد) ؛ البالعة وتطور الأجسام المضادة (Anagène، الجزء الثابت والمتغير) ؛ من الـ ADN إلى البروتين (429 = 3 × 143، 141 = 1 − 142) ؛ الغشاء الهيولي ونظام CMH (فسيفسائي ومائع، 16.66 % = 1 × 100 ÷ 6) |
+| **2017** | `data/years/m/year-2017.js` | 6+14 / 6+14   | الرد المناعي الخلطي والمعقد المناعي ؛ من المورثة إلى البروتين (سلسلة الـ ADN، اتجاه الترجمة، تسلسل الأحماض الأمينية) ؛ الأحماض الأمينية والهجرة الكهربائية (pH = 3.2، Lys–Glu–Gly) ؛ شروط إنتاج الجزيئات الدفاعية (الخلية البلاسمية، تجربة الغرفتين، IL2)                                              |
+| **2018** | `data/years/m/year-2018.js` | 7+13 / 6+14   | المورثة والبروتين والنمط الظاهري ؛ العجز المناعي (المنحنى، CMH II، الأنترلوكين 2) ؛ اللقاح والجسم المضاد والاستجابة الثانوية ؛ مورثة الريبونوكلياز والبروتين غير العادي                                                                                                                                |
+| **2019** | `data/years/m/year-2019.js` | 6+14 / 6+14   | بنية البروتين والرابطة الببتيدية (كتلة مولية) ؛ الخلايا المناعية والغرفتان ؛ البالعة وجزيئاتها الغشائية ؛ الشفرة الوراثية (Nirenberg/Matthaei/Khorana)                                                                                                                                                 |
+| **2020** | `data/years/m/year-2020.js` | 8+12 / 8+12   | بنية البروتينات والهجرة الكهربائية ؛ Ras/p53 وسرطان الجلد ؛ جزيئات HLA والذات/اللاذات ؛ الدريبانوسيتوز HbA/HbS                                                                                                                                                                                         |
+| **2022** | `data/years/m/year-2022.js` | 8+12 / 8+12   | ريبوزوم (PM 844) ؛ RADT Cov19 ؛ جسم مضاد ؛ هيبسيدين **HAMP** (GCC→ACC Ala→Thr)                                                                                                                                                                                                                         |
+| **2023** | `data/years/m/year-2023.js` | 8+12 / 7+13   | إيثانول Asp-Tyr ؛ **PRF1** G→A (UAG) ؛ CPA/LB/LT ؛ هالوفوجينون / ProRS                                                                                                                                                                                                                                 |
+| **2024** | `data/years/m/year-2024.js` | 7+13 / 7+13   | كورديسبين ؛ DLBCL (β2m / HLA I) ؛ PID ؛ ألبورت **COL4A5** Gly→Glu                                                                                                                                                                                                                                      |
+| **2025** | `data/years/m/year-2025.js` | 8+12 / 8+12   | مضادان Q/D والريبوزوم ؛ TAP / HLA I ؛ **HLA-DRB1** Arg74Trp ؛ UV-C Spike ACE2                                                                                                                                                                                                                          |
+| **2026** | `data/years/m/year-2026.js` | 6+14 / 8+12   | LTc / CMH I ؛ HCF LDLR/PCSK9 ؛ IL-2 NDNA11 ؛ غيتلمان **SLC12A3** Leu892Pro                                                                                                                                                                                                                             |
 
 ### Contenu BAC 2021 (شعبة رياضيات)
 
@@ -339,13 +343,13 @@ Les sujets de la filière choisie remplacent la grille.
 | Filière                  | Épreuve               | Consultation (sujet + تصحيح)                    |
 | ------------------------ | --------------------- | ----------------------------------------------- |
 | شعبة علوم تجريبية (`se`) | 2013–2020 و 2022–2026 | 2021                                            |
-| شعبة رياضيات (`m`)       | 2017–2026             | 2013–2016 (+ 2017 exceptionnelle)               |
+| شعبة رياضيات (`m`)       | 2016–2026             | 2013–2015 (+ 2017 exceptionnelle)               |
 | شعبة تقني رياضي (`tm`)   | —                     | **absente de la source** (trou affiché, 0 lien) |
 
 Statut honnête :
 
 - **2013–2019 SE** : sujets reconstruits (`data/years/se/`). Toutes consignes `reconstructed`. **2018** : thèmes relus OCR dzexams. **2013–2017, 2019** : thèmes pédagogiques 3AS, **non certifiables** comme énoncés officiels. Confiance UI basse.
-- **2020 et 2022–2026 SE** et **2017–2026 Maths** : sujets chargés à la demande depuis `data/years/{se,m}/`, indexés par le catalogue `data/subjects.js`.
+- **2020 et 2022–2026 SE** et **2016–2026 Maths** : sujets chargés à la demande depuis `data/years/{se,m}/`, indexés par le catalogue `data/subjects.js`.
 - **Consultation** : sujet officiel + تصحيح النموذجي via dzexams. Aucun
   barème, mot-clé ou réponse modèle : le moteur ne s'applique pas.
 - **Maths 2022–2026** : viewer dzexams bloqué (`contentVerified: false`) ;
@@ -365,6 +369,12 @@ Statut honnête :
   le 2026-09-14, corrigé eddirasa lu via la même URL. Les deux consignes
   non rattachées (برّر تثبيط PCSK9، قدّم نصيحة) le sont ; `S1-E2/E` chiffre la
   mutation (الثلاثية 33 GTC ← ATC) et `S2-E2/E` détaille les trois figures.
+- **2016 Maths** : dossier dzexams local complet — sujet pp. 1–4, corrigé
+  « عناصر الإجابة » pp. 5–11 relu en image le 2026-09-14. Les consignes
+  imprimées sont `official` (12 pôles sur 16) et les quatre étapes de cadrage
+  restent badgées ⚠️ ; les valeurs du corrigé sont reprises telles quelles
+  (429 = 3 × 143، 141 = 1 − 142، 16.66 % = 1 × 100 ÷ 6، الجزء الثابت والمتغير,
+  فسيفسائي ومائع).
 - **2021 Maths** : dossier dzexams local — sujet pp. 1–6, corrigé « الإجابة
   النموذجية » pp. 7–12 relu en image le 2026-09-14. Les cinq consignes qui
   n'étaient mappées nulle part (النمط الوراثي لولدين، اشرح آلية التأثير، قدم
@@ -401,10 +411,10 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **267** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
-- Copies vérifiées dans le hard benchmark : **0/3060 minimum** avant toute promotion numérique
-- Inventaires de tâches officielles commencés : **46/48 sujets** (**472 tâches connues**)
-- Sujets éligibles à la simulation : **46**
+- Tests exécutés par `npm test` : **274** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Copies vérifiées dans le hard benchmark : **0/3240 minimum** avant toute promotion numérique
+- Inventaires de tâches officielles commencés : **48/50 sujets** (**488 tâches connues**)
+- Sujets éligibles à la simulation : **48**
 - Critères P1 fermés : **3/6** — statut global : **incomplet**
 - Critères P2 fermés : **6/7** — élèves distincts testés : **0/5**
 - Critères P3 fermés : **5/6** — statut global : **incomplet**

@@ -1,6 +1,6 @@
 # Checklist de relecture — BAC maths (شعبة رياضيات)
 
-**Date :** 2026-09-14 (dernières passes : 2021-m, 2022-m, 2026-m). Branche
+**Date :** 2026-09-14 (dernières passes : 2016-m, 2021-m, 2022-m, 2026-m). Branche
 `arena/01a09be6-rebrique-sujet-bac` (PR #26).
 
 Périmètre : toutes les consignes officielles de la filière maths encodées dans
@@ -49,6 +49,9 @@ Audit d'un sujet (pôles, points, provenance, page) :
 | 2019-m S1                   | 1                    | ت1 (6ن) بنية البروتين / الرابطة الببتيدية                   | Q1–Q4 mot à mot (بيانات، صيغة + كتلة مولية، تعليل، نص علمي)                                                                                                                                         |
 | 2019-m S1                   | 2, 3                 | ت2 (14ن) الخلايا المناعية / الغرفتان                        | N, S, E mot à mot ; W reconstruit                                                                                                                                                                   |
 | 2019-m S2                   | 4, 5                 | ت1 (6ن) البالعة ; ت2 (14ن) الشفرة الوراثية                  | consignes mot à mot                                                                                                                                                                                 |
+| 2016-m S1                   | 1, 2                 | ت1 (10ن) تركيب البروتين ; ت2 (10ن) البالعة والأجسام المضادة | consignes mot à mot (Q1/Q2، الجدول، الوثيقة 2) ; les deux pôles N reconstruits                                                                                                                      |
+| 2016-m S2                   | 3, 4                 | ت1 (10ن) من الـ ADN إلى البروتين ; ت2 (10ن) الغشاء وCMH     | consignes mot à mot (Anagène، الترجمة والحساب، الفلورة، CMH والنمط الوراثي) ; les deux pôles N reconstruits                                                                                         |
+| 2016-m corrigé              | 5-11                 | corrigé officiel « عناصر الإجابة » des deux sujets          | réponses modèle réécrites : 429 = 3 × 143 و141 = 1 − 142 ; 16.66 % = 1 × 100 ÷ 6 (الأليل C3 متماثل) ; الجزء الثابت والمتغير للجسم المضاد ; فسيفسائي ومائع ; نظام CMH ونظام ABO والريزوس             |
 | 2021-m S1                   | 1, 2, 3              | ت1 (8ن) CMH / زرع الكلية ; ت2 (12ن) الماكروليد (Mex.R)      | S1 : S = Q1+Q2 (النمط الوراثي لولدين rattachée), E = Q3 ; S2 : N = question du préambule, S = Q1, E = Q2أ+Q2ب puis Q1 du الجزء الثاني, W = نصيحة + نص علمي du الجزء الثالث                          |
 | 2021-m S2                   | 4, 5, 6              | ت1 (8ن) النسخ والترجمة ; ت2 (12ن) الهيموغلوبين R/T          | S2-E1 : S = Q1+Q2, E = Q3+Q4 ; S2-E2 : N = Q2, S = Q1, E = Q1+Q2أ+Q2ب+Q3 (الفرضية والخطورة rattachées), W = Q3 du الجزء الثالث                                                                      |
 | 2022-m S1                   | 1, 2, 3              | ت1 (8ن) دور الريبوزوم ; ت2 (12ن) اختبار RADT Cov19          | S1 : S = Q1, E = Q2+Q4, W = Q3 ; S2 : N = فرضيتان, E = Q du الجزء الثاني (الشكل (ج) et les trois sites), W = Q du الجزء الثالث (وضّح)                                                               |
@@ -131,6 +134,33 @@ Réponses modèle complétées depuis le corrigé : `S1-E2/E` chiffre la mutatio
 Leu ← Pro ; تجاذب الجذور الكارهة للماء) et donne la نصيحة du corrigé (أغذية غنية
 بالشوارد + أدوية تنشط إعادة الامتصاص).
 
+## Passe 2016-m (2026-09-14)
+
+Première année encodée hors du programme de rattrapage initial : son dossier
+dzexams local `M/dzexams-bac-sciences-1413929.pdf` porte le sujet (pp. 1-4) ET le
+corrigé officiel « عناصر الإجابة » (pp. 5-11). Les onze pages ont été relues en
+image ; la couche texte du fichier est accentuée à l'envers (`عمى` pour `على`,
+`خمية` pour `خلية`) et n'a servi qu'à recouper.
+
+```bash
+node scripts/render-pdf-pages.mjs M/dzexams-bac-sciences-1413929.pdf 1,2,3,4 2
+node scripts/render-pdf-pages.mjs M/dzexams-bac-sciences-1413929.pdf 5,6,7,8,9,10,11 2
+node scripts/report-subject-inventory.mjs 2016-m
+```
+
+Format retrouvé sur l'image : **2 sujets × 2 exercices (10 + 10)**, durée
+imprimée 02 سا و30 د. Sujet 1 : تركيب البروتين (نسخ وترجمة) puis البالعة وتطور
+الأجسام المضادة. Sujet 2 : من الـ ADN إلى البروتين (Anagène، الهيموغلوبين) puis
+الغشاء الهيولي ونظام CMH. Douze consignes imprimées deviennent des tâches
+`official` ; les quatre étapes de cadrage N restent reconstruites (aucune
+question de ce type n'est imprimée) et le disent dans leur note.
+
+Valeurs reprises du corrigé : `429 = 3 × 143` niqueotides et `141 = 1 − 142`
+acides aminés (2016-m S2-E1) ; الموقع التحفيزي A فارغ مقابل رامزة التوقف UAG ;
+`16.66 % = 1 × 100 ÷ 6` avec l'allèle C3 identique chez les deux parents
+(2016-m S2-E2) ; الجزء الثابت والمتغير du corps anticorps ; الغشاء الهيولي
+فسيفسائي ومائع ; النمط الوراثي المحتمل A2 C5 B12 / A17 C6 B34.
+
 ## Passe 2021-m (2026-09-14)
 
 Le dossier dzexams local `M/dzexams-bac-sciences-2068087.pdf` réunit les sujets
@@ -186,7 +216,8 @@ et sept libellés paraphrasés depuis la couche texte inversée sont recopiés m
 mot. Le pôle N de 2021-m S1-E2 accueille la question du préambule (page 2),
 recopiée mot à mot : la note du pôle dit qu'elle n'est pas numérotée.
 
-Bilan maths 2017–2026 : **118 tâches officielles sur 160** (la relecture 2018
+Bilan maths 2016–2026 : **130 tâches officielles sur 176** (l'encodage 2016
+ajoute 12 consignes officielles sur 16, format 10+10 par sujet ; la relecture 2018
 ajoute 15 consignes officielles sur 16 ; la session 2020 avait ajouté 10 consignes
 officielles : les questions de cadrage « صُغ المشكل العلمي » et « أبرز المشكلة
 المطروحة » existent réellement dans le sujet ; 2017 est intégralement officielle,
@@ -209,19 +240,19 @@ corrigé local à l'appui).
    sur l'image (page 4) et son corrigé donne **ج ← أ ← ب** ; la réponse modèle et
    les mots-clés (`ثانوي`, `LB`) ont été alignés. Le 0 % du probe venait de la
    réponse précédente, qui classait (س) en « أولي ».
-3. **Années maths 2013–2016** : les PDF sont présents
-   (`subjects/M/2013…2016`, listés dans `subjects/manifest.json`) mais aucune
+3. **Années maths 2013–2015** : les PDF sont présents
+   (`subjects/M/2013…2015`, listés dans `subjects/manifest.json`) mais aucune
    donnée n'existe encore dans `data/years/m/` → ces années restent en
-   consultation externe, sans mode BAC. **2020, 2019, 2018 et 2017 sont
-   désormais encodées** (`year-2020.js`, `year-2019.js`, `year-2018.js`,
-   `year-2017.js`). Encoder 2016 puis 2015… demande la même relecture page à
-   page et ne doit pas être fait à l'aveugle. Deux scans ont une police
+   consultation externe, sans mode BAC. **2020…2016 sont désormais encodées**
+   (`year-2020.js` … `year-2016.js`). Encoder 2015 puis 2014… demande la même
+   relecture page à page et ne doit pas être fait à l'aveugle. Deux scans ont une police
    incomplète : 2019 (quelques séries de mots non dessinées) et 2018 (le nom du
    virus dans « فيروس الـ ( ) » n'est pas dessiné). Ils sont signalés dans
    `bacPromptNotes` et jamais complétés au hasard (la couche texte, lue par
    `scripts/dump-pdf-text.mjs`, tranche les cas lisibles par fragments).
 4. Corrections officielles maths : **le corrigé est dans le même dossier
-   dzexams que le sujet**. Déjà relus et exploités : 2017
+   dzexams que le sujet**. Déjà relus et exploités : 2016
+   (`-1413929.pdf`, عناصر الإجابة pp. 5–11, relu le 2026-09-14), 2017
    (`-2275712.pdf`, عناصر الإجابة pp. 5–9), 2018 (`-1967487.pdf`, pp. 7–12),
    2019 (`-2280992.pdf`, pp. 6–10, relu le 2026-09-14) et 2020
    (`-2273619.pdf`, pp. 6–10) et 2021 (`-2068087.pdf`, corrigé

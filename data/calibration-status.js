@@ -2,7 +2,7 @@
 export const CALIBRATION_STATUS = Object.freeze({
   corpusSha256: "90eb4dd47127ac4649ec4ce280477a04d90b2c299c34fd3a6c9582a92cf96625",
   copiesCompared: 0,
-  activePoles: 204,
+  activePoles: 216,
   coveredPoles: 0,
   calibrated: false,
   scorePromotionAllowed: false,
