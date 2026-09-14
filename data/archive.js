@@ -202,7 +202,7 @@ export const ARCHIVE = {
       attachments: true,
       viewer: "ok",
       notes:
-        "Page ouverte (2026-08-31) : 12 pages ; pièces jointes sciences-m-bac2021 + sciences-m-bac2021-correction ; couche texte inversée lisible. Sujet 1 : CMH et greffe rénale ; Macrolide / Mex.R. Encodé 4D sous l id 2021-m (hub Maths : carte entraînement, pas consultation)."
+        "Page ouverte (2026-08-31) : 12 pages ; pièces jointes sciences-m-bac2021 + sciences-m-bac2021-correction. Sujet 1 : CMH et greffe rénale ; Macrolide / Mex.R. Encodé 4D sous l id 2021-m (hub Maths : carte entraînement, pas consultation). Relu en image le 2026-09-14 (dossier dzexams local M/dzexams-bac-sciences-2068087.pdf : sujets pp. 1-6, corrigé officiel « الإجابة النموذجية » pp. 7-12) : les consignes, d abord reconstituées depuis une couche texte inversée, ont été recopiées mot à mot et les réponses modèle réécrites depuis le corrigé."
     },
     {
       year: "2020",

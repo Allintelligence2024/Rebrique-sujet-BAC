@@ -286,13 +286,19 @@ une réponse locale HTTP 200 peut seulement entrer dans le cache runtime borné 
 
 ### Contenu BAC 2017–2026 (شعبة رياضيات)
 
-Énoncé + corrigé officiels eddirasa (OCR, 2026-08-31) pour 2021–2026 ; **2020**,
+Énoncé + corrigé officiels eddirasa (OCR, 2026-08-31) pour 2022–2026 ; **2021**
+a été relue en image le 2026-09-14 sur le dossier dzexams local
+(`M/dzexams-bac-sciences-2068087.pdf` : sujets pp. 1–6, corrigé « الإجابة
+النموذجية » pp. 7–12), consignes recopiées mot à mot et réponses modèle
+réécrites depuis le corrigé ; **2020**,
 **2019**, **2018** et **2017** ont été encodées le 2026-09-13 depuis les PDF
 locaux (`subjects/M/2020/`, `subjects/M/2019/`, `subjects/M/2018/`,
 `subjects/M/2017/`), relues page à page en image. Les dossiers dzexams locaux de
 2017 (`M/dzexams-bac-sciences-2275712.pdf`, « عناصر الإجابة » pp. 5–9), 2018
 (`M/dzexams-bac-sciences-1967487.pdf`, pp. 7–12), 2019
-(`M/dzexams-bac-sciences-2280992.pdf`, pp. 6–10, relu le 2026-09-14) et 2020
+2019
+(`M/dzexams-bac-sciences-2280992.pdf`, pp. 6–10, relu le 2026-09-14), 2020 et
+2021 (`M/dzexams-bac-sciences-2068087.pdf`, pp. 7–12, relu le 2026-09-14)
 portent aussi la correction officielle, qui fonde alors les réponses modèle
 (section corrigée pour 2019 : masse 257 غ/مول du fragment (م), cellules
 س=LT4 / ع=LT8 / ص=LB / ل=بالعة, chambre (3) sans réponse immunitaire, n = 3 et
@@ -348,6 +354,13 @@ Statut honnête :
   pp. 6–10), consignes recopiées mot à mot depuis l'image des pages ; les questions de
   cadrage officielles (« صُغ المشكل العلمي », « أبرز المشكلة المطروحة ») sont marquées
   `official`, les étapes pédagogiques restent badgées ⚠️.
+- **2021 Maths** : dossier dzexams local — sujet pp. 1–6, corrigé « الإجابة
+  النموذجية » pp. 7–12 relu en image le 2026-09-14. Les cinq consignes qui
+  n'étaient mappées nulle part (النمط الوراثي لولدين، اشرح آلية التأثير، قدم
+  نصيحة، مرحلة التدخل والمعادلة، فسّر الشكل (ب) وناقش الفرضية وخطورة انخفاض
+  الـ pH) sont rattachées aux pôles déjà officiels, les libellés paraphrasés
+  sont recopiés mot à mot (بيّن في نص علمي، اكتسبت، مبرزا تأثر هذه العلاقة) et
+  les valeurs fausses sont corrigées (0→40 د، 70 %/10 %, Mex.R الثلاثية 114).
 - **2019 Maths** : dossier dzexams local complet — sujet pp. 1–5, corrigé
   « الإجابة النموذجية » pp. 6–10 relu en image le 2026-09-14. Les réponses modèle
   suivent ce corrigé (le programme ne sert plus que pour les deux clôtures
