@@ -129,8 +129,9 @@ corrigé local à l'appui).
    (`-2275712.pdf`, عناصر الإجابة pp. 5–9), 2018 (`-1967487.pdf`, pp. 7–12),
    2019 (`-2280992.pdf`, pp. 6–10, relu le 2026-09-14) et 2020
    (`-2273619.pdf`, pp. 6–10). Restent à relire et à réinjecter dans les
-   réponses modèle : 2021 (`-2068087.pdf`), 2022 (`-1777391.pdf`), puis
-   2023–2026 (`data/archive.js`).
+   réponses modèle : 2021 (`-2068087.pdf`, corrigé repéré pp. 7–12) et 2022
+   (`-1777391.pdf`, corrigé repéré pp. 7–13) — balayage de la couche texte du
+   2026-09-14 —, puis 2023–2026 (`data/archive.js`).
 5. Cohérence mots-clés / réponses modèle : **traité le 2026-09-14**. Sonde
    `evaluateText(réponse modèle, règle)` sur les 160 pôles maths :
    `hits >= req` partout (0 échec). Quatre règles ne pouvaient pas être
