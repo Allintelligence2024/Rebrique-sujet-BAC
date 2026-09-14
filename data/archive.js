@@ -130,7 +130,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-31) : titre BAC 2026 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2026-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation)."
+        "Page ouverte (2026-08-31) : titre BAC 2026 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2026-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation). Les scans locaux subjects/M/2026/sujet-{1,2}.pdf ont été relus en image le 2026-09-14 : les deux consignes non rattachées (برّر تثبيط PCSK9، قدّم نصيحة) le sont désormais et les réponses modèle suivent le corrigé eddirasa (الثلاثية 33 GTC ← ATC pour le النمط B ; النصيحة = أغذية غنية بالشوارد + أدوية)."
     },
     {
       year: "2025",
@@ -189,7 +189,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-31) : titre BAC 2022 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2022-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation)."
+        "Page ouverte (2026-08-31) : titre BAC 2022 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2022-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation). Le dossier dzexams local M/dzexams-bac-sciences-1777391.pdf (sujets pp. 1-6, corrigé « الإجابة النموذجية » pp. 7-13) a été relu en image le 2026-09-14 : verbes corrigés (وضّح chez S1-E2/W), consignes non rattachées rattachées, et réponses modèle alignées sur le corrigé — (س) = niveau بنائي ثانوي, ترتيب ج ← أ ← ب, « من 10 إلى 30 غ », mutation du النمط B au الثلاثية 33."
     },
     {
       year: "2021",

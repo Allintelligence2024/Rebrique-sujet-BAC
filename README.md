@@ -349,11 +349,22 @@ Statut honnête :
 - **Consultation** : sujet officiel + تصحيح النموذجي via dzexams. Aucun
   barème, mot-clé ou réponse modèle : le moteur ne s'applique pas.
 - **Maths 2022–2026** : viewer dzexams bloqué (`contentVerified: false`) ;
-  Cartes encodées depuis les PDF officiels eddirasa (même papier ONEC).
+  Cartes encodées depuis les PDF officiels eddirasa (même papier ONEC) ;
+  **2022** et **2026** ont été relues en image le 2026-09-14 (dossier dzexams
+  local pour 2022, scans locaux `subjects/M/2026` pour 2026), corrigé appliqué.
 - **2020 Maths** : relu page à page sur le dossier dzexams local (sujet pp. 1–5, corrigé
   pp. 6–10), consignes recopiées mot à mot depuis l'image des pages ; les questions de
   cadrage officielles (« صُغ المشكل العلمي », « أبرز المشكلة المطروحة ») sont marquées
   `official`, les étapes pédagogiques restent badgées ⚠️.
+- **2022 Maths** : dossier dzexams local — sujet pp. 1–6, corrigé « الإجابة
+  النموذجية » pp. 7–13 relu en image le 2026-09-14. Les réponses modèle fausses
+  sont corrigées ((س) = مستوى ثانوي et ترتيب ج ← أ ← ب ; « من 10 إلى 30 غ » du
+  tableau 1 ; mutation du النمط B au الثلاثية 33 : GTC ← ATC) et les trois
+  consignes non rattachées (المعادلة، رتّب المراحل، analyse du tableau 1) le sont.
+- **2026 Maths** : scans locaux `subjects/M/2026/sujet-{1,2}.pdf` relus en image
+  le 2026-09-14, corrigé eddirasa lu via la même URL. Les deux consignes
+  non rattachées (برّر تثبيط PCSK9، قدّم نصيحة) le sont ; `S1-E2/E` chiffre la
+  mutation (الثلاثية 33 GTC ← ATC) et `S2-E2/E` détaille les trois figures.
 - **2021 Maths** : dossier dzexams local — sujet pp. 1–6, corrigé « الإجابة
   النموذجية » pp. 7–12 relu en image le 2026-09-14. Les cinq consignes qui
   n'étaient mappées nulle part (النمط الوراثي لولدين، اشرح آلية التأثير، قدم
@@ -390,7 +401,7 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **263** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **267** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0/3060 minimum** avant toute promotion numérique
 - Inventaires de tâches officielles commencés : **46/48 sujets** (**472 tâches connues**)
 - Sujets éligibles à la simulation : **46**
