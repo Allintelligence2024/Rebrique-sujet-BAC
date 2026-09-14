@@ -67,3 +67,24 @@ test("aucun mot-clé de règle n'est un score ni une note chiffrée", async () =
     }
   }
 });
+
+test("aucune note des années maths ne prétend qu'un corrigé est absent du dépôt", async () => {
+  // Les corrigés officiels 2017–2020 sont dans le dépôt (dossiers dzexams
+  // `M/dzexams-bac-sciences-*.pdf`) et ceux de 2021–2022 y ont été repérés
+  // (pp. 7–12 / 7–13). Une note qui affirme le contraire redevient une fausse
+  // information sur la provenance des réponses modèle.
+  for (const entry of mathsYears) {
+    const year = await loadYear(entry.id);
+    for (const subject of year.sujets) {
+      for (const exercise of subject.exercises) {
+        for (const [pole, data] of Object.entries(exercise.poles)) {
+          assert.doesNotMatch(
+            data.bacPromptNotes || "",
+            /absent du dépôt/,
+            `${entry.id}/S${subject.id}E${exercise.number}${pole} : corrigé annoncé absent`
+          );
+        }
+      }
+    }
+  }
+});

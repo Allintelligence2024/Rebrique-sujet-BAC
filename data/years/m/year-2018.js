@@ -122,7 +122,7 @@ export const YEAR_2018_M = {
               prompt: "الخاتمة: لماذا يحدد البروتين النمط الظاهري",
               bacPrompt: "لماذا يُقال إنّ الخلل في المورثة يُترجم إلى خلل في النمط الظاهري؟",
               ...RECON(
-                "Pas une question BAC autonome : clôture issue de la question 4. Le corrigé 2018 étant absent du dépôt, la réponse s'appuie sur le programme."
+                "Pas une question BAC autonome : clôture issue de la question 4 (النص العلمي). Le corrigé officiel 2018 est dans le dépôt (M/dzexams-bac-sciences-1967487.pdf, pp. 7-12) et il ne comporte pas de question de clôture : cette réponse est rédigée à partir du programme, sans se réclamer du corrigé."
               ),
               placeholder: "في الختام...",
               minLength: 40,

@@ -377,7 +377,7 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **262** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **263** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0/3060 minimum** avant toute promotion numérique
 - Inventaires de tâches officielles commencés : **46/48 sujets** (**472 tâches connues**)
 - Sujets éligibles à la simulation : **46**
