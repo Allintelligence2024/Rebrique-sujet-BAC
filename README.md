@@ -290,11 +290,13 @@ une réponse locale HTTP 200 peut seulement entrer dans le cache runtime borné 
 **2019**, **2018** et **2017** ont été encodées le 2026-09-13 depuis les PDF
 locaux (`subjects/M/2020/`, `subjects/M/2019/`, `subjects/M/2018/`,
 `subjects/M/2017/`), relues page à page en image. Les dossiers dzexams locaux de
-2017 (`M/dzexams-bac-sciences-2275712.pdf`, « عناصر الإجابة » pp. 5–9) et de 2020
-portent aussi la correction officielle, qui fonde alors les réponses modèle ;
-pour 2018 et 2019 les réponses modèle sont rédigées depuis le programme et les
-données du sujet, jamais présentées comme un corrigé officiel. Format Maths :
-2 sujets × 2 exercices. id `YYYY-m`.
+2017 (`M/dzexams-bac-sciences-2275712.pdf`, « عناصر الإجابة » pp. 5–9), 2018
+(`M/dzexams-bac-sciences-1967487.pdf`, pp. 7–12), 2019
+(`M/dzexams-bac-sciences-2280992.pdf`, pp. 6–10, relu le 2026-09-14) et 2020
+portent aussi la correction officielle, qui fonde alors les réponses modèle
+(section corrigée pour 2019 : masse 257 غ/مول du fragment (م), cellules
+س=LT4 / ع=LT8 / ص=LB / ل=بالعة, chambre (3) sans réponse immunitaire, n = 3 et
+رامزات UUU/AAA/CCC). Format Maths : 2 sujets × 2 exercices. id `YYYY-m`.
 
 | Année    | Fichier                     | Barème      | Thèmes                                                                                                                                                                                                                                                    |
 | -------- | --------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -346,6 +348,11 @@ Statut honnête :
   pp. 6–10), consignes recopiées mot à mot depuis l'image des pages ; les questions de
   cadrage officielles (« صُغ المشكل العلمي », « أبرز المشكلة المطروحة ») sont marquées
   `official`, les étapes pédagogiques restent badgées ⚠️.
+- **2019 Maths** : dossier dzexams local complet — sujet pp. 1–5, corrigé
+  « الإجابة النموذجية » pp. 6–10 relu en image le 2026-09-14. Les réponses modèle
+  suivent ce corrigé (le programme ne sert plus que pour les deux clôtures
+  reconstruites) ; les lettres que le scan ne dessine pas (n, ARNm, Crick, Brenner)
+  sont restituées depuis la couche texte du même PDF et signalées dans les notes.
 - **SE 2021** : pas de carte d'épreuve — couche texte / corrigé mot à mot absents sur dzexams.
 - **شعبة تقني رياضي** : pas d'épreuve SVT au BAC ; l'index dzexams n'a que
   `se` et `m` (revérifié 2026-08-31). Le hub affiche le trou, **aucun lien
@@ -370,7 +377,7 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **251** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **262** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0/3060 minimum** avant toute promotion numérique
 - Inventaires de tâches officielles commencés : **46/48 sujets** (**472 tâches connues**)
 - Sujets éligibles à la simulation : **46**
