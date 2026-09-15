@@ -62,7 +62,8 @@ const FORBIDDEN = [
   "إنطلاق",
   "إنتقاء",
   "إختلافات",
-  "أكتب",
+  // « أكتب » reste banni partout sauf dans la transcription du sujet
+  // officiel 2021 SE (voir le test dédié « le sujet officiel 2021 SE … »).
   "انجز",
   "اجسام",
   "احماض",
@@ -257,6 +258,27 @@ test("aucune des formes fautives corrigées ne revient dans les données", () =>
     }
   }
   assert.deepEqual(hits, [], `formes fautives réintroduites :\n${hits.join("\n")}`);
+});
+
+test("« أكتب » (hamza) n'existe que dans la transcription du sujet officiel 2021 SE", () => {
+  // Le corrigé et nos rédactions écrivent « اكتب » (sans hamza). Le sujet
+  // officiel 2021 SE, lui, imprime « أكتب » : la recopie est mot à mot, on
+  // ne réécrit donc pas la source. L'exception est nominative : tout autre
+  // fichier qui se remet à écrire « أكتب » fait échouer ce test.
+  const hits = [];
+  for (const { stream, name, text } of FILES) {
+    for (const token of new Set(tokensOf(text))) {
+      const bare = ["و", "ف"].some((p) => token.startsWith(p)) ? token.slice(1) : token;
+      if (bare === "أكتب") hits.push(`${stream}/${name} : ${token}`);
+    }
+  }
+  assert.deepEqual(hits, ["se/year-2021.js : أكتب"], `occurrences de « أكتب » :\n${hits.join("\n")}`);
+  const subject = FILES.find((f) => f.name === "year-2021.js" && f.stream === "se");
+  assert.match(
+    subject.text,
+    /2 ــ أكتب نصا علميا توضح فيه المؤهلات/,
+    "la phrase officielle doit rester recopiée telle quelle"
+  );
 });
 
 test("le jeton nu « لازمية » n'existe nulle part (forme correcte : بلازمية)", () => {

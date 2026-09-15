@@ -163,7 +163,7 @@ Le serveur applique une liste blanche d'assets publics. Ne pas remplacer cette c
 ## 📄 Contenu réel — épreuve
 
 **28 sessions encodées** : 14 en علوم تجريبية (2013–2019, 2020, 2021 et 2022–2026) + 14 en رياضيات (2013-m … 2026-m).
-Le hub SE affiche 2013–2026 en cartes d'épreuve — **2021 y ouvre une « ورقة حرة »** (structure et thèmes officiels relevés, aucune consigne encodée : la couche texte du PDF est illisible, rien n'a été inventé) ; le hub Maths affiche 2013–2026 en épreuve (chaque année encodée remplace sa carte de consultation ; seule la session exceptionnelle 2017 reste consultable en plus de sa carte d'épreuve). Les thèmes SE 2013–2019 restent des repères pédagogiques, pas des énoncés ministériels.
+Le hub SE affiche 2013–2026 en cartes d'épreuve — **2021 y ouvre une « ورقة حرة »** (structure, thèmes et **questions officielles recopiées** page par page depuis le PDF ; rien n'est noté, faute de pôles et de corrigé local) ; le hub Maths affiche 2013–2026 en épreuve (chaque année encodée remplace sa carte de consultation ; seule la session exceptionnelle 2017 reste consultable en plus de sa carte d'épreuve). Les thèmes SE 2013–2019 restent des repères pédagogiques, pas des énoncés ministériels.
 
 ### Contenu BAC 2025 (شعبة علوم تجريبية)
 
@@ -344,11 +344,11 @@ Fichier : `data/years/m/year-2021.js`.
 Le bouton coin **تغيير الشعبة** cycle **علوم تجريبية → رياضيات → تقني رياضي**.
 Les sujets de la filière choisie remplacent la grille.
 
-| Filière                  | Épreuve               | Consultation (sujet + تصحيح)                       |
-| ------------------------ | --------------------- | -------------------------------------------------- |
-| شعبة علوم تجريبية (`se`) | 2013–2021 و 2022–2026 | — (2021 en ورقة حرة ; entrée dzexams au catalogue) |
-| شعبة رياضيات (`m`)       | 2013–2026             | 2017 (session exceptionnelle)                      |
-| شعبة تقني رياضي (`tm`)   | —                     | **absente de la source** (trou affiché, 0 lien)    |
+| Filière                  | Épreuve               | Consultation (sujet + تصحيح)                                            |
+| ------------------------ | --------------------- | ----------------------------------------------------------------------- |
+| شعبة علوم تجريبية (`se`) | 2013–2021 و 2022–2026 | — (2021 en ورقة حرة, questions recopiées ; entrée dzexams au catalogue) |
+| شعبة رياضيات (`m`)       | 2013–2026             | 2017 (session exceptionnelle)                                           |
+| شعبة تقني رياضي (`tm`)   | —                     | **absente de la source** (trou affiché, 0 lien)                         |
 
 Statut honnête :
 
@@ -417,7 +417,7 @@ Statut honnête :
   suivent ce corrigé (le programme ne sert plus que pour les deux clôtures
   reconstruites) ; les lettres que le scan ne dessine pas (n, ARNm, Crick, Brenner)
   sont restituées depuis la couche texte du même PDF et signalées dans les notes.
-- **SE 2021** : carte d'épreuve en **« ورقة حرة »** — la couche texte du PDF officiel est illisible (1 consigne sur 77 retrouvée) et le corrigé mot à mot est absent : aucune consigne n'a été inventée, l'élève lit le PDF et rédige par exercice (`poles: {}`, aucun inventaire dérivé).
+- **SE 2021** : épreuve en **« ورقة حرة »**, questions officielles **recopiées** — relecture image page par page ; les chiffres de la couche texte sont faux (police à encodage décalé) et les nombres sont donc lus sur l'image, tandis que les symboles latins que le rendu ne dessine pas (A, ARNm, ARNt, VIH, LT4, Tetrahymena, pH…) sont restitués depuis cette couche et signalés. Le corrigé local est absent : `poles: {}`, aucun inventaire, aucune note — l'élève lit le sujet, voit la transcription des questions et rédige par exercice.
 - **شعبة تقني رياضي** : pas d'épreuve SVT au BAC ; l'index dzexams n'a que
   `se` et `m` (revérifié 2026-08-31). Le hub affiche le trou, **aucun lien
   inventé**. Les filières Lettres / Langues / Gestion n'ont pas non plus
@@ -441,7 +441,7 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **330** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **332** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0/3660 minimum** avant toute promotion numérique
 - Inventaires de tâches officielles commencés : **54/56 sujets** (**536 tâches connues**)
 - Sujets éligibles à la simulation : **54**

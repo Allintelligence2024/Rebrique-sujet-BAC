@@ -293,16 +293,31 @@ export function createSimulationController(deps) {
   }
 
   /* Épreuve « copie libre » : session dont les consignes ne sont pas
-     encodées (couche texte du PDF illisible, rien n'a pu être recopié mot à
-     mot ni reconstitué sans inventer). Plutôt que de fermer la session, on
-     ouvre une épreuve honnête : le sujet officiel s'affiche dans la
-     visionneuse, un champ de rédaction par exercice, le chronomètre officiel
-     et « ✓ تسليم الورقة ». Aucune note, aucun corrigé : il n'y a ici rien à
-     corriger — seulement l'armature (thème + barème) lue dans le fichier. */
+     notées (ni pôle, ni inventaire, ni corrigé local — rien à corriger).
+     Les questions officielles, recopiées page par page depuis le PDF, sont
+     affichées sous chaque exercice avec leur page source : les documents
+     (tableaux, courbes, protocoles) restent dans la visionneuse. */
   const FREE_MODE_NOTICE =
-    "وضع «الورقة الحرة»: تعليمات هذه الدورة غير مُشفَّرة لأن ملفها الرسمي غير قابل للاستخراج. " +
-    "اقرأ الموضوع من الملف أعلاه واكتب إجابتك الكاملة لكل تمرين في الخانة المخصصة. " +
-    "لا يوجد تصحيح ولا نقطة في هذا الوضع.";
+    "وضع «الورقة الحرة»: لا يوجد تصحيح آلي ولا نقطة في هذا الوضع. " +
+    "الأسئلة الرسمية منقولة أسفل كل تمرين، والموضوع الكامل (الوثائق والجداول) في الملف أعلاه. " +
+    "اقرأ الموضوع واكتب إجابتك الكاملة لكل تمرين في الخانة المخصصة.";
+
+  /* Les questions officielles recopiées : affichées telles quelles, jamais
+     notées. Le bloc porte sa source pour que l'élève sache ce qu'il lit. */
+  function freeConsignesHTML(exercise) {
+    const lines = Array.isArray(exercise.consignes) ? exercise.consignes.filter((l) => l && l.trim()) : [];
+    if (!lines.length) return "";
+    const pages = exercise.consignesPages ? ` — ${exercise.consignesPages}` : "";
+    return `<div class="stack free-consignes" data-consigne-source="transcription">
+            <p class="small text-dim">النص الرسمي للأسئلة${escapeHTML(pages)}</p>
+            ${lines
+              .map(
+                (line) =>
+                  `<p class="free-consigne-line${/^الجزء/.test(line) ? " free-consigne-part" : ""}">${escapeHTML(line)}</p>`
+              )
+              .join("")}
+          </div>`;
+  }
 
   function renderFreeAnswerExam(subject) {
     const completed = store.state.sessionStatus === "completed";
@@ -348,6 +363,7 @@ export function createSimulationController(deps) {
             </div>
             <h3>${escapeHTML(exercise.label)}</h3>
             <p class="small text-muted">${escapeHTML(exercise.desc || "")}</p>
+            ${freeConsignesHTML(exercise)}
             <label class="lbl" for="free-answer-${exercise.number}">إجابتك</label>
             <textarea class="field simulation-answer" id="free-answer-${exercise.number}" data-exercise-free="${exercise.number}" data-exercise="${exercise.number}" rows="10"${completed ? " disabled" : ""}></textarea>
             ${completed ? "" : micButton(`free-answer-${exercise.number}`)}

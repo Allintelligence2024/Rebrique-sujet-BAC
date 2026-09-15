@@ -120,7 +120,7 @@ export function createStrategyScreen(deps) {
       (task) => task.promptSource === "official"
     ).length;
     const inventoryNote = coverage.freeAnswerEligible
-      ? `<p class="small text-muted inventory-note" id="inventory-note-${subject.id}">وضع الإجابة الحرة: تعليمات هذه الدورة غير مُشفَّرة (ملفها غير قابل للاستخراج). الامتحان مفتوح — اقرأ الموضوع واكتب إجابتك — بلا تصحيح ولا نقطة.</p>`
+      ? `<p class="small text-muted inventory-note" id="inventory-note-${subject.id}">وضع الإجابة الحرة: بلا تصحيح آلي ولا نقطة. الأسئلة الرسمية منقولة في شاشة الاختبار، والموضوع الكامل في الملف.</p>`
       : `<p class="small text-muted inventory-note" id="inventory-note-${subject.id}">جرد المهام: ${taskCountArabic(coverage.knownTaskCount)}، منها ${officialTaskCountArabic(officialTasks)}.</p>`;
     return `
     <div class="card stack subject-card" data-subject-coverage="${coverage.inventoryStatus}" data-simulation-eligible="${coverage.simulationEligible}" data-exam-openable="${examOpenable(coverage)}" data-answer-mode="${coverage.freeAnswerEligible ? "free" : "inventory"}">

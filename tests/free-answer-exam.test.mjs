@@ -1,14 +1,15 @@
 /* ============================================================
    Épreuve « copie libre » — 2021 شعبة علوم تجريبية
    ------------------------------------------------------------
-   Le PDF officiel de cette session a une couche texte illisible :
-   aucune consigne n'a pu être recopiée mot à mot ni reconstituée
-   sans inventer des formulations scientifiques. Plutôt que de
-   fermer l'année, on ouvre une épreuve honnête : le sujet officiel
-   est lu dans l'application, l'élève rédige une réponse par
-   exercice, le chronomètre officiel tourne et il rend sa copie.
+   Les questions officielles de cette session ont été recopiées page
+   par page depuis le PDF (relecture image ; les symboles latins sont
+   restitués d'après la couche texte du PDF, dont les chiffres sont
+   faux). L'année reste en « copie libre » : le sujet officiel est lu
+   dans l'application, l'élève rédige une réponse par exercice, le
+   chronomètre officiel tourne et il rend sa copie.
    Ce test verrouille ce qui doit l'être :
      - rien n'est inventé (aucun pôle, aucun inventaire, aucune note) ;
+     - les questions affichées sont la transcription, avec sa page source ;
      - mais l'épreuve est réelle (PDF, champs, chrono, تسليم الورقة).
    ============================================================ */
 import { test, after } from "node:test";
@@ -69,7 +70,7 @@ test("2021 ouvre une épreuve, pas une consultation", () => {
   assert.match(card.textContent, /وضع الإجابة الحرة|الورقة الحرة|غير مُشفَّرة/);
 });
 
-test("l'écran de choix annonce l'absence de consignes encodées", () => {
+test("l'écran de choix annonce l'absence d'inventaire, sans inventer de جرد", () => {
   click('#year-grid [data-year="2021"]');
   assert.ok(!$("#view-guide").classList.contains("hidden"));
   click("#guide-next");
@@ -80,7 +81,8 @@ test("l'écran de choix annonce l'absence de consignes encodées", () => {
     assert.equal(card.dataset.answerMode, "free");
     assert.equal(card.dataset.simulationEligible, "false", "aucune note n'est calculable");
   }
-  assert.match($("#view-strategy").textContent, /غير مُشفَّرة/);
+  assert.match($("#view-strategy").textContent, /بلا تصحيح آلي ولا نقطة/);
+  assert.match($("#view-strategy").textContent, /الأسئلة الرسمية منقولة/);
   assert.doesNotMatch($("#view-strategy").textContent, /جرد المهام: \d+ مهمة/);
 });
 
@@ -107,9 +109,15 @@ test("l'épreuve affiche le sujet officiel et un champ de rédaction par exercic
   assert.match($("#view-workspace").textContent, /7 نقطة/);
   assert.match($("#view-workspace").textContent, /8 نقطة/);
 
-  // Ce qui ne doit jamais apparaître : une consigne inventée, un corrigé, une note.
-  assert.match($("#view-workspace").textContent, /غير مُشفَّرة/);
-  assert.equal($("#view-workspace .bac-consigne"), null, "aucune consigne ne doit être affichée");
+  // Ce qui est affiché : la transcription officielle, avec sa page source.
+  const consignes = $$('#view-workspace [data-consigne-source="transcription"]');
+  assert.equal(consignes.length, 3, "une transcription par exercice");
+  assert.match($("#view-workspace").textContent, /النص الرسمي للأسئلة/);
+  assert.match($("#view-workspace").textContent, /الصفحة 1 من 10/);
+  assert.match($("#view-workspace").textContent, /مستوى البنية الفراغية للبروتين/);
+
+  // Ce qui ne doit jamais apparaître : un pôle noté, un corrigé, une note.
+  assert.equal($("#view-workspace .bac-consigne"), null, "aucune consigne de pôle");
   assert.equal($("#view-workspace [data-task-answer]"), null, "aucune tâche inventée");
 
   // L'épreuve est une épreuve : chronomètre officiel et remise de copie.
@@ -141,4 +149,29 @@ test("la réponse est enregistrée, puis la remise verrouille la copie", () => {
   assert.ok($("#simulation-review-notice"), "la relecture est annoncée");
   assert.ok($("#global-timer-bar").classList.contains("hidden"), "le chronomètre s'arrête");
   assert.equal($("#view-workspace").dataset.reviewMode, "true");
+});
+
+test("les six exercices portent une transcription datée, aucun pôle, aucune note", async () => {
+  const { YEAR_2021_SE } = await import("../data/years/se/year-2021.js");
+  assert.equal(YEAR_2021_SE.answerMode, "free");
+  assert.ok(YEAR_2021_SE.answerModeNote.length > 20);
+  let exercises = 0;
+  for (const subject of YEAR_2021_SE.sujets) {
+    assert.equal(subject.answerMode, "free", `sujet ${subject.id}`);
+    assert.ok(subject.pdfLocalUrl, `sujet ${subject.id} : le PDF officiel reste servi`);
+    for (const exercise of subject.exercises) {
+      exercises += 1;
+      assert.deepEqual(exercise.poles, {}, `${subject.id}/${exercise.number} : rien à noter`);
+      assert.ok(Array.isArray(exercise.consignes), `${subject.id}/${exercise.number} : consignes`);
+      assert.ok(exercise.consignes.length >= 2, `${subject.id}/${exercise.number} : questions listées`);
+      assert.ok(
+        /الصفح/.test(exercise.consignesPages || ""),
+        `${subject.id}/${exercise.number} : page source citée`
+      );
+      assert.match(exercise.consignesSource || "", /منقولة من ملف الموضوع الرسمي/);
+      // Une transcription n'est pas un corrigé : aucune réponse modèle déguisée.
+      assert.doesNotMatch(exercise.consignes.join(" "), /الإجابة النموذجية|الحل/);
+    }
+  }
+  assert.equal(exercises, 6, "deux sujets × trois exercices");
 });

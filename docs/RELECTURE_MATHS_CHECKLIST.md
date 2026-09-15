@@ -525,6 +525,14 @@ des possessifs (`لتترجمه` → `لتترجمةا`, `رامزها` → `ر�
 corpus « le `ة` est toujours en finale de jeton » est vérifié à la fois sur
 `HEAD` (0 cas) et après la passe (0 cas).
 
+**Le cas `ى` / `ي` (2026-09-15)** : les candidats relevés dans les mots-clés
+ne sont pas des coquilles — `الهيولى` est le nom (هيولى, cytoplasmique au
+sens de « matière ») et `الهيولي` l'adjectif (غشاء هيولي, شبكة هيولية) ;
+`تتالي`, `يحتوي`, `قوي`, `تعطي`, `بنى`, `غنى`, `السفلى`, `تنتقي` sont des
+formes correctes. Aucun n'a été changé ; en revanche les mots-clés restent
+écrits en `ي` (forme normalisée par `normalizeArabic`, qui mappe `ى → ي`)
+et le verrou de `tests/arabic-orthography.test.mjs` refuse le `ى` final.
+
 **Ce qui n'a volontairement PAS été changé** : `انسب`/`أنسب` (les deux
 impératifs sont attestés, y compris dans les corrigés), `استراديول` /
 `أستراديول` et `انزيم` / `إنزيم` d'autres fichiers, les possessifs légitimes

@@ -209,12 +209,13 @@ export function createHubScreen(deps) {
     return card;
   }
 
-  /* Une année « copie libre » n'a aucune consigne encodée : la carte ne peut
-     pas annoncer un جرد المهام qu'elle n'a pas. Elle le dit à la place. */
+  /* Une année « copie libre » n'a aucun inventaire : la carte ne peut pas
+     annoncer un جرد المهام qu'elle n'a pas. Elle dit ce qui est vrai —
+     épreuve ouverte, questions officielles recopiées, aucune note. */
   function examCardNote(y) {
     const duration = formatDuration(examMinutesForYear(y));
     return y.answerMode === "free"
-      ? `امتحان الموضوع — وضع «الورقة الحرة»: تعليمات هذه الدورة غير مُشفَّرة، تقرأ الموضوع من الملف وتكتب إجابتك. مدة الاختبار الرسمية: ${duration}.`
+      ? `امتحان الموضوع — وضع «الورقة الحرة»: لا تصحيح آلي ولا نقطة؛ الأسئلة الرسمية منقولة، والموضوع الكامل في الملف. مدة الاختبار الرسمية: ${duration}.`
       : `امتحان الموضوع — جرد المهام جزئي: بعض تعليمات الموضوع الرسمية غير مُدرجة بعد، وبعض الخطوات مُعاد بناؤها. مدة الاختبار الرسمية: ${duration}.`;
   }
 
