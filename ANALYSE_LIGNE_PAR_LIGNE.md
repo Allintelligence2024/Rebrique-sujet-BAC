@@ -7,10 +7,16 @@
 > ce jour-là (HEAD `e8f8f7f`) et ne sont pas mis à jour. État courant au 2026-09-15,
 > branche `arena/01a09be6-rebrique-sujet-bac` : filière maths **2013-m … 2026-m
 > entièrement encodée** (14 sessions, 158/224 pôles officiels), **54 inventaires**
-> de sujets officiels, `npm test` **326 tests · 325 passent · 0 échec · 1 skippé**,
-> build `e641f46d5184`, README et docs régénérés. Le plan d'action (§8) et les
+> de sujets officiels, `npm test` **329 tests · 328 passent · 0 échec · 1 skippé**,
+> build `902b8c8357cb`, README et docs régénérés. Le plan d'action (§8) et les
 > anomalies (§6) sont conservés pour mémoire : l'essentiel est traité depuis
 > (§10 et `docs/RELECTURE_MATHS_CHECKLIST.md`).
+>
+> 📌 **Lecture des ⚠️ de §5-§6** : ils décrivent l'état du 2026-09-12. Le tableau
+> §10.1 dit lesquels sont corrigés ; les lignes concernées portent désormais la
+> mention « → corrigé (§10.1 …) ». Restent ouverts : S2.5 (Safari, non vérifiable
+> ici), S2.6 (dette défensive assumée), l'ancrage à 75 % de `strategy.js:130` et
+> l'arbitrage juridique des PDF (§10.1 S3.8).
 
 ---
 
@@ -173,7 +179,7 @@ Aucune faille trouvée. Le store est la partie la plus solide du projet.
 - **L.71-108** : enchaînement `inferTaskSignals → deriveTaskProfile → analyzeSentenceStructure → matchConcept (keywords / forbidden) → evaluateMethodology → evaluateScience/Document/Artifact/Hypotheses/Closing/Technique/Rubric`.
 - **L.115-133** : pondération `content / methodology / richness` selon le profil, puis modulation par la longueur (`0.55 + 0.45 * lengthRatio`).
 - **L.135-156** : pénalités multiplicatives en cascade (document, artifact, hypothèses, technique, clôture, `هذا يدل` sans `مما يدل`, erreurs scientifiques plafonnées à 0,45).
-- **L.176-195** `allowPerfect` : **⚠️ point faible**. La condition `hits >= req` (L.189) est vraie quand `req === 0`, c'est-à-dire **quand la règle n'a aucun mot-clé**. Une règle sans `keywords` peut donc obtenir `fraction = 1`. Vérifié expérimentalement sur `DEMO_RULE` : `fraction(avant) = 0`, `fraction(après) = 1` avec `hits = 0`. Les 408 pôles réels ont tous des mots-clés (mesuré), donc **l'impact est aujourd'hui nul en production**, mais la garde est fragile : un futur pôle sans `keywords` noterait 20/20 n'importe quoi. Correctif suggéré : `hits > 0 && hits >= req`.
+- **L.176-195** `allowPerfect` : **⚠️ point faible**. La condition `hits >= req` (L.189) est vraie quand `req === 0`, c'est-à-dire **quand la règle n'a aucun mot-clé**. Une règle sans `keywords` peut donc obtenir `fraction = 1`. Vérifié expérimentalement sur `DEMO_RULE` : `fraction(avant) = 0`, `fraction(après) = 1` avec `hits = 0`. Les 408 pôles réels ont tous des mots-clés (mesuré), donc **l'impact est aujourd'hui nul en production**, mais la garde est fragile : un futur pôle sans `keywords` noterait 20/20 n'importe quoi. Correctif suggéré : `hits > 0 && hits >= req`. → **corrigé** (§10.1 S2.1).
 - **L.227-236** : `scoreFromFraction` (arrondi 0,01) et `scoreBac` (arrondi au quart de point, comme le barème BAC).
 
 #### `text-analysis.js` (771 lignes) — le cœur linguistique
@@ -206,7 +212,7 @@ Aucune faille trouvée. Le store est la partie la plus solide du projet.
 
 `evaluateScience` (L.10-64, pénalité douce `max(0.1, 1 - 0.25n)` — correctif #65), `evaluateDocument` (L.66-149, comparaisons/tendances/valeurs/axes/relations/cellules), `evaluateArtifact` (L.151-199, schéma/équation), `evaluateHypotheses` (L.201-228), `evaluateClosingCover` (L.230-238), `evaluateTechnique` (L.240-259), `evaluateAnalysisRubric` (L.261-292, 4 étapes à 0,25), `buildProfessorVerdict` (L.294-306, 4 paliers de formulation).
 
-⚠️ **L.308** : commentaire orphelin `/* ---------- Évaluation d'un champ de texte (pôles N/S/E/W) ---------- */` en fin de fichier — vestige d'un découpage antérieur.
+⚠️ **L.308** : commentaire orphelin `/* ---------- Évaluation d'un champ de texte (pôles N/S/E/W) ---------- */` en fin de fichier — vestige d'un découpage antérieur. → **corrigé** (§10.1 S3.6).
 ⚠️ **L.138** : regex `يرتفع المنحني|…المنحني ينخفض` : n'intercepte que la graphie **sans** hamza (`المنحني`) ; la variante `المنحنى` (très courante) passe à travers. À harmoniser avec `method-scripts.js:188` qui a le même biais.
 
 #### `pipeline-evaluator.js` (52 lignes)
@@ -247,20 +253,20 @@ Score de placement des blocs : exact = 1, bon flux mauvais rang = 0,5, mauvais f
 - `operational-status.js` (36 L.) : badge build + connectivité, écoute `miftah:operational-status`.
 - `coverage-messages.js` (16 L.) : 9 libellés de blocage de simulation.
 
-⚠️ **Duplication** : `coverage-messages.js` et `strategy.js:157-171` définissent **deux fois** la même table de libellés (`simulationBlockersArabic` vs `simulationGuardArabic`) — 10 lignes dupliquées, risque de divergence.
+⚠️ **Duplication** : `coverage-messages.js` et `strategy.js:157-171` définissent **deux fois** la même table de libellés (`simulationBlockersArabic` vs `simulationGuardArabic`) — 10 lignes dupliquées, risque de divergence. → **corrigé** : `strategy.js` consomme `simulationBlockersArabic()` (§10.1 S3.2).
 
 **Écrans**
 
 - `guide.js` (63 L.) : écran de calme (respiration + 4 étapes + invocations + durée officielle). Volontairement dépouillé.
 - `hub.js` (328 L.) : filière persistée (`boussole4d.stream`, cycle `se → m → tm`), cartes « entraînement » (depuis `APP_CONFIG.years`) + cartes « consultation » (depuis `data/archive.js`), section repliée d'entraînement, démo et atlas injectés **à la fin** de la section (L.156-175).
-  ⚠️ **L.159** : `insertAdjacentHTML` —唯一 endroit où du HTML est injecté en dehors de `setInternalHTML` ; contenu statique, donc acceptable, mais contourne la frontière documentée.
+  ⚠️ **L.159** : `insertAdjacentHTML` —唯一 endroit où du HTML est injecté en dehors de `setInternalHTML` ; contenu statique, donc acceptable, mais contourne la frontière documentée. → **corrigé** (§10.1 S3.10).
   ⚠️ **L.138-151** : le clic désactive le bouton et le remet en état **seulement si `startSession` renvoie falsy** — correct ; mais `button.textContent` est sauvegardé **après** le premier rendu : si deux clics rapides arrivent, `label` capture « جارٍ تحميل السنة… ». Le bouton étant `disabled`, le risque est théorique.
 - `strategy.js` (252 L.) : aperçu PDF (lien externe dzexams, jamais de redistribution — L.33-59), estimation personnelle par exercice (L.124-155), recommandation comparative (L.198-224), **garde de simulation** (L.226-249).
-  ⚠️ **L.244-246** : `if (mode === "training" || mode === "simulation") { timers.startGlobal(); }` — **condition tautologique** (les deux seules valeurs possibles, validées en amont L.231 et `store.activateSubjectMode` L.414). Les deux branches du commentaire (L.242-243) sont donc en réalité identiques : l'horloge démarre dans les deux cas, ce que le commentaire laisse croire différent.
+  ⚠️ **L.244-246** : `if (mode === "training" || mode === "simulation") { timers.startGlobal(); }` — **condition tautologique** (les deux seules valeurs possibles, validées en amont L.231 et `store.activateSubjectMode` L.414). Les deux branches du commentaire (L.242-243) sont donc en réalité identiques : l'horloge démarre dans les deux cas, ce que le commentaire laisse croire différent. → **corrigé** (§10.1 S2.2).
   ⚠️ **L.130** : `initial = Math.round(exercise.max * 0.75 * 4) / 4` — pré-remplit l'estimation à 75 % du maximum. Biais d'ancrage discutable pour un outil censé aider à choisir, mais assumé.
 - `simulation.js` (325 L.) : mode examen « silencieux » (aucun indice ni modèle pendant l'épreuve), restitution `data-task-answer` (L.128-148), évaluation **qualitative** par longueur (`qualitativeLabel`, L.150-156 — heuristique assumée, sans note), verrouillage après remise (`disabled`, L.59), relecture `taskReviewHTML` (L.17-37) qui affiche des « références d'entraînement » en précisant qu'elles ne sont pas un corrigé officiel.
-  ⚠️ **L.216-224** : `if (!inventory || !report.simulationEligible) { renderBacReadingMode(subject); return; }` — la simulation dégénère silencieusement en « mode lecture BAC ». Comportement défendable (filet de sécurité), mais **le bouton étant déjà désactivé en amont** (`strategy.js:133`), ce chemin n'est atteignable que par restauration d'état ou manipulation : l'utilisateur qui croyait démarrer une simulation se retrouve dans un autre mode **sans message d'explication** (contrairement à `denyInvalidSimulation`, L.279-284, qui alerte bien).
-  ⚠️ **L.195** : en mode lecture, un lien `download` du PDF local est proposé — alors que `strategy.js:34-36` affirme qu'« un lien de téléchargement direct n'est jamais présenté ». **Contre-dit entre deux écrans** (le contexte diffère : lecture vs aperçu, mais la règle mériterait d'être écrite une fois).
+  ⚠️ **L.216-224** : `if (!inventory || !report.simulationEligible) { renderBacReadingMode(subject); return; }` — la simulation dégénère silencieusement en « mode lecture BAC ». Comportement défendable (filet de sécurité), mais **le bouton étant déjà désactivé en amont** (`strategy.js:133`), ce chemin n'est atteignable que par restauration d'état ou manipulation : l'utilisateur qui croyait démarrer une simulation se retrouve dans un autre mode **sans message d'explication** (contrairement à `denyInvalidSimulation`, L.279-284, qui alerte bien). → **corrigé** : `renderBacReadingMode(subject, reason)` + avis `FALLBACK_NOTICE` (§10.1 S2.3).
+  ⚠️ **L.195** : en mode lecture, un lien `download` du PDF local est proposé — alors que `strategy.js:34-36` affirme qu'« un lien de téléchargement direct n'est jamais présenté ». **Contre-dit entre deux écrans** (le contexte diffère : lecture vs aperçu, mais la règle mériterait d'être écrite une fois). → **corrigé** : commentaire sourcé (§10.1 S3.3).
 
 **Workspace (`screens/workspace.js`, 667 L.)**
 
@@ -273,14 +279,14 @@ Score de placement des blocs : exact = 1, bon flux mauvais rang = 0,5, mauvais f
 - L.542-566 `applySessionLock` : désactive tous les contrôles une fois la session terminée + bandeau d'information.
 - L.568-620 : modale de fin + `handleSessionCompletion` (délègue à la simulation si `sessionMode === "simulation"`).
 
-⚠️ **L.284 vs L.287** : `goToSuccessStep(exNum)` est appelé avec un argument, mais `function goToSuccessStep()` n'en déclare aucun — l'argument est ignoré. Signature trompeuse.
-⚠️ **L.517-520** : `updateLiveScore()` ne fait plus qu'appeler `exDef(...)` sans utiliser le résultat — **fonction devenue vide** (le score a été retiré de l'en-tête par design). Trois appels (L.167, L.278, L.482) pour rien.
-⚠️ **L.629-645** : `confirmReset()` (réinitialisation totale) est définie **mais jamais câblée à un bouton** : `store.reset()` est donc inaccessible depuis l'UI. Le test `ui.test.mjs` n°246 le reconnaît explicitement (« تصفير n'est plus exposé dans la copie ; le reset reste couvert au niveau store »).
+⚠️ **L.284 vs L.287** : `goToSuccessStep(exNum)` est appelé avec un argument, mais `function goToSuccessStep()` n'en déclare aucun — l'argument est ignoré. Signature trompeuse. → **corrigé** (§10.1 S3.5).
+⚠️ **L.517-520** : `updateLiveScore()` ne fait plus qu'appeler `exDef(...)` sans utiliser le résultat — **fonction devenue vide** (le score a été retiré de l'en-tête par design). Trois appels (L.167, L.278, L.482) pour rien. → **corrigé** : fonction et appels supprimés (§10.1 S3.4).
+⚠️ **L.629-645** : `confirmReset()` (réinitialisation totale) est définie **mais jamais câblée à un bouton** : `store.reset()` est donc inaccessible depuis l'UI. Le test `ui.test.mjs` n°246 le reconnaît explicitement (« تصفير n'est plus exposé dans la copie ; le reset reste couvert au niveau store »). → **corrigé** : câblé sur `#ws-reset` (§10.2).
 
 **Modules du workspace**
 
 - `brouillon.js` (159 L.) : feuille de brouillon 4 pôles + zone libre, `brouillonPreflight` (3 contrôles méthodologiques, L.18-41), insertion **en ajout** si le champ est déjà rempli (L.150, correctif #71), échappement systématique (L.71-80), blocage si le pré-contrôle échoue (L.135-142).
-  ⚠️ **L.53** : `detectVerb(pole.prompt) || detectVerb(pole.bacPrompt)` — `detectVerb` renvoie **toujours** un objet (`presentation.js:108` : fallback `verbRouting[0]`), la seconde moitié est morte.
+  ⚠️ **L.53** : `detectVerb(pole.prompt) || detectVerb(pole.bacPrompt)` — `detectVerb` renvoie **toujours** un objet (`presentation.js:108` : fallback `verbRouting[0]`), la seconde moitié est morte. → **corrigé** (§10.1 S3.9).
   ⚠️ **L.54** : `activePole || verb.recommendedPole` — `activePole` est toujours une chaîne non vide : `verb.recommendedPole` n'est **jamais** utilisé. Le routage par verbe (`data/brouillon.js:277-343`) n'influence donc pas la recommandation affichée.
 - `presentation.js` (133 L.) : provenance (officielle / décomposée / reconstruite, L.13-30), formatage du diagnostic (L.32-83), puce de décision, canevas méthodologique.
 - `quick-check.js` (24 L.) : 4 items du « فحص رباعي معكوس », partagés avec la carte imprimable.
@@ -293,8 +299,8 @@ Score de placement des blocs : exact = 1, bon flux mauvais rang = 0,5, mauvais f
 - L.29-55 : carte « deux décisions » avec 4 exemples cliquables, verdict instantané.
 - L.74-109 : carte « niveau avancé » (6 plis : ouvrez, structure, calcul, arbre généalogique, contrôle de clôture, phrase de secours).
 - L.111-375 : contrôleur avec `html()` / `mount()` / `teardown()` ; drill : moteur injecté (`createDrillEngine`), minuteur ancré sur l'horloge (L.186-202, correctif #63), résumé, série persistée (`store.recordDrillRound`), déverrouillage à 3 séries parfaites (L.290-294), carte imprimable (`keycard.js`) avec `window.print()` et classe `keycard-printing` (L.327-340).
-- ⚠️ **L.136, L.155, L.252** : écritures `innerHTML` directes — valeurs applicatives uniquement (OK), mais **contournent `setInternalHTML`**, ce qui affaiblit la règle « une seule frontière ».
-- ⚠️ **L.366-367** : `bindOnce("#drill-start", startDrill)` est appelé dans `mount()` **et** dans `renderDrillIdle()` (L.176) : si le rendu d'attente est réaffiché après `mount`, le listener est **doublé** (deux démarrages de drill possibles). À vérifier en conditions réelles.
+- ⚠️ **L.136, L.155, L.252** : écritures `innerHTML` directes — valeurs applicatives uniquement (OK), mais **contournent `setInternalHTML`**, ce qui affaiblit la règle « une seule frontière ». → **corrigé** (§10.1 S3.10).
+- ⚠️ **L.366-367** : `bindOnce("#drill-start", startDrill)` est appelé dans `mount()` **et** dans `renderDrillIdle()` (L.176) : si le rendu d'attente est réaffiché après `mount`, le listener est **doublé** (deux démarrages de drill possibles). À vérifier en conditions réelles. → **corrigé** : `bindOnce()` (§10.1 S2.7).
 
 **`atlas.js` (96 L.)** : 4 techniques + verbes BAC + hypothèses + cartes mémoire, onglets `aria-pressed`, recherche filtrée.
 **`keycard.js` (109 L.)** : carte imprimable A4 **générée depuis les mêmes sources** (`QUICK_CHECK_ITEMS`, `DRILL_ROUND_SIZE`, `DRILL_UNLOCK_STREAK`) — pas de duplication de contenu. ✅
@@ -302,7 +308,7 @@ Score de placement des blocs : exact = 1, bon flux mauvais rang = 0,5, mauvais f
 ### 4.11 `data/**`
 
 - **`subjects.js` (303 L.)** : `normalizeArabic` (L.11-31), `stripArabicClitics` avec liste de radicaux protégés (L.37-75, correctif #68), `EXAM_MINUTES_BY_STREAM {se:270, m:150}` (L.77-80), `YEAR_CATALOG` 19 entrées (L.95-204), `YEAR_LOADERS` 19 chargeurs littéraux (L.209-229), `validateLoadedYear` (L.234-251 : id, stream, nombre de sujets, nombre d'exercices), `loadYear` avec promesse partagée (L.259-279).
-  ⚠️ **L.38** : `"بكتيريا"` apparaît **deux fois** dans `PROTECTED_STEMS` (doublon inoffensif mais révélateur d'une liste non vérifiée).
+  ⚠️ **L.38** : `"بكتيريا"` apparaît **deux fois** dans `PROTECTED_STEMS` (doublon inoffensif mais révélateur d'une liste non vérifiée). → **corrigé** (§10.1 S3.7).
   ⚠️ **Absence volontaire** : aucun chargeur pour `2021` SE (PDF chiffré) — cohérent avec `CONTINUATION.md` (« NOT created, deliberate ») et avec `data/archive.js` qui garde 2021 SE en consultation.
 - **`official-tasks.js` (72 L.)** : **1 seul inventaire**, `2025/S1`, `status: "partial"`, 2 tâches, `scoringReviewStatus: "provisional"`, `documentReviewStatus: "reviewed"`, `verifiedAt: "2026-08-23"`. Mappings `trainingMappings` vers les pôles (Q1→S direct ; Q2→N/E/W decomposition). Le fichier documente lui-même que « the subject is not simulation-ready » (L.14-15).
 - **`calibration-policy.js` (73 L.)** : 4 catégories obligatoires × pôle, 6 seuils (MAE ≤ 0,15 ; biais ≤ 0,05 ; FP/FN ≤ 0,10 ; inter-annotateurs ≤ 0,15 ; 15 copies/pôle). `assessCalibrationPromotion` **échoue fermé** (`reasons.length === 0`).
