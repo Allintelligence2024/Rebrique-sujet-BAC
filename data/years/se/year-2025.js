@@ -144,7 +144,7 @@ const YEAR_2025_SE = {
               bacPromptVerifiedAt: "2026-08-23",
               bacPromptNotes:
                 "Relecture visuelle page 2. Verbe officiel : حلّل. Question 1 du الجزء الأول. Consigne page 2 « أبرز أثر الخصائص البنيوية… » non mappée (un pôle = une consigne).",
-              placeholder: "حلّل الشكل (أ): قارن بالتوازي النطبيعي والطافر...",
+              placeholder: "حلّل الشكل (أ): قارن بين النمط الطبيعي والطافر...",
               minLength: 90,
               modelAnswer:
                 "تمثل الوثيقة نسبة نمو النمط الطبيعي والطافر بدلالة تركيز HCO3⁻. نلاحظ نموا مرتفعا عند الطبيعي في التركيز المنخفض بينما ينخفض نمو الطافر، ومنه نستنتج أن النمط الطبيعي يستغل التراكيز المنخفضة بكفاءة أعلى.",

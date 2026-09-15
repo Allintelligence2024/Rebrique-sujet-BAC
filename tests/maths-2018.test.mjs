@@ -136,6 +136,8 @@ test("les valeurs du corrigé officiel 2018 sont bien celles des réponses modè
   assert.match(answers.get("S2E2S"), /His – Phe – Asp – Pro – Ser – Val/);
   assert.match(answers.get("S2E2S"), /GTA AAA CTA GGA AGT CAG ATT/);
   assert.match(answers.get("S2E2S"), /CAT TTT GAT CCT TCA GTC TAA/);
+  // ت2 : le corrigé nomme les deux cystéines du pont disulfure.
+  assert.match(answers.get("S2E2N"), /السيستينين المرتبطين بجسر ثنائي الكبريت/);
   // ت2 : la mutation chiffrée du corrigé (A 362 → T, acide aminé 120).
   assert.match(answers.get("S2E2E"), /His–Tyr–Asp–Pro–Ser–Val/);
   assert.match(answers.get("S2E2E"), /رقم 362/);

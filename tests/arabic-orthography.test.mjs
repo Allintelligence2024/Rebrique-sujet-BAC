@@ -213,7 +213,12 @@ const FORBIDDEN = [
   "اللازمية",
   "تماز",
   "تمازت",
-  "تشطيم"
+  "تشطيم",
+  // Quatrième passe du 2026-09-15 : « السيستينين » (2018-m, deux cystéines
+  // reliées par un pont disulfure) s'écrivait « السيسيتين », et le slug
+  // « النطبيعي » de la SE-2025 fusionnait « النمط » et « الطبيعي ».
+  "سيسيتين",
+  "النطبيعي"
 ];
 
 test("aucune des formes fautives corrigées ne revient dans les données", () => {
@@ -292,7 +297,8 @@ test("les corrections du 2026-09-15 sont bien en place (échantillon maths)", ()
     "لمفاوية",
     "لاذات",
     "تيموسية",
-    "وريقية"
+    "وريقية",
+    "السيستينين"
   ]) {
     assert.ok(tokens.has(good), `forme corrigée absente : ${good}`);
   }
