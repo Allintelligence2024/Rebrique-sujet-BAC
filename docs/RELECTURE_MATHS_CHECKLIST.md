@@ -541,8 +541,8 @@ hyaloplasme, nom) contre `الغشاء الهيولي` / `الشبكة الهي�
 correctes). Dans les `keywords`, la forme ي est obligatoire —
 `tests/data-selfcheck.test.mjs` l'impose puisque `normalizeArabic` mappe ى→ي.
 
-**Verrou** : `tests/arabic-orthography.test.mjs` (4 tests) refuse les 138
-graphies fautives (comparaison par jeton, préfixes `و ف ب ك ل ال وال فال بال
+**Verrou** : `tests/arabic-orthography.test.mjs` (4 tests) refuse les 139
+graphies fautives (139 avec `رابعه`, comparaison par jeton, préfixes `و ف ب ك ل ال وال فال بال
 كال لل` retirés avant comparaison : `والتماز` échappait à la liste où figure
 `التماز` — corrigé le 2026-09-15 en `والتمايز` — et `اللأمينين` à celle où
 figure `لأمينين` ; injections vérifiées dans les deux sens), exige que le `ة`
