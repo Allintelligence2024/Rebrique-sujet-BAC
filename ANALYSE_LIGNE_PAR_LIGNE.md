@@ -3,6 +3,15 @@
 **Date** : 2026-09-12 · **Branche** : `arena/01a096cc-rebrique-sujet-bac` (HEAD `e8f8f7f`)
 **Objet** : lecture intégrale du code, de la donnée, des scripts, des tests et de la documentation, avec vérifications exécutées (tests, build, lint, typecheck, format, statuts P1/P2/P3, release).
 
+> ⚠️ **Instantané daté (2026-09-12)** — les chiffres ci-dessous décrivent l'état de
+> ce jour-là (HEAD `e8f8f7f`) et ne sont pas mis à jour. État courant au 2026-09-15,
+> branche `arena/01a09be6-rebrique-sujet-bac` : filière maths **2013-m … 2026-m
+> entièrement encodée** (14 sessions, 158/224 pôles officiels), **54 inventaires**
+> de sujets officiels, `npm test` **326 tests · 325 passent · 0 échec · 1 skippé**,
+> build `e641f46d5184`, README et docs régénérés. Le plan d'action (§8) et les
+> anomalies (§6) sont conservés pour mémoire : l'essentiel est traité depuis
+> (§10 et `docs/RELECTURE_MATHS_CHECKLIST.md`).
+
 ---
 
 ## 0. Résumé exécutif
