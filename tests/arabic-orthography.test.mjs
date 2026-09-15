@@ -265,6 +265,22 @@ test("le jeton nu « لازمية » n'existe nulle part (forme correcte : بل�
   assert.deepEqual(hits, [], `forme fautive réintroduite :\n${hits.join("\n")}`);
 });
 
+test("les réponses modèle disent المبلغات العصبية, jamais المبالغ", () => {
+  // SE-2023 : « ترتبط المبالغ العصبية بمستقبلات غشائية نوعية » — « المبالغ »
+  // (les montants) n'a aucun sens ici et contredit la même session, qui écrit
+  // « مستقبل غشائي للمبلغ العصبي » (L. 61), comme 2026-m « المبلغات الكيميائية ».
+  // Le vocabulaire des scans ne connaît pas non plus المبالغ (0 contre 28 formes
+  // en مبلغ). Le mot seul reste licite ailleurs : on verrouille la phrase.
+  const hits = [];
+  let good = 0;
+  for (const { stream, name, text } of FILES) {
+    if (text.includes("المبالغ العصبية")) hits.push(`${stream}/${name} : المبالغ العصبية`);
+    good += (text.match(/المبلغات العصبية/g) || []).length;
+  }
+  assert.deepEqual(hits, [], `contresens réintroduit :\n${hits.join("\n")}`);
+  assert.ok(good >= 1, "forme corrigée المبلغات العصبية absente");
+});
+
 test("le ة reste en finale de jeton dans les deux filières", () => {
   const hits = [];
   for (const { stream, name, text } of FILES) {
