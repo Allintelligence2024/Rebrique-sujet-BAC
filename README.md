@@ -286,13 +286,15 @@ une réponse locale HTTP 200 peut seulement entrer dans le cache runtime borné 
 | **2** | ت2 (7ن)  | مادة **الريسين** وتثبيط تركيب البروتين (ARNr 28s)              |
 | **2** | ت3 (8ن)  | المشبك المثبط ونضج **GABA** (NKCC1 → KCC2)                     |
 
-### Contenu BAC 2014–2026 (شعبة رياضيات)
+### Contenu BAC 2013–2026 (شعبة رياضيات)
 
 Énoncé + corrigé officiels eddirasa (OCR, 2026-08-31) pour 2022–2026 ; **2021**
 a été relue en image le 2026-09-14 sur le dossier dzexams local
 (`M/dzexams-bac-sciences-2068087.pdf` : sujets pp. 1–6, corrigé « الإجابة
 النموذجية » pp. 7–12), consignes recopiées mot à mot et réponses modèle
-réécrites depuis le corrigé ; **2020**,
+réécrites depuis le corrigé ; **2013** a été encodée le 2026-09-15 (dossier
+`M/dzexams-bac-sciences-2770867.pdf`, sujet pp. 1–4, corrigé pp. 5–11, scan
+image seul) : la filière maths est ainsi complète de **2013 à 2026** ; **2020**,
 **2019**, **2018** et **2017** ont été encodées le 2026-09-13 depuis les PDF
 locaux (`subjects/M/2020/`, `subjects/M/2019/`, `subjects/M/2018/`,
 `subjects/M/2017/`), relues page à page en image ; **2016** l'a été le
@@ -352,7 +354,7 @@ Les sujets de la filière choisie remplacent la grille.
 Statut honnête :
 
 - **2013–2019 SE** : sujets reconstruits (`data/years/se/`). Toutes consignes `reconstructed`. **2018** : thèmes relus OCR dzexams. **2013–2017, 2019** : thèmes pédagogiques 3AS, **non certifiables** comme énoncés officiels. Confiance UI basse.
-- **2020 et 2022–2026 SE** et **2014–2026 Maths** : sujets chargés à la demande depuis `data/years/{se,m}/`, indexés par le catalogue `data/subjects.js`.
+- **2020 et 2022–2026 SE** et **2013–2026 Maths** : sujets chargés à la demande depuis `data/years/{se,m}/`, indexés par le catalogue `data/subjects.js`.
 - **Consultation** : sujet officiel + تصحيح النموذجي via dzexams. Aucun
   barème, mot-clé ou réponse modèle : le moteur ne s'applique pas.
 - **Maths 2022–2026** : viewer dzexams bloqué (`contentVerified: false`) ;

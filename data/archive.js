@@ -283,7 +283,7 @@ export const ARCHIVE = {
       attachments: true,
       viewer: "ok",
       notes:
-        "Page ouverte (2026-08-30) : 11 pages ; pièces jointes sciences-m-bac2016 + sciences-m-bac2016-correction ; sujet : traduction/Anagène, immunité humorale, membrane cellulaire/CMH. Encodé 4D sous l id 2016-m le 2026-09-14 : les 11 pages du dossier dzexams local (M/dzexams-bac-sciences-1413929.pdf : sujet pp. 1-4, corrigé « عناصر الإجابة » pp. 5-11) ont été rendues en image, consignes recopiées mot à mot et réponses modèle reprises du corrigé (429 = 3 × 143 ; 141 = 1 − 142 ; 16.66 % = 1 × 100 ÷ 6). La carte de consultation de 2016 est remplacée par la carte d épreuve ; 2013-2014 restent en consultation (2015 a été encodée le 2026-09-15)."
+        "Page ouverte (2026-08-30) : 11 pages ; pièces jointes sciences-m-bac2016 + sciences-m-bac2016-correction ; sujet : traduction/Anagène, immunité humorale, membrane cellulaire/CMH. Encodé 4D sous l id 2016-m le 2026-09-14 : les 11 pages du dossier dzexams local (M/dzexams-bac-sciences-1413929.pdf : sujet pp. 1-4, corrigé « عناصر الإجابة » pp. 5-11) ont été rendues en image, consignes recopiées mot à mot et réponses modèle reprises du corrigé (429 = 3 × 143 ; 141 = 1 − 142 ; 16.66 % = 1 × 100 ÷ 6). La carte de consultation de 2016 est remplacée par la carte d épreuve ; 2015 a été encodée le 2026-09-15, puis 2014 et enfin 2013 (2026-09-15) : la filière maths est complète de 2013 à 2026, plus aucune carte maths ne reste en consultation."
     },
     {
       year: "2015",
@@ -297,7 +297,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet). Encodé 4D sous l id 2015-m le 2026-09-15 : les 10 pages du dossier dzexams local (M/dzexams-bac-sciences-2723927.pdf : sujet pp. 1-4, corrigé « الإجابة النموذجية وسلم التنقيط » pp. 5-10) ont été rendues en image et relues ; ce scan est image seul (1 fragment de texte par page), les consignes sont donc recopiées depuis l image. Réponses modèle reprises du corrigé (503 = (133+174+117+133) − 3×18 ; pHi = 4.5 ; 90 % في الوسط 4 ; الأم AB− والبنت B+). La carte de consultation de 2015 est remplacée par la carte d épreuve ; 2013-2014 restent en consultation."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet). Encodé 4D sous l id 2015-m le 2026-09-15 : les 10 pages du dossier dzexams local (M/dzexams-bac-sciences-2723927.pdf : sujet pp. 1-4, corrigé « الإجابة النموذجية وسلم التنقيط » pp. 5-10) ont été rendues en image et relues ; ce scan est image seul (1 fragment de texte par page), les consignes sont donc recopiées depuis l image. Réponses modèle reprises du corrigé (503 = (133+174+117+133) − 3×18 ; pHi = 4.5 ; 90 % في الوسط 4 ; الأم AB− والبنت B+). La carte de consultation de 2015 est remplacée par la carte d épreuve ; 2014 puis 2013 ont été encodées le 2026-09-15, la filière maths est donc complète de 2013 à 2026."
     },
     {
       year: "2014",
@@ -311,7 +311,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet). Encodé 4D sous l id 2014-m le 2026-09-15 : les 11 pages du dossier dzexams local (M/dzexams-bac-sciences-2369148.pdf : sujet pp. 1-4, corrigé « الإجابة النموذجية » pp. 5-11) ont été rendues en image et relues ; ce scan est image seul (1 fragment de texte par page), les consignes sont donc recopiées depuis l image. Réponses modèle reprises du corrigé (pHi 3 / 5 / 9.8 / 10.8 ; 4⁴ = 256 et 4×3×2×1 = 24 ; بنية ثالثية، رابطة كبريتية (A) وشاردية (B) ; 100 % في الوسط أ؛ زمرة (س) : B أو O؛ 18 = 5×3 + 3 و 4 وحدات بنائية؛ gp120/CD4). La carte de consultation de 2014 est remplacée par la carte d épreuve ; seule 2013 reste en consultation."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet). Encodé 4D sous l id 2014-m le 2026-09-15 : les 11 pages du dossier dzexams local (M/dzexams-bac-sciences-2369148.pdf : sujet pp. 1-4, corrigé « الإجابة النموذجية » pp. 5-11) ont été rendues en image et relues ; ce scan est image seul (1 fragment de texte par page), les consignes sont donc recopiées depuis l image. Réponses modèle reprises du corrigé (pHi 3 / 5 / 9.8 / 10.8 ; 4⁴ = 256 et 4×3×2×1 = 24 ; بنية ثالثية، رابطة كبريتية (A) وشاردية (B) ; 100 % في الوسط أ؛ زمرة (س) : B أو O؛ 18 = 5×3 + 3 و 4 وحدات بنائية؛ gp120/CD4). La carte de consultation de 2014 est remplacée par la carte d épreuve ; 2013 a été encodée le 2026-09-15, la filière maths est donc complète de 2013 à 2026."
     },
     {
       year: "2013",
