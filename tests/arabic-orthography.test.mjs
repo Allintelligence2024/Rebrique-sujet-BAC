@@ -245,7 +245,12 @@ const FORBIDDEN = [
   // Cinquième passe (2026-09-15, après la recopie SE-2021) : voir l'en-tête.
   "أراكيدونيك",
   "تركيض",
-  "للرفاق"
+  "للرفاق",
+  // Trois graphies du mot « nucléotide » vivent dans les scans : نيكليوتيد
+  // (49), نكليوتيدة (21) et نيوكليوتيد avec wāw (10). Le payload 2017-m
+  // employait la troisième une seule fois contre huit fois la première :
+  // aligné sur sa propre majorité (test dédié ci-dessous pour la famille).
+  "نيوكليوتيد"
 ];
 
 test("aucune des formes fautives corrigées ne revient dans les données", () => {
@@ -442,4 +447,22 @@ test("les mots-clés acceptent la graphie que l'élève lit dans le sujet offici
       );
     }
   }
+});
+
+test("la famille نيوكليوتيد (avec wāw) n'existe plus ; nos rédactions disent نيكليوتيد", () => {
+  // Le corpus officiel atteste trois graphies : نيكليوتيد (49 occurrences),
+  // نكليوتيدة (21) et نيوكليوتيد avec wāw (10). Le corrigé 2017 imprime la
+  // deuxième (« استبدال النكليوتيدة T ... بالنكليوتيدة U ») et le sujet
+  // 2017-m cite « تسلسل نكليوتيدات المورثة » : ces citations restent telles
+  // quelles. En revanche nos propres phrases suivent la forme majoritaire
+  // نيكليوتيد, et non la troisième — un mot qui n'était écrit qu'une fois
+  // contre huit dans le même fichier.
+  const withWaw = [];
+  for (const { stream, name, text } of FILES) {
+    const n = (text.match(/نيوكليوت/g) || []).length;
+    if (n) withWaw.push(`${stream}/${name} : ${n}`);
+  }
+  assert.deepEqual(withWaw, [], `famille avec wāw réintroduite :\n${withWaw.join("\n")}`);
+  const good = FILES.reduce((sum, f) => sum + (f.text.match(/نيكليوت/g) || []).length, 0);
+  assert.ok(good >= 1, "forme نيكليوتيد absente des données");
 });
