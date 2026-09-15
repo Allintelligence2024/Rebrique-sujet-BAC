@@ -218,7 +218,12 @@ const FORBIDDEN = [
   // reliées par un pont disulfure) s'écrivait « السيسيتين », et le slug
   // « النطبيعي » de la SE-2025 fusionnait « النمط » et « الطبيعي ».
   "سيسيتين",
-  "النطبيعي"
+  "النطبيعي",
+  // Radicaux de mots-clés morts : « بلاسم » ne pouvait plus rien attraper
+  // après « بلاسموسيت » → « بلازموسيت », et « زمري » n'était le radical
+  // d'aucun mot du corpus (le pôle voisin utilise déjà « الزمر »).
+  "بلاسم",
+  "زمري"
 ];
 
 test("aucune des formes fautives corrigées ne revient dans les données", () => {

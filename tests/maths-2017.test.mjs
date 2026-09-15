@@ -18,6 +18,7 @@ import { YEAR_CATALOG, examMinutesForYear, loadYear } from "../data/subjects.js"
 import { officialTaskInventoryFor } from "../data/official-tasks.js";
 import { buildOfficialCoverageReport, examOpenable } from "../js/domain/subjects/official-coverage.js";
 import { simulationExamHTML } from "../js/ui/screens/simulation.js";
+import { matchConcept } from "../js/engine.js";
 
 const entry = YEAR_CATALOG.find((year) => year.id === "2017-m");
 const year = await loadYear("2017-m");
@@ -125,4 +126,19 @@ test("l'écran d'épreuve affiche les consignes officielles de 2017-m sans dévo
   assert.equal((html.match(/data-task-source="reconstructed"/g) || []).length, 0);
   assert.doesNotMatch(html, /محدّد مستضدي/);
   assert.doesNotMatch(html, /الحسور ثنائية الكبريت/);
+});
+
+test("chaque mot-clé de S2E2W matche sa propre réponse modèle", () => {
+  // « بلاسم » était le reliquat de l'ancienne graphie « بلاسموسيت » : la
+  // réponse modèle écrit بلازموسيتات, donc ce radical ne pouvait plus rien
+  // attraper (بلاسم ≠ بلازم pour normalizeArabic). Corrigé en « بلازم »,
+  // comme « لمفاو » et « تعاون » qui sont déjà des radicaux dans la même liste.
+  const { data } = poles().find((item) => item.key === "S2E2W");
+  assert.ok(data, "S2E2W absent");
+  assert.ok(data.rule.keywords.includes("بلازم"), "radical بلازم attendu");
+  assert.ok(!data.rule.keywords.includes("بلاسم"), "reliquat بلاسم");
+  assert.match(data.modelAnswer, /بلازموسيتات/);
+  for (const keyword of data.rule.keywords) {
+    assert.ok(matchConcept(data.modelAnswer, keyword), `mot-clé mort : ${keyword}`);
+  }
 });

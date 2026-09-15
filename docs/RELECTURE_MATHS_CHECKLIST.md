@@ -569,21 +569,23 @@ fautives de plus. Les trois premières sont tranchées sur l'image du corrigé 2
 dossier, rendues par `scripts/render-pdf-pages.mjs`) ; les deux dernières sur le
 reste du corpus et le vocabulaire des scans.
 
-| Famille          | Correction                                     | Détail                                                                                                   |
-| ---------------- | ---------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| translittération | `لازمية` → `بلازمية`, `اللازمية` → `البلازمية` | 20 (2013-m) ; le corrigé p. 4 écrit « خلية بلازمية LBP » et le schéma p. 3 « بلازمية »                   |
-| coquille         | `تماز` → `تمايز`, `وتمازت` → `وتمايزت`         | 6 (2013-m) ; corrigé p. 4 « مصدر الخلية البلازمية (الشكل ب) : تمايز الخلية اللمفاوية LB المنتقاة »       |
-| coquille         | `تشطيم` → `التنشيط` (1) et `تنشيط` (1)         | 2013-m ; schéma p. 3 « التنشيط : التكاثر و التمايز »                                                     |
-| coquille         | `السيسيتين` → `السيستينين`                     | 2018-m : deux cystéines du pont disulfure ; le corpus écrit `السيستين` (2014-m) et les scans `السيستيني` |
-| slug reconstruit | `النطبيعي` → `النمط الطبيعي`                   | SE-2025 : le placeholder fusionnait `النمط` et `الطبيعي` (la réponse modèle disait déjà `النمط الطبيعي`) |
+| Famille          | Correction                                           | Détail                                                                                                                                |
+| ---------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| translittération | `لازمية` → `بلازمية`, `اللازمية` → `البلازمية`       | 20 (2013-m) ; le corrigé p. 4 écrit « خلية بلازمية LBP » et le schéma p. 3 « بلازمية »                                                |
+| coquille         | `تماز` → `تمايز`, `وتمازت` → `وتمايزت`               | 6 (2013-m) ; corrigé p. 4 « مصدر الخلية البلازمية (الشكل ب) : تمايز الخلية اللمفاوية LB المنتقاة »                                    |
+| coquille         | `تشطيم` → `التنشيط` (1) et `تنشيط` (1)               | 2013-m ; schéma p. 3 « التنشيط : التكاثر و التمايز »                                                                                  |
+| coquille         | `السيسيتين` → `السيستينين`                           | 2018-m : deux cystéines du pont disulfure ; le corpus écrit `السيستين` (2014-m) et les scans `السيستيني`                              |
+| slug reconstruit | `النطبيعي` → `النمط الطبيعي`                         | SE-2025 : le placeholder fusionnait `النمط` et `الطبيعي` (la réponse modèle disait déjà `النمط الطبيعي`)                              |
+| mot-clé mort     | `بلاسم` → `بلازم` (2017-m), `زمري` → `زمر` (SE-2025) | radicaux restés sur les anciennes graphies : la réponse modèle écrit `بلازموسيتات`, et le pôle voisin de SE-2025 utilise déjà `الزمر` |
 
 Le même schéma porte une case jaune « التشيط + » : cette graphie officielle est
-celle du corpus, elle n'a pas été touchée. Le verrou gagne six formes
-(`اللازمية`, `تماز`, `تمازت`, `تشطيم`, `سيسيتين`, `النطبيعي`) et un cinquième
+celle du corpus, elle n'a pas été touchée. Le verrou gagne huit formes
+(`اللازمية`, `تماز`, `تمازت`, `تشطيم`, `سيسيتين`, `النطبيعي`, `بلاسم`,
+`زمري`) et un cinquième
 test compare le **jeton entier** `لازمية` — il ne peut pas entrer dans la liste des préfixes, où le
 préfixe `ب` l'aurait rendu égal à la forme correcte `بلازمية`.
 
-**Verrou** : `tests/arabic-orthography.test.mjs` (5 tests) refuse les 155
+**Verrou** : `tests/arabic-orthography.test.mjs` (5 tests) refuse les 157
 graphies fautives (comparaison par jeton, préfixes
 `و ف ب ك ل ال وال فال بال كال لل` retirés avant comparaison : `والتماز`
 échappait à la liste où figure `التماز` — corrigé le 2026-09-15 en
