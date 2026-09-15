@@ -7865,7 +7865,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
     status: "partial",
     source: {
       kind: "local-pdf",
-      locator: "https://www.dzexams.com/ar/expiree/UmdYdlc3em1RWmJQWEJCbW52Vm12dz09",
+      locator: "https://www.dzexams.com/ar/annales/UmdYdlc3em1RWmJQWEJCbW52Vm12dz09",
       humanVerified: false,
       verifiedAt: null,
       notes: null

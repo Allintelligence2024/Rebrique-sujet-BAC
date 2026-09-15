@@ -442,6 +442,50 @@ imprimée dans ce sujet) restant reconstruits et le disant. Les encodages
 précédents avaient ajouté : 2014 (neuf consignes), 2015 (onze), 2016 (douze),
 2017 et 2018 (quinze chacune), puis les relectures 2019 à 2026.
 
+## Passe de cohérence (2026-09-15) : liens morts et verrous manquants
+
+Deux trous trouvés en reprenant la branche, tous deux corrigés ici.
+
+**1. Un lien mort dans l'inventaire généré.** Le sujet 2 de 2013 pointait vers
+`https://www.dzexams.com/ar/expiree/…` (page expirée) au lieu de
+`/ar/annales/…`. La source (`data/subjects.js`, `data/archive.js`) avait été
+corrigée le 2026-09-15, mais `data/official-tasks.js` — fichier GÉNÉRÉ — ne
+l'avait pas été régénéré : `npm run inventory:check` échouait et l'application
+affichait encore le lien mort. Correction : régénération de l'inventaire.
+Garde-fou ajouté : `tests/curated-links.test.mjs` scanne toutes les sources
+curées (`data/**`, `index.html`, `manifest.webmanifest`) et tous les
+localisateurs d'inventaire ; il refuse `/ar/expiree/`, les sections inconnues de
+dzexams et exige que 2013-m/S2 reste sur la page annales. Vérifié dans les deux
+sens : les quatre tests échouent sur l'inventaire non régénéré et passent après.
+
+**2. Trois années maths sans fichier de test.** 2017-m, 2018-m et 2021-m
+n'étaient couvertes que par les tests transversaux, alors que ce sont les années
+les plus retravaillées (corrigé 2018 réécrit depuis les pp. 7-12, relecture 2021
+du 2026-09-14). Elles ont désormais leurs verrous, sur le modèle de
+`tests/maths-2016.test.mjs` :
+
+- `tests/maths-2017.test.mjs` — 2 × (6 + 14), les **seize** pôles officiels
+  (page 1-4, relecture du 2026-09-13), corrigé : (س) مستضد / (ع) جسم مضاد،
+  معقد مناعي، ARNt/ARNm/حمض أميني، الموقعان A و P، مرحلة الاستطالة،
+  `Met–Ala–Val–Ala–Asn–Ile–Phé–Gly` et les deux chaînes TAC…/ATG…،
+  الخلية البلاسمية، les trois expériences de تراص `+++++` / `-----` ;
+- `tests/maths-2018.test.mjs` — 7 + 13 / 6 + 14, quinze pôles officiels et
+  l'unique étape reconstruite (S1-E1-W, dont la note dit que le corrigé EST
+  dans le dépôt), corrigé : (س) الاستنساخ النواة / (ص) الترجمة، **مرحلة النهاية
+  puis مرحلة الاستطالة**, (a) CD4 et (b) TCR، `GTA AAA CTA GGA AGT CAG ATT`,
+  `His – Phe – Asp – Pro – Ser – Val`, l'استبدال de l'`A` رقم 362 →
+  `Phe` → `Tyr` (حمض أميني 120) ;
+- `tests/maths-2021.test.mjs` — 8 + 12, douze pôles officiels et quatre étapes
+  reconstruites, les cinq consignes rattachées le 2026-09-14, les trois verbes
+  du scan (`بيّن في نص علمي`، `اكتسبت`، `مبرزا تأثر هذه العلاقة`), les deux
+  valeurs corrigées (`0 → 40 د`، `70 % / 10 %`, règle documentaire alignée) et
+  le corrigé Mex.R (`الثلاثية 114 : TGC → TGA`, `رامزة التوقف UGA`,
+  `7 أحماض أمينية بدل 9`).
+
+Chaque année maths (2013-m … 2026-m) possède maintenant son fichier de test
+dédié : une édition de barème, de provenance ou de réponse modèle sans mise à
+jour des données fait échouer `npm test`.
+
 ## Reste à faire (assumé)
 
 1. **Plus aucune consigne « non mappée »** dans les notes de payload : les
