@@ -116,13 +116,13 @@ Le disclaimers du hard benchmark (0 copie réelle doublement annotée) reste la 
 Les questions BAC ne sont plus supposées équivalentes aux quatre étapes N/S/E/W. Un inventaire indépendant déclare désormais chaque tâche : sa provenance (`official` quand le texte vient de l'énoncé, `reconstructed` quand il s'agit d'une étape pédagogique), sa page quand elle est connue, ses références documentaires et son maximum — **provisoire** partout, puisqu'aucun barème n'a été relu par un humain.
 
 ```bash
-npm run coverage:official # détail des 52 sujets inventoriés (tous ouverts à l'épreuve)
+npm run coverage:official # détail des 56 sujets audités (54 ouverts à l'épreuve)
 npm run inventory:check    # data/official-tasks.js doit être régénéré, jamais édité à la main
 npm run p1:status         # verdict des six critères P1
 npm run p1:check          # échoue tant que P1 n'est pas réellement terminé
 ```
 
-Les inventaires couvrent les **52 sujets** et **520 tâches** : **236** consignes officielles (avec page) et **284** étapes reconstruites (sans page — on n'invente pas un numéro de page). Ces 52 sujets sont ouverts à l'épreuve, conformément à la décision produit consignée dans `data/bac-mode-policy.js` : le contenu doit être inventorié, mappé et borné (règle stricte), mais les certifications humaines — relecture des documents, barème vérifié — peuvent manquer, à condition que l'écran le dise. La règle stricte reste implémentée (`strictEligible`) et continuera de décider seule dès que les preuves humaines existeront. La couverture globale vaut `unknown` tant que l'inventaire d'un sujet est partiel : elle n'est jamais transformée en 0 % ou 100 %. Les exports chiffrés restent interdits tant que la calibration humaine n'est pas faite.
+Les inventaires couvrent les **54 sujets** et **536 tâches** : **244** consignes officielles (avec page) et **292** étapes reconstruites (sans page — on n'invente pas un numéro de page). Ces 54 sujets sont ouverts à l'épreuve, conformément à la décision produit consignée dans `data/bac-mode-policy.js` : le contenu doit être inventorié, mappé et borné (règle stricte), mais les certifications humaines — relecture des documents, barème vérifié — peuvent manquer, à condition que l'écran le dise. La règle stricte reste implémentée (`strictEligible`) et continuera de décider seule dès que les preuves humaines existeront. La couverture globale vaut `unknown` tant que l'inventaire d'un sujet est partiel : elle n'est jamais transformée en 0 % ou 100 %. Les exports chiffrés restent interdits tant que la calibration humaine n'est pas faite.
 
 Le code du parcours est en place : une épreuve silencieuse fondée sur les tâches inventoriées, puis une relecture verrouillée après remise. La CSP n'autorise plus `unsafe-inline` et les sources publiques ne contiennent plus de style inline. Cela ne clôt pas P1 : les inventaires complets et le corpus humain sont des preuves externes absentes, pas des cases que le code peut cocher seul. Le volume et le format des apports nécessaires sont détaillés dans [`docs/P1_EVIDENCE_REQUIREMENTS.md`](docs/P1_EVIDENCE_REQUIREMENTS.md).
 
