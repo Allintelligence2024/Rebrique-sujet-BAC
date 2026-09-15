@@ -7963,7 +7963,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "W",
         page: null,
         prompt:
-          "ممّا سبق ومعلوماتك، اكتب نصا علميا توضّح فيه كيف تتحول الخلية اللمفاوية B المنتقاة إلى خلية لازمية مفرزة لجزيئات متخصصة في القضاء على المستضد.",
+          "ممّا سبق ومعلوماتك، اكتب نصا علميا توضّح فيه كيف تتحول الخلية اللمفاوية B المنتقاة إلى خلية بلازمية مفرزة لجزيئات متخصصة في القضاء على المستضد.",
         promptSource: "reconstructed",
         maxPoints: 2,
         scoringReviewStatus: "provisional",

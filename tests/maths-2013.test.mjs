@@ -13,7 +13,7 @@
    (2³ = 8 ; AUG/Met et UAA/UAG/UGA ; AAG/ACC/UGG/GGC ;
    H2N–CH(R1)–CO–NH–CH(R2)–CO–NH–CH(R3)–COOH ; قوس الترسيب
    بين الحفرتين (م) و(د) ; مناعة خلطية ; ظهور ARNm في الخلية
-   اللازمية).
+   البلازمية).
    ============================================================ */
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -128,6 +128,20 @@ test("les valeurs du corrigé officiel 2013 sont bien celles des réponses modè
   assert.match(answer("S2E2S"), /LTC/);
   assert.match(answer("S2E2S"), /CMH I/);
   assert.match(answer("S2E2E"), /الأسبوع الأول/);
+  // Mots recopiés du corrigé 2013 (الإجابة النموذجية, p. 4 du dossier,
+  // relue en image le 2026-09-15) : « خلية بلازمية LBP »,
+  // « مصدر الخلية البلازمية : تمايز الخلية اللمفاوية LB المنتقاة », et le
+  // schéma p. 3 « التنشيط : التكاثر و التمايز ». Les formes « لازمية »,
+  // « تماز » et « تشطيم » étaient des corruptions de recopie.
+  const answers = poles.map((item) => item.data.modelAnswer || "").join("\n");
+  assert.match(answers, /خلايا بلازمية/);
+  assert.match(answers, /مصدرها تمايز الخلية اللمفاوية LB/);
+  assert.match(answers, /ومصدرها تمايز الخلايا اللمفاوية LT8/);
+  assert.match(answers, /التنشيط: تكاثر وتمايز/);
+  const tokens = answers.match(/[\u0621-\u0652\u0670\u0640]+/g) || [];
+  for (const bad of ["لازمية", "اللازمية", "تماز", "وتمازت", "تشطيم"]) {
+    assert.ok(!tokens.includes(bad), `forme fautive réintroduite : ${bad}`);
+  }
   assert.match(answer("S2E2E"), /VIH/);
   assert.match(answer("S2E2E"), /مناعة نوعية ذات وساطة خلوية/);
 });

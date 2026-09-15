@@ -396,7 +396,7 @@ Statut honnête :
   reprises : 2³ = 8 ; إشارات البدء AUG (Met) والنهاية UAA/UAG/UGA ;
   س: AAG، ص: ACC، ع: UGG، ل: GGC ; H2N–CH(R1)–CO–NH–CH(R2)–CO–NH–CH(R3)–COOH ;
   قوس الترسيب بين الحفرتين (م) و(د) فقط ; مناعة نوعية ذات وساطة خلطية ;
-  ARNr و ARNt في الخلية اللمفاوية مقابل ظهور ARNm في الخلية اللازمية ;
+  ARNr و ARNt في الخلية اللمفاوية مقابل ظهور ARNm في الخلية البلازمية ;
   8 Å و 2 Å لمسافتي الأسبارتيك والهستيدين.
 - **2014 Maths** : dossier dzexams local — sujet pp. 1–4, corrigé « الإجابة
   النموذجية » pp. 5–11 relu en image le 2026-09-15 ; le scan est image seul
@@ -441,7 +441,7 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **326** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **327** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0/3660 minimum** avant toute promotion numérique
 - Inventaires de tâches officielles commencés : **54/56 sujets** (**536 tâches connues**)
 - Sujets éligibles à la simulation : **54**

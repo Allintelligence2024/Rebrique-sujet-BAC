@@ -69,7 +69,7 @@ Audit d'un sujet (pôles, points, provenance, page) :
 | 2026-m S2                   | 4, 5, 6 (scan local)   | ت1 (8ن) IL-2 ; ت2 (12ن) غيتلمان/SLC12A3                                         | S2-E1 : N = Q1, S = Q2, E = Q3, W = خاتمة ; S2-E2 : N = Q1, E = Q1+Q2 (قدّم نصيحة rattachée), W = مخطط وظيفي du الجزء الثالث                                                                                                             |
 | 2021-m corrigé              | 7-12                   | corrigé officiel « الإجابة النموذجية » des deux sujets                          | réponses modèle réécrites : 0→40 د, 70 %/10 % ; Mex.R (الثلاثية 114 : TGC → TGA, رامزة توقف, 7 أحماض بديلة عن 9) ; R/T (روابط كارِهة للماء، تثبيت/تحرير O2) ; 7.4 → 7.3 ; رابطة شاردية His146–Asp94                                      |
 | 2013-m S1                   | 1, 2                   | ت1 (10ن) الشفرة الوراثية والترجمة ; ت2 (10ن) الألبومين والاستجابة الخلطية       | S1-E1 : S = Q1أ-د, E = Q2أ-ج ; S1-E2 : S = Q1أ+ب, E = Q2أ+ب puis Q3أ+ب ; pôles N et W reconstruits (aucune question de cadrage ni de clôture imprimée)                                                                                   |
-| 2013-m S2                   | 3, 4                   | ت1 (10ن) الخلية اللمفاوية B واللازمية ; ت2 (10ن) الاستجابة الخلوية              | S2-E1 : S = QI-1+2+3أ+3ب, E = QII-1+2أ+2ب+3أ+3ب ; S2-E2 : S = QI-1+2أ+2ب, E = QII-1أ+1ب+2أ+2ب puis QIII ; pôles N et W reconstruits                                                                                                      |
+| 2013-m S2                   | 3, 4                   | ت1 (10ن) الخلية اللمفاوية B والبلازمية ; ت2 (10ن) الاستجابة الخلوية             | S2-E1 : S = QI-1+2+3أ+3ب, E = QII-1+2أ+2ب+3أ+3ب ; S2-E2 : S = QI-1+2أ+2ب, E = QII-1أ+1ب+2أ+2ب puis QIII ; pôles N et W reconstruits                                                                                                      |
 | 2013-m corrigé              | 5-11                   | corrigé officiel « الإجابة النموذجية » (7 pages)                                | réponses modèle réécrites : 2³ = 8 ; AUG/Met و UAA/UAG/UGA ; AAG/ACC/UGG/GGC ; H2N–CH(R1)–CO–NH–CH(R2)–CO–NH–CH(R3)–COOH ; قوس الترسيب بين (م) و(د) فقط ; مناعة خلطية ثم خلوية ; ARNr/ARNt مقابل ظهور ARNm chez la plasmocyte            |
 | 2023-m (relu 2026-09-14)    | couche texte 1-3 + 4-6 | consignes et figures des deux sujets                                            | deux consignes corrigées (Asp/Tyr imprimés ; fin de بيّن في نص علمي) ; valeurs des figures relues : courbe 0.6→10 et 10→80 %, barres ≈3500/≈250 جزيئة, triplets AGT GTC ATA GTG / AGT ATC ATA GTG, UCA→Ser…UAG→توقف                      |
 | 2024-m (relu 2026-09-14)    | 1, 2 (S1) + 1 (S2)     | ت1 الكورديسبين ; ت2 الورم ; ت1 PID                                              | Q2 de ت1 reçue sa réponse (complément AGACGUUG lu sur la figure) ; verbe تُبيّن restauré ; courbe du الوسط 1 (250→≈330→≈180) et du الوسط 2 (250→≈1180) ; corrigé : LT8 source des LTc ; consigne restituée avec الأولي et نص علمي مُهيكل |
@@ -219,7 +219,7 @@ Format retrouvé sur l'image : **2 sujets × 2 exercices (10 + 10)**, durée imp
 1-6 والأحماض A1 إلى A5 وثلاثيات القواعد، الصيغة الكيميائية للجزء المؤطر (م)،
 والأحداث التي سمحت بالانتقال من الشكل أ إلى الشكل ب) puis الألبومين والاستجابة
 الخلطية (تقنية Ouchterlony، العنصر (س)، رسم المعقد المناعي، الأشعة X واستئصال
-الغدة السعرية، الحفر الأربع). Sujet 2 : الخلية اللمفاوية B والخلية اللازمية
+الغدة السعرية، الحفر الأربع). Sujet 2 : الخلية اللمفاوية B والخلية البلازمية
 (البيانات 1-7، نتائج فصل ARNr و ARNt و ARNm، بنية الجسم المضاد) ثم الاستجابة
 الخلوية (جدول التجارب الأربع، شروط عمل الخلية (س)، منحنى الأرثروكين، فيروس VIH).
 
@@ -242,12 +242,12 @@ Valeurs reprises du corrigé : les lettres `A` (عدد قواعد الرامزة
 قوس الترسيب يتشكل بين الحفرتين (م) و(د) فقط (المجموعة الرابعة المعطاة LB + LT)
 والمجموعات الثلاث الأخرى بلا أجسام مضادة (غياب B و T، أو غياب B، أو غياب LT4)؛
 ونوع الاستجابة **مناعة نوعية ذات وساطة خلطية**. Sujet 2 exercice 1 : (أ) خلية
-لمفاوية LB و(ب) خلية لازمية LBP، ومصدرها نقي العظام ثم تماز LB المنتقاة؛ نتائج
-الفصل تُظهر ARNr و ARNt في اللمفاوية مقابل **ظهور ARNm** في اللازمية (دلالة على
+لمفاوية LB و(ب) خلية بلازمية LBP، ومصدرها نقي العظام ثم تمايز LB المنتقاة؛ نتائج
+الفصل تُظهر ARNr و ARNt في اللمفاوية مقابل **ظهور ARNm** في البلازمية (دلالة على
 تركيب البروتين وإفرازه عبر الشبكة الهيولية وجهاز كولجي والحويصلات)؛ والجسم
 المضاد بروتين (غاما غلوبولين) ثالثي الببتيد في جزئه المؤطر، يحافظ على ثباته
 بروابط هيدروجينية وشاردية وجسور ثنائية الكبريت وتجاذب الجذور الكارهة للماء.
-Sujet 2 exercice 2 : (س) هي LTC ومصدرها تماز LT8 المنتقاة؛ وشروط عملها (خلية
+Sujet 2 exercice 2 : (س) هي LTC ومصدرها تمايز LT8 المنتقاة؛ وشروط عملها (خلية
 مصابة تحمل نفس الببتيد المستضدي، ونفس سلالة الفأر أي توافق CMH)؛ والآلية
 تعرف مزدوج (TCR مع ببتيد مستضدي–CMH I) ثم البيرفورين والصدمة الحلولية؛ ومنحنى
 الأرثروكين ثابت ومنخفض إلى الأسبوع الأول (فترة الانتقاء) ثم متزايد؛ وVIH
@@ -563,7 +563,24 @@ recopie portait `فوسفوهيدنية مضافة` (deux slips), `غليكو ب
 2014-m, avec l'image comme preuve ; le reste de la page (الوسط أ/ب، الرسم، زمرة
 (س)، الذات/اللاذات) correspond mot pour mot à ce qui était encodé.
 
-**Verrou** : `tests/arabic-orthography.test.mjs` (4 tests) refuse les 149
+**Troisième passe du 2026-09-15 (2013-m)** : trois recopies fautives de plus,
+toutes tranchées sur l'image du corrigé 2013 (`M/dzexams-bac-sciences-2770867.pdf`,
+« الإجابة النموذجية » pp. 4 et 3 du dossier, rendues par
+`scripts/render-pdf-pages.mjs`).
+
+| Famille          | Correction                                     | Détail                                                                                             |
+| ---------------- | ---------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| translittération | `لازمية` → `بلازمية`, `اللازمية` → `البلازمية` | 20 (2013-m) ; le corrigé p. 4 écrit « خلية بلازمية LBP » et le schéma p. 3 « بلازمية »             |
+| coquille         | `تماز` → `تمايز`, `وتمازت` → `وتمايزت`         | 6 (2013-m) ; corrigé p. 4 « مصدر الخلية البلازمية (الشكل ب) : تمايز الخلية اللمفاوية LB المنتقاة » |
+| coquille         | `تشطيم` → `التنشيط` (1) et `تنشيط` (1)         | 2013-m ; schéma p. 3 « التنشيط : التكاثر و التمايز »                                               |
+
+Le même schéma porte une case jaune « التشيط + » : cette graphie officielle est
+celle du corpus, elle n'a pas été touchée. Le verrou gagne quatre formes
+(`اللازمية`, `تماز`, `تمازت`, `تشطيم`) et un cinquième test compare le **jeton
+entier** `لازمية` — il ne peut pas entrer dans la liste des préfixes, où le
+préfixe `ب` l'aurait rendu égal à la forme correcte `بلازمية`.
+
+**Verrou** : `tests/arabic-orthography.test.mjs` (5 tests) refuse les 153
 graphies fautives (comparaison par jeton, préfixes
 `و ف ب ك ل ال وال فال بال كال لل` retirés avant comparaison : `والتماز`
 échappait à la liste où figure `التماز` — corrigé le 2026-09-15 en

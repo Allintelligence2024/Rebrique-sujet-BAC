@@ -204,7 +204,16 @@ const FORBIDDEN = [
   "لأمينين",
   "محأليل",
   "يترجمة",
-  "ويترجمة"
+  "ويترجمة",
+  // Troisième passe du 2026-09-15 (2013-m, corrigé relu en image) : le
+  // corrigé écrit « خلية بلازمية », « تمايز » et « التنشيط : التكاثر و
+  // التمايز ». Le jeton nu « لازمية » ne peut pas entrer ici : le préfixe
+  // « ب » le rendrait égal à la forme correcte « بلازمية » ; un test dédié
+  // ci-dessous compare donc le jeton entier.
+  "اللازمية",
+  "تماز",
+  "تمازت",
+  "تشطيم"
 ];
 
 test("aucune des formes fautives corrigées ne revient dans les données", () => {
@@ -231,6 +240,19 @@ test("aucune des formes fautives corrigées ne revient dans les données", () =>
     }
   }
   assert.deepEqual(hits, [], `formes fautives réintroduites :\n${hits.join("\n")}`);
+});
+
+test("le jeton nu « لازمية » n'existe nulle part (forme correcte : بلازمية)", () => {
+  // Corrigé 2013-m p. 4 relu en image : « خلية بلازمية LBP ». La comparaison
+  // est exacte, jeton entier, parce que la boucle de préfixes du premier test
+  // ne peut pas distinguer « لازمية » de « بلازمية » (préfixe « ب »).
+  const hits = [];
+  for (const { stream, name, text } of FILES) {
+    for (const token of new Set(tokensOf(text))) {
+      if (token === "لازمية") hits.push(`${stream}/${name} : ${token}`);
+    }
+  }
+  assert.deepEqual(hits, [], `forme fautive réintroduite :\n${hits.join("\n")}`);
 });
 
 test("le ة reste en finale de jeton dans les deux filières", () => {
