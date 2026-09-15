@@ -624,8 +624,9 @@ Les quatre tests `maths-2016/2017/2021` qui figeaient d'anciennes graphies ont
   2026-09-15 : ces `bacPromptPage` sont numérotés dans le dossier dzexams alors
   que le fichier local est un extrait eddirasa dont la pagination imprimée diffère
   (`subjects/M/2024/sujet-2.pdf` : 3 pages ; `subjects/SE/2023/sujet-2.pdf` :
-  pieds de page « صفحة 6 et 7 … 9 et 11 من 11 »), donc la correspondance n'est pas
-  un décalage constant. Le générateur refuse d'inventer (`computePageOffset`
+  pieds de page « صفحة 6, 7, 8, 9 puis 11 من 11 » — **l'extrait saute la page 10**),
+  donc la correspondance n'est pas un simple décalage constant : un extrait n'est
+  pas nécessairement un intervalle contigu. Le générateur refuse d'inventer (`computePageOffset`
   renvoie `null`). Conséquence mesurée dans `js/ui/screens/simulation.js` :
   `taskPageHTML` affiche alors `الصفحة N (الأصل)` — la page du document, sans
   page locale — et `openSubjectPdf` ouvre le PDF sans ancre de page. Aucune page
