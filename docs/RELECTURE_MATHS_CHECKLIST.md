@@ -441,7 +441,8 @@ chantier) ajoute huit consignes recopiées sur l'image, les huit autres pôles
 (quatre cadrages N et quatre clôtures W, aucune question de ce type n'étant
 imprimée dans ce sujet) restant reconstruits et le disant. Les encodages
 précédents avaient ajouté : 2014 (neuf consignes), 2015 (onze), 2016 (douze),
-2017 et 2018 (quinze chacune), puis les relectures 2019 à 2026.
+2017 (seize, soit la totalité de ses pôles) et 2018 (quinze), puis les
+relectures 2019 à 2026.
 
 ## Passe de cohérence (2026-09-15) : liens morts et verrous manquants
 
@@ -533,7 +534,9 @@ jour des données fait échouer `npm test`.
 5. Cohérence mots-clés / réponses modèle : **traité le 2026-09-14**, étendu le
    2026-09-15 aux 16 pôles de 2015-m, puis aux 16 pôles de 2014-m et enfin aux
    16 pôles de 2013-m. Sonde
-   `evaluateText(réponse modèle, règle)` sur les 208 pôles maths :
+   `evaluateText(réponse modèle, règle)` sur les 224 pôles maths (les 14
+   sessions maths × 16 pôles ; `tests/maths-model-answers.test.mjs` les
+   parcourt tous) :
    `hits >= req` partout (0 échec). Quatre règles ne pouvaient pas être
    satisfaites par la réponse modèle officielle et ont été ajustées
    (2017-m S2E2W, 2018-m S2E2E, 2018-m S2E2W, 2020-m S1E1W) ; deux réponses

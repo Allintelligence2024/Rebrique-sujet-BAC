@@ -17,6 +17,9 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { YEAR_CATALOG, loadYear } from "../data/subjects.js";
 import { evaluateText } from "../js/domain/evaluation/text-evaluator.js";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const mathsYears = YEAR_CATALOG.filter((entry) => entry.stream === "m");
 
@@ -87,4 +90,35 @@ test("aucune note des années maths ne prétend qu'un corrigé est absent du dé
       }
     }
   }
+});
+
+test("les compteurs annoncés dans la checklist maths correspondent aux données", async () => {
+  // La checklist est le document que lisent les relecteurs humains : des
+  // compteurs périmés (208 pôles annoncés pour 224 réels, « 2017 quinze »)
+  // laissent croire qu'une année n'a pas été auditée. Le bilan est donc
+  // recalculé ici depuis les données.
+  const checklist = readFileSync(
+    join(dirname(fileURLToPath(import.meta.url)), "..", "docs", "RELECTURE_MATHS_CHECKLIST.md"),
+    "utf8"
+  );
+  let official = 0;
+  let total = 0;
+  for (const entry of mathsYears) {
+    const year = await loadYear(entry.id);
+    for (const subject of year.sujets) {
+      for (const exercise of subject.exercises) {
+        for (const data of Object.values(exercise.poles)) {
+          total += 1;
+          if (data.bacPromptSource === "official") official += 1;
+        }
+      }
+    }
+  }
+  assert.equal(mathsYears.length, 14, "les 14 sessions maths 2013-2026");
+  assert.match(
+    checklist,
+    new RegExp(`\\*\\*${official} tâches officielles sur ${total}\\*\\*`),
+    `la checklist doit annoncer « ${official} tâches officielles sur ${total} »`
+  );
+  assert.doesNotMatch(checklist, /sur les 208 pôles/, "compteur de pôles périmé");
 });
