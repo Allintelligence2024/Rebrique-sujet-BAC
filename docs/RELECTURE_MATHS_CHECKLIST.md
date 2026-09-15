@@ -500,13 +500,13 @@ mot à mot, en s'appuyant sur les couches texte des sujets/corrigés locaux
 635 lignes, **201 graphies fautives distinctes** (196 graphies corrigées
 apparaissent). Aucune phrase n'a été réécrite : seuls des jetons ont changé.
 
-| Famille | Avant → Après | Exemples |
-| --- | --- | --- |
-| `ة` finale écrite `ه` | `بنيه` → `بنية` | `رامزه` (23), `ببتيديه` (12), `بنيه` (47), `وظيفه` (16), `مضاده` (45), `نواه` → `نواة`, `زمره` → `زمرة` |
-| hamzat wasl hamzée | `إستجابة` → `استجابة` | `إستنساخ`, `إستطالة`, `إرتباط`, `إكتساب`, `إنطلاق` → `انطلاق` |
-| hamza de coupure manquante | `اجسام` → `أجسام` | `احماض` → `أحماض`, `إنزيم`/`انزيم` → `أنزيم` (137 formes : `الأنزيمي`, `للأنزيم`, `أنزيمات`…), `إكتساب` → `اكتساب`, `أكسجين` (29), `اشعاع` → `إشعاع`, `أكتب` → `اكتب`, `انجز` → `أنجز` |
-| coquilles de recopie | `البيبتيدية` → `الببتيدية` | `التماز` → `التمايز`, `التكزري` → `الكزازي`, `الغرأنزيم` → `الغرانزيم`, `البلاسمية` → `البلازمية`, `البلاسموديوم` → `البلازموديوم`, `المحسة` → `المحسسة`, `البيتيد` → `الببتيد` |
-| phrase fausse (preuve corrigé) | `بين الضمحل الييني وArg120` → `بين الحمض الأميني Arg120` | corrigé SE 2022 : « روابط بين CoEM والحمض الأميني Arg120 و Tyr333 » |
+| Famille                        | Avant → Après                                            | Exemples                                                                                                                                                                               |
+| ------------------------------ | -------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ة` finale écrite `ه`          | `بنيه` → `بنية`                                          | `رامزه` (23), `ببتيديه` (12), `بنيه` (47), `وظيفه` (16), `مضاده` (45), `نواه` → `نواة`, `زمره` → `زمرة`                                                                                |
+| hamzat wasl hamzée             | `إستجابة` → `استجابة`                                    | `إستنساخ`, `إستطالة`, `إرتباط`, `إكتساب`, `إنطلاق` → `انطلاق`                                                                                                                          |
+| hamza de coupure manquante     | `اجسام` → `أجسام`                                        | `احماض` → `أحماض`, `إنزيم`/`انزيم` → `أنزيم` (137 formes : `الأنزيمي`, `للأنزيم`, `أنزيمات`…), `إكتساب` → `اكتساب`, `أكسجين` (29), `اشعاع` → `إشعاع`, `أكتب` → `اكتب`, `انجز` → `أنجز` |
+| coquilles de recopie           | `البيبتيدية` → `الببتيدية`                               | `التماز` → `التمايز`, `التكزري` → `الكزازي`, `الغرأنزيم` → `الغرانزيم`, `البلاسمية` → `البلازمية`, `البلاسموديوم` → `البلازموديوم`, `المحسة` → `المحسسة`, `البيتيد` → `الببتيد`        |
+| phrase fausse (preuve corrigé) | `بين الضمحل الييني وArg120` → `بين الحمض الأميني Arg120` | corrigé SE 2022 : « روابط بين CoEM والحمض الأميني Arg120 و Tyr333 »                                                                                                                    |
 
 **Preuve** : pour chaque famille, le comptage des deux graphies dans la couche
 texte des PDF tranche (`فرضية` 109 / `فرضيه` 0, `طفرة` 6 / `طفره` 0,
@@ -529,8 +529,11 @@ impératifs sont attestés, y compris dans les corrigés), `استراديول` 
 (`سكره` = son sucre, `مصله` = son sérum, `نقله` = son transfert, `مرافقه` =
 son cofacteur, `عضويته`, `خلله`), `مورثات متعددة الصنويات` — **confirmé par le
 corrigé** et non une coquille —, `الفينغومييلين` (transcription attestée),
-et les 2013-2015 dont le corrigé est sans couche texte : aucun mot n'y a été
-« corrigé » sans lecture d'image.
+les **mots-clés gardent la forme ي** (`منحني` et non `منحنى`) car
+`normalizeArabic` mappe ى→ي et `tests/data-selfcheck.test.mjs` l'impose ;
+seule l'attente documentaire 2022-m « عظمى » a suivi la formulation du
+corrigé (« قيمة عظمى في اليوم 15 »). Et les 2013-2015 dont le corrigé est
+sans couche texte : aucun mot n'y a été « corrigé » sans lecture d'image.
 
 **Verrou** : `tests/arabic-orthography.test.mjs` (4 tests) refuse les 138
 graphies fautives (comparaison par jeton), exige que le `ة` reste final,
@@ -595,6 +598,12 @@ Les quatre tests `maths-2016/2017/2021` qui figeaient d'anciennes graphies ont
    (2017-m S2E2W, 2018-m S2E2E, 2018-m S2E2W, 2020-m S1E1W) ; deux réponses
    modèle de 2018-m ont gagné les termes exacts du corrigé (الرامزة، المورثة،
    ARNm). Le contrôle est verrouillé par `tests/maths-model-answers.test.mjs`.
+6. Traçabilité dans `pdfNote` : les notes de 2013-m, 2014-m et 2015-m disent
+   désormais « relecture image du 2026-09-15 » et celle de 2016-m
+   « relecture image du 2026-09-14 », comme 2017-m, 2019-m, 2021-m et 2022-m le
+   faisaient déjà. **2020-m reste sans date** dans sa note : ses
+   `bacPromptNotes` disent « relu en image » sans date et aucune passe datée ne
+   l'atteste ; on ne l'invente pas.
 
 ## Vérifications
 

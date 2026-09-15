@@ -187,7 +187,7 @@ export const YEAR_2022_M = {
                   comparisons: [["إصابة", "أجسام"]],
                   trends: [
                     { about: "4", expect: ["منعدمة", "ظهور"] },
-                    { about: "15", expect: ["عظمي", "تزداد"] }
+                    { about: "15", expect: ["عظمى", "تزداد"] }
                   ],
                   relations: [{ type: "parallel", a: "زمن", b: "أجسام" }],
                   values: ["15"],

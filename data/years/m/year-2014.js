@@ -26,7 +26,7 @@ const RECON = (notes) => ({
 });
 
 const PDF_NOTE =
-  "PDF officiel non redistribué dans le dépôt. Source locale du sujet dans l'application : /subjects/M/2014/sujet-N.pdf, extrait du dossier officiel dzexams 2014 filière رياضيات (11 pages : sujet pp. 1-4, corrigé « الإجابة النموذجية » pp. 5-11). Page annales : https://www.dzexams.com/ar/annales/MXlQMjVhL2ZLK25mcEpTWnI5N3JtQT09. Le scan est image seul (aucune couche texte exploitable) : les consignes sont recopiées mot à mot depuis l'image des pages.";
+  "PDF officiel non redistribué dans le dépôt. Source locale du sujet dans l'application : /subjects/M/2014/sujet-N.pdf, extrait du dossier officiel dzexams 2014 filière رياضيات (11 pages : sujet pp. 1-4, corrigé « الإجابة النموذجية » pp. 5-11). Page annales : https://www.dzexams.com/ar/annales/MXlQMjVhL2ZLK25mcEpTWnI5N3JtQT09. Le scan est image seul (aucune couche texte exploitable) : les consignes sont recopiées mot à mot depuis l'image des pages (relecture image du 2026-09-15).";
 
 export const YEAR_2014_M = {
   id: "2014-m",
