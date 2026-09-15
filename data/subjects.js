@@ -245,9 +245,10 @@ export const YEAR_CATALOG = Object.freeze([
       modulePath: `data/years/se/year-${id}.js`
     })
   ),
-  // La filière maths ouvre en 2014 (le PDF 2013 est présent dans subjects/M/
-  // mais sans payload : l'encoder demande la même relecture page à page).
+  // La filière maths est encodée de 2013 à 2026 : chaque année a été relue page
+  // à page sur le dossier dzexams local (sujet + corrigé officiel).
   ...[
+    "2013",
     "2014",
     "2015",
     "2016",
@@ -295,6 +296,7 @@ const YEAR_LOADERS = Object.freeze({
   2024: () => import("./years/se/year-2024.js"),
   2025: () => import("./years/se/year-2025.js"),
   2026: () => import("./years/se/year-2026.js"),
+  "2013-m": () => import("./years/m/year-2013.js"),
   "2014-m": () => import("./years/m/year-2014.js"),
   "2015-m": () => import("./years/m/year-2015.js"),
   "2016-m": () => import("./years/m/year-2016.js"),

@@ -162,8 +162,8 @@ Le serveur applique une liste blanche d'assets publics. Ne pas remplacer cette c
 
 ## 📄 Contenu réel — épreuve
 
-**23 années** dans `APP_CONFIG.years` : 2013–2019 et 2020+2022–2026 علوم تجريبية + 2016–2026 رياضيات.
-Le hub SE affiche 2013–2020 et 2022–2026 en cartes d'épreuve ; le hub Maths affiche 2016–2026 (2016 à 2020 ont rejoint les cartes d'épreuve ; leurs cartes de consultation sont masquées au profit de l'épreuve, sauf la session exceptionnelle 2017 qui reste consultable).
+**28 sessions encodées** : 14 en علوم تجريبية (2013–2019, 2020, 2021 et 2022–2026) + 14 en رياضيات (2013-m … 2026-m).
+Le hub SE affiche 2013–2020 et 2022–2026 en cartes d'épreuve ; le hub Maths affiche 2013–2026 (chaque année encodée remplace sa carte de consultation ; seule la session exceptionnelle 2017 reste consultable en plus de sa carte d'épreuve).
 **2021 SE est volontairement absente des cartes d'épreuve.** L'archive 2013–2019 n'est pas un énoncé ministériel.
 
 ### Contenu BAC 2025 (شعبة علوم تجريبية)
@@ -346,7 +346,7 @@ Les sujets de la filière choisie remplacent la grille.
 | Filière                  | Épreuve               | Consultation (sujet + تصحيح)                    |
 | ------------------------ | --------------------- | ----------------------------------------------- |
 | شعبة علوم تجريبية (`se`) | 2013–2020 و 2022–2026 | 2021                                            |
-| شعبة رياضيات (`m`)       | 2014–2026             | 2013 (+ 2017 exceptionnelle)                    |
+| شعبة رياضيات (`m`)       | 2013–2026             | 2017 (session exceptionnelle)                   |
 | شعبة تقني رياضي (`tm`)   | —                     | **absente de la source** (trou affiché, 0 lien) |
 
 Statut honnête :
@@ -385,6 +385,15 @@ Statut honnête :
   restent badgées ⚠️ ; les valeurs du corrigé sont reprises telles quelles
   (429 = 3 × 143، 141 = 1 − 142، 16.66 % = 1 × 100 ÷ 6، الجزء الثابت والمتغير,
   فسيفسائي ومائع).
+- **2013 Maths** : dossier dzexams local — sujet pp. 1–4, corrigé « الإجابة
+  النموذجية » pp. 5–11 relu en image le 2026-09-15 ; le scan est image seul
+  (1 fragment de texte par page), les huit consignes officielles viennent donc de
+  l'image, les clôtures n'étant pas imprimées sont badgées ⚠️. Valeurs du corrigé
+  reprises : 2³ = 8 ; إشارات البدء AUG (Met) والنهاية UAA/UAG/UGA ;
+  س: AAG، ص: ACC، ع: UGG، ل: GGC ; H2N–CH(R1)–CO–NH–CH(R2)–CO–NH–CH(R3)–COOH ;
+  قوس الترسيب بين الحفرتين (م) و(د) فقط ; مناعة نوعية ذات وساطة خلطية ;
+  ARNr و ARNt في الخلية اللمفاوية مقابل ظهور ARNm في الخلية اللازمية ;
+  8 Å و 2 Å لمسافتي الأسبارتيك والهستيدين.
 - **2014 Maths** : dossier dzexams local — sujet pp. 1–4, corrigé « الإجابة
   النموذجية » pp. 5–11 relu en image le 2026-09-15 ; le scan est image seul
   (1 fragment de texte par page), les neuf consignes officielles viennent donc de
@@ -428,10 +437,10 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **288** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
-- Copies vérifiées dans le hard benchmark : **0/3540 minimum** avant toute promotion numérique
-- Inventaires de tâches officielles commencés : **52/54 sujets** (**520 tâches connues**)
-- Sujets éligibles à la simulation : **52**
+- Tests exécutés par `npm test` : **295** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Copies vérifiées dans le hard benchmark : **0/3660 minimum** avant toute promotion numérique
+- Inventaires de tâches officielles commencés : **54/56 sujets** (**536 tâches connues**)
+- Sujets éligibles à la simulation : **54**
 - Critères P1 fermés : **3/6** — statut global : **incomplet**
 - Critères P2 fermés : **6/7** — élèves distincts testés : **0/5**
 - Critères P3 fermés : **5/6** — statut global : **incomplet**

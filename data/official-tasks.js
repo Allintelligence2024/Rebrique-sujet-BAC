@@ -7642,6 +7642,442 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       }
     ]
   },
+  "2013-m/S1": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/ar/annales/UmdYdlc3em1RWmJQWEJCbW52Vm12dz09",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2013/sujet-1.pdf",
+      pages: 2,
+      pageOffset: 0
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: []
+    },
+    tasks: [
+      {
+        id: "2013-m-S1-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "يحتاج تركيب البروتين في الخلية إلى قراءة لغة ( 1 غ ) بواسطة قاموس، يعطي لكل كلمة من اللغة ( 1 غ ) ما يقابلها في اللغة الثانية ( 2 غ )، وذلك لوجود علاقة بين اللغتين تمثلها المعادلة التالية: 4³ = 64. فكيف تقرأ الخلية لغتها الوراثية وتحوّلها إلى سلسلة بروتينية؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2013-m-S1-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 1,
+        prompt:
+          "1- أ- عرّف ما تمثله الحروف A، B، C. ب- سمّ اللغة ( 1 غ ) و ( 2 غ ) و القاموس اللازم لقراءة اللغة ( 1 غ ). ج- ثم مخبريا تركيب لغة ( 1 غ ) بواسطة نوعين من الحروف فقط، بنسب متساوية. احسب عدد أنواع كلمات هذه اللغة. د- إنّ تركيب سلسلة ببتيدية يحتاج إلى إشارات بداية و نهاية على مستوى اللغة ( 1 غ ). استخرج هذه الإشارات من جدول الوثيقة ( 1 ).",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2013-m-S1-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 1,
+        prompt:
+          "2- تبيّن الوثيقة (2) بعض الأحداث المرتبطة بتركيب البروتين في السيتوبلازم: أ- سمّ البيانات المرقمة و الأحماض الأمينية (A1، A2، A3، A5) وثلاثيات القواعد (س، ع، ص، ل). ب- بالاعتماد على الصيغة الكيميائية العامة للحمض الأميني، اكتب الصيغة الكيميائية للجزء المؤطر (م). ج- صف الأحداث التي سمحت بالانتقال من الشكل (أ) إلى الشكل (ب).",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2013-m-S1-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: null,
+        prompt:
+          "ممّا سبق ومعلوماتك، اكتب نصا علميا توضّح فيه كيف تتحول المعلومة الوراثية المحمولة على الـ ADN إلى سلسلة ببتيدية.",
+        promptSource: "reconstructed",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2013-m-S1-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "حقن فأر بألبومين مصل دم البقر، وبعد أسبوعين استخلص من الفأر كمية من المصل لتطبيق تقنية الانتشار المناعي Ouchterlony، حيث أحدثت حفر في الجيلوز (مادة هلامية)، ووضع مصل الفأر في الحفرة المركزية وألبومين مصل دم حيوانات مختلفة في الحفر المحيطية. فما هي طبيعة العنصر المتدخل في هذه الاستجابة، وما دور الخلايا اللمفاوية فيها؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2013-m-S1-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 2,
+        prompt:
+          "1- أ- سمّ العنصر (س)، ثم بيّن ماذا يمثل ؟ دعم إجابتك برسم تخطيطي مع وضع البيانات اللازمة. ب- ما هي المعلومة المستخلصة من نتائج هذه التجربة ؟",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2013-m-S1-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 2,
+        prompt:
+          "2- في اللحظة ز، تمّ استئصال الغدة السعرية لفئران خضعت من قبل للأشعة X، ثم وزعت هذه الفئران إلى 4 مجموعات لإنجاز التجربة لغرض إنجاز التجربة الممثلة في الجدول الآتي: [المجموعة الأولى (فئران شاهدة: لم تحقن باللمفاويات)، المجموعة الثانية (حقنت باللمفاويات LT)، المجموعة الثالثة (حقنت باللمفاويات LB)، المجموعة الرابعة (حقنت باللمفاويات LB و LT)]، وفي المرحلة الثانية بعد 30 ساعة حقن جميع الفئران بألبومين مصل دم البقر. 3- بعد 15 يوما، استخلص المصل من فئران المجموعات الأربعة، وأجريت تقنية الانتشار المناعي. أ- علّل ما يلي: تعريض الفئران للأشعة X، استئصال الغدة السعرية عند هذه الفئران، أخذ الخلايا اللمفاوية من فئران من نفس السلالة. ب- فسّر النتائج الممثلة في الوثيقة (2). 3- أ- ما نوع الاستجابة المناعية المدروسة ؟ ب- أنجز رسما تخطيطيا توضّح من خلاله مراحل آلية هذه الاستجابة المناعية.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2013-m-S1-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: null,
+        prompt:
+          "ممّا سبق ومعلوماتك، اكتب نصا علميا توضّح فيه كيف تتكامل الخلايا اللمفاوية LB و LT4 لإنتاج الأجسام المضادة والقضاء على اللاذات.",
+        promptSource: "reconstructed",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      }
+    ]
+  },
+  "2013-m/S2": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/ar/expiree/UmdYdlc3em1RWmJQWEJCbW52Vm12dz09",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2013/sujet-2.pdf",
+      pages: 2,
+      pageOffset: 2
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: []
+    },
+    tasks: [
+      {
+        id: "2013-m-S2-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "البروتينات هي جزيئات متخصصة تركّبها خلايا الكائنات الحية بصورة منتظمة للقيام بمختلف نشاطاتها الحيوية. فكيف يظهر هذا التخصص في بنية الخلية وفي الجزيئات التي تنتجها؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2013-m-S2-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 3,
+        prompt:
+          "I- الوثيقة (1) تمثّل نوعين من الخلايا التي تلعب دورا في الرد المناعي الخلطي، ونتائج فصل أنماط الـ ARN الهيولي لكل خلية: 1- سمّ خلية الشكل (أ) والشكل (ب)، ثم أكتب البيانات المرقمة. 2- ما هو مصدر الخليتين ؟ 3- أ- قارن نتائج الفصل. ب- وضّح العلاقة بين هذه النتائج و بنية كل خلية.",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2013-m-S2-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 3,
+        prompt:
+          "II- إنّ مصدر الجزيئة الموضّحة في الوثيقة (2) مرتبط بظهور خلية الشكل (ب) في العضوية: 1- سمّ هذه الجزيئة مع ذكر طبيعتها الكيميائية. 2- أ- ماذا يمثل الجزء المؤطّر ؟ ب- اعتمادا على الصيغة الكيميائية العامة للوحدات البنائية، مثّل الجزء المؤطّر. 3- إنّ وظيفة البروتين مرتبطة باستقرار وثبات بنيته الفراغية: أ- كيف تحافظ هذه الجزيئة على ثبات واستقرار بنيتها الفراغية الوظيفية ؟ ب- وضّح العلاقة بين بنية الجزيئة وتخصّصها الوظيفي، مدعّما إجابتك برسم تخطيطي عليه البيانات المناسبة.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2013-m-S2-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: null,
+        prompt:
+          "ممّا سبق ومعلوماتك، اكتب نصا علميا توضّح فيه كيف تتحول الخلية اللمفاوية B المنتقاة إلى خلية لازمية مفرزة لجزيئات متخصصة في القضاء على المستضد.",
+        promptSource: "reconstructed",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2013-m-S2-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "إنّ الجهاز المناعي يتدخل لحماية العضوية ضدّ الإصابات الفيروسية. قصد إنجاز تجربة، حُقن فأر من سلالة A بفيروس Z، وبعد 10 أيام استخلص منه خلايا لمفاوية (س). فكيف تتعرف هذه الخلايا على الخلايا المصابة وتقضي عليها؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2013-m-S2-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 4,
+        prompt:
+          "I- الوثيقة (1) تمثّل النتائج التجريبية الموضحة في الجدول: 1- سمّ الخلية (س)، ثم بيّن مصدرها. 2- أ- انطلاقا من النتائج المبينة في الجدول، استخرج شروط عمل الخلية (س). ب- بناء على نتيجة التجربة (1) ومعلوماتك، صف آلية عمل الخلية (س).",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2013-m-S2-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 4,
+        prompt:
+          "II- إنّ نتائج التحليل الكيميائي الكمّي لدم فئران السلالة A المصابة بالفيروس Z، أعطت النتائج المبيّنة في الوثيقة (2): 1- أ- حلّل المنحنى البياني. ب- علّل النتائج المحصّل عليها: بين لحظة الإصابة والأسبوع الثاني، بين الأسبوع الثاني والأسبوع الثالث. 2- أ- ظهور الخلايا (س) في العضوية مرتبط بعمل الأرثروكين، وضّح ذلك. ب- عند الشخص المصاب بفيروس VIH، تتناقص كمية الأرثروكينات في الدم. علّل ذلك. III- حدّد نوع الاستجابة المناعية المدروسة، مدعّما إجابتك برسم تخطيطي يوضّح مراحلها.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2013-m-S2-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: null,
+        prompt:
+          "ممّا سبق ومعلوماتك، اكتب نصا علميا توضّح فيه مراحل الاستجابة المناعية الخلوية ودور كل من اللمفاويات LT4 و LT8 في القضاء على الخلايا المصابة.",
+        promptSource: "reconstructed",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      }
+    ]
+  },
   "2014-m/S1": {
     schemaVersion: 1,
     status: "partial",

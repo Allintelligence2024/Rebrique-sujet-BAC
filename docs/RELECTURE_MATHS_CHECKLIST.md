@@ -1,8 +1,8 @@
 # Checklist de relecture — BAC maths (شعبة رياضيات)
 
-**Date :** 2026-09-15 (dernière passe : 2014-m ; passes précédentes : 2015-m,
-2016-m, 2021-m, 2022-m, 2026-m, puis
-2023-m, 2024-m et 2025-m revérifiés sur les scans locaux). Branche
+**Date :** 2026-09-15 (dernière passe : 2013-m — la filière maths est encodée de
+2013 à 2026 ; passes précédentes : 2014-m, 2015-m, 2016-m, 2021-m, 2022-m,
+2026-m, puis 2023-m, 2024-m et 2025-m revérifiés sur les scans locaux). Branche
 `arena/01a09be6-rebrique-sujet-bac` (PR #26).
 
 Périmètre : toutes les consignes officielles de la filière maths encodées dans
@@ -68,6 +68,9 @@ Audit d'un sujet (pôles, points, provenance, page) :
 | 2026-m S1                   | 1, 2, 3 (scan local)   | ت1 (6ن) LTc ; ت2 (14ن) HCF/LDLR/PCSK9                                           | S1-E1 : S = Q1, E = Q2 (mention « مُهيكل بمقدمة وعرض وخاتمة ») ; S1-E2 : N = فرضيتان, E = Q1+Q2 (برّر تثبيط PCSK9 rattachée), W = خلاصة du الجزء الثالث                                                                                  |
 | 2026-m S2                   | 4, 5, 6 (scan local)   | ت1 (8ن) IL-2 ; ت2 (12ن) غيتلمان/SLC12A3                                         | S2-E1 : N = Q1, S = Q2, E = Q3, W = خاتمة ; S2-E2 : N = Q1, E = Q1+Q2 (قدّم نصيحة rattachée), W = مخطط وظيفي du الجزء الثالث                                                                                                             |
 | 2021-m corrigé              | 7-12                   | corrigé officiel « الإجابة النموذجية » des deux sujets                          | réponses modèle réécrites : 0→40 د, 70 %/10 % ; Mex.R (الثلاثية 114 : TGC → TGA, رامزة توقف, 7 أحماض بديلة عن 9) ; R/T (روابط كارِهة للماء، تثبيت/تحرير O2) ; 7.4 → 7.3 ; رابطة شاردية His146–Asp94                                      |
+| 2013-m S1                   | 1, 2                   | ت1 (10ن) الشفرة الوراثية والترجمة ; ت2 (10ن) الألبومين والاستجابة الخلطية       | S1-E1 : S = Q1أ-د, E = Q2أ-ج ; S1-E2 : S = Q1أ+ب, E = Q2أ+ب puis Q3أ+ب ; pôles N et W reconstruits (aucune question de cadrage ni de clôture imprimée)                                                                                   |
+| 2013-m S2                   | 3, 4                   | ت1 (10ن) الخلية اللمفاوية B واللازمية ; ت2 (10ن) الاستجابة الخلوية              | S2-E1 : S = QI-1+2+3أ+3ب, E = QII-1+2أ+2ب+3أ+3ب ; S2-E2 : S = QI-1+2أ+2ب, E = QII-1أ+1ب+2أ+2ب puis QIII ; pôles N et W reconstruits                                                                                                      |
+| 2013-m corrigé              | 5-11                   | corrigé officiel « الإجابة النموذجية » (7 pages)                                | réponses modèle réécrites : 2³ = 8 ; AUG/Met و UAA/UAG/UGA ; AAG/ACC/UGG/GGC ; H2N–CH(R1)–CO–NH–CH(R2)–CO–NH–CH(R3)–COOH ; قوس الترسيب بين (م) و(د) فقط ; مناعة خلطية ثم خلوية ; ARNr/ARNt مقابل ظهور ARNm chez la plasmocyte            |
 | 2023-m (relu 2026-09-14)    | couche texte 1-3 + 4-6 | consignes et figures des deux sujets                                            | deux consignes corrigées (Asp/Tyr imprimés ; fin de بيّن في نص علمي) ; valeurs des figures relues : courbe 0.6→10 et 10→80 %, barres ≈3500/≈250 جزيئة, triplets AGT GTC ATA GTG / AGT ATC ATA GTG, UCA→Ser…UAG→توقف                      |
 | 2024-m (relu 2026-09-14)    | 1, 2 (S1) + 1 (S2)     | ت1 الكورديسبين ; ت2 الورم ; ت1 PID                                              | Q2 de ت1 reçue sa réponse (complément AGACGUUG lu sur la figure) ; verbe تُبيّن restauré ; courbe du الوسط 1 (250→≈330→≈180) et du الوسط 2 (250→≈1180) ; corrigé : LT8 source des LTc ; consigne restituée avec الأولي et نص علمي مُهيكل |
 | 2025-m (relu 2026-09-14)    | 2, 3 (S1) + 2 (S2)     | ت2 TAP ; ت2 UV-C/Spike                                                          | deux consignes de فرضيتين recopiées mot à mot ; tableau du الشكل (ب) : 10/35/50/70 % contre 3/5/8/9 % pour 0.1→2 µg/mL ; تتابع ...CTGACTGG... / ...CTGATGG... (حذف C) ; LT8                                                              |
@@ -195,6 +198,66 @@ Ce qui a changé dans les données :
 
 Les réponses modèle restent verrouillées par `tests/maths-model-answers.test.mjs`
 (la réponse modèle doit satisfaire sa propre règle de mots-clés).
+
+## Passe 2013-m (2026-09-15) — dernière année maths
+
+Troisième scan **image seul** : le dossier dzexams local
+`M/dzexams-bac-sciences-2770867.pdf` (11 pages) porte le sujet (pp. 1-4) et son
+corrigé officiel « الإجابة النموذجية » (pp. 5-11), avec **1 fragment de texte par
+page** (`www.dzexams.com`) : aucune consigne n'a pu être recopiée depuis une
+couche texte, tout vient de l'image.
+
+```bash
+node scripts/render-pdf-pages.mjs M/dzexams-bac-sciences-2770867.pdf 1,2,3,4 2
+node scripts/render-pdf-pages.mjs M/dzexams-bac-sciences-2770867.pdf 5,6,7,8,9,10,11 2
+node scripts/report-subject-inventory.mjs 2013-m
+```
+
+Format retrouvé sur l'image : **2 sujets × 2 exercices (10 + 10)**, durée imprimée
+02 سا و30 د. Sujet 1 : قراءة اللغة الوراثية (جدول الشفرة الوراثية و`4³ = 64`،
+اللغتان والقاموس، إشارات البدء والنهاية، رسم الترجمة على الريبوزوم بالبيانات
+1-6 والأحماض A1 إلى A5 وثلاثيات القواعد، الصيغة الكيميائية للجزء المؤطر (م)،
+والأحداث التي سمحت بالانتقال من الشكل أ إلى الشكل ب) puis الألبومين والاستجابة
+الخلطية (تقنية Ouchterlony، العنصر (س)، رسم المعقد المناعي، الأشعة X واستئصال
+الغدة السعرية، الحفر الأربع). Sujet 2 : الخلية اللمفاوية B والخلية اللازمية
+(البيانات 1-7، نتائج فصل ARNr و ARNt و ARNm، بنية الجسم المضاد) ثم الاستجابة
+الخلوية (جدول التجارب الأربع، شروط عمل الخلية (س)، منحنى الأرثروكين، فيروس VIH).
+
+Huit consignes imprimées deviennent des tâches `official` ; les quatre pôles N
+(aucune question de cadrage imprimée) et les quatre pôles W (les quatre exercices
+se terminent sur une question déjà rattachée au pôle E : 1د، 3ب، II-3ب، III)
+restent reconstruits et le disent dans leur note.
+
+Valeurs reprises du corrigé : les lettres `A` (عدد قواعد الرامزة = 3) و `B` (عدد
+أنواع القواعد الأزوتية = 4) و `C` (عدد أنواع الرامزات = 64)؛ اللغة 1 نوية واللغة
+2 بروتينية والقاموس هو جدول الشفرة الوراثية؛ بفرض نوعين من الحروف فإن `2³ = 8`
+كلمات؛ إشارات البدء `AUG` (Met) وإشارات النهاية `UAA` و`UAG` و`UGA`؛ البيانات
+1 رامزة انطلاق، 2 الموقع P، 3 حمض أميني، 4 الريبوزوم، 5 الموقع A، 6 ARNt؛
+الأحماض A1 Met، A2 Lys، A3 Phe، A5 Gly؛ ثلاثيات القواعد س: AAG، ص: ACC،
+ع: UGG، ل: GGC؛ الصيغة الكيميائية للجزء المؤطر
+`H2N–CH(R1)–CO–NH–CH(R2)–CO–NH–CH(R3)–COOH`؛ وصف الأحداث في ثلاث خطوات
+(انقطاع الترابط وتشكل رابطة ببتيدية، حركة الريبوزوم برامزة واحدة، وصول ARNt
+خامس). Sujet 1 exercice 2 : (س) هو الجسم المضاد (خلية لمفاوية B مفرزة)، الرسم
+مع المنطقة المتغيرة والثابتة والسلسلتين، والمعلومة المستخلصة هي نوعية المفعول؛
+قوس الترسيب يتشكل بين الحفرتين (م) و(د) فقط (المجموعة الرابعة المعطاة LB + LT)
+والمجموعات الثلاث الأخرى بلا أجسام مضادة (غياب B و T، أو غياب B، أو غياب LT4)؛
+ونوع الاستجابة **مناعة نوعية ذات وساطة خلطية**. Sujet 2 exercice 1 : (أ) خلية
+لمفاوية LB و(ب) خلية لازمية LBP، ومصدرها نقي العظام ثم تماز LB المنتقاة؛ نتائج
+الفصل تُظهر ARNr و ARNt في اللمفاوية مقابل **ظهور ARNm** في اللازمية (دلالة على
+تركيب البروتين وإفرازه عبر الشبكة الهيولية وجهاز كولجي والحويصلات)؛ والجسم
+المضاد بروتين (غاما غلوبولين) ثالثي الببتيد في جزئه المؤطر، يحافظ على ثباته
+بروابط هيدروجينية وشاردية وجسور ثنائية الكبريت وتجاذب الجذور الكارهة للماء.
+Sujet 2 exercice 2 : (س) هي LTC ومصدرها تماز LT8 المنتقاة؛ وشروط عملها (خلية
+مصابة تحمل نفس الببتيد المستضدي، ونفس سلالة الفأر أي توافق CMH)؛ والآلية
+تعرف مزدوج (TCR مع ببتيد مستضدي–CMH I) ثم البيرفورين والصدمة الحلولية؛ ومنحنى
+الأرثروكين ثابت ومنخفض إلى الأسبوع الأول (فترة الانتقاء) ثم متزايد؛ وVIH
+يستهدف LT4 فينقص الأرثروكين؛ ونوع الاستجابة **مناعية نوعية ذات وساطة خلوية**.
+
+Le catalogue maths ouvre désormais en **2013** : les quinze sessions encodées
+(2013-m … 2026-m plus la session exceptionnelle 2017) couvrent toute la filière,
+`tests/maths-2013.test.mjs` verrouille la session (barème, inventaire mappé, liste
+des huit pôles officiels, valeurs du corrigé) et plus aucune carte maths ne reste
+en consultation.
 
 ## Passe 2014-m (2026-09-15)
 
@@ -371,14 +434,13 @@ et sept libellés paraphrasés depuis la couche texte inversée sont recopiés m
 mot. Le pôle N de 2021-m S1-E2 accueille la question du préambule (page 2),
 recopiée mot à mot : la note du pôle dit qu'elle n'est pas numérotée.
 
-Bilan maths 2014–2026 : **150 tâches officielles sur 208** (l'encodage 2014
-ajoute neuf consignes recopiées sur l'image ; l'encodage 2015
-ajoute 11 consignes officielles sur 16 ; l'encodage 2016
-ajoute 12 consignes officielles sur 16, format 10+10 par sujet ; la relecture 2018
-ajoute 15 consignes officielles sur 16 ; la session 2020 avait ajouté 10 consignes
-officielles : les questions de cadrage « صُغ المشكل العلمي » et « أبرز المشكلة
-المطروحة » existent réellement dans le sujet ; 2017 est intégralement officielle,
-corrigé local à l'appui).
+Bilan maths 2013–2026 : **158 tâches officielles sur 224** — la filière est
+complète, aucune année ne reste en consultation. L'encodage 2013 (dernier
+chantier) ajoute huit consignes recopiées sur l'image, les huit autres pôles
+(quatre cadrages N et quatre clôtures W, aucune question de ce type n'étant
+imprimée dans ce sujet) restant reconstruits et le disant. Les encodages
+précédents avaient ajouté : 2014 (neuf consignes), 2015 (onze), 2016 (douze),
+2017 et 2018 (quinze chacune), puis les relectures 2019 à 2026.
 
 ## Reste à faire (assumé)
 
@@ -397,17 +459,16 @@ corrigé local à l'appui).
    sur l'image (page 4) et son corrigé donne **ج ← أ ← ب** ; la réponse modèle et
    les mots-clés (`ثانوي`, `LB`) ont été alignés. Le 0 % du probe venait de la
    réponse précédente, qui classait (س) en « أولي ».
-3. **Année maths 2013** : ses deux PDF sont présents
-   (`subjects/M/2013/sujet-{1,2}.pdf`, extraits du dossier dzexams
-   `M/dzexams-bac-sciences-2770867.pdf`, listés dans `subjects/manifest.json`)
-   mais aucune donnée n'existe encore dans `data/years/m/` → cette année reste
-   en consultation externe, sans mode BAC. **2020…2014 sont désormais encodées**
-   (`year-2020.js` … `year-2014.js`). Encoder 2013 demande la même relecture
-   page à page (scan image seul) et ne doit pas être fait à l'aveugle. Deux scans ont une police
+3. **Toutes les années maths 2013–2026 sont encodées** (2013-m … 2026-m) :
+   la filière ne compte plus aucune année en consultation externe, il ne reste
+   que la carte de la session exceptionnelle 2017. Deux scans ont une police
    incomplète : 2019 (quelques séries de mots non dessinées) et 2018 (le nom du
    virus dans « فيروس الـ ( ) » n'est pas dessiné). Ils sont signalés dans
    `bacPromptNotes` et jamais complétés au hasard (la couche texte, lue par
-   `scripts/dump-pdf-text.mjs`, tranche les cas lisibles par fragments).
+   `scripts/dump-pdf-text.mjs`, tranche les cas lisibles par fragments) ; 2013,
+   2014 et 2015 sont image seul (1 fragment de texte par page) et ont donc été
+   entièrement relus sur l'image.
+
 4. Corrections officielles maths : **toutes les années encodées ont leur corrigé
    relu**. Le corrigé est dans le même dossier dzexams que le sujet : 2015
    (`-2723927.pdf`, « الإجابة النموذجية وسلم التنقيط » pp. 5–10, relu le
@@ -419,13 +480,15 @@ corrigé local à l'appui).
    2026-09-14) et 2022 (`-1777391.pdf`, pp. 7–13, relu le 2026-09-14).
    2023, 2024, 2025 et 2026 disposent du corrigé eddirasa (2026 et 2023–2025
    revérifiés le 2026-09-14, chiffres relus sur les figures des scans locaux car
-   l'OCR inverse les nombres) et 2014 (`-2369148.pdf`, « الإجابة النموذجية »
-   pp. 5–11, relu le 2026-09-15, scan image seul). La seule année sans corrigé
-   localisé est **2013**, dont le scan est image seul : c'est le chantier
-   d'encodage restant (cf. point 3).
+   l'OCR inverse les nombres), 2014 (`-2369148.pdf`, « الإجابة النموذجية »
+   pp. 5–11, relu le 2026-09-15, scan image seul) et 2013 (`-2770867.pdf`,
+   « الإجابة النموذجية » pp. 5–11, relu le 2026-09-15, scan image seul).
+   **Chaque année encodée a donc son corrigé relu** : il n'existe plus de
+   réponse modèle rédigée depuis le seul programme.
 5. Cohérence mots-clés / réponses modèle : **traité le 2026-09-14**, étendu le
-   2026-09-15 aux 16 pôles de 2015-m puis aux 16 pôles de 2014-m. Sonde
-   `evaluateText(réponse modèle, règle)` sur les 192 pôles maths :
+   2026-09-15 aux 16 pôles de 2015-m, puis aux 16 pôles de 2014-m et enfin aux
+   16 pôles de 2013-m. Sonde
+   `evaluateText(réponse modèle, règle)` sur les 208 pôles maths :
    `hits >= req` partout (0 échec). Quatre règles ne pouvaient pas être
    satisfaites par la réponse modèle officielle et ont été ajustées
    (2017-m S2E2W, 2018-m S2E2E, 2018-m S2E2W, 2020-m S1E1W) ; deux réponses

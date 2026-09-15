@@ -127,7 +127,7 @@ test("chaque entrée du shell existe et chaque module JS est justifié", () => {
 });
 
 test("tous les payloads d'année sont découpés, catalogués et importés dynamiquement", () => {
-  assert.equal(lazyYearFiles.length, 27);
+  assert.equal(lazyYearFiles.length, 28);
   assert.equal(new Set(lazyYearFiles).size, lazyYearFiles.length);
   const subjectsSource = readFileSync(join(root, "data/subjects.js"), "utf8");
   for (const path of lazyYearFiles) {
