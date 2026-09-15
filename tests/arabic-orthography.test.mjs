@@ -195,10 +195,27 @@ const FORBIDDEN = [
 ];
 
 test("aucune des formes fautives corrigées ne revient dans les données", () => {
+  // Comparaison par jeton entier, mais un jeton peut porter un préfixe :
+  // « والتماز » échappait à la liste où figure « التماز », de même qu'un
+  // article collé (« اللأمينين », corruption de « اللامينين »). On essaie
+  // donc les préfixes connus avant de comparer.
+  const PREFIXES = ["و", "ف", "ب", "ك", "ل", "ال", "وال", "فال", "بال", "كال", "لل"];
+  const wrongForms = new Set(FORBIDDEN);
   const hits = [];
   for (const { stream, name, text } of FILES) {
-    const tokens = new Set(tokensOf(text));
-    for (const wrong of FORBIDDEN) if (tokens.has(wrong)) hits.push(`${stream}/${name} : ${wrong}`);
+    for (const token of new Set(tokensOf(text))) {
+      if (wrongForms.has(token)) {
+        hits.push(`${stream}/${name} : ${token}`);
+        continue;
+      }
+      for (const prefix of PREFIXES) {
+        const bare = token.slice(prefix.length);
+        if (token.startsWith(prefix) && wrongForms.has(bare)) {
+          hits.push(`${stream}/${name} : ${token} (→ ${bare})`);
+          break;
+        }
+      }
+    }
   }
   assert.deepEqual(hits, [], `formes fautives réintroduites :\n${hits.join("\n")}`);
 });
@@ -229,7 +246,8 @@ test("les corrections du 2026-09-15 sont bien en place (échantillon maths)", ()
     "ببتيدية",
     "بلعمة",
     "أكسجين",
-    "مضادة"
+    "مضادة",
+    "التمايز"
   ]) {
     assert.ok(tokens.has(good), `forme corrigée absente : ${good}`);
   }

@@ -357,10 +357,13 @@ Statut honnête :
 - **2020 et 2022–2026 SE** et **2013–2026 Maths** : sujets chargés à la demande depuis `data/years/{se,m}/`, indexés par le catalogue `data/subjects.js`.
 - **Consultation** : sujet officiel + تصحيح النموذجي via dzexams. Aucun
   barème, mot-clé ou réponse modèle : le moteur ne s'applique pas.
-- **Maths 2022–2026** : viewer dzexams bloqué (`contentVerified: false`) ;
-  Cartes encodées depuis les PDF officiels eddirasa (même papier ONEC) ;
-  **2022** et **2026** ont été relues en image le 2026-09-14 (dossier dzexams
-  local pour 2022, scans locaux `subjects/M/2026` pour 2026), corrigé appliqué.
+- **Maths 2022–2026** : viewer dzexams bloqué (`contentVerified: false`) — le
+  lecteur en ligne du site source ne s'ouvre pas, mais le dossier PDF est local
+  et relu. Cartes encodées depuis les PDF officiels eddirasa (même papier ONEC) ;
+  **2022** relue en image (dossier dzexams local), **2023** tranchée par la
+  couche texte des scans locaux, **2024**, **2025** et **2026** relues en image
+  le 2026-09-14 (`subjects/M/…`), chiffres relus sur les figures car l'OCR
+  inverse les nombres ; corrigés appliqués.
 - **2020 Maths** : relu page à page sur le dossier dzexams local (sujet pp. 1–5, corrigé
   pp. 6–10), consignes recopiées mot à mot depuis l'image des pages ; les questions de
   cadrage officielles (« صُغ المشكل العلمي », « أبرز المشكلة المطروحة ») sont marquées
