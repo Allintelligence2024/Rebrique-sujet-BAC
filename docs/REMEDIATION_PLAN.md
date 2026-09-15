@@ -35,7 +35,7 @@
 | Lot                                      | État    | Avancement au 7 septembre 2026                                                                                                           |
 | ---------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | P1.1 — Inventaire des tâches officielles | Bloqué  | 0/38 inventaires complets. Pilote 2025/S1/E1 : 2 tâches reliées à 4 étapes ; les autres ne seront pas inventés sans sources vérifiables. |
-| P1.2 — Mesure de couverture              | Bloqué  | Moteur et rapport terminés, mais 0/38 sujets à 100 % ; un inventaire partiel reste `unknown`.                                            |
+| P1.2 — Mesure de couverture              | Bloqué  | Moteur et rapport terminés, mais 0/52 sujets à 100 % ; un inventaire partiel reste `unknown`.                                            |
 | P1.3 — Garde de simulation               | Terminé | Contrôle à la sélection et au rendu ; restauration altérée refusée ; 0 sujet réel éligible.                                              |
 | P1.4 — Parcours séparés                  | Terminé | Épreuve unique : entraînement retiré de la copie, épreuve silencieuse par tâches inventoriées, relecture verrouillée après remise.       |
 | P1.5 — Corpus réel et calibration        | Bloqué  | Seuils et statut généré terminés ; 0/2 235 copies minimales réelles, consenties et doublement corrigées. Notes numériques masquées.      |
@@ -55,7 +55,7 @@
 
 ### Définition mesurable de « P1 terminé »
 
-`npm run p1:status` publie les preuves des six lots ; `npm run p1:check` échoue tant qu'un seul reste bloqué. P1.1 exige 38 inventaires officiels complets et valides. P1.2 exige 100 % de couverture explicite pour ces 38 sujets. P1.5 exige au minimum 15 copies par pôle officiellement vérifié, les quatre catégories et le respect des cinq seuils d'erreur/désaccord de `data/calibration-policy.js`. Au 7 septembre 2026, **3 critères sur 6** sont fermés : P1 est donc incomplet, indépendamment de la quantité de code livrée.
+`npm run p1:status` publie les preuves des six lots ; `npm run p1:check` échoue tant qu'un seul reste bloqué. P1.1 exige 52 inventaires officiels complets et valides. P1.2 exige 100 % de couverture explicite pour ces 52 sujets. P1.5 exige au minimum 15 copies par pôle officiellement vérifié, les quatre catégories et le respect des cinq seuils d'erreur/désaccord de `data/calibration-policy.js`. Au 7 septembre 2026, **3 critères sur 6** sont fermés : P1 est donc incomplet, indépendamment de la quantité de code livrée.
 
 Les données manquantes ne peuvent pas être synthétisées : il faut les sujets et barèmes officiels vérifiables pour les 37 inventaires absents, puis un processus humain de consentement, anonymisation et double correction. Falsifier ces éléments pour afficher 100 % violerait les règles de pilotage 1 et 3.
 

@@ -245,23 +245,35 @@ export const YEAR_CATALOG = Object.freeze([
       modulePath: `data/years/se/year-${id}.js`
     })
   ),
-  // La filière maths ouvre en 2015 (les PDF 2013–2014 sont présents dans
-  // subjects/M/ mais sans payload : les encoder demande la même relecture
-  // page à page, année par année).
-  ...["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026"].map(
-    (calendarYear) =>
-      catalogEntry({
-        id: `${calendarYear}-m`,
-        stream: "m",
-        calendarYear,
-        label: `بكالوريا الجزائر دورة ${calendarYear} — شعبة رياضيات`,
-        badge: "دورة رسمية",
-        theme: "indigo",
-        enabled: true,
-        subjectCount: 2,
-        exerciseCounts: [2, 2],
-        modulePath: `data/years/m/year-${calendarYear}.js`
-      })
+  // La filière maths ouvre en 2014 (le PDF 2013 est présent dans subjects/M/
+  // mais sans payload : l'encoder demande la même relecture page à page).
+  ...[
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+  ].map((calendarYear) =>
+    catalogEntry({
+      id: `${calendarYear}-m`,
+      stream: "m",
+      calendarYear,
+      label: `بكالوريا الجزائر دورة ${calendarYear} — شعبة رياضيات`,
+      badge: "دورة رسمية",
+      theme: "indigo",
+      enabled: true,
+      subjectCount: 2,
+      exerciseCounts: [2, 2],
+      modulePath: `data/years/m/year-${calendarYear}.js`
+    })
   )
 ]);
 
@@ -283,6 +295,7 @@ const YEAR_LOADERS = Object.freeze({
   2024: () => import("./years/se/year-2024.js"),
   2025: () => import("./years/se/year-2025.js"),
   2026: () => import("./years/se/year-2026.js"),
+  "2014-m": () => import("./years/m/year-2014.js"),
   "2015-m": () => import("./years/m/year-2015.js"),
   "2016-m": () => import("./years/m/year-2016.js"),
   "2017-m": () => import("./years/m/year-2017.js"),

@@ -116,13 +116,13 @@ Le disclaimers du hard benchmark (0 copie réelle doublement annotée) reste la 
 Les questions BAC ne sont plus supposées équivalentes aux quatre étapes N/S/E/W. Un inventaire indépendant déclare désormais chaque tâche : sa provenance (`official` quand le texte vient de l'énoncé, `reconstructed` quand il s'agit d'une étape pédagogique), sa page quand elle est connue, ses références documentaires et son maximum — **provisoire** partout, puisqu'aucun barème n'a été relu par un humain.
 
 ```bash
-npm run coverage:official # détail des 38 sujets (tous ouverts à l'épreuve)
+npm run coverage:official # détail des 52 sujets inventoriés (tous ouverts à l'épreuve)
 npm run inventory:check    # data/official-tasks.js doit être régénéré, jamais édité à la main
 npm run p1:status         # verdict des six critères P1
 npm run p1:check          # échoue tant que P1 n'est pas réellement terminé
 ```
 
-Les inventaires couvrent les **38 sujets** et **408 tâches** : **149** consignes officielles (avec page) et **259** étapes reconstruites (sans page — on n'invente pas un numéro de page). Les 38 sujets sont ouverts à l'épreuve, conformément à la décision produit consignée dans `data/bac-mode-policy.js` : le contenu doit être inventorié, mappé et borné (règle stricte), mais les certifications humaines — relecture des documents, barème vérifié — peuvent manquer, à condition que l'écran le dise. La règle stricte reste implémentée (`strictEligible`) et continuera de décider seule dès que les preuves humaines existeront. La couverture globale vaut `unknown` tant que l'inventaire d'un sujet est partiel : elle n'est jamais transformée en 0 % ou 100 %. Les exports chiffrés restent interdits tant que la calibration humaine n'est pas faite.
+Les inventaires couvrent les **52 sujets** et **520 tâches** : **236** consignes officielles (avec page) et **284** étapes reconstruites (sans page — on n'invente pas un numéro de page). Ces 52 sujets sont ouverts à l'épreuve, conformément à la décision produit consignée dans `data/bac-mode-policy.js` : le contenu doit être inventorié, mappé et borné (règle stricte), mais les certifications humaines — relecture des documents, barème vérifié — peuvent manquer, à condition que l'écran le dise. La règle stricte reste implémentée (`strictEligible`) et continuera de décider seule dès que les preuves humaines existeront. La couverture globale vaut `unknown` tant que l'inventaire d'un sujet est partiel : elle n'est jamais transformée en 0 % ou 100 %. Les exports chiffrés restent interdits tant que la calibration humaine n'est pas faite.
 
 Le code du parcours est en place : une épreuve silencieuse fondée sur les tâches inventoriées, puis une relecture verrouillée après remise. La CSP n'autorise plus `unsafe-inline` et les sources publiques ne contiennent plus de style inline. Cela ne clôt pas P1 : les inventaires complets et le corpus humain sont des preuves externes absentes, pas des cases que le code peut cocher seul. Le volume et le format des apports nécessaires sont détaillés dans [`docs/P1_EVIDENCE_REQUIREMENTS.md`](docs/P1_EVIDENCE_REQUIREMENTS.md).
 
@@ -286,7 +286,7 @@ une réponse locale HTTP 200 peut seulement entrer dans le cache runtime borné 
 | **2** | ت2 (7ن)  | مادة **الريسين** وتثبيط تركيب البروتين (ARNr 28s)              |
 | **2** | ت3 (8ن)  | المشبك المثبط ونضج **GABA** (NKCC1 → KCC2)                     |
 
-### Contenu BAC 2016–2026 (شعبة رياضيات)
+### Contenu BAC 2014–2026 (شعبة رياضيات)
 
 Énoncé + corrigé officiels eddirasa (OCR, 2026-08-31) pour 2022–2026 ; **2021**
 a été relue en image le 2026-09-14 sur le dossier dzexams local
@@ -297,7 +297,9 @@ réécrites depuis le corrigé ; **2020**,
 locaux (`subjects/M/2020/`, `subjects/M/2019/`, `subjects/M/2018/`,
 `subjects/M/2017/`), relues page à page en image ; **2016** l'a été le
 2026-09-14 (`M/dzexams-bac-sciences-1413929.pdf` : sujet pp. 1–4, corrigé
-« عناصر الإجابة » pp. 5–11). Les dossiers dzexams locaux de
+« عناصر الإجابة » pp. 5–11) et **2014** le 2026-09-15
+(`M/dzexams-bac-sciences-2369148.pdf` : sujet pp. 1–4, corrigé « الإجابة
+النموذجية » pp. 5–11, scan image seul comme 2015). Les dossiers dzexams locaux de
 2016 (`M/dzexams-bac-sciences-1413929.pdf`, « عناصر الإجابة » pp. 5–11, relu le
 2026-09-14), 2017 (`M/dzexams-bac-sciences-2275712.pdf`, « عناصر الإجابة »
 pp. 5–9), 2018 (`M/dzexams-bac-sciences-1967487.pdf`, pp. 7–12), 2019
@@ -344,13 +346,13 @@ Les sujets de la filière choisie remplacent la grille.
 | Filière                  | Épreuve               | Consultation (sujet + تصحيح)                    |
 | ------------------------ | --------------------- | ----------------------------------------------- |
 | شعبة علوم تجريبية (`se`) | 2013–2020 و 2022–2026 | 2021                                            |
-| شعبة رياضيات (`m`)       | 2015–2026             | 2013–2014 (+ 2017 exceptionnelle)               |
+| شعبة رياضيات (`m`)       | 2014–2026             | 2013 (+ 2017 exceptionnelle)                    |
 | شعبة تقني رياضي (`tm`)   | —                     | **absente de la source** (trou affiché, 0 lien) |
 
 Statut honnête :
 
 - **2013–2019 SE** : sujets reconstruits (`data/years/se/`). Toutes consignes `reconstructed`. **2018** : thèmes relus OCR dzexams. **2013–2017, 2019** : thèmes pédagogiques 3AS, **non certifiables** comme énoncés officiels. Confiance UI basse.
-- **2020 et 2022–2026 SE** et **2016–2026 Maths** : sujets chargés à la demande depuis `data/years/{se,m}/`, indexés par le catalogue `data/subjects.js`.
+- **2020 et 2022–2026 SE** et **2014–2026 Maths** : sujets chargés à la demande depuis `data/years/{se,m}/`, indexés par le catalogue `data/subjects.js`.
 - **Consultation** : sujet officiel + تصحيح النموذجي via dzexams. Aucun
   barème, mot-clé ou réponse modèle : le moteur ne s'applique pas.
 - **Maths 2022–2026** : viewer dzexams bloqué (`contentVerified: false`) ;
@@ -383,6 +385,13 @@ Statut honnête :
   restent badgées ⚠️ ; les valeurs du corrigé sont reprises telles quelles
   (429 = 3 × 143، 141 = 1 − 142، 16.66 % = 1 × 100 ÷ 6، الجزء الثابت والمتغير,
   فسيفسائي ومائع).
+- **2014 Maths** : dossier dzexams local — sujet pp. 1–4, corrigé « الإجابة
+  النموذجية » pp. 5–11 relu en image le 2026-09-15 ; le scan est image seul
+  (1 fragment de texte par page), les neuf consignes officielles viennent donc de
+  l'image. Valeurs du corrigé reprises : pHi 3 / 5 / 9.8 / 10.8 ; 4⁴ = 256 et
+  4 × 3 × 2 × 1 = 24 ; بنية ثالثية ولارابطة كبريتية (A) وشاردية (B) ; 100 % في
+  الوسط أ وتناقص التيميدين المشع في الوسط ب ; زمرة (س) : B أو O ; 18 = 5×3 + 3
+  و 4 وحدات بنائية ; gp120/CD4 وتناقص LT4.
 - **2021 Maths** : dossier dzexams local — sujet pp. 1–6, corrigé « الإجابة
   النموذجية » pp. 7–12 relu en image le 2026-09-14. Les cinq consignes qui
   n'étaient mappées nulle part (النمط الوراثي لولدين، اشرح آلية التأثير، قدم
@@ -419,10 +428,10 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **281** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
-- Copies vérifiées dans le hard benchmark : **0/3405 minimum** avant toute promotion numérique
-- Inventaires de tâches officielles commencés : **50/52 sujets** (**504 tâches connues**)
-- Sujets éligibles à la simulation : **50**
+- Tests exécutés par `npm test` : **288** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Copies vérifiées dans le hard benchmark : **0/3540 minimum** avant toute promotion numérique
+- Inventaires de tâches officielles commencés : **52/54 sujets** (**520 tâches connues**)
+- Sujets éligibles à la simulation : **52**
 - Critères P1 fermés : **3/6** — statut global : **incomplet**
 - Critères P2 fermés : **6/7** — élèves distincts testés : **0/5**
 - Critères P3 fermés : **5/6** — statut global : **incomplet**

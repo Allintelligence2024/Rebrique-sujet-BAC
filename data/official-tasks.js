@@ -7642,6 +7642,444 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       }
     ]
   },
+  "2014-m/S1": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/ar/annales/MXlQMjVhL2ZLK25mcEpTWnI5N3JtQT09",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2014/sujet-1.pdf",
+      pages: 2,
+      pageOffset: 0
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: []
+    },
+    tasks: [
+      {
+        id: "2014-m-S1-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "تأخذ البروتينات بعد تركيبها على مستوى الريبوزومات بنيات فراغية محددة لتؤدي وظيفتها داخل أو خارج الخلية. فكيف تحدد الوحدات البنائية بنية البروتين الفراغية وما الذي يحافظ عليها؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2014-m-S1-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 1,
+        prompt:
+          "1- إن الوحدات البنائية للبروتين هي المسؤولة عن تحديد مستوى البنية الفراغية الممثلة في الوثيقة (1). يمثل الشكل (أ) جذور بعض هذه الوحدات، بينما يمثل الشكل (ب) قيم الـ pHi هذه الوحدات. أ- انسب لكل حمض أميني قيمة الـ pHi المناسبة مع التعليل. ب- α- ما هي نتائج الهجرة الكهربائية للأحماض الأمينية التي جذورها (R2,R1) عند pH الوسط = 5 ؟ علل. β- اكتب الصيغ الكيميائية لهذين الحمضين الأمينيين في نفس الوسط pH=5. ج- اكتب الصيغة الكيميائية لرباعي الببتيد الذي جذور أحماضه الأمينية كالـتالي (R2-R1-R3-R4). د- احسب عدد أنواع رباعي الببتيد الذي يمكن تركيبه من الوحدات البنائية ذات الجذور المبينة في الشكل (أ) من الوثيقة (1) بدون تكرار الحمض الأميني، و بتكرار الحمض الأميني. ماذا تستنتج ؟",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2014-m-S1-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 2,
+        prompt:
+          "2- أ- تعرّف على مستوى البنية الممثلة في الوثيقة ( ج ) . ب- تنشأ بين الأحماض الأمينية أنواع من الروابط بعضها مثل في الشكل ( ج ) من الوثيقة (1). استنتج أنواع هذه الروابط (B،A). ثم اقترح أنواعا أخرى. ج- ما أهمية هذه الروابط ؟ 3- نعامل بروتين وظيفي باليوريا و بيتا مركبتوإيتانول كما هو مثل في التجربة 1 و 2 للوثيقة ( 2 ) . أ- حلل الوثيقة. ب- من خلال تحليلك للوثيقة و ما سبق بيّن على ماذا تتوقف البنية الفراغية الوظيفية للبروتين.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2014-m-S1-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: null,
+        prompt:
+          "بعد دراستك للتجربتين، اكتب نصا علميا توضح فيه العلاقة بين البنية الفراغية للبروتين وتخصصه الوظيفي.",
+        promptSource: "reconstructed",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2014-m-S1-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "يمثل كل فرد وحدة بيولوجية مستقلة بذاتها، إذ تستطيع عضويته التمييز بين المكونات الخاصة بالذات واللاذات، حيث يلعب الغشاء الهيولي دورا أساسيا في ذلك. فكيف يميز الغشاء الهيولي بين الذات واللاذات؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2014-m-S1-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 2,
+        prompt:
+          "1- تبيّن الوثيقة (1) توضّع الجزيئات الكيميائية في الغشاء الهيولي حسب النموذج الفسيفسائي المائع. بالاعتماد على الوثيقة (1): أ- اكتب البيانات المرقمة من 1 إلى 6. ب- قدّم وصفاً لتموضع الجزيئات الكيميائية ضمن الغشاء. ج- علّل تسمية النموذج بالفسيفسائي المائع. د- حدّد الجزيئات الكيميائية المميزة للذات مدعماً إجابتك بتجربة تؤكد ذلك.",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2014-m-S1-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 2,
+        prompt:
+          "2- لإبراز دور البنية الممثلة في الوثيقة (1) في تحديد الهوية البيولوجية، نقترح الشكل (أ) من الوثيقة (2) الذي يمثل الشروط التجريبية و النتائج المحصل عليها. أ- فسّر النتائج المحصل عليها. ب- باستغلال النتيجة المحصل عليها، بيّن كيف أن البنية الممثلة في الوثيقة (1) تحدد الهوية البيولوجية للفرد. 3- في إطار نفس الدراسة، تؤخذ كمية من مصل دم شخص (س) مجهول الزمرة الدموية و توضع على قطرة دم شخص (ص) زمرته A، فكانت نتائج الملاحظة المجهرية، كما هي مبينة في الشكل ( ب ) للوثيقة (2). أ- علّل النتائج المحصل عليها، مدعّمًا إجابتك برسم تخطيطي. ب- ما هي زمرة الشخص (س)؟ علّل ذلك.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2014-m-S1-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: 2,
+        prompt: "4- معتمدًا على النتائج المتوصل إليها، قدّم إذا تعريفا دقيقا للذات واللاذات.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      }
+    ]
+  },
+  "2014-m/S2": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/ar/annales/MXlQMjVhL2ZLK25mcEpTWnI5N3JtQT09",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2014/sujet-2.pdf",
+      pages: 2,
+      pageOffset: 2
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: []
+    },
+    tasks: [
+      {
+        id: "2014-m-S2-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "تميز الخلايا الحية بقدرتها على تركيب البروتينات، وهذا نتيجة سلسلة من الأحداث تتم بواسطة عناصر نووية وهيولية. فكيف تتم هذه الأحداث وما هي العناصر المتدخلة فيها؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2014-m-S2-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 3,
+        prompt:
+          "1- أ- قدّم أسماء البيانات المرقمة من 1 إلى 8. ب- سمّ الظاهرة التي سمحت بظهور العنصر ( ص ) في الشكل ( ب ) وحدّد مقرها في الخلية. ج- العنصر ( ص ) هو نتيجة نشاط خلوي يحدث على مستوى الخلية، صف مراحل هذا النشاط الخلوي. 2- من خلال معطيات الشكل ( أ ) و الشكل ( ب ) : استخرج عدد القواعد الأزوتية للعنصر رقم 6 و عدد الوحدات البنائية للعنصر ( ص ) ـ علل إجابتك.",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2014-m-S2-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 3,
+        prompt:
+          "3- خلال النشاط الممثل في الوثيقة (1) يرتبط العنصر (3) بالعنصر (4). أ- في أي مرحلة من النشاط المدروس يحدث هذا الارتباط ؟ ب- أنجز رسما تخطيطيا تعبّر من خلاله عن هذه المرحلة. 4- عملية تركيب البروتين مرتبطة كذلك بحدوث النشاط الخلوي الممثل في الوثيقة (2). أ- سمّ هذا النشاط الخلوي ثم اذكر أهميته. ب- لخص في جدول أهم الاختلافات بين العنصر 1 و العنصر 2. ج- صف في نص علمي الظاهرة التي تحدث على مستوى الجزء المؤطر ( ع ).",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2014-m-S2-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: null,
+        prompt: "من خلال ما درست، وضّح في نص علمي مصير المعلومة الوراثية من المورثة إلى تركيب البروتين.",
+        promptSource: "reconstructed",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2014-m-S2-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "الجهاز المناعي يعترض لما يعتبر لاذات، سواء كان جسما غريبا أو ذاتيا تعرّض للتغيير وذلك قصد المحافظة على صحة الجسم و تلعب البروتينات الغشائية في هذا المجال دورا أساسيا. فكيف يقصي الجهاز المناعي اللاذات؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2014-m-S2-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 4,
+        prompt:
+          "1- أ- أعط مثالا لكل حالة ( لما يعتبر لاذات ). ب- اذكر أسماء البروتينات الغشائية الأساسية التي تمكن الجسم من التعرف على ما هو ذاتي و ما هو غير ذاتي. 2- لإبراز دور بعض عناصر الجهاز المناعي لإقصاء اللاذات، أستخلصت خلايا مناعية من طحال فأر و أنجزت التجربة الممثلة في الوثيقة (1). أ- بواسطة رسم تخطيطي، عبّر عن ما حدث في الوسط 1. ب- صف ما حدث في الوسط 2. ج- فسّر نتائج معايرة إنتاج الأجسام المضادة في الوسط 3 ، 4 ، 5. د- ما هي المعلومات التي يمكن إستخلاصها من نتائج هذه التجربة؟",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2014-m-S2-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 4,
+        prompt:
+          "3- يفقد الجهاز المناعي لجسم مصاب بفيروس السيدا (VIH) فعاليته بصورة تدريجية الشيء الذي يترتب عنه ظهور أمراض انتهازية، و لإبراز كيف يؤثر هذا الفيروس نقترح الدراسة التالية: يمثل الشكل (أ) تطور نسبة اللمفاويات LT4 و LB المزروعة في وسط فيزيولوجي يحتوي على فيروس (VIH). أما الشكل (ب) فيمثل تطور كمية الأجسام المضادة في دم شخص مصاب منذ 8 سنوات. أ- فسّر النتائج المحصل عليها في الشكل (أ). ب- ماهي المشكلة المطروحة من مقارنة نتائج الشكل (أ) والشكل (ب) ؟ ج- مما سبق ومعتمدا على معلوماتك، اقترح حلاّ منطقيا لهذه المشكلة العلمية.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2014-m-S2-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: null,
+        prompt: "اعتمادا على دراستك، اكتب نصا علميا توضح فيه كيف يتصدى الجهاز المناعي لفيروس السيدا (VIH).",
+        promptSource: "reconstructed",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      }
+    ]
+  },
   "2015-m/S1": {
     schemaVersion: 1,
     status: "partial",

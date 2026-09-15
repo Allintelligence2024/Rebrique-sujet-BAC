@@ -311,7 +311,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet)."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet). Encodé 4D sous l id 2014-m le 2026-09-15 : les 11 pages du dossier dzexams local (M/dzexams-bac-sciences-2369148.pdf : sujet pp. 1-4, corrigé « الإجابة النموذجية » pp. 5-11) ont été rendues en image et relues ; ce scan est image seul (1 fragment de texte par page), les consignes sont donc recopiées depuis l image. Réponses modèle reprises du corrigé (pHi 3 / 5 / 9.8 / 10.8 ; 4⁴ = 256 et 4×3×2×1 = 24 ; بنية ثالثية، رابطة كبريتية (A) وشاردية (B) ; 100 % في الوسط أ؛ زمرة (س) : B أو O؛ 18 = 5×3 + 3 و 4 وحدات بنائية؛ gp120/CD4). La carte de consultation de 2014 est remplacée par la carte d épreuve ; seule 2013 reste en consultation."
     },
     {
       year: "2013",

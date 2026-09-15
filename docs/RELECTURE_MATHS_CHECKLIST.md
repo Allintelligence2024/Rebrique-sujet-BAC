@@ -1,6 +1,7 @@
 # Checklist de relecture — BAC maths (شعبة رياضيات)
 
-**Date :** 2026-09-15 (dernières passes : 2015-m, 2016-m, 2021-m, 2022-m, 2026-m, puis
+**Date :** 2026-09-15 (dernière passe : 2014-m ; passes précédentes : 2015-m,
+2016-m, 2021-m, 2022-m, 2026-m, puis
 2023-m, 2024-m et 2025-m revérifiés sur les scans locaux). Branche
 `arena/01a09be6-rebrique-sujet-bac` (PR #26).
 
@@ -53,6 +54,9 @@ Audit d'un sujet (pôles, points, provenance, page) :
 | 2015-m S1                   | 1, 2                   | ت1 (10ن) الهجرة الكهربائية والببتيد 503 ; ت2 (10ن) الزمر الدموية                | consignes mot à mot (تحليل النتائج، الفرضية، II-1/II-2، الاختباران، الرسم، المقارنة، المخطط) ; les deux pôles N reconstruits et le W de ت2 reconstruit                                                                                   |
 | 2015-m S2                   | 3, 4                   | ت1 (10ن) البروتين amphotère والبنية الثالثية ; ت2 (10ن) فيروس الالتهاب الكبدي B | consignes mot à mot (المنحنى، pHi، II-1/II-2/II-3، وصف البنية، فسّر، الرسم، المراحل، استخرج) ; les deux pôles N reconstruits                                                                                                             |
 | 2015-m corrigé              | 5-10                   | corrigé officiel « الإجابة النموذجية وسلم التنقيط » des deux sujets             | réponses modèle réécrites : 503 = (133+174+117+133) − 3×18 ; pHi = 4.5 ; قوس ترسيب Hbs/Hbe ; 90 % في الوسط 4 ; O+ / AB− / B+ / A+ ; N أسيتيل غلوكوزامين و الغالاكتوز                                                                     |
+| 2014-m S1                   | 1, 2                   | ت1 (10ن) البنيات الفراغية وجذور R1-R4 ; ت2 (10ن) الغشاء الهيولي وتحديد الذات    | S1 : S = Q1 (أ، ب α/β، ج، د), E = Q2+Q3 ; W reconstruit (l'exercice s'arrête à 3ب) ; S2 : S = Q1, E = Q2+Q3 ; W = Q4 imprimée (تعريف الذات واللاذات), N reconstruits                                                                     |
+| 2014-m S2                   | 3, 4                   | ت1 (10ن) النسخ والترجمة ; ت2 (10ن) الجهاز المناعي وفيروس السيدا                 | S2-E1 : S = Q1+Q2, E = Q3+Q4 (جدول ADN/ARNm et النص العلمي) ; S2-E2 : S = Q1+Q2, E = Q3 ; les deux W reconstruits (l'exercice s'arrête à 4ج et 3ج)                                                                                       |
+| 2014-m corrigé              | 5-11                   | corrigé officiel « الإجابة النموذجية » des deux sujets                          | réponses modèle réécrites : pHi 3 / 5 / 9.8 / 10.8 ; 4⁴ = 256 و 4×3×2×1 = 24 ; بنية ثالثية، رابطة كبريتية (A) وشاردية (B) ; 100 % في الوسط أ وتناقص التيميدين ; زمرة (س) : B أو O (Anti A) ; 18 = 5×3 + 3 و 4 وحدات بنائية ; gp120/CD4   |
 | 2016-m S1                   | 1, 2                   | ت1 (10ن) تركيب البروتين ; ت2 (10ن) البالعة والأجسام المضادة                     | consignes mot à mot (Q1/Q2، الجدول، الوثيقة 2) ; les deux pôles N reconstruits                                                                                                                                                           |
 | 2016-m S2                   | 3, 4                   | ت1 (10ن) من الـ ADN إلى البروتين ; ت2 (10ن) الغشاء وCMH                         | consignes mot à mot (Anagène، الترجمة والحساب، الفلورة، CMH والنمط الوراثي) ; les deux pôles N reconstruits                                                                                                                              |
 | 2016-m corrigé              | 5-11                   | corrigé officiel « عناصر الإجابة » des deux sujets                              | réponses modèle réécrites : 429 = 3 × 143 و141 = 1 − 142 ; 16.66 % = 1 × 100 ÷ 6 (الأليل C3 متماثل) ; الجزء الثابت والمتغير للجسم المضاد ; فسيفسائي ومائع ; نظام CMH ونظام ABO والريزوس                                                  |
@@ -192,6 +196,56 @@ Ce qui a changé dans les données :
 Les réponses modèle restent verrouillées par `tests/maths-model-answers.test.mjs`
 (la réponse modèle doit satisfaire sa propre règle de mots-clés).
 
+## Passe 2014-m (2026-09-15)
+
+Deuxième année dont le scan est **image seul** : le dossier dzexams local
+`M/dzexams-bac-sciences-2369148.pdf` (11 pages) porte le sujet (pp. 1-4) et son
+corrigé officiel « الإجابة النموذجية » (pp. 5-11), avec **1 fragment de texte par
+page** : rien n'a pu être recopié depuis une couche texte, tout vient de l'image.
+
+```bash
+node scripts/render-pdf-pages.mjs M/dzexams-bac-sciences-2369148.pdf 1,2,3,4 3
+node scripts/render-pdf-pages.mjs M/dzexams-bac-sciences-2369148.pdf 5,6,7,8,9,10,11 2
+node scripts/report-subject-inventory.mjs 2014-m
+```
+
+Format retrouvé sur l'image : **2 sujets × 2 exercices (10 + 10)**, durée imprimée
+02 سا و30 د. Sujet 1 : البنيات الفراغية (جذور R1-R4 وقيم pHi، الهجرة الكهربائية
+عند pH=5، عدد أنواع رباعي الببتيد، الروابط A وB، تجربتا اليوريا وبيتا
+مركبتوإيتانول على الريبونوكلياز) ثم الغشاء الهيولي وتحديد الذات (النموذج
+الفسيفسائي المائع، تجربة الزرع في الوسطين أ و ب، مصل الشخص (س) وقطرة دم الشخص
+(ص)). Sujet 2 : النسخ والترجمة (البيانات 1-8، العنصر (ص)، مراحل تنشيط الحمض
+الأميني، الاستنساخ) ثم الجهاز المناعي وإقصاء اللاذات (خلايا الطحال في خمسة
+وسائط، فيروس السيدا، نسبة LT4 و LB، تطور الأجسام المضادة).
+
+Neuf consignes imprimées deviennent des tâches `official`. Les quatre étapes de
+cadrage N restent reconstruites (aucun « المشكل العلمي » n'est imprimé) et le
+disent dans leur note, comme trois pôles W : les exercices 1 et 2 du sujet 1 et
+les deux exercices du sujet 2 se terminent en effet sur une question de
+conclusion déjà rattachée au pôle E (3ب، 4ج، 3ج), sauf 2014-m S1-E2 dont la
+question 4 (تعريف الذات واللاذات) est imprimée et devient le pôle W officiel.
+
+Valeurs reprises du corrigé : l'aspartate (`R1`, pHi = 3) migre vers le pôle
+positif et le résidu neutre (`R2`, pHi = 5) reste en place ; le nombre de
+tétrapeptides est **4⁴ = 256** avec répétition et **4 × 3 × 2 × 1 = 24** sans
+répétition ; la question 2أ identifie la **بنية ثالثية**, `A` la liaison
+disulfure et `B` la liaison ionique ; l'expérience 1 restaure la structure
+native alors que l'expérience 2 (urée maintenue) donne une structure non
+fonctionnelle ; dans le sujet 1 exercice 2, le milieu (أ) garde 100 % du
+tritium car l'histocompatibilité CMH empêche la prolifération, le milieu (ب)
+le consomme progressivement, et le sérum du sujet (س) agglutine les hématies A
+→ zéros de groupe **B ou O** (anticorps Anti-A) ; dans le sujet 2, l'ARNm
+(élément 6) compte **18 bases** (`5 × 3 + 3`) pour **4 unités** dans la chaîne
+(5 ARNt moins la méthionine initiatrice) ; enfin le VIH se fixe par **gp120**
+sur les cellules portant **CD4**, ce qui explique la chute des LT4 et le
+maintien des LB, la production d'anticorps devenant faible par manque
+d'interleukines.
+
+Le catalogue maths ouvre désormais en **2014** (13 cartes-épreuve 2014-m …
+2026-m, une seule carte de consultation pour 2013, plus la session
+exceptionnelle 2017) et `tests/maths-2014.test.mjs` verrouille la session
+(barème, inventaire mappé, liste des neuf pôles officiels, valeurs du corrigé).
+
 ## Passe 2015-m (2026-09-15)
 
 Cinquième année encodée hors programme de rattrapage, et première dont le scan
@@ -229,10 +283,11 @@ vers le pôle positif et l'arginine vers le pôle négatif ; la liaison ionique
 famille sont **الأب O+ ، الأم AB− ، البنت B+ ، الابن A+** ; `1 %` dans les milieux
 1-3 et `90 %` dans le milieu 4 avec la double reconnaissance LTc/CMH I.
 
-Le catalogue maths ouvre donc en **2015** (12 cartes-épreuve 2015-m … 2026-m,
-3 cartes de consultation pour 2013-2014 + la session exceptionnelle 2017) et
-`tests/maths-2015.test.mjs` verrouille la session (barème, inventaire mappé,
-liste des 11 pôles officiels, valeurs du corrigé, badge ⚠️).
+Le catalogue maths ouvrait en **2015** au moment de cette passe (12 cartes-épreuve
+2015-m … 2026-m) ; depuis la passe 2014-m ci-dessus, il ouvre en **2014** et seul
+2013 reste en consultation. `tests/maths-2015.test.mjs` verrouille la session
+(barème, inventaire mappé, liste des 11 pôles officiels, valeurs du corrigé,
+badge ⚠️).
 
 ## Passe 2016-m (2026-09-14)
 
@@ -316,7 +371,8 @@ et sept libellés paraphrasés depuis la couche texte inversée sont recopiés m
 mot. Le pôle N de 2021-m S1-E2 accueille la question du préambule (page 2),
 recopiée mot à mot : la note du pôle dit qu'elle n'est pas numérotée.
 
-Bilan maths 2015–2026 : **141 tâches officielles sur 192** (l'encodage 2015
+Bilan maths 2014–2026 : **150 tâches officielles sur 208** (l'encodage 2014
+ajoute neuf consignes recopiées sur l'image ; l'encodage 2015
 ajoute 11 consignes officielles sur 16 ; l'encodage 2016
 ajoute 12 consignes officielles sur 16, format 10+10 par sujet ; la relecture 2018
 ajoute 15 consignes officielles sur 16 ; la session 2020 avait ajouté 10 consignes
@@ -341,13 +397,13 @@ corrigé local à l'appui).
    sur l'image (page 4) et son corrigé donne **ج ← أ ← ب** ; la réponse modèle et
    les mots-clés (`ثانوي`, `LB`) ont été alignés. Le 0 % du probe venait de la
    réponse précédente, qui classait (س) en « أولي ».
-3. **Années maths 2013–2014** : les PDF sont présents
-   (`subjects/M/2013…2014`, listés dans `subjects/manifest.json`) mais aucune
-   donnée n'existe encore dans `data/years/m/` → ces années restent en
-   consultation externe, sans mode BAC. **2020…2015 sont désormais encodées**
-   (`year-2020.js` … `year-2015.js`). Encoder 2014 puis 2013 demande la même
-   relecture page à page (scans image seul) et ne doit pas être fait à
-   l'aveugle. Deux scans ont une police
+3. **Année maths 2013** : ses deux PDF sont présents
+   (`subjects/M/2013/sujet-{1,2}.pdf`, extraits du dossier dzexams
+   `M/dzexams-bac-sciences-2770867.pdf`, listés dans `subjects/manifest.json`)
+   mais aucune donnée n'existe encore dans `data/years/m/` → cette année reste
+   en consultation externe, sans mode BAC. **2020…2014 sont désormais encodées**
+   (`year-2020.js` … `year-2014.js`). Encoder 2013 demande la même relecture
+   page à page (scan image seul) et ne doit pas être fait à l'aveugle. Deux scans ont une police
    incomplète : 2019 (quelques séries de mots non dessinées) et 2018 (le nom du
    virus dans « فيروس الـ ( ) » n'est pas dessiné). Ils sont signalés dans
    `bacPromptNotes` et jamais complétés au hasard (la couche texte, lue par
@@ -363,12 +419,13 @@ corrigé local à l'appui).
    2026-09-14) et 2022 (`-1777391.pdf`, pp. 7–13, relu le 2026-09-14).
    2023, 2024, 2025 et 2026 disposent du corrigé eddirasa (2026 et 2023–2025
    revérifiés le 2026-09-14, chiffres relus sur les figures des scans locaux car
-   l'OCR inverse les nombres). Les seules années sans corrigé localisé sont
-   **2013 et 2014**, dont les scans sont image seul : c'est le chantier
+   l'OCR inverse les nombres) et 2014 (`-2369148.pdf`, « الإجابة النموذجية »
+   pp. 5–11, relu le 2026-09-15, scan image seul). La seule année sans corrigé
+   localisé est **2013**, dont le scan est image seul : c'est le chantier
    d'encodage restant (cf. point 3).
 5. Cohérence mots-clés / réponses modèle : **traité le 2026-09-14**, étendu le
-   2026-09-15 aux 16 pôles de 2015-m. Sonde
-   `evaluateText(réponse modèle, règle)` sur les 176 pôles maths :
+   2026-09-15 aux 16 pôles de 2015-m puis aux 16 pôles de 2014-m. Sonde
+   `evaluateText(réponse modèle, règle)` sur les 192 pôles maths :
    `hits >= req` partout (0 échec). Quatre règles ne pouvaient pas être
    satisfaites par la réponse modèle officielle et ont été ajustées
    (2017-m S2E2W, 2018-m S2E2E, 2018-m S2E2W, 2020-m S1E1W) ; deux réponses
