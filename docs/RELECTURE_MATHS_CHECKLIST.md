@@ -508,6 +508,8 @@ apparaissent). Aucune phrase n'a été réécrite : seuls des jetons ont changé
 | coquilles de recopie           | `البيبتيدية` → `الببتيدية`                               | `التماز` → `التمايز`, `التكزري` → `الكزازي`, `الغرأنزيم` → `الغرانزيم`, `البلاسمية` → `البلازمية`, `البلاسموديوم` → `البلازموديوم`, `المحسة` → `المحسسة`, `البيتيد` → `الببتيد`        |
 | phrase fausse (preuve corrigé) | `بين الضمحل الييني وArg120` → `بين الحمض الأميني Arg120` | corrigé SE 2022 : « روابط بين CoEM والحمض الأميني Arg120 و Tyr333 »                                                                                                                    |
 
+**Résidu de la même famille (2026-09-15, après la passe)** : quatre formes VII/VIII/X avaient échappé à la liste — `إستعاد`, `إكتسب`, `إرتصاص`, `إنطواء` (2014-m). Le même fichier écrit `ارتصاص` 18 fois et le corpus `استعادة` (4), `يكتسب` (6), `انطواء` (2) ; un balayage des jetons entiers opposant `إ…` et `ا…` n'en trouve plus aucun autre dans tout le corpus.
+
 **Preuve** : pour chaque famille, le comptage des deux graphies dans la couche
 texte des PDF tranche (`فرضية` 109 / `فرضيه` 0, `طفرة` 6 / `طفره` 0,
 `نواة` 29 / `نواه` 0, `مورثة` 79 / `مورثه` 0, `سرعة`, `حرارة`, `مضخة`,
@@ -569,17 +571,19 @@ sept lignes de plus. Les trois premières sont tranchées sur l'image du corrig�
 dossier, rendues par `scripts/render-pdf-pages.mjs`) ; les suivantes sur le
 reste du corpus et le vocabulaire des scans.
 
-| Famille          | Correction                                           | Détail                                                                                                                                           |
-| ---------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| translittération | `لازمية` → `بلازمية`, `اللازمية` → `البلازمية`       | 20 (2013-m) ; le corrigé p. 4 écrit « خلية بلازمية LBP » et le schéma p. 3 « بلازمية »                                                           |
-| coquille         | `تماز` → `تمايز`, `وتمازت` → `وتمايزت`               | 6 (2013-m) ; corrigé p. 4 « مصدر الخلية البلازمية (الشكل ب) : تمايز الخلية اللمفاوية LB المنتقاة »                                               |
-| coquille         | `تشطيم` → `التنشيط` (1) et `تنشيط` (1)               | 2013-m ; schéma p. 3 « التنشيط : التكاثر و التمايز »                                                                                             |
-| coquille         | `السيسيتين` → `السيستينين`                           | 2018-m : deux cystéines du pont disulfure ; le corpus écrit `السيستين` (2014-m) et les scans `السيستيني`                                         |
-| slug reconstruit | `النطبيعي` → `النمط الطبيعي`                         | SE-2025 : le placeholder fusionnait `النمط` et `الطبيعي` (la réponse modèle disait déjà `النمط الطبيعي`)                                         |
-| mot-clé mort     | `بلاسم` → `بلازم` (2017-m), `زمري` → `زمر` (SE-2025) | radicaux restés sur les anciennes graphies : la réponse modèle écrit `بلازموسيتات`, et le pôle voisin de SE-2025 utilise déjà `الزمر`            |
-| contresens       | `المبالغ العصبية` → `المبلغات العصبية`               | SE-2023 : « المبالغ » (les montants) n'a aucun sens ; la même session écrit `مستقبل غشائي للمبلغ العصبي` (L. 61) et 2026-m `المبلغات الكيميائية` |
+| Famille          | Correction                                                                       | Détail                                                                                                                                           |
+| ---------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| translittération | `لازمية` → `بلازمية`, `اللازمية` → `البلازمية`                                   | 20 (2013-m) ; le corrigé p. 4 écrit « خلية بلازمية LBP » et le schéma p. 3 « بلازمية »                                                           |
+| coquille         | `تماز` → `تمايز`, `وتمازت` → `وتمايزت`                                           | 6 (2013-m) ; corrigé p. 4 « مصدر الخلية البلازمية (الشكل ب) : تمايز الخلية اللمفاوية LB المنتقاة »                                               |
+| coquille         | `تشطيم` → `التنشيط` (1) et `تنشيط` (1)                                           | 2013-m ; schéma p. 3 « التنشيط : التكاثر و التمايز »                                                                                             |
+| coquille         | `السيسيتين` → `السيستينين`                                                       | 2018-m : deux cystéines du pont disulfure ; le corpus écrit `السيستين` (2014-m) et les scans `السيستيني`                                         |
+| slug reconstruit | `النطبيعي` → `النمط الطبيعي`                                                     | SE-2025 : le placeholder fusionnait `النمط` et `الطبيعي` (la réponse modèle disait déjà `النمط الطبيعي`)                                         |
+| mot-clé mort     | `بلاسم` → `بلازم` (2017-m), `زمري` → `زمر` (SE-2025)                             | radicaux restés sur les anciennes graphies : la réponse modèle écrit `بلازموسيتات`, et le pôle voisin de SE-2025 utilise déjà `الزمر`            |
+| contresens       | `المبالغ العصبية` → `المبلغات العصبية`                                           | SE-2023 : « المبالغ » (les montants) n'a aucun sens ; la même session écrit `مستقبل غشائي للمبلغ العصبي` (L. 61) et 2026-m `المبلغات الكيميائية` |
+| hamzat wasl      | `إستعاد` → `استعاد`, `إكتسب` → `اكتسب`, `إرتصاص` → `ارتصاص`, `إنطواء` → `انطواء` | 2014-m : formes VII/VIII/X hamzées ; le même fichier écrit `ارتصاص` (18 fois) et le corpus `استعادة`, `يكتسب`, `انطواء`                          |
+| slug reconstruit | `مستقل زمرته` → `مستقبل زمرته`                                                   | SE-2025 : le résumé du pôle N disait « مستقل » (indépendant) là où l'énoncé officiel du même pôle (page 9) écrit `مستقبل`                        |
 
-La dernière ligne a été tranchée par cohérence interne (même fichier, corpus, vocabulaire des scans : 0 `المبالغ` contre 28 formes en `مبلغ`), pas par relecture d'image : le mot seul reste licite, c'est la phrase qui est verrouillée.
+Les trois dernières lignes (hamzat wasl, receveur SE-2025) ont été tranchées par règle orthographique et cohérence interne — formes VII/VIII/X jamais hamzées, `مستقبل` écrit juste à côté dans l'énoncé officiel — sans relecture d'image. La ligne « contresens » a été tranchée par cohérence interne
 
 Le même schéma porte une case jaune « التشيط + » : cette graphie officielle est
 celle du corpus, elle n'a pas été touchée. Le verrou gagne huit formes
@@ -588,19 +592,19 @@ celle du corpus, elle n'a pas été touchée. Le verrou gagne huit formes
 test compare le **jeton entier** `لازمية` — il ne peut pas entrer dans la liste des préfixes, où le
 préfixe `ب` l'aurait rendu égal à la forme correcte `بلازمية`.
 
-**Verrou** : `tests/arabic-orthography.test.mjs` (6 tests) refuse les 157
+**Verrou** : `tests/arabic-orthography.test.mjs` (7 tests) refuse les 161
 graphies fautives (comparaison par jeton, préfixes
 `و ف ب ك ل ال وال فال بال كال لل` retirés avant comparaison : `والتماز`
 échappait à la liste où figure `التماز` — corrigé le 2026-09-15 en
 `والتمايز` — et `اللأمينين` à celle où figure `لأمينين` ; injections vérifiées
 dans les deux sens, y compris après la seconde passe), exige que le `ة`
 reste final,
-contrôle vingt-deux formes corrigées et les phrases-témoins (2017 `الخلية البلازمية`,
+contrôle vingt-quatre formes corrigées (`ارتصاص` et `انطواء` en plus) et les phrases-témoins (2017 `الخلية البلازمية`,
 2018 `الأناتوكسين الكزازي`, SE 2022 `اللامينين`, 2015 `محاليل`). Vérifié dans
 les deux sens : réintroduire `إنزيم` fait échouer le premier test, injecter
 `ترجمةا` fait échouer le second ; les quatre repassent sans la réintroduction.
 Les quatre tests `maths-2016/2017/2021` qui figeaient d'anciennes graphies ont
-été alignés (`أنزيم ARN بوليميراز`, `الخلية البلازمية`, `قليلة`).
+été alignés (`أنزيم ARN بوليميراز`, `الخلية البلازمية`, `قليلة`). Deux verrous ciblent les corrections de cette passe : `مستقل زمرته` (SE-2025, test 7) et la phrase `المبالغ العصبية` (SE-2023, test 3).
 
 ## Reste à faire (assumé)
 

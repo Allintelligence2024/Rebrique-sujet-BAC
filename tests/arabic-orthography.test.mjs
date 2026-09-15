@@ -223,7 +223,14 @@ const FORBIDDEN = [
   // après « بلاسموسيت » → « بلازموسيت », et « زمري » n'était le radical
   // d'aucun mot du corpus (le pôle voisin utilise déjà « الزمر »).
   "بلاسم",
-  "زمري"
+  "زمري",
+  // Restes de hamzat wasl (formes VII/VIII/X) : « إستعاد »/« إكتسب »/
+  // « إرتصاص »/« إنطواء » en 2014-m, alors que le même fichier écrit
+  // ارتصاص (18 fois) et le corpus استعادة / يكتسب / انطواء.
+  "إستعاد",
+  "إكتسب",
+  "إرتصاص",
+  "إنطواء"
 ];
 
 test("aucune des formes fautives corrigées ne revient dans les données", () => {
@@ -319,7 +326,9 @@ test("les corrections du 2026-09-15 sont bien en place (échantillon maths)", ()
     "لاذات",
     "تيموسية",
     "وريقية",
-    "السيستينين"
+    "السيستينين",
+    "ارتصاص",
+    "انطواء"
   ]) {
     assert.ok(tokens.has(good), `forme corrigée absente : ${good}`);
   }
@@ -342,4 +351,18 @@ test("la réponse modèle 2021 conserve les possessifs رامزها / تركيز
   const text = FILES.map((f) => f.text).join("\n");
   assert.match(text, /رامزها المضادة/);
   assert.doesNotMatch(text, /ةا\b/);
+});
+
+test("le résumé SE-2025 nomme le receveur (مستقبل), pas مستقل", () => {
+  // Le résumé du pôle N disait « نقل الدم من مانح زمرته A إلى مستقل زمرته O »
+  // alors que l'énoncé officiel du même pôle (page 9, vérifié le 2026-08-23)
+  // écrit « إلى مستقبل زمرته O ». « مستقل » (indépendant) n'a pas de sens ici.
+  const hits = [];
+  let good = 0;
+  for (const { stream, name, text } of FILES) {
+    if (text.includes("مستقل زمرته")) hits.push(`${stream}/${name} : مستقل زمرته`);
+    good += (text.match(/مستقبل زمرته/g) || []).length;
+  }
+  assert.deepEqual(hits, [], `forme fautive réintroduite :\n${hits.join("\n")}`);
+  assert.ok(good >= 1, "forme correcte مستقبل زمرته absente");
 });
