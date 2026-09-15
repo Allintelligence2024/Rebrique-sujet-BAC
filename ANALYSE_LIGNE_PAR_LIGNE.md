@@ -15,8 +15,9 @@
 > 📌 **Lecture des ⚠️ de §5-§6** : ils décrivent l'état du 2026-09-12. Le tableau
 > §10.1 dit lesquels sont corrigés ; les lignes concernées portent désormais la
 > mention « → corrigé (§10.1 …) ». Restent ouverts : S2.5 (Safari, non vérifiable
-> ici), S2.6 (dette défensive assumée), l'ancrage à 75 % de `strategy.js:130` et
-> l'arbitrage juridique des PDF (§10.1 S3.8).
+> ici), S2.6 (dette défensive assumée) et l'arbitrage juridique des PDF
+> (§10.1 S3.8). L'ancrage à 75 % de `strategy.js:130` a été **supprimé** le
+> 2026-09-15 (champ vide + repère du maximum, test dédié).
 
 ---
 
@@ -263,7 +264,7 @@ Score de placement des blocs : exact = 1, bon flux mauvais rang = 0,5, mauvais f
   ⚠️ **L.138-151** : le clic désactive le bouton et le remet en état **seulement si `startSession` renvoie falsy** — correct ; mais `button.textContent` est sauvegardé **après** le premier rendu : si deux clics rapides arrivent, `label` capture « جارٍ تحميل السنة… ». Le bouton étant `disabled`, le risque est théorique.
 - `strategy.js` (252 L.) : aperçu PDF (lien externe dzexams, jamais de redistribution — L.33-59), estimation personnelle par exercice (L.124-155), recommandation comparative (L.198-224), **garde de simulation** (L.226-249).
   ⚠️ **L.244-246** : `if (mode === "training" || mode === "simulation") { timers.startGlobal(); }` — **condition tautologique** (les deux seules valeurs possibles, validées en amont L.231 et `store.activateSubjectMode` L.414). Les deux branches du commentaire (L.242-243) sont donc en réalité identiques : l'horloge démarre dans les deux cas, ce que le commentaire laisse croire différent. → **corrigé** (§10.1 S2.2).
-  ⚠️ **L.130** : `initial = Math.round(exercise.max * 0.75 * 4) / 4` — pré-remplit l'estimation à 75 % du maximum. Biais d'ancrage discutable pour un outil censé aider à choisir, mais assumé.
+  ✅ **L.130** : `initial = Math.round(exercise.max * 0.75 * 4) / 4` — pré-remplissait l'estimation à 75 % du maximum (biais d'ancrage pour un outil censé aider à choisir). → **corrigé** le 2026-09-15 : plus de `value`, un `placeholder` « من N » rappelle le maximum, et `subjectEstimate` lit 0 pour un champ vide. Verrouillé par un test (`all-buttons.test.mjs`) : tous les champs partent vides, la somme affiche 0,00 puis suit la saisie.
 - `simulation.js` (325 L.) : mode examen « silencieux » (aucun indice ni modèle pendant l'épreuve), restitution `data-task-answer` (L.128-148), évaluation **qualitative** par longueur (`qualitativeLabel`, L.150-156 — heuristique assumée, sans note), verrouillage après remise (`disabled`, L.59), relecture `taskReviewHTML` (L.17-37) qui affiche des « références d'entraînement » en précisant qu'elles ne sont pas un corrigé officiel.
   ⚠️ **L.216-224** : `if (!inventory || !report.simulationEligible) { renderBacReadingMode(subject); return; }` — la simulation dégénère silencieusement en « mode lecture BAC ». Comportement défendable (filet de sécurité), mais **le bouton étant déjà désactivé en amont** (`strategy.js:133`), ce chemin n'est atteignable que par restauration d'état ou manipulation : l'utilisateur qui croyait démarrer une simulation se retrouve dans un autre mode **sans message d'explication** (contrairement à `denyInvalidSimulation`, L.279-284, qui alerte bien). → **corrigé** : `renderBacReadingMode(subject, reason)` + avis `FALLBACK_NOTICE` (§10.1 S2.3).
   ⚠️ **L.195** : en mode lecture, un lien `download` du PDF local est proposé — alors que `strategy.js:34-36` affirme qu'« un lien de téléchargement direct n'est jamais présenté ». **Contre-dit entre deux écrans** (le contexte diffère : lecture vs aperçu, mais la règle mériterait d'être écrite une fois). → **corrigé** : commentaire sourcé (§10.1 S3.3).

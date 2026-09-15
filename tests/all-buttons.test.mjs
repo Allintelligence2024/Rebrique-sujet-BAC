@@ -330,3 +330,24 @@ test("10. La copie n'affiche aucun indice de confiance ni barème", () => {
   assert.doesNotMatch($("#view-workspace").textContent, /ثقة (مرتفعة|متوسطة|منخفضة)/);
   assert.match($("#view-workspace").textContent, /اختبار صامت/);
 });
+
+test("l'écran de choix n'ancre aucune estimation : les champs partent vides", async () => {
+  // Biais relevé dans l'analyse (§5, `strategy.js:130`) : chaque champ était
+  // pré-rempli à 75 % du maximum, ce qui suggérait une estimation que l'élève
+  // n'avait pas faite. Les champs sont vides, le maximum reste visible en
+  // indication, et la somme part de zéro tant que l'élève n'a rien saisi.
+  click('#year-grid [data-year="2025"]');
+  click("#guide-next");
+  const inputs = $$("#view-strategy .calc-input");
+  assert.ok(inputs.length >= 2, "les estimations doivent rester saisissables");
+  for (const input of inputs) {
+    assert.equal(input.value, "", `champ pré-rempli : ${input.id} = ${input.value}`);
+    assert.equal(input.getAttribute("placeholder"), `من ${input.dataset.max}`);
+  }
+  assert.match($("#s1-total").textContent, /^0\.00 \/ \d+\.\d{2}$/);
+  const input = inputs[0];
+  input.value = "4";
+  input.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
+  assert.match($("#s1-total").textContent, /^4\.00 \/ \d+\.\d{2}$/);
+  click("#strategy-exit");
+});

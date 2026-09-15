@@ -112,8 +112,12 @@ export function createStrategyScreen(deps) {
     const coverage = officialCoverageForSubject(year, subject);
     const inputs = subject.exercises
       .map((exercise) => {
-        const initial = Math.round(exercise.max * 0.75 * 4) / 4;
-        return `<div class="flex spread"><label class="small" for="strategy-s${subject.id}-e${exercise.number}">ت${exercise.number}: ${exercise.label} (${exercise.max}ن)</label><input class="field calc-input" id="strategy-s${subject.id}-e${exercise.number}" data-subject="${subject.id}" data-exercise="${exercise.number}" data-max="${exercise.max}" type="number" min="0" max="${exercise.max}" step="0.25" value="${initial}"></div>`;
+        /* Aucune valeur pré-remplie : pré-remplir 75 % du maximum ancrait
+           l'élève sur une estimation qu'il n'avait pas faite (biais relevé
+           dans l'analyse §5, `strategy.js:130`). Le champ vide n'est pas
+           compté dans la somme (`subjectEstimate` lit 0 quand la valeur est
+           absente), et le repère du maximum reste visible en indication. */
+        return `<div class="flex spread"><label class="small" for="strategy-s${subject.id}-e${exercise.number}">ت${exercise.number}: ${exercise.label} (${exercise.max}ن)</label><input class="field calc-input" id="strategy-s${subject.id}-e${exercise.number}" data-subject="${subject.id}" data-exercise="${exercise.number}" data-max="${exercise.max}" type="number" min="0" max="${exercise.max}" step="0.25" placeholder="من ${exercise.max}" aria-label="تقديرك في التمرين ${exercise.number} من ${exercise.max}"></div>`;
       })
       .join("");
     const officialTasks = (officialTaskInventoryFor(store.state.yearId, subject.id)?.tasks || []).filter(
