@@ -104,16 +104,51 @@ test('1b. SE 2013–2026 en épreuve : 4D partout, 2021 en armature "copie libre
 test("1c. Le bouton filière affiche Maths puis le trou تقني رياضي", () => {
   click("#btn-stream-fab");
   assert.match($("#stream-fab-label").textContent, /رياضيات/);
-  assert.equal($$("#year-grid [data-year]").length, 6, "six entraînements 4D Maths (2021–2026)");
+  assert.equal(
+    $$("#year-grid [data-year]").length,
+    14,
+    "quatorze entraînements 4D Maths (2013–2026) ; la filière maths est complète"
+  );
   assert.equal($('#year-grid [data-hub-year="2021"]').dataset.kind, "exam");
   assert.equal($('#year-grid [data-year="2021-m"]').disabled, false);
-  assert.equal($$("#year-grid .year-card").length, 14);
+  // 14 cartes-épreuve (2013-m … 2026-m) + 1 carte de consultation
+  // (la session exceptionnelle 2017) : chaque carte 20xx principale devient
+  // celle de l'épreuve dès que l'année est encodée, la consultation de la
+  // session exceptionnelle 2017 restant attachée à sa propre carte.
+  assert.equal($$("#year-grid .year-card").length, 15);
+  assert.equal(
+    $('#year-grid [data-hub-year="2017-exceptionnelle"]').dataset.kind,
+    "consult",
+    "la session exceptionnelle 2017 reste consultable"
+  );
   assert.ok($('#year-grid [data-hub-year="2026"]'));
   assert.ok($('#year-grid [data-hub-year="2022"]'));
   assert.ok($('#year-grid [data-hub-year="2021"]'));
   assert.ok($('#year-grid [data-hub-year="2013"]'));
+  assert.ok($('#year-grid [data-hub-year="2014"]'));
   const links = $$('#year-grid [data-kind="consult"] a[href*="dzexams.com/ar/annales/"]');
-  assert.equal(links.length, 9, "filière Maths : 8 principales 2013–2020 + 2017 exceptionnelle");
+  assert.equal(
+    links.length,
+    1,
+    "filière Maths : seule la session exceptionnelle 2017 reste en consultation ; 2013 à 2026 sont des épreuves"
+  );
+  assert.equal($('#year-grid [data-hub-year="2020"]').dataset.kind, "exam", "2020-m ouvre une épreuve");
+  assert.equal($('#year-grid [data-hub-year="2016"]').dataset.kind, "exam", "2016-m ouvre une épreuve");
+  assert.equal($('#year-grid [data-year="2016-m"]').disabled, false, "2016-m ouvre une épreuve");
+  assert.equal($('#year-grid [data-hub-year="2015"]').dataset.kind, "exam", "2015-m ouvre une épreuve");
+  assert.equal($('#year-grid [data-year="2015-m"]').disabled, false, "2015-m ouvre une épreuve");
+  assert.equal($('#year-grid [data-hub-year="2014"]').dataset.kind, "exam", "2014-m ouvre une épreuve");
+  assert.equal($('#year-grid [data-year="2014-m"]').disabled, false, "2014-m ouvre une épreuve");
+  assert.equal($('#year-grid [data-hub-year="2013"]').dataset.kind, "exam", "2013-m ouvre une épreuve");
+  assert.equal($('#year-grid [data-year="2013-m"]').disabled, false, "2013-m ouvre une épreuve");
+  assert.equal($('#year-grid [data-year="2017-m"]').disabled, false, "2017-m ouvre une épreuve");
+  assert.equal($('#year-grid [data-year="2018-m"]').disabled, false, "2018-m ouvre une épreuve");
+  assert.equal($('#year-grid [data-year="2019-m"]').disabled, false, "2019-m ouvre une épreuve");
+  assert.equal(
+    $('#year-grid [data-hub-year="2019"]').dataset.kind,
+    "exam",
+    "la carte 2019 est celle de l'épreuve"
+  );
 
   click('#year-grid [data-year="2026-m"]');
   assert.match($("#view-guide").textContent, /2س30د/);
@@ -188,6 +223,9 @@ test("3. Stratégie : calculatrice, inventaire officiel et confirmation", () => 
   click('#view-strategy [data-confirm="1"][data-session-mode="bac"]');
   assert.equal(store.state.sessionMode, "bac");
   assert.ok(!$("#view-workspace").classList.contains("hidden"));
+  // Régression : l'écran gardait le « data-answer-mode » de la session
+  // précédente (un sujet inventorié s'affichait comme une copie libre).
+  assert.equal($("#view-workspace").dataset.answerMode, "inventory");
 });
 
 test("4. L'écran onboarding n'existe plus et les exercices restent librement accessibles", () => {
@@ -291,4 +329,25 @@ test("10. La copie n'affiche aucun indice de confiance ni barème", () => {
   assert.equal($$("#view-workspace .confidence-chip").length, 0, "aucun indice de confiance en épreuve");
   assert.doesNotMatch($("#view-workspace").textContent, /ثقة (مرتفعة|متوسطة|منخفضة)/);
   assert.match($("#view-workspace").textContent, /اختبار صامت/);
+});
+
+test("l'écran de choix n'ancre aucune estimation : les champs partent vides", async () => {
+  // Biais relevé dans l'analyse (§5, `strategy.js:130`) : chaque champ était
+  // pré-rempli à 75 % du maximum, ce qui suggérait une estimation que l'élève
+  // n'avait pas faite. Les champs sont vides, le maximum reste visible en
+  // indication, et la somme part de zéro tant que l'élève n'a rien saisi.
+  click('#year-grid [data-year="2025"]');
+  click("#guide-next");
+  const inputs = $$("#view-strategy .calc-input");
+  assert.ok(inputs.length >= 2, "les estimations doivent rester saisissables");
+  for (const input of inputs) {
+    assert.equal(input.value, "", `champ pré-rempli : ${input.id} = ${input.value}`);
+    assert.equal(input.getAttribute("placeholder"), `من ${input.dataset.max}`);
+  }
+  assert.match($("#s1-total").textContent, /^0\.00 \/ \d+\.\d{2}$/);
+  const input = inputs[0];
+  input.value = "4";
+  input.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
+  assert.match($("#s1-total").textContent, /^4\.00 \/ \d+\.\d{2}$/);
+  click("#strategy-exit");
 });

@@ -11,12 +11,13 @@
    - 1 entrée شعبة علوم تجريبية : 2021 uniquement.
    Les autres années SE (2013–2020 et 2022–2026) ne sont plus des cartes
    d'archive : elles sont encodées en entraînement 4D dans
-   data/years/se/year-*.js. Les années Maths 2021–2026 sont à la fois
-   cataloguées ici et encodées dans data/years/m/year-*.js, et le hub
-   les affiche en 4D (identifiants 2021-m … 2026-m).
-   2021 SE reste en consultation : son PDF officiel est chiffré, sans
-   couche texte exploitable — aucun énoncé n'a été fabriqué pour combler
-   ce trou, et le champ `notes` de l'entrée le rappelle.
+   data/years/se/year-*.js. Les années Maths 2013–2026 sont à la fois
+   cataloguées ici et encodées dans data/years/m/year-*.js, et le hub les
+   affiche en épreuve (identifiants 2013-m … 2026-m) : seule la session
+   exceptionnelle 2017 garde une carte de consultation, en plus de sa carte
+   d'épreuve. 2021 SE est encodée en 2021 (armature « ورقة حرة », sans
+   consigne inventée) : sa carte d'épreuve masque sa carte de consultation,
+   mais l'entrée d'archive reste comme trace de la vérification du lien.
    Index racine : uniquement se et m — pas de catégorie تقني رياضي.
    /ar/bac/sciences-naturelles/tm redirige vers /ar/bac ; aucun URL inventé.
 
@@ -130,7 +131,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-31) : titre BAC 2026 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2026-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation)."
+        "Page ouverte (2026-08-31) : titre BAC 2026 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2026-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation). Les scans locaux subjects/M/2026/sujet-{1,2}.pdf ont été relus en image le 2026-09-14 : les deux consignes non rattachées (برّر تثبيط PCSK9، قدّم نصيحة) le sont désormais et les réponses modèle suivent le corrigé eddirasa (الثلاثية 33 GTC ← ATC pour le النمط B ; النصيحة = أغذية غنية بالشوارد + أدوية)."
     },
     {
       year: "2025",
@@ -145,7 +146,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-31) : titre BAC 2025 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2025-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation)."
+        "Page ouverte (2026-08-31) : titre BAC 2025 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2025-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation). Scans locaux relus en image le 2026-09-14 : les deux consignes de فرضيتين sont recopiées mot à mot, le tableau du الشكل (ب) donne 10/35/50/70 % contre 3/5/8/9 % (0.1 إلى 2 µg/mL) et le الشكل (ج) oppose ...CTGACTGG... à ...CTGATGG... (حذف نيكليوتيدة C ; الخلية LT8)."
     },
     {
       year: "2024",
@@ -160,7 +161,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-31) : titre BAC 2024 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2024-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation)."
+        "Page ouverte (2026-08-31) : titre BAC 2024 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2024-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation). Scans locaux relus en image le 2026-09-14 : la question 2 du ت1 a reçu sa réponse (complément A G A C G U U G lu sur la figure), le verbe تُبيّن est restauré, les courbes du الوسط 1 (250 → ≈330 → ≈180) et du الوسط 2 (250 → ≈1180) sont relues sur l image, et le corrigé attribue aux الخلايا LT8 le rôle de source des LTc."
     },
     {
       year: "2023",
@@ -175,7 +176,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-31) : titre BAC 2023 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2023-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation)."
+        "Page ouverte (2026-08-31) : titre BAC 2023 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2023-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation). La couche texte des scans locaux (relue le 2026-09-14) a tranché deux consignes : les deux acides aminés Asp et Tyr sont imprimés dans l énoncé, et la fin de la question بيّن في نص علمي du sujet 2 manquait ; les valeurs des figures ont été relues sur l image (10 %→80 % contre ~20 %, ≈3500/≈250 جزيئة, triplets AGT GTC ATA GTG / AGT ATC ATA GTG, UCA→Ser … UAG→توقف)."
     },
     {
       year: "2022",
@@ -189,7 +190,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-31) : titre BAC 2022 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2022-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation)."
+        "Page ouverte (2026-08-31) : titre BAC 2022 filière Maths confirmé ; viewer 0 pages ; lien تحميل observé. Octets PDF non récupérés (TLS). Encodé 4D sous l id 2022-m depuis énoncé + corrigé officiels eddirasa (hub Maths : carte entraînement, pas consultation). Le dossier dzexams local M/dzexams-bac-sciences-1777391.pdf (sujets pp. 1-6, corrigé « الإجابة النموذجية » pp. 7-13) a été relu en image le 2026-09-14 : verbes corrigés (وضّح chez S1-E2/W), consignes non rattachées rattachées, et réponses modèle alignées sur le corrigé — (س) = niveau بنائي ثانوي, ترتيب ج ← أ ← ب, « من 10 إلى 30 غ », mutation du النمط B au الثلاثية 33."
     },
     {
       year: "2021",
@@ -202,7 +203,7 @@ export const ARCHIVE = {
       attachments: true,
       viewer: "ok",
       notes:
-        "Page ouverte (2026-08-31) : 12 pages ; pièces jointes sciences-m-bac2021 + sciences-m-bac2021-correction ; couche texte inversée lisible. Sujet 1 : CMH et greffe rénale ; Macrolide / Mex.R. Encodé 4D sous l id 2021-m (hub Maths : carte entraînement, pas consultation)."
+        "Page ouverte (2026-08-31) : 12 pages ; pièces jointes sciences-m-bac2021 + sciences-m-bac2021-correction. Sujet 1 : CMH et greffe rénale ; Macrolide / Mex.R. Encodé 4D sous l id 2021-m (hub Maths : carte entraînement, pas consultation). Relu en image le 2026-09-14 (dossier dzexams local M/dzexams-bac-sciences-2068087.pdf : sujets pp. 1-6, corrigé officiel « الإجابة النموذجية » pp. 7-12) : les consignes, d abord reconstituées depuis une couche texte inversée, ont été recopiées mot à mot et les réponses modèle réécrites depuis le corrigé."
     },
     {
       year: "2020",
@@ -215,7 +216,7 @@ export const ARCHIVE = {
       attachments: true,
       viewer: "ok",
       notes:
-        "Page ouverte (2026-08-30) : 10 pages ; pièces jointes sciences-m-bac2020 + sciences-m-bac2020-correction ; sujet : structure des protéines/électrophorèse, cancer de la peau (Ras/p53), CMH et rejet de greffe."
+        "Page ouverte (2026-08-30) : 10 pages ; pièces jointes sciences-m-bac2020 + sciences-m-bac2020-correction ; sujet : structure des protéines/électrophorèse, cancer de la peau (Ras/p53), CMH et rejet de greffe. Relu page à page (2026-09-13) et encodé 4D sous l'id 2020-m : le hub Maths affiche une carte épreuve, plus une consultation."
     },
     {
       year: "2019",
@@ -229,7 +230,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet)."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet). Encodé 4D sous l id 2019-m le 2026-09-13 (consignes recopiées page à page sur l image des PDF locaux) : le hub Maths affiche la carte épreuve, la carte de consultation correspondante est masquée."
     },
     {
       year: "2018",
@@ -243,7 +244,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien تحميل présent. PDF dzexams validé mécaniquement. Corrigé eddirasa OCR RTL (2026-09-01) : https://eddirasa.com/wp-content/uploads/2018/07/eddirasa-com-correction-bac-math-science-2018.pdf (6 p., 7+13/6+14 ; VIH/LT4/IL-2 ; Ac/tétanos ; ribonucléase). Énoncé 2018 M non lu ici. 4D non encodé."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien تحميل présent. PDF dzexams validé mécaniquement. Corrigé eddirasa OCR RTL (2026-09-01) : https://eddirasa.com/wp-content/uploads/2018/07/eddirasa-com-correction-bac-math-science-2018.pdf (6 p., 7+13/6+14 ; VIH/LT4/IL-2 ; Ac/tétanos ; ribonucléase). Encodé 4D sous l id 2018-m le 2026-09-13 : les six pages des deux PDF locaux ont été rendues en image et les consignes recopiées mot à mot (15 officielles, 1 reconstruite) ; le corrigé 2018 est dans le même dossier dzexams (M/dzexams-bac-sciences-1967487.pdf, « الإجابة النموذجية » pp. 7-12, relu le 2026-09-13) et les réponses modèle ont été réécrites depuis ces pages, la note d archive eddirasa ci-dessus servant de recoupement thématique (VIH/LT4/IL-2, Ac/tétanos, ribonucléase). Le hub Maths affiche la carte épreuve, la carte de consultation correspondante est masquée."
     },
     {
       year: "2017",
@@ -270,7 +271,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent (chemin /2017/, session 1). Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet)."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent (chemin /2017/, session 1). Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet). Encodé 4D sous l id 2017-m le 2026-09-13 : les 4 pages du sujet et les 5 pages de l « عناصر الإجابة » officielle (pp. 5-9 du même dossier local) ont été rendues en image, consignes recopiées mot à mot et réponses modèle reprises du corrigé. La carte de consultation de la session principale est masquée au profit de l épreuve ; celle de la session exceptionnelle 2017 (شعبة رياضيات) reste affichée."
     },
     {
       year: "2016",
@@ -283,7 +284,7 @@ export const ARCHIVE = {
       attachments: true,
       viewer: "ok",
       notes:
-        "Page ouverte (2026-08-30) : 11 pages ; pièces jointes sciences-m-bac2016 + sciences-m-bac2016-correction ; sujet : traduction/Anagène, immunité humorale, membrane cellulaire/CMH."
+        "Page ouverte (2026-08-30) : 11 pages ; pièces jointes sciences-m-bac2016 + sciences-m-bac2016-correction ; sujet : traduction/Anagène, immunité humorale, membrane cellulaire/CMH. Encodé 4D sous l id 2016-m le 2026-09-14 : les 11 pages du dossier dzexams local (M/dzexams-bac-sciences-1413929.pdf : sujet pp. 1-4, corrigé « عناصر الإجابة » pp. 5-11) ont été rendues en image, consignes recopiées mot à mot et réponses modèle reprises du corrigé (429 = 3 × 143 ; 141 = 1 − 142 ; 16.66 % = 1 × 100 ÷ 6). La carte de consultation de 2016 est remplacée par la carte d épreuve ; 2015 a été encodée le 2026-09-15, puis 2014 et enfin 2013 (2026-09-15) : la filière maths est complète de 2013 à 2026, plus aucune carte maths ne reste en consultation."
     },
     {
       year: "2015",
@@ -297,7 +298,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet)."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet). Encodé 4D sous l id 2015-m le 2026-09-15 : les 10 pages du dossier dzexams local (M/dzexams-bac-sciences-2723927.pdf : sujet pp. 1-4, corrigé « الإجابة النموذجية وسلم التنقيط » pp. 5-10) ont été rendues en image et relues ; ce scan est image seul (1 fragment de texte par page), les consignes sont donc recopiées depuis l image. Réponses modèle reprises du corrigé (503 = (133+174+117+133) − 3×18 ; pHi = 4.5 ; 90 % في الوسط 4 ; الأم AB− والبنت B+). La carte de consultation de 2015 est remplacée par la carte d épreuve ; 2014 puis 2013 ont été encodées le 2026-09-15, la filière maths est donc complète de 2013 à 2026."
     },
     {
       year: "2014",
@@ -311,7 +312,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet)."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet). Encodé 4D sous l id 2014-m le 2026-09-15 : les 11 pages du dossier dzexams local (M/dzexams-bac-sciences-2369148.pdf : sujet pp. 1-4, corrigé « الإجابة النموذجية » pp. 5-11) ont été rendues en image et relues ; ce scan est image seul (1 fragment de texte par page), les consignes sont donc recopiées depuis l image. Réponses modèle reprises du corrigé (pHi 3 / 5 / 9.8 / 10.8 ; 4⁴ = 256 et 4×3×2×1 = 24 ; بنية ثالثية، رابطة كبريتية (A) وشاردية (B) ; 100 % في الوسط أ؛ زمرة (س) : B أو O؛ 18 = 5×3 + 3 و 4 وحدات بنائية؛ gp120/CD4). La carte de consultation de 2014 est remplacée par la carte d épreuve ; 2013 a été encodée le 2026-09-15, la filière maths est donc complète de 2013 à 2026."
     },
     {
       year: "2013",
@@ -325,7 +326,7 @@ export const ARCHIVE = {
       attachments: false,
       viewer: "blocked",
       notes:
-        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet)."
+        "Page ouverte (2026-08-30) : titre et filière confirmés; viewer « 0 pages » ; lien de téléchargement direct présent. Contenu du PDF téléchargé et validé via lien direct (HTTP 200, en-tête %PDF, fichier complet). Encodé 4D sous l id 2013-m le 2026-09-15 : les 11 pages du dossier dzexams local (M/dzexams-bac-sciences-2770867.pdf : sujet pp. 1-4, corrigé « الإجابة النموذجية » pp. 5-11) ont été rendues en image et relues ; ce scan est image seul (1 fragment de texte par page), les consignes sont donc recopiées depuis l image, jamais reconstituées. Réponses modèle reprises du corrigé (2³ = 8 ; AUG/Met et UAA/UAG/UGA ; AAG/ACC/UGG/GGC ; H2N–CH(R1)–CO–NH–CH(R2)–CO–NH–CH(R3)–COOH ; قوس الترسيب بين الحفرتين (م) و(د) فقط ; مناعة خلطية ; ARNr/ARNt في الخلية اللمفاوية مقابل ظهور ARNm في الخلية البلازمية ; 2 Å و 8 Å pour les distances). La carte de consultation de 2013 devient la carte d épreuve : les quinze sessions de la filière maths (2013 → 2026 + la session exceptionnelle 2017) sont désormais encodées, aucune année maths ne reste en consultation."
     }
   ]
 };

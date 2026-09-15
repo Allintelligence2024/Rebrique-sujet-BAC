@@ -9,6 +9,33 @@ Production build: `dist/site` 136 files, standalone `dist/boussole-4d-standalone
 > **2026-09-12 — batch « analyse ligne par ligne »** (branch `arena/01a096cc-rebrique-sujet-bac`, rapport complet dans `ANALYSE_LIGNE_PAR_LIGNE.md`):
 > fixed S1.1 (JSDoc `@param {string} lang` → `npm run typecheck` vert), S2.1 (`hits > 0` avant le palier parfait), S2.2 (condition tautologique de l'horloge en stratégie + suppression du doublon de libellés arabes au profit de `js/ui/coverage-messages.js`), S2.3 (le repli de simulation annonce désormais `missing`/`partial`/`blocked`), S3.9 (opérande mort dans `brouillon.js`), S3.6 (commentaire orphelin), `methodology.js` refactoré (28 blocs de retour → 1, −235 lignes, **0 différence sur 2448 couples échantillon/pôle**), démo « avant/après » recalée sur le schéma réel de `evaluateText`, frontière `setInternalHTML` restaurée partout, `build.mjs` n'affirme plus que les PDF ne sont pas distribués (et affiche leur poids dans le log), en-têtes périmés de `data/archive.js` corrigés, modules de rapport documentés comme volontairement non câblés.
 
+## Mise à jour du 2026-09-15 — état réel du dépôt (lire avant les sections ci-dessous)
+
+Les sections qui suivent décrivent la session `arena/01a08ed2…` et restent utiles
+comme historique (liste des bugs corrigés, plan OCR). Ce qui a changé depuis :
+
+- Branche de travail : `arena/01a09be6-rebrique-sujet-bac` (PR **#26**, OPEN — ne pas
+  merger sans consigne explicite du propriétaire). Tête vérifiée au moment de cette
+  mise à jour : `3c8d276`, CI « Quality » verte sur chaque push de la session.
+- État mesuré : **336 tests (335 pass / 0 fail / 1 skip)**, **28 sessions encodées**
+  (14 maths `2013-m … 2026-m`, 14 sciences `2013 … 2026`), **54 inventaires**
+  officiels, `npm run coverage:official` → 54 sujets éligibles, 0 invalide.
+- **SE 2021 n'est plus « non créée »** : `data/years/se/year-2021.js` existe (armature
+  2 sujets × 3 exercices, barème 5 + 7 + 8, thèmes) et, depuis le 2026-09-15, les
+  **questions officielles y sont recopiées** (`consignes`, `consignesPages`,
+  `consignesSource`) après relecture image des dix pages. L'année reste en **copie
+  libre** (`answerMode: "free"`, `poles: {}`) : aucun inventaire, aucune note,
+  `coverage:official` la donne `blocked` par design. La règle permanente tient : rien
+  n'est marqué « officiel » sans relecture humaine, et les symboles latins restitués
+  depuis la couche texte (dont les chiffres sont faux) sont signalés comme tels.
+- Backlog d'analyse (`ANALYSE_LIGNE_PAR_LIGNE.md`) : tout §10.1 est corrigé sauf
+  S2.5 (chemin `StereoPannerNode` écrit, à confirmer sur un vrai Safari), S2.6 (dette
+  défensive non atteignable en pratique) et l'arbitrage juridique des PDF (§10.1 S3.8,
+  décision propriétaire). L'ancrage à 75 % de l'écran de choix a été supprimé.
+- Prochaine étape ouverte : conversion **BAC** de SE 2021 (pôles + inventaire). Elle
+  exige de réassigner l'année « copie libre » de référence dans les tests et de
+  n'écrire que des réponses explicitement **reconstruites** (aucun corrigé local).
+
 ## Bugs already fixed this session (committed)
 
 Catastrophic/data-loss:
@@ -44,7 +71,7 @@ Scoring heuristics:
 
 ## NOT created (deliberate, per user constraint)
 
-- **data/years/se/year-2021.js (training 4D)**: The 2021 SE PDF is encrypted (viewer 0 pages on dzexams). `scripts/extracted/SE/2021/*.txt` exists but is RTL-inverted, garbled (shows "المدة: 40 سا و04 د"), and has no usable text layer. Per standing rule "never mark OCR-extracted prompts as verified, never fabricate coverage" I did **not** author 2021 SE in 4D. It stays as a consult card pointing to dzexams. Promoting 2021 SE requires manual re-reading of the PDF page by page to build poles + model answers — content authoring, not a code patch.
+- **data/years/se/year-2021.js (training 4D)** _(dépassé : le fichier existe depuis le 2026-09-12 en copie libre, avec questions recopiées le 2026-09-15 — voir la mise à jour en tête de ce document)_: The 2021 SE PDF is encrypted (viewer 0 pages on dzexams). `scripts/extracted/SE/2021/*.txt` exists but is RTL-inverted, garbled (shows "المدة: 40 سا و04 د"), and has no usable text layer. Per standing rule "never mark OCR-extracted prompts as verified, never fabricate coverage" I did **not** author 2021 SE in 4D. It stays as a consult card pointing to dzexams. Promoting 2021 SE requires manual re-reading of the PDF page by page to build poles + model answers — content authoring, not a code patch.
 
 ## Files changed in this batch
 
@@ -92,6 +119,11 @@ I patched the most damaging scoring heuristics (#65–#69) but did NOT fully aud
 - Still to check: `js/ui/workspace/brouillon.js` `buildDrafts`/`brouillonPreflight` — draft content rendered into the preview is escaped through `elementFromInternalHTML` templates, worth a dedicated test.
 
 ### P4 — SE 2021 (content, not code)
+
+> **État au 2026-09-15** : les points 1 à 3 et 6 de cette liste sont faits pour la
+> **copie libre** (fichier, chargeur, catalogue, épreuve ouverte) ; les points 4-5
+> restent à trancher si l'année passe en mode BAC, ce qui suppose un corrigé ou des
+> réponses explicitement reconstruites. Voir la mise à jour en tête de ce document.
 
 When OCR is usable AND the Arabic text has been manually verified line-by-line against the PDF:
 

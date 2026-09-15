@@ -11,7 +11,7 @@ import {
 
 test("le catalogue initial reste léger et ne contient aucun sujet complet", () => {
   assert.equal(APP_CONFIG.dataLoading, "on-demand");
-  assert.equal(YEAR_CATALOG.length, 20);
+  assert.equal(YEAR_CATALOG.length, 28);
   assert.deepEqual(loadedYearIds(), []);
   for (const metadata of YEAR_CATALOG) {
     assert.equal("sujets" in metadata, false, `${metadata.id} embarque un payload dans le catalogue`);
@@ -40,10 +40,10 @@ test("une année inconnue est refusée sans modifier le cache", async () => {
   assert.deepEqual(loadedYearIds(), ["2025"]);
 });
 
-test("l'audit exhaustif peut charger les 20 payloads sans doublon", async () => {
+test("l'audit exhaustif peut charger les 28 payloads sans doublon", async () => {
   const years = await loadAllYears();
-  assert.equal(years.length, 20);
-  assert.equal(new Set(years.map((year) => year.id)).size, 20);
+  assert.equal(years.length, 28);
+  assert.equal(new Set(years.map((year) => year.id)).size, 28);
   assert.deepEqual(
     years.map((year) => year.id),
     YEAR_CATALOG.map((year) => year.id)
