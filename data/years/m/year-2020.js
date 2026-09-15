@@ -25,7 +25,7 @@ const RECON = (notes) => ({
 });
 
 const PDF_NOTE =
-  "PDF officiel non redistribué dans le dépôt. Source locale du sujet dans l'application : /subjects/M/2020/sujet-N.pdf, extrait du dossier officiel dzexams 2020 filière رياضيات (10 pages : sujet pp. 1-5, corrigé pp. 6-10). Page annales : https://www.dzexams.com/ar/annales/SUFqL0VzRjNzdmd6ek1EekpsOTFMdz09. Consignes recopiées mot à mot depuis l'image des pages, jamais depuis la couche texte.";
+  "PDF officiel non redistribué dans le dépôt. Source locale du sujet dans l'application : /subjects/M/2020/sujet-N.pdf, extrait du dossier officiel dzexams 2020 filière رياضيات (10 pages : sujet pp. 1-5, corrigé pp. 6-10). Page annales : https://www.dzexams.com/ar/annales/SUFqL0VzRjNzdmd6ek1EekpsOTFMdz09. Consignes recopiées mot à mot depuis l'image des pages (relecture image du 2026-09-13, date du commit d'encodage e068e80), jamais depuis la couche texte.";
 
 export const YEAR_2020_M = {
   id: "2020-m",

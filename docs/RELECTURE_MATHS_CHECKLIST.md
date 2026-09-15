@@ -609,11 +609,29 @@ Les quatre tests `maths-2016/2017/2021` qui figeaient d'anciennes graphies ont
    modèle de 2018-m ont gagné les termes exacts du corrigé (الرامزة، المورثة،
    ARNm). Le contrôle est verrouillé par `tests/maths-model-answers.test.mjs`.
 6. Traçabilité dans `pdfNote` : les notes de 2013-m, 2014-m et 2015-m disent
-   désormais « relecture image du 2026-09-15 » et celle de 2016-m
-   « relecture image du 2026-09-14 », comme 2017-m, 2019-m, 2021-m et 2022-m le
-   faisaient déjà. **2020-m reste sans date** dans sa note : ses
-   `bacPromptNotes` disent « relu en image » sans date et aucune passe datée ne
-   l'atteste ; on ne l'invente pas.
+   désormais « relecture image du 2026-09-15 », celle de 2016-m
+   « relecture image du 2026-09-14 » et celle de 2020-m « relecture image du
+   2026-09-13, date du commit d'encodage e068e80 » — même convention que
+   2017-m, 2018-m et 2019-m (« relecture 2026-09-13 ») et que 2021-m / 2022-m
+   (« relus page à page le 2026-09-14 »). La date d'encodage est vérifiable dans
+   l'historique (`git show -s e068e80`) ; aucune note n'affirme une relecture
+   qui n'a pas eu lieu.
+
+## Notes d'entretien
+
+- **Trois avertissements de pagination restent** dans `npm run inventory:generate` :
+  `2023/S2 (7)`, `2026/S1 (9)` (filière SE) et `2024-m/S2 (5)`. Cause vérifiée le
+  2026-09-15 : ces `bacPromptPage` sont numérotés dans le dossier dzexams alors
+  que le fichier local est un extrait eddirasa dont la pagination imprimée diffère
+  (`subjects/M/2024/sujet-2.pdf` : 3 pages ; `subjects/SE/2023/sujet-2.pdf` :
+  pieds de page « صفحة 6 et 7 … 9 et 11 من 11 »), donc la correspondance n'est pas
+  un décalage constant. Le générateur refuse d'inventer (`computePageOffset`
+  renvoie `null`). Conséquence mesurée dans `js/ui/screens/simulation.js` :
+  `taskPageHTML` affiche alors `الصفحة N (الأصل)` — la page du document, sans
+  page locale — et `openSubjectPdf` ouvre le PDF sans ancre de page. Aucune page
+  fausse n'est donc montrée ; c'est seulement une page locale en moins. À
+  reprendre si l'on veut une table de correspondance vérifiée page à page pour
+  ces trois sujets (`2023/S2`, `2026/S1` côté SE, `2024-m/S2`).
 
 ## Vérifications
 
