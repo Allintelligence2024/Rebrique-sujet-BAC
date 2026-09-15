@@ -234,7 +234,7 @@ const YEAR_2016_SE = {
               answerStatus: "synthetic",
               rule: {
                 prompt: "تأطير الإشكالية حول: المناعة الخلطية",
-                keywords: ["مضادة", "بلاسموسيت"],
+                keywords: ["مضادة", "بلازموسيت"],
                 minHits: 2,
                 forbidden: []
               }
@@ -249,18 +249,18 @@ const YEAR_2016_SE = {
               placeholder: "نلاحظ... بينما... ومنه نستنتج...",
               minLength: 60,
               modelAnswer:
-                "تمثل الوثيقة تغيرات مضادة بدلالة الزمن مقارنة بـ بلاسموسيت. نلاحظ تغيرا واضحا في مضادة مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع بلاسموسيت.",
+                "تمثل الوثيقة تغيرات مضادة بدلالة الزمن مقارنة بـ بلازموسيت. نلاحظ تغيرا واضحا في مضادة مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع بلازموسيت.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "استغلال الوثيقة المتعلقة بـ المناعة الخلطية",
-                keywords: ["مضادة", "بلاسموسيت", "نلاحظ"],
+                keywords: ["مضادة", "بلازموسيت", "نلاحظ"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
                   axes: ["مضادة", "زمن"],
-                  comparisons: [["مضادة", "بلاسموسيت"]],
-                  trends: [{ about: "مضادة", expect: ["مضادة", "بلاسموسيت"] }],
+                  comparisons: [["مضادة", "بلازموسيت"]],
+                  trends: [{ about: "مضادة", expect: ["مضادة", "بلازموسيت"] }],
                   values: [],
                   strictValues: false
                 }
@@ -276,11 +276,11 @@ const YEAR_2016_SE = {
               placeholder: "يعود ذلك إلى...",
               minLength: 110,
               modelAnswer:
-                "يعود ذلك إلى تدخل مضادة وبلاسموسيت عبر آلية دقيقة تؤدي إلى مستضد، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+                "يعود ذلك إلى تدخل مضادة وبلازموسيت عبر آلية دقيقة تؤدي إلى مستضد، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ المناعة الخلطية",
-                keywords: ["مضادة", "بلاسموسيت", "مستضد"],
+                keywords: ["مضادة", "بلازموسيت", "مستضد"],
                 minHits: 3,
                 forbidden: []
               }
@@ -292,16 +292,16 @@ const YEAR_2016_SE = {
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
-              placeholder: "مضادة → بلاسموسيت → مستضد",
+              placeholder: "مضادة → بلازموسيت → مستضد",
               minLength: 40,
-              modelAnswer: "عنوان المخطط: مضادة. مضادة → بلاسموسيت → مستضد.",
+              modelAnswer: "عنوان المخطط: مضادة. مضادة → بلازموسيت → مستضد.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول المناعة الخلطية",
                 keywords: ["مخطط", "مضادة", "مستضد"],
                 minHits: 2,
                 forbidden: [],
-                schema: { arrows: true, title: "مضادة", ordered: ["مضادة", "بلاسموسيت", "مستضد"] }
+                schema: { arrows: true, title: "مضادة", ordered: ["مضادة", "بلازموسيت", "مستضد"] }
               }
             }
           }

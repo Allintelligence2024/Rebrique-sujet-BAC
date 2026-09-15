@@ -541,13 +541,36 @@ hyaloplasme, nom) contre `الغشاء الهيولي` / `الشبكة الهي�
 correctes). Dans les `keywords`, la forme ي est obligatoire —
 `tests/data-selfcheck.test.mjs` l'impose puisque `normalizeArabic` mappe ى→ي.
 
-**Verrou** : `tests/arabic-orthography.test.mjs` (4 tests) refuse les 139
-graphies fautives (139 avec `رابعه`, comparaison par jeton, préfixes `و ف ب ك ل ال وال فال بال
-كال لل` retirés avant comparaison : `والتماز` échappait à la liste où figure
-`التماز` — corrigé le 2026-09-15 en `والتمايز` — et `اللأمينين` à celle où
-figure `لأمينين` ; injections vérifiées dans les deux sens), exige que le `ة`
+**Seconde passe du 2026-09-15** (même jour, après la première) : onze jetons
+corrigés dans neuf payloads, tous vérifiables dans le dépôt.
+
+| Famille          | Correction                                                  | Détail                                                                                                                     |
+| ---------------- | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| translittération | `بلاسموسيت` → `بلازموسيت`                                   | 12 occurrences (SE-2016 ×11, SE-2019 ×1) ; la liste ne bannissait que `البلاسموسيت`, la forme sans article passait         |
+| translittération | `بلاسمية` → `بلازمية`                                       | 5 (2014-m ×2, 2017-m ×3) — même famille, déjà documentée pour `البلاسمية`                                                  |
+| translittération | `بالمسموتسيت` → `بلازموسيت`, `بالمسموتسيات` → `بلازموسيتات` | 2017-m (3) : deux corruptions du même terme dans la même réponse modèle                                                    |
+| translittération | `برفورين` / `بروفيرين` → `بيرفورين`                         | 19 (2014-m 1, 2015-m 6, 2019-m 8, 2023-m 4) ; `البيرفورين` est la graphie du sujet **officiel** 2023 (`official-tasks.js`) |
+| mot-clé          | `تيموسيه` → `تيموسية`                                       | 2017-m : la forme en ة vit 5 fois dans le corpus (2017-m, 2024-m)                                                          |
+| mot-clé          | `لالذات` → `لاذات`                                          | 2016-m : double ل ; `لاذات` 118 fois dans le corpus                                                                        |
+| mot-clé          | `ليمفاوية` → `لمفاوية`                                      | 2016-m : seule occurrence en ي contre 115 en `لمفاوية`                                                                     |
+| mot-clé          | `بيت` → `وريقية`                                            | 2018-m : mot-clé sans correspondance dans la réponse modèle (« بنية وريقية β »)                                            |
+
+**Recopies du corrigé 2014-m relues en image** (`M/dzexams-bac-sciences-2369148.pdf`,
+« الإجابة النموذجية » p. 7, rendu par `scripts/render-pdf-pages.mjs`) : le libellé
+du document 1 est « 1 — طبقة فوسفودهنية مضاعفة ، 2 — بروتين سطحي داخلي … ». La
+recopie portait `فوسفوهيدنية مضافة` (deux slips), `غليكو بروتين` au lieu de
+`غليكوبروتينية` et `تحضى` au lieu de `تحظى` (2). Quatre jetons corrigés dans
+2014-m, avec l'image comme preuve ; le reste de la page (الوسط أ/ب، الرسم، زمرة
+(س)، الذات/اللاذات) correspond mot pour mot à ce qui était encodé.
+
+**Verrou** : `tests/arabic-orthography.test.mjs` (4 tests) refuse les 149
+graphies fautives (comparaison par jeton, préfixes
+`و ف ب ك ل ال وال فال بال كال لل` retirés avant comparaison : `والتماز`
+échappait à la liste où figure `التماز` — corrigé le 2026-09-15 en
+`والتمايز` — et `اللأمينين` à celle où figure `لأمينين` ; injections vérifiées
+dans les deux sens, y compris après la seconde passe), exige que le `ة`
 reste final,
-contrôle dix formes corrigées et les phrases-témoins (2017 `الخلية البلازمية`,
+contrôle vingt-deux formes corrigées et les phrases-témoins (2017 `الخلية البلازمية`,
 2018 `الأناتوكسين الكزازي`, SE 2022 `اللامينين`, 2015 `محاليل`). Vérifié dans
 les deux sens : réintroduire `إنزيم` fait échouer le premier test, injecter
 `ترجمةا` fait échouer le second ; les quatre repassent sans la réintroduction.
@@ -607,7 +630,11 @@ Les quatre tests `maths-2016/2017/2021` qui figeaient d'anciennes graphies ont
    satisfaites par la réponse modèle officielle et ont été ajustées
    (2017-m S2E2W, 2018-m S2E2E, 2018-m S2E2W, 2020-m S1E1W) ; deux réponses
    modèle de 2018-m ont gagné les termes exacts du corrigé (الرامزة، المورثة،
-   ARNm). Le contrôle est verrouillé par `tests/maths-model-answers.test.mjs`.
+   ARNm). La seconde passe du 2026-09-15 a ajouté quatre mots-clés que la
+   réponse modèle du même pôle ne pouvait pas satisfaire (`لالذات`, `ليمفاوية`,
+   `بيت`, `بروفيرين`) et deux formes fautives (`تيموسيه`, `فوسفوهيدنيه`) : le
+   contrôle `tests/maths-model-answers.test.mjs` reste vert après correction.
+   Le contrôle est verrouillé par `tests/maths-model-answers.test.mjs`.
 6. Traçabilité dans `pdfNote` : les notes de 2013-m, 2014-m et 2015-m disent
    désormais « relecture image du 2026-09-15 », celle de 2016-m
    « relecture image du 2026-09-14 » et celle de 2020-m « relecture image du
