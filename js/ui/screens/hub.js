@@ -130,9 +130,9 @@ export function createHubScreen(deps) {
     const caption = $("#hub-stream-caption");
     caption.textContent =
       streamId === "se"
-        ? `الشعبة: ${stream.label} — مواضيع 2013–2026.`
+        ? `الشعبة: ${stream.label} — مواضيع 2013–2026 (دورة 2021 في وضع الورقة الحرة).`
         : streamId === "m"
-          ? `الشعبة: ${stream.label} — مواضيع 2020–2026 + مواضيع رسمية للقراءة 2013–2019.`
+          ? `الشعبة: ${stream.label} — مواضيع 2013–2026 (كل الدورات في وضع الامتحان) + الدورة الاستثنائية 2017 للقراءة.`
           : `الشعبة: ${stream.label} — لا موضوع SVT رسمي على المصادر المتاحة.`;
 
     const fab = $("#btn-stream-fab");

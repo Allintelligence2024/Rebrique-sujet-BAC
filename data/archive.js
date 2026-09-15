@@ -11,12 +11,13 @@
    - 1 entrée شعبة علوم تجريبية : 2021 uniquement.
    Les autres années SE (2013–2020 et 2022–2026) ne sont plus des cartes
    d'archive : elles sont encodées en entraînement 4D dans
-   data/years/se/year-*.js. Les années Maths 2020–2026 sont à la fois
-   cataloguées ici et encodées dans data/years/m/year-*.js, et le hub
-   les affiche en 4D (identifiants 2020-m … 2026-m).
-   2021 SE reste en consultation : son PDF officiel est chiffré, sans
-   couche texte exploitable — aucun énoncé n'a été fabriqué pour combler
-   ce trou, et le champ `notes` de l'entrée le rappelle.
+   data/years/se/year-*.js. Les années Maths 2013–2026 sont à la fois
+   cataloguées ici et encodées dans data/years/m/year-*.js, et le hub les
+   affiche en épreuve (identifiants 2013-m … 2026-m) : seule la session
+   exceptionnelle 2017 garde une carte de consultation, en plus de sa carte
+   d'épreuve. 2021 SE est encodée en 2021 (armature « ورقة حرة », sans
+   consigne inventée) : sa carte d'épreuve masque sa carte de consultation,
+   mais l'entrée d'archive reste comme trace de la vérification du lien.
    Index racine : uniquement se et m — pas de catégorie تقني رياضي.
    /ar/bac/sciences-naturelles/tm redirige vers /ar/bac ; aucun URL inventé.
 
