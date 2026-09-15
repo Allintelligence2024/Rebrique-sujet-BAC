@@ -347,8 +347,9 @@ famille sont **الأب O+ ، الأم AB− ، البنت B+ ، الابن A+**
 1-3 et `90 %` dans le milieu 4 avec la double reconnaissance LTc/CMH I.
 
 Le catalogue maths ouvrait en **2015** au moment de cette passe (12 cartes-épreuve
-2015-m … 2026-m) ; depuis la passe 2014-m ci-dessus, il ouvre en **2014** et seul
-2013 reste en consultation. `tests/maths-2015.test.mjs` verrouille la session
+2015-m … 2026-m) ; il a ouvert en **2014** puis **2013** aux passes suivantes (voir
+plus bas), et la filière n'a plus aucune carte en consultation.
+`tests/maths-2015.test.mjs` verrouille la session
 (barème, inventaire mappé, liste des 11 pôles officiels, valeurs du corrigé,
 badge ⚠️).
 
