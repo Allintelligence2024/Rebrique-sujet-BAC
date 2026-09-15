@@ -51,7 +51,7 @@ const YEAR_2014_SE = {
               answerStatus: "synthetic",
               rule: {
                 prompt: "تأطير الإشكالية حول: مراحل تركيب البروتين",
-                keywords: ["استنساخ", "ترجمه"],
+                keywords: ["استنساخ", "ترجمة"],
                 minHits: 2,
                 forbidden: []
               }
@@ -66,18 +66,18 @@ const YEAR_2014_SE = {
               placeholder: "نلاحظ... بينما... ومنه نستنتج...",
               minLength: 40,
               modelAnswer:
-                "تمثل الوثيقة تغيرات استنساخ بدلالة الزمن مقارنة بـ ترجمه. نلاحظ تغيرا واضحا في استنساخ مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع ترجمه.",
+                "تمثل الوثيقة تغيرات استنساخ بدلالة الزمن مقارنة بـ ترجمة. نلاحظ تغيرا واضحا في استنساخ مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع ترجمة.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "استغلال الوثيقة المتعلقة بـ مراحل تركيب البروتين",
-                keywords: ["استنساخ", "ترجمه", "نلاحظ"],
+                keywords: ["استنساخ", "ترجمة", "نلاحظ"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
                   axes: ["استنساخ", "زمن"],
-                  comparisons: [["استنساخ", "ترجمه"]],
-                  trends: [{ about: "استنساخ", expect: ["استنساخ", "ترجمه"] }],
+                  comparisons: [["استنساخ", "ترجمة"]],
+                  trends: [{ about: "استنساخ", expect: ["استنساخ", "ترجمة"] }],
                   values: [],
                   strictValues: false
                 }
@@ -93,11 +93,11 @@ const YEAR_2014_SE = {
               placeholder: "يعود ذلك إلى...",
               minLength: 120,
               modelAnswer:
-                "يعود ذلك إلى تدخل استنساخ وترجمه عبر آلية دقيقة تؤدي إلى بروتين، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+                "يعود ذلك إلى تدخل استنساخ وترجمة عبر آلية دقيقة تؤدي إلى بروتين، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ مراحل تركيب البروتين",
-                keywords: ["استنساخ", "ترجمه", "بروتين"],
+                keywords: ["استنساخ", "ترجمة", "بروتين"],
                 minHits: 3,
                 forbidden: []
               }
@@ -111,7 +111,7 @@ const YEAR_2014_SE = {
               ),
               placeholder: "في الختام...",
               minLength: 40,
-              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ استنساخ وترجمه فتُغلق الظاهرة على بروتين.",
+              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ استنساخ وترجمة فتُغلق الظاهرة على بروتين.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول مراحل تركيب البروتين",
@@ -125,24 +125,24 @@ const YEAR_2014_SE = {
         {
           number: 2,
           ui: "text",
-          label: "التثبيط الإنزيمي",
+          label: "التثبيط الأنزيمي",
           max: 7,
           desc: "تثبيط تنافسي وغير تنافسي على الموقع الفعال",
           poles: {
             N: {
               points: 1,
-              prompt: "تأطير الإشكالية حول: التثبيط الإنزيمي",
-              bacPrompt: "ما المشكل العلمي المرتبط بـ التثبيط الإنزيمي؟",
+              prompt: "تأطير الإشكالية حول: التثبيط الأنزيمي",
+              bacPrompt: "ما المشكل العلمي المرتبط بـ التثبيط الأنزيمي؟",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
               placeholder: "صياغة المشكل العلمي...",
               minLength: 40,
               modelAnswer:
-                "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ التثبيط الإنزيمي في الظاهرة المدروسة؟",
+                "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ التثبيط الأنزيمي في الظاهرة المدروسة؟",
               answerStatus: "synthetic",
               rule: {
-                prompt: "تأطير الإشكالية حول: التثبيط الإنزيمي",
+                prompt: "تأطير الإشكالية حول: التثبيط الأنزيمي",
                 keywords: ["تثبيط", "موقع"],
                 minHits: 2,
                 forbidden: []
@@ -150,8 +150,8 @@ const YEAR_2014_SE = {
             },
             S: {
               points: 2.5,
-              prompt: "استغلال الوثيقة المتعلقة بـ التثبيط الإنزيمي",
-              bacPrompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ التثبيط الإنزيمي.",
+              prompt: "استغلال الوثيقة المتعلقة بـ التثبيط الأنزيمي",
+              bacPrompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ التثبيط الأنزيمي.",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
@@ -161,7 +161,7 @@ const YEAR_2014_SE = {
                 "تمثل الوثيقة تغيرات تثبيط بدلالة الزمن مقارنة بـ موقع. نلاحظ تغيرا واضحا في تثبيط مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع موقع.",
               answerStatus: "synthetic",
               rule: {
-                prompt: "استغلال الوثيقة المتعلقة بـ التثبيط الإنزيمي",
+                prompt: "استغلال الوثيقة المتعلقة بـ التثبيط الأنزيمي",
                 keywords: ["تثبيط", "موقع", "نلاحظ"],
                 minHits: 2,
                 forbidden: ["بسبب"],
@@ -177,37 +177,37 @@ const YEAR_2014_SE = {
             },
             E: {
               points: 2.5,
-              prompt: "تفسير الآلية المرتبطة بـ التثبيط الإنزيمي",
-              bacPrompt: "اشرح الآلية التي تفسر التثبيط الإنزيمي انطلاقا من الوثيقة ومعلوماتك.",
+              prompt: "تفسير الآلية المرتبطة بـ التثبيط الأنزيمي",
+              bacPrompt: "اشرح الآلية التي تفسر التثبيط الأنزيمي انطلاقا من الوثيقة ومعلوماتك.",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
               placeholder: "يعود ذلك إلى...",
               minLength: 110,
               modelAnswer:
-                "يعود ذلك إلى تدخل تثبيط وموقع عبر آلية دقيقة تؤدي إلى ركيزه، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+                "يعود ذلك إلى تدخل تثبيط وموقع عبر آلية دقيقة تؤدي إلى ركيزة، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
               answerStatus: "synthetic",
               rule: {
-                prompt: "تفسير الآلية المرتبطة بـ التثبيط الإنزيمي",
-                keywords: ["تثبيط", "موقع", "ركيزه"],
+                prompt: "تفسير الآلية المرتبطة بـ التثبيط الأنزيمي",
+                keywords: ["تثبيط", "موقع", "ركيزة"],
                 minHits: 3,
                 forbidden: []
               }
             },
             W: {
               points: 1,
-              prompt: "الخاتمة التركيبية حول التثبيط الإنزيمي",
-              bacPrompt: "لخّص النتيجة النهائية المرتبطة بـ التثبيط الإنزيمي.",
+              prompt: "الخاتمة التركيبية حول التثبيط الأنزيمي",
+              bacPrompt: "لخّص النتيجة النهائية المرتبطة بـ التثبيط الأنزيمي.",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
               placeholder: "في الختام...",
               minLength: 40,
-              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ تثبيط وموقع فتُغلق الظاهرة على ركيزه.",
+              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ تثبيط وموقع فتُغلق الظاهرة على ركيزة.",
               answerStatus: "synthetic",
               rule: {
-                prompt: "الخاتمة التركيبية حول التثبيط الإنزيمي",
-                keywords: ["تثبيط", "ركيزه", "ختام"],
+                prompt: "الخاتمة التركيبية حول التثبيط الأنزيمي",
+                keywords: ["تثبيط", "ركيزة", "ختام"],
                 minHits: 2,
                 forbidden: []
               }
@@ -340,7 +340,7 @@ const YEAR_2014_SE = {
               answerStatus: "synthetic",
               rule: {
                 prompt: "تأطير الإشكالية حول: كمون الراحة",
-                keywords: ["راحه", "مضخه"],
+                keywords: ["راحة", "مضخة"],
                 minHits: 2,
                 forbidden: []
               }
@@ -355,18 +355,18 @@ const YEAR_2014_SE = {
               placeholder: "نلاحظ... بينما... ومنه نستنتج...",
               minLength: 40,
               modelAnswer:
-                "تمثل الوثيقة تغيرات راحه بدلالة الزمن مقارنة بـ مضخه. نلاحظ تغيرا واضحا في راحه مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع مضخه.",
+                "تمثل الوثيقة تغيرات راحة بدلالة الزمن مقارنة بـ مضخة. نلاحظ تغيرا واضحا في راحة مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع مضخة.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "استغلال الوثيقة المتعلقة بـ كمون الراحة",
-                keywords: ["راحه", "مضخه", "نلاحظ"],
+                keywords: ["راحة", "مضخة", "نلاحظ"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
-                  axes: ["راحه", "زمن"],
-                  comparisons: [["راحه", "مضخه"]],
-                  trends: [{ about: "راحه", expect: ["راحه", "مضخه"] }],
+                  axes: ["راحة", "زمن"],
+                  comparisons: [["راحة", "مضخة"]],
+                  trends: [{ about: "راحة", expect: ["راحة", "مضخة"] }],
                   values: [],
                   strictValues: false
                 }
@@ -382,11 +382,11 @@ const YEAR_2014_SE = {
               placeholder: "يعود ذلك إلى...",
               minLength: 120,
               modelAnswer:
-                "يعود ذلك إلى تدخل راحه ومضخه عبر آلية دقيقة تؤدي إلى شوارد، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+                "يعود ذلك إلى تدخل راحة ومضخة عبر آلية دقيقة تؤدي إلى شوارد، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ كمون الراحة",
-                keywords: ["راحه", "مضخه", "شوارد"],
+                keywords: ["راحة", "مضخة", "شوارد"],
                 minHits: 3,
                 forbidden: []
               }
@@ -400,11 +400,11 @@ const YEAR_2014_SE = {
               ),
               placeholder: "في الختام...",
               minLength: 40,
-              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ راحه ومضخه فتُغلق الظاهرة على شوارد.",
+              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ راحة ومضخة فتُغلق الظاهرة على شوارد.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول كمون الراحة",
-                keywords: ["راحه", "شوارد", "ختام"],
+                keywords: ["راحة", "شوارد", "ختام"],
                 minHits: 2,
                 forbidden: []
               }

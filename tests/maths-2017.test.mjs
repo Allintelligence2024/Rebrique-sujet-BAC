@@ -6,7 +6,7 @@
    corrigé officiel local à l'appui (M/dzexams-bac-sciences-2275712.pdf,
    « عناصر الإجابة » pp. 5-9). Aucun fichier de test ne la couvrait :
    une régression sur les consignes ou sur les réponses modèle
-   (مستضد / جسم مضاد, ARNt/ARNm, مرحلة الاستطالة, الخلية البلاسمية,
+   (مستضد / جسم مضاد, ARNt/ARNm, مرحلة الاستطالة, الخلية البلازمية,
    les trois expériences de تراص +++++ et -----) restait invisible.
    Ce test verrouille : format 2 × (6 + 14), durée 2 سا و30 د,
    inventaire mappé, provenance des seize consignes et valeurs du
@@ -107,8 +107,8 @@ test("les valeurs du corrigé officiel 2017 sont bien celles des réponses modè
   // ت1 du sujet 2 : équation Lys–Glu–Gly avec deux liaisons peptidiques.
   assert.match(answers.get("S2E1E"), /Lys–Glu–Gly/);
   assert.match(answers.get("S2E1E"), /رابطتين ببتيديتين/);
-  // ت2 du sujet 2 : la cellule productrice est la الخلية البلاسمية.
-  assert.match(answers.get("S2E2S"), /الخلية البلاسمية/);
+  // ت2 du sujet 2 : la cellule productrice est la الخلية البلازمية.
+  assert.match(answers.get("S2E2S"), /الخلية البلازمية/);
   assert.match(answers.get("S2E2S"), /الشبكة الهيولية/);
   // ت2 du sujet 2 : les trois expériences de la chambre de Marbrook.
   assert.match(answers.get("S2E2W"), /تراص كامل \(\+{5}\)/);

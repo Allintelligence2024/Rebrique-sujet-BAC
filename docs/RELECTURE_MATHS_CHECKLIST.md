@@ -488,6 +488,59 @@ Chaque année maths (2013-m … 2026-m) possède maintenant son fichier de test
 dédié : une édition de barème, de provenance ou de réponse modèle sans mise à
 jour des données fait échouer `npm test`.
 
+## Passe d'orthographe arabe (2026-09-15)
+
+Le point « beaucoup d'erreurs » du relevé portait aussi sur la **langue** des
+données : des mots recopiés avec un `ه` au lieu du `ة`, des hamzas de coupure
+manquantes ou, à l'inverse, des hamzat wasl hamzées. La correction a été faite
+mot à mot, en s'appuyant sur les couches texte des sujets/corrigés locaux
+(32 PDF, `/tmp/pdf-all.txt`) plutôt que sur une règle automatique.
+
+**Ampleur** : 27 fichiers d'annales (14 maths + 13 sciences expérimentales),
+635 lignes, **201 graphies fautives distinctes** (196 graphies corrigées
+apparaissent). Aucune phrase n'a été réécrite : seuls des jetons ont changé.
+
+| Famille | Avant → Après | Exemples |
+| --- | --- | --- |
+| `ة` finale écrite `ه` | `بنيه` → `بنية` | `رامزه` (23), `ببتيديه` (12), `بنيه` (47), `وظيفه` (16), `مضاده` (45), `نواه` → `نواة`, `زمره` → `زمرة` |
+| hamzat wasl hamzée | `إستجابة` → `استجابة` | `إستنساخ`, `إستطالة`, `إرتباط`, `إكتساب`, `إنطلاق` → `انطلاق` |
+| hamza de coupure manquante | `اجسام` → `أجسام` | `احماض` → `أحماض`, `إنزيم`/`انزيم` → `أنزيم` (137 formes : `الأنزيمي`, `للأنزيم`, `أنزيمات`…), `إكتساب` → `اكتساب`, `أكسجين` (29), `اشعاع` → `إشعاع`, `أكتب` → `اكتب`, `انجز` → `أنجز` |
+| coquilles de recopie | `البيبتيدية` → `الببتيدية` | `التماز` → `التمايز`, `التكزري` → `الكزازي`, `الغرأنزيم` → `الغرانزيم`, `البلاسمية` → `البلازمية`, `البلاسموديوم` → `البلازموديوم`, `المحسة` → `المحسسة`, `البيتيد` → `الببتيد` |
+| phrase fausse (preuve corrigé) | `بين الضمحل الييني وArg120` → `بين الحمض الأميني Arg120` | corrigé SE 2022 : « روابط بين CoEM والحمض الأميني Arg120 و Tyr333 » |
+
+**Preuve** : pour chaque famille, le comptage des deux graphies dans la couche
+texte des PDF tranche (`فرضية` 109 / `فرضيه` 0, `طفرة` 6 / `طفره` 0,
+`نواة` 29 / `نواه` 0, `مورثة` 79 / `مورثه` 0, `سرعة`, `حرارة`, `مضخة`,
+`كارهة`, `حلزونية`, `ثانوية`, `ذاكرة`, `رقابة`, `ناسخة`, `الثالثة`,
+`الأسيتيل`, `وذمة`, `بلعمة`…). Les composés sont traités comme des jetons
+entiers, jamais en sous-chaîne : `ارض` n'est pas corrigé dans « العارضة » et
+`كره` pas dans « سكره ».
+
+**Régression attrapée pendant la passe** : remplacer une sous-chaîne a abîmé
+des possessifs (`لتترجمه` → `لتترجمةا`, `رامزها` → `رامزةا`, `تركيزهما`,
+`تسلسلها`, `تبلعمها`, `تشفرها`, `محاليل` → `محأليل`, `اللامينين` →
+`اللأمينين`). Les treize occurrences ont été restaurées, et l'invariant du
+corpus « le `ة` est toujours en finale de jeton » est vérifié à la fois sur
+`HEAD` (0 cas) et après la passe (0 cas).
+
+**Ce qui n'a volontairement PAS été changé** : `انسب`/`أنسب` (les deux
+impératifs sont attestés, y compris dans les corrigés), `استراديول` /
+`أستراديول` et `انزيم` / `إنزيم` d'autres fichiers, les possessifs légitimes
+(`سكره` = son sucre, `مصله` = son sérum, `نقله` = son transfert, `مرافقه` =
+son cofacteur, `عضويته`, `خلله`), `مورثات متعددة الصنويات` — **confirmé par le
+corrigé** et non une coquille —, `الفينغومييلين` (transcription attestée),
+et les 2013-2015 dont le corrigé est sans couche texte : aucun mot n'y a été
+« corrigé » sans lecture d'image.
+
+**Verrou** : `tests/arabic-orthography.test.mjs` (4 tests) refuse les 138
+graphies fautives (comparaison par jeton), exige que le `ة` reste final,
+contrôle dix formes corrigées et les phrases-témoins (2017 `الخلية البلازمية`,
+2018 `الأناتوكسين الكزازي`, SE 2022 `اللامينين`, 2015 `محاليل`). Vérifié dans
+les deux sens : réintroduire `إنزيم` fait échouer le premier test, injecter
+`ترجمةا` fait échouer le second ; les quatre repassent sans la réintroduction.
+Les quatre tests `maths-2016/2017/2021` qui figeaient d'anciennes graphies ont
+été alignés (`أنزيم ARN بوليميراز`, `الخلية البلازمية`, `قليلة`).
+
 ## Reste à faire (assumé)
 
 1. **Plus aucune consigne « non mappée »** dans les notes de payload : les

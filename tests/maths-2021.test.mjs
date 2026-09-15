@@ -164,7 +164,7 @@ test("les deux valeurs fausses du corrigé ne reviennent pas (0→40 د, 70 % et
     s.rule.document.trends.map((trend) => trend.expect),
     [
       ["تزداد", "70"],
-      ["قليله", "10"]
+      ["قليلة", "10"]
     ]
   );
 });

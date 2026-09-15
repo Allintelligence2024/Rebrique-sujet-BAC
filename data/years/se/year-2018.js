@@ -50,7 +50,7 @@ const YEAR_2018_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "تأطير الإشكالية: كيف تؤمن البروتينات الغشائية نقل الرسالة العصبية ودمجها؟",
-                keywords: ["غشائي", "رساله", "عصبيه"],
+                keywords: ["غشائي", "رسالة", "عصبية"],
                 minHits: 2,
                 forbidden: []
               }
@@ -70,7 +70,7 @@ const YEAR_2018_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "ذكر البروتينات الغشائية ودور كل منها",
-                keywords: ["قنوات", "مضخه", "مستقبل"],
+                keywords: ["قنوات", "مضخة", "مستقبل"],
                 minHits: 2,
                 forbidden: ["بسبب"]
               }
@@ -89,7 +89,7 @@ const YEAR_2018_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "نص علمي حول دمج الرسائل على العصبون المحرك",
-                keywords: ["دمج", "تنبيهي", "تثبيطي", "عتبه", "محرك"],
+                keywords: ["دمج", "تنبيهي", "تثبيطي", "عتبة", "محرك"],
                 minHits: 3,
                 forbidden: []
               }
@@ -107,7 +107,7 @@ const YEAR_2018_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "الخاتمة: شرط صدور الرسالة الحركية",
-                keywords: ["دمج", "عتبه", "حركيه"],
+                keywords: ["دمج", "عتبة", "حركية"],
                 minHits: 2,
                 forbidden: []
               }
@@ -135,7 +135,7 @@ const YEAR_2018_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "تأطير الإشكالية: كيف تؤدي طفرة مستقبل LDL إلى تصلب الشرايين؟",
-                keywords: ["LDL", "مستقبل", "طفره"],
+                keywords: ["LDL", "مستقبل", "طفرة"],
                 minHits: 2,
                 forbidden: []
               }
@@ -155,7 +155,7 @@ const YEAR_2018_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "تحديد دور الأحماض الأمينية في ثبات المستقبل",
-                keywords: ["احماض", "بنيه", "مستقبل", "LDL"],
+                keywords: ["أحماض", "بنية", "مستقبل", "LDL"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
@@ -183,7 +183,7 @@ const YEAR_2018_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "مناقشة العلاقة بين الطفرة وتصلب الشرايين",
-                keywords: ["طفره", "كولسترول", "مستقبل", "شرايين", "LDL"],
+                keywords: ["طفرة", "كولسترول", "مستقبل", "شرايين", "LDL"],
                 minHits: 3,
                 forbidden: []
               }
@@ -201,7 +201,7 @@ const YEAR_2018_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "الخاتمة: أصل المرض",
-                keywords: ["طفره", "LDL", "كولسترول"],
+                keywords: ["طفرة", "LDL", "كولسترول"],
                 minHits: 2,
                 forbidden: []
               }
@@ -229,7 +229,7 @@ const YEAR_2018_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "اقتراح فرضية حول سبب قلة حركة النطاف",
-                keywords: ["فرضيه", "نطاف", "ATP"],
+                keywords: ["فرضية", "نطاف", "ATP"],
                 minHits: 2,
                 forbidden: []
               }
@@ -248,14 +248,14 @@ const YEAR_2018_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "تحليل استهلاك O2 في معلق النطاف",
-                keywords: ["اكسجين", "نطاف", "ناقل"],
+                keywords: ["أكسجين", "نطاف", "ناقل"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
-                  axes: ["اكسجين", "زمن"],
+                  axes: ["أكسجين", "زمن"],
                   comparisons: [["سليم", "مصاب"]],
-                  trends: [{ about: "سليم", expect: ["انخفاض", "اكسجين"] }],
+                  trends: [{ about: "سليم", expect: ["انخفاض", "أكسجين"] }],
                   values: [],
                   strictValues: false
                 }
@@ -276,7 +276,7 @@ const YEAR_2018_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "تفسير تأثير Coenzyme Q10",
-                keywords: ["Q10", "سلسله", "ATP", "نطاف", "الكترون"],
+                keywords: ["Q10", "سلسلة", "ATP", "نطاف", "الكترون"],
                 minHits: 3,
                 forbidden: []
               }
@@ -336,7 +336,7 @@ const YEAR_2018_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "تأطير الإشكالية: كيف يظهر النمط الظاهري للزمرة؟",
-                keywords: ["زمره", "مستضد", "اليل"],
+                keywords: ["زمرة", "مستضد", "أليل"],
                 minHits: 2,
                 forbidden: []
               }
@@ -355,7 +355,7 @@ const YEAR_2018_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "المقارنة بين الزمر والمؤشرات",
-                keywords: ["مستضد", "زمره", "غشاء"],
+                keywords: ["مستضد", "زمرة", "غشاء"],
                 minHits: 2,
                 forbidden: ["بسبب"]
               }
@@ -370,11 +370,11 @@ const YEAR_2018_SE = {
               placeholder: "سيادة، غياب سيادة...",
               minLength: 120,
               modelAnswer:
-                "يشرف الصبغي 9 على أليلات IA وIB السائدتين بالنسبة إلى i المتنحي، وبين IA وIB غياب سيادة. يركّب كل أليل سائد إنزيما يضيف سكرا نوعيا على المستضد H فيظهر النمط الظاهري للزمرة.",
+                "يشرف الصبغي 9 على أليلات IA وIB السائدتين بالنسبة إلى i المتنحي، وبين IA وIB غياب سيادة. يركّب كل أليل سائد أنزيما يضيف سكرا نوعيا على المستضد H فيظهر النمط الظاهري للزمرة.",
               answerStatus: "authored",
               rule: {
                 prompt: "نص علمي حول وراثة الزمر",
-                keywords: ["اليل", "سياده", "مستضد", "زمره", "نمط"],
+                keywords: ["أليل", "سيادة", "مستضد", "زمرة", "نمط"],
                 minHits: 3,
                 forbidden: []
               }
@@ -393,7 +393,7 @@ const YEAR_2018_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "الخاتمة: أهمية معرفة الزمرة",
-                keywords: ["زمره", "مستضد", "نقل"],
+                keywords: ["زمرة", "مستضد", "نقل"],
                 minHits: 2,
                 forbidden: []
               }
@@ -405,7 +405,7 @@ const YEAR_2018_SE = {
           ui: "text",
           label: "اللاكتاز وعدم تحمل اللاكتوز",
           max: 7,
-          desc: "نشاط إنزيم اللاكتاز وتأثير pH والحرارة والثيولاكتوز، وعلاقة نقصه بأعراض عدم التحمل",
+          desc: "نشاط أنزيم اللاكتاز وتأثير pH والحرارة والثيولاكتوز، وعلاقة نقصه بأعراض عدم التحمل",
           poles: {
             N: {
               points: 1,
@@ -440,14 +440,14 @@ const YEAR_2018_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "تحليل أثر pH والحرارة على السرعة الابتدائية",
-                keywords: ["سرعه", "لاكتاز", "حراره"],
+                keywords: ["سرعة", "لاكتاز", "حرارة"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
-                  axes: ["سرعه", "PH"],
+                  axes: ["سرعة", "PH"],
                   comparisons: [["معتدل", "طرف"]],
-                  trends: [{ about: "معتدل", expect: ["اعظميه", "سرعه"] }],
+                  trends: [{ about: "معتدل", expect: ["أعظمية", "سرعة"] }],
                   values: [],
                   strictValues: false
                 }
@@ -474,19 +474,19 @@ const YEAR_2018_SE = {
             },
             W: {
               points: 1,
-              prompt: "الخاتمة: مفهوم الإنزيم",
-              bacPrompt: "ما المفهوم الدقيق للإنزيم انطلاقا من هذه الدراسة؟",
+              prompt: "الخاتمة: مفهوم الأنزيم",
+              bacPrompt: "ما المفهوم الدقيق للأنزيم انطلاقا من هذه الدراسة؟",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
               placeholder: "في الختام...",
               minLength: 40,
               modelAnswer:
-                "في الختام، الإنزيم وسيط حيوي نوعي يسرّع التفاعل في ظروف ملائمة دون أن يُستهلك، ونقصه يعطل الهضم.",
+                "في الختام، الأنزيم وسيط حيوي نوعي يسرّع التفاعل في ظروف ملائمة دون أن يُستهلك، ونقصه يعطل الهضم.",
               answerStatus: "authored",
               rule: {
-                prompt: "الخاتمة: مفهوم الإنزيم",
-                keywords: ["انزيم", "نوعي", "تفاعل"],
+                prompt: "الخاتمة: مفهوم الأنزيم",
+                keywords: ["أنزيم", "نوعي", "تفاعل"],
                 minHits: 2,
                 forbidden: []
               }
@@ -513,7 +513,7 @@ const YEAR_2018_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "اقتراح فرضية حول مصدر O2 المطروح",
-                keywords: ["فرضيه", "اكسجين", "ضوء"],
+                keywords: ["فرضية", "أكسجين", "ضوء"],
                 minHits: 2,
                 forbidden: []
               }
@@ -532,14 +532,14 @@ const YEAR_2018_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "استغلال ارتفاع O2 في الضوء",
-                keywords: ["اكسجين", "ضوء", "ظلام"],
+                keywords: ["أكسجين", "ضوء", "ظلام"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
-                  axes: ["اكسجين", "زمن"],
+                  axes: ["أكسجين", "زمن"],
                   comparisons: [["ضوء", "ظلام"]],
-                  trends: [{ about: "ضوء", expect: ["ارتفاع", "اكسجين"] }],
+                  trends: [{ about: "ضوء", expect: ["ارتفاع", "أكسجين"] }],
                   values: [],
                   strictValues: false
                 }
@@ -559,7 +559,7 @@ const YEAR_2018_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "تفسير آلية طرح O2",
-                keywords: ["ضوء", "ماء", "اكسجين", "الكترون", "طاقه"],
+                keywords: ["ضوء", "ماء", "أكسجين", "الكترون", "طاقة"],
                 minHits: 3,
                 forbidden: []
               }
@@ -571,16 +571,16 @@ const YEAR_2018_SE = {
               ...RECON(
                 "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
               ),
-              placeholder: "ضوء → ماء → اكسجين",
+              placeholder: "ضوء → ماء → أكسجين",
               minLength: 40,
-              modelAnswer: "عنوان المخطط: ضوء. ضوء → ماء → اكسجين.",
+              modelAnswer: "عنوان المخطط: ضوء. ضوء → ماء → أكسجين.",
               answerStatus: "authored",
               rule: {
                 prompt: "مخطط تحويل الطاقة الضوئية",
-                keywords: ["مخطط", "ضوء", "اكسجين"],
+                keywords: ["مخطط", "ضوء", "أكسجين"],
                 minHits: 2,
                 forbidden: [],
-                schema: { arrows: true, title: "ضوء", ordered: ["ضوء", "ماء", "اكسجين"] }
+                schema: { arrows: true, title: "ضوء", ordered: ["ضوء", "ماء", "أكسجين"] }
               }
             }
           }

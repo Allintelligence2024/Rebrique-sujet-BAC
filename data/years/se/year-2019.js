@@ -35,7 +35,7 @@ const YEAR_2019_SE = {
           ui: "text",
           label: "الاستنساخ وتركيب ARNm",
           max: 5,
-          desc: "آلية الاستنساخ ودور إنزيم ARN بوليميراز في تركيب ARNm",
+          desc: "آلية الاستنساخ ودور أنزيم ARN بوليميراز في تركيب ARNm",
           poles: {
             N: {
               points: 1,
@@ -69,7 +69,7 @@ const YEAR_2019_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "تعرف على مراحل الاستنساخ",
-                keywords: ["بدايه", "استطاله", "نهايه"],
+                keywords: ["بداية", "استطالة", "نهاية"],
                 minHits: 2,
                 forbidden: ["بسبب"]
               }
@@ -88,7 +88,7 @@ const YEAR_2019_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "نص علمي حول الاستنساخ",
-                keywords: ["نواه", "بوليميراز", "ARNm", "ناسخه", "هيولي"],
+                keywords: ["نواة", "بوليميراز", "ARNm", "ناسخة", "هيولي"],
                 minHits: 3,
                 forbidden: []
               }
@@ -106,7 +106,7 @@ const YEAR_2019_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "الخاتمة: مصير ARNm",
-                keywords: ["ARNm", "هيولي", "ترجمه"],
+                keywords: ["ARNm", "هيولي", "ترجمة"],
                 minHits: 2,
                 forbidden: []
               }
@@ -116,14 +116,14 @@ const YEAR_2019_SE = {
         {
           number: 2,
           ui: "text",
-          label: "الموقع الفعال والتخصص الإنزيمي",
+          label: "الموقع الفعال والتخصص الأنزيمي",
           max: 7,
           desc: "العلاقة بين بنية الموقع الفعال ومادة التفاعل وتأثير درجة الحرارة وpH",
           poles: {
             N: {
               points: 1,
-              prompt: "تأطير الإشكالية: ما أصل التخصص الإنزيمي؟",
-              bacPrompt: "كيف تضمن البنية الفراغية للإنزيم تخصصه الوظيفي؟",
+              prompt: "تأطير الإشكالية: ما أصل التخصص الأنزيمي؟",
+              bacPrompt: "كيف تضمن البنية الفراغية للأنزيم تخصصه الوظيفي؟",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
@@ -133,7 +133,7 @@ const YEAR_2019_SE = {
                 "المشكل العلمي: كيف يتكامل الموقع الفعال مع مادة التفاعل فيحدد التخصص، وكيف تؤثر الحرارة وpH؟",
               answerStatus: "authored",
               rule: {
-                prompt: "تأطير الإشكالية: ما أصل التخصص الإنزيمي؟",
+                prompt: "تأطير الإشكالية: ما أصل التخصص الأنزيمي؟",
                 keywords: ["موقع", "فعال", "تخصص"],
                 minHits: 2,
                 forbidden: []
@@ -149,18 +149,18 @@ const YEAR_2019_SE = {
               placeholder: "درجة مثلى، انخفاض على الطرفين...",
               minLength: 90,
               modelAnswer:
-                "نلاحظ سرعة أعظمية عند درجة pH وحرارة مثلى، بينما تنخفض السرعة في الطرفين، ومنه نستنتج وجود ظروف مثلى للنشاط الإنزيمي.",
+                "نلاحظ سرعة أعظمية عند درجة pH وحرارة مثلى، بينما تنخفض السرعة في الطرفين، ومنه نستنتج وجود ظروف مثلى للنشاط الأنزيمي.",
               answerStatus: "authored",
               rule: {
                 prompt: "تحليل تغيرات السرعة بدلالة pH والحرارة",
-                keywords: ["سرعه", "حراره", "نشاط"],
+                keywords: ["سرعة", "حرارة", "نشاط"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
-                  axes: ["سرعه", "PH"],
+                  axes: ["سرعة", "PH"],
                   comparisons: [["مثلى", "طرف"]],
-                  trends: [{ about: "مثلى", expect: ["اعظميه", "سرعه"] }],
+                  trends: [{ about: "مثلى", expect: ["أعظمية", "سرعة"] }],
                   values: [],
                   strictValues: false
                 }
@@ -176,11 +176,11 @@ const YEAR_2019_SE = {
               placeholder: "شحنات، تشوه، تخريب...",
               minLength: 110,
               modelAnswer:
-                "يغيّر pH شحنات الأحماض الأمينية في الموقع الفعال فيضعف التكامل مع الركيزة. وارتفاع الحرارة يخرب البنية الفراغية فيفقد الإنزيم تخصصه.",
+                "يغيّر pH شحنات الأحماض الأمينية في الموقع الفعال فيضعف التكامل مع الركيزة. وارتفاع الحرارة يخرب البنية الفراغية فيفقد الأنزيم تخصصه.",
               answerStatus: "authored",
               rule: {
                 prompt: "تفسير تأثير pH والحرارة على الموقع الفعال",
-                keywords: ["موقع", "فعال", "شحنات", "بنيه", "تخريب"],
+                keywords: ["موقع", "فعال", "شحنات", "بنية", "تخريب"],
                 minHits: 3,
                 forbidden: []
               }
@@ -188,7 +188,7 @@ const YEAR_2019_SE = {
             W: {
               points: 1,
               prompt: "الخاتمة: شروط النشاط",
-              bacPrompt: "ما الشروط التي تحفظ النشاط الإنزيمي؟",
+              bacPrompt: "ما الشروط التي تحفظ النشاط الأنزيمي؟",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
@@ -227,7 +227,7 @@ const YEAR_2019_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "اقتراح فرضيتين حول آلية القضاء على المستضد",
-                keywords: ["فرضيه", "مستضد", "مضاده"],
+                keywords: ["فرضية", "مستضد", "مضادة"],
                 minHits: 2,
                 forbidden: [],
                 hypotheses: { min: 2, distinct: true }
@@ -247,14 +247,14 @@ const YEAR_2019_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "استغلال نتائج حقن المستضد",
-                keywords: ["اجسام", "مضاده", "LTc"],
+                keywords: ["أجسام", "مضادة", "LTc"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
-                  axes: ["كميه", "زمن"],
-                  comparisons: [["مضاده", "LTc"]],
-                  trends: [{ about: "مضاده", expect: ["ارتفاع", "كميه"] }],
+                  axes: ["كمية", "زمن"],
+                  comparisons: [["مضادة", "LTc"]],
+                  trends: [{ about: "مضادة", expect: ["ارتفاع", "كمية"] }],
                   values: [],
                   strictValues: false
                 }
@@ -267,14 +267,14 @@ const YEAR_2019_SE = {
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
-              placeholder: "إنترلوكينات، تكاثر، تمايز...",
+              placeholder: "أنترلوكينات، تكاثر، تمايز...",
               minLength: 110,
               modelAnswer:
-                "تتعرف LT4 على الببتيد المعروض مع CMH II فتفرز إنترلوكينات تحفّز تكاثر LB وتمايزها إلى بلاسموسيت وتكاثر LTc، فتتأكد الفرضيتان بالتعاون المناعي.",
+                "تتعرف LT4 على الببتيد المعروض مع CMH II فتفرز أنترلوكينات تحفّز تكاثر LB وتمايزها إلى بلاسموسيت وتكاثر LTc، فتتأكد الفرضيتان بالتعاون المناعي.",
               answerStatus: "authored",
               rule: {
                 prompt: "تفسير التعاون المناعي",
-                keywords: ["LT4", "انترلوكين", "LB", "LTc", "تعاون"],
+                keywords: ["LT4", "أنترلوكين", "LB", "LTc", "تعاون"],
                 minHits: 3,
                 forbidden: []
               }
@@ -289,14 +289,14 @@ const YEAR_2019_SE = {
               placeholder: "مستضد → LT4 → LB/LTc...",
               minLength: 40,
               modelAnswer:
-                "عنوان المخطط: استجابة نوعية. مستضد → عرض على CMH → LT4 → إنترلوكينات → أجسام مضادة وتخريب خلوي.",
+                "عنوان المخطط: استجابة نوعية. مستضد → عرض على CMH → LT4 → أنترلوكينات → أجسام مضادة وتخريب خلوي.",
               answerStatus: "authored",
               rule: {
                 prompt: "مخطط الاستجابة النوعية",
                 keywords: ["مخطط", "مستضد", "LT4"],
                 minHits: 2,
                 forbidden: [],
-                schema: { arrows: true, title: "استجابة نوعية", ordered: ["مستضد", "LT4", "مضاده"] }
+                schema: { arrows: true, title: "استجابة نوعية", ordered: ["مستضد", "LT4", "مضادة"] }
               }
             }
           }
@@ -372,7 +372,7 @@ const YEAR_2019_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "نص علمي حول آلية كمون العمل",
-                keywords: ["عتبه", "قنوات", "صوديوم", "بوتاسيوم", "ليف"],
+                keywords: ["عتبة", "قنوات", "صوديوم", "بوتاسيوم", "ليف"],
                 minHits: 3,
                 forbidden: []
               }
@@ -437,12 +437,12 @@ const YEAR_2019_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "تحليل استهلاك O2 وإنتاج CO2 وATP",
-                keywords: ["اكسجين", "ATP", "غلوكوز"],
+                keywords: ["أكسجين", "ATP", "غلوكوز"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
-                  axes: ["اكسجين", "زمن"],
+                  axes: ["أكسجين", "زمن"],
                   comparisons: [["O2", "ATP"]],
                   trends: [{ about: "ATP", expect: ["ارتفاع", "ATP"] }],
                   values: [],
@@ -464,7 +464,7 @@ const YEAR_2019_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "شرح مراحل التنفس",
-                keywords: ["تحلل", "كريبس", "سلسله", "بيروفيك", "ATP"],
+                keywords: ["تحلل", "كريبس", "سلسلة", "بيروفيك", "ATP"],
                 minHits: 3,
                 forbidden: []
               }
@@ -483,7 +483,7 @@ const YEAR_2019_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "الخاتمة: أهمية O2",
-                keywords: ["اكسجين", "ATP", "الكترون"],
+                keywords: ["أكسجين", "ATP", "الكترون"],
                 minHits: 2,
                 forbidden: []
               }
@@ -511,7 +511,7 @@ const YEAR_2019_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "اقتراح فرضية حول محرك الصفائح",
-                keywords: ["فرضيه", "صفائح", "حمل"],
+                keywords: ["فرضية", "صفائح", "حمل"],
                 minHits: 2,
                 forbidden: []
               }
@@ -530,14 +530,14 @@ const YEAR_2019_SE = {
               answerStatus: "authored",
               rule: {
                 prompt: "استغلال أعمار البازلت وتدفق الحرارة",
-                keywords: ["ظهره", "بازلت", "حراره"],
+                keywords: ["ظهره", "بازلت", "حرارة"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "table",
-                  axes: ["عمر", "مسافه"],
+                  axes: ["عمر", "مسافة"],
                   comparisons: [["ظهره", "طرف"]],
-                  cells: [["بازلت", "حراره"]],
+                  cells: [["بازلت", "حرارة"]],
                   values: [],
                   strictValues: false
                 }

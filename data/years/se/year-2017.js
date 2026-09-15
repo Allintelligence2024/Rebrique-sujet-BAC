@@ -51,7 +51,7 @@ const YEAR_2017_SE = {
               answerStatus: "synthetic",
               rule: {
                 prompt: "تأطير الإشكالية حول: الشفرة الوراثية والترجمة",
-                keywords: ["رامزه", "ترجمه"],
+                keywords: ["رامزة", "ترجمة"],
                 minHits: 2,
                 forbidden: []
               }
@@ -66,18 +66,18 @@ const YEAR_2017_SE = {
               placeholder: "نلاحظ... بينما... ومنه نستنتج...",
               minLength: 40,
               modelAnswer:
-                "تمثل الوثيقة تغيرات رامزه بدلالة الزمن مقارنة بـ ترجمه. نلاحظ تغيرا واضحا في رامزه مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع ترجمه.",
+                "تمثل الوثيقة تغيرات رامزة بدلالة الزمن مقارنة بـ ترجمة. نلاحظ تغيرا واضحا في رامزة مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع ترجمة.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "استغلال الوثيقة المتعلقة بـ الشفرة الوراثية والترجمة",
-                keywords: ["رامزه", "ترجمه", "نلاحظ"],
+                keywords: ["رامزة", "ترجمة", "نلاحظ"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
-                  axes: ["رامزه", "زمن"],
-                  comparisons: [["رامزه", "ترجمه"]],
-                  trends: [{ about: "رامزه", expect: ["رامزه", "ترجمه"] }],
+                  axes: ["رامزة", "زمن"],
+                  comparisons: [["رامزة", "ترجمة"]],
+                  trends: [{ about: "رامزة", expect: ["رامزة", "ترجمة"] }],
                   values: [],
                   strictValues: false
                 }
@@ -93,11 +93,11 @@ const YEAR_2017_SE = {
               placeholder: "يعود ذلك إلى...",
               minLength: 120,
               modelAnswer:
-                "يعود ذلك إلى تدخل رامزه وترجمه عبر آلية دقيقة تؤدي إلى ARNm، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+                "يعود ذلك إلى تدخل رامزة وترجمة عبر آلية دقيقة تؤدي إلى ARNm، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ الشفرة الوراثية والترجمة",
-                keywords: ["رامزه", "ترجمه", "ARNm"],
+                keywords: ["رامزة", "ترجمة", "ARNm"],
                 minHits: 3,
                 forbidden: []
               }
@@ -111,11 +111,11 @@ const YEAR_2017_SE = {
               ),
               placeholder: "في الختام...",
               minLength: 40,
-              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ رامزه وترجمه فتُغلق الظاهرة على ARNm.",
+              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ رامزة وترجمة فتُغلق الظاهرة على ARNm.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول الشفرة الوراثية والترجمة",
-                keywords: ["رامزه", "ARNm", "ختام"],
+                keywords: ["رامزة", "ARNm", "ختام"],
                 minHits: 2,
                 forbidden: []
               }
@@ -143,7 +143,7 @@ const YEAR_2017_SE = {
               answerStatus: "synthetic",
               rule: {
                 prompt: "تأطير الإشكالية حول: البنية الفراغية للبروتين",
-                keywords: ["بنيه", "روابط"],
+                keywords: ["بنية", "روابط"],
                 minHits: 2,
                 forbidden: []
               }
@@ -158,18 +158,18 @@ const YEAR_2017_SE = {
               placeholder: "نلاحظ... بينما... ومنه نستنتج...",
               minLength: 90,
               modelAnswer:
-                "تمثل الوثيقة تغيرات بنيه بدلالة الزمن مقارنة بـ روابط. نلاحظ تغيرا واضحا في بنيه مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع روابط.",
+                "تمثل الوثيقة تغيرات بنية بدلالة الزمن مقارنة بـ روابط. نلاحظ تغيرا واضحا في بنية مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع روابط.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "استغلال الوثيقة المتعلقة بـ البنية الفراغية للبروتين",
-                keywords: ["بنيه", "روابط", "نلاحظ"],
+                keywords: ["بنية", "روابط", "نلاحظ"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
-                  axes: ["بنيه", "زمن"],
-                  comparisons: [["بنيه", "روابط"]],
-                  trends: [{ about: "بنيه", expect: ["بنيه", "روابط"] }],
+                  axes: ["بنية", "زمن"],
+                  comparisons: [["بنية", "روابط"]],
+                  trends: [{ about: "بنية", expect: ["بنية", "روابط"] }],
                   values: [],
                   strictValues: false
                 }
@@ -185,11 +185,11 @@ const YEAR_2017_SE = {
               placeholder: "يعود ذلك إلى...",
               minLength: 110,
               modelAnswer:
-                "يعود ذلك إلى تدخل بنيه وروابط عبر آلية دقيقة تؤدي إلى طفره، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+                "يعود ذلك إلى تدخل بنية وروابط عبر آلية دقيقة تؤدي إلى طفرة، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ البنية الفراغية للبروتين",
-                keywords: ["بنيه", "روابط", "طفره"],
+                keywords: ["بنية", "روابط", "طفرة"],
                 minHits: 3,
                 forbidden: []
               }
@@ -203,11 +203,11 @@ const YEAR_2017_SE = {
               ),
               placeholder: "في الختام...",
               minLength: 40,
-              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ بنيه وروابط فتُغلق الظاهرة على طفره.",
+              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ بنية وروابط فتُغلق الظاهرة على طفرة.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول البنية الفراغية للبروتين",
-                keywords: ["بنيه", "طفره", "ختام"],
+                keywords: ["بنية", "طفرة", "ختام"],
                 minHits: 2,
                 forbidden: []
               }
@@ -277,11 +277,11 @@ const YEAR_2017_SE = {
               placeholder: "يعود ذلك إلى...",
               minLength: 110,
               modelAnswer:
-                "يعود ذلك إلى تدخل تيلاكوئيد وضوء عبر آلية دقيقة تؤدي إلى اكسجين، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+                "يعود ذلك إلى تدخل تيلاكوئيد وضوء عبر آلية دقيقة تؤدي إلى أكسجين، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ المرحلة الكيميائية الضوئية",
-                keywords: ["تيلاكوئيد", "ضوء", "اكسجين"],
+                keywords: ["تيلاكوئيد", "ضوء", "أكسجين"],
                 minHits: 3,
                 forbidden: []
               }
@@ -293,16 +293,16 @@ const YEAR_2017_SE = {
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
-              placeholder: "تيلاكوئيد → ضوء → اكسجين",
+              placeholder: "تيلاكوئيد → ضوء → أكسجين",
               minLength: 40,
-              modelAnswer: "عنوان المخطط: تيلاكوئيد. تيلاكوئيد → ضوء → اكسجين.",
+              modelAnswer: "عنوان المخطط: تيلاكوئيد. تيلاكوئيد → ضوء → أكسجين.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول المرحلة الكيميائية الضوئية",
-                keywords: ["مخطط", "تيلاكوئيد", "اكسجين"],
+                keywords: ["مخطط", "تيلاكوئيد", "أكسجين"],
                 minHits: 2,
                 forbidden: [],
-                schema: { arrows: true, title: "تيلاكوئيد", ordered: ["تيلاكوئيد", "ضوء", "اكسجين"] }
+                schema: { arrows: true, title: "تيلاكوئيد", ordered: ["تيلاكوئيد", "ضوء", "أكسجين"] }
               }
             }
           }
@@ -414,24 +414,24 @@ const YEAR_2017_SE = {
         {
           number: 2,
           ui: "text",
-          label: "تأثير pH على النشاط الإنزيمي",
+          label: "تأثير pH على النشاط الأنزيمي",
           max: 7,
           desc: "تغير شحنات الموقع الفعال بدلالة pH الوسط",
           poles: {
             N: {
               points: 1,
-              prompt: "تأطير الإشكالية حول: تأثير pH على النشاط الإنزيمي",
-              bacPrompt: "ما المشكل العلمي المرتبط بـ تأثير pH على النشاط الإنزيمي؟",
+              prompt: "تأطير الإشكالية حول: تأثير pH على النشاط الأنزيمي",
+              bacPrompt: "ما المشكل العلمي المرتبط بـ تأثير pH على النشاط الأنزيمي؟",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
               placeholder: "صياغة المشكل العلمي...",
               minLength: 40,
               modelAnswer:
-                "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ تأثير pH على النشاط الإنزيمي في الظاهرة المدروسة؟",
+                "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ تأثير pH على النشاط الأنزيمي في الظاهرة المدروسة؟",
               answerStatus: "synthetic",
               rule: {
-                prompt: "تأطير الإشكالية حول: تأثير pH على النشاط الإنزيمي",
+                prompt: "تأطير الإشكالية حول: تأثير pH على النشاط الأنزيمي",
                 keywords: ["PH", "موقع"],
                 minHits: 2,
                 forbidden: []
@@ -439,8 +439,8 @@ const YEAR_2017_SE = {
             },
             S: {
               points: 2.5,
-              prompt: "استغلال الوثيقة المتعلقة بـ تأثير pH على النشاط الإنزيمي",
-              bacPrompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ تأثير pH على النشاط الإنزيمي.",
+              prompt: "استغلال الوثيقة المتعلقة بـ تأثير pH على النشاط الأنزيمي",
+              bacPrompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ تأثير pH على النشاط الأنزيمي.",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
@@ -450,7 +450,7 @@ const YEAR_2017_SE = {
                 "تمثل الوثيقة تغيرات PH بدلالة الزمن مقارنة بـ موقع. نلاحظ تغيرا واضحا في PH مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع موقع.",
               answerStatus: "synthetic",
               rule: {
-                prompt: "استغلال الوثيقة المتعلقة بـ تأثير pH على النشاط الإنزيمي",
+                prompt: "استغلال الوثيقة المتعلقة بـ تأثير pH على النشاط الأنزيمي",
                 keywords: ["PH", "موقع", "نلاحظ"],
                 minHits: 2,
                 forbidden: ["بسبب"],
@@ -466,8 +466,8 @@ const YEAR_2017_SE = {
             },
             E: {
               points: 2.5,
-              prompt: "تفسير الآلية المرتبطة بـ تأثير pH على النشاط الإنزيمي",
-              bacPrompt: "اشرح الآلية التي تفسر تأثير pH على النشاط الإنزيمي انطلاقا من الوثيقة ومعلوماتك.",
+              prompt: "تفسير الآلية المرتبطة بـ تأثير pH على النشاط الأنزيمي",
+              bacPrompt: "اشرح الآلية التي تفسر تأثير pH على النشاط الأنزيمي انطلاقا من الوثيقة ومعلوماتك.",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
@@ -477,7 +477,7 @@ const YEAR_2017_SE = {
                 "يعود ذلك إلى تدخل PH وموقع عبر آلية دقيقة تؤدي إلى نشاط، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
               answerStatus: "synthetic",
               rule: {
-                prompt: "تفسير الآلية المرتبطة بـ تأثير pH على النشاط الإنزيمي",
+                prompt: "تفسير الآلية المرتبطة بـ تأثير pH على النشاط الأنزيمي",
                 keywords: ["PH", "موقع", "نشاط"],
                 minHits: 3,
                 forbidden: []
@@ -485,8 +485,8 @@ const YEAR_2017_SE = {
             },
             W: {
               points: 1,
-              prompt: "الخاتمة التركيبية حول تأثير pH على النشاط الإنزيمي",
-              bacPrompt: "لخّص النتيجة النهائية المرتبطة بـ تأثير pH على النشاط الإنزيمي.",
+              prompt: "الخاتمة التركيبية حول تأثير pH على النشاط الأنزيمي",
+              bacPrompt: "لخّص النتيجة النهائية المرتبطة بـ تأثير pH على النشاط الأنزيمي.",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
@@ -495,7 +495,7 @@ const YEAR_2017_SE = {
               modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ PH وموقع فتُغلق الظاهرة على نشاط.",
               answerStatus: "synthetic",
               rule: {
-                prompt: "الخاتمة التركيبية حول تأثير pH على النشاط الإنزيمي",
+                prompt: "الخاتمة التركيبية حول تأثير pH على النشاط الأنزيمي",
                 keywords: ["PH", "نشاط", "ختام"],
                 minHits: 2,
                 forbidden: []
@@ -566,11 +566,11 @@ const YEAR_2017_SE = {
               placeholder: "يعود ذلك إلى...",
               minLength: 110,
               modelAnswer:
-                "يعود ذلك إلى تدخل VIH وLT4 عبر آلية دقيقة تؤدي إلى مناعه، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+                "يعود ذلك إلى تدخل VIH وLT4 عبر آلية دقيقة تؤدي إلى مناعة، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ فيروس VIH والمناعة",
-                keywords: ["VIH", "LT4", "مناعه"],
+                keywords: ["VIH", "LT4", "مناعة"],
                 minHits: 3,
                 forbidden: []
               }
@@ -582,16 +582,16 @@ const YEAR_2017_SE = {
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
-              placeholder: "VIH → LT4 → مناعه",
+              placeholder: "VIH → LT4 → مناعة",
               minLength: 40,
-              modelAnswer: "عنوان المخطط: VIH. VIH → LT4 → مناعه.",
+              modelAnswer: "عنوان المخطط: VIH. VIH → LT4 → مناعة.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول فيروس VIH والمناعة",
-                keywords: ["مخطط", "VIH", "مناعه"],
+                keywords: ["مخطط", "VIH", "مناعة"],
                 minHits: 2,
                 forbidden: [],
-                schema: { arrows: true, title: "VIH", ordered: ["VIH", "LT4", "مناعه"] }
+                schema: { arrows: true, title: "VIH", ordered: ["VIH", "LT4", "مناعة"] }
               }
             }
           }

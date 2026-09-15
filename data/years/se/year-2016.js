@@ -92,11 +92,11 @@ const YEAR_2016_SE = {
               placeholder: "يعود ذلك إلى...",
               minLength: 120,
               modelAnswer:
-                "يعود ذلك إلى تدخل استنساخ وبوليميراز عبر آلية دقيقة تؤدي إلى نواه، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+                "يعود ذلك إلى تدخل استنساخ وبوليميراز عبر آلية دقيقة تؤدي إلى نواة، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ الاستنساخ داخل النواة",
-                keywords: ["استنساخ", "بوليميراز", "نواه"],
+                keywords: ["استنساخ", "بوليميراز", "نواة"],
                 minHits: 3,
                 forbidden: []
               }
@@ -110,11 +110,11 @@ const YEAR_2016_SE = {
               ),
               placeholder: "في الختام...",
               minLength: 40,
-              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ استنساخ وبوليميراز فتُغلق الظاهرة على نواه.",
+              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ استنساخ وبوليميراز فتُغلق الظاهرة على نواة.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول الاستنساخ داخل النواة",
-                keywords: ["استنساخ", "نواه", "ختام"],
+                keywords: ["استنساخ", "نواة", "ختام"],
                 minHits: 2,
                 forbidden: []
               }
@@ -124,51 +124,51 @@ const YEAR_2016_SE = {
         {
           number: 2,
           ui: "text",
-          label: "التخصص الوظيفي للإنزيم",
+          label: "التخصص الوظيفي للأنزيم",
           max: 7,
           desc: "تكامل الموقع الفعال مع مادة التفاعل",
           poles: {
             N: {
               points: 1,
-              prompt: "تأطير الإشكالية حول: التخصص الوظيفي للإنزيم",
-              bacPrompt: "ما المشكل العلمي المرتبط بـ التخصص الوظيفي للإنزيم؟",
+              prompt: "تأطير الإشكالية حول: التخصص الوظيفي للأنزيم",
+              bacPrompt: "ما المشكل العلمي المرتبط بـ التخصص الوظيفي للأنزيم؟",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
               placeholder: "صياغة المشكل العلمي...",
               minLength: 40,
               modelAnswer:
-                "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ التخصص الوظيفي للإنزيم في الظاهرة المدروسة؟",
+                "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ التخصص الوظيفي للأنزيم في الظاهرة المدروسة؟",
               answerStatus: "synthetic",
               rule: {
-                prompt: "تأطير الإشكالية حول: التخصص الوظيفي للإنزيم",
-                keywords: ["انزيم", "ركيزه"],
+                prompt: "تأطير الإشكالية حول: التخصص الوظيفي للأنزيم",
+                keywords: ["أنزيم", "ركيزة"],
                 minHits: 2,
                 forbidden: []
               }
             },
             S: {
               points: 2.5,
-              prompt: "استغلال الوثيقة المتعلقة بـ التخصص الوظيفي للإنزيم",
-              bacPrompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ التخصص الوظيفي للإنزيم.",
+              prompt: "استغلال الوثيقة المتعلقة بـ التخصص الوظيفي للأنزيم",
+              bacPrompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ التخصص الوظيفي للأنزيم.",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
               placeholder: "نلاحظ... بينما... ومنه نستنتج...",
               minLength: 90,
               modelAnswer:
-                "تمثل الوثيقة تغيرات انزيم بدلالة الزمن مقارنة بـ ركيزه. نلاحظ تغيرا واضحا في انزيم مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع ركيزه.",
+                "تمثل الوثيقة تغيرات أنزيم بدلالة الزمن مقارنة بـ ركيزة. نلاحظ تغيرا واضحا في أنزيم مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع ركيزة.",
               answerStatus: "synthetic",
               rule: {
-                prompt: "استغلال الوثيقة المتعلقة بـ التخصص الوظيفي للإنزيم",
-                keywords: ["انزيم", "ركيزه", "نلاحظ"],
+                prompt: "استغلال الوثيقة المتعلقة بـ التخصص الوظيفي للأنزيم",
+                keywords: ["أنزيم", "ركيزة", "نلاحظ"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
-                  axes: ["انزيم", "زمن"],
-                  comparisons: [["انزيم", "ركيزه"]],
-                  trends: [{ about: "انزيم", expect: ["انزيم", "ركيزه"] }],
+                  axes: ["أنزيم", "زمن"],
+                  comparisons: [["أنزيم", "ركيزة"]],
+                  trends: [{ about: "أنزيم", expect: ["أنزيم", "ركيزة"] }],
                   values: [],
                   strictValues: false
                 }
@@ -176,37 +176,37 @@ const YEAR_2016_SE = {
             },
             E: {
               points: 2.5,
-              prompt: "تفسير الآلية المرتبطة بـ التخصص الوظيفي للإنزيم",
-              bacPrompt: "اشرح الآلية التي تفسر التخصص الوظيفي للإنزيم انطلاقا من الوثيقة ومعلوماتك.",
+              prompt: "تفسير الآلية المرتبطة بـ التخصص الوظيفي للأنزيم",
+              bacPrompt: "اشرح الآلية التي تفسر التخصص الوظيفي للأنزيم انطلاقا من الوثيقة ومعلوماتك.",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
               placeholder: "يعود ذلك إلى...",
               minLength: 110,
               modelAnswer:
-                "يعود ذلك إلى تدخل انزيم وركيزه عبر آلية دقيقة تؤدي إلى تخصص، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+                "يعود ذلك إلى تدخل أنزيم وركيزة عبر آلية دقيقة تؤدي إلى تخصص، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
               answerStatus: "synthetic",
               rule: {
-                prompt: "تفسير الآلية المرتبطة بـ التخصص الوظيفي للإنزيم",
-                keywords: ["انزيم", "ركيزه", "تخصص"],
+                prompt: "تفسير الآلية المرتبطة بـ التخصص الوظيفي للأنزيم",
+                keywords: ["أنزيم", "ركيزة", "تخصص"],
                 minHits: 3,
                 forbidden: []
               }
             },
             W: {
               points: 1,
-              prompt: "الخاتمة التركيبية حول التخصص الوظيفي للإنزيم",
-              bacPrompt: "لخّص النتيجة النهائية المرتبطة بـ التخصص الوظيفي للإنزيم.",
+              prompt: "الخاتمة التركيبية حول التخصص الوظيفي للأنزيم",
+              bacPrompt: "لخّص النتيجة النهائية المرتبطة بـ التخصص الوظيفي للأنزيم.",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
               placeholder: "في الختام...",
               minLength: 40,
-              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ انزيم وركيزه فتُغلق الظاهرة على تخصص.",
+              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ أنزيم وركيزة فتُغلق الظاهرة على تخصص.",
               answerStatus: "synthetic",
               rule: {
-                prompt: "الخاتمة التركيبية حول التخصص الوظيفي للإنزيم",
-                keywords: ["انزيم", "تخصص", "ختام"],
+                prompt: "الخاتمة التركيبية حول التخصص الوظيفي للأنزيم",
+                keywords: ["أنزيم", "تخصص", "ختام"],
                 minHits: 2,
                 forbidden: []
               }
@@ -218,7 +218,7 @@ const YEAR_2016_SE = {
           ui: "text",
           label: "المناعة الخلطية",
           max: 8,
-          desc: "إنتاج الأجسام المضادة من البلاسموسيت",
+          desc: "إنتاج الأجسام المضادة من البلازموسيت",
           poles: {
             N: {
               points: 0.5,
@@ -234,7 +234,7 @@ const YEAR_2016_SE = {
               answerStatus: "synthetic",
               rule: {
                 prompt: "تأطير الإشكالية حول: المناعة الخلطية",
-                keywords: ["مضاده", "بلاسموسيت"],
+                keywords: ["مضادة", "بلاسموسيت"],
                 minHits: 2,
                 forbidden: []
               }
@@ -249,18 +249,18 @@ const YEAR_2016_SE = {
               placeholder: "نلاحظ... بينما... ومنه نستنتج...",
               minLength: 60,
               modelAnswer:
-                "تمثل الوثيقة تغيرات مضاده بدلالة الزمن مقارنة بـ بلاسموسيت. نلاحظ تغيرا واضحا في مضاده مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع بلاسموسيت.",
+                "تمثل الوثيقة تغيرات مضادة بدلالة الزمن مقارنة بـ بلاسموسيت. نلاحظ تغيرا واضحا في مضادة مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع بلاسموسيت.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "استغلال الوثيقة المتعلقة بـ المناعة الخلطية",
-                keywords: ["مضاده", "بلاسموسيت", "نلاحظ"],
+                keywords: ["مضادة", "بلاسموسيت", "نلاحظ"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
-                  axes: ["مضاده", "زمن"],
-                  comparisons: [["مضاده", "بلاسموسيت"]],
-                  trends: [{ about: "مضاده", expect: ["مضاده", "بلاسموسيت"] }],
+                  axes: ["مضادة", "زمن"],
+                  comparisons: [["مضادة", "بلاسموسيت"]],
+                  trends: [{ about: "مضادة", expect: ["مضادة", "بلاسموسيت"] }],
                   values: [],
                   strictValues: false
                 }
@@ -276,11 +276,11 @@ const YEAR_2016_SE = {
               placeholder: "يعود ذلك إلى...",
               minLength: 110,
               modelAnswer:
-                "يعود ذلك إلى تدخل مضاده وبلاسموسيت عبر آلية دقيقة تؤدي إلى مستضد، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+                "يعود ذلك إلى تدخل مضادة وبلاسموسيت عبر آلية دقيقة تؤدي إلى مستضد، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ المناعة الخلطية",
-                keywords: ["مضاده", "بلاسموسيت", "مستضد"],
+                keywords: ["مضادة", "بلاسموسيت", "مستضد"],
                 minHits: 3,
                 forbidden: []
               }
@@ -292,16 +292,16 @@ const YEAR_2016_SE = {
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
-              placeholder: "مضاده → بلاسموسيت → مستضد",
+              placeholder: "مضادة → بلاسموسيت → مستضد",
               minLength: 40,
-              modelAnswer: "عنوان المخطط: مضاده. مضاده → بلاسموسيت → مستضد.",
+              modelAnswer: "عنوان المخطط: مضادة. مضادة → بلاسموسيت → مستضد.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول المناعة الخلطية",
-                keywords: ["مخطط", "مضاده", "مستضد"],
+                keywords: ["مخطط", "مضادة", "مستضد"],
                 minHits: 2,
                 forbidden: [],
-                schema: { arrows: true, title: "مضاده", ordered: ["مضاده", "بلاسموسيت", "مستضد"] }
+                schema: { arrows: true, title: "مضادة", ordered: ["مضادة", "بلاسموسيت", "مستضد"] }
               }
             }
           }
@@ -564,11 +564,11 @@ const YEAR_2016_SE = {
               placeholder: "يعود ذلك إلى...",
               minLength: 110,
               modelAnswer:
-                "يعود ذلك إلى تدخل انقطاع ورداء عبر آلية دقيقة تؤدي إلى نواه، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+                "يعود ذلك إلى تدخل انقطاع ورداء عبر آلية دقيقة تؤدي إلى نواة، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ بنية الكرة الأرضية",
-                keywords: ["انقطاع", "رداء", "نواه"],
+                keywords: ["انقطاع", "رداء", "نواة"],
                 minHits: 3,
                 forbidden: []
               }
@@ -580,16 +580,16 @@ const YEAR_2016_SE = {
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
-              placeholder: "انقطاع → رداء → نواه",
+              placeholder: "انقطاع → رداء → نواة",
               minLength: 40,
-              modelAnswer: "عنوان المخطط: انقطاع. انقطاع → رداء → نواه.",
+              modelAnswer: "عنوان المخطط: انقطاع. انقطاع → رداء → نواة.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول بنية الكرة الأرضية",
-                keywords: ["مخطط", "انقطاع", "نواه"],
+                keywords: ["مخطط", "انقطاع", "نواة"],
                 minHits: 2,
                 forbidden: [],
-                schema: { arrows: true, title: "انقطاع", ordered: ["انقطاع", "رداء", "نواه"] }
+                schema: { arrows: true, title: "انقطاع", ordered: ["انقطاع", "رداء", "نواة"] }
               }
             }
           }

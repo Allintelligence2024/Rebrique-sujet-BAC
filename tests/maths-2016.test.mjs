@@ -116,7 +116,7 @@ test("les valeurs du corrigé officiel 2016 sont bien celles des réponses modè
   assert.match(answer("S2E2W"), /A17 C6 B34/);
   // t1 du sujet 1 : masse de la chaîne et codons/anticodons du corrigé.
   assert.match(answer("S1E1E"), /روابط كيميائية/);
-  assert.match(answer("S1E1S"), /إنزيم ARN بوليميراز/);
+  assert.match(answer("S1E1S"), /أنزيم ARN بوليميراز/);
   // t2 du sujet 1 : la thymine est la preuve de l'ADN, l'uracile celle de l'ARNm.
   assert.match(answer("S2E1S"), /التيمين/);
   assert.match(answer("S2E1S"), /اليوراسيل/);

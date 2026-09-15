@@ -35,7 +35,7 @@ const YEAR_2015_SE = {
           ui: "text",
           label: "الترجمة في الهيولى",
           max: 5,
-          desc: "العناصر المتدخلة في تركيب السلسلة البيبتيدية",
+          desc: "العناصر المتدخلة في تركيب السلسلة الببتيدية",
           poles: {
             N: {
               points: 1,
@@ -127,7 +127,7 @@ const YEAR_2015_SE = {
           ui: "text",
           label: "الكربوكسي بيبتيداز والموقع الفعال",
           max: 7,
-          desc: "علاقة البنية الفراغية للإنزيم بمادة التفاعل",
+          desc: "علاقة البنية الفراغية للأنزيم بمادة التفاعل",
           poles: {
             N: {
               points: 1,
@@ -278,11 +278,11 @@ const YEAR_2015_SE = {
               placeholder: "يعود ذلك إلى...",
               minLength: 110,
               modelAnswer:
-                "يعود ذلك إلى تدخل VIH وLT4 عبر آلية دقيقة تؤدي إلى مراقبه، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+                "يعود ذلك إلى تدخل VIH وLT4 عبر آلية دقيقة تؤدي إلى مراقبة، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ الاستجابة ضد VIH",
-                keywords: ["VIH", "LT4", "مراقبه"],
+                keywords: ["VIH", "LT4", "مراقبة"],
                 minHits: 3,
                 forbidden: []
               }
@@ -294,16 +294,16 @@ const YEAR_2015_SE = {
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
-              placeholder: "VIH → LT4 → مراقبه",
+              placeholder: "VIH → LT4 → مراقبة",
               minLength: 40,
-              modelAnswer: "عنوان المخطط: VIH. VIH → LT4 → مراقبه.",
+              modelAnswer: "عنوان المخطط: VIH. VIH → LT4 → مراقبة.",
               answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول الاستجابة ضد VIH",
-                keywords: ["مخطط", "VIH", "مراقبه"],
+                keywords: ["مخطط", "VIH", "مراقبة"],
                 minHits: 2,
                 forbidden: [],
-                schema: { arrows: true, title: "VIH", ordered: ["VIH", "LT4", "مراقبه"] }
+                schema: { arrows: true, title: "VIH", ordered: ["VIH", "LT4", "مراقبة"] }
               }
             }
           }
