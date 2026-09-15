@@ -240,6 +240,7 @@ Les points N/S/E/W sont une **allocation pédagogique interne**, pas le barème 
 | **2026 SE**    | **activée** | aucun (droit d'auteur)                      | [énoncé eddirasa](https://eddirasa.com/uploads/2026/08/bac-science-2026-se.pdf) · [corrigé](https://eddirasa.com/uploads/2026/08/correction-bac-science-2026-se.pdf)                                                                                                                                                                                           | `official` / `reconstructed` depuis OCR du PDF officiel (2026-08-31)                                                                                                                                              |
 | **2020 SE**    | **activée** | aucun (droit d'auteur)                      | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2020/09/eddirasa.com-bac-se-science-2020.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2020/09/eddirasa.com-correction-bac-sc-science-2020.pdf)                                                                                                                                           | `official` / `reconstructed` depuis OCR RTL (2026-08-31)                                                                                                                                                          |
 | **2021 Maths** | **activée** | aucun (droit d'auteur)                      | [dzexams 2021 m](https://www.dzexams.com/ar/annales/T2tYS3FTcFRwWCtCbXV2QmFyRTcydz09) ; dossier local `M/dzexams-bac-sciences-2068087.pdf`                                                                                                                                                                                                                     | `official` / `reconstructed` — corrigé officiel pp. 7–12 relu en image le 2026-09-14                                                                                                                              |
+| **2015 Maths** | **activée** | aucun (droit d'auteur)                      | [dzexams 2015 m](https://www.dzexams.com/ar/annales/QjZpdDhZUjhQOXhSMzZvQnFvVlFjQT09) ; dossier local `M/dzexams-bac-sciences-2723927.pdf`                                                                                                                                                                                                                     | `official` / `reconstructed` — sujet pp. 1–4 et corrigé officiel « الإجابة النموذجية وسلم التنقيط » pp. 5–10 relus en image le 2026-09-15 ; scan image seul ; format 10+10 / 10+10                                |
 | **2016 Maths** | **activée** | aucun (droit d'auteur)                      | [dzexams 2016 m](https://www.dzexams.com/ar/annales/TW9GY3FMeVdkeFBBNGIwMmppdi9xQT09) ; dossier local `M/dzexams-bac-sciences-1413929.pdf`                                                                                                                                                                                                                     | `official` / `reconstructed` — sujet pp. 1–4 et corrigé officiel pp. 5–11 relus en image le 2026-09-14 ; format 10+10 / 10+10                                                                                     |
 | **2022 Maths** | **activée** | aucun (droit d'auteur)                      | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2022/06/eddirasa.com-bac-math-science-2022.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2022/06/eddirasa.com-correction-bac-math-science-2022.pdf)                                                                                                                                       | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 8+12 / 8+12                                                                                                                                         |
 | **2023 Maths** | **activée** | aucun (droit d'auteur)                      | [énoncé eddirasa](https://eddirasa.com/wp-content/uploads/2023/07/eddirasa.com-bac-sciences-math-2023.pdf) · [corrigé](https://eddirasa.com/wp-content/uploads/2023/07/eddirasa.com-correction-bac-sciences-math-2023.pdf)                                                                                                                                     | `official` / `reconstructed` depuis OCR (2026-08-31) ; format 8+12 / 7+13                                                                                                                                         | ; deux consignes corrigées et figures relues sur les scans locaux le 2026-09-14 (Asp/Tyr imprimés, courbe 10 %→80 % vs ~20 %, ≈3500/≈250 جزيئة, triplets 47-50, UAG) |
@@ -343,7 +344,7 @@ Les sujets de la filière choisie remplacent la grille.
 | Filière                  | Épreuve               | Consultation (sujet + تصحيح)                    |
 | ------------------------ | --------------------- | ----------------------------------------------- |
 | شعبة علوم تجريبية (`se`) | 2013–2020 و 2022–2026 | 2021                                            |
-| شعبة رياضيات (`m`)       | 2016–2026             | 2013–2015 (+ 2017 exceptionnelle)               |
+| شعبة رياضيات (`m`)       | 2015–2026             | 2013–2014 (+ 2017 exceptionnelle)               |
 | شعبة تقني رياضي (`tm`)   | —                     | **absente de la source** (trou affiché, 0 lien) |
 
 Statut honnête :
@@ -369,6 +370,13 @@ Statut honnête :
   le 2026-09-14, corrigé eddirasa lu via la même URL. Les deux consignes
   non rattachées (برّر تثبيط PCSK9، قدّم نصيحة) le sont ; `S1-E2/E` chiffre la
   mutation (الثلاثية 33 GTC ← ATC) et `S2-E2/E` détaille les trois figures.
+- **2015 Maths** : dossier dzexams local — sujet pp. 1–4, corrigé « الإجابة
+  النموذجية وسلم التنقيط » pp. 5–10 relu en image le 2026-09-15. Ce scan est
+  image seul (`dump-pdf-text` n'y trouve qu'un fragment par page) : les
+  consignes sont recopiées depuis l'image, jamais reconstituées, et les onze
+  pôles officiels le disent dans leur note. Les valeurs du corrigé sont
+  reprises telles quelles (503 = (133+174+117+133) − 3×18 ; pHi = 4.5 ;
+  90 % dans le milieu 4 ; الأب O+ ، الأم AB− ، البنت B+ ، الابن A+).
 - **2016 Maths** : dossier dzexams local complet — sujet pp. 1–4, corrigé
   « عناصر الإجابة » pp. 5–11 relu en image le 2026-09-14. Les consignes
   imprimées sont `official` (12 pôles sur 16) et les quatre étapes de cadrage
@@ -411,10 +419,10 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **274** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
-- Copies vérifiées dans le hard benchmark : **0/3240 minimum** avant toute promotion numérique
-- Inventaires de tâches officielles commencés : **48/50 sujets** (**488 tâches connues**)
-- Sujets éligibles à la simulation : **48**
+- Tests exécutés par `npm test` : **281** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Copies vérifiées dans le hard benchmark : **0/3405 minimum** avant toute promotion numérique
+- Inventaires de tâches officielles commencés : **50/52 sujets** (**504 tâches connues**)
+- Sujets éligibles à la simulation : **50**
 - Critères P1 fermés : **3/6** — statut global : **incomplet**
 - Critères P2 fermés : **6/7** — élèves distincts testés : **0/5**
 - Critères P3 fermés : **5/6** — statut global : **incomplet**

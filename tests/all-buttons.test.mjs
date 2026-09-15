@@ -106,13 +106,13 @@ test("1c. Le bouton filière affiche Maths puis le trou تقني رياضي", ()
   assert.match($("#stream-fab-label").textContent, /رياضيات/);
   assert.equal(
     $$("#year-grid [data-year]").length,
-    11,
-    "onze entraînements 4D Maths (2016–2026) ; 2013–2015 restent consultables"
+    12,
+    "douze entraînements 4D Maths (2015–2026) ; 2013–2014 restent consultables"
   );
   assert.equal($('#year-grid [data-hub-year="2021"]').dataset.kind, "exam");
   assert.equal($('#year-grid [data-year="2021-m"]').disabled, false);
-  // 11 cartes-épreuve (2016-m … 2026-m) + 4 cartes de consultation
-  // (2013–2015 + la session exceptionnelle 2017) : chaque carte 20xx principale
+  // 12 cartes-épreuve (2015-m … 2026-m) + 3 cartes de consultation
+  // (2013–2014 + la session exceptionnelle 2017) : chaque carte 20xx principale
   // devient celle de l'épreuve dès que l'année est encodée, la consultation de
   // la session exceptionnelle 2017 restant attachée à sa propre carte.
   assert.equal($$("#year-grid .year-card").length, 15);
@@ -125,16 +125,19 @@ test("1c. Le bouton filière affiche Maths puis le trou تقني رياضي", ()
   assert.ok($('#year-grid [data-hub-year="2022"]'));
   assert.ok($('#year-grid [data-hub-year="2021"]'));
   assert.ok($('#year-grid [data-hub-year="2013"]'));
+  assert.ok($('#year-grid [data-hub-year="2014"]'));
   const links = $$('#year-grid [data-kind="consult"] a[href*="dzexams.com/ar/annales/"]');
   assert.equal(
     links.length,
-    4,
-    "filière Maths : 2013–2015 en consultation + 2017 exceptionnelle ; 2016 à 2026 sont des épreuves"
+    3,
+    "filière Maths : 2013–2014 en consultation + 2017 exceptionnelle ; 2015 à 2026 sont des épreuves"
   );
   assert.equal($('#year-grid [data-hub-year="2020"]').dataset.kind, "exam", "2020-m ouvre une épreuve");
   assert.equal($('#year-grid [data-hub-year="2016"]').dataset.kind, "exam", "2016-m ouvre une épreuve");
   assert.equal($('#year-grid [data-year="2016-m"]').disabled, false, "2016-m ouvre une épreuve");
-  assert.equal($('#year-grid [data-hub-year="2015"]').dataset.kind, "consult", "2015 reste consultable");
+  assert.equal($('#year-grid [data-hub-year="2015"]').dataset.kind, "exam", "2015-m ouvre une épreuve");
+  assert.equal($('#year-grid [data-year="2015-m"]').disabled, false, "2015-m ouvre une épreuve");
+  assert.equal($('#year-grid [data-hub-year="2014"]').dataset.kind, "consult", "2014 reste consultable");
   assert.equal($('#year-grid [data-year="2017-m"]').disabled, false, "2017-m ouvre une épreuve");
   assert.equal($('#year-grid [data-year="2018-m"]').disabled, false, "2018-m ouvre une épreuve");
   assert.equal($('#year-grid [data-year="2019-m"]').disabled, false, "2019-m ouvre une épreuve");

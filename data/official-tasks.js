@@ -7642,6 +7642,457 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       }
     ]
   },
+  "2015-m/S1": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/ar/annales/QjZpdDhZUjhQOXhSMzZvQnFvVlFjQT09",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2015/sujet-1.pdf",
+      pages: 2,
+      pageOffset: 0
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: []
+    },
+    tasks: [
+      {
+        id: "2015-m-S1-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "البروتينات جزيئات محددة بمعلومة وراثية، تؤدي وظائف حيوية متنوعة تتوقف على بنيتها الفراغية. فكيف يمكن الكشف عن البنية الفراغية للبروتين وتخصصه الوظيفي؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2015-m-S1-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 1,
+        prompt:
+          "1- حلّل نتائج الوثيقة (1). ماذا تستنتج؟ 2- اقترح فرضية تحدّد من خلالها عدد الوحدات البنائية المشكلة لهذا الببتيد.",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2015-m-S1-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 1,
+        prompt:
+          "II-1- الشكل (أ) من الوثيقة (2) السلسلة الناسخة لقطعة ADN تشرف على تركيب الببتيد الوظيفي المدروس، وجزء من جدول الشفرة الوراثية: أ- مثّل تتابع الوحدات البنائية المشكلة لهذا الببتيد الوظيفي. ب- هل تأكدت من صحة الفرضية المقترحة سابقا؟ 2- يلخص الشكل (ب) من الوثيقة (2) pHi للوحدات البنائية المشكلة للببتيد المدروس وجذورها (R) وكتلتها المولية: أ- أنسب الوحدة البنائية الموافقة للموقع المشار إليه بالحروف (أ)، (ب)، (ج) من الوثيقة (1). علّل. ب- اكتب الصيغة الكيميائية المفصلة للببتيد الوظيفي المدروس. ج- هل توافق النتيجة المحصل عليها في الوثيقة (2) والكتلة المولية للببتيد المدروس؟ علّل إجابتك.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2015-m-S1-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: 1,
+        prompt:
+          "3- ما هي الخاصية التي تتميز بها البروتينات اعتمادا على هذه التقنية؟ 4- ممّا سبق ومعلوماتك، وضّح في نص علمي العلاقة بين بنية البروتين وتخصصه الوظيفي داخل العضوية.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2015-m-S1-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "تُحدَّد الذات بنظام الـ CMH ونظام ABO وRh. قصد معرفة العناصر المتدخلة في تحديد الزمر الدموية وعلاقتها بنقل الدم بين الأشخاص، تُقترح عليك الدراسة التالية. فكيف تُحدَّد زمرة كل فرد وما علاقتها بنقل الدم؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2015-m-S1-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 2,
+        prompt:
+          "1- ما الهدف من استعمال المصل والكريات الدماء الحمراء في هذين الاختبارين؟ 2- أ- حدّد زمرة كل فرد من أفراد هذه العائلة. ثم علّل إجابتك معتمدا على نتائج الاختبار (1) باستعمال المصل. ب- هل نتائج الاختبار (1) باستعمال المصل تؤكد نتائج الاختبار (2) باستعمال ك.د.ح؟ وضّح ذلك.",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2015-m-S1-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 2,
+        prompt:
+          "3- وضّح برسم تخطيطي نتيجة الاختبار الحاصل عند الأم باستعمال ضد A (Anti-A). II-1- قارن بين المستقبلات الغشائية لهذه الزمر الدموية. ماذا تستنتج؟ 2- مثّل بمخطط يبيّن نقل الدم بين أفراد هذه العائلة.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2015-m-S1-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: null,
+        prompt:
+          "مما سبق ومعلوماتك، وضّح في نص علمي كيف تسمح الجزيئات الغشائية بتحديد الذات في نظام الزمر الدموية ABO.",
+        promptSource: "reconstructed",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      }
+    ]
+  },
+  "2015-m/S2": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/ar/annales/QjZpdDhZUjhQOXhSMzZvQnFvVlFjQT09",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2015/sujet-2.pdf",
+      pages: 2,
+      pageOffset: 2
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: []
+    },
+    tasks: [
+      {
+        id: "2015-m-S2-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "تهدف الدراسة التالية لإظهار العلاقة بين بنية البروتين وتخصصه الوظيفي داخل العضوية. فكيف تُحدَّد بنية البروتين وما علاقتها بتخصصه الوظيفي؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2015-m-S2-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 3,
+        prompt:
+          "I- يختلف سلوك البروتينات تبعا لدرجة حموضة الوسط، لإثبات ذلك أُخضع بروتين لتقنية الرحلان الكهربائي باستعمال محاليل ذات pH متزايدة، وقيسَت مسافة تحرك البروتين نحو القطب الموجب (+) أو السالب (−): 1- مثّل بمنحنى بياني النتائج المحصل عليها في الوثيقة (1). 2- أ- استخرج قيمة pHi لهذه الجزيئة. ب- فسّر المنحنى المحصل عليه. 3- ما هي الخاصية التي تتميز بها البروتينات اعتمادا على هذه التقنية؟",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2015-m-S2-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 3,
+        prompt:
+          "II- لإظهار علاقة الأحماض الأمينية بالبنية الفراغية للبروتين، أنجزت أشكال الوثيقة (2) حيث: يمثل الشكل (أ) البنية الفراغية لبروتين باستعمال مبرمج محاكاة Rastop، أما الشكل (ب) فيمثل رسما تخطيطيا لهذا البروتين، بينما الشكل (ج) يوضح الصيغة الكيميائية لكل من حمض الجلوتاميك رقم (63) وأرجنين رقم (87) في السلسلة الببتيدية: 1- حدّد المستوى البنائي لهذا البروتين. علّل إجابتك. 2- اكتب الصيغة الكيميائية للجزء المؤطر في الشكل (ب) باستعمال الصيغة العامة للحموض الأمينية. 3- أ- مستعينا بمعطيات الشكل (ب) و(ج) من الوثيقة (2)، بيّن كيف يساهم الحمضان الأمينيان رقم (63) ورقم (87) في استقرار البنية الفراغية لهذا البروتين. ب- ما مصدر الكبريت المشار إليه بالحرف (S) في الشكل (ب)؟ وما دوره؟",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2015-m-S2-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: 3,
+        prompt:
+          "4- أدّى خلل على مستوى المورثة المشرفة على تركيب هذا البروتين إلى فقدان نشاطه الطبيعي. من مكتسباتك والمعارف المبنية من هذه الدراسة، وضّح في نص علمي العلاقة بين بنية البروتين ووظيفته.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2015-m-S2-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "للعضوية جهاز مناعي نوعي يتصدى للأجسام الغريبة (المستضدات)، لمعرفة طرق هذا التصدي تُقترح الدراسة التالية. فما هي الطرق التي يتصدى بها الجهاز المناعي النوعي لفيروس الالتهاب الكبدي من النمط (B)؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2015-m-S2-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 4,
+        prompt:
+          "I- يمثل الشكل (أ) من الوثيقة (1) رسما تخطيطيا لبنية فيروس الالتهاب الكبدي من النمط (B)، بينما يمثل الشكل (ب) من نفس الوثيقة نتائج اختبار تقنية الانتشار المناعي (Ouchterlony) حيث أنّ: الحفرة (1) فيها مصل شخص مصاب بفيروس الالتهاب الكبدي من النمط (B)، الحفرة (2) فيها محلول به عناصر Hbs، الحفرة (3) فيها محلول به عناصر Hbe، الحفرة (4) فيها محلول به فيروس VIH: 1- صف بنية الفيروس الموضحة في الشكل (أ) من الوثيقة (1). 2- فسّر النتائج المحصل عليها في الشكل (ب) من الوثيقة (1). 3- أ- ما هي الخاصية المناعية التي أظهرتها هذه التقنية؟",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2015-m-S2-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 4,
+        prompt:
+          "3- ب- وضّح برسم تخطيطي ما حصل في المنطقة (س). II- لمعرفة نوع آخر من الطرق المناعية المتدخلة في التصدي لمرض الالتهاب الكبدي أُجريت التجربة التالية: حُضّرت أربعة أوساط زرع مزودة بالثيمين المشع (*T: قاعدة أزوتية تدخل في تركيب الـ ADN) الذي يسمح بقياس عدد الخلايا الناتجة عن انقسام اللمفاوية المتدخلة في هذه الطريقة المناعية (نسبة الإشعاع %)، واستُعملت في التجربة خلايا لمفاوية ثانية (LT) وخلايا كبدية أُخذت من شخصين أحدهما مصاب بفيروس الالتهاب الكبدي من النمط (B) والآخر سليم: 1- فسّر نتائج جدول الوثيقة (2). 2- صف مراحل الآلية التي سمحت بتخريب الخلايا الكبدية في الوسط (4).",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2015-m-S2-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: 4,
+        prompt:
+          "3- ممّا سبق، استخرج طرق تصدي العضوية المصابة بالمرض الذي يسببه فيروس الالتهاب الكبدي من النمط (B).",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      }
+    ]
+  },
   "2016-m/S1": {
     schemaVersion: 1,
     status: "partial",

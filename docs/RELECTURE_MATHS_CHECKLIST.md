@@ -1,6 +1,6 @@
 # Checklist de relecture — BAC maths (شعبة رياضيات)
 
-**Date :** 2026-09-14 (dernières passes : 2016-m, 2021-m, 2022-m, 2026-m, puis
+**Date :** 2026-09-15 (dernières passes : 2015-m, 2016-m, 2021-m, 2022-m, 2026-m, puis
 2023-m, 2024-m et 2025-m revérifiés sur les scans locaux). Branche
 `arena/01a09be6-rebrique-sujet-bac` (PR #26).
 
@@ -26,44 +26,47 @@ Audit d'un sujet (pôles, points, provenance, page) :
 
 ## Pages relues en image
 
-| Sujet                       | Page                   | Contenu                                                     | Décision                                                                                                                                                                                                                                 |
-| --------------------------- | ---------------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2023-m S1 (scan `-1077342`) | 1                      | ت1 (8ن) الإيثانول / بنية البروتين                           | S = Q1+Q2 mot à mot, E = Q3 (نص علمي)                                                                                                                                                                                                    |
-| 2023-m S1                   | 2                      | ت2 (12ن) القصور المناعي / PRF1, الجزء الأول                 | N = consigne officielle mot à mot                                                                                                                                                                                                        |
-| 2023-m S1                   | 3                      | ت2, الجزء الثاني + الثالث                                   | E et W alignés sur le scan                                                                                                                                                                                                               |
-| 2023-m S1                   | 4                      | S2 ت1 : التعاون الخلوي                                      | S, E confirmés                                                                                                                                                                                                                           |
-| 2023-m S2                   | 5                      | ت2 (13ن) Halofuginone / ملاريا, الجزء الأول                 | N confirmé                                                                                                                                                                                                                               |
-| 2023-m S2                   | 6                      | ت2, الجزء الثاني + الثالث                                   | E = Q1+Q2 (نصيحة), W confirmé                                                                                                                                                                                                            |
-| 2024-m S1                   | 1                      | ت1 (7ن) الكورديسبين                                         | S = Q1+Q2, E = Q3                                                                                                                                                                                                                        |
-| 2024-m S2                   | 1 (page 4 du scan)     | ت1 (7ن) PID / الرد الخلطي                                   | S = Q1+Q2 (جدول المنشأ), E = Q3                                                                                                                                                                                                          |
-| 2025-m S1                   | 1                      | ت1 (8ن) Q/D / الريبوزوم                                     | S = Q1+Q2+Q3, E = Q4                                                                                                                                                                                                                     |
-| 2020-m S1 (scan `-2273619`) | 1                      | ت1 (8ن) بنية البروتين / هجرة كهربائية                       | S = Q1+Q2+Q3, E = Q4 ; N/W reconstruits                                                                                                                                                                                                  |
-| 2020-m S1                   | 2-3                    | ت2 (12ن) Ras / p53 / سرطان الجلد                            | N = « صُغ المشكل العلمي », S = فرضية+بيّن+ترجم, E = اشرح+نص علمي                                                                                                                                                                         |
-| 2020-m S2                   | 4                      | ت1 (8ن) جزيئات HLA                                          | S = Q1+Q2+Q3, E = Q4 ; N/W reconstruits                                                                                                                                                                                                  |
-| 2020-m S2                   | 5                      | ت2 (12ن) الأنيميا المنجلية HbS                              | N = « أبرز المشكلة المطروحة », S = فرضية+قارن, E = تحقق+نص علمي                                                                                                                                                                          |
-| 2020-m corrigé              | 6-10                   | corrigé officiel complet                                    | réponses modèle rédigées depuis l'image (رابطة شاردية، (س)=R2…، T→A position 20)                                                                                                                                                         |
-| 2017-m S1                   | 1, 2                   | ت1 (6ن) المعقد المناعي ; ت2 (14ن) النسخ والترجمة            | quatre consignes mot à mot par exercice ; réponses modèle = corrigé officiel (`-2275712` pp. 5-7)                                                                                                                                        |
-| 2017-m S2                   | 3, 4                   | ت1 (6ن) الأحماض الأمينية ; ت2 (14ن) الجزيئات الدفاعية       | huit consignes mot à mot ; réponses modèle = corrigé officiel (pp. 7-9)                                                                                                                                                                  |
-| 2019-m corrigé              | 6-10                   | corrigé officiel complet des deux sujets                    | réponses modèle réécrites : (1) β / (2) α / (3) انعطاف et 257 غ/مول ; (س)=LT4، (ع)=LT8، (ص)=LB، (ل)=بالعة ; الغرفة (3) بلا استجابة ; n = 3، UUU/AAA/CCC، 4 أحماض، UCC/CUC/ACA/CAC، رامزات التوقف                                         |
-| 2018-m S1                   | 1, 2, 3                | ت1 (7ن) المورثة والبروتين ; ت2 (13ن) العجز المناعي          | Q1–Q4 mot à mot (بيانات+الظاهرتان، مرحلتا (ص)، هجرة كهربائية، نص علمي) ; W reconstruit ; ت2 : كل السلم mot à mot (منحنى، مقارنة، (a)/(b) وCMH II، تحليل الوثيقة 4، نص علمي)                                                              |
-| 2018-m S2                   | 4, 5, 6                | ت1 (6ن) اللقاح والجسم المضاد ; ت2 (14ن) مورثة الريبونوكلياز | huit consignes mot à mot (تعرّف/مثّل، الظاهرة، الاستجابة الثانوية، نص علمي، البيانات 1–3، جدول الشفرة، متتالية الأحماض، سبب RNas غير عادي)                                                                                               |
-| 2019-m S1                   | 1                      | ت1 (6ن) بنية البروتين / الرابطة الببتيدية                   | Q1–Q4 mot à mot (بيانات، صيغة + كتلة مولية، تعليل، نص علمي)                                                                                                                                                                              |
-| 2019-m S1                   | 2, 3                   | ت2 (14ن) الخلايا المناعية / الغرفتان                        | N, S, E mot à mot ; W reconstruit                                                                                                                                                                                                        |
-| 2019-m S2                   | 4, 5                   | ت1 (6ن) البالعة ; ت2 (14ن) الشفرة الوراثية                  | consignes mot à mot                                                                                                                                                                                                                      |
-| 2016-m S1                   | 1, 2                   | ت1 (10ن) تركيب البروتين ; ت2 (10ن) البالعة والأجسام المضادة | consignes mot à mot (Q1/Q2، الجدول، الوثيقة 2) ; les deux pôles N reconstruits                                                                                                                                                           |
-| 2016-m S2                   | 3, 4                   | ت1 (10ن) من الـ ADN إلى البروتين ; ت2 (10ن) الغشاء وCMH     | consignes mot à mot (Anagène، الترجمة والحساب، الفلورة، CMH والنمط الوراثي) ; les deux pôles N reconstruits                                                                                                                              |
-| 2016-m corrigé              | 5-11                   | corrigé officiel « عناصر الإجابة » des deux sujets          | réponses modèle réécrites : 429 = 3 × 143 و141 = 1 − 142 ; 16.66 % = 1 × 100 ÷ 6 (الأليل C3 متماثل) ; الجزء الثابت والمتغير للجسم المضاد ; فسيفسائي ومائع ; نظام CMH ونظام ABO والريزوس                                                  |
-| 2021-m S1                   | 1, 2, 3                | ت1 (8ن) CMH / زرع الكلية ; ت2 (12ن) الماكروليد (Mex.R)      | S1 : S = Q1+Q2 (النمط الوراثي لولدين rattachée), E = Q3 ; S2 : N = question du préambule, S = Q1, E = Q2أ+Q2ب puis Q1 du الجزء الثاني, W = نصيحة + نص علمي du الجزء الثالث                                                               |
-| 2021-m S2                   | 4, 5, 6                | ت1 (8ن) النسخ والترجمة ; ت2 (12ن) الهيموغلوبين R/T          | S2-E1 : S = Q1+Q2, E = Q3+Q4 ; S2-E2 : N = Q2, S = Q1, E = Q1+Q2أ+Q2ب+Q3 (الفرضية والخطورة rattachées), W = Q3 du الجزء الثالث                                                                                                           |
-| 2022-m S1                   | 1, 2, 3                | ت1 (8ن) دور الريبوزوم ; ت2 (12ن) اختبار RADT Cov19          | S1 : S = Q1, E = Q2+Q4, W = Q3 ; S2 : N = فرضيتان, E = Q du الجزء الثاني (الشكل (ج) et les trois sites), W = Q du الجزء الثالث (وضّح)                                                                                                    |
-| 2022-m S2                   | 4, 5, 6                | ت1 (8ن) البنية الفراغية للجسم المضاد ; ت2 (12ن) الهيبسيدين  | S2-E1 : S = Q1+Q2 (رتب المراحل rattachée), E = Q3 ; S2-E2 : N = Q1, S = exploitation du tableau 1, E = Q du الجزء الثاني, W = Q du الجزء الثالث                                                                                          |
-| 2022-m corrigé              | 7-13                   | corrigé officiel « الإجابة النموذجية » des deux sujets      | réponses modèle réécrites : 0→40 د n'existe pas ici ; R/T absent ; points clés = (س) ثانوي، ج←أ←ب، 10-30 غ، الثلاثية 33 G→A, sites S/T/C, وضّح chez 2022-m S1-E2/W                                                                       |
-| 2026-m S1                   | 1, 2, 3 (scan local)   | ت1 (6ن) LTc ; ت2 (14ن) HCF/LDLR/PCSK9                       | S1-E1 : S = Q1, E = Q2 (mention « مُهيكل بمقدمة وعرض وخاتمة ») ; S1-E2 : N = فرضيتان, E = Q1+Q2 (برّر تثبيط PCSK9 rattachée), W = خلاصة du الجزء الثالث                                                                                  |
-| 2026-m S2                   | 4, 5, 6 (scan local)   | ت1 (8ن) IL-2 ; ت2 (12ن) غيتلمان/SLC12A3                     | S2-E1 : N = Q1, S = Q2, E = Q3, W = خاتمة ; S2-E2 : N = Q1, E = Q1+Q2 (قدّم نصيحة rattachée), W = مخطط وظيفي du الجزء الثالث                                                                                                             |
-| 2021-m corrigé              | 7-12                   | corrigé officiel « الإجابة النموذجية » des deux sujets      | réponses modèle réécrites : 0→40 د, 70 %/10 % ; Mex.R (الثلاثية 114 : TGC → TGA, رامزة توقف, 7 أحماض بديلة عن 9) ; R/T (روابط كارِهة للماء، تثبيت/تحرير O2) ; 7.4 → 7.3 ; رابطة شاردية His146–Asp94                                      |
-| 2023-m (relu 2026-09-14)    | couche texte 1-3 + 4-6 | consignes et figures des deux sujets                        | deux consignes corrigées (Asp/Tyr imprimés ; fin de بيّن في نص علمي) ; valeurs des figures relues : courbe 0.6→10 et 10→80 %, barres ≈3500/≈250 جزيئة, triplets AGT GTC ATA GTG / AGT ATC ATA GTG, UCA→Ser…UAG→توقف                      |
-| 2024-m (relu 2026-09-14)    | 1, 2 (S1) + 1 (S2)     | ت1 الكورديسبين ; ت2 الورم ; ت1 PID                          | Q2 de ت1 reçue sa réponse (complément AGACGUUG lu sur la figure) ; verbe تُبيّن restauré ; courbe du الوسط 1 (250→≈330→≈180) et du الوسط 2 (250→≈1180) ; corrigé : LT8 source des LTc ; consigne restituée avec الأولي et نص علمي مُهيكل |
-| 2025-m (relu 2026-09-14)    | 2, 3 (S1) + 2 (S2)     | ت2 TAP ; ت2 UV-C/Spike                                      | deux consignes de فرضيتين recopiées mot à mot ; tableau du الشكل (ب) : 10/35/50/70 % contre 3/5/8/9 % pour 0.1→2 µg/mL ; تتابع ...CTGACTGG... / ...CTGATGG... (حذف C) ; LT8                                                              |
+| Sujet                       | Page                   | Contenu                                                                         | Décision                                                                                                                                                                                                                                 |
+| --------------------------- | ---------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2023-m S1 (scan `-1077342`) | 1                      | ت1 (8ن) الإيثانول / بنية البروتين                                               | S = Q1+Q2 mot à mot, E = Q3 (نص علمي)                                                                                                                                                                                                    |
+| 2023-m S1                   | 2                      | ت2 (12ن) القصور المناعي / PRF1, الجزء الأول                                     | N = consigne officielle mot à mot                                                                                                                                                                                                        |
+| 2023-m S1                   | 3                      | ت2, الجزء الثاني + الثالث                                                       | E et W alignés sur le scan                                                                                                                                                                                                               |
+| 2023-m S1                   | 4                      | S2 ت1 : التعاون الخلوي                                                          | S, E confirmés                                                                                                                                                                                                                           |
+| 2023-m S2                   | 5                      | ت2 (13ن) Halofuginone / ملاريا, الجزء الأول                                     | N confirmé                                                                                                                                                                                                                               |
+| 2023-m S2                   | 6                      | ت2, الجزء الثاني + الثالث                                                       | E = Q1+Q2 (نصيحة), W confirmé                                                                                                                                                                                                            |
+| 2024-m S1                   | 1                      | ت1 (7ن) الكورديسبين                                                             | S = Q1+Q2, E = Q3                                                                                                                                                                                                                        |
+| 2024-m S2                   | 1 (page 4 du scan)     | ت1 (7ن) PID / الرد الخلطي                                                       | S = Q1+Q2 (جدول المنشأ), E = Q3                                                                                                                                                                                                          |
+| 2025-m S1                   | 1                      | ت1 (8ن) Q/D / الريبوزوم                                                         | S = Q1+Q2+Q3, E = Q4                                                                                                                                                                                                                     |
+| 2020-m S1 (scan `-2273619`) | 1                      | ت1 (8ن) بنية البروتين / هجرة كهربائية                                           | S = Q1+Q2+Q3, E = Q4 ; N/W reconstruits                                                                                                                                                                                                  |
+| 2020-m S1                   | 2-3                    | ت2 (12ن) Ras / p53 / سرطان الجلد                                                | N = « صُغ المشكل العلمي », S = فرضية+بيّن+ترجم, E = اشرح+نص علمي                                                                                                                                                                         |
+| 2020-m S2                   | 4                      | ت1 (8ن) جزيئات HLA                                                              | S = Q1+Q2+Q3, E = Q4 ; N/W reconstruits                                                                                                                                                                                                  |
+| 2020-m S2                   | 5                      | ت2 (12ن) الأنيميا المنجلية HbS                                                  | N = « أبرز المشكلة المطروحة », S = فرضية+قارن, E = تحقق+نص علمي                                                                                                                                                                          |
+| 2020-m corrigé              | 6-10                   | corrigé officiel complet                                                        | réponses modèle rédigées depuis l'image (رابطة شاردية، (س)=R2…، T→A position 20)                                                                                                                                                         |
+| 2017-m S1                   | 1, 2                   | ت1 (6ن) المعقد المناعي ; ت2 (14ن) النسخ والترجمة                                | quatre consignes mot à mot par exercice ; réponses modèle = corrigé officiel (`-2275712` pp. 5-7)                                                                                                                                        |
+| 2017-m S2                   | 3, 4                   | ت1 (6ن) الأحماض الأمينية ; ت2 (14ن) الجزيئات الدفاعية                           | huit consignes mot à mot ; réponses modèle = corrigé officiel (pp. 7-9)                                                                                                                                                                  |
+| 2019-m corrigé              | 6-10                   | corrigé officiel complet des deux sujets                                        | réponses modèle réécrites : (1) β / (2) α / (3) انعطاف et 257 غ/مول ; (س)=LT4، (ع)=LT8، (ص)=LB، (ل)=بالعة ; الغرفة (3) بلا استجابة ; n = 3، UUU/AAA/CCC، 4 أحماض، UCC/CUC/ACA/CAC، رامزات التوقف                                         |
+| 2018-m S1                   | 1, 2, 3                | ت1 (7ن) المورثة والبروتين ; ت2 (13ن) العجز المناعي                              | Q1–Q4 mot à mot (بيانات+الظاهرتان، مرحلتا (ص)، هجرة كهربائية، نص علمي) ; W reconstruit ; ت2 : كل السلم mot à mot (منحنى، مقارنة، (a)/(b) وCMH II، تحليل الوثيقة 4، نص علمي)                                                              |
+| 2018-m S2                   | 4, 5, 6                | ت1 (6ن) اللقاح والجسم المضاد ; ت2 (14ن) مورثة الريبونوكلياز                     | huit consignes mot à mot (تعرّف/مثّل، الظاهرة، الاستجابة الثانوية، نص علمي، البيانات 1–3، جدول الشفرة، متتالية الأحماض، سبب RNas غير عادي)                                                                                               |
+| 2019-m S1                   | 1                      | ت1 (6ن) بنية البروتين / الرابطة الببتيدية                                       | Q1–Q4 mot à mot (بيانات، صيغة + كتلة مولية، تعليل، نص علمي)                                                                                                                                                                              |
+| 2019-m S1                   | 2, 3                   | ت2 (14ن) الخلايا المناعية / الغرفتان                                            | N, S, E mot à mot ; W reconstruit                                                                                                                                                                                                        |
+| 2019-m S2                   | 4, 5                   | ت1 (6ن) البالعة ; ت2 (14ن) الشفرة الوراثية                                      | consignes mot à mot                                                                                                                                                                                                                      |
+| 2015-m S1                   | 1, 2                   | ت1 (10ن) الهجرة الكهربائية والببتيد 503 ; ت2 (10ن) الزمر الدموية                | consignes mot à mot (تحليل النتائج، الفرضية، II-1/II-2، الاختباران، الرسم، المقارنة، المخطط) ; les deux pôles N reconstruits et le W de ت2 reconstruit                                                                                   |
+| 2015-m S2                   | 3, 4                   | ت1 (10ن) البروتين amphotère والبنية الثالثية ; ت2 (10ن) فيروس الالتهاب الكبدي B | consignes mot à mot (المنحنى، pHi، II-1/II-2/II-3، وصف البنية، فسّر، الرسم، المراحل، استخرج) ; les deux pôles N reconstruits                                                                                                             |
+| 2015-m corrigé              | 5-10                   | corrigé officiel « الإجابة النموذجية وسلم التنقيط » des deux sujets             | réponses modèle réécrites : 503 = (133+174+117+133) − 3×18 ; pHi = 4.5 ; قوس ترسيب Hbs/Hbe ; 90 % في الوسط 4 ; O+ / AB− / B+ / A+ ; N أسيتيل غلوكوزامين و الغالاكتوز                                                                     |
+| 2016-m S1                   | 1, 2                   | ت1 (10ن) تركيب البروتين ; ت2 (10ن) البالعة والأجسام المضادة                     | consignes mot à mot (Q1/Q2، الجدول، الوثيقة 2) ; les deux pôles N reconstruits                                                                                                                                                           |
+| 2016-m S2                   | 3, 4                   | ت1 (10ن) من الـ ADN إلى البروتين ; ت2 (10ن) الغشاء وCMH                         | consignes mot à mot (Anagène، الترجمة والحساب، الفلورة، CMH والنمط الوراثي) ; les deux pôles N reconstruits                                                                                                                              |
+| 2016-m corrigé              | 5-11                   | corrigé officiel « عناصر الإجابة » des deux sujets                              | réponses modèle réécrites : 429 = 3 × 143 و141 = 1 − 142 ; 16.66 % = 1 × 100 ÷ 6 (الأليل C3 متماثل) ; الجزء الثابت والمتغير للجسم المضاد ; فسيفسائي ومائع ; نظام CMH ونظام ABO والريزوس                                                  |
+| 2021-m S1                   | 1, 2, 3                | ت1 (8ن) CMH / زرع الكلية ; ت2 (12ن) الماكروليد (Mex.R)                          | S1 : S = Q1+Q2 (النمط الوراثي لولدين rattachée), E = Q3 ; S2 : N = question du préambule, S = Q1, E = Q2أ+Q2ب puis Q1 du الجزء الثاني, W = نصيحة + نص علمي du الجزء الثالث                                                               |
+| 2021-m S2                   | 4, 5, 6                | ت1 (8ن) النسخ والترجمة ; ت2 (12ن) الهيموغلوبين R/T                              | S2-E1 : S = Q1+Q2, E = Q3+Q4 ; S2-E2 : N = Q2, S = Q1, E = Q1+Q2أ+Q2ب+Q3 (الفرضية والخطورة rattachées), W = Q3 du الجزء الثالث                                                                                                           |
+| 2022-m S1                   | 1, 2, 3                | ت1 (8ن) دور الريبوزوم ; ت2 (12ن) اختبار RADT Cov19                              | S1 : S = Q1, E = Q2+Q4, W = Q3 ; S2 : N = فرضيتان, E = Q du الجزء الثاني (الشكل (ج) et les trois sites), W = Q du الجزء الثالث (وضّح)                                                                                                    |
+| 2022-m S2                   | 4, 5, 6                | ت1 (8ن) البنية الفراغية للجسم المضاد ; ت2 (12ن) الهيبسيدين                      | S2-E1 : S = Q1+Q2 (رتب المراحل rattachée), E = Q3 ; S2-E2 : N = Q1, S = exploitation du tableau 1, E = Q du الجزء الثاني, W = Q du الجزء الثالث                                                                                          |
+| 2022-m corrigé              | 7-13                   | corrigé officiel « الإجابة النموذجية » des deux sujets                          | réponses modèle réécrites : 0→40 د n'existe pas ici ; R/T absent ; points clés = (س) ثانوي، ج←أ←ب، 10-30 غ، الثلاثية 33 G→A, sites S/T/C, وضّح chez 2022-m S1-E2/W                                                                       |
+| 2026-m S1                   | 1, 2, 3 (scan local)   | ت1 (6ن) LTc ; ت2 (14ن) HCF/LDLR/PCSK9                                           | S1-E1 : S = Q1, E = Q2 (mention « مُهيكل بمقدمة وعرض وخاتمة ») ; S1-E2 : N = فرضيتان, E = Q1+Q2 (برّر تثبيط PCSK9 rattachée), W = خلاصة du الجزء الثالث                                                                                  |
+| 2026-m S2                   | 4, 5, 6 (scan local)   | ت1 (8ن) IL-2 ; ت2 (12ن) غيتلمان/SLC12A3                                         | S2-E1 : N = Q1, S = Q2, E = Q3, W = خاتمة ; S2-E2 : N = Q1, E = Q1+Q2 (قدّم نصيحة rattachée), W = مخطط وظيفي du الجزء الثالث                                                                                                             |
+| 2021-m corrigé              | 7-12                   | corrigé officiel « الإجابة النموذجية » des deux sujets                          | réponses modèle réécrites : 0→40 د, 70 %/10 % ; Mex.R (الثلاثية 114 : TGC → TGA, رامزة توقف, 7 أحماض بديلة عن 9) ; R/T (روابط كارِهة للماء، تثبيت/تحرير O2) ; 7.4 → 7.3 ; رابطة شاردية His146–Asp94                                      |
+| 2023-m (relu 2026-09-14)    | couche texte 1-3 + 4-6 | consignes et figures des deux sujets                                            | deux consignes corrigées (Asp/Tyr imprimés ; fin de بيّن في نص علمي) ; valeurs des figures relues : courbe 0.6→10 et 10→80 %, barres ≈3500/≈250 جزيئة, triplets AGT GTC ATA GTG / AGT ATC ATA GTG, UCA→Ser…UAG→توقف                      |
+| 2024-m (relu 2026-09-14)    | 1, 2 (S1) + 1 (S2)     | ت1 الكورديسبين ; ت2 الورم ; ت1 PID                                              | Q2 de ت1 reçue sa réponse (complément AGACGUUG lu sur la figure) ; verbe تُبيّن restauré ; courbe du الوسط 1 (250→≈330→≈180) et du الوسط 2 (250→≈1180) ; corrigé : LT8 source des LTc ; consigne restituée avec الأولي et نص علمي مُهيكل |
+| 2025-m (relu 2026-09-14)    | 2, 3 (S1) + 2 (S2)     | ت2 TAP ; ت2 UV-C/Spike                                                          | deux consignes de فرضيتين recopiées mot à mot ; tableau du الشكل (ب) : 10/35/50/70 % contre 3/5/8/9 % pour 0.1→2 µg/mL ; تتابع ...CTGACTGG... / ...CTGATGG... (حذف C) ; LT8                                                              |
 
 ## Consignes corrigées ou ajoutées (cette passe)
 
@@ -189,6 +192,48 @@ Ce qui a changé dans les données :
 Les réponses modèle restent verrouillées par `tests/maths-model-answers.test.mjs`
 (la réponse modèle doit satisfaire sa propre règle de mots-clés).
 
+## Passe 2015-m (2026-09-15)
+
+Cinquième année encodée hors programme de rattrapage, et première dont le scan
+est **image seul** : le dossier dzexams local
+`M/dzexams-bac-sciences-2723927.pdf` (10 pages) porte le sujet (pp. 1-4) ET son
+corrigé officiel « الإجابة النموذجية وسلم التنقيط » (pp. 5-10), mais
+`scripts/dump-pdf-text.mjs` n'y trouve **1 fragment de texte par page** — aucune
+couche texte ne peut donc servir de source, tout est recopié depuis l'image.
+
+```bash
+node scripts/render-pdf-pages.mjs M/dzexams-bac-sciences-2723927.pdf 1,2,3,4,5 2
+node scripts/render-pdf-pages.mjs M/dzexams-bac-sciences-2723927.pdf 6,7,8,9,10 2
+node scripts/report-subject-inventory.mjs 2015-m
+```
+
+Format retrouvé sur l'image : **2 sujets × 2 exercices (10 + 10)**, durée
+imprimée 02 سا و30 د. Sujet 1 : البروتين (الهجرة الكهربائية لثلاث وحدات بنائية،
+السلسلة الناسخة وجدول الشفرة، pHi والجذور) puis الزمر الدموية (اختبار المصل
+وكريات الدم الحمراء، Ouchterlony). Sujet 2 : البروتين amphotère (منحنى
+الرحلان، Rastop، الجلوتاميك 63 والأرجنين 87، سيستيين) puis التصدي لفيروس
+الالتهاب الكبدي B (Ouchterlony، الثيمين المشع، LTc والبرفورين).
+
+Onze consignes imprimées deviennent des tâches `official` ; les quatre étapes de
+cadrage N restent reconstruites (aucune question de ce type n'est imprimée) et
+le disent dans leur note, comme le pôle W de 2015-m S1-E2 (l'exercice n'a pas de
+جزء ثالث imprimé).
+
+Valeurs reprises du corrigé : `503 = (133 + 174 + 117 + 133) − 3 (18) = 557 − 54`
+(où `3 (18)` est le nombre de molécules d'eau retirées pour former le
+tétrapeptide) ; `pHi = 4.5` et la relation inverse entre pH et distance de
+migration ; `AUG-GAC-GUC-AGA-GAU-UAA` → `Asp-Val-Arg-Asp` ; l'aspartate migre
+vers le pôle positif et l'arginine vers le pôle négatif ; la liaison ionique
+`COO− … NH3+` entre le glutamate 63 (`pHi = 3.08`) et l'arginine 87
+(`pHi = 10.7`) ; la source du soufre est le cystéine (Cys) ; les zones de la
+famille sont **الأب O+ ، الأم AB− ، البنت B+ ، الابن A+** ; `1 %` dans les milieux
+1-3 et `90 %` dans le milieu 4 avec la double reconnaissance LTc/CMH I.
+
+Le catalogue maths ouvre donc en **2015** (12 cartes-épreuve 2015-m … 2026-m,
+3 cartes de consultation pour 2013-2014 + la session exceptionnelle 2017) et
+`tests/maths-2015.test.mjs` verrouille la session (barème, inventaire mappé,
+liste des 11 pôles officiels, valeurs du corrigé, badge ⚠️).
+
 ## Passe 2016-m (2026-09-14)
 
 Première année encodée hors du programme de rattrapage initial : son dossier
@@ -271,7 +316,8 @@ et sept libellés paraphrasés depuis la couche texte inversée sont recopiés m
 mot. Le pôle N de 2021-m S1-E2 accueille la question du préambule (page 2),
 recopiée mot à mot : la note du pôle dit qu'elle n'est pas numérotée.
 
-Bilan maths 2016–2026 : **130 tâches officielles sur 176** (l'encodage 2016
+Bilan maths 2015–2026 : **141 tâches officielles sur 192** (l'encodage 2015
+ajoute 11 consignes officielles sur 16 ; l'encodage 2016
 ajoute 12 consignes officielles sur 16, format 10+10 par sujet ; la relecture 2018
 ajoute 15 consignes officielles sur 16 ; la session 2020 avait ajouté 10 consignes
 officielles : les questions de cadrage « صُغ المشكل العلمي » et « أبرز المشكلة
@@ -295,18 +341,21 @@ corrigé local à l'appui).
    sur l'image (page 4) et son corrigé donne **ج ← أ ← ب** ; la réponse modèle et
    les mots-clés (`ثانوي`, `LB`) ont été alignés. Le 0 % du probe venait de la
    réponse précédente, qui classait (س) en « أولي ».
-3. **Années maths 2013–2015** : les PDF sont présents
-   (`subjects/M/2013…2015`, listés dans `subjects/manifest.json`) mais aucune
+3. **Années maths 2013–2014** : les PDF sont présents
+   (`subjects/M/2013…2014`, listés dans `subjects/manifest.json`) mais aucune
    donnée n'existe encore dans `data/years/m/` → ces années restent en
-   consultation externe, sans mode BAC. **2020…2016 sont désormais encodées**
-   (`year-2020.js` … `year-2016.js`). Encoder 2015 puis 2014… demande la même
-   relecture page à page et ne doit pas être fait à l'aveugle. Deux scans ont une police
+   consultation externe, sans mode BAC. **2020…2015 sont désormais encodées**
+   (`year-2020.js` … `year-2015.js`). Encoder 2014 puis 2013 demande la même
+   relecture page à page (scans image seul) et ne doit pas être fait à
+   l'aveugle. Deux scans ont une police
    incomplète : 2019 (quelques séries de mots non dessinées) et 2018 (le nom du
    virus dans « فيروس الـ ( ) » n'est pas dessiné). Ils sont signalés dans
    `bacPromptNotes` et jamais complétés au hasard (la couche texte, lue par
    `scripts/dump-pdf-text.mjs`, tranche les cas lisibles par fragments).
 4. Corrections officielles maths : **toutes les années encodées ont leur corrigé
-   relu**. Le corrigé est dans le même dossier dzexams que le sujet : 2016
+   relu**. Le corrigé est dans le même dossier dzexams que le sujet : 2015
+   (`-2723927.pdf`, « الإجابة النموذجية وسلم التنقيط » pp. 5–10, relu le
+   2026-09-15, scan image seul), 2016
    (`-1413929.pdf`, عناصر الإجابة pp. 5–11, relu le 2026-09-14), 2017
    (`-2275712.pdf`, pp. 5–9), 2018 (`-1967487.pdf`, pp. 7–12), 2019
    (`-2280992.pdf`, pp. 6–10, relu le 2026-09-14), 2020
@@ -315,10 +364,11 @@ corrigé local à l'appui).
    2023, 2024, 2025 et 2026 disposent du corrigé eddirasa (2026 et 2023–2025
    revérifiés le 2026-09-14, chiffres relus sur les figures des scans locaux car
    l'OCR inverse les nombres). Les seules années sans corrigé localisé sont
-   **2013, 2014 et 2015**, dont les scans sont image seul : c'est le chantier
+   **2013 et 2014**, dont les scans sont image seul : c'est le chantier
    d'encodage restant (cf. point 3).
-5. Cohérence mots-clés / réponses modèle : **traité le 2026-09-14**. Sonde
-   `evaluateText(réponse modèle, règle)` sur les 160 pôles maths :
+5. Cohérence mots-clés / réponses modèle : **traité le 2026-09-14**, étendu le
+   2026-09-15 aux 16 pôles de 2015-m. Sonde
+   `evaluateText(réponse modèle, règle)` sur les 176 pôles maths :
    `hits >= req` partout (0 échec). Quatre règles ne pouvaient pas être
    satisfaites par la réponse modèle officielle et ont été ajustées
    (2017-m S2E2W, 2018-m S2E2E, 2018-m S2E2W, 2020-m S1E1W) ; deux réponses

@@ -18,8 +18,8 @@ test("le statut P1 refuse un faux 100 % tant que les inventaires et copies manqu
   );
   assert.ok(inventoryEvidence, `preuve P1.1 inattendue: ${byId["P1.1"].evidence}`);
   assert.equal(Number(inventoryEvidence[1]), 0);
-  assert.ok(Number(inventoryEvidence[2]) >= 48, "les sujets encodés ne peuvent pas régresser");
-  assert.ok(Number(inventoryEvidence[3]) >= 488);
+  assert.ok(Number(inventoryEvidence[2]) >= 50, "les sujets encodés ne peuvent pas régresser");
+  assert.ok(Number(inventoryEvidence[3]) >= 504);
   // Le minimum dépend du nombre de pôles actifs : on le calcule au lieu de le figer.
   const requiredCopies = CALIBRATION_STATUS.activePoles * CALIBRATION_THRESHOLDS.minimumCopiesPerPole;
   assert.match(byId["P1.5"].evidence, new RegExp(`0/${requiredCopies} copies`));
