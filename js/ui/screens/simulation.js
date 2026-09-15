@@ -42,10 +42,13 @@ function taskReviewHTML(task, subject) {
       const exercise = subject.exercises.find((item) => item.number === mapping.exerciseNumber);
       const pole = exercise?.poles?.[mapping.pole];
       if (!pole?.modelAnswer) return "";
-      /* Les payloads de l'archive 2013–2019 portent des « réponses modèle »
-         fabriquées par concaténation de mots-clés (answerStatus: "synthetic").
-         Elles servent au moteur d'audit, jamais à l'élève : afficher
-         « تغيرات راحه بدلالة الزمن » comme un corrigé serait pire que rien. */
+      /* Les payloads de la filière sciences expérimentales 2013–2017 portent
+         des « réponses modèle » fabriquées par concaténation de mots-clés
+         (answerStatus: "synthetic", 120 pôles). Elles servent au moteur
+         d'audit, jamais à l'élève : afficher « تغيرات راحه بدلالة الزمن »
+         comme un corrigé serait pire que rien. Les payloads maths et les
+         sessions SE 2018–2026 n'en contiennent plus (réponses relues sur les
+         corrigés, answerStatus: "authored" ou réponse officielle). */
       if (pole.answerStatus === "synthetic") {
         syntheticCount += 1;
         return "";

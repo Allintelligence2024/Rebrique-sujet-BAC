@@ -96,10 +96,10 @@ Les données manquantes ne peuvent pas être synthétisées : il faut les sujets
 
 | Lot  | Preuve d’acceptation                                                                                                                                                           | État    |
 | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- |
-| P3.1 | Catalogue initial limité aux métadonnées ; 19 payloads filière/année importés à la demande, dédupliqués et validés.                                                            | Terminé |
+| P3.1 | Catalogue initial limité aux métadonnées ; 28 payloads filière/année importés à la demande, dédupliqués et validés.                                                            | Terminé |
 | P3.2 | Shell statique exhaustif sans année/PDF ; aucun PDF tiers local ; sources externes ouvertes seulement via un lien explicite.                                                   | Terminé |
 | P3.3 | Identifiant dérivé du contenu ; manifeste, icônes et PDF portent une révision SHA-256 ; caches isolés par build, anciens caches MIFTAH nettoyés et version affichée dans l’UI. | Terminé |
-| P3.4 | Runtime limité à 12 réponses locales HTTP 200 ; erreurs, réponses partielles et requêtes `Range` exclues ; plus anciennes insertions évincées.                                 | Terminé |
+| P3.4 | Runtime limité à 20 réponses locales HTTP 200 ; erreurs, réponses partielles et requêtes `Range` exclues ; plus anciennes insertions évincées.                                 | Terminé |
 | P3.5 | Diagnostics locaux bornés à des compteurs techniques agrégés et des états connectivité/SW ; réponses, textes d’erreur, URLs et données élève interdits et testés.              | Terminé |
 | P3.6 | Build déterministe (`dist/site/`, monofichier, manifeste d’octets/SHA-256), vérification exacte, CI après E2E, déploiement atomique et rollback documentés.                    | Terminé |
 
