@@ -646,6 +646,22 @@ Les quatre tests `maths-2016/2017/2021` qui figeaient d'anciennes graphies ont
    2014 et 2015 sont image seul (1 fragment de texte par page) et ont donc été
    entièrement relus sur l'image.
 
+3ter. **Formes minoritaires examinées puis conservées, avec preuve** (2026-09-15) :
+
+- `متحسسة` / `متموضعة` (2016-m) : le corpus des scans donne 9 `محسسة` pour
+  1 `متحسسة`, ce qui en faisait un signal. La couche texte du corrigé local
+  `M/dzexams-bac-sciences-1413929.pdf` tranche : « تحفيز باقي الخلايا
+  اللمفاوية **المتحسسة** », « بين أحماض أمينية معينة **متموضعة** في أماكن
+  محددة » et « في السلسلة **المتموضعة** في الموقع المحفز ». Nos réponses
+  modèle sont ces citations : **rien changé**, et un test les verrouille
+  (`tests/maths-2016.test.mjs`).
+- `بكتريا` (2014-m, 3 occurrences) : les deux graphies vivent dans les sujets
+  officiels (`بكتريا` 15 / `بكتيريا` 31 dans les scans ; le sujet 2021-m
+  imprime `البكتريا`) : **rien changé**.
+- `دوره` / `دورها` (11 occurrences) : ce sont des possessifs (« son rôle »),
+  pas des coquilles de `دورة` — tranché sans image, par grammaire, et déjà
+  couvert par la liste des possessifs vérifiés.
+
 3bis. **Mots-clés qui ne vivent pas dans leur propre réponse modèle** : un
 balayage du 2026-09-15 (1890 mots-clés sur 536 pôles, `matchConcept` de la
 réponse modèle vers chaque mot-clé) en laisse **164**, presque tous des

@@ -134,3 +134,25 @@ test("l'écran d'épreuve affiche les consignes officielles de 2016-m et badge l
   // Aucune réponse modèle n'est révélée pendant l'épreuve.
   assert.doesNotMatch(html, /روابط كيميائية/);
 });
+
+test("les graphies rares des réponses modèle 2016-m sont celles du corrigé, pas des coquilles", () => {
+  // Signal d'audit resté ouvert : `متحسسة` (2 occurrences dans les données) et
+  // `متموضعة` (3) paraissaient minoritaires (le corpus des scans donne 9
+  // `محسسة` pour 1 `متحسسة`). La couche texte du corrigé local
+  // M/dzexams-bac-sciences-1413929.pdf tranche : « تحفيز باقي الخلايا
+  // اللمفاوية المتحسسة » et « بين أحماض أمينية معينة متموضعة في أماكن
+  // محددة » / « في السلسلة المتموضعة في الموقع المحفز ». Ce sont des
+  // citations — donc conservées telles quelles.
+  const list = year.sujets.flatMap((subject) =>
+    subject.exercises.flatMap((exercise) =>
+      Object.entries(exercise.poles).map(([pole, data]) => ({
+        key: `S${subject.id}E${exercise.number}${pole}`,
+        data
+      }))
+    )
+  );
+  const answer = (key) => list.find((item) => item.key === key).data.modelAnswer;
+  assert.match(answer("S1E2W"), /الخلايا اللمفاوية المتحسسة/);
+  assert.match(answer("S1E1E"), /أحماض أمينية معينة متموضعة في أماكن محددة/);
+  assert.match(answer("S2E1W"), /السلسلة المتموضعة في الموقع المحفز/);
+});
