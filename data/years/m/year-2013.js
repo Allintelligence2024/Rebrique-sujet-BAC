@@ -234,7 +234,7 @@ export const YEAR_2013_M = {
       id: 2,
       pdf: null,
       pdfAvailable: false,
-      pdfExternalUrl: "https://www.dzexams.com/ar/expiree/UmdYdlc3em1RWmJQWEJCbW52Vm12dz09",
+      pdfExternalUrl: "https://www.dzexams.com/ar/annales/UmdYdlc3em1RWmJQWEJCbW52Vm12dz09",
       pdfLocalUrl: "/subjects/M/2013/sujet-2.pdf",
       pdfNote: PDF_NOTE,
       title: "الموضوع الثاني",
