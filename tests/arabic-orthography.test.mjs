@@ -10,6 +10,15 @@
    الحمض الأميني d'après le corrigé 2022 « روابط بين CoEM والحمض
    الأميني Arg120 »).
 
+   Trois formes de plus le 2026-09-15, chacune tranchée par une preuve :
+     - « الأراكيدونيك » → « الأراشيدونيك » : le sujet SE-2020 imprime
+       « حمض أراشيدونيك » (relu en image, page 2 : diagramme + question) ;
+     - « تركيض » → « ارتباط » : le jeton n'existe nulle part (0 dans le
+       corpus des scans, 0 dans la réponse modèle) et le corrigé officiel
+       SE-2022 dit « يمنع 3-NOP ارتباط CoEM بالأنزيم » ;
+     - « للرفاق » → « المرافق » : le corrigé écrit « الموقع الخاص بتثبيت
+       المرافق الأنزيمي ».
+
    Ces tests verrouillent le résultat :
    1. aucune des formes fautives corrigées ne revient (jeton par jeton,
       pour ne pas confondre « سكره » « son sucre » avec une coquille) ;
@@ -24,6 +33,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
+import { matchConcept } from "../js/engine.js";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -231,7 +241,11 @@ const FORBIDDEN = [
   "إستعاد",
   "إكتسب",
   "إرتصاص",
-  "إنطواء"
+  "إنطواء",
+  // Cinquième passe (2026-09-15, après la recopie SE-2021) : voir l'en-tête.
+  "أراكيدونيك",
+  "تركيض",
+  "للرفاق"
 ];
 
 test("aucune des formes fautives corrigées ne revient dans les données", () => {
@@ -387,4 +401,45 @@ test("le résumé SE-2025 nomme le receveur (مستقبل), pas مستقل", () 
   }
   assert.deepEqual(hits, [], `forme fautive réintroduite :\n${hits.join("\n")}`);
   assert.ok(good >= 1, "forme correcte مستقبل زمرته absente");
+});
+
+test("les mots-clés acceptent la graphie que l'élève lit dans le sujet officiel", () => {
+  // Un mot-clé écrit dans une seule graphie peut être « mort » pour l'élève
+  // qui recopie le sujet : le sujet SE-2022 imprime « الجينتامسين » (س) quand
+  // son corrigé écrit « الجينتاميسين », et le sujet 2021-m imprime « البكتريا ».
+  // Les trois règles ci-dessous doivent accepter les deux lectures.
+  const cases = [
+    {
+      label: "SE-2020/S1E2/S — حمض أراشيدونيك",
+      keywords: ["Cox", "اراشيدونيك", "الم", "مخاط"],
+      minHits: 3,
+      student: "يحول Cox-1 حمض أراشيدونيك إلى برستاغلوندين يفرز المخاط فيحمي جدار المعدة"
+    },
+    {
+      label: "SE-2022/S1E3/N — الجينتامسين",
+      keywords: ["فرضية", "ترجمة", "جينتامسين"],
+      minHits: 2,
+      student: "الفرضية: يتسبب الجينتامسين في قراءة خاطئة للرموز خلال الترجمة"
+    },
+    {
+      label: "2021-m/S1E2/W — البكتريا",
+      keywords: ["مضادات", "مقاومة", "بكتريا"],
+      minHits: 2,
+      student:
+        "تثبط المضادات الحيوية تركيب بروتينات البكتريا فتوقف نموها، والاستعمال المفرط ينتج سلالات مقاومة"
+    }
+  ];
+  const se2022 = FILES.find((f) => f.stream === "se" && f.name === "year-2022.js");
+  const m2021 = FILES.find((f) => f.stream === "m" && f.name === "year-2021.js");
+  // La graphie du sujet doit être présente dans le fichier, dans un groupe d'alias.
+  assert.match(se2022.text, /\["جينتامسين", "جينتاميسين"\]/);
+  assert.match(m2021.text, /\["بكتيريا", "بكتريا"\]/);
+  for (const c of cases) {
+    for (const k of c.keywords) {
+      assert.ok(
+        matchConcept(c.student, k),
+        `${c.label} : mot-clé « ${k} » non attrapé (minHits ${c.minHits})`
+      );
+    }
+  }
 });

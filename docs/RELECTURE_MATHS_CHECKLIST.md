@@ -579,19 +579,24 @@ sept lignes de plus. Les trois premières sont tranchées sur l'image du corrig�
 dossier, rendues par `scripts/render-pdf-pages.mjs`) ; les suivantes sur le
 reste du corpus et le vocabulaire des scans.
 
-| Famille          | Correction                                                                       | Détail                                                                                                                                           |
-| ---------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| translittération | `لازمية` → `بلازمية`, `اللازمية` → `البلازمية`                                   | 20 (2013-m) ; le corrigé p. 4 écrit « خلية بلازمية LBP » et le schéma p. 3 « بلازمية »                                                           |
-| coquille         | `تماز` → `تمايز`, `وتمازت` → `وتمايزت`                                           | 6 (2013-m) ; corrigé p. 4 « مصدر الخلية البلازمية (الشكل ب) : تمايز الخلية اللمفاوية LB المنتقاة »                                               |
-| coquille         | `تشطيم` → `التنشيط` (1) et `تنشيط` (1)                                           | 2013-m ; schéma p. 3 « التنشيط : التكاثر و التمايز »                                                                                             |
-| coquille         | `السيسيتين` → `السيستينين`                                                       | 2018-m : deux cystéines du pont disulfure ; le corpus écrit `السيستين` (2014-m) et les scans `السيستيني`                                         |
-| slug reconstruit | `النطبيعي` → `النمط الطبيعي`                                                     | SE-2025 : le placeholder fusionnait `النمط` et `الطبيعي` (la réponse modèle disait déjà `النمط الطبيعي`)                                         |
-| mot-clé mort     | `بلاسم` → `بلازم` (2017-m), `زمري` → `زمر` (SE-2025)                             | radicaux restés sur les anciennes graphies : la réponse modèle écrit `بلازموسيتات`, et le pôle voisin de SE-2025 utilise déjà `الزمر`            |
-| contresens       | `المبالغ العصبية` → `المبلغات العصبية`                                           | SE-2023 : « المبالغ » (les montants) n'a aucun sens ; la même session écrit `مستقبل غشائي للمبلغ العصبي` (L. 61) et 2026-m `المبلغات الكيميائية` |
-| hamzat wasl      | `إستعاد` → `استعاد`, `إكتسب` → `اكتسب`, `إرتصاص` → `ارتصاص`, `إنطواء` → `انطواء` | 2014-m : formes VII/VIII/X hamzées ; le même fichier écrit `ارتصاص` (18 fois) et le corpus `استعادة`, `يكتسب`, `انطواء`                          |
-| slug reconstruit | `مستقل زمرته` → `مستقبل زمرته`                                                   | SE-2025 : le résumé du pôle N disait « مستقل » (indépendant) là où l'énoncé officiel du même pôle (page 9) écrit `مستقبل`                        |
+| Famille          | Correction                                                                       | Détail                                                                                                                                                   |
+| ---------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| translittération | `لازمية` → `بلازمية`, `اللازمية` → `البلازمية`                                   | 20 (2013-m) ; le corrigé p. 4 écrit « خلية بلازمية LBP » et le schéma p. 3 « بلازمية »                                                                   |
+| coquille         | `تماز` → `تمايز`, `وتمازت` → `وتمايزت`                                           | 6 (2013-m) ; corrigé p. 4 « مصدر الخلية البلازمية (الشكل ب) : تمايز الخلية اللمفاوية LB المنتقاة »                                                       |
+| coquille         | `تشطيم` → `التنشيط` (1) et `تنشيط` (1)                                           | 2013-m ; schéma p. 3 « التنشيط : التكاثر و التمايز »                                                                                                     |
+| coquille         | `السيسيتين` → `السيستينين`                                                       | 2018-m : deux cystéines du pont disulfure ; le corpus écrit `السيستين` (2014-m) et les scans `السيستيني`                                                 |
+| slug reconstruit | `النطبيعي` → `النمط الطبيعي`                                                     | SE-2025 : le placeholder fusionnait `النمط` et `الطبيعي` (la réponse modèle disait déjà `النمط الطبيعي`)                                                 |
+| mot-clé mort     | `بلاسم` → `بلازم` (2017-m), `زمري` → `زمر` (SE-2025)                             | radicaux restés sur les anciennes graphies : la réponse modèle écrit `بلازموسيتات`, et le pôle voisin de SE-2025 utilise déjà `الزمر`                    |
+| contresens       | `المبالغ العصبية` → `المبلغات العصبية`                                           | SE-2023 : « المبالغ » (les montants) n'a aucun sens ; la même session écrit `مستقبل غشائي للمبلغ العصبي` (L. 61) et 2026-m `المبلغات الكيميائية`         |
+| hamzat wasl      | `إستعاد` → `استعاد`, `إكتسب` → `اكتسب`, `إرتصاص` → `ارتصاص`, `إنطواء` → `انطواء` | 2014-m : formes VII/VIII/X hamzées ; le même fichier écrit `ارتصاص` (18 fois) et le corpus `استعادة`, `يكتسب`, `انطواء`                                  |
+| slug reconstruit | `مستقل زمرته` → `مستقبل زمرته`                                                   | SE-2025 : le résumé du pôle N disait « مستقل » (indépendant) là où l'énoncé officiel du même pôle (page 9) écrit `مستقبل`                                |
+| translittération | `الأراكيدونيك` → `الأراشيدونيك`                                                  | SE-2020 : le sujet officiel imprime `حمض أراشيدونيك` (page 2, relue en image : diagramme + question) — la forme française `-k-` n'existe dans aucun scan |
+| mot-clé mort     | `تركيض` → `ارتباط` (SE-2022)                                                     | jeton inexistant (0 occurrence dans le corpus des scans, 0 dans la réponse modèle) ; le corrigé officiel dit `يمنع 3-NOP ارتباط CoEM بالأنزيم`           |
+| coquille         | `للرفاق الأنزيمي` → `المرافق الأنزيمي` (SE-2022)                                 | le corrigé officiel écrit `الموقع الخاص بتثبيت المرافق الأنزيمي` ; le même pôle porte déjà `المرافق` trois fois                                          |
+| graphie du sujet | mot-clé `جينتاميسين` → groupe `["جينتامسين", "جينتاميسين"]`                      | le sujet SE-2022 imprime `الجينتامسين` (س) et son corrigé `الجينتاميسين` : sans le groupe, l'élève qui lit le sujet n'était jamais crédité               |
+| graphie du sujet | mot-clé `بكتيريا` → groupe `["بكتيريا", "بكتريا"]` (2021-m)                      | le sujet 2021-m imprime `البكتريا` (couche texte locale) : les deux graphies sont attestées, l'élève doit être crédité des deux                          |
 
-Les trois dernières lignes (hamzat wasl, receveur SE-2025) ont été tranchées par règle orthographique et cohérence interne — formes VII/VIII/X jamais hamzées, `مستقبل` écrit juste à côté dans l'énoncé officiel — sans relecture d'image. La ligne « contresens » a été tranchée par cohérence interne
+Les lignes « hamzat wasl » (2014-m) et « slug reconstruit » (SE-2025) ont été tranchées par règle orthographique et cohérence interne — formes VII/VIII/X jamais hamzées, `مستقبل` écrit juste à côté dans l'énoncé officiel — sans relecture d'image ; la ligne « contresens » (SE-2023) l'a été par cohérence interne. Les cinq lignes ajoutées ensuite (2026-09-15, après la recopie SE-2021) s'appuient, elles, sur l'image du sujet (`حمض أراشيدونيك`, SE-2020 p. 2), sur le corpus des scans (`تركيض` : 0 occurrence ; `المرافق الأنزيمي`) ou sur la couche texte du sujet local (`الجينتامسين` SE-2022, `البكتريا` 2021-m)
 
 Le même schéma porte une case jaune « التشيط + » : cette graphie officielle est
 celle du corpus, elle n'a pas été touchée. Le verrou gagne huit formes
@@ -600,19 +605,19 @@ celle du corpus, elle n'a pas été touchée. Le verrou gagne huit formes
 test compare le **jeton entier** `لازمية` — il ne peut pas entrer dans la liste des préfixes, où le
 préfixe `ب` l'aurait rendu égal à la forme correcte `بلازمية`.
 
-**Verrou** : `tests/arabic-orthography.test.mjs` (7 tests) refuse les 161
-graphies fautives (comparaison par jeton, préfixes
+**Verrou** : `tests/arabic-orthography.test.mjs` (9 tests) refuse les 164
+graphies fautives (`أراكيدونيك`, `تركيض`, `للرفاق` en plus) (comparaison par jeton, préfixes
 `و ف ب ك ل ال وال فال بال كال لل` retirés avant comparaison : `والتماز`
 échappait à la liste où figure `التماز` — corrigé le 2026-09-15 en
 `والتمايز` — et `اللأمينين` à celle où figure `لأمينين` ; injections vérifiées
 dans les deux sens, y compris après la seconde passe), exige que le `ة`
 reste final,
-contrôle vingt-quatre formes corrigées (`ارتصاص` et `انطواء` en plus) et les phrases-témoins (2017 `الخلية البلازمية`,
+contrôle vingt-cinq formes corrigées (`اراشيدونيك` en plus) et les phrases-témoins (2017 `الخلية البلازمية`,
 2018 `الأناتوكسين الكزازي`, SE 2022 `اللامينين`, 2015 `محاليل`). Vérifié dans
 les deux sens : réintroduire `إنزيم` fait échouer le premier test, injecter
 `ترجمةا` fait échouer le second ; les quatre repassent sans la réintroduction.
 Les quatre tests `maths-2016/2017/2021` qui figeaient d'anciennes graphies ont
-été alignés (`أنزيم ARN بوليميراز`, `الخلية البلازمية`, `قليلة`). Deux verrous ciblent les corrections de cette passe : `مستقل زمرته` (SE-2025, test 7) et la phrase `المبالغ العصبية` (SE-2023, test 3).
+été alignés (`أنزيم ARN بوليميراز`, `الخلية البلازمية`, `قليلة`). Deux verrous ciblent les corrections de cette passe : `مستقل زمرته` (SE-2025, test 7) et la phrase `المبالغ العصبية` (SE-2023, test 3). Un neuvième test vérifie la **graphie lue par l'élève** : `حمض أراشيدونيك` (SE-2020), `الجينتامسين` (SE-2022, groupe d'alias avec `الجينتاميسين`) et `البكتريا` (2021-m, groupe avec `بكتيريا`) doivent tous être attrapés par leur mot-clé ; casser un groupe d'alias le fait échouer (injection vérifiée).
 
 ## Reste à faire (assumé)
 
@@ -640,6 +645,17 @@ Les quatre tests `maths-2016/2017/2021` qui figeaient d'anciennes graphies ont
    `scripts/dump-pdf-text.mjs`, tranche les cas lisibles par fragments) ; 2013,
    2014 et 2015 sont image seul (1 fragment de texte par page) et ont donc été
    entièrement relus sur l'image.
+
+3bis. **Mots-clés qui ne vivent pas dans leur propre réponse modèle** : un
+balayage du 2026-09-15 (1890 mots-clés sur 536 pôles, `matchConcept` de la
+réponse modèle vers chaque mot-clé) en laisse **164**, presque tous des
+approximations assumées — un mot-clé de cadrage (`الأنواع`, `أكسجين`,
+`وظيفة`) que la réponse modèle n'emploie pas littéralement. Le balayage ne
+garde un signal que croisé avec une variante quasi identique dans la réponse
+(2 cas, tous deux légitimes : `وظيفة`/`وظيفي`, `بكتيريا`/`بكتيرية`) et avec le
+corpus des scans (`تركيض` : 0 occurrence), ce qui a donné la correction
+SE-2022. Les 164 restants sont documentés ici, pas « corrigés » : les réécrire
+sans preuve serait inventer.
 
 4. Corrections officielles maths : **toutes les années encodées ont leur corrigé
    relu**. Le corrigé est dans le même dossier dzexams que le sujet : 2015
