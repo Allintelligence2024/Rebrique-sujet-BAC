@@ -41,7 +41,8 @@ test("dist/site est un artefact vérifiable qui n'expose aucun fichier de dével
     "sw.js",
     "manifest.webmanifest",
     "data/years/se/year-2025.js",
-    "data/years/m/year-2026.js"
+    "data/years/m/year-2026.js",
+    "data/years/m/year-2014.js"
   ]) {
     assert.ok(existsSync(join(sitePath, path)), `${path} absent de la release`);
   }

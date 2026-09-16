@@ -245,7 +245,24 @@ export const YEAR_CATALOG = Object.freeze([
       modulePath: `data/years/se/year-${id}.js`
     })
   ),
-  ...["2021", "2022", "2023", "2024", "2025", "2026"].map((calendarYear) =>
+  // La filière maths est encodée de 2013 à 2026 : chaque année a été relue page
+  // à page sur le dossier dzexams local (sujet + corrigé officiel).
+  ...[
+    "2013",
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+  ].map((calendarYear) =>
     catalogEntry({
       id: `${calendarYear}-m`,
       stream: "m",
@@ -279,6 +296,14 @@ const YEAR_LOADERS = Object.freeze({
   2024: () => import("./years/se/year-2024.js"),
   2025: () => import("./years/se/year-2025.js"),
   2026: () => import("./years/se/year-2026.js"),
+  "2013-m": () => import("./years/m/year-2013.js"),
+  "2014-m": () => import("./years/m/year-2014.js"),
+  "2015-m": () => import("./years/m/year-2015.js"),
+  "2016-m": () => import("./years/m/year-2016.js"),
+  "2017-m": () => import("./years/m/year-2017.js"),
+  "2018-m": () => import("./years/m/year-2018.js"),
+  "2019-m": () => import("./years/m/year-2019.js"),
+  "2020-m": () => import("./years/m/year-2020.js"),
   "2021-m": () => import("./years/m/year-2021.js"),
   "2022-m": () => import("./years/m/year-2022.js"),
   "2023-m": () => import("./years/m/year-2023.js"),
@@ -353,7 +378,10 @@ export function loadedYearIds() {
 
 export const APP_CONFIG = Object.freeze({
   appTitle: "مفتاح الكنز",
-  appSubtitle: "منهجية الإجابة — بكالوريا علوم الطبيعة والحياة",
+  // Le sous-titre ne nomme aucune filière : l'application couvre les
+  // sciences expérimentales ET les mathématiques (l'ancien libellé « SVT »
+  // affiché sur les cartes Maths était trompeur).
+  appSubtitle: "منهجية الإجابة — بكالوريا علوم الطبيعة والحياة ورياضيات",
   examMinutesByStream: EXAM_MINUTES_BY_STREAM,
   strategyMinutes: 25,
   dataLoading: "on-demand",

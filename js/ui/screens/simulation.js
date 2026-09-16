@@ -36,17 +36,33 @@ function taskProvenanceHTML(task) {
 }
 
 function taskReviewHTML(task, subject) {
+  let syntheticCount = 0;
   const references = (task.trainingMappings || [])
     .map((mapping) => {
       const exercise = subject.exercises.find((item) => item.number === mapping.exerciseNumber);
       const pole = exercise?.poles?.[mapping.pole];
       if (!pole?.modelAnswer) return "";
+      /* Les payloads de la filière sciences expérimentales 2013–2017 portent
+         des « réponses modèle » fabriquées par concaténation de mots-clés
+         (answerStatus: "synthetic", 120 pôles). Elles servent au moteur
+         d'audit, jamais à l'élève : afficher « تغيرات راحه بدلالة الزمن »
+         comme un corrigé serait pire que rien. Les payloads maths et les
+         sessions SE 2018–2026 n'en contiennent plus (réponses relues sur les
+         corrigés, answerStatus: "authored" ou réponse officielle). */
+      if (pole.answerStatus === "synthetic") {
+        syntheticCount += 1;
+        return "";
+      }
       return `<li><b>${escapeHTML(mapping.pole)}</b> — ${escapeHTML(pole.modelAnswer)}</li>`;
     })
     .filter(Boolean)
     .join("");
   if (!references) {
-    return `<div class="feedback mid simulation-review-reference">لا يوجد مرجع تدريبي مراجع لهذه المهمة. لا تُخترع إجابة بعد التسليم.</div>`;
+    return `<div class="feedback mid simulation-review-reference">${
+      syntheticCount
+        ? "لا توجد إجابة نموذجية مشفّرة لهذه المهمة: أرشيف مُعاد بناؤه، وصياغته الآلية لا تُعرض كتصحيح. لا تُخترع إجابة بعد التسليم."
+        : "لا يوجد مرجع تدريبي مراجع لهذه المهمة. لا تُخترع إجابة بعد التسليم."
+    }</div>`;
   }
   return `<details class="model-box simulation-review-reference">
     <summary class="model-summary">مراجع التدريب المرتبطة بهذه المهمة</summary>
@@ -71,7 +87,7 @@ export function simulationExamHTML({
   const reconstructed = tasks.filter((task) => task.promptSource === "reconstructed").length;
   const reconstructedNotice =
     reconstructed > 0
-      ? `<div class="feedback mid mb-2" role="note">${reconstructed} من ${tasks.length} مهام معروضة خطوات مُعاد بناؤها (⚠️) وليست نصّ التعليمات الرسمية.</div>`
+      ? `<div class="feedback mid mb-2" role="note">${reconstructed} من ${tasks.length} مهام معروضة خطوات مُعاد بناؤها (⚠️) وليست نصّ التعليمات الرسمية — وقد تكون بعض تعليمات الموضوع الرسمية غير مُدرجة في هذا الجرد الجزئي.</div>`
       : "";
   const provisionalNotice = provisional
     ? `<div class="feedback mid mb-2" role="note">${escapeHTML(BAC_MODE_NOTICES.provisionalScoring)}</div>`
@@ -220,11 +236,11 @@ export function createSimulationController(deps) {
      mode lecture — en l'annonçant explicitement, jamais à l'insu de l'élève. */
   const FALLBACK_NOTICE = {
     missing:
-      "لا يوجد جرد رسمي لمهام هذا الموضوع: وضع الإمتحان غير متاح. تعرض هذه الشاشة الموضوع للقراءة وكتابة إجابات حرة فقط.",
+      "لا يوجد جرد رسمي لمهام هذا الموضوع: وضع الامتحان غير متاح. تعرض هذه الشاشة الموضوع للقراءة وكتابة إجابات حرة فقط.",
     partial:
-      "جرد المهام الرسمية لهذا الموضوع غير مكتمل: وضع الإمتحان غير متاح حتى اكتماله. تعرض هذه الشاشة الموضوع للقراءة وكتابة إجابات حرة فقط.",
+      "جرد المهام الرسمية لهذا الموضوع غير مكتمل: وضع الامتحان غير متاح حتى اكتماله. تعرض هذه الشاشة الموضوع للقراءة وكتابة إجابات حرة فقط.",
     blocked:
-      "لم يستوفِ هذا الموضوع شروط الأهلية للإمتحان. تعرض هذه الشاشة الموضوع للقراءة وكتابة إجابات حرة فقط."
+      "لم يستوفِ هذا الموضوع شروط الأهلية للامتحان. تعرض هذه الشاشة الموضوع للقراءة وكتابة إجابات حرة فقط."
   };
 
   function renderBacReadingMode(subject, fallbackReason = "") {
@@ -233,6 +249,10 @@ export function createSimulationController(deps) {
       : "";
     const screen = $("#view-workspace");
     screen?.setAttribute("data-session-mode", "bac");
+    // Le mode de réponse est un état d'écran : il doit être réécrit à chaque
+    // rendu, sinon la valeur « free » d'une session précédente reste collée
+    // (un sujet à inventaire complet héritait du mode copie libre).
+    screen?.setAttribute("data-answer-mode", "reading");
     screen?.setAttribute("data-review-mode", "false");
     setInternalHTML(
       screen,
@@ -273,16 +293,31 @@ export function createSimulationController(deps) {
   }
 
   /* Épreuve « copie libre » : session dont les consignes ne sont pas
-     encodées (couche texte du PDF illisible, rien n'a pu être recopié mot à
-     mot ni reconstitué sans inventer). Plutôt que de fermer la session, on
-     ouvre une épreuve honnête : le sujet officiel s'affiche dans la
-     visionneuse, un champ de rédaction par exercice, le chronomètre officiel
-     et « ✓ تسليم الورقة ». Aucune note, aucun corrigé : il n'y a ici rien à
-     corriger — seulement l'armature (thème + barème) lue dans le fichier. */
+     notées (ni pôle, ni inventaire, ni corrigé local — rien à corriger).
+     Les questions officielles, recopiées page par page depuis le PDF, sont
+     affichées sous chaque exercice avec leur page source : les documents
+     (tableaux, courbes, protocoles) restent dans la visionneuse. */
   const FREE_MODE_NOTICE =
-    "وضع «الورقة الحرة»: تعليمات هذه الدورة غير مُشفَّرة لأن ملفها الرسمي غير قابل للاستخراج. " +
-    "اقرأ الموضوع من الملف أعلاه واكتب إجابتك الكاملة لكل تمرين في الخانة المخصصة. " +
-    "لا يوجد تصحيح ولا نقطة في هذا الوضع.";
+    "وضع «الورقة الحرة»: لا يوجد تصحيح آلي ولا نقطة في هذا الوضع. " +
+    "الأسئلة الرسمية منقولة أسفل كل تمرين، والموضوع الكامل (الوثائق والجداول) في الملف أعلاه. " +
+    "اقرأ الموضوع واكتب إجابتك الكاملة لكل تمرين في الخانة المخصصة.";
+
+  /* Les questions officielles recopiées : affichées telles quelles, jamais
+     notées. Le bloc porte sa source pour que l'élève sache ce qu'il lit. */
+  function freeConsignesHTML(exercise) {
+    const lines = Array.isArray(exercise.consignes) ? exercise.consignes.filter((l) => l && l.trim()) : [];
+    if (!lines.length) return "";
+    const pages = exercise.consignesPages ? ` — ${exercise.consignesPages}` : "";
+    return `<div class="stack free-consignes" data-consigne-source="transcription">
+            <p class="small text-dim">النص الرسمي للأسئلة${escapeHTML(pages)}</p>
+            ${lines
+              .map(
+                (line) =>
+                  `<p class="free-consigne-line${/^الجزء/.test(line) ? " free-consigne-part" : ""}">${escapeHTML(line)}</p>`
+              )
+              .join("")}
+          </div>`;
+  }
 
   function renderFreeAnswerExam(subject) {
     const completed = store.state.sessionStatus === "completed";
@@ -297,11 +332,11 @@ export function createSimulationController(deps) {
           <div class="brand">
             <button class="btn btn-rose btn-sm" id="simulation-home">الرئيسية</button>
             <div>
-              <h2>الإمتحان · الموضوع ${subject.id === 1 ? "الأول" : "الثاني"}</h2>
-              <p>${completed ? "إعادة القراءة بعد التسليم" : "الإمتحان جارٍ — إجابة حرة انطلاقاً من الموضوع الرسمي"}</p>
+              <h2>الامتحان · الموضوع ${subject.id === 1 ? "الأول" : "الثاني"}</h2>
+              <p>${completed ? "إعادة القراءة بعد التسليم" : "الامتحان جارٍ — إجابة حرة انطلاقاً من الموضوع الرسمي"}</p>
             </div>
           </div>
-          <span class="badge ${completed ? "badge-emerald" : "badge-rose"}">${completed ? "مُسلَّم" : "إمتحان"}</span>
+          <span class="badge ${completed ? "badge-emerald" : "badge-rose"}">${completed ? "مُسلَّم" : "امتحان"}</span>
         </header>
         ${
           completed
@@ -328,6 +363,7 @@ export function createSimulationController(deps) {
             </div>
             <h3>${escapeHTML(exercise.label)}</h3>
             <p class="small text-muted">${escapeHTML(exercise.desc || "")}</p>
+            ${freeConsignesHTML(exercise)}
             <label class="lbl" for="free-answer-${exercise.number}">إجابتك</label>
             <textarea class="field simulation-answer" id="free-answer-${exercise.number}" data-exercise-free="${exercise.number}" data-exercise="${exercise.number}" rows="10"${completed ? " disabled" : ""}></textarea>
             ${completed ? "" : micButton(`free-answer-${exercise.number}`)}
@@ -376,6 +412,7 @@ export function createSimulationController(deps) {
     // L'état de l'épreuve est porté par l'écran : un seul endroit, lisible
     // par les tests et par les feuilles de style.
     screen?.setAttribute("data-session-mode", "bac");
+    screen?.setAttribute("data-answer-mode", "inventory");
     screen?.setAttribute("data-review-mode", String(completed));
     setInternalHTML(
       screen,
@@ -384,11 +421,11 @@ export function createSimulationController(deps) {
           <div class="brand">
             <button class="btn btn-rose btn-sm" id="simulation-home">الرئيسية</button>
             <div>
-              <h2>الإمتحان · الموضوع ${subject.id === 1 ? "الأول" : "الثاني"}</h2>
-              <p>${completed ? "إعادة القراءة بعد التسليم" : "الإمتحان جارٍ — لا تلميح ولا إجابة نموذجية"}</p>
+              <h2>الامتحان · الموضوع ${subject.id === 1 ? "الأول" : "الثاني"}</h2>
+              <p>${completed ? "إعادة القراءة بعد التسليم" : "الامتحان جارٍ — لا تلميح ولا إجابة نموذجية"}</p>
             </div>
           </div>
-          <span class="badge ${completed ? "badge-emerald" : "badge-rose"}">${completed ? "مُسلَّم" : "إمتحان"}</span>
+          <span class="badge ${completed ? "badge-emerald" : "badge-rose"}">${completed ? "مُسلَّم" : "امتحان"}</span>
         </header>
             <div class="workspace-tools" aria-label="أدوات الاختبار">
               <button class="btn btn-indigo btn-sm" id="simulation-pdf">📄 الموضوع</button>
@@ -449,7 +486,7 @@ export function createSimulationController(deps) {
   function denyInvalidSimulation(report) {
     timers.stopAll();
     if (store.isSessionActive()) store.leaveSession();
-    toast(`الإمتحان مرفوض: ${simulationBlockersArabic(report?.blockers)}`, "error");
+    toast(`الامتحان مرفوض: ${simulationBlockersArabic(report?.blockers)}`, "error");
     goHome();
   }
 
@@ -459,7 +496,7 @@ export function createSimulationController(deps) {
       "تسليم الورقة",
       "بعد التسليم تُقفل الإجابات نهائياً وتبدأ إعادة القراءة. لا توجد نقطة آلية.",
       `<button class="btn btn-rose" id="simulation-finish-yes">نعم، سلّم الورقة</button>
-       <button class="btn btn-ghost" id="simulation-finish-no" data-close="btn">لا، أكمل الإمتحان</button>`
+       <button class="btn btn-ghost" id="simulation-finish-no" data-close="btn">لا، أكمل الامتحان</button>`
     );
     $("#simulation-finish-yes")?.addEventListener("click", () => {
       persistAnswers();
@@ -478,7 +515,7 @@ export function createSimulationController(deps) {
     if (completionNoticeShown) return;
     completionNoticeShown = true;
     openModal(
-      reason === "time-expired" ? "انتهى وقت الإمتحان" : "تم تسليم الورقة",
+      reason === "time-expired" ? "انتهى وقت الامتحان" : "تم تسليم الورقة",
       `<p>حُفظت الإجابات محلياً وأُغلقت الكتابة.</p>
        <p class="feedback mid">تبدأ الآن إعادة القراءة دون نقطة آلية. المراجع المعروضة تدريبية وليست تصحيحاً وزارياً.</p>`
     );

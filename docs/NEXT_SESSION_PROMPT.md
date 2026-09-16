@@ -1,5 +1,11 @@
 # Prompt de session Antigravity — corrections 2022, hygiène Unicode, merge PR #10
 
+> ⚠️ **Document historique (2026-08-27).** Il décrit la PR **#10**, aujourd'hui
+> fermée/mergée, et des consignes de l'époque. L'état courant du dépôt est décrit
+> par `CONTINUATION.md` (mise à jour du 2026-09-15) et l'audit
+> `ANALYSE_LIGNE_PAR_LIGNE.md` ; la PR ouverte est la **#26**. Les règles
+> permanentes listées ci-dessous restent valables telles quelles.
+
 Tu travailles sur `Allintelligence2024/Rebrique-sujet-BAC`. La PR #10
 (branche `arena/01a04067-rebrique-sujet-bac`, tête `5b8a2c3`) est **OPEN**, CI verte
 (run 33063819918 sur le SHA exact). Elle ajoute l'année BAC 2022 (P1→P4) et a été

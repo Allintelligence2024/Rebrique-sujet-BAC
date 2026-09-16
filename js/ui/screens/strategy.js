@@ -2,7 +2,12 @@ import { setInternalHTML } from "../dom.js";
 import { officialTaskInventoryFor } from "../../../data/official-tasks.js";
 import { mountPdfViewers, pdfViewerHTML } from "../pdf-viewer.js";
 import { assertSimulationEligible, examOpenable } from "../../domain/subjects/official-coverage.js";
-import { simulationBlockersArabic } from "../coverage-messages.js";
+import { officialTaskCountArabic, simulationBlockersArabic, taskCountArabic } from "../coverage-messages.js";
+
+/** « الموضوع الأول » / « الموضوع الثاني » — jamais un « 01 » collé au mot. */
+function subjectOrdinal(id) {
+  return Number(id) === 2 ? "الموضوع الثاني" : "الموضوع الأول";
+}
 
 export function createStrategyScreen(deps) {
   const {
@@ -50,7 +55,7 @@ export function createStrategyScreen(deps) {
         <div class="brand">
           <button class="btn btn-rose btn-sm" id="strategy-exit">✕ إلغاء وخروج</button>
           <div class="brand-icon" aria-hidden="true">٤</div>
-          <div><h2>اختر موضوع الإمتحان</h2>
+          <div><h2>اختر موضوع الامتحان</h2>
           <p class="small text-muted">تصفّح وقدّر ثقتك في كل تمرين — 25 د.</p></div>
         </div>
         <div class="pill"><span class="text-dim">وقت الاختيار:</span><span class="mono" id="strategy-timer">25:00</span></div>
@@ -64,7 +69,7 @@ export function createStrategyScreen(deps) {
               ${year.sujets
                 .map(
                   (subject, index) =>
-                    `<button class="btn ${index === 0 ? "btn-indigo" : "btn-purple"} btn-sm" data-preview="${subject.id}">الموضوع 0${subject.id}</button>`
+                    `<button class="btn ${index === 0 ? "btn-indigo" : "btn-purple"} btn-sm" data-preview="${subject.id}">${subjectOrdinal(subject.id)}</button>`
                 )
                 .join("")}
             </div>
@@ -107,30 +112,34 @@ export function createStrategyScreen(deps) {
     const coverage = officialCoverageForSubject(year, subject);
     const inputs = subject.exercises
       .map((exercise) => {
-        const initial = Math.round(exercise.max * 0.75 * 4) / 4;
-        return `<div class="flex spread"><label class="small" for="strategy-s${subject.id}-e${exercise.number}">ت${exercise.number}: ${exercise.label} (${exercise.max}ن)</label><input class="field calc-input" id="strategy-s${subject.id}-e${exercise.number}" data-subject="${subject.id}" data-exercise="${exercise.number}" data-max="${exercise.max}" type="number" min="0" max="${exercise.max}" step="0.25" value="${initial}"></div>`;
+        /* Aucune valeur pré-remplie : pré-remplir 75 % du maximum ancrait
+           l'élève sur une estimation qu'il n'avait pas faite (biais relevé
+           dans l'analyse §5, `strategy.js:130`). Le champ vide n'est pas
+           compté dans la somme (`subjectEstimate` lit 0 quand la valeur est
+           absente), et le repère du maximum reste visible en indication. */
+        return `<div class="flex spread"><label class="small" for="strategy-s${subject.id}-e${exercise.number}">ت${exercise.number}: ${exercise.label} (${exercise.max}ن)</label><input class="field calc-input" id="strategy-s${subject.id}-e${exercise.number}" data-subject="${subject.id}" data-exercise="${exercise.number}" data-max="${exercise.max}" type="number" min="0" max="${exercise.max}" step="0.25" placeholder="من ${exercise.max}" aria-label="تقديرك في التمرين ${exercise.number} من ${exercise.max}"></div>`;
       })
       .join("");
     const officialTasks = (officialTaskInventoryFor(store.state.yearId, subject.id)?.tasks || []).filter(
       (task) => task.promptSource === "official"
     ).length;
     const inventoryNote = coverage.freeAnswerEligible
-      ? `<p class="small text-muted inventory-note" id="inventory-note-${subject.id}">وضع الإجابة الحرة: تعليمات هذه الدورة غير مُشفَّرة (ملفها غير قابل للاستخراج). الإمتحان مفتوح — اقرأ الموضوع واكتب إجابتك — بلا تصحيح ولا نقطة.</p>`
-      : `<p class="small text-muted inventory-note" id="inventory-note-${subject.id}">جرد المهام: ${coverage.knownTaskCount} مهمة، منها ${officialTasks} تعليمة رسمية موثّقة.</p>`;
+      ? `<p class="small text-muted inventory-note" id="inventory-note-${subject.id}">وضع الإجابة الحرة: بلا تصحيح آلي ولا نقطة. الأسئلة الرسمية منقولة في شاشة الاختبار، والموضوع الكامل في الملف.</p>`
+      : `<p class="small text-muted inventory-note" id="inventory-note-${subject.id}">جرد المهام: ${taskCountArabic(coverage.knownTaskCount)}، منها ${officialTaskCountArabic(officialTasks)}.</p>`;
     return `
     <div class="card stack subject-card" data-subject-coverage="${coverage.inventoryStatus}" data-simulation-eligible="${coverage.simulationEligible}" data-exam-openable="${examOpenable(coverage)}" data-answer-mode="${coverage.freeAnswerEligible ? "free" : "inventory"}">
       <div>
         <div class="flex spread subject-card-head">
-          <span class="badge badge-${theme}">الموضوع 0${subject.id}</span>
+          <span class="badge badge-${theme}">${subjectOrdinal(subject.id)}</span>
           <span class="mono small text-dim">${total.toFixed(2)} نقطة</span>
         </div>
         <div class="stack mt-1">${inputs}</div>
         <div class="flex spread small mt-1 subject-estimate">
-          <span class="bold text-muted">مجموع تقدير الموضوع ${subject.id}:</span><span class="mono text-${theme}" id="s${subject.id}-total"></span>
+          <span class="bold text-muted">مجموع تقدير ${subjectOrdinal(subject.id)}:</span><span class="mono text-${theme}" id="s${subject.id}-total"></span>
         </div>
       </div>
       <div class="stack subject-mode-actions">
-        <button class="btn btn-block btn-${theme}" data-confirm="${subject.id}" data-session-mode="bac">ابدأ الإمتحان</button>
+        <button class="btn btn-block btn-${theme}" data-confirm="${subject.id}" data-session-mode="bac">ابدأ الامتحان</button>
         ${inventoryNote}
       </div>
     </div>`;
@@ -185,7 +194,7 @@ export function createStrategyScreen(deps) {
       gain.textContent = `${(best.fraction * 100).toFixed(1)}% ثقة ذاتية`;
       return;
     }
-    recommendation.textContent = `يميل تقديرك الذاتي إلى الموضوع ${best.subject.id} بفارق ${(
+    recommendation.textContent = `يميل تقديرك الذاتي إلى ${subjectOrdinal(best.subject.id)} بفارق ${(
       (best.fraction - second.fraction) *
       100
     ).toFixed(1)} نقطة مئوية.`;
@@ -205,11 +214,11 @@ export function createStrategyScreen(deps) {
       try {
         assertSimulationEligible(coverage);
       } catch {
-        toast(`الإمتحان مرفوض: ${simulationBlockersArabic(coverage.blockers)}`, "error");
+        toast(`الامتحان مرفوض: ${simulationBlockersArabic(coverage.blockers)}`, "error");
         return;
       }
     } else if (!coverage.freeAnswerEligible) {
-      toast(`الإمتحان مرفوض: ${simulationBlockersArabic(coverage.blockers)}`, "error");
+      toast(`الامتحان مرفوض: ${simulationBlockersArabic(coverage.blockers)}`, "error");
       return;
     }
     store.activateSubjectMode(sujetNum, mode);

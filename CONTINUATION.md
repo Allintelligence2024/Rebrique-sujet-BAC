@@ -6,8 +6,72 @@ Test status at handoff: **256 pass / 0 fail / 1 skipped** (`npm test`).
 PWA build id: `f54ac619b7a2` (stale as soon as any source file changes — regenerate with `npm run pwa:version`).
 Production build: `dist/site` 136 files, standalone `dist/boussole-4d-standalone.html` 1.80 MB (reproducible sha256).
 
+> **2026-09-16 — état courant de la session** (branche `arena/01a09be6-rebrique-sujet-bac`,
+> PR **#26** OPEN — ne pas merger sans consigne du propriétaire ; tête `2e44da9`, suivie du présent
+> bandeau ; commits poussés ce jour : `5b9e947`, `0b2ec31`, `ad26660`, `71b0cf7`, `0afdee4`,
+> `185c42c`, `2e44da9`, puis ce commit — CI « Quality » verte sur chaque push).
+>
+> - **Mesures :** `npm test` → **365 (364 pass / 1 skip)** ; 28 sessions encodées (14 maths, 14 sciences) ;
+>   54 inventaires ; **253 pôles `official`** (95 SE + 158 M) = `CALIBRATION_STATUS.activePoles`,
+>   **232/253** consignes rattachées à une page du fichier ; build `509a7a7cf435`, standalone 3024 KB
+>   (sha `b604a50e82fd`), release 135 fichiers sha256 `c2c4068becd2…`.
+> - **Backlog d'analyse (`ANALYSE_LIGNE_PAR_LIGNE.md`) : §10.1 entièrement fermé sauf l'arbitrage
+>   juridique des PDF (S3.8, décision propriétaire).** S2.5 (binaural) est verrouillé par
+>   `tests/sound-engine.test.mjs` — seule l'écoute réelle Safari reste due ; S2.6 (ordre de création
+>   de `#toast-zone`) est corrigé (`ensureToastZone()`) et verrouillé par `tests/toast-zone.test.mjs`.
+>   Les tableaux §6 et §4 portent désormais le renvoi « → §10.1 » promis par la bannière du rapport.
+> - **Contenus — SE-2021 :** les dix pages ont été relues en image ; deux consignes recopiées
+>   (sujet 1 exercice 3, sujet 2 exercice 3 « مقر ودور … للإحساس بالألم ») sont recalées et
+>   verrouillées par `tests/se-2021-recopy.test.mjs`. La couche texte du même PDF écrit `ثالث` là où
+>   l'image imprime `ثلاث فرضيات` : continuer à recopier sur l'image, jamais sur la couche.
+>   L'année reste en **copie libre**.
+> - **Contenus — SE-2024 :** les deux scans sont image seule ; les pages 1, 3, 4 et 5 (sujet 1)
+>   puis 8 et 9 (sujet 2) ont été relues le 2026-09-16, et les pages 6, 7 et 10, d'abord transcrites
+>   sur photos le 2026-08-31, ont été contrôlées sur le scan le même jour. **17 pôles sur 24** sont
+>   `official` (sujet 1 : ex1 S/E p.1 ; ex2 S/E p.2 + W p.3 ; ex3 N p.3, S p.4, E/W p.5 — sujet 2 :
+>   ex1 S/E p.6 ; ex2 S/E p.7 + W p.8 ; ex3 S p.9, E/W p.10). Sept pôles de cadrage (N/W) restent
+>   `reconstructed` : aucune question imprimée. Deux corrections trouvées en relisant les images :
+>   S2-E2 E sans « في الأوراق » et S2-E3 W avec « المدروسة » (et non « الخلطية »).
+>   `tests/se-2024-recopy.test.mjs` (**12 tests**) verrouille les citations, les pages, le rattachement
+>   d'inventaire et les notes datées ; `docs/RELECTURE_2024_CHECKLIST.md` tient le tableau page-à-page.
+>   Aucun corrigé local : les réponses modèles sont rédigées d'après les documents, sans correction
+>   officielle revendiquée. **Reste à faire sur ce chantier :** les mêmes relectures pour SE-2025 et
+>   SE-2026 (PDF image seule eux aussi).
+> - **Décisions en attente du propriétaire :** (a) redistribuer ou non les 41,1 Mo de PDF dans
+>   `dist/site` ; (b) passer SE-2021 en mode BAC chiffré ou la garder en copie libre ; (c) ouvrir ou non
+>   les archives SE 2013-2019 à des consignes `official` (elles sont aujourd'hui verrouillées
+>   `reconstructed` par `tests/archive-years.test.mjs`, alors que les PDF officiels sont dans le dépôt).
+
 > **2026-09-12 — batch « analyse ligne par ligne »** (branch `arena/01a096cc-rebrique-sujet-bac`, rapport complet dans `ANALYSE_LIGNE_PAR_LIGNE.md`):
 > fixed S1.1 (JSDoc `@param {string} lang` → `npm run typecheck` vert), S2.1 (`hits > 0` avant le palier parfait), S2.2 (condition tautologique de l'horloge en stratégie + suppression du doublon de libellés arabes au profit de `js/ui/coverage-messages.js`), S2.3 (le repli de simulation annonce désormais `missing`/`partial`/`blocked`), S3.9 (opérande mort dans `brouillon.js`), S3.6 (commentaire orphelin), `methodology.js` refactoré (28 blocs de retour → 1, −235 lignes, **0 différence sur 2448 couples échantillon/pôle**), démo « avant/après » recalée sur le schéma réel de `evaluateText`, frontière `setInternalHTML` restaurée partout, `build.mjs` n'affirme plus que les PDF ne sont pas distribués (et affiche leur poids dans le log), en-têtes périmés de `data/archive.js` corrigés, modules de rapport documentés comme volontairement non câblés.
+
+## Mise à jour du 2026-09-15 — état réel du dépôt (lire avant les sections ci-dessous)
+
+Les sections qui suivent décrivent la session `arena/01a08ed2…` et restent utiles
+comme historique (liste des bugs corrigés, plan OCR). Ce qui a changé depuis :
+
+- Branche de travail : `arena/01a09be6-rebrique-sujet-bac` (PR **#26**, OPEN — ne pas
+  merger sans consigne explicite du propriétaire). Tête vérifiée au moment de cette
+  mise à jour : `3c8d276` (état depuis dépassé : voir le bandeau **2026-09-16** en tête de
+  ce document — tête `71b0cf7`, 352 tests, §10.1 fermé hors arbitrage juridique).
+- État mesuré : **336 tests (335 pass / 0 fail / 1 skip)**, **28 sessions encodées**
+  (14 maths `2013-m … 2026-m`, 14 sciences `2013 … 2026`), **54 inventaires**
+  officiels, `npm run coverage:official` → 54 sujets éligibles, 0 invalide.
+- **SE 2021 n'est plus « non créée »** : `data/years/se/year-2021.js` existe (armature
+  2 sujets × 3 exercices, barème 5 + 7 + 8, thèmes) et, depuis le 2026-09-15, les
+  **questions officielles y sont recopiées** (`consignes`, `consignesPages`,
+  `consignesSource`) après relecture image des dix pages. L'année reste en **copie
+  libre** (`answerMode: "free"`, `poles: {}`) : aucun inventaire, aucune note,
+  `coverage:official` la donne `blocked` par design. La règle permanente tient : rien
+  n'est marqué « officiel » sans relecture humaine, et les symboles latins restitués
+  depuis la couche texte (dont les chiffres sont faux) sont signalés comme tels.
+- Backlog d'analyse (`ANALYSE_LIGNE_PAR_LIGNE.md`) : tout §10.1 est corrigé sauf
+  S2.5 (chemin `StereoPannerNode` écrit, à confirmer sur un vrai Safari), S2.6 (dette
+  défensive non atteignable en pratique) et l'arbitrage juridique des PDF (§10.1 S3.8,
+  décision propriétaire). L'ancrage à 75 % de l'écran de choix a été supprimé.
+- Prochaine étape ouverte : conversion **BAC** de SE 2021 (pôles + inventaire). Elle
+  exige de réassigner l'année « copie libre » de référence dans les tests et de
+  n'écrire que des réponses explicitement **reconstruites** (aucun corrigé local).
 
 ## Bugs already fixed this session (committed)
 
@@ -44,7 +108,7 @@ Scoring heuristics:
 
 ## NOT created (deliberate, per user constraint)
 
-- **data/years/se/year-2021.js (training 4D)**: The 2021 SE PDF is encrypted (viewer 0 pages on dzexams). `scripts/extracted/SE/2021/*.txt` exists but is RTL-inverted, garbled (shows "المدة: 40 سا و04 د"), and has no usable text layer. Per standing rule "never mark OCR-extracted prompts as verified, never fabricate coverage" I did **not** author 2021 SE in 4D. It stays as a consult card pointing to dzexams. Promoting 2021 SE requires manual re-reading of the PDF page by page to build poles + model answers — content authoring, not a code patch.
+- **data/years/se/year-2021.js (training 4D)** _(dépassé : le fichier existe depuis le 2026-09-12 en copie libre, avec questions recopiées le 2026-09-15 — voir la mise à jour en tête de ce document)_: The 2021 SE PDF is encrypted (viewer 0 pages on dzexams). `scripts/extracted/SE/2021/*.txt` exists but is RTL-inverted, garbled (shows "المدة: 40 سا و04 د"), and has no usable text layer. Per standing rule "never mark OCR-extracted prompts as verified, never fabricate coverage" I did **not** author 2021 SE in 4D. It stays as a consult card pointing to dzexams. Promoting 2021 SE requires manual re-reading of the PDF page by page to build poles + model answers — content authoring, not a code patch.
 
 ## Files changed in this batch
 
@@ -70,7 +134,7 @@ Scoring heuristics:
 
 ### P1 — Bugs still on the list
 
-- ~~**#51** Sound engine binaural on Safari~~ **corrigé le 2026-09-12** (`js/services/sound-engine.js`, `_playBinaural`) : le code utilisait déjà un `ChannelMerger`, auquel s'ajoute désormais un chemin explicite `StereoPannerNode` (pan ∓1) quand le moteur l'expose, le merger restant le repli. **Non vérifié dans un vrai navigateur** (jsdom n'a pas WebAudio) : à confirmer sur Safari.
+- ~~**#51** Sound engine binaural on Safari~~ **corrigé le 2026-09-12** (`js/services/sound-engine.js`, `_playBinaural`) : le code utilisait déjà un `ChannelMerger`, auquel s'ajoute désormais un chemin explicite `StereoPannerNode` (pan ∓1) quand le moteur l'expose, le merger restant le repli. **Câblage verrouillé depuis le 2026-09-15** par `tests/sound-engine.test.mjs` (contexte WebAudio factice : les deux chemins, l'étanchéité des modes et le gain maître). Reste à confirmer à l'oreille sur un vrai Safari : aucun test ne peut écouter le rendu.
 - ~~**#54** Speech recognition `InvalidStateError`~~ **corrigé le 2026-09-12** (`js/services/speech-recognition.js`) : la boucle `ar-SA → ar-EG → ar` rappelait `start()` sur l'objet qui venait d'échouer. Chaque tentative construit désormais une instance neuve, une locale refusée de façon asynchrone (`language-not-supported`) retente la suivante, et un seul message est affiché par action. Couvert par `tests/speech-recognition.test.mjs` (5 tests, moteur fictif).
 - **Diagnostics**: `reportDiagnostic` still has an edge case where it can double-count if same error fires synchronously during reporting (low severity).
 
@@ -92,6 +156,11 @@ I patched the most damaging scoring heuristics (#65–#69) but did NOT fully aud
 - Still to check: `js/ui/workspace/brouillon.js` `buildDrafts`/`brouillonPreflight` — draft content rendered into the preview is escaped through `elementFromInternalHTML` templates, worth a dedicated test.
 
 ### P4 — SE 2021 (content, not code)
+
+> **État au 2026-09-15** : les points 1 à 3 et 6 de cette liste sont faits pour la
+> **copie libre** (fichier, chargeur, catalogue, épreuve ouverte) ; les points 4-5
+> restent à trancher si l'année passe en mode BAC, ce qui suppose un corrigé ou des
+> réponses explicitement reconstruites. Voir la mise à jour en tête de ce document.
 
 When OCR is usable AND the Arabic text has been manually verified line-by-line against the PDF:
 

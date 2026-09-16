@@ -52,7 +52,7 @@ test("l'expiration globale termine la session et verrouille la copie affichée",
   assert.ok(document.querySelector("#simulation-review-notice"));
   assert.match(document.querySelector("#view-workspace").textContent, /لا تُعرض أي علامة رقمية/);
   // Le motif de fin est annoncé dans une boîte de dialogue, pas dans un toast.
-  assert.match(document.querySelector(".modal").textContent, /انتهى وقت الإمتحان/);
+  assert.match(document.querySelector(".modal").textContent, /انتهى وقت الامتحان/);
   assert.match(document.querySelector(".modal").textContent, /راجع الإجابات/);
   assert.ok(document.querySelector("#global-timer-bar").classList.contains("hidden"));
 });

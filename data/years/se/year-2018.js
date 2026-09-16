@@ -47,9 +47,10 @@ const YEAR_2018_SE = {
               minLength: 40,
               modelAnswer:
                 "المشكل العلمي: كيف تتدخل مختلف البروتينات الغشائية في توليد وانتشار الرسالة العصبية ودمجها على مستوى العصبون المحرك؟",
+              answerStatus: "authored",
               rule: {
                 prompt: "تأطير الإشكالية: كيف تؤمن البروتينات الغشائية نقل الرسالة العصبية ودمجها؟",
-                keywords: ["غشائي", "رساله", "عصبيه"],
+                keywords: ["غشائي", "رسالة", "عصبية"],
                 minHits: 2,
                 forbidden: []
               }
@@ -66,9 +67,10 @@ const YEAR_2018_SE = {
               minLength: 40,
               modelAnswer:
                 "القنوات الفولطية لـ Na⁺ وK⁺ تولد كمون العمل. مضخة Na⁺/K⁺ تحفظ كمون الراحة. قنوات الكالسيوم الفولطية تسمح بالتحرير. مستقبلات بعد مشبكية تولد PPSE أو PPSI.",
+              answerStatus: "authored",
               rule: {
                 prompt: "ذكر البروتينات الغشائية ودور كل منها",
-                keywords: ["قنوات", "مضخه", "مستقبل"],
+                keywords: ["قنوات", "مضخة", "مستقبل"],
                 minHits: 2,
                 forbidden: ["بسبب"]
               }
@@ -84,9 +86,10 @@ const YEAR_2018_SE = {
               minLength: 120,
               modelAnswer:
                 "تصل إلى العصبون المحرك جهود بعد مشبكية تنبيهية وتثبيطية. يُدمج المحصّل تجميعا فضائيا وزمانيا على مستوى القطعة الابتدائية، فإذا بلغ العتبة تولد كمون عمل وانتشر نحو العضلة.",
+              answerStatus: "authored",
               rule: {
                 prompt: "نص علمي حول دمج الرسائل على العصبون المحرك",
-                keywords: ["دمج", "تنبيهي", "تثبيطي", "عتبه", "محرك"],
+                keywords: ["دمج", "تنبيهي", "تثبيطي", "عتبة", "محرك"],
                 minHits: 3,
                 forbidden: []
               }
@@ -101,9 +104,10 @@ const YEAR_2018_SE = {
               placeholder: "في الختام...",
               minLength: 40,
               modelAnswer: "في الختام، لا تصدر رسالة حركية إلا إذا بلغ محصّل الدمج عتبة توليد كمون العمل.",
+              answerStatus: "authored",
               rule: {
                 prompt: "الخاتمة: شرط صدور الرسالة الحركية",
-                keywords: ["دمج", "عتبه", "حركيه"],
+                keywords: ["دمج", "عتبة", "حركية"],
                 minHits: 2,
                 forbidden: []
               }
@@ -128,9 +132,10 @@ const YEAR_2018_SE = {
               minLength: 40,
               modelAnswer:
                 "المشكل العلمي: كيف تضمن أحماض أمينية محددة ثبات مستقبل LDL، وكيف تفقد الطفرة هذا التخصص فيرتفع الكولسترول؟",
+              answerStatus: "authored",
               rule: {
                 prompt: "تأطير الإشكالية: كيف تؤدي طفرة مستقبل LDL إلى تصلب الشرايين؟",
-                keywords: ["LDL", "مستقبل", "طفره"],
+                keywords: ["LDL", "مستقبل", "طفرة"],
                 minHits: 2,
                 forbidden: []
               }
@@ -147,9 +152,10 @@ const YEAR_2018_SE = {
               minLength: 90,
               modelAnswer:
                 "تمثل الوثيقة تتابع الأحماض الأمينية في المستقبل LDL بدلالة الموضع عند السليم والمصاب. نلاحظ تموضعا دقيقا لأحماض مشحونة وكبريتية عند السليم، بينما يختل التموضع عند المصاب، ومنه نستنتج أن الروابط تثبّت البنية الفراغية اللازمة للتعرف على LDL.",
+              answerStatus: "authored",
               rule: {
                 prompt: "تحديد دور الأحماض الأمينية في ثبات المستقبل",
-                keywords: ["احماض", "بنيه", "مستقبل", "LDL"],
+                keywords: ["أحماض", "بنية", "مستقبل", "LDL"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
@@ -174,9 +180,10 @@ const YEAR_2018_SE = {
               minLength: 110,
               modelAnswer:
                 "عند السليم يثبت LDL على مستقبل وظيفي فيُقتنص. عند المصاب تغيّر الطفرة حمضا أمينيا فيفقد المستقبل شكله فلا يدخل LDL، فيرتفع الكولسترول في الدم ويتصلب الشريان.",
+              answerStatus: "authored",
               rule: {
                 prompt: "مناقشة العلاقة بين الطفرة وتصلب الشرايين",
-                keywords: ["طفره", "كولسترول", "مستقبل", "شرايين", "LDL"],
+                keywords: ["طفرة", "كولسترول", "مستقبل", "شرايين", "LDL"],
                 minHits: 3,
                 forbidden: []
               }
@@ -191,9 +198,10 @@ const YEAR_2018_SE = {
               placeholder: "في الختام...",
               minLength: 40,
               modelAnswer: "في الختام، أصل المرض طفرة في مورثة المستقبل تمنع اقتناص LDL فيتراكم الكولسترول.",
+              answerStatus: "authored",
               rule: {
                 prompt: "الخاتمة: أصل المرض",
-                keywords: ["طفره", "LDL", "كولسترول"],
+                keywords: ["طفرة", "LDL", "كولسترول"],
                 minHits: 2,
                 forbidden: []
               }
@@ -218,9 +226,10 @@ const YEAR_2018_SE = {
               minLength: 30,
               modelAnswer:
                 "الفرضية: يعود نقص الحركة إلى خلل في أكسدة النواقل المرجعة فلا يتشكل ATP الكافي لحركة النطفة.",
+              answerStatus: "authored",
               rule: {
                 prompt: "اقتراح فرضية حول سبب قلة حركة النطاف",
-                keywords: ["فرضيه", "نطاف", "ATP"],
+                keywords: ["فرضية", "نطاف", "ATP"],
                 minHits: 2,
                 forbidden: []
               }
@@ -236,16 +245,17 @@ const YEAR_2018_SE = {
               minLength: 60,
               modelAnswer:
                 "تمثل الوثيقة نسبة الأكسجين بدلالة الزمن في المعلق السليم والمصاب. نلاحظ عند السليم انخفاضا واضحا في O2 بعد إضافة TH2، بينما يبقى الانخفاض ضعيفا عند المصاب، ومنه نستنتج ضعفا في أكسدة النواقل عند المصاب.",
+              answerStatus: "authored",
               rule: {
                 prompt: "تحليل استهلاك O2 في معلق النطاف",
-                keywords: ["اكسجين", "نطاف", "ناقل"],
+                keywords: ["أكسجين", "نطاف", "ناقل"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
-                  axes: ["اكسجين", "زمن"],
+                  axes: ["أكسجين", "زمن"],
                   comparisons: [["سليم", "مصاب"]],
-                  trends: [{ about: "سليم", expect: ["انخفاض", "اكسجين"] }],
+                  trends: [{ about: "سليم", expect: ["انخفاض", "أكسجين"] }],
                   values: [],
                   strictValues: false
                 }
@@ -263,9 +273,10 @@ const YEAR_2018_SE = {
               minLength: 110,
               modelAnswer:
                 "يعيد Coenzyme Q10 نقل الإلكترونات في السلسلة التنفسية فيستأنف تدرج البروتونات ويتشكل ATP فتعود حركة النطاف، فتتأكد فرضية الخلل الطاقوي.",
+              answerStatus: "authored",
               rule: {
                 prompt: "تفسير تأثير Coenzyme Q10",
-                keywords: ["Q10", "سلسله", "ATP", "نطاف", "الكترون"],
+                keywords: ["Q10", "سلسلة", "ATP", "نطاف", "الكترون"],
                 minHits: 3,
                 forbidden: []
               }
@@ -281,6 +292,7 @@ const YEAR_2018_SE = {
               minLength: 40,
               modelAnswer:
                 "عنوان المخطط: طاقة النطفة. فركتوز → نواقل مرجعة → سلسلة تنفسية تستهلك O2 → ATP → نطاف. في وجود Q10 تُستأنف السلسلة.",
+              answerStatus: "authored",
               rule: {
                 prompt: "مخطط العلاقة أيض-O2-وظائف حيوية",
                 keywords: ["مخطط", "ATP", "نطاف"],
@@ -321,9 +333,10 @@ const YEAR_2018_SE = {
               minLength: 40,
               modelAnswer:
                 "المشكل العلمي: كيف تحدد الأليلات IA وIB وi نوع المستضد الغشائي على كرية الدم الحمراء؟",
+              answerStatus: "authored",
               rule: {
                 prompt: "تأطير الإشكالية: كيف يظهر النمط الظاهري للزمرة؟",
-                keywords: ["زمره", "مستضد", "اليل"],
+                keywords: ["زمرة", "مستضد", "أليل"],
                 minHits: 2,
                 forbidden: []
               }
@@ -339,9 +352,10 @@ const YEAR_2018_SE = {
               minLength: 40,
               modelAnswer:
                 "الزمرة O تحمل مستضد H فقط، والزمرة A تضيف غالاكتوز أمين على H، والزمرة B تضيف غالاكتوز، والزمرة AB تحمل المستضدين A وB.",
+              answerStatus: "authored",
               rule: {
                 prompt: "المقارنة بين الزمر والمؤشرات",
-                keywords: ["مستضد", "زمره", "غشاء"],
+                keywords: ["مستضد", "زمرة", "غشاء"],
                 minHits: 2,
                 forbidden: ["بسبب"]
               }
@@ -356,10 +370,11 @@ const YEAR_2018_SE = {
               placeholder: "سيادة، غياب سيادة...",
               minLength: 120,
               modelAnswer:
-                "يشرف الصبغي 9 على أليلات IA وIB السائدتين بالنسبة إلى i المتنحي، وبين IA وIB غياب سيادة. يركّب كل أليل سائد إنزيما يضيف سكرا نوعيا على المستضد H فيظهر النمط الظاهري للزمرة.",
+                "يشرف الصبغي 9 على أليلات IA وIB السائدتين بالنسبة إلى i المتنحي، وبين IA وIB غياب سيادة. يركّب كل أليل سائد أنزيما يضيف سكرا نوعيا على المستضد H فيظهر النمط الظاهري للزمرة.",
+              answerStatus: "authored",
               rule: {
                 prompt: "نص علمي حول وراثة الزمر",
-                keywords: ["اليل", "سياده", "مستضد", "زمره", "نمط"],
+                keywords: ["أليل", "سيادة", "مستضد", "زمرة", "نمط"],
                 minHits: 3,
                 forbidden: []
               }
@@ -375,9 +390,10 @@ const YEAR_2018_SE = {
               minLength: 40,
               modelAnswer:
                 "في الختام، تحدد المؤشرات الغشائية التوافق عند النقل، فكل مستضد غريب يُرفض بالأجسام المضادة.",
+              answerStatus: "authored",
               rule: {
                 prompt: "الخاتمة: أهمية معرفة الزمرة",
-                keywords: ["زمره", "مستضد", "نقل"],
+                keywords: ["زمرة", "مستضد", "نقل"],
                 minHits: 2,
                 forbidden: []
               }
@@ -389,7 +405,7 @@ const YEAR_2018_SE = {
           ui: "text",
           label: "اللاكتاز وعدم تحمل اللاكتوز",
           max: 7,
-          desc: "نشاط إنزيم اللاكتاز وتأثير pH والحرارة والثيولاكتوز، وعلاقة نقصه بأعراض عدم التحمل",
+          desc: "نشاط أنزيم اللاكتاز وتأثير pH والحرارة والثيولاكتوز، وعلاقة نقصه بأعراض عدم التحمل",
           poles: {
             N: {
               points: 1,
@@ -401,6 +417,7 @@ const YEAR_2018_SE = {
               placeholder: "صياغة المشكل العلمي...",
               minLength: 40,
               modelAnswer: "المشكل العلمي: كيف يؤثر نقص اللاكتاز على هضم اللاكتوز فتظهر أعراض عدم التحمل؟",
+              answerStatus: "authored",
               rule: {
                 prompt: "تأطير الإشكالية: ما أصل عدم تحمل اللاكتوز؟",
                 keywords: ["لاكتاز", "لاكتوز", "تحمل"],
@@ -420,16 +437,17 @@ const YEAR_2018_SE = {
               minLength: 90,
               modelAnswer:
                 "تمثل الوثيقة تغير السرعة بدلالة pH. نلاحظ سرعة أعظمية عند pH قريب من المعتدل وحرارة متوسطة، بينما تنعدم عند الطرف، ومنه نستنتج أن اللاكتاز يعمل في ظروف المعي الدقيق.",
+              answerStatus: "authored",
               rule: {
                 prompt: "تحليل أثر pH والحرارة على السرعة الابتدائية",
-                keywords: ["سرعه", "لاكتاز", "حراره"],
+                keywords: ["سرعة", "لاكتاز", "حرارة"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
-                  axes: ["سرعه", "PH"],
+                  axes: ["سرعة", "PH"],
                   comparisons: [["معتدل", "طرف"]],
-                  trends: [{ about: "معتدل", expect: ["اعظميه", "سرعه"] }],
+                  trends: [{ about: "معتدل", expect: ["أعظمية", "سرعة"] }],
                   values: [],
                   strictValues: false
                 }
@@ -446,6 +464,7 @@ const YEAR_2018_SE = {
               minLength: 110,
               modelAnswer:
                 "عند السليم يهضم اللاكتاز اللاكتوز في المعي الدقيق فلا يصل إلى الغليظ. عند المصاب ينقص اللاكتاز فيصل اللاكتوز إلى المعي الغليظ حيث تخمره البكتيريا فتتكون غازات وأحماض مسببة الانتفاخ والآلام.",
+              answerStatus: "authored",
               rule: {
                 prompt: "تفسير أعراض عدم التحمل",
                 keywords: ["لاكتاز", "تخمر", "معي", "غازات", "مصاب"],
@@ -455,18 +474,19 @@ const YEAR_2018_SE = {
             },
             W: {
               points: 1,
-              prompt: "الخاتمة: مفهوم الإنزيم",
-              bacPrompt: "ما المفهوم الدقيق للإنزيم انطلاقا من هذه الدراسة؟",
+              prompt: "الخاتمة: مفهوم الأنزيم",
+              bacPrompt: "ما المفهوم الدقيق للأنزيم انطلاقا من هذه الدراسة؟",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
               placeholder: "في الختام...",
               minLength: 40,
               modelAnswer:
-                "في الختام، الإنزيم وسيط حيوي نوعي يسرّع التفاعل في ظروف ملائمة دون أن يُستهلك، ونقصه يعطل الهضم.",
+                "في الختام، الأنزيم وسيط حيوي نوعي يسرّع التفاعل في ظروف ملائمة دون أن يُستهلك، ونقصه يعطل الهضم.",
+              answerStatus: "authored",
               rule: {
-                prompt: "الخاتمة: مفهوم الإنزيم",
-                keywords: ["انزيم", "نوعي", "تفاعل"],
+                prompt: "الخاتمة: مفهوم الأنزيم",
+                keywords: ["أنزيم", "نوعي", "تفاعل"],
                 minHits: 2,
                 forbidden: []
               }
@@ -490,9 +510,10 @@ const YEAR_2018_SE = {
               placeholder: "الفرضية...",
               minLength: 30,
               modelAnswer: "الفرضية: ينتج O2 من أكسدة الماء خلال المرحلة الكيميائية الضوئية بوجود الضوء.",
+              answerStatus: "authored",
               rule: {
                 prompt: "اقتراح فرضية حول مصدر O2 المطروح",
-                keywords: ["فرضيه", "اكسجين", "ضوء"],
+                keywords: ["فرضية", "أكسجين", "ضوء"],
                 minHits: 2,
                 forbidden: []
               }
@@ -508,16 +529,17 @@ const YEAR_2018_SE = {
               minLength: 60,
               modelAnswer:
                 "تمثل الوثيقة نسبة الأكسجين بدلالة الزمن في الضوء والظلام. نلاحظ ارتفاع O2 في الضوء وعدم ارتفاعه في الظلام، ومنه نستنتج أن الضوء ضروري لطرح الأكسجين.",
+              answerStatus: "authored",
               rule: {
                 prompt: "استغلال ارتفاع O2 في الضوء",
-                keywords: ["اكسجين", "ضوء", "ظلام"],
+                keywords: ["أكسجين", "ضوء", "ظلام"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
-                  axes: ["اكسجين", "زمن"],
+                  axes: ["أكسجين", "زمن"],
                   comparisons: [["ضوء", "ظلام"]],
-                  trends: [{ about: "ضوء", expect: ["ارتفاع", "اكسجين"] }],
+                  trends: [{ about: "ضوء", expect: ["ارتفاع", "أكسجين"] }],
                   values: [],
                   strictValues: false
                 }
@@ -534,9 +556,10 @@ const YEAR_2018_SE = {
               minLength: 110,
               modelAnswer:
                 "تمتص الأنظمة الضوئية الفوتونات فتتأكسد جزيئة الماء وينطلق O2 وتتحرر إلكترونات تختزل النواقل، فتتحول الطاقة الضوئية إلى طاقة كيميائية كامنة. تتأكد الفرضية.",
+              answerStatus: "authored",
               rule: {
                 prompt: "تفسير آلية طرح O2",
-                keywords: ["ضوء", "ماء", "اكسجين", "الكترون", "طاقه"],
+                keywords: ["ضوء", "ماء", "أكسجين", "الكترون", "طاقة"],
                 minHits: 3,
                 forbidden: []
               }
@@ -548,15 +571,16 @@ const YEAR_2018_SE = {
               ...RECON(
                 "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
               ),
-              placeholder: "ضوء → ماء → اكسجين",
+              placeholder: "ضوء → ماء → أكسجين",
               minLength: 40,
-              modelAnswer: "عنوان المخطط: ضوء. ضوء → ماء → اكسجين.",
+              modelAnswer: "عنوان المخطط: ضوء. ضوء → ماء → أكسجين.",
+              answerStatus: "authored",
               rule: {
                 prompt: "مخطط تحويل الطاقة الضوئية",
-                keywords: ["مخطط", "ضوء", "اكسجين"],
+                keywords: ["مخطط", "ضوء", "أكسجين"],
                 minHits: 2,
                 forbidden: [],
-                schema: { arrows: true, title: "ضوء", ordered: ["ضوء", "ماء", "اكسجين"] }
+                schema: { arrows: true, title: "ضوء", ordered: ["ضوء", "ماء", "أكسجين"] }
               }
             }
           }
