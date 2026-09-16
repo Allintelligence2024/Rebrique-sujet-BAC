@@ -15,7 +15,7 @@ const YEAR_2024_SE = {
       pdfExternalUrl: "https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf",
       pdfLocalUrl: "/subjects/SE/2024/sujet-1.pdf",
       pdfNote:
-        "PDF non redistribué dans le dépôt ; source: https://eddirasa.com/bac-science-2024-se/ (consulté 2026-08-25). Miroir dzexams: https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09 · PDF: https://www.dzexams.com/uploads/sujets/officiels/bac/2024/dzexams-bac-sciences-naturelles-1751784.pdf. Pages 2, 6, 7 et 10 relues sur photos du sujet officiel (2026-08-31). Viewer dzexams bloqué (0 pages) dans la sandbox. Session de remplacement non localisée.",
+        "PDF non redistribué dans le dépôt ; source: https://eddirasa.com/bac-science-2024-se/ (consulté 2026-08-25). Miroir dzexams: https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09 · PDF: https://www.dzexams.com/uploads/sujets/officiels/bac/2024/dzexams-bac-sciences-naturelles-1751784.pdf. Pages 1, 2, 6, 7 et 10 relues sur le sujet officiel (page 1 : scan local, 2026-09-16 ; autres : photos, 2026-08-31). Viewer dzexams bloqué (0 pages) dans la sandbox. Session de remplacement non localisée.",
       title: "الموضوع الأول",
       exercises: [
         {
@@ -32,7 +32,7 @@ const YEAR_2024_SE = {
                 "كيف يتطور فيروس VIH داخل الخلايا LT4 مسببا فقدان المناعة المكتسبة، وما أثر تثبيط إحدى مراحل هذا التطور بدواء Zalcitabine؟",
               bacPromptSource: "reconstructed",
               bacPromptNotes:
-                "Thème lu sur la couche texte bruitée (2026-08-25). Pas de question autonome de cadrage ; reformulation pédagogique du préambule.",
+                "Aucune question autonome de cadrage : le préambule est un énoncé (vérifié sur l'image de la page 1, 2026-09-16). Reformulation pédagogique assumée (badge ⚠️).",
               placeholder: "صياغة المشكل العلمي...",
               minLength: 40,
               modelAnswer:
@@ -47,10 +47,12 @@ const YEAR_2024_SE = {
             S: {
               points: 1,
               prompt: "استخراج مراحل تطور الفيروس من الوثيقة",
-              bacPrompt: "استخرج من الوثيقة المراحل المختلفة لتطور فيروس VIH داخل الخلايا LT4.",
-              bacPromptSource: "reconstructed",
+              bacPrompt: "1 ــ تعرَّف على المراحل الممثَّلة بالأرقام من ① إلى ⑥.",
+              bacPromptSource: "official",
+              bacPromptPage: 1,
+              bacPromptVerifiedAt: "2026-09-16",
               bacPromptNotes:
-                "Reconstruction pédagogique 2024 — thème (VIH/LT4/Zalcitabine) lu sur la couche texte bruitée.",
+                "Question 1 officielle, recopiée sur l'image de la page 1 du scan local (subjects/SE/2024/sujet-1.pdf, relecture 2026-09-16).",
               placeholder: "التصاق، نسخ عكسي، إدماج، تبرعم...",
               minLength: 40,
               modelAnswer:
@@ -66,10 +68,12 @@ const YEAR_2024_SE = {
               points: 2,
               prompt: "النص العلمي: مراحل تطور الفيروس وتأثير Zalcitabine",
               bacPrompt:
-                "بيّن في نص علمي مراحل تطور فيروس VIH في الخلايا LT4 وتأثير دواء Zalcitabine على ذلك.",
-              bacPromptSource: "reconstructed",
+                "2 ــ اشرح في نص علمي مراحل تطور الفيروس (VIH) داخل الخلايا (LT4) وتأثير دواء Zalcitabine على ذلك باستغلال الوثيقة ومعلوماتك. (النص العلمي مُهيكل بمقدّمة وعرض وخاتمة).",
+              bacPromptSource: "official",
+              bacPromptPage: 1,
+              bacPromptVerifiedAt: "2026-09-16",
               bacPromptNotes:
-                "Verbe officiel lu (بيّن في نص علمي) sur la couche texte bruitée ; wording reconstruit mot à mot.",
+                "Question 2 officielle, recopiée sur l'image de la page 1 du scan local (subjects/SE/2024/sujet-1.pdf, relecture 2026-09-16) — le verbe, le cadre du texte scientifique et la mention (مقدّمة وعرض وخاتمة) sont ceux du sujet.",
               placeholder: "مقدمة، عرض، خاتمة...",
               minLength: 120,
               modelAnswer:
@@ -87,7 +91,7 @@ const YEAR_2024_SE = {
               bacPrompt: "ما أثر تثبيط النسخ العكسي بدواء Zalcitabine على فقدان المناعة المكتسبة؟",
               bacPromptSource: "reconstructed",
               bacPromptNotes:
-                "La clôture est incluse dans le texte scientifique officiel (pôle E). Pas une question BAC autonome.",
+                "Aucune question de clôture imprimée (vérifié sur l'image de la page 1, 2026-09-16) : la synthèse demandée est portée par la question 2 (pôle E). Reconstruction assumée (badge ⚠️).",
               placeholder: "في الختام...",
               minLength: 40,
               modelAnswer:

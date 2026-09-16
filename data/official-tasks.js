@@ -702,13 +702,18 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 1,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "استخرج من الوثيقة المراحل المختلفة لتطور فيروس VIH داخل الخلايا LT4.",
-        promptSource: "reconstructed",
+        page: 1,
+        prompt: "1 ــ تعرَّف على المراحل الممثَّلة بالأرقام من ① إلى ⑥.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -716,20 +721,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2024-S1-E1-Q3",
         exerciseNumber: 1,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "بيّن في نص علمي مراحل تطور فيروس VIH في الخلايا LT4 وتأثير دواء Zalcitabine على ذلك.",
-        promptSource: "reconstructed",
+        page: 1,
+        prompt:
+          "2 ــ اشرح في نص علمي مراحل تطور الفيروس (VIH) داخل الخلايا (LT4) وتأثير دواء Zalcitabine على ذلك باستغلال الوثيقة ومعلوماتك. (النص العلمي مُهيكل بمقدّمة وعرض وخاتمة).",
+        promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -737,7 +748,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2024-S1-E1-Q4",
