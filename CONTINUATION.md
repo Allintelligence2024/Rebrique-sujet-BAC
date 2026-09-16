@@ -97,7 +97,7 @@ Scoring heuristics:
 
 ### P1 — Bugs still on the list
 
-- ~~**#51** Sound engine binaural on Safari~~ **corrigé le 2026-09-12** (`js/services/sound-engine.js`, `_playBinaural`) : le code utilisait déjà un `ChannelMerger`, auquel s'ajoute désormais un chemin explicite `StereoPannerNode` (pan ∓1) quand le moteur l'expose, le merger restant le repli. **Non vérifié dans un vrai navigateur** (jsdom n'a pas WebAudio) : à confirmer sur Safari.
+- ~~**#51** Sound engine binaural on Safari~~ **corrigé le 2026-09-12** (`js/services/sound-engine.js`, `_playBinaural`) : le code utilisait déjà un `ChannelMerger`, auquel s'ajoute désormais un chemin explicite `StereoPannerNode` (pan ∓1) quand le moteur l'expose, le merger restant le repli. **Câblage verrouillé depuis le 2026-09-15** par `tests/sound-engine.test.mjs` (contexte WebAudio factice : les deux chemins, l'étanchéité des modes et le gain maître). Reste à confirmer à l'oreille sur un vrai Safari : aucun test ne peut écouter le rendu.
 - ~~**#54** Speech recognition `InvalidStateError`~~ **corrigé le 2026-09-12** (`js/services/speech-recognition.js`) : la boucle `ar-SA → ar-EG → ar` rappelait `start()` sur l'objet qui venait d'échouer. Chaque tentative construit désormais une instance neuve, une locale refusée de façon asynchrone (`language-not-supported`) retente la suivante, et un seul message est affiché par action. Couvert par `tests/speech-recognition.test.mjs` (5 tests, moteur fictif).
 - **Diagnostics**: `reportDiagnostic` still has an edge case where it can double-count if same error fires synchronously during reporting (low severity).
 

@@ -103,9 +103,26 @@ function exDef(num) {
   return sujetObj()?.exercises.find((e) => e.number === num);
 }
 
+/* La zone d'annonces est créée à la demande. Avant, `toast()` sortait
+   silencieusement si `#toast-zone` n'existait pas encore : le minuteur
+   installait son rappel (plus haut dans `init`) avant la création de la zone,
+   et un tir précoce aurait perdu le message. Aucun minuteur ne démarre aussi
+   tôt aujourd'hui, mais la dépendance d'ordre disparaît. */
+function ensureToastZone() {
+  const existing = $("#toast-zone");
+  if (existing) return existing;
+  const zone = document.createElement("div");
+  zone.id = "toast-zone";
+  zone.className = "toast-zone";
+  zone.setAttribute("aria-live", "polite");
+  zone.setAttribute("aria-relevant", "additions text");
+  zone.setAttribute("aria-label", "الإشعارات");
+  document.body.appendChild(zone);
+  return zone;
+}
+
 function toast(msg, type = "info", ms = 3500) {
-  const zone = $("#toast-zone");
-  if (!zone) return;
+  const zone = ensureToastZone();
   const t = node("div", {
     className: `toast ${type}`,
     attrs: { role: type === "error" || type === "warn" ? "alert" : "status", "aria-atomic": "true" }
@@ -366,15 +383,7 @@ export async function init() {
     }
   };
 
-  if (!$("#toast-zone")) {
-    const toastZone = document.createElement("div");
-    toastZone.id = "toast-zone";
-    toastZone.className = "toast-zone";
-    toastZone.setAttribute("aria-live", "polite");
-    toastZone.setAttribute("aria-relevant", "additions text");
-    toastZone.setAttribute("aria-label", "الإشعارات");
-    document.body.appendChild(toastZone);
-  }
+  ensureToastZone();
 
   /* Une copie rendue reste relisible après rechargement : la relecture est
      restaurée comme une session active. La condition exigeait autrefois
