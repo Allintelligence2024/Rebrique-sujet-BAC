@@ -19,7 +19,7 @@ Un thème, un corrigé non attribué ou une consigne reconstruite ne suffit pas.
 
 ## P1.5 — corpus humain
 
-Le périmètre numérique actuel contient 246 pôles dont la consigne est marquée officielle. La politique exige au minimum 15 copies par pôle : **3 660 réponses réelles** au minimum, chacune avec :
+Le périmètre numérique actuel contient 251 pôles dont la consigne est marquée officielle. La politique exige au minimum 15 copies par pôle : **3 765 réponses réelles** au minimum, chacune avec :
 
 - consentement et anonymisation vérifiables ;
 - transcription fidèle ;

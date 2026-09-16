@@ -158,7 +158,7 @@ test("les pages annoncées restent utilisables dans le PDF livré", () => {
   }
   // Le générateur rattache la très grande majorité des consignes à une page du
   // fichier ; les autres restent annotées « (الأصل) » plutôt que d'être devinées.
-  assert.equal(declared, 246);
+  assert.equal(declared, 251);
   assert.ok(located / declared > 0.8, `trop de pages non locables: ${declared - located}`);
 });
 

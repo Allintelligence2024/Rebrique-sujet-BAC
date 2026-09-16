@@ -672,7 +672,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
-      taskCompleteExerciseNumbers: []
+      taskCompleteExerciseNumbers: [3]
     },
     tasks: [
       {
@@ -851,13 +851,19 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 2,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "ما دور طفرة الجين Scn1a في ظهور اضطرابات الصرع؟",
-        promptSource: "reconstructed",
+        page: 3,
+        prompt:
+          "1 ــ بيّن أصل الاعتلال الدماغي المُسبّب لحالة الصُّرع المدروسة باستغلال النتائج المُثبتة في شكلي الوثيقة 2. 2 ــ اقترح حلا علاجيًا للتخفيف من أعراض نوبات الصُّرع بناءً على ما توصلت إليه من خلال هذه الدراسة.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -865,20 +871,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2024-S1-E3-Q1",
         exerciseNumber: 3,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "كيف تؤدي طفرة الجين P53 الناتجة عن التعرض للبنزوبيرين إلى نشأة سرطان الرئة؟",
-        promptSource: "reconstructed",
+        page: 3,
+        prompt: "فما هي العلاقة بين مكوّنات التبغ وارتفاع نسبة احتمال الإصابة بسرطان الرئة عند المدخّنين؟",
+        promptSource: "official",
         maxPoints: 0.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -886,21 +897,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2024-S1-E3-Q2",
         exerciseNumber: 3,
         order: 2,
         pole: "S",
-        page: null,
+        page: 4,
         prompt:
-          "استغل الوثائق: مقارنة تتابع الجين P53 السليم والسرطاني (Anagène) وتغير تركيز البنزوبيرين بدلالة نسبة احتمال الإصابة بسرطان الرئة.",
-        promptSource: "reconstructed",
+          "اقترح فرضية توضّح من خلالها العلاقة بين Benzopyrène وارتفاع نسبة احتمال الإصابة بسرطان الرئة عند المدخّنين باستغلالك شكلي الوثيقة 1 ومعلوماتك.",
+        promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -908,20 +924,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2024-S1-E3-Q3",
         exerciseNumber: 3,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "فسّر كيف تفقد بروتينة P53 وظيفتها الكابحة للأورام عند حدوث طفرة ناتجة عن البنزوبيرين.",
-        promptSource: "reconstructed",
+        page: 5,
+        prompt: "1 ــ صادق على صحة الفرضية المقترحة باستغلالك لأشكال الوثيقة 2 ومعلوماتك.",
+        promptSource: "official",
         maxPoints: 4,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -929,20 +950,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 5
       },
       {
         id: "2024-S1-E3-Q4",
         exerciseNumber: 3,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص المسار الذي يربط البنزوبيرين بطفرة P53 ونشأة ورم الرئة.",
-        promptSource: "reconstructed",
+        page: 5,
+        prompt:
+          "2 ــ قدّم إرشادات للمدخّنين وغير المدخّنين لتقادي الإصابة بمرض السرطان الرئوي. لخّص في مخطط دور البروتينين P53 في إصلاح اختلال الـ ADN المسبب للسرطان عند المدخّنين وغير المدخّنين بناءً على ما سبق ومعلوماتك.",
+        promptSource: "official",
         maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -950,7 +977,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 5
       }
     ]
   },

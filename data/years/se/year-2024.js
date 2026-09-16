@@ -15,7 +15,7 @@ const YEAR_2024_SE = {
       pdfExternalUrl: "https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf",
       pdfLocalUrl: "/subjects/SE/2024/sujet-1.pdf",
       pdfNote:
-        "PDF non redistribué dans le dépôt ; source: https://eddirasa.com/bac-science-2024-se/ (consulté 2026-08-25). Miroir dzexams: https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09 · PDF: https://www.dzexams.com/uploads/sujets/officiels/bac/2024/dzexams-bac-sciences-naturelles-1751784.pdf. Pages 1, 2, 6, 7 et 10 relues sur le sujet officiel (page 1 : scan local, 2026-09-16 ; autres : photos, 2026-08-31). Viewer dzexams bloqué (0 pages) dans la sandbox. Session de remplacement non localisée.",
+        "PDF non redistribué dans le dépôt ; source: https://eddirasa.com/bac-science-2024-se/ (consulté 2026-08-25). Miroir dzexams: https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09 · PDF: https://www.dzexams.com/uploads/sujets/officiels/bac/2024/dzexams-bac-sciences-naturelles-1751784.pdf. Sujet 1 relu sur le sujet officiel : page 1 : scan local, 2026-09-16 ; pages 3, 4 et 5 : scan local, 2026-09-16 ; page 2 : photo, 2026-08-31. Sujet 2 : pages 6, 7 et 10 relues sur photos, 2026-08-31. Viewer dzexams bloqué (0 pages) dans la sandbox. Session de remplacement non localisée.",
       title: "الموضوع الأول",
       exercises: [
         {
@@ -119,7 +119,7 @@ const YEAR_2024_SE = {
                 "ما أصل اختلال التوازن بين التنبيه والتثبيط في اضطرابات الصرع، وما دور طفرة الجين Scn1a في ذلك؟",
               bacPromptSource: "reconstructed",
               bacPromptNotes:
-                "Thème (Excitation/Inhibition, Glutamate/GABA, Scn1a) lu sur la couche texte bruitée ; pas de question autonome de cadrage.",
+                "Aucune question de cadrage imprimée : relecture de l'image de la page 2 (scan local, 2026-09-16) — l'énoncé annonce l'objectif (« نبحث من خلال هذه الدراسة في أصل إحدى حالات هذا المرض ») sans poser de question. Les deux questions du الجزء الثاني (page 3) sont rattachées au pôle W. Reformulation pédagogique.",
               placeholder: "صياغة المشكل العلمي...",
               minLength: 40,
               modelAnswer:
@@ -194,19 +194,22 @@ const YEAR_2024_SE = {
             },
             W: {
               points: 1,
-              prompt: "الخلاصة: دور طفرة Scn1a في الصرع",
-              bacPrompt: "ما دور طفرة الجين Scn1a في ظهور اضطرابات الصرع؟",
-              bacPromptSource: "reconstructed",
+              prompt: "الجزء الثاني: أصل الاعتلال الدماغي والاقتراح العلاجي",
+              bacPrompt:
+                "1 ــ بيّن أصل الاعتلال الدماغي المُسبّب لحالة الصُّرع المدروسة باستغلال النتائج المُثبتة في شكلي الوثيقة 2. 2 ــ اقترح حلا علاجيًا للتخفيف من أعراض نوبات الصُّرع بناءً على ما توصلت إليه من خلال هذه الدراسة.",
+              bacPromptSource: "official",
+              bacPromptPage: 3,
+              bacPromptVerifiedAt: "2026-09-16",
               bacPromptNotes:
-                "La clôture est incluse dans l'explication officielle (pôle E). Pas une question BAC autonome.",
-              placeholder: "في الختام...",
-              minLength: 40,
+                "Questions 1 et 2 du الجزء الثاني recopiées mot à mot sur l'image de la page 3 du sujet officiel 2024 (scan local, 2026-09-16). Les deux questions de cette partie sont regroupées dans le pôle de clôture ; l'énoncé du التمرين الثاني (page 2) n'imprime aucune question de cadrage (pôle N). Aucun corrigé local pour la session 2024 : réponse rédigée à partir des documents du sujet, sans correction officielle revendiquée.",
+              placeholder: "طفرة المورثة Scn1a، قناة الصوديوم، اقتراح علاجي...",
+              minLength: 80,
               modelAnswer:
-                "في الختام، تؤدي طفرة الجين Scn1a المشفّر لقناة الصوديوم إلى خلل في نقل الإشارة العصبية فتختل وظيفة العصبونات المثبطة ويسود التنبيه فتظهر نوبات الصرع.",
+                "يُعزى أصل الاعتلال الدماغي المُسبّب لحالة الصُّرع المدروسة إلى طفرة في المورثة (Scn1a) المشرفة على تركيب قناة الصوديوم الفولطية في الخلايا العصبية قبل المشبكية، فيتغيّر الحمض الأميني في البروتينة فتختل مراحل عمل القناة (الشكل أ)، ويصبح دخول شوارد الصوديوم غير منتظم فيرتفع تواتر كمونات العمل ويزداد إفراز المبلّغ العصبي المُنبّه (Glutamate) مقارنة بالمثبّط (GABA)، فتختل العلاقة بين التنبيه والتثبيط وتظهر نوبات الصُّرع. ومن الحلول العلاجية المقترحة: استعمال أدوية مضادة للصُّرع تُعيد تنظيم عمل قنوات الصوديوم الفولطية أو تُقوّي التثبيط الغابي، مما يخفّف من أعراض نوبات الصُّرع.",
               rule: {
-                prompt: "اكتب خلاصة حول دور طفرة Scn1a",
-                keywords: ["طفرة", "Scn1a", "قناة", "صرع"],
-                minHits: 2,
+                prompt: "بين أصل الاعتلال الدماغي واقترح حلا علاجيا",
+                keywords: ["طفرة", "Scn1a", "صوديوم", "GABA", "علاج"],
+                minHits: 3,
                 forbidden: []
               }
             }
@@ -221,43 +224,49 @@ const YEAR_2024_SE = {
           poles: {
             N: {
               points: 0.5,
-              prompt: "تأطير الإشكالية: علاقة طفرة P53 بسرطان الرئة",
-              bacPrompt: "كيف تؤدي طفرة الجين P53 الناتجة عن التعرض للبنزوبيرين إلى نشأة سرطان الرئة؟",
-              bacPromptSource: "reconstructed",
+              prompt: "تأطير الإشكالية: علاقة مكوّنات التبغ بسرطان الرئة",
+              bacPrompt:
+                "فما هي العلاقة بين مكوّنات التبغ وارتفاع نسبة احتمال الإصابة بسرطان الرئة عند المدخّنين؟",
+              bacPromptSource: "official",
+              bacPromptPage: 3,
+              bacPromptVerifiedAt: "2026-09-16",
               bacPromptNotes:
-                "Thème (P53, Benzopyrène, cancer du poumon) lu sur la couche texte bruitée ; pas de question autonome de cadrage.",
+                "Question de cadrage imprimée dans l'énoncé du التمرين الثالث (page 3), recopiée mot à mot sur l'image du scan local (2026-09-16) ; l'introduction (« يتوقف التخصص الوظيفي للبروتين ... ») précède la question. Aucun corrigé local pour la session 2024.",
               placeholder: "صياغة المشكل العلمي...",
               minLength: 30,
               modelAnswer:
-                "المشكل العلمي: كيف تؤدي طفرة الجين P53 الناتجة عن التعرض للبنزوبيرين إلى فقدان وظيفة البروتين الكابحة للأورام ونشأة سرطان الرئة؟",
+                "المشكل العلمي: ما العلاقة بين مكوّنات التبغ (البنزوبيرين BZP) وارتفاع نسبة احتمال الإصابة بسرطان الرئة عند المدخّنين؟",
               rule: {
-                prompt: "حدد المشكل العلمي حول P53 والبنزوبيرين",
-                keywords: ["P53", "طفرة", "بنزوبيرين", "سرطان"],
+                prompt: "حدد المشكل العلمي حول مكوّنات التبغ وسرطان الرئة",
+                keywords: ["بنزوبيرين", "سرطان", "احتمال"],
                 minHits: 2,
                 forbidden: []
               }
             },
             S: {
               points: 2,
-              prompt: "استغلال الوثائق: تتابع الجين P53 السليم والسرطاني وعلاقة البنزوبيرين بالإصابة",
+              prompt: "الجزء الأول: اقتراح فرضية حول علاقة البنزوبيرين بسرطان الرئة",
               bacPrompt:
-                "استغل الوثائق: مقارنة تتابع الجين P53 السليم والسرطاني (Anagène) وتغير تركيز البنزوبيرين بدلالة نسبة احتمال الإصابة بسرطان الرئة.",
-              bacPromptSource: "reconstructed",
-              bacPromptNotes: "Reconstruction pédagogique 2024 — thème lu sur la couche texte bruitée.",
+                "اقترح فرضية توضّح من خلالها العلاقة بين Benzopyrène وارتفاع نسبة احتمال الإصابة بسرطان الرئة عند المدخّنين باستغلالك شكلي الوثيقة 1 ومعلوماتك.",
+              bacPromptSource: "official",
+              bacPromptPage: 4,
+              bacPromptVerifiedAt: "2026-09-16",
+              bacPromptNotes:
+                "Question du الجزء الأول recopiée mot à mot sur l'image de la page 4 du sujet officiel 2024 (scan local, 2026-09-16). Le tableau du الشكل (أ) donne : 0 سيجارة → 0.02 µg/mL → %1 ; 10 → 0.34 → %20 ; 20 → 0.68 → %32 ; 30 → 1.02 → %57 ; 40 → 1.36 → %80 ; 50 → 1.70 → %85. Aucun corrigé local : réponse rédigée à partir des documents.",
               placeholder: "تتابع، طفرة، تركيز، نسبة إصابة...",
               minLength: 60,
               modelAnswer:
-                "تمثل الوثائق مقارنة تتابع الجين P53 السليم والسرطاني وتغير نسبة احتمال الإصابة بسرطان الرئة بدلالة عدد السجائر وتركيز البنزوبيرين. نلاحظ ظهور طفرة نقطية في التتابع السرطاني وارتفاع نسبة احتمال الإصابة بارتفاع تركيز البنزوبيرين، ومنه نستنتج علاقة البنزوبيرين بطفرة P53 ونشأة السرطان.",
+                "الفرضية: يُحدِث البنزوبيرين (BZP) المتأتي من التبغ طفرة في مورثة P53 فتفقد البروتينة وظيفتها الكابحة للانقسام الخلوي، فلا يتوقف انقسام الخلية التي أصابها العامل المسبب للسرطان (FC)، فتتكاثر انقسامات متتالية مشكّلة ورما سرطانيا. ويُدعم ذلك بأن نسبة احتمال الإصابة بسرطان الرئة ترتفع بدلالة ارتفاع تركيز البنزوبيرين وعدد السجائر المستهلكة في اليوم (جدول الشكل أ)، وأن تتابع المورثة P53 عند المدخّن يختلف عن تتابعها عند غير المدخّن (الشكل ب).",
               rule: {
-                prompt: "استغل الوثائق حول P53 والبنزوبيرين",
-                keywords: ["تتابع", "طفرة", "بنزوبيرين", "إصابة"],
+                prompt: "اقترح فرضية حول البنزوبيرين وسرطان الرئة",
+                keywords: ["فرضية", "بنزوبيرين", "طفرة", "P53", "سرطان"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "table",
-                  axes: ["تتابع", "تركيز"],
-                  comparisons: [["سليم", "سرطاني"]],
-                  cells: [["P53", "طفرة"]],
+                  axes: ["تركيز", "سجائر"],
+                  comparisons: [],
+                  cells: [["سجائر", "بنزوبيرين"]],
                   values: [],
                   strictValues: false
                 }
@@ -266,10 +275,12 @@ const YEAR_2024_SE = {
             E: {
               points: 4,
               prompt: "تفسير أثر طفرة P53 على وظيفته الكابحة للورم",
-              bacPrompt:
-                "فسّر كيف تفقد بروتينة P53 وظيفتها الكابحة للأورام عند حدوث طفرة ناتجة عن البنزوبيرين.",
-              bacPromptSource: "reconstructed",
-              bacPromptNotes: "Reconstruction pédagogique 2024 — thème lu sur la couche texte bruitée.",
+              bacPrompt: "1 ــ صادق على صحة الفرضية المقترحة باستغلالك لأشكال الوثيقة 2 ومعلوماتك.",
+              bacPromptSource: "official",
+              bacPromptPage: 5,
+              bacPromptVerifiedAt: "2026-09-16",
+              bacPromptNotes:
+                "Question 1 du الجزء الثاني recopiée mot à mot sur l'image de la page 5 du sujet officiel 2024 (scan local, 2026-09-16). La réponse modèle (mécanisme de la mutation de P53) valide la hypothèse ; la question du الجزء الثالث (لخّص في مخطط) est rattachée au pôle W. Aucun corrigé local : réponse rédigée à partir des documents.",
               placeholder: "الموقع الفعال، تتابع، وظيفة كابحة...",
               minLength: 110,
               modelAnswer:
@@ -283,19 +294,22 @@ const YEAR_2024_SE = {
             },
             W: {
               points: 1.5,
-              prompt: "الخلاصة: مسار البنزوبيرين نحو الورم",
-              bacPrompt: "لخّص المسار الذي يربط البنزوبيرين بطفرة P53 ونشأة ورم الرئة.",
-              bacPromptSource: "reconstructed",
+              prompt: "الجزء الثاني والثالث: إرشادات الوقاية ولخّص دور P53",
+              bacPrompt:
+                "2 ــ قدّم إرشادات للمدخّنين وغير المدخّنين لتقادي الإصابة بمرض السرطان الرئوي. لخّص في مخطط دور البروتينين P53 في إصلاح اختلال الـ ADN المسبب للسرطان عند المدخّنين وغير المدخّنين بناءً على ما سبق ومعلوماتك.",
+              bacPromptSource: "official",
+              bacPromptPage: 5,
+              bacPromptVerifiedAt: "2026-09-16",
               bacPromptNotes:
-                "La clôture est incluse dans l'explication (pôle E). Pas une question BAC autonome.",
-              placeholder: "بنزوبيرين → طفرة → فقدان الوظيفة → ورم...",
-              minLength: 40,
+                "Question 2 du الجزء الثاني et question du الجزء الثالث recopiées mot à mot sur l'image de la page 5 du sujet officiel 2024 (scan local, 2026-09-16), regroupées dans le pôle de clôture. Aucun corrigé local : réponse rédigée à partir des documents.",
+              placeholder: "الامتناع عن التدخين، تفادي البنزوبيرين، P53 يصلح الاختلال...",
+              minLength: 60,
               modelAnswer:
-                "في الختام، يحدث البنزوبيرين طفرة في الجين P53 فتفقد البروتينة وظيفتها الكابحة للأورام، فتتكاثر الخلايا دون رقابة ويتكون ورم الرئة.",
+                "من الإرشادات: الامتناع عن التدخين وتفادي التعرض لمصادر البنزوبيرين الأخرى (دخان المصانع والسيارات والأغذية الملوثة)، والكشف المبكر عن سرطان الرئة. ويُبيّن المخطط أن العامل المسبب للسرطان (FC) يُحدث اختلالا في الـ ADN، فعند غير المدخّن يرتبط بروتين P53 السليم بالـ ADN ويصلح الاختلال فيتوقف انقسام الخلية المصابة، أما عند المدخّن فيُحدث البنزوبيرين طفرة في مورثة P53 فيصبح البروتين غير وظيفي فلا يُصلح الاختلال ولا يوقف الانقسام، فتتكاثر الخلايا انقسامات متتالية وينشأ الورم السرطاني.",
               rule: {
-                prompt: "لخص مسار البنزوبيرين نحو الورم",
-                keywords: ["بنزوبيرين", "طفرة", "ورم"],
-                minHits: 2,
+                prompt: "قدم إرشادات ولخص دور P53 في إصلاح الاختلال",
+                keywords: ["تدخين", "بنزوبيرين", "P53", "ADN", "ورم"],
+                minHits: 3,
                 forbidden: []
               }
             }

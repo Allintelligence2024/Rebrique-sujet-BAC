@@ -7,25 +7,33 @@ PWA build id: `f54ac619b7a2` (stale as soon as any source file changes — regen
 Production build: `dist/site` 136 files, standalone `dist/boussole-4d-standalone.html` 1.80 MB (reproducible sha256).
 
 > **2026-09-16 — état courant de la session** (branche `arena/01a09be6-rebrique-sujet-bac`,
-> PR **#26** OPEN — ne pas merger sans consigne du propriétaire ; tête `71b0cf7`, quatre commits
-> poussés ce jour : `5b9e947`, `0b2ec31`, `ad26660`, `71b0cf7`, CI « Quality » verte sur chaque push).
+> PR **#26** OPEN — ne pas merger sans consigne du propriétaire ; tête `0afdee4`, suivie du présent
+> bandeau ; commits poussés ce jour : `5b9e947`, `0b2ec31`, `ad26660`, `71b0cf7`, `0afdee4`, puis ce
+> commit — CI « Quality » verte sur chaque push).
 >
-> - **Mesures :** `npm test` → **352 (351 pass / 1 skip)** ; 28 sessions encodées (14 maths, 14 sciences) ;
->   54 inventaires ; **246 pôles `official`** (88 SE + 158 M) = `CALIBRATION_STATUS.activePoles` ;
->   build `7b4844269a74`, standalone 2992 KB, release sha256 `76ef04fe…`.
+> - **Mesures :** `npm test` → **355 (354 pass / 1 skip)** ; 28 sessions encodées (14 maths, 14 sciences) ;
+>   54 inventaires ; **251 pôles `official`** (93 SE + 158 M) = `CALIBRATION_STATUS.activePoles`,
+>   **230/251** consignes rattachées à une page du fichier ; build `3be034cc86ff`, standalone 3004 KB
+>   (sha `80882c35291b`), release 135 fichiers sha256 `66d21c57…`.
 > - **Backlog d'analyse (`ANALYSE_LIGNE_PAR_LIGNE.md`) : §10.1 entièrement fermé sauf l'arbitrage
 >   juridique des PDF (S3.8, décision propriétaire).** S2.5 (binaural) est verrouillé par
 >   `tests/sound-engine.test.mjs` — seule l'écoute réelle Safari reste due ; S2.6 (ordre de création
 >   de `#toast-zone`) est corrigé (`ensureToastZone()`) et verrouillé par `tests/toast-zone.test.mjs`.
 >   Les tableaux §6 et §4 portent désormais le renvoi « → §10.1 » promis par la bannière du rapport.
-> - **Contenus :** les dix pages de **SE-2021** ont été relues en image ; deux consignes recopiées
->   avaient dérivé (sujet 1 exercice 3, sujet 2 exercice 3 « مقر ودور … للإحساس بالألم ») et sont
->   recalées, verrouillées par `tests/se-2021-recopy.test.mjs`. L'année reste en **copie libre**.
-> - **SE-2024** : le scan est image seule ; la page 1 relue le 2026-09-16 a permis de recopier les deux
->   questions officielles de l'exercice 1 (pôles S et E passés `official`, page 1) — inventaire
->   régénéré (246 tâches avec page), `tests/se-2024-recopy.test.mjs` verrouille les citations.
->   **Reste à faire sur ce chantier :** exercices 2 et 3 du sujet 1 (pages 2 et 4-5), puis sujet 2,
->   puis les mêmes relectures pour SE-2025 et SE-2026 (PDF image seule eux aussi).
+> - **Contenus — SE-2021 :** les dix pages ont été relues en image ; deux consignes recopiées
+>   (sujet 1 exercice 3, sujet 2 exercice 3 « مقر ودور … للإحساس بالألم ») sont recalées et
+>   verrouillées par `tests/se-2021-recopy.test.mjs`. La couche texte du même PDF écrit `ثالث` là où
+>   l'image imprime `ثلاث فرضيات` : continuer à recopier sur l'image, jamais sur la couche.
+>   L'année reste en **copie libre**.
+> - **Contenus — SE-2024 :** le scan est image seule ; la relecture des pages 1, 3, 4 et 5 le
+>   2026-09-16 a fait passer **neuf pôles du sujet 1 sur douze** en `official` (ex1 : S/E p.1 ;
+>   ex2 : S/E p.2 + W p.3 ; ex3 : N p.3, S p.4, E/W p.5). Les pôles N de l'ex2 et N/W de l'ex1
+>   restent `reconstructed` — l'énoncé n'imprime aucune question de cadrage. `tests/se-2024-recopy.test.mjs`
+>   (7 tests) verrouille les citations, le rattachement d'inventaire et les notes datées ;
+>   `docs/RELECTURE_2024_CHECKLIST.md` tient le tableau page-à-page. Aucun corrigé local : les
+>   réponses modèles sont rédigées d'après les documents, sans correction officielle revendiquée.
+>   **Reste à faire sur ce chantier :** sujet 2 (pages 8-9 non relues, cadrages N/W), puis les mêmes
+>   relectures pour SE-2025 et SE-2026 (PDF image seule eux aussi).
 > - **Décisions en attente du propriétaire :** (a) redistribuer ou non les 41,1 Mo de PDF dans
 >   `dist/site` ; (b) passer SE-2021 en mode BAC chiffré ou la garder en copie libre ; (c) ouvrir ou non
 >   les archives SE 2013-2019 à des consignes `official` (elles sont aujourd'hui verrouillées
