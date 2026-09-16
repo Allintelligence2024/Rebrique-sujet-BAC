@@ -15,7 +15,7 @@ const YEAR_2024_SE = {
       pdfExternalUrl: "https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf",
       pdfLocalUrl: "/subjects/SE/2024/sujet-1.pdf",
       pdfNote:
-        "PDF non redistribué dans le dépôt ; source: https://eddirasa.com/bac-science-2024-se/ (consulté 2026-08-25). Miroir dzexams: https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09 · PDF: https://www.dzexams.com/uploads/sujets/officiels/bac/2024/dzexams-bac-sciences-naturelles-1751784.pdf. Sujet 1 relu sur le sujet officiel : page 1 : scan local, 2026-09-16 ; pages 3, 4 et 5 : scan local, 2026-09-16 ; page 2 : photo, 2026-08-31. Sujet 2 : pages 6, 7 et 10 relues sur photos, 2026-08-31. Viewer dzexams bloqué (0 pages) dans la sandbox. Session de remplacement non localisée.",
+        "PDF non redistribué dans le dépôt ; source: https://eddirasa.com/bac-science-2024-se/ (consulté 2026-08-25). Miroir dzexams: https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09 · PDF: https://www.dzexams.com/uploads/sujets/officiels/bac/2024/dzexams-bac-sciences-naturelles-1751784.pdf. Sujet 1 relu sur le sujet officiel : page 1 : scan local, 2026-09-16 ; pages 3, 4 et 5 : scan local, 2026-09-16 ; page 2 : photo, 2026-08-31. Sujet 2 : pages 6, 7 et 10 relues sur photos, 2026-08-31 ; pages 8 et 9 : scan local, 2026-09-16. Viewer dzexams bloqué (0 pages) dans la sandbox. Session de remplacement non localisée.",
       title: "الموضوع الأول",
       exercises: [
         {
@@ -324,7 +324,7 @@ const YEAR_2024_SE = {
       pdfExternalUrl: "https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf",
       pdfLocalUrl: "/subjects/SE/2024/sujet-2.pdf",
       pdfNote:
-        "PDF non redistribué dans le dépôt ; même fichier que le sujet 1 (session normale, sujets 1 et 2). Pages 6, 7 et 10 relues sur photos du sujet officiel (2026-08-31). Viewer dzexams bloqué dans la sandbox.",
+        "PDF non redistribué dans le dépôt ; même fichier que le sujet 1 (session normale, sujets 1 et 2). Pages 6, 7 et 10 relues sur photos du sujet officiel (2026-08-31) ; pages 8 et 9 relues sur le scan local (images lues une à une, 2026-09-16). Viewer dzexams bloqué dans la sandbox.",
       title: "الموضوع الثاني",
       exercises: [
         {
@@ -359,9 +359,9 @@ const YEAR_2024_SE = {
               bacPrompt: "اذكر العناصر المتدخّلة في حدوث هذه المرحلة.",
               bacPromptSource: "official",
               bacPromptPage: 6,
-              bacPromptVerifiedAt: "2026-08-31",
+              bacPromptVerifiedAt: "2026-09-16",
               bacPromptNotes:
-                "Relecture visuelle photo page 6 du sujet officiel 2024 (ONEC). Verbe officiel : اذكر. Question 1 du التمرين الأول (Sujet 2).",
+                "Relue aussi sur le scan local (image page 6, 2026-09-16) : transcription identique. Verbe officiel : اذكر. Question 1 du التمرين الأول (Sujet 2).",
               placeholder: "ARNm، ريبوزوم، ARNt...",
               minLength: 30,
               modelAnswer:
@@ -380,9 +380,9 @@ const YEAR_2024_SE = {
                 "اشرح في نص علمي خطوات الترجمة وتأثير كل من Oxazolidinone و Tetracycline عليها باستغلال الوثيقة ومعلوماتك (النص العلمي مهيكل في مقدمة وعرض وخاتمة).",
               bacPromptSource: "official",
               bacPromptPage: 6,
-              bacPromptVerifiedAt: "2026-08-31",
+              bacPromptVerifiedAt: "2026-09-16",
               bacPromptNotes:
-                "Relecture visuelle photo page 6 du sujet officiel 2024 (ONEC). Verbe officiel : اشرح. Question 2 du التمرين الأول (Sujet 2).",
+                "Relue aussi sur le scan local (image page 6, 2026-09-16) : transcription identique. Verbe officiel : اشرح. Question 2 du التمرين الأول (Sujet 2).",
               placeholder: "مقدمة، عرض، خاتمة...",
               minLength: 120,
               modelAnswer:
@@ -428,7 +428,7 @@ const YEAR_2024_SE = {
                 "كيف يؤثر عامل الظلام على تفاعلات تثبيت جزيئة CO2 بأنزيم RUBISCO عند أوراق نبات الفاصولياء؟",
               bacPromptSource: "reconstructed",
               bacPromptNotes:
-                "Thème (RUBISCO, CO2, RuBP, Phaseolus, CA1P) lu sur la couche texte bruitée ; pas de question autonome de cadrage.",
+                "Aucune question de cadrage imprimée : l'énoncé du التمرين الثاني (page 6, relu sur le scan local le 2026-09-16) annonce seulement l'objectif — « نهدف من خلال هذه الدراسة إلى تفسير آلية تأثير عامل الظلام على تفاعلات تثبيت جزيئة الـ CO2 على أوراق من نبات الفاصولياء Phaseolus.v » — puis décrit les expériences, sans phrase interrogative. Reformulation pédagogique : jamais présentée comme consigne officielle.",
               placeholder: "صياغة المشكل العلمي...",
               minLength: 40,
               modelAnswer:
@@ -446,9 +446,9 @@ const YEAR_2024_SE = {
               bacPrompt: "حلّل النتائج الممثّلة في الشكل (أ) من الوثيقة 1.",
               bacPromptSource: "official",
               bacPromptPage: 7,
-              bacPromptVerifiedAt: "2026-08-31",
+              bacPromptVerifiedAt: "2026-09-16",
               bacPromptNotes:
-                "Relecture visuelle photo page 7 du sujet officiel 2024 (ONEC). Verbe officiel : حلّل. Question 1 du الجزء الأول (Sujet 2, Ex2).",
+                "Relue aussi sur le scan local (image page 7, 2026-09-16) : transcription identique, aucun écart. Verbe officiel : حلّل. Question 1 du الجزء الأول (Sujet 2, Ex2).",
               placeholder: "نشاط RUBISCO، CA1P، تثبيت CO2...",
               minLength: 90,
               modelAnswer:
@@ -484,12 +484,12 @@ const YEAR_2024_SE = {
               points: 2.5,
               prompt: "شرح أثر الظلام على نشاط RUBISCO عبر CA1P",
               bacPrompt:
-                "أبرز العلاقة بين كمية (CA1P) في الأوراق ونسبة نشاط الأنزيم (Rubisco) انطلاقا من نتائج الشكل (ب) والمعلومة المستخلصة من الشكل (أ) من الوثيقة 1.",
+                "أبرز العلاقة بين كمية (CA1P) ونسبة نشاط الأنزيم (Rubisco) انطلاقا من نتائج الشكل (ب) والمعلومة المستخلصة من الشكل (أ) من الوثيقة 1.",
               bacPromptSource: "official",
               bacPromptPage: 7,
-              bacPromptVerifiedAt: "2026-08-31",
+              bacPromptVerifiedAt: "2026-09-16",
               bacPromptNotes:
-                "Relecture visuelle photo page 7 du sujet officiel 2024 (ONEC). Verbe officiel : أبرز. Question 2 du الجزء الأول (Sujet 2, Ex2). Consigne du الجزء الثاني (mécanisme du الظلام) non mappée (un pôle = une consigne).",
+                "Relue sur le scan local (image page 7, 2026-09-16) : « في الأوراق » retiré, la question imprimée disant « بين كمية (CA1P) ونسبة نشاط الأنزيم (Rubisco) ». Verbe officiel : أبرز. Question 2 du الجزء الأول (Sujet 2, Ex2) ; la consigne du الجزء الثاني (mécanisme du الظلام) est portée par le pôle W.",
               placeholder: "CA1P، الموقع الفعال، تثبيط...",
               minLength: 110,
               modelAnswer:
@@ -503,20 +503,31 @@ const YEAR_2024_SE = {
             },
             W: {
               points: 1,
-              prompt: "الخلاصة: أهمية الضوء لتثبيت CO2",
-              bacPrompt: "ما أهمية الضوء في الحفاظ على نشاط RUBISCO وتثبيت CO2؟",
-              bacPromptSource: "reconstructed",
+              prompt: "الجزء الثاني: آلية تأثير عامل الظلام على تثبيت CO2",
+              bacPrompt:
+                "اشرح آلية تأثير عامل الظلام على تفاعلات تثبيت جزيئة الـ CO2 باستغلال أشكال الوثيقة 2 ومعلوماتك.",
+              bacPromptSource: "official",
+              bacPromptPage: 8,
+              bacPromptVerifiedAt: "2026-09-16",
               bacPromptNotes:
-                "La clôture est incluse dans l'explication (pôle E). Pas une question BAC autonome.",
-              placeholder: "في الختام...",
-              minLength: 40,
+                "Recopiée sur l'image de la page 8 du scan local (sujet 2, 2026-09-16) : seule consigne imprimée du الجزء الثاني (الوثيقة 2 = tableau du الشكل (أ), courbe du الشكل (ب), modélisation du الشكل (ج)). Le pôle de clôture regroupe la fin de l'exercice ; le cadrage N reste reconstruit faute de question imprimée. Aucun corrigé local pour la session 2024 : réponse modèle rédigée d'après les documents du sujet.",
+              placeholder: "CA1P، الموقع الفعال، Rudip، توقف التثبيت...",
+              minLength: 60,
               modelAnswer:
-                "في الختام، يحافظ الضوء على نشاط أنزيم RUBISCO بمنع تراكم مثبط CA1P، فيستمر تثبيت CO2 وإنتاج المادة العضوية عند النبات.",
+                "في الظلام يتراكم المركب CA1P في الأوراق فيرتبط بالمواقع الفعالة لأنزيم Rubisco، ويُبيّن الشكل (ب) من الوثيقة 2 أن ارتفاع كمية CA1P يرافقه انخفاض عدد المواقع الفعالة للأنزيم؛ وعندما تحتلّ CA1P الموقع الفعال لا يتثبت Rudip ولا يثبّت جزيئة الـ CO2، وهو ما يؤكده جدول الشكل (أ): في الوسط الثاني (أُضيفت إليه CA1P قبل Rudip) يبقى مقدار CO2 المثبَّت ضعيفا جدا (0.05 µmol/min) مهما ارتفع تركيز Rudip، بينما يرتفع في الوسط الأول (Rudip و Rubisco فقط) من 00 إلى 0.8 µmol/min. ويوضّح الشكل (ج) هذه الآلية: في الضوء يرتبط Rudip بالأنزيم فيُثبَّت CO2، وفي الظلام يحتلّ CA1P الموقع الفعال فيتوقف تثبيت جزيئة الـ CO2.",
               rule: {
-                prompt: "اكتب خلاصة حول أهمية الضوء لتثبيت CO2",
-                keywords: ["ضوء", "RUBISCO", "تثبيت"],
-                minHits: 2,
-                forbidden: []
+                prompt: "اشرح آلية تأثير الظلام على تثبيت CO2",
+                keywords: ["CA1P", "Rudip", "تثبيت", "ظلام"],
+                minHits: 3,
+                forbidden: ["بسبب"],
+                document: {
+                  kind: "table",
+                  axes: ["CO2", "Rudip"],
+                  comparisons: [["الضوء", "الظلام"]],
+                  cells: [["CA1P", "Rudip"]],
+                  values: [],
+                  strictValues: false
+                }
               }
             }
           }
@@ -535,7 +546,7 @@ const YEAR_2024_SE = {
                 "كيف تقضي المناعة على البكتيريا الممرضة (Corynebacterium وStaphylococcus aureus)، وما دور بروتين SPA في ذلك؟",
               bacPromptSource: "reconstructed",
               bacPromptNotes:
-                "Thème (diphtérie, S. aureus, SPA) lu sur la couche texte bruitée ; pas de question autonome de cadrage.",
+                "Aucune question de cadrage imprimée : l'énoncé du التمرين الثالث (page 3 du scan local, relu le 2026-09-16) se termine par « لفهم إحدى تلك الآليات نقترح الدراسة التالية » — une annonce, pas une question. Reformulation pédagogique : jamais présentée comme consigne officielle.",
               placeholder: "صياغة المشكل العلمي...",
               minLength: 30,
               modelAnswer:
@@ -549,25 +560,28 @@ const YEAR_2024_SE = {
             },
             S: {
               points: 2,
-              prompt: "استغلال الوثائق: نسبة الروابط الميكروبية ضد الممرضين",
+              prompt: "الجزء الأول: اقتراح فرضيتين حول آلية تأثير البكتيريا",
               bacPrompt:
-                "استغل الوثائق: نسبة الارتباط بالمستضدات (AgCd) و(AgSa) والبروتينات المناعية ضد Corynebacterium وStaphylococcus aureus.",
-              bacPromptSource: "reconstructed",
-              bacPromptNotes: "Reconstruction pédagogique 2024 — thème lu sur la couche texte bruitée.",
-              placeholder: "أجسام مضادة، مستضد، نسبة ارتباط...",
-              minLength: 60,
+                "اقترح فرضيتين تُبيّن من خلالهما آلية تأثير البكتيريا Staphylococcus aureus على الاستجابة المناعية باستغلالك شكلي الوثيقة 1 ومعلوماتك.",
+              bacPromptSource: "official",
+              bacPromptPage: 9,
+              bacPromptVerifiedAt: "2026-09-16",
+              bacPromptNotes:
+                "Recopiée sur l'image de la page 9 du scan local (sujet 2, 2026-09-16) : question du الجزء الأول (الوثيقة 1 = tableau des معقدات + schéma des cellules spléniques). Elle remplace la reconstruction antérieure. Aucun corrigé local pour la session 2024 : la réponse modèle propose deux hypothèses lues sur les documents, sans correction officielle revendiquée.",
+              placeholder: "فرضيتان: تعطّل تشكّل المعقدات المناعية، تعطّل البلعمة...",
+              minLength: 90,
               modelAnswer:
-                "تمثل الوثائق نسبة ارتباط الأجسام المضادة بمستضدات البكتيريا Corynebacterium (AgCd) وStaphylococcus aureus (AgSa). نلاحظ ارتباطا نوعيا مرتفعا للأجسام المضادة بمستضدها الموافق، ومنه نستنتج خصوصية الاستجابة المناعية الخلطية ضد كل بكتيريا.",
+                "الفرضية الأولى: يُعطّل Staphylococcus aureus تشكّل المعقدات المناعية مع المستضدات الأخرى فيمنع تعرّف البلعميات عليها؛ ويؤيد ذلك الجدول حيث بلغت نسبة تشكّل المعقد المناعي في المجموعة 2 %100 بينما كانت نسبة التخلص منه %00، في مقابل %100 في المجموعة 1. الفرضية الثانية: تُغيّر هذه البكتيريا المستقبلات الغشائية للبلعميات فتُفقدها القدرة على الارتباط بالمعقدات المناعية؛ ويؤيد ذلك الشكل (ب) حيث تبقى المعقدات المناعية خارج البلعميات في خلايا فئران المجموعة 2.",
               rule: {
-                prompt: "استغل الوثائق حول المناعة ضد البكتيريا",
-                keywords: ["مستضد", "أجسام", "مضادة", "ارتباط"],
-                minHits: 2,
+                prompt: "اقترح فرضيتين حول آلية تأثير البكتيريا على الاستجابة المناعية",
+                keywords: ["فرضية", "معقد", "بلعم", "مستضد"],
+                minHits: 3,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "table",
-                  axes: ["ارتباط", "مستضد"],
-                  comparisons: [["AgCd", "AgSa"]],
-                  cells: [["مستضد", "ارتباط"]],
+                  axes: ["مستضد", "تخلص"],
+                  comparisons: [["المجموعة 1", "المجموعة 2"]],
+                  cells: [["معقد", "مناعي"]],
                   values: [],
                   strictValues: false
                 }
@@ -579,9 +593,9 @@ const YEAR_2024_SE = {
               bacPrompt: "ناقش صحة إحدى الفرضيتين المقترحتين باستغلالك لأشكال الوثيقة 2 ومعلوماتك.",
               bacPromptSource: "official",
               bacPromptPage: 10,
-              bacPromptVerifiedAt: "2026-08-31",
+              bacPromptVerifiedAt: "2026-09-16",
               bacPromptNotes:
-                "Relecture visuelle photo page 10 du sujet officiel 2024 (ONEC). Verbe officiel : ناقش. Question 1 du الجزء الثاني (Sujet 2, Ex3). Consigne اقترح حلا للمشكل non mappée (un pôle = une consigne).",
+                "Relue aussi sur le scan local (image page 10, 2026-09-16) : transcription identique. Verbe officiel : ناقش. Question 1 du الجزء الثاني (Sujet 2, Ex3) ; la question 2 du même الجزء (اقترح حلا للمشكل) est portée par le pôle W.",
               placeholder: "SPA، جسم مضاد، بلعمة...",
               minLength: 110,
               modelAnswer:
@@ -595,27 +609,27 @@ const YEAR_2024_SE = {
             },
             W: {
               points: 1.5,
-              prompt: "مخطط الاستجابة المناعية الخلطية في وجود وغياب البكتيريا",
+              prompt: "الجزء الثاني والثالث: حلّ علمي ولخّص المخطط",
               bacPrompt:
-                "لخّص في مخطط مراحل الاستجابة المناعية الخلطية في وجود وغياب بكتيريا Staphylococcus aureus اعتمادا على ما سبق ومعلوماتك.",
+                "2 ــ اقترح بناءً على أساس علمي حلاً للمشكل الذي تثيره بكتيريا Staphylococcus aureus. لخّص في مخطط مراحل الاستجابة المناعية المدروسة في وجود وغياب بكتيريا Staphylococcus aureus اعتمادا على ما سبق ومعلوماتك.",
               bacPromptSource: "official",
               bacPromptPage: 10,
-              bacPromptVerifiedAt: "2026-08-31",
+              bacPromptVerifiedAt: "2026-09-16",
               bacPromptNotes:
-                "Relecture visuelle photo page 10 du sujet officiel 2024 (ONEC). Verbe officiel : لخّص في مخطط. Question du الجزء الثالث (Sujet 2, Ex3).",
-              placeholder: "في الختام...",
-              minLength: 0,
+                "Recopiées sur l'image de la page 10 du scan local (sujet 2, 2026-09-16) : question 2 du الجزء الثاني (proposition de solution, imprimée « 2 ــ ») et question du الجزء الثالث (schéma de synthèse). Le pôle E porte la question 1 du الجزء الثاني (ناقش). La consigne imprimée dit « الاستجابة المناعية المدروسة » : la formulation « الخلطية », qui venait d'une lecture antérieure, est retirée. Aucun corrigé local : réponse modèle rédigée d'après les documents.",
+              placeholder: "تحييد SPA، مخطط: مستضد ← جسم مضاد ← بلعمة...",
+              minLength: 60,
               modelAnswer:
-                "عنوان المخطط: الاستجابة المناعية الخلطية. في غياب SPA: مستضد → جسم مضاد → بلعمة. في وجود Staphylococcus aureus و SPA: ارتباط SPA بالقطعة Fc يعطل البلعمة.",
+                "عنوان المخطط: مراحل الاستجابة المناعية في وجود وغياب Staphylococcus aureus. في غياب البكتيريا: مستضد → جسم مضاد → معقد مناعي → ارتباط بالمستقبل الغشائي للبالعة → بلعمة والتخلص من المستضد. في وجود البكتيريا: يرتبط بروتين SPA بالقطعة Fc للجسم المضاد فيمنع ارتباط المعقد المناعي بالمستقبل الغشائي للبالعة فلا تحدث البلعمة وتُفلت البكتيريا من الاستجابة المناعية. ومن الحلول المقترحة على أساس علمي: تحييد بروتين SPA باستعمال أجسام مضادة مضادة له أو تثبيط إنتاجه، فيستعيد المعقد المناعي قدرته على الارتباط بالبالعة وتحدث البلعمة.",
               rule: {
-                prompt: "لخص في مخطط الاستجابة المناعية الخلطية",
-                keywords: ["مخطط", "SPA", "بلعمة"],
-                minHits: 1,
+                prompt: "اقترح حلاً للمشكل ولخّص مراحل الاستجابة المناعية",
+                keywords: ["SPA", "بلعم", "معقد", "مضاد"],
+                minHits: 3,
                 forbidden: [],
                 schema: {
                   arrows: true,
                   title: "استجابة",
-                  ordered: ["مستضد", "جسم", "بلعمة"]
+                  ordered: ["مستضد", "جسم", "بلعم"]
                 }
               }
             }

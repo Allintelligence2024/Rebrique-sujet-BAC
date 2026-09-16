@@ -1151,7 +1151,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "E",
         page: 7,
         prompt:
-          "أبرز العلاقة بين كمية (CA1P) في الأوراق ونسبة نشاط الأنزيم (Rubisco) انطلاقا من نتائج الشكل (ب) والمعلومة المستخلصة من الشكل (أ) من الوثيقة 1.",
+          "أبرز العلاقة بين كمية (CA1P) ونسبة نشاط الأنزيم (Rubisco) انطلاقا من نتائج الشكل (ب) والمعلومة المستخلصة من الشكل (أ) من الوثيقة 1.",
         promptSource: "official",
         maxPoints: 2.5,
         scoringReviewStatus: "provisional",
@@ -1176,13 +1176,19 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 2,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "ما أهمية الضوء في الحفاظ على نشاط RUBISCO وتثبيت CO2؟",
-        promptSource: "reconstructed",
+        page: 8,
+        prompt:
+          "اشرح آلية تأثير عامل الظلام على تفاعلات تثبيت جزيئة الـ CO2 باستغلال أشكال الوثيقة 2 ومعلوماتك.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [8]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -1190,7 +1196,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2024-S2-E3-Q1",
@@ -1219,14 +1225,19 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 3,
         order: 2,
         pole: "S",
-        page: null,
+        page: 9,
         prompt:
-          "استغل الوثائق: نسبة الارتباط بالمستضدات (AgCd) و(AgSa) والبروتينات المناعية ضد Corynebacterium وStaphylococcus aureus.",
-        promptSource: "reconstructed",
+          "اقترح فرضيتين تُبيّن من خلالهما آلية تأثير البكتيريا Staphylococcus aureus على الاستجابة المناعية باستغلالك شكلي الوثيقة 1 ومعلوماتك.",
+        promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [9]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -1234,7 +1245,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2024-S2-E3-Q3",
@@ -1269,7 +1280,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "W",
         page: 10,
         prompt:
-          "لخّص في مخطط مراحل الاستجابة المناعية الخلطية في وجود وغياب بكتيريا Staphylococcus aureus اعتمادا على ما سبق ومعلوماتك.",
+          "2 ــ اقترح بناءً على أساس علمي حلاً للمشكل الذي تثيره بكتيريا Staphylococcus aureus. لخّص في مخطط مراحل الاستجابة المناعية المدروسة في وجود وغياب بكتيريا Staphylococcus aureus اعتمادا على ما سبق ومعلوماتك.",
         promptSource: "official",
         maxPoints: 1.5,
         scoringReviewStatus: "provisional",
