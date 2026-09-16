@@ -6,6 +6,31 @@ Test status at handoff: **256 pass / 0 fail / 1 skipped** (`npm test`).
 PWA build id: `f54ac619b7a2` (stale as soon as any source file changes — regenerate with `npm run pwa:version`).
 Production build: `dist/site` 136 files, standalone `dist/boussole-4d-standalone.html` 1.80 MB (reproducible sha256).
 
+> **2026-09-16 — état courant de la session** (branche `arena/01a09be6-rebrique-sujet-bac`,
+> PR **#26** OPEN — ne pas merger sans consigne du propriétaire ; tête `71b0cf7`, quatre commits
+> poussés ce jour : `5b9e947`, `0b2ec31`, `ad26660`, `71b0cf7`, CI « Quality » verte sur chaque push).
+>
+> - **Mesures :** `npm test` → **352 (351 pass / 1 skip)** ; 28 sessions encodées (14 maths, 14 sciences) ;
+>   54 inventaires ; **246 pôles `official`** (88 SE + 158 M) = `CALIBRATION_STATUS.activePoles` ;
+>   build `7b4844269a74`, standalone 2992 KB, release sha256 `76ef04fe…`.
+> - **Backlog d'analyse (`ANALYSE_LIGNE_PAR_LIGNE.md`) : §10.1 entièrement fermé sauf l'arbitrage
+>   juridique des PDF (S3.8, décision propriétaire).** S2.5 (binaural) est verrouillé par
+>   `tests/sound-engine.test.mjs` — seule l'écoute réelle Safari reste due ; S2.6 (ordre de création
+>   de `#toast-zone`) est corrigé (`ensureToastZone()`) et verrouillé par `tests/toast-zone.test.mjs`.
+>   Les tableaux §6 et §4 portent désormais le renvoi « → §10.1 » promis par la bannière du rapport.
+> - **Contenus :** les dix pages de **SE-2021** ont été relues en image ; deux consignes recopiées
+>   avaient dérivé (sujet 1 exercice 3, sujet 2 exercice 3 « مقر ودور … للإحساس بالألم ») et sont
+>   recalées, verrouillées par `tests/se-2021-recopy.test.mjs`. L'année reste en **copie libre**.
+> - **SE-2024** : le scan est image seule ; la page 1 relue le 2026-09-16 a permis de recopier les deux
+>   questions officielles de l'exercice 1 (pôles S et E passés `official`, page 1) — inventaire
+>   régénéré (246 tâches avec page), `tests/se-2024-recopy.test.mjs` verrouille les citations.
+>   **Reste à faire sur ce chantier :** exercices 2 et 3 du sujet 1 (pages 2 et 4-5), puis sujet 2,
+>   puis les mêmes relectures pour SE-2025 et SE-2026 (PDF image seule eux aussi).
+> - **Décisions en attente du propriétaire :** (a) redistribuer ou non les 41,1 Mo de PDF dans
+>   `dist/site` ; (b) passer SE-2021 en mode BAC chiffré ou la garder en copie libre ; (c) ouvrir ou non
+>   les archives SE 2013-2019 à des consignes `official` (elles sont aujourd'hui verrouillées
+>   `reconstructed` par `tests/archive-years.test.mjs`, alors que les PDF officiels sont dans le dépôt).
+
 > **2026-09-12 — batch « analyse ligne par ligne »** (branch `arena/01a096cc-rebrique-sujet-bac`, rapport complet dans `ANALYSE_LIGNE_PAR_LIGNE.md`):
 > fixed S1.1 (JSDoc `@param {string} lang` → `npm run typecheck` vert), S2.1 (`hits > 0` avant le palier parfait), S2.2 (condition tautologique de l'horloge en stratégie + suppression du doublon de libellés arabes au profit de `js/ui/coverage-messages.js`), S2.3 (le repli de simulation annonce désormais `missing`/`partial`/`blocked`), S3.9 (opérande mort dans `brouillon.js`), S3.6 (commentaire orphelin), `methodology.js` refactoré (28 blocs de retour → 1, −235 lignes, **0 différence sur 2448 couples échantillon/pôle**), démo « avant/après » recalée sur le schéma réel de `evaluateText`, frontière `setInternalHTML` restaurée partout, `build.mjs` n'affirme plus que les PDF ne sont pas distribués (et affiche leur poids dans le log), en-têtes périmés de `data/archive.js` corrigés, modules de rapport documentés comme volontairement non câblés.
 
@@ -16,7 +41,8 @@ comme historique (liste des bugs corrigés, plan OCR). Ce qui a changé depuis :
 
 - Branche de travail : `arena/01a09be6-rebrique-sujet-bac` (PR **#26**, OPEN — ne pas
   merger sans consigne explicite du propriétaire). Tête vérifiée au moment de cette
-  mise à jour : `3c8d276`, CI « Quality » verte sur chaque push de la session.
+  mise à jour : `3c8d276` (état depuis dépassé : voir le bandeau **2026-09-16** en tête de
+  ce document — tête `71b0cf7`, 352 tests, §10.1 fermé hors arbitrage juridique).
 - État mesuré : **336 tests (335 pass / 0 fail / 1 skip)**, **28 sessions encodées**
   (14 maths `2013-m … 2026-m`, 14 sciences `2013 … 2026`), **54 inventaires**
   officiels, `npm run coverage:official` → 54 sujets éligibles, 0 invalide.
