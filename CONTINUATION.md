@@ -7,14 +7,14 @@ PWA build id: `f54ac619b7a2` (stale as soon as any source file changes — regen
 Production build: `dist/site` 136 files, standalone `dist/boussole-4d-standalone.html` 1.80 MB (reproducible sha256).
 
 > **2026-09-16 — état courant de la session** (branche `arena/01a09be6-rebrique-sujet-bac`,
-> PR **#26** OPEN — ne pas merger sans consigne du propriétaire ; tête `185c42c`, suivie du présent
+> PR **#26** OPEN — ne pas merger sans consigne du propriétaire ; tête `2e44da9`, suivie du présent
 > bandeau ; commits poussés ce jour : `5b9e947`, `0b2ec31`, `ad26660`, `71b0cf7`, `0afdee4`,
-> `185c42c`, puis ce commit — CI « Quality » verte sur chaque push).
+> `185c42c`, `2e44da9`, puis ce commit — CI « Quality » verte sur chaque push).
 >
-> - **Mesures :** `npm test` → **360 (359 pass / 1 skip)** ; 28 sessions encodées (14 maths, 14 sciences) ;
+> - **Mesures :** `npm test` → **365 (364 pass / 1 skip)** ; 28 sessions encodées (14 maths, 14 sciences) ;
 >   54 inventaires ; **253 pôles `official`** (95 SE + 158 M) = `CALIBRATION_STATUS.activePoles`,
->   **232/253** consignes rattachées à une page du fichier ; build `349f97862cdc`, standalone 3015 KB
->   (sha `f3ce79e805f2`), release 135 fichiers sha256 `fb802198a072…`.
+>   **232/253** consignes rattachées à une page du fichier ; build `509a7a7cf435`, standalone 3024 KB
+>   (sha `b604a50e82fd`), release 135 fichiers sha256 `c2c4068becd2…`.
 > - **Backlog d'analyse (`ANALYSE_LIGNE_PAR_LIGNE.md`) : §10.1 entièrement fermé sauf l'arbitrage
 >   juridique des PDF (S3.8, décision propriétaire).** S2.5 (binaural) est verrouillé par
 >   `tests/sound-engine.test.mjs` — seule l'écoute réelle Safari reste due ; S2.6 (ordre de création
