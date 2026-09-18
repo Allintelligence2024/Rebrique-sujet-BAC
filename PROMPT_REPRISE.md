@@ -13,12 +13,16 @@ contient les défauts D1–D18 avec file:line, les mesures, et les décisions d�
 État vérifié au moment de la reprise :
 
 ```
-npm test            → 324 tests, 323 pass, 0 fail, 1 skipped
+npm test            → 328 tests, 327 pass, 0 fail, 1 skipped
 lint / typecheck / format:check / build / release:verify
 docs:check / calibration:check / inventory:check   → tous exit 0
-p1:check → exit 1 (3/6)   p2:check → exit 1 (6/7)   p3:check → exit 1 (5/6)
+p1:check → exit 1 (3/6)   p2:check → exit 1 (6/7)   p3:check → exit 0 (6/6)
 npm run calibration → 0 copie comparée, 0/149 pôles, non calibré
 ```
+
+**Déjà traité depuis la première rédaction de ce document** (ne pas refaire) :
+T4 (garde-fou P3.2 reciblé), T6.1 (`test-results/.last-run.json` sorti de l'index),
+T6.2 (CSP `frame-ancestors` configurable). Détails en fin de document.
 
 ---
 
@@ -112,43 +116,28 @@ C'est du travail de lecture et d'encodage, pas de code. Le rapport d'audit note 
 
 ---
 
-## T4 — P3.2 : garde-fou périmé (petit, mais trompeur)
+## T4 — ~~P3.2 : garde-fou périmé~~ — **FAIT, ne pas refaire**
 
-`npm run p3:check` → `P3: INCOMPLET (5/6)`, seul P3.2 bloqué.
+`npm run p3:check` → `P3: TERMINÉ (6/6)`, exit 0.
 
-**Cause exacte, mesurée.** `scripts/report-p3-status.mjs:61-66` calcule :
+Le garde-fou `explicitPdf` (`scripts/report-p3-status.mjs`) cherchait `pdfExternalUrl` et
+`فتح المصدر الخارجي` dans `js/ui/screens/strategy.js`, alors que cette construction a été
+extraite vers `js/ui/pdf-viewer.js`. Il est maintenant reciblé sur la **branche « source
+externe »** de `pdf-viewer.js` (à partir de l'ancre `if (external) {`), pas sur le fichier
+entier.
 
-```js
-const explicitPdf =
-  !shell.some((asset) => asset.endsWith(".pdf") || asset.includes("data/years/")) &&
-  strategy.includes("pdfExternalUrl") &&
-  strategy.includes("فتح المصدر الخارجي") &&
-  !strategy.includes("download=") &&
-  !strategy.includes("<iframe");
-```
+**Pourquoi la branche et non le fichier.** `pdf-viewer.js` contient bien une `<iframe>`
+(ligne 26) et un attribut `download` (ligne 29) — mais dans la branche « fichier local », où
+c'est légitime : iframe masquée servant de repli au rendu `<canvas>`, même origine, autorisée
+par `frame-src 'self'`. Un garde-fou portant sur le fichier entier aurait donc été rouge à
+tort. Les conditions négatives (`download`, `<iframe`) ne s'appliquent qu'au repli externe.
 
-Évaluation réelle des cinq sous-conditions :
+Si l'ancre `if (external) {` disparaît, `externalBranch` vaut `""` et toutes les conditions
+positives échouent : le garde-fou tombe en échec plutôt que de passer à vide.
 
-| # | sous-condition | valeur |
-| --- | --- | --- |
-| 1 | shell sans PDF ni `data/years/` (37 ressources, 0 PDF, 0 payload) | **true** |
-| 2 | `strategy.js` contient `pdfExternalUrl` | **false** |
-| 3 | `strategy.js` contient `فتح المصدر الخارجي` | **false** |
-| 4 | `strategy.js` ne contient pas `download=` | **true** |
-| 5 | `strategy.js` ne contient pas `<iframe` | **true** |
-
-**Seules 2 et 3 échouent**, et pour une unique raison : la construction du lien externe a été
-extraite de `strategy.js` vers `js/ui/pdf-viewer.js`. `strategy.js` ne fait plus qu'appeler
-`pdfFallbackHTML` (l.38, 148, 226) et ne contient aucune de ces deux chaînes.
-
-**À faire.** Recibler les conditions 2 et 3 sur `js/ui/pdf-viewer.js` (ou sur les deux
-fichiers), **sans toucher aux conditions 1, 4 et 5** qui portent sur le shell et restent
-justes. Ne pas affaiblir l'intention : aucun PDF ni payload annuel dans le shell, lien externe
-explicite, pas de `download=`, pas d'`<iframe>`.
-
-**Vérifier que le garde-fou mord encore** après déplacement : le rendre vert en élargissant la
-recherche à n'importe quel fichier le viderait de son sens. Tester en retirant délibérément le
-lien externe de `pdf-viewer.js` et en constatant que `p3:check` repasse à l'échec.
+**Vérifié par 3 mutations** (chacune fait repasser `p3:check` à `INCOMPLET 5/6`, exit 1) :
+suppression du libellé arabe, ajout de `download="sujet.pdf"` dans la branche externe,
+renommage de l'ancre. Restauration contrôlée par `git diff` vide.
 
 ---
 
@@ -168,13 +157,20 @@ lien externe de `pdf-viewer.js` et en constatant que `p3:check` repasse à l'éc
 
 ---
 
-## T6 — Dette restante (faisable immédiatement)
+## T6 — Dette restante
 
-1. **`test-results/.last-run.json` est suivi par Git alors que `.gitignore` contient
-   `test-results/`.** → `git rm --cached test-results/.last-run.json`.
-2. **`server.mjs:23`** — la CSP contient `frame-ancestors 'self' https://*.e2b.app` : un hôte de
-   sandbox de développement figé dans la CSP de production. À rendre configurable par variable
-   d'environnement, sans valeur par défaut permissive.
+1. ~~**`test-results/.last-run.json` est suivi par Git alors que `.gitignore` contient
+   `test-results/`.**~~ **FAIT** : `git rm --cached`, fichier conservé sur disque,
+   `.gitignore:7` s'applique (vérifié par `git check-ignore -v`).
+2. ~~**`server.mjs:23`** — la CSP contient `frame-ancestors 'self' https://*.e2b.app`.~~
+   **FAIT** : `resolveFrameAncestors(process.env.CSP_FRAME_ANCESTORS)`, défaut `'self'`,
+   aucun hôte tiers codé en dur. Validation au démarrage : seuls `'self'` et les origines
+   `https://` explicites passent ; `*`, `https://*`, `http://…` sont refusés et **le serveur ne
+   démarre pas** — pas de repli permissif silencieux. 4 tests, documenté dans
+   `docs/DEPLOYMENT.md`.
+   ⚠️ **Conséquence à connaître** : un déploiement qui doit être intégré dans un cadre doit
+   désormais passer `CSP_FRAME_ANCESTORS` explicitement. C'est voulu, mais à prévoir dans tout
+   script de démarrage existant.
 3. **Racine encombrée** — `01a07c55-65b0-7317-af13-bd3460834d72.patch`,
    `ANALYSE_LIGNE_PAR_LIGNE.md`, `CONTINUATION.md`, `_v1_backup/` (96 Ko, 2 fichiers suivis),
    `patches/` (3 `.patch` déjà appliqués sur main selon `patches/apply-patches.sh`).

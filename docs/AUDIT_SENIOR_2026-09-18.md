@@ -406,10 +406,13 @@ permission documentée, soit sortir ces binaires du dépôt (Git LFS ou stockage
 
 ### D18 — divers
 
-- `test-results/.last-run.json` est suivi alors que `test-results/` figure au `.gitignore`
-  (committé avant la règle → Git continue de le suivre).
-- `server.mjs:23` : `frame-ancestors 'self' https://*.e2b.app` — le domaine de la sandbox de
-  développement est codé en dur dans l'en-tête de sécurité de production.
+- ~~`test-results/.last-run.json` est suivi alors que `test-results/` figure au `.gitignore`~~
+  **Corrigé** : retiré de l'index (`git rm --cached`), le fichier reste sur disque et la règle
+  `.gitignore:7` s'applique désormais.
+- ~~`server.mjs:23` : `frame-ancestors 'self' https://*.e2b.app` — le domaine de la sandbox de
+  développement est codé en dur dans l'en-tête de sécurité de production.~~ **Corrigé** : la
+  valeur vient de `CSP_FRAME_ANCESTORS`, défaut `'self'`, validation au démarrage sans repli
+  permissif (`resolveFrameAncestors`, 4 tests). Documenté dans `docs/DEPLOYMENT.md`.
 - `tests/hard-benchmark/cases.json` = `{"cases": []}` et `audit-manifest.json` = `{"records": []}`.
   `hard-benchmark.test.mjs:56` s'appelle littéralement « *cases.json peut rester vide — aucune
   copie n'est inventée* » : le test valide le vide. Honnête, mais cela signifie que

@@ -1,7 +1,13 @@
 import { after, before, test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, statSync } from "node:fs";
-import { createStaticServer, isPublicRoute, resolveByteRange, securityHeaders } from "../server.mjs";
+import {
+  createStaticServer,
+  isPublicRoute,
+  resolveByteRange,
+  resolveFrameAncestors,
+  securityHeaders
+} from "../server.mjs";
 
 let server;
 let origin;
@@ -154,4 +160,38 @@ test("HTTP : un Range hors fichier répond 416 avec « bytes */size »", async (
   });
   assert.equal(response.status, 416);
   assert.equal(response.headers.get("content-range"), `bytes */${size}`);
+});
+
+test("CSP : frame-ancestors n'embarque aucun hôte de prévisualisation par défaut", () => {
+  const csp = securityHeaders["Content-Security-Policy"];
+  assert.match(csp, /frame-ancestors 'self'(?:;|$)/);
+  assert.doesNotMatch(csp, /e2b\.app/, "un hôte de sandbox ne doit pas être figé dans la CSP");
+});
+
+test("resolveFrameAncestors : 'self' par défaut, y compris sur valeur vide", () => {
+  assert.equal(resolveFrameAncestors(undefined), "'self'");
+  assert.equal(resolveFrameAncestors("   "), "'self'");
+  assert.equal(resolveFrameAncestors("'self'"), "'self'");
+});
+
+test("resolveFrameAncestors : accepte une origine https explicite", () => {
+  assert.equal(resolveFrameAncestors("'self' https://hote.exemple"), "'self' https://hote.exemple");
+  assert.equal(resolveFrameAncestors("'self' https://*.e2b.app"), "'self' https://*.e2b.app");
+});
+
+test("resolveFrameAncestors : refuse toute valeur qui élargirait la surface", () => {
+  for (const value of [
+    "*",
+    "https://*",
+    "http://insecure.test",
+    "'unsafe-inline'",
+    "https://",
+    "example.com"
+  ]) {
+    assert.throws(
+      () => resolveFrameAncestors(value),
+      /CSP_FRAME_ANCESTORS invalide/,
+      `${value} doit être refusé`
+    );
+  }
 });

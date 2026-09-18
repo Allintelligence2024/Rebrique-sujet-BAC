@@ -18,9 +18,30 @@ const types = {
   ".pdf": "application/pdf"
 };
 
+/* Origines autorisées à intégrer l'application dans un cadre. Par défaut, seule
+   l'origine propre : aucun hôte de prévisualisation n'est figé dans la CSP de
+   production. Un environnement qui a besoin d'être intégré le déclare par
+   `CSP_FRAME_ANCESTORS="'self' https://hote.exemple"`. Toute valeur non
+   conforme fait échouer le démarrage plutôt que d'élargir silencieusement la
+   surface d'intégration. */
+const FRAME_ANCESTOR = /^(?:'self'|https:\/\/(?:\*\.)?[a-z0-9-]+(?:\.[a-z0-9-]+)+)$/i;
+
+/** @param {string | undefined} raw @returns {string} */
+export function resolveFrameAncestors(raw) {
+  const value = (raw ?? "'self'").trim();
+  if (!value) return "'self'";
+  for (const part of value.split(/\s+/)) {
+    if (!FRAME_ANCESTOR.test(part)) {
+      throw new Error(`CSP_FRAME_ANCESTORS invalide : « ${part} » (attendu 'self' ou https://hote)`);
+    }
+  }
+  return value.split(/\s+/).join(" ");
+}
+
+const frameAncestors = resolveFrameAncestors(process.env.CSP_FRAME_ANCESTORS);
+
 export const securityHeaders = {
-  "Content-Security-Policy":
-    "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; media-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'self' https://*.e2b.app; form-action 'self'",
+  "Content-Security-Policy": `default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; media-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors ${frameAncestors}; form-action 'self'`,
   "X-Content-Type-Options": "nosniff",
   "Referrer-Policy": "strict-origin-when-cross-origin",
   "Permissions-Policy": "microphone=(self)",
