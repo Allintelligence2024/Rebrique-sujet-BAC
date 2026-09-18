@@ -34,7 +34,8 @@ test("2021 SE reste cataloguée, sans contenu 4D inventé ni faux contentVerifie
   assert.equal(maths.contentVerified, true);
   /* 2021 est désormais une épreuve « copie libre » : le sujet officiel est lu
      dans l'application, mais AUCUNE consigne n'est encodée (couche texte
-     illisible). Ce n'est pas du 4D : aucun pôle, aucun inventaire, aucune note. */
+     lisible mais chiffres corrompus — mesuré par `npm run pdftext:status`).
+     Ce n'est pas du 4D : aucun pôle, aucun inventaire, aucune note. */
   const { APP_CONFIG, loadYear } = await import("../data/subjects.js");
   const se2021 = APP_CONFIG.years.find((y) => y.id === "2021" && (y.stream || "se") === "se");
   assert.ok(se2021 && se2021.enabled, "2021 ouvre une épreuve");

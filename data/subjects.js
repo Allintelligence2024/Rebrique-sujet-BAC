@@ -197,7 +197,8 @@ export const YEAR_CATALOG = Object.freeze([
     theme: "emerald",
     enabled: true,
     // Armature « copie libre » : aucune consigne encodée (couche texte du PDF
-    // illisible). Doit rester identique au champ du payload (test de cohérence).
+    // lisible mais chiffres corrompus — voir data/years/se/year-2021.js).
+    // Doit rester identique au champ du payload (test de cohérence).
     answerMode: "free",
     subjectCount: 2,
     exerciseCounts: [3, 3],

@@ -1,10 +1,12 @@
 /* ============================================================
    Épreuve « copie libre » — 2021 شعبة علوم تجريبية
    ------------------------------------------------------------
-   Le PDF officiel de cette session a une couche texte illisible :
+   Le PDF officiel de cette session a une couche texte lisible mais
+   aux chiffres corrompus (barème extrait « 05 / 40 / 00 » pour un
+   barème réel 5 + 7 + 8 — mesuré par `npm run pdftext:status`) :
    aucune consigne n'a pu être recopiée mot à mot ni reconstituée
-   sans inventer des formulations scientifiques. Plutôt que de
-   fermer l'année, on ouvre une épreuve honnête : le sujet officiel
+   sans risquer d'inventer des formulations scientifiques. Plutôt que
+   de fermer l'année, on ouvre une épreuve honnête : le sujet officiel
    est lu dans l'application, l'élève rédige une réponse par
    exercice, le chronomètre officiel tourne et il rend sa copie.
    Ce test verrouille ce qui doit l'être :

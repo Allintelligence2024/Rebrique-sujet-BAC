@@ -25,6 +25,8 @@
     "p2:check": "node scripts/report-p2-status.mjs --check-complete",
     "p3:status": "node scripts/report-p3-status.mjs",
     "p3:check": "node scripts/report-p3-status.mjs --check-complete",
+    "pdftext:status": "node scripts/report-pdf-text-layers.mjs",
+    "pdftext:check": "node scripts/report-pdf-text-layers.mjs --check-complete",
     "pwa:version": "node scripts/generate-pwa-version.mjs",
     "release:verify": "node scripts/verify-release.mjs",
     "test:e2e": "playwright test",

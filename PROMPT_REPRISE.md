@@ -119,7 +119,41 @@ Mesuré : **40 sujets, 0 inventaire complet, 408 tâches = 149 `official` + 259 
 Une tâche `reconstructed` est une étape méthodologique **reconstruite**, pas le texte officiel
 de la consigne. L'UI le dit déjà honnêtement à l'élève (`taskProvenanceHTML`, badge ⚠️).
 
-**À faire.** Relire les sujets officiels et encoder le découpage officiel dans
+### Mesure préalable faite le 2026-09-18 : `npm run pdftext:status`
+
+Avant d'encoder quoi que ce soit, il faut savoir si les PDF ont une couche texte
+exploitable. C'est mesuré, pas supposé — `scripts/report-pdf-text-layers.mjs` :
+
+| classe | sujets | sens |
+| --- | --- | --- |
+| `propre` | **6** | arabe logique, en-tête officiel verbatim, 0 transposition |
+| `transposé` | 11 | ordre des ligatures inversé (`اختبار يف مادة` pour `في`) |
+| `formes-visuelles` | 4 | Arabic Presentation Forms (U+FB50–FDFF / FE70–FEFF) |
+| `scan` | 18 | aucune couche texte, image seule |
+| `indéterminé` | 1 | aucun marqueur reconnu |
+
+Les 6 sujets `propre` : `2020/SE1`, `2020/SE2`, `2021/SE1`, `2021/SE2`, `2021-m/M1`,
+`2021-m/M2`.
+
+**Piège à ne pas répéter.** Une couche texte `propre` n'autorise **pas** un encodage
+automatique. Sur les sujets les mieux classés du corpus, deux défauts subsistent :
+
+- les **chiffres sont corrompus** — le barème de `2021/SE1` s'extrait `05 / 40 / 00`
+  alors que le barème réel est `5 + 7 + 8` ;
+- des **coupures parasites** scindent les mots — 248 détectées sur `2021/SE1`,
+  59,6 % des tokens font 3 lettres ou moins.
+
+Recopier sans relecture humaine injecterait donc des consignes **et des barèmes faux**.
+Le garde-fou n° 1 s'applique : aucune consigne ne passe en `official` sans relecture
+humaine. La valeur de cet outil est de **cibler** la relecture humaine sur les 6 sujets
+où elle est assistable, au lieu de la supposer également difficile partout.
+
+`npm run pdftext:check` renvoie exit 1 tant que les 40 sujets ne sont pas `propre` —
+c'est voulu, ce n'est pas un garde-fou à « réparer ».
+
+### Ce qui reste à faire
+
+Relire les sujets officiels et encoder le découpage officiel dans
 `data/official-tasks.js`, puis `npm run inventory:generate` et `npm run inventory:check`.
 C'est du travail de lecture et d'encodage, pas de code. Le rapport d'audit note que
 `official-coverage.js:206-233` admet `relaxedEligible` sans inventaire `complete` ni
