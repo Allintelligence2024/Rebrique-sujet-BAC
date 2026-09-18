@@ -34,6 +34,7 @@ const SHELL_ASSETS = [
   "./js/main.js",
   "./js/ui.js",
   "./js/store.js",
+  "./js/application/debounce.js",
   "./js/application/timers.js",
   "./js/application/subject-session.js",
   "./js/domain/subjects/official-coverage.js",
@@ -78,7 +79,10 @@ function isRuntimeAsset(request) {
   const pathname = new URL(request.url).pathname;
   return (
     /\/data\/years\/(?:se|m)\/year-\d{4}(?:-[a-z]{1,3})?\.js$/.test(pathname) ||
-    /\/subjects\/(?:SE|M|TM)\/(?:\d{4}|\d{4}-[a-z]{1,3})\/sujet-\d+\.pdf$/.test(pathname)
+    // (?:\/exceptional)? : les PDF de session exceptionnelle vivent dans un
+    // sous-dossier. Sans ce segment ils échappaient au cache runtime borné et
+    // retombaient dans le cache shell, qui n'a aucune borne.
+    /\/subjects\/(?:SE|M|TM)\/(?:\d{4}|\d{4}-[a-z]{1,3})(?:\/exceptional)?\/sujet-\d+\.pdf$/.test(pathname)
   );
 }
 

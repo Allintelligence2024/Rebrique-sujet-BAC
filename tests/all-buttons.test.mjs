@@ -241,11 +241,14 @@ test("6. Épreuve : les tâches du sujet sont visibles et peuvent être rédigé
   input.value = "إجابة الطالب في الإمتحان";
   input.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
   assert.equal(store.exercise("2025", 1, 1).officialTaskAnswers["2025-S1-E1-Q1"], "إجابة الطالب في الإمتحان");
-  // Le contrôle qualité n'est pas un corrigé : il ne rend pas de note.
-  click('#view-workspace [data-qualitative-for="2025-S1-E1-Q1"]');
-  const result = $('#view-workspace [data-qualitative-result="2025-S1-E1-Q1"]');
-  assert.notEqual(result.textContent.trim(), "");
-  assert.doesNotMatch(result.textContent, /\d+[.,]\d+\s*\/\s*\d+/);
+  // « اختبار صامت » promet l'absence de diagnostic PENDANT l'épreuve : aucun
+  // contrôle d'évaluation ne doit y être rendu. Il réapparaît en relecture.
+  assert.equal(
+    $('#view-workspace [data-qualitative-for="2025-S1-E1-Q1"]'),
+    null,
+    "aucune évaluation qualitative pendant l'épreuve"
+  );
+  assert.equal($("#view-workspace .qualitative-check"), null, "aucun bouton تقييم نوعي en épreuve");
 });
 
 test("7. Épreuve : transition vers l'exercice 3 et rédaction complète", () => {
@@ -278,6 +281,15 @@ test("8-9. Ni rapport, ni réinitialisation : la remise est la seule sortie", ()
   assert.equal($("#view-workspace").dataset.reviewMode, "true");
   assert.equal($("#view-workspace [data-task-answer]").disabled, true);
   assert.equal($("#simulation-finish"), null, "plus de remise après remise");
+  // L'évaluation qualitative a été déplacée ici : en relecture le diagnostic
+  // est permis, et il ne reste pas un corrigé — aucune note n'est rendue.
+  // (La relecture affiche l'exercice actif, on ne présuppose donc pas un id.)
+  const reviewButton = $("#view-workspace [data-qualitative-for]");
+  assert.ok(reviewButton, "l'évaluation qualitative doit être disponible en relecture");
+  click(`#view-workspace [data-qualitative-for="${reviewButton.dataset.qualitativeFor}"]`);
+  const result = $(`#view-workspace [data-qualitative-result="${reviewButton.dataset.qualitativeFor}"]`);
+  assert.notEqual(result.textContent.trim(), "");
+  assert.doesNotMatch(result.textContent, /\d+[.,]\d+\s*\/\s*\d+/);
   // Retour au hub.
   click("#simulation-home");
   assert.ok(!$("#view-hub").classList.contains("hidden"));

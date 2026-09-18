@@ -1,6 +1,6 @@
 import { node, replaceContent, setInternalHTML } from "./dom.js";
 
-export function createDialogManager({ $, $$ }) {
+export function createDialogManager({ $, $$, onClose }) {
   let activeDialog = null;
   let dialogSequence = 0;
   let backgroundState = [];
@@ -32,6 +32,10 @@ export function createDialogManager({ $, $$ }) {
     if (!activeDialog) return;
     const { element, returnFocus } = activeDialog;
     activeDialog = null;
+    // Avant le retrait du DOM : c'est la dernière occasion d'atteindre les
+    // hôtes encore vivants (visionneuses PDF, minuteurs) via leur sous-arbre.
+    // Injecté par l'appelant pour garder ce gestionnaire indépendant du rendu.
+    onClose?.(element);
     element.remove();
     restoreBackground();
     if (returnFocus?.isConnected) returnFocus.focus();

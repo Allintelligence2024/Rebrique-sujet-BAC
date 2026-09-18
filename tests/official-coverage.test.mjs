@@ -156,3 +156,32 @@ test("une armature sans PDF ni barème ne peut pas ouvrir d'épreuve", () => {
   const inventoried = APP_CONFIG.years.find((year) => year.answerMode !== "free").sujets[0];
   assert.equal(isFreeAnswerSubject(inventoried), false);
 });
+
+/* D14 — « exercise-not-inventoried » était émis par official-coverage.js:195
+   mais absent de BLOCKER_LABELS : l'élève voyait le message générique
+   « دليل الأهلية غير مكتمل » au lieu de la raison précise. Ce test verrouille
+   l'exhaustivité pour que la liste ne puisse plus dériver en silence. */
+test("D14 : chaque blocker émis possède un libellé arabe", async () => {
+  const { readFileSync } = await import("node:fs");
+  const { fileURLToPath } = await import("node:url");
+  const { dirname, join } = await import("node:path");
+  const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+  const source = readFileSync(join(root, "js/domain/subjects/official-coverage.js"), "utf8");
+  const { simulationBlockersArabic } = await import("../js/ui/coverage-messages.js");
+
+  const emitted = new Set();
+  // blockers.push("x") et les tableaux littéraux `blockers: ["x"]` — se limiter
+  // à la première forme laisserait passer un blocker déclaré autrement.
+  for (const match of source.matchAll(/blockers\.push\("([a-z-]+)"\)/g)) emitted.add(match[1]);
+  for (const match of source.matchAll(/blockers:\s*\[([^\]]*)\]/g)) {
+    for (const item of match[1].matchAll(/"([a-z-]+)"/g)) emitted.add(item[1]);
+  }
+
+  assert.ok(emitted.size >= 9, `trop peu de blockers détectés (${emitted.size})`);
+  // Un code absent de BLOCKER_LABELS rend le message générique : on compare à
+  // ce que rend un code volontairement inconnu, plutôt qu'à une chaîne codée en
+  // dur qui dériverait avec le texte.
+  const generic = simulationBlockersArabic(["__code-inexistant__"]);
+  const unlabeled = [...emitted].filter((blocker) => simulationBlockersArabic([blocker]) === generic);
+  assert.deepEqual(unlabeled, [], "blockers sans libellé arabe");
+});

@@ -1,14 +1,9 @@
 import { assertSimulationEligible } from "../../domain/subjects/official-coverage.js";
 import { simulationBlockersArabic } from "../coverage-messages.js";
-import { setInternalHTML } from "../dom.js";
-import { mountPdfViewers, pdfViewerHTML } from "../pdf-viewer.js";
+import { escapeHTML, setInternalHTML } from "../dom.js";
+import { disposeAllPdfViewers, mountPdfViewers, pdfViewerHTML } from "../pdf-viewer.js";
+import { debounce } from "../../application/debounce.js";
 import { BAC_MODE_NOTICES } from "../../../data/bac-mode-policy.js";
-
-const escapeHTML = (value = "") =>
-  String(value).replace(
-    /[&<>'"]/g,
-    (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[character]
-  );
 
 function tasksForExercise(inventory, exerciseNumber) {
   return (inventory?.tasks || [])
@@ -95,7 +90,11 @@ export function simulationExamHTML({
         <label class="lbl" for="simulation-answer-${escapeHTML(task.id)}">إجابتك</label>
         <textarea class="field simulation-answer" id="simulation-answer-${escapeHTML(task.id)}" data-task-answer="${escapeHTML(task.id)}" data-exercise="${task.exerciseNumber}" rows="8"${completed ? " disabled" : ""}></textarea>
         ${completed ? "" : micButton(`simulation-answer-${task.id}`)}
-        ${completed ? "" : `<button class="btn btn-ghost btn-sm qualitative-check" data-qualitative-for="${escapeHTML(task.id)}">تقييم نوعي</button><div class="feedback small qualitative-feedback" data-qualitative-result="${escapeHTML(task.id)}" aria-live="polite"></div>`}
+        ${
+          completed
+            ? `<button class="btn btn-ghost btn-sm qualitative-check" data-qualitative-for="${escapeHTML(task.id)}">تقييم نوعي</button><div class="feedback small qualitative-feedback" data-qualitative-result="${escapeHTML(task.id)}" aria-live="polite"></div>`
+            : ""
+        }
         ${completed ? taskReviewHTML(task, subject) : ""}
       </article>`;
     })
@@ -166,7 +165,9 @@ export function createSimulationController(deps) {
     }
   }
 
-  function persistAnswers() {
+  /* Synchronise le DOM vers l'état, sans rien sérialiser : c'est la partie
+     bon marché, elle peut tourner à chaque frappe. */
+  function collectAnswers() {
     $$("#view-workspace [data-task-answer]").forEach((input) => {
       const progress = store.exercise(
         store.state.yearId,
@@ -185,7 +186,42 @@ export function createSimulationController(deps) {
       progress.freeAnswer = input.value;
       if (input.value.trim()) progress.answeredAny = true;
     });
+  }
+
+  /* store.save() resérialise TOUT l'état : le déclencher à chaque frappe
+     saccade la saisie sur téléphone. Le regroupement est sans risque parce que
+     chaque point de sortie appelle flushAnswers(). */
+  const scheduleSave = debounce(() => store.save(), 350);
+
+  /** Frappe en cours : état mis à jour tout de suite, écriture regroupée. */
+  function persistAnswers() {
+    collectAnswers();
+    scheduleSave();
+  }
+
+  /** Écriture garantie et immédiate — remise de copie, changement d'exercice,
+   *  page masquée. L'élève se voit promettre « حُفظت الإجابات محلياً » : cette
+   *  promesse ne peut pas dépendre d'un minuteur. */
+  function flushAnswers() {
+    collectAnswers();
+    scheduleSave.cancel();
     store.save();
+  }
+
+  /* Un onglet mis en arrière-plan ou fermé ne déclenchera pas le minuteur :
+     on vide la file avant de perdre la main. `window` plutôt que `globalThis`
+     parce que sous Node globalThis n'est pas une EventTarget : le filet serait
+     silencieusement absent — donc impossible à tester, donc jamais vérifié. */
+  let unloadGuardBound = false;
+  function bindUnloadFlush() {
+    if (unloadGuardBound) return;
+    const target = globalThis.window || globalThis;
+    if (!target?.addEventListener) return;
+    unloadGuardBound = true;
+    target.addEventListener("pagehide", flushAnswers);
+    target.addEventListener("visibilitychange", () => {
+      if (globalThis.document?.visibilityState === "hidden") flushAnswers();
+    });
   }
 
   function qualitativeLabel(value) {
@@ -234,6 +270,9 @@ export function createSimulationController(deps) {
     const screen = $("#view-workspace");
     screen?.setAttribute("data-session-mode", "bac");
     screen?.setAttribute("data-review-mode", "false");
+    // Avant de remplacer le contenu : un visionneur monté reste sinon accroché
+    // à `resize` et garde son document pdf.js ouvert sur un DOM déjà jeté.
+    if (screen) disposeAllPdfViewers(screen);
     setInternalHTML(
       screen,
       `<div class="app app-wide bac-reading-mode">
@@ -290,6 +329,7 @@ export function createSimulationController(deps) {
     screen?.setAttribute("data-session-mode", "bac");
     screen?.setAttribute("data-answer-mode", "free");
     screen?.setAttribute("data-review-mode", String(completed));
+    if (screen) disposeAllPdfViewers(screen);
     setInternalHTML(
       screen,
       `<div class="app app-wide">
@@ -331,7 +371,11 @@ export function createSimulationController(deps) {
             <label class="lbl" for="free-answer-${exercise.number}">إجابتك</label>
             <textarea class="field simulation-answer" id="free-answer-${exercise.number}" data-exercise-free="${exercise.number}" data-exercise="${exercise.number}" rows="10"${completed ? " disabled" : ""}></textarea>
             ${completed ? "" : micButton(`free-answer-${exercise.number}`)}
-            ${completed ? "" : `<button class="btn btn-ghost btn-sm qualitative-check" data-qualitative-free="${exercise.number}">تقييم نوعي</button><div class="feedback small qualitative-feedback" data-qualitative-result-free="${exercise.number}" aria-live="polite"></div>`}
+            ${
+              completed
+                ? `<button class="btn btn-ghost btn-sm qualitative-check" data-qualitative-free="${exercise.number}">تقييم نوعي</button><div class="feedback small qualitative-feedback" data-qualitative-result-free="${exercise.number}" aria-live="polite"></div>`
+                : ""
+            }
           </article>`
             )
             .join("")}
@@ -377,6 +421,7 @@ export function createSimulationController(deps) {
     // par les tests et par les feuilles de style.
     screen?.setAttribute("data-session-mode", "bac");
     screen?.setAttribute("data-review-mode", String(completed));
+    if (screen) disposeAllPdfViewers(screen);
     setInternalHTML(
       screen,
       `<div class="app app-wide">
@@ -416,7 +461,9 @@ export function createSimulationController(deps) {
     $("#simulation-finish")?.addEventListener("click", confirmFinish);
     $$("#view-workspace [data-simulation-exercise]").forEach((button) =>
       button.addEventListener("click", () => {
-        if (!completed) persistAnswers();
+        // L'écran va être reconstruit : écriture immédiate, pas de minuteur
+        // en suspens sur un DOM qui n'existera plus.
+        if (!completed) flushAnswers();
         store.setActiveExercise(Number(button.dataset.simulationExercise));
         renderSimulation();
       })
@@ -427,6 +474,11 @@ export function createSimulationController(deps) {
       );
       bindQualitativeChecks();
       bindMics($("#view-workspace"));
+      bindUnloadFlush();
+    } else {
+      // En relecture l'évaluation qualitative est autorisée : le diagnostic
+      // n'y fausse plus une épreuve en cours.
+      bindQualitativeChecks();
     }
   }
 
@@ -462,7 +514,9 @@ export function createSimulationController(deps) {
        <button class="btn btn-ghost" id="simulation-finish-no" data-close="btn">لا، أكمل الإمتحان</button>`
     );
     $("#simulation-finish-yes")?.addEventListener("click", () => {
-      persistAnswers();
+      // « حُفظت الإجابات محلياً » est affiché juste après : l'écriture doit
+      // être effective avant, pas programmée.
+      flushAnswers();
       store.finishSession("manual");
       timers.stopAll();
       // Le chronomètre s'efface avec la remise : il ne doit plus rien décompter.
@@ -487,12 +541,13 @@ export function createSimulationController(deps) {
   }
 
   function handleSessionCompletion(reason = store.state.sessionEndReason) {
-    persistAnswers();
+    // Fin de temps ou remise automatique : même promesse d'enregistrement.
+    flushAnswers();
     timers.stopAll();
     $("#global-timer-bar")?.classList.add("hidden");
     renderSimulation();
     showCompletionNotice(reason);
   }
 
-  return { renderSimulation, handleSessionCompletion, persistAnswers };
+  return { renderSimulation, handleSessionCompletion, persistAnswers, flushAnswers };
 }

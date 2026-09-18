@@ -30,8 +30,10 @@ test("loadYear ne charge que l'année demandée, la valide et la mémorise", asy
   assert.deepEqual(loadedYearIds(), ["2025"]);
   assert.equal(getLoadedYear("2025"), year);
   assert.equal(getLoadedYear("2024"), null);
-  assert.equal(year.sujets[0].pdfAvailable, false);
+  // Le PDF n'est plus inline dans le payload : il est servi séparément, via
+  // pdfLocalUrl (fichier du dépôt) ou pdfExternalUrl (source externe).
   assert.equal(year.sujets[0].pdf, null);
+  assert.match(year.sujets[0].pdfLocalUrl, /^\/subjects\/SE\/2025\/sujet-1\.pdf$/);
   assert.match(year.sujets[0].pdfExternalUrl, /^https:\/\/www\.dzexams\.com\//);
 });
 

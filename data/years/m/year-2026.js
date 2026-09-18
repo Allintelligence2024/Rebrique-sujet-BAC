@@ -38,7 +38,6 @@ export const YEAR_2026_M = {
     {
       id: 1,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: PDF,
       pdfLocalUrl: "/subjects/M/2026/sujet-1.pdf",
       pdfNote: PDF_NOTE,
@@ -225,7 +224,6 @@ export const YEAR_2026_M = {
     {
       id: 2,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: PDF,
       pdfLocalUrl: "/subjects/M/2026/sujet-2.pdf",
       pdfNote: PDF_NOTE,

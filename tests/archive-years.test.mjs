@@ -41,7 +41,7 @@ test("chaque année reconstruite 2013–2019 est activée avec 2 sujets × 3 exe
         [5, 7, 8],
         `${year.id}/S${sujet.id} barème 5/7/8`
       );
-      assert.equal(sujet.pdfAvailable, false);
+      assert.equal(sujet.pdf, null, `${year.id}/S${sujet.id} : PDF chargé à part, jamais inline`);
       assert.ok(sujet.pdfExternalUrl.startsWith("https://"));
       assert.ok(sujet.pdfNote && sujet.pdfNote.length > 20);
     }

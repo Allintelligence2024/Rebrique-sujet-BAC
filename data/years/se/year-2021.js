@@ -54,7 +54,6 @@ export const YEAR_2021_SE = {
     {
       id: 1,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: PDF_DZEXAMS,
       pdfLocalUrl: "/subjects/SE/2021/sujet-1.pdf",
       pdfNote: NOTE_2021,
@@ -84,7 +83,6 @@ export const YEAR_2021_SE = {
     {
       id: 2,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: PDF_DZEXAMS,
       pdfLocalUrl: "/subjects/SE/2021/sujet-2.pdf",
       pdfNote: NOTE_2021,

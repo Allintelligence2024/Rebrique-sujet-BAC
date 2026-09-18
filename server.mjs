@@ -41,6 +41,35 @@ export function isPublicRoute(requested) {
   );
 }
 
+/**
+ * Résout un en-tête `Range` simple en une plage d'octets.
+ * RFC 9110 §14.2 : `bytes=A-B`, `bytes=A-` (jusqu'à la fin) et le **suffixe**
+ * `bytes=-N` qui demande les N DERNIERS octets du fichier — c'est ainsi qu'un
+ * lecteur PDF va chercher le trailer et la table xref en fin de fichier.
+ * Les multi-plages (`bytes=0-9,20-29`) ne sont pas prises en charge.
+ *
+ * @param {string|undefined} header valeur de l'en-tête Range
+ * @param {number} size taille du fichier en octets
+ * @returns {{start:number,end:number}|null|undefined}
+ *   plage résolue, `null` si elle n'est pas satisfaisable (répondre 416),
+ *   `undefined` si l'en-tête est inexploitable (répondre 200 complet).
+ */
+export function resolveByteRange(header, size) {
+  const match = /^bytes=(\d*)-(\d*)$/.exec(String(header || "").trim());
+  if (!match) return undefined;
+  const first = match[1] === "" ? null : Number(match[1]);
+  const last = match[2] === "" ? null : Number(match[2]);
+  if (size <= 0) return null;
+  if (first === null) {
+    // Suffixe : les N derniers octets. `bytes=-` ou `bytes=-0` n'a pas de sens.
+    if (last === null || last <= 0) return null;
+    return { start: Math.max(0, size - last), end: size - 1 };
+  }
+  if (first > size - 1) return null;
+  const end = last === null ? size - 1 : Math.min(last, size - 1);
+  return first <= end ? { start: first, end } : null;
+}
+
 function notFound(res) {
   res.writeHead(404, { ...securityHeaders, "Content-Type": "text/plain; charset=utf-8" });
   res.end("Not found");
@@ -113,19 +142,26 @@ export function createStaticServer({ rootDirectory = root } = {}) {
 
     // Minimal Range support so PDF viewers can seek and first-page rendering
     // doesn't have to wait for a full multi-megabyte download. Only a single
-    // bytes=start-end range is supported (no multi-range).
+    // bytes=start-end / start- / -suffix range is supported (no multi-range).
     let start = 0;
     let end = stat.size - 1;
     let status = 200;
-    const rangeHeader = req.headers.range;
-    if (extension === ".pdf" && rangeHeader) {
-      const match = /^bytes=(\d*)-(\d*)$/.exec(rangeHeader.trim());
-      if (match) {
-        const s = match[1] === "" ? null : Number(match[1]);
-        const e = match[2] === "" ? null : Number(match[2]);
-        if (s != null && Number.isFinite(s)) start = Math.max(0, Math.min(stat.size - 1, s));
-        if (e != null && Number.isFinite(e)) end = Math.max(start, Math.min(stat.size - 1, e));
-        if (s != null && e == null) end = stat.size - 1;
+    if (extension === ".pdf" && req.headers.range) {
+      const range = resolveByteRange(req.headers.range, stat.size);
+      if (range === null) {
+        // Plage demandée hors du fichier : le dire explicitement plutôt que de
+        // renvoyer silencieusement des octets qui ne sont pas ceux attendus.
+        res.writeHead(416, {
+          ...securityHeaders,
+          "Content-Type": "text/plain; charset=utf-8",
+          "Content-Range": `bytes */${stat.size}`,
+          "Accept-Ranges": "bytes"
+        });
+        return res.end(req.method === "HEAD" ? undefined : "Range Not Satisfiable");
+      }
+      if (range) {
+        start = range.start;
+        end = range.end;
         if (start > 0 || end < stat.size - 1) status = 206;
       }
     }

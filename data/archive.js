@@ -65,7 +65,9 @@ export const ARCHIVE = {
     {
       year: "2016",
       stream: "m",
-      localPdfUrls: ["/subjects/M/2016/sujet-1.pdf", "/subjects/M/2016/sujet-2.pdf"],
+      // Pas de localPdfUrls ici : l'entrée documente une session absente de la
+      // source. Y rattacher les PDF de la session principale ferait afficher le
+      // mauvais sujet dès que les trous seront rendus quelque part.
       session: "exceptional",
       reason:
         "Index dzexams /ar/bac/sciences-naturelles/m : une seule ligne 2016 (session principale). 2017 y figure deux fois. Constat 2026-08-31 — aucun URL fabriqué."
@@ -248,7 +250,11 @@ export const ARCHIVE = {
     {
       year: "2017",
       stream: "m",
-      localPdfUrls: ["/subjects/M/2017/sujet-1.pdf", "/subjects/M/2017/sujet-2.pdf"],
+      // Session exceptionnelle : fichiers distincts de la session principale
+      // (sha256 différents). L'entrée pointait auparavant vers les PDF de la
+      // session principale, ce qui faisait afficher le mauvais sujet à l'élève
+      // et laissait les vrais PDF orphelins.
+      localPdfUrls: ["/subjects/M/2017/exceptional/sujet-1.pdf", "/subjects/M/2017/exceptional/sujet-2.pdf"],
       session: "exceptional",
       url: `${ANNALES}/eU1zMTNYMTJTLzROeWhLTkxaajRWZz09`,
       page: "consulted",

@@ -22,7 +22,6 @@ const YEAR_2019_SE = {
     {
       id: 1,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-3051478.pdf",
       pdfLocalUrl: "/subjects/SE/2019/sujet-1.pdf",
@@ -294,7 +293,6 @@ const YEAR_2019_SE = {
     {
       id: 2,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-3051478.pdf",
       pdfLocalUrl: "/subjects/SE/2019/sujet-2.pdf",

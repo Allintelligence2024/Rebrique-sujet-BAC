@@ -27,3 +27,25 @@ jobs:
       - run: npm run docs:check
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+      # D12 — portes d'acceptation du projet. Elles sont INCOMPLÈTES aujourd'hui
+      # (P1 3/6, P2 6/7, P3 5/6) : les exécuter en bloquant rendrait la CI rouge
+      # en permanence, ce qui ferait ignorer tous les autres signaux. On les
+      # publie donc sans bloquer, pour que l'écart soit visible à chaque push
+      # plutôt que découvert à la main. Les retirer de `continue-on-error` dès
+      # que les critères restants sont fermés.
+      - name: P1 — inventaires et copies (attendu INCOMPLET)
+        if: always()
+        continue-on-error: true
+        run: npm run p1:check
+      - name: P2 — qualité des contenus (attendu INCOMPLET)
+        if: always()
+        continue-on-error: true
+        run: npm run p2:check
+      - name: P3 — poids et empreinte (attendu INCOMPLET)
+        if: always()
+        continue-on-error: true
+        run: npm run p3:check
+      - name: Calibration — état réel du banc
+        if: always()
+        continue-on-error: true
+        run: npm run calibration

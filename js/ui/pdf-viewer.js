@@ -10,11 +10,7 @@
    échoue. Le lien dzexams et le téléchargement complètent l'ensemble.
    ============================================================ */
 
-const escapeHTML = (value = "") =>
-  String(value).replace(
-    /[&<>'"]/g,
-    (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[character]
-  );
+import { escapeHTML } from "./dom.js";
 
 export function pdfViewerHTML(subject, { showCover = true, page = null } = {}) {
   const local = subject?.pdfLocalUrl;
@@ -48,4 +44,4 @@ export function pdfViewerHTML(subject, { showCover = true, page = null } = {}) {
   return `<div class="center stack preview-empty"><p class="small text-muted">لا يوجد ملف موضوع متاح لهذه الدورة في التطبيق.</p></div>`;
 }
 
-export { mountPdfViewer, mountPdfViewers } from "./pdf-renderer.js";
+export { disposeAllPdfViewers, disposePdfViewer, mountPdfViewer, mountPdfViewers } from "./pdf-renderer.js";

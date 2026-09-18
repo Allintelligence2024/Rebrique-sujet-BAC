@@ -1,7 +1,7 @@
 import { setInternalHTML } from "../dom.js";
 import { officialTaskInventoryFor } from "../../../data/official-tasks.js";
-import { mountPdfViewers, pdfViewerHTML } from "../pdf-viewer.js";
-import { assertSimulationEligible, examOpenable } from "../../domain/subjects/official-coverage.js";
+import { disposeAllPdfViewers, mountPdfViewers, pdfViewerHTML } from "../pdf-viewer.js";
+import { examOpenable } from "../../domain/subjects/official-coverage.js";
 import { simulationBlockersArabic } from "../coverage-messages.js";
 
 export function createStrategyScreen(deps) {
@@ -141,6 +141,10 @@ export function createStrategyScreen(deps) {
     const subject = year?.sujets.find((item) => item.id === subjectId) || year?.sujets[0];
     const box = $("#pdf-preview-container");
     if (box && subject) {
+      // Chaque changement d'aperçu remplaçait le contenu sans libérer le
+      // visionneur précédent : un document pdf.js et un listener resize
+      // s'accumulaient à chaque clic.
+      disposeAllPdfViewers(box);
       setInternalHTML(box, pdfFallbackHTML(subject));
       mountPdfViewers(box);
     }
@@ -200,15 +204,12 @@ export function createStrategyScreen(deps) {
     // Filet de sécurité : un sujet sans inventaire exploitable reste fermé,
     // sauf armature « copie libre » — là, rien n'est noté mais l'épreuve est
     // réelle : le sujet se lit dans l'application et l'élève rédige.
+    // Le `try/catch` qui enveloppait assertSimulationEligible était inatteignable :
+    // cette fonction ne lève que si !simulationEligible, et l'appel était placé
+    // dans la branche `if (coverage.simulationEligible)`. Le garde réel est le
+    // test booléen ci-dessous — même table de vérité, une branche morte en moins.
     const coverage = officialCoverageForSubject(year, subject);
-    if (coverage.simulationEligible) {
-      try {
-        assertSimulationEligible(coverage);
-      } catch {
-        toast(`الإمتحان مرفوض: ${simulationBlockersArabic(coverage.blockers)}`, "error");
-        return;
-      }
-    } else if (!coverage.freeAnswerEligible) {
+    if (!coverage.simulationEligible && !coverage.freeAnswerEligible) {
       toast(`الإمتحان مرفوض: ${simulationBlockersArabic(coverage.blockers)}`, "error");
       return;
     }

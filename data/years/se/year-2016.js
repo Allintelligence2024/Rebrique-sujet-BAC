@@ -22,7 +22,6 @@ const YEAR_2016_SE = {
     {
       id: 1,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: "https://www.dzexams.com/ar/annales/M09NK2ZYVHFzQXg3KzZHazBaTk5IUT09",
       pdfLocalUrl: "/subjects/SE/2016/sujet-1.pdf",
       pdfNote:
@@ -299,7 +298,6 @@ const YEAR_2016_SE = {
     {
       id: 2,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: "https://www.dzexams.com/ar/annales/M09NK2ZYVHFzQXg3KzZHazBaTk5IUT09",
       pdfLocalUrl: "/subjects/SE/2016/sujet-2.pdf",
       pdfNote:

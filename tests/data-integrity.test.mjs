@@ -52,21 +52,22 @@ test("pdfExternalUrl, si défini, est une URL https:// valide", () => {
   }
 });
 
-test("pdfAvailable et pdfExternalUrl sont cohérents", () => {
+test("PDF : chargement paresseux, source externe et aucune résurrection de pdfAvailable", () => {
   for (const year of APP_CONFIG.years) {
     for (const sujet of year.sujets) {
-      if (sujet.pdfAvailable) {
-        assert.ok(
-          sujet.pdf && sujet.pdf.length > 0,
-          `pdfAvailable=true mais pdf vide pour ${year.id}/S${sujet.id}`
-        );
-      }
-      if (!sujet.pdfAvailable && !sujet.pdfExternalUrl) {
-        assert.ok(
-          sujet.pdfNote && sujet.pdfNote.length > 0,
-          `pdf non disponible sans URL ni note pour ${year.id}/S${sujet.id}`
-        );
-      }
+      // Le payload n'embarque plus le PDF : c'est ce que pdfAvailable:false
+      // prétendait exprimer, en contredisant pdfLocalUrl au passage.
+      assert.equal(sujet.pdf, null, `PDF inline inattendu pour ${year.id}/S${sujet.id}`);
+      assert.equal(
+        sujet.pdfAvailable,
+        undefined,
+        `pdfAvailable est un champ mort et contradictoire (${year.id}/S${sujet.id})`
+      );
+      // L'élève garde toujours une sortie : source externe ou note explicite.
+      assert.ok(
+        (sujet.pdfExternalUrl || "").startsWith("https://") || (sujet.pdfNote || "").length > 0,
+        `ni URL externe ni note pour ${year.id}/S${sujet.id}`
+      );
     }
   }
 });

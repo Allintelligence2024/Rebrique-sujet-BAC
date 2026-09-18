@@ -22,7 +22,6 @@ const YEAR_2013_SE = {
     {
       id: 1,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-4463279.pdf",
       pdfLocalUrl: "/subjects/SE/2013/sujet-1.pdf",
@@ -299,7 +298,6 @@ const YEAR_2013_SE = {
     {
       id: 2,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-4463279.pdf",
       pdfLocalUrl: "/subjects/SE/2013/sujet-2.pdf",
