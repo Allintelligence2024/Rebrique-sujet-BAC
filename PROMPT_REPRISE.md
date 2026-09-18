@@ -183,10 +183,14 @@ renommage de l'ancre. Restauration contrôlée par `git diff` vide.
    ⚠️ **Conséquence à connaître** : un déploiement qui doit être intégré dans un cadre doit
    désormais passer `CSP_FRAME_ANCESTORS` explicitement. C'est voulu, mais à prévoir dans tout
    script de démarrage existant.
-3. **Racine encombrée** — `01a07c55-65b0-7317-af13-bd3460834d72.patch`,
+3. ~~**Racine encombrée** — `01a07c55-65b0-7317-af13-bd3460834d72.patch`,
    `ANALYSE_LIGNE_PAR_LIGNE.md`, `CONTINUATION.md`, `_v1_backup/` (96 Ko, 2 fichiers suivis),
-   `patches/` (3 `.patch` déjà appliqués sur main selon `patches/apply-patches.sh`).
-   À archiver sous `docs/history/` ou supprimer, après confirmation.
+   `patches/` (3 `.patch` déjà appliqués sur main selon `patches/apply-patches.sh`).~~
+   **FAIT** : les cinq éléments sont archivés sous `docs/history/` par `git mv` (rien n'est
+   supprimé, `git log --follow` retrouve les chemins d'origine). Références techniques mises à
+   jour : `eslint.config.js:4`, `tests/server.test.mjs:49,50,73,74`. Voir
+   `docs/history/README.md` pour le rôle de chacun — en particulier l'avertissement sur les
+   numéros de lignes périmés de `ANALYSE_LIGNE_PAR_LIGNE.md`.
 4. **`js/domain/evaluation/**` + `js/engine.js` (2 634 lignes) ne sont branchés sur aucune UI.**
    Décision déjà prise et documentée dans l'en-tête de `js/engine.js` : actif d'audit et de
    calibration, pas de la dette morte. **À confirmer ou infirmer par le propriétaire** : soit on

@@ -5,6 +5,12 @@
 
 > Chaque affirmation ci-dessous est issue d'une commande exécutée sur ce dépôt le 2026-09-18.
 > Les numéros de ligne renvoient à l'état du commit `d6347d3`.
+>
+> **Note du 2026-09-18 (postérieure à la rédaction)** : les chemins `patches/…`,
+> `_v1_backup/…`, `ANALYSE_LIGNE_PAR_LIGNE.md`, `CONTINUATION.md` et
+> `01a07c55-65b0-7317-af13-bd3460834d72.patch` cités ci-dessous ont été archivés sous
+> `docs/history/` (déplacement suivi par Git, rien n'est supprimé). Préfixer par
+> `docs/history/` pour les résoudre. Les constats eux-mêmes ne sont pas modifiés.
 
 ---
 
@@ -423,8 +429,12 @@ permission documentée, soit sortir ces binaires du dépôt (Git LFS ou stockage
 - `store.js:296` durcit `150 * 60` pour la filière maths alors que `EXAM_MINUTES_BY_STREAM.m`
   vaut déjà 150 (`data/subjects.js:124-127`) — constante dupliquée, et `examMinutesForYear`
   autorise une surcharge par année qui ferait diverger les deux.
-- Racine encombrée : `01a07c55-….patch` (360 Ko), `ANALYSE_LIGNE_PAR_LIGNE.md` (80 Ko),
-  `CONTINUATION.md`, `_v1_backup/`, `patches/` (tout est déjà appliqué selon `patches/INDEX.md`).
+- ~~Racine encombrée : `01a07c55-….patch` (360 Ko), `ANALYSE_LIGNE_PAR_LIGNE.md` (80 Ko),
+  `CONTINUATION.md`, `_v1_backup/`, `patches/` (tout est déjà appliqué selon
+  `patches/INDEX.md`).~~ **Traité le 2026-09-18** : les cinq éléments sont archivés sous
+  `docs/history/` (déplacement suivi par Git, rien n'est supprimé). Voir
+  `docs/history/README.md` pour le rôle de chacun et l'avertissement sur les numéros de lignes
+  périmés de `ANALYSE_LIGNE_PAR_LIGNE.md`.
 
 ---
 

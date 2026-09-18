@@ -88,7 +88,8 @@
   `process.env.SKIP_NETWORK_TESTS === "true" || true` : le `|| true` rendait le commentaire
   « pour l'activer, passer SKIP_NETWORK_TESTS=false » faux. Corrigé en
   `!== "false"` (skippé par défaut, activable réellement).
-- **`_v1_backup/`** : ancienne version monolithique conservée dans le dépôt. Inerte.
+- **`docs/history/_v1_backup/`** : ancienne version monolithique conservée dans le dépôt.
+  Inerte. (Archivée sous `docs/history/` le 2026-09-18 — voir `docs/history/README.md`.)
 - **GitHub Pages non activé** (`gh api repos/…/pages` → 404) : l'app n'est accessible à aucun
   élève. L'activer exige les droits d'admin du propriétaire (le token de l'App GitHub n'a pas
   `pages: write`, vérifié le 2026-09-06 → HTTP 403).

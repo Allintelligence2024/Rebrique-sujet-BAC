@@ -46,8 +46,8 @@ test("la liste blanche ne reconnaît que les routes de déploiement", () => {
     "build.mjs",
     "tests/ui.test.mjs",
     "docs/REMEDIATION_PLAN.md",
-    "patches/README.md",
-    "_v1_backup/index.html",
+    "docs/history/patches/README.md",
+    "docs/history/_v1_backup/index.html",
     "assets/../package.json"
   ]) {
     assert.equal(isPublicRoute(route), false, `${route} ne doit jamais être publique`);
@@ -70,8 +70,8 @@ test("le serveur livre le shell avec CSP et refuse les fichiers privés", async 
     "/server.mjs",
     "/tests/ui.test.mjs",
     "/docs/REMEDIATION_PLAN.md",
-    "/patches/README.md",
-    "/_v1_backup/index.html"
+    "/docs/history/patches/README.md",
+    "/docs/history/_v1_backup/index.html"
   ]) {
     const response = await globalThis.fetch(origin + path);
     assert.equal(response.status, 404, `${path} a été exposé`);

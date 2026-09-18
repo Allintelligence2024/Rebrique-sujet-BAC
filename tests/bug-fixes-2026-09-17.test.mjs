@@ -27,11 +27,12 @@ test("Bug #B50 : diagnosticMessage tolère les codes non-string (undefined, null
    Bug fixes — tests de non-régression (2026-09-17)
    ------------------------------------------------------------
    Ce fichier verrouille les corrections des bugs identifiés lors
-   de l'audit de code du 2026-09-17 (cf. liste dans CONTINUATION.md).
+   de l'audit de code du 2026-09-17 (cf. liste dans docs/history/CONTINUATION.md).
    Chaque test référence l'identifiant du bug qu'il verrouille.
 
    Convention : les commentaires "Bug #B<n>" pointent vers la liste
-   de CONTINUATION.md pour qu'on puisse retrouver la discussion d'origine.
+   de docs/history/CONTINUATION.md pour qu'on puisse retrouver la discussion
+   d'origine. (Document archivé sous docs/history/ le 2026-09-18.)
 
    Bugs couverts ici :
      B2 : validateState accepte un yearId hors catalogue

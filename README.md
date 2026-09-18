@@ -6,7 +6,7 @@ N = اقرأ — تأطير المسألة، S = اجمع — استغلال ا�
 > ⚠️ **Positionnement honnête : outil d'entraînement méthodologique non calibré.** Le moteur calcule des signaux heuristiques pour ses tests, mais l'interface masque toute note numérique tant que les seuils de calibration humaine ne sont pas franchis. Les consignes marquées `reconstructed` ne sont pas des énoncés officiels. Le benchmark vérifié contient actuellement **0 copie réelle doublement annotée** : aucune métrique de fiabilité ne peut donc être publiée.
 
 > ✅ **Version intégrée à la racine.** L'ancien site monolithique est conservé dans
-> [`_v1_backup/`](_v1_backup) au cas où.
+> [`docs/history/_v1_backup/`](docs/history/_v1_backup) au cas où.
 
 ---
 
@@ -104,7 +104,6 @@ Le disclaimers du hard benchmark (0 copie réelle doublement annotée) reste la 
 ├── build.mjs                         # produit la release web déterministe et le monofichier
 ├── sw.js                             # shell précaché + runtime borné à 12 entrées
 ├── manifest.webmanifest              # PWA (installable)
-├── _v1_backup/                       # ancien site monolithique conservé
 ├── dist/                             # généré par `npm run build` (ignoré par git)
 │   ├── site/                         # artefact de production + release.json vérifiable
 │   └── boussole-4d-standalone.html   # version monofichier (ouvre en file://)
