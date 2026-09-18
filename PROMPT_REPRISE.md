@@ -6,23 +6,35 @@ Tu reprends le dépôt `Allintelligence2024/Rebrique-sujet-BAC` (application PWA
 sujets du BAC algérien SVT/Maths, interface arabe RTL, aucune note affichée à l'élève).
 
 Un audit senior complet a été mené et **les lots 1 à 5 sont terminés, committés et poussés** sur
-la branche `arena/01a0b332-rebrique-sujet-bac` (commit `168b50a`). Le rapport est dans
-`docs/AUDIT_SENIOR_2026-09-18.md` — **lis-le en entier avant de toucher quoi que ce soit**, il
-contient les défauts D1–D18 avec file:line, les mesures, et les décisions déjà tranchées.
+la branche `arena/01a0b332-rebrique-sujet-bac`, ouverte en **PR #28** (base `main`). Le rapport
+est dans `docs/AUDIT_SENIOR_2026-09-18.md` — **lis-le en entier avant de toucher quoi que ce
+soit**, il contient les défauts D1–D18 avec file:line, les mesures, et les décisions déjà
+tranchées.
 
-État vérifié au moment de la reprise :
+État vérifié au moment de la reprise (pointe de branche `d87d362`) :
 
 ```
-npm test            → 328 tests, 327 pass, 0 fail, 1 skipped
+npm test            → 331 tests, 330 pass, 0 fail, 1 skipped
 lint / typecheck / format:check / build / release:verify
 docs:check / calibration:check / inventory:check   → tous exit 0
+build               → d0b5752a97b5, 128 fichiers
 p1:check → exit 1 (3/6)   p2:check → exit 1 (6/7)   p3:check → exit 0 (6/6)
 npm run calibration → 0 copie comparée, 0/149 pôles, non calibré
+CI (job verify)     → pass
 ```
 
 **Déjà traité depuis la première rédaction de ce document** (ne pas refaire) :
 T4 (garde-fou P3.2 reciblé), T6.1 (`test-results/.last-run.json` sorti de l'index),
-T6.2 (CSP `frame-ancestors` configurable). Détails en fin de document.
+T6.2 (CSP `frame-ancestors` configurable), T6.5 (PR #28 ouverte), normalisation
+cross-platform (`.gitattributes` + chemins du test service-worker), et la perte silencieuse
+des notifications émises avant `init()`. Détails en fin de document.
+
+⚠️ **Piège spécifique à cet environnement** : le `.git` du sandbox peut être re-cloné entre
+deux tours. Le pointeur de branche revient alors au commit de base alors que l'arbre de
+travail conserve les fichiers, et les commits non poussés deviennent inaccessibles
+(`git cat-file -t <sha>` → fatal). Réparation : `git fetch origin <branche>` puis
+`git reset --mixed <sha>` — **jamais `--hard`**. Vérifier ensuite que le travail d'un autre
+agent n'est pas écrasé avant tout `git add -A`.
 
 ---
 
@@ -180,7 +192,18 @@ renommage de l'ancre. Restauration contrôlée par `git diff` vide.
    calibration, pas de la dette morte. **À confirmer ou infirmer par le propriétaire** : soit on
    assume ce statut, soit on câble le moteur sur l'UI — mais alors la règle « aucune note »
    doit être revue, ce qui est une décision produit.
-5. **Aucune pull request n'est ouverte** pour `arena/01a0b332-rebrique-sujet-bac`.
+5. ~~**Aucune pull request n'est ouverte** pour `arena/01a0b332-rebrique-sujet-bac`.~~
+   **FAIT** : PR #28 ouverte, base `main`, `MERGEABLE`, CI `verify` au vert. Titre et corps
+   décrivent les 5 commits et 62 fichiers réels.
+   ⚠️ `gh pr edit` échoue silencieusement sur ce dépôt (erreur GraphQL `projectCards`,
+   Projects classic déprécié) : le titre et le corps ne sont pas modifiés alors que la commande
+   semble passer. Utiliser `gh api -X PATCH repos/<owner>/<repo>/pulls/28 --input <json>`.
+6. **Normalisation cross-platform** — `.gitattributes` (`* text=auto eol=lf` + binaires
+   protégés) et `staticImportClosure()` corrigé sur `relative(root, file).split(sep).join("/")`
+   dans `tests/service-worker.test.mjs`. Sans cela, `format:check` remonte des faux positifs
+   CRLF sous Windows et les chemins à `\` ne correspondent jamais à `SHELL_ASSETS`.
+7. **Notifications émises avant `init()`** — `toast()` ne sort plus silencieusement quand
+   `#toast-zone` manque : `ensureToastZone()` est appelée par `toast()` et par `init()`.
 
 ---
 
