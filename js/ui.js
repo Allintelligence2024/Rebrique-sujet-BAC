@@ -97,8 +97,27 @@ function exDef(num) {
   return sujetObj()?.exercises.find((e) => e.number === num);
 }
 
+/* La zone de notifications est une région aria-live : créée en même temps que
+   son contenu, elle n'est pas annoncée de façon fiable. `init()` la crée donc
+   tôt. `toast()` la recrée au besoin plutôt que de sortir silencieusement —
+   avant cela, toute notification émise avant `init()` était perdue sans trace
+   (mesuré : `notify("…")` pré-init ne rendait rien). */
+function ensureToastZone() {
+  const existing = $("#toast-zone");
+  if (existing) return existing;
+  if (!document.body) return null;
+  const zone = document.createElement("div");
+  zone.id = "toast-zone";
+  zone.className = "toast-zone";
+  zone.setAttribute("aria-live", "polite");
+  zone.setAttribute("aria-relevant", "additions text");
+  zone.setAttribute("aria-label", "الإشعارات");
+  document.body.appendChild(zone);
+  return zone;
+}
+
 function toast(msg, type = "info", ms = 3500) {
-  const zone = $("#toast-zone");
+  const zone = ensureToastZone();
   if (!zone) return;
   const t = node("div", {
     className: `toast ${type}`,
@@ -363,15 +382,7 @@ export async function init() {
     }
   };
 
-  if (!$("#toast-zone")) {
-    const toastZone = document.createElement("div");
-    toastZone.id = "toast-zone";
-    toastZone.className = "toast-zone";
-    toastZone.setAttribute("aria-live", "polite");
-    toastZone.setAttribute("aria-relevant", "additions text");
-    toastZone.setAttribute("aria-label", "الإشعارات");
-    document.body.appendChild(toastZone);
-  }
+  ensureToastZone();
 
   /* Une copie rendue reste relisible après rechargement : la relecture est
      restaurée comme une session active. La condition exigeait autrefois
