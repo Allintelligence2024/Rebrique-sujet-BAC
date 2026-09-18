@@ -1,0 +1,223 @@
+# Prompt de reprise — travail restant sur `Allintelligence2024/Rebrique-sujet-BAC`
+
+## Contexte à donner à l'agent
+
+Tu reprends le dépôt `Allintelligence2024/Rebrique-sujet-BAC` (application PWA « Miftah Kanz »,
+sujets du BAC algérien SVT/Maths, interface arabe RTL, aucune note affichée à l'élève).
+
+Un audit senior complet a été mené et **les lots 1 à 5 sont terminés, committés et poussés** sur
+la branche `arena/01a0b332-rebrique-sujet-bac` (commit `168b50a`). Le rapport est dans
+`docs/AUDIT_SENIOR_2026-09-18.md` — **lis-le en entier avant de toucher quoi que ce soit**, il
+contient les défauts D1–D18 avec file:line, les mesures, et les décisions déjà tranchées.
+
+État vérifié au moment de la reprise :
+
+```
+npm test            → 324 tests, 323 pass, 0 fail, 1 skipped
+lint / typecheck / format:check / build / release:verify
+docs:check / calibration:check / inventory:check   → tous exit 0
+p1:check → exit 1 (3/6)   p2:check → exit 1 (6/7)   p3:check → exit 1 (5/6)
+npm run calibration → 0 copie comparée, 0/149 pôles, non calibré
+```
+
+---
+
+## Garde-fous absolus (ne pas violer)
+
+1. **Ne jamais réintroduire une note numérique visible par l'élève.**
+   `data/bac-mode-policy.js` porte `neverShowNumericScores`. Tout test existant qui asserte
+   `doesNotMatch(/\\d+[.,]\\d+\\s*\\/\\s*\\d+/)` encode cette règle produit.
+2. **Ne pas desserrer un seuil d'évaluation sans données de calibration.** La calibration est à
+   0/149 pôles : tout réglage du moteur serait arbitraire. C'est explicitement la raison pour
+   laquelle le seuil `connectorHits >= 2` n'a pas été retouché.
+3. **Ne pas supprimer ni déplacer `subjects/`, `M/`, `SE/` sans décision écrite du propriétaire.**
+   Voir tâche T1.
+4. **Ne pas committer sur une autre branche que celle de la session**, ni forcer un push.
+5. Après toute édition de `js/**` ou `sw.js` : `npm run pwa:version`.
+   Après tout ajout de `test()` : `npm run docs:update`.
+   Après toute édition manuelle : `npx prettier --write <fichiers>` (printWidth 110).
+   `docs/*.md` n'est **pas** dans le périmètre de `format:check`.
+
+---
+
+## T1 — Décision juridique sur les PDF (bloquant publication) — **nécessite un humain**
+
+**Constat mesuré.** Trois ensembles de PDF sont suivis par Git :
+
+| emplacement | fichiers | poids | servi par `server.mjs` ? |
+| --- | --- | --- | --- |
+| `subjects/` | 58 | 42 Mo | oui (`PUBLIC_DIRECTORIES`, `server.mjs:31`) |
+| `M/` (racine) | 15 | 30 Mo | **non** |
+| `SE/` (racine) | 17 | 51 Mo | **non** |
+
+`.git` pèse 104 Mo. `M/` et `SE/` sont les PDF bruts téléchargés depuis dzexams ; ils
+n'apparaissent dans le code qu'en **provenance** (`subjects/manifest.json`, champ `"source"`,
+58 entrées). Aucun module ne les lit, aucun ne les sert.
+
+**Le problème.** Ce sont des énoncés officiels du BAC algérien. `LICENSE-CONTENT` et `NOTICE`
+encadrent le contenu, mais **la permission de redistribution n'est établie nulle part**. Les
+fichiers étant suivis par Git, ils sont dans l'historique, pas seulement dans l'arbre de travail.
+
+**À faire.**
+1. Obtenir une décision écrite : autorisation de redistribution explicite, **ou** retrait.
+2. Si retrait : sortir `subjects/`, `M/`, `SE/` du dépôt (artefact de build, sous-module, ou
+   stockage externe), **puis réécrire l'historique** — un simple `git rm` ne retire rien de
+   l'historique. Prévoir `git filter-repo`, une rotation des clones, et la mise à jour de
+   `server.mjs`, `sw.js`, `scripts/vendor-pdfjs.mjs` et `tests/pdf-content-integrity.test.mjs`.
+3. Si autorisation : la documenter dans `NOTICE` avec la source et la date.
+
+**Ne pas faire** : trancher seul. C'est une décision éditoriale et juridique.
+
+---
+
+## T2 — Calibration du moteur (P1.5, P2.7) — **nécessite de vraies copies d'élèves**
+
+`npm run calibration` renvoie `0 copie comparée, 0/149 pôles, non calibré`. Tant que c'est le
+cas, **aucun réglage du moteur d'évaluation n'est défendable**.
+
+Ce qui bloque est hors code :
+
+- **P1.5** — `0/2235 copies vérifiées minimales`.
+- **P2.7** — `0/5 élèves distincts avec session réelle, consentie et valide`.
+
+Le protocole existe déjà et est exigeant : `tests/hard-benchmark/COLLECTION_PROTOCOL.md`
+(rôles séparés collecteur / correcteurs A et B / vérificateur / arbitre, `auditId` non
+signifiant, `consentRef` opaque, anonymisation du scan, SHA-256 sur scan + transcription +
+formulaires, `blindedToPeer` et `blindedToEngine`). L'import se fait par
+`tests/hard-benchmark/import-copy.mjs`, le manifeste public est
+`tests/hard-benchmark/audit-manifest.json` (schéma : `audit-manifest.schema.json`).
+
+**À faire.** Collecter et faire double-annoter au moins 5 copies réelles conformes au protocole,
+puis `npm run calibration:update`. Ensuite seulement : ré-évaluer les seuils signalés en T5.
+
+---
+
+## T3 — Compléter les inventaires officiels (P1.1, P1.2) — **gros travail de contenu**
+
+Mesuré : **40 sujets, 0 inventaire complet, 408 tâches = 149 `official` + 259 `reconstructed`
+(63 % reconstitué)**.
+
+- **P1.1** — `0/40 inventaires complets`.
+- **P1.2** — `0/40 sujets à 100 % de couverture explicite`.
+
+Une tâche `reconstructed` est une étape méthodologique **reconstruite**, pas le texte officiel
+de la consigne. L'UI le dit déjà honnêtement à l'élève (`taskProvenanceHTML`, badge ⚠️).
+
+**À faire.** Relire les sujets officiels et encoder le découpage officiel dans
+`data/official-tasks.js`, puis `npm run inventory:generate` et `npm run inventory:check`.
+C'est du travail de lecture et d'encodage, pas de code. Le rapport d'audit note que
+`official-coverage.js:206-233` admet `relaxedEligible` sans inventaire `complete` ni
+`scoringReviewStatus === "verified"` — c'est ce qui explique 38 sujets éligibles malgré
+0/40 inventaires complets. **À durcir une fois les inventaires réels en place.**
+
+---
+
+## T4 — P3.2 : garde-fou périmé (petit, mais trompeur)
+
+`npm run p3:check` → `P3: INCOMPLET (5/6)`, seul P3.2 bloqué.
+
+**Cause exacte, mesurée.** `scripts/report-p3-status.mjs:61-66` calcule :
+
+```js
+const explicitPdf =
+  !shell.some((asset) => asset.endsWith(".pdf") || asset.includes("data/years/")) &&
+  strategy.includes("pdfExternalUrl") &&
+  strategy.includes("فتح المصدر الخارجي") &&
+  !strategy.includes("download=") &&
+  !strategy.includes("<iframe");
+```
+
+Évaluation réelle des cinq sous-conditions :
+
+| # | sous-condition | valeur |
+| --- | --- | --- |
+| 1 | shell sans PDF ni `data/years/` (37 ressources, 0 PDF, 0 payload) | **true** |
+| 2 | `strategy.js` contient `pdfExternalUrl` | **false** |
+| 3 | `strategy.js` contient `فتح المصدر الخارجي` | **false** |
+| 4 | `strategy.js` ne contient pas `download=` | **true** |
+| 5 | `strategy.js` ne contient pas `<iframe` | **true** |
+
+**Seules 2 et 3 échouent**, et pour une unique raison : la construction du lien externe a été
+extraite de `strategy.js` vers `js/ui/pdf-viewer.js`. `strategy.js` ne fait plus qu'appeler
+`pdfFallbackHTML` (l.38, 148, 226) et ne contient aucune de ces deux chaînes.
+
+**À faire.** Recibler les conditions 2 et 3 sur `js/ui/pdf-viewer.js` (ou sur les deux
+fichiers), **sans toucher aux conditions 1, 4 et 5** qui portent sur le shell et restent
+justes. Ne pas affaiblir l'intention : aucun PDF ni payload annuel dans le shell, lien externe
+explicite, pas de `download=`, pas d'`<iframe>`.
+
+**Vérifier que le garde-fou mord encore** après déplacement : le rendre vert en élargissant la
+recherche à n'importe quel fichier le viderait de son sens. Tester en retirant délibérément le
+lien externe de `pdf-viewer.js` et en constatant que `p3:check` repasse à l'échec.
+
+---
+
+## T5 — Seuils d'évaluation signalés, non calibrés
+
+À traiter **après T2**, jamais avant.
+
+1. `js/domain/evaluation/methodology.js:289` et `:800` — `structure.connectorHits >= 2 &&
+   structure.wordCount >= 12`. Ce seuil était **inopérant** avant le correctif D5 (tout texte de
+   12 mots atteignait 2 correspondances par sous-chaîne accidentelle). Il discrimine réellement
+   pour la première fois. Son calibre n'est validé par aucune copie réelle.
+2. `js/ui/screens/simulation.js` — `qualitativeLabel()` ne mesure **que la longueur** du texte
+   (`<80`, `<220`, sinon « ممتاز — A »). Il récompense la verbosité, pas la qualité. Il n'est
+   plus affiché pendant l'épreuve (décision D10) mais reste visible en relecture.
+3. `tests/bac-benchmark.test.mjs` — deux bornes « acceptable » ont été ajustées sur la mesure
+   corrigée de D5, avec justification en commentaire. À revalider sur copies réelles.
+
+---
+
+## T6 — Dette restante (faisable immédiatement)
+
+1. **`test-results/.last-run.json` est suivi par Git alors que `.gitignore` contient
+   `test-results/`.** → `git rm --cached test-results/.last-run.json`.
+2. **`server.mjs:23`** — la CSP contient `frame-ancestors 'self' https://*.e2b.app` : un hôte de
+   sandbox de développement figé dans la CSP de production. À rendre configurable par variable
+   d'environnement, sans valeur par défaut permissive.
+3. **Racine encombrée** — `01a07c55-65b0-7317-af13-bd3460834d72.patch`,
+   `ANALYSE_LIGNE_PAR_LIGNE.md`, `CONTINUATION.md`, `_v1_backup/` (96 Ko, 2 fichiers suivis),
+   `patches/` (3 `.patch` déjà appliqués sur main selon `patches/apply-patches.sh`).
+   À archiver sous `docs/history/` ou supprimer, après confirmation.
+4. **`js/domain/evaluation/**` + `js/engine.js` (2 634 lignes) ne sont branchés sur aucune UI.**
+   Décision déjà prise et documentée dans l'en-tête de `js/engine.js` : actif d'audit et de
+   calibration, pas de la dette morte. **À confirmer ou infirmer par le propriétaire** : soit on
+   assume ce statut, soit on câble le moteur sur l'UI — mais alors la règle « aucune note »
+   doit être revue, ce qui est une décision produit.
+5. **Aucune pull request n'est ouverte** pour `arena/01a0b332-rebrique-sujet-bac`.
+
+---
+
+## Protocole de vérification (à exécuter à chaque lot)
+
+```bash
+npm ci --no-audit --no-fund      # node_modules disparaît entre les sessions sandbox
+npm test                          # attendu : 0 fail, 1 skipped (test réseau)
+for s in lint typecheck format:check build release:verify docs:check \
+         calibration:check inventory:check; do npm run $s; done
+npm run pwa:version               # après toute édition de js/** ou sw.js
+npm run docs:update               # après tout ajout de test()
+```
+
+**Règle de preuve.** Pour chaque correctif, démontrer que le test mord : restaurer le code
+d'origine (`git checkout <fichier>`) ou appliquer une mutation ciblée, relancer, constater
+l'échec, puis restaurer. Un test qui passe avant **et** après ne prouve rien — cette erreur a
+déjà été commise sur ce dépôt (première version du test D14).
+
+## Pièges connus
+
+- `echo $?` après un pipe mesure la dernière commande du pipe, pas npm. Toujours
+  `out=$(npm run x); code=$?`.
+- `node_modules/` et `dist/` sont effacés entre les tours du sandbox → `npm ci`, ce n'est pas un
+  bug du code.
+- Toute édition de `js/**` rend `js/app-version.js` périmé et fait échouer `tests/build.test.mjs`.
+  Correctif : `npm run pwa:version`. Ne pas contourner le garde-fou.
+- `npm run inventory:check` émet `Cannot polyfill DOMMatrix / Path2D` (`canvas` absent).
+  Sans impact. **Ne pas installer `canvas`.**
+- Sous Node, `globalThis` n'est **pas** une `EventTarget` : `globalThis.addEventListener` vaut
+  `undefined`. Le code résout sa cible sur `globalThis.window || globalThis` pour cette raison ;
+  ne pas « simplifier » vers `globalThis` seul.
+- Un `git checkout` d'un fichier dont un nouvel export est importé fait échouer le module entier
+  à l'import : ça ne prouve pas le comportement. Isoler par un script de probe distinct, avec des
+  chemins **absolus** dans les imports ESM.
+- Les sondes dans `/tmp` échouent (`ERR_MODULE_NOT_FOUND`) sur les imports relatifs du dépôt.
