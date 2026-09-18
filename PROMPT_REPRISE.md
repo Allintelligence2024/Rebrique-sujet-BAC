@@ -151,6 +151,13 @@ où elle est assistable, au lieu de la supposer également difficile partout.
 `npm run pdftext:check` renvoie exit 1 tant que les 40 sujets ne sont pas `propre` —
 c'est voulu, ce n'est pas un garde-fou à « réparer ».
 
+**Branchement CI (2026-09-18).** Cette mesure est désormais publiée à chaque push par
+`.github/workflows/quality.yml`, étape « Couche texte des PDF (6/40, attendu INCOMPLET) »,
+en `continue-on-error` comme P1/P2. La même passe a rendu l'étape **P3 bloquante**
+(`p3:check` renvoie 6/6) — la règle inscrite dans le commentaire D12 du workflow, et
+vérifiée avant application : `scripts/report-p3-status.mjs` ne lit que le système de
+fichiers du dépôt, ni réseau, ni `process.env`, ni artefact de build.
+
 ### Ce qui reste à faire
 
 Relire les sujets officiels et encoder le découpage officiel dans
