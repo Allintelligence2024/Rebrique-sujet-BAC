@@ -219,7 +219,7 @@ test("le shell précache tout le graphe de démarrage et rien de plus", () => {
     (match) => match[1]
   );
   const startup = staticImportClosure(join(root, "js/main.js")).map(
-    (file) => "./" + file.slice(root.length + 1)
+    (file) => "./" + relative(root, file).split(sep).join("/")
   );
   assert.ok(startup.length > 10, "le graphe de démarrage doit être détecté");
   for (const file of startup) {
