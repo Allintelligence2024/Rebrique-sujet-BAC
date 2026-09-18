@@ -65,5 +65,10 @@ export const timers = {
     this.strategyInterval = null;
     store.state.strategyRunning = false;
     store.state.strategyLastTick = null;
+    // Bug #B16 : avant le fix, stopAll() remettait strategyRunning à false
+    // en mémoire mais ne persistait pas dans localStorage. Un rechargement
+    // relisait strategyRunning=true (fuite d'état). stopStrategy() persistait,
+    // stopAll() non — asymétrie silencieuse.
+    store.save();
   }
 };

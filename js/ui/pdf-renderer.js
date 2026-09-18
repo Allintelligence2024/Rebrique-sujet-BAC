@@ -94,14 +94,26 @@ function setStatus(host, message) {
 
 /** Révèle l'iframe de repli et explique pourquoi le rendu direct a échoué. */
 function fallbackToFrame(host, message) {
-  const frame = host.parentElement?.querySelector("iframe.pdf-frame");
+  const parent = host.parentElement;
+  const frame = parent?.querySelector("iframe.pdf-frame");
   host.hidden = true;
   if (frame) frame.hidden = false;
-  const note = document.createElement("p");
-  note.className = "feedback mid small pdf-viewer-fallback";
-  note.setAttribute("role", "status");
+  if (!parent) return;
+  // Bug #B23 : à chaque échec de chargement pdf.js, fallbackToFrame créait un
+  // nouveau <p class="pdf-viewer-fallback"> sans vérifier si une note existait
+  // déjà. Après disposeViewerState + retry, deux notes empilaient
+  // (« premier échec » + « deuxième échec ») et l'ARIA region annonçait deux
+  // statuts contradictoires. On cherche d'abord la note existante par
+  // sélecteur de classe simple (compatible DOM natif ET les mini-DOM de test)
+  // et on met à jour son texte ; sinon on en crée une seule.
+  let note = parent.querySelector(".pdf-viewer-fallback");
+  if (!note) {
+    note = document.createElement("p");
+    note.className = "feedback mid small pdf-viewer-fallback";
+    note.setAttribute("role", "status");
+    parent.appendChild(note);
+  }
   note.textContent = message;
-  host.parentElement?.appendChild(note);
 }
 
 function toolbar() {
@@ -277,6 +289,27 @@ export async function mountPdfViewer(host, options = {}) {
     );
     if (globalThis.console) console.warn("pdf.js indisponible:", error);
   }
+}
+
+/** Bug #B18 : export de disposePdfViewer pour nettoyer un visionneur avant
+ *  un remontage (écrans détruits/réaffichés, navigation SPA). Avant le fix,
+ *  les listeners resize restaient accrochés et le pdf.js instance n'était
+ *  jamais destroy() → fuite mémoire cumulative à chaque consultation. */
+export function disposePdfViewer(host) {
+  const state = states.get(host);
+  if (state?.onResize) globalThis.removeEventListener?.("resize", state.onResize);
+  if (state?.resizeTimer) clearTimeout(state.resizeTimer);
+  state?.pdf?.destroy?.();
+  states.delete(host);
+  // Note : on NE supprime PAS la note de fallback pour qu'elle reste
+  // affichée tant que le DOM parent n'est pas démonté.
+}
+
+/** Dispose tous les visionneurs encore référencés par leurs hôtes. Utile
+ *  lors d'un changement d'écran (view-hub → view-workspace). */
+export function disposeAllPdfViewers(scope = document) {
+  const hosts = [...scope.querySelectorAll("[data-pdf-canvas]")];
+  for (const host of hosts) disposePdfViewer(host);
 }
 
 /** Monte tous les visionneurs d'un sous-arbre du DOM (écran, tiroir…). */

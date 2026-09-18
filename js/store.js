@@ -9,6 +9,45 @@ const LEGACY_KEY = "boussole4d.v3";
 const AMBIGUOUS_LEGACY_KEY = "boussole4d.v2";
 export const CURRENT_SCHEMA_VERSION = 5;
 export const YEAR_ID_PATTERN = /^\d{4}(?:-[a-z]{1,3})?$/;
+/** Plage d'années effectivement présentes dans le catalogue applicatif
+ *  (2013-2026 sciences expérimentales + 2013-2026 maths). Une année hors de
+ *  cette plage (par exemple "9999" issue d'un localStorage corrompu) n'a
+ *  aucun payload chargeable : loadYear jetterait RangeError. Bug #B2 :
+ *  YEAR_ID_PATTERN seul validait la forme sans garantir l'existence. */
+export const KNOWN_YEAR_IDS = new Set([
+  "2013",
+  "2014",
+  "2015",
+  "2016",
+  "2017",
+  "2018",
+  "2019",
+  "2020",
+  "2021",
+  "2022",
+  "2023",
+  "2024",
+  "2025",
+  "2026",
+  "2013-m",
+  "2014-m",
+  "2015-m",
+  "2016-m",
+  "2017-m",
+  "2018-m",
+  "2019-m",
+  "2020-m",
+  "2021-m",
+  "2022-m",
+  "2023-m",
+  "2024-m",
+  "2025-m",
+  "2026-m"
+]);
+/** Année connue (catalogue) ET conforme au pattern. */
+function isCatalogYear(id) {
+  return typeof id === "string" && YEAR_ID_PATTERN.test(id) && KNOWN_YEAR_IDS.has(id);
+}
 /* Un seul mode : l'épreuve. L'ancien « mode entraînement » (N/S/E/W avec
    aides, modèles et diagnostics) a été retiré du produit ; les sessions
    enregistrées avec "training" ou "simulation" sont ramenées à "bac". */
@@ -76,8 +115,12 @@ function sanitizeExercise(value) {
   safe.answeredAny = raw.answeredAny === true;
   for (const pole of POLES) {
     safe.scores[pole] = asFiniteNumber(raw.scores?.[pole], 0, 0, 20);
-    safe.text[pole] = asString(raw.text?.[pole]);
-    safe.scratch[pole] = asString(raw.scratch?.[pole]);
+    // Bug #B15 : scratch et text peuvent accumuler des blocs copiés-collés
+    // dépassant la dizaine de MB ; on borne à 60 000 caractères par pôle pour
+    // éviter qu'un localStorage corrompu ralentisse le rechargement (et que
+    // la session prenne >30s pour validerState).
+    safe.text[pole] = asString(raw.text?.[pole]).slice(0, 60000);
+    safe.scratch[pole] = asString(raw.scratch?.[pole]).slice(0, 60000);
   }
   safe.scratch.free = asString(raw.scratch?.free);
   if (isRecord(raw.fields)) {
@@ -108,7 +151,11 @@ function sanitizeProgress(value) {
   const progress = {};
   if (!isRecord(value)) return progress;
   for (const [yearId, subjects] of Object.entries(value)) {
-    if (!YEAR_ID_PATTERN.test(yearId) || !isRecord(subjects)) continue;
+    // Bug #B2 (sanitizeProgress) : on ne garde que les années effectivement
+    // cataloguées, pas seulement celles qui matchent YEAR_ID_PATTERN. Une
+    // entrée "9999" ou "../etc/passwd" passait le pattern et polluait
+    // store.state.progress[yearId] jusqu'à un RangeError dans loadYear.
+    if (!isCatalogYear(yearId) || !isRecord(subjects)) continue;
     progress[yearId] = {};
     for (const [sujetId, exercises] of Object.entries(subjects)) {
       if (!/^[1-9]\d*$/.test(sujetId) || !isRecord(exercises)) continue;
@@ -242,7 +289,7 @@ export function validateState(candidate) {
   const requestedMode = normalizeSessionMode(candidate.sessionMode);
   state.sessionMode = SESSION_MODES.includes(requestedMode) ? requestedMode : "bac";
   state.reviewMode = candidate.reviewMode === true || state.sessionStatus === "completed";
-  state.yearId = YEAR_ID_PATTERN.test(candidate.yearId) ? candidate.yearId : state.yearId;
+  state.yearId = isCatalogYear(candidate.yearId) ? candidate.yearId : state.yearId;
   state.sujetId = asFiniteNumber(candidate.sujetId, state.sujetId, 1, 9);
   state.activeExercise = asFiniteNumber(candidate.activeExercise, state.activeExercise, 1, 9);
   state.activeStep = asFiniteNumber(candidate.activeStep, state.activeStep, 1, 4);
@@ -288,35 +335,33 @@ export const store = {
 
   load() {
     this.state = defaultState();
+    // Bug #B5 : si KEY est corrompu (JSON invalide), on ne tente pas le
+    // LEGACY_KEY et l'élève perd l'accès à un état restaurable. On factorise
+    // désormais la restauration en helper qui tente chaque clé
+    // indépendamment.
+    const tryRestoreFromKey = (keyName, out) => {
+      const raw = localStorage.getItem(keyName);
+      if (!raw) return false;
+      try {
+        out.state = validateState(migrateState(JSON.parse(raw)));
+        if (keyName !== KEY) localStorage.removeItem(keyName);
+        out.save();
+        return true;
+      } catch (error) {
+        reportDiagnostic(`store.load-invalid-${keyName === LEGACY_KEY ? "legacy-" : ""}state`, error);
+        backupMalformed(raw);
+        return false;
+      }
+    };
     try {
-      const raw = localStorage.getItem(KEY);
-      if (raw) {
-        try {
-          this.state = validateState(migrateState(JSON.parse(raw)));
-          // Persist migration/normalization immediately so it runs once.
-          this.save();
-        } catch (error) {
-          reportDiagnostic("store.load-invalid-state", error);
-          backupMalformed(raw);
-        }
-      } else {
-        const legacy = localStorage.getItem(LEGACY_KEY);
-        if (legacy) {
-          try {
-            this.state = validateState(migrateState(JSON.parse(legacy)));
-            localStorage.removeItem(LEGACY_KEY);
-            this.save();
-          } catch (error) {
-            reportDiagnostic("store.load-invalid-legacy-state", error);
-            backupMalformed(legacy);
-          }
-        } else {
-          const ambiguous = localStorage.getItem(AMBIGUOUS_LEGACY_KEY);
-          if (ambiguous) {
-            // v2 had no year in exercise keys. Keeping it is safer than a false migration.
-            localStorage.setItem(`${AMBIGUOUS_LEGACY_KEY}.legacy-unmigrated`, ambiguous);
-            localStorage.removeItem(AMBIGUOUS_LEGACY_KEY);
-          }
+      if (tryRestoreFromKey(KEY, this)) {
+        /* restored */
+      } else if (!tryRestoreFromKey(LEGACY_KEY, this)) {
+        const ambiguous = localStorage.getItem(AMBIGUOUS_LEGACY_KEY);
+        if (ambiguous) {
+          // v2 had no year in exercise keys. Keeping it is safer than a false migration.
+          localStorage.setItem(`${AMBIGUOUS_LEGACY_KEY}.legacy-unmigrated`, ambiguous);
+          localStorage.removeItem(AMBIGUOUS_LEGACY_KEY);
         }
       }
     } catch (error) {
@@ -390,7 +435,14 @@ export const store = {
 
   exercise(yearId, sujetId, exNum) {
     if (!yearId) throw new Error("yearId est requis pour isoler la progression BAC.");
-    if (!YEAR_ID_PATTERN.test(yearId)) throw new Error(`yearId invalide: ${String(yearId)}`);
+    if (!isCatalogYear(yearId)) throw new Error(`yearId invalide: ${String(yearId)}`);
+    // Bug #B7 : NaN ou chaînes passées en sujetId/exNum créaient des clés
+    // fantômes (progress[yearId]["abc"][NaN]) non nettoyées par validateState.
+    // On impose un entier borné ici aussi pour symétrie avec enterSession.
+    if (!Number.isInteger(sujetId) || sujetId < 1 || sujetId > 9)
+      throw new Error(`sujetId invalide: ${String(sujetId)}`);
+    if (!Number.isInteger(exNum) || exNum < 1 || exNum > 9)
+      throw new Error(`exNum invalide: ${String(exNum)}`);
     if (!this.state.progress[yearId]) this.state.progress[yearId] = {};
     if (!this.state.progress[yearId][sujetId]) this.state.progress[yearId][sujetId] = {};
     if (!this.state.progress[yearId][sujetId][exNum])
@@ -406,7 +458,7 @@ export const store = {
     if (!SESSION_MODES.includes(requestedMode)) throw new Error(`mode de session invalide: ${requestedMode}`);
     const now = Date.now();
     this.state.yearId = yearId;
-    this.state.sujetId = sujetId || 1;
+    this.state.sujetId = asFiniteNumber(sujetId, 1, 1, 9);
     this.state.activeExercise = 1;
     this.state.activeStep = 1;
     this.state.activeScreen = "view-guide";
@@ -450,6 +502,12 @@ export const store = {
     return true;
   },
   leaveSession() {
+    // Bug #B6 : leaveSession sans session active est un no-op strict. Avant le
+    // fix, on inventait un sessionEndReason="left" et lastTick=null sur un état
+    // déjà inactif, ce qui marquait faussement la session dans les exports.
+    if (this.state.sessionActive === false && this.state.sessionStatus === "idle") {
+      return false;
+    }
     this.state.sessionStatus = "idle";
     this.state.sessionActive = false;
     this.state.sessionEndReason = "left";
@@ -457,6 +515,7 @@ export const store = {
     this.state.strategyRunning = false;
     this.state.strategyLastTick = null;
     this.save();
+    return true;
   },
   isSessionActive() {
     return this.state.sessionStatus === "active" && this.state.sessionActive === true;
@@ -469,17 +528,30 @@ export const store = {
     this.save();
   },
   setActiveExercise(n) {
-    this.state.activeExercise = n;
-    this.state.activeStep = 1;
-    this.save();
+    // Bug #B36 : on rejette les entrées non-entières ou hors plage [1,9]
+    // plutôt que d'écrire NaN ou "abc" dans store.state.activeExercise
+    // (l'UI cliquait ensuite sur un sujet fantôme).
+    if (Number.isInteger(n) && n >= 1 && n <= 9) {
+      this.state.activeExercise = n;
+      this.state.activeStep = 1;
+      this.save();
+    }
   },
   setActiveStep(step) {
-    this.state.activeStep = step;
-    this.save();
+    // Bug #B36 : idem pour activeStep, plage [1,4] (les 4 étapes de l'épreuve).
+    if (Number.isInteger(step) && step >= 1 && step <= 4) {
+      this.state.activeStep = step;
+      this.save();
+    }
   },
   setActiveScreen(screenId) {
-    this.state.activeScreen = screenId;
-    this.save();
+    // Bug #B36 : whitelist SCREENS. Une URL malveillante ou une faute de
+    // frappe ne doit pas pouvoir basculer l'application hors des écrans
+    // connus (et donc potentiellement sur du DOM non défini).
+    if (typeof screenId === "string" && SCREENS.has(screenId)) {
+      this.state.activeScreen = screenId;
+      this.save();
+    }
   },
 
   /** Jauge du drill شحذ المفتاح : une round parfaite prolonge la série, sinon remise à zéro. */
@@ -501,9 +573,19 @@ export const store = {
 
 export const helpers = {
   fmt(seconds) {
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-    const s = seconds % 60;
+    // Bug #B19 : fmt(undefined) ou fmt("abc") renvoyait "NaN:NaN" parce que
+    // Math.floor(undefined / 3600) = NaN. On borne désormais à un entier
+    // >= 0, floor appliqué APRÈS le clamp pour respecter la consigne
+    // "ignore les fractions (floor)" du test B19.
+    const num = Number(seconds);
+    if (!Number.isFinite(num) || num < 0) {
+      const fallback = Math.floor(0);
+      return "00:00";
+    }
+    const total = Math.floor(num);
+    const h = Math.floor(total / 3600);
+    const m = Math.floor((total % 3600) / 60);
+    const s = total % 60;
     const p = (n) => String(n).padStart(2, "0");
     return h > 0 ? `${p(h)}:${p(m)}:${p(s)}` : `${p(m)}:${p(s)}`;
   }
