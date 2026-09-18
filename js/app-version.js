@@ -1,5 +1,5 @@
 // Generated deterministically by scripts/generate-pwa-version.mjs
-globalThis.APP_BUILD_ID = "b529160c0ee3";
+globalThis.APP_BUILD_ID = "fedde7f44961";
 globalThis.APP_ASSET_REVISIONS = Object.freeze({
   "assets/icon-192.png": {
     bytes: 37017,
@@ -10,7 +10,7 @@ globalThis.APP_ASSET_REVISIONS = Object.freeze({
     sha256: "48ad8ebbee47d38c9beac4b54cd1a1b283a3dfbcfe80c51330e4e53f6756bea3"
   },
   "manifest.webmanifest": {
-    bytes: 851,
-    sha256: "83c7092a6635bb01945c2d789528eb91e47059cb79c7a82765897a3107c8e637"
+    bytes: 868,
+    sha256: "722a9982452096796e24135c8851975aaca15ebee66b53b324abfbdb25281e50"
   }
 });
