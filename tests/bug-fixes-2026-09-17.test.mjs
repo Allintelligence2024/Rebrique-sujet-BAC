@@ -63,17 +63,13 @@ function memoryStorage() {
     setItem: (key, value) => values.set(key, String(value)),
     removeItem: (key) => values.delete(key),
     clear: () => values.clear(),
-    keys: () => [...keys()],
-    get keys() {
-      return [...values.keys()];
-    }
+    keys: () => [...values.keys()]
   };
 }
 
 globalThis.localStorage = memoryStorage();
-const { store, helpers, validateState, KNOWN_YEAR_IDS, CURRENT_SCHEMA_VERSION } = await import(
-  "../js/store.js"
-);
+const { store, helpers, validateState, KNOWN_YEAR_IDS, CURRENT_SCHEMA_VERSION } =
+  await import("../js/store.js");
 const { normalizeArabic, stripArabicClitics } = await import("../data/subjects.js");
 const { evaluateText, scoreFromFraction } = await import("../js/domain/evaluation/text-evaluator.js");
 
@@ -121,19 +117,15 @@ test("Bug #B2 : sanitizeProgress filtre les yearId hors catalogue", () => {
       yearId: "2025",
       sujetId: 1,
       progress: {
-        "2025": { 1: { 1: { answeredAny: true } } },
-        "9999": { 1: { 1: { answeredAny: true } } }
+        2025: { 1: { 1: { answeredAny: true } } },
+        9999: { 1: { 1: { answeredAny: true } } }
       },
       sessionStatus: "idle",
       sessionActive: false
     })
   );
   store.load();
-  assert.equal(
-    store.state.progress["9999"],
-    undefined,
-    "9999 doit être filtré par sanitizeProgress"
-  );
+  assert.equal(store.state.progress["9999"], undefined, "9999 doit être filtré par sanitizeProgress");
   assert.ok(store.state.progress["2025"], "2025 doit être conservé");
 });
 
@@ -211,16 +203,8 @@ test("Bug #B6 : leaveSession avec session active fonctionne normalement", () => 
    =========================================================== */
 test("Bug #B7 : store.exercise rejette sujetId non entier", () => {
   store.enterSession("2025", 1);
-  assert.throws(
-    () => store.exercise("2025", "abc", 1),
-    /sujetId invalide/,
-    "chaîne doit throw"
-  );
-  assert.throws(
-    () => store.exercise("2025", NaN, 1),
-    /sujetId invalide/,
-    "NaN doit throw"
-  );
+  assert.throws(() => store.exercise("2025", "abc", 1), /sujetId invalide/, "chaîne doit throw");
+  assert.throws(() => store.exercise("2025", NaN, 1), /sujetId invalide/, "NaN doit throw");
 });
 
 test("Bug #B7 : store.exercise rejette exNum non entier", () => {
@@ -361,10 +345,7 @@ test("Bug #B16 : timers.stopAll persiste strategyRunning=false dans localStorage
   assert.equal(store.state.strategyRunning, true);
   // Forcer la persistance pour vérifier le baseline
   store.save();
-  assert.match(
-    JSON.parse(localStorage.getItem("boussole4d.v4") || "{}").strategyRunning + "",
-    /true/
-  );
+  assert.match(JSON.parse(localStorage.getItem("boussole4d.v4") || "{}").strategyRunning + "", /true/);
   // Stopper sans save manuel
   timers.stopAll();
   // Vérifier l'écriture immédiate
@@ -379,11 +360,7 @@ test("Bug #B16 : timers.stopAll persiste strategyRunning=false dans localStorage
 test("Bug #B18 : disposePdfViewer et disposeAllPdfViewers sont exportés depuis pdf-renderer.js", async () => {
   const mod = await import("../js/ui/pdf-renderer.js");
   assert.equal(typeof mod.disposePdfViewer, "function", "disposePdfViewer exporté");
-  assert.equal(
-    typeof mod.disposeAllPdfViewers,
-    "function",
-    "disposeAllPdfViewers exporté"
-  );
+  assert.equal(typeof mod.disposeAllPdfViewers, "function", "disposeAllPdfViewers exporté");
 });
 
 /* ===========================================================
@@ -476,9 +453,7 @@ function makeFakeDocument() {
       return allCreated.filter((node) => node.className === className);
     },
     fallbackNotes() {
-      return allCreated.filter(
-        (node) => node.className === "feedback mid small pdf-viewer-fallback"
-      );
+      return allCreated.filter((node) => node.className === "feedback mid small pdf-viewer-fallback");
     },
     createElement(tag) {
       const node = {
@@ -500,16 +475,12 @@ function makeFakeDocument() {
 // Helper synchrone (extrait le code source de fallbackToFrame et l'évalue).
 // Test isolé : pas d'import dynamique (qui casse avec `await` en non-async).
 function extractFallbackToFrame() {
-  const source = nodeFs.readFileSync(
-    new URL("../js/ui/pdf-renderer.js", import.meta.url),
-    "utf8"
-  );
+  const source = nodeFs.readFileSync(new URL("../js/ui/pdf-renderer.js", import.meta.url), "utf8");
   const match = source.match(/function fallbackToFrame[\s\S]+?\n\}/);
   if (!match) throw new Error("fallbackToFrame introuvable dans pdf-renderer.js");
-  const body = match[0]
-    .replace(/^function fallbackToFrame\s*\([^)]*\)\s*\{/, "")
-    .replace(/\n\}$/, "");
-  // eslint-disable-next-line no-new-func
+  const body = match[0].replace(/^function fallbackToFrame\s*\([^)]*\)\s*\{/, "").replace(/\n\}$/, "");
+  // L'utilisation de new Function est volontaire : permet de tester la
+  // logique interne sans dépendre d'un export dynamique.
   return new Function("host", "message", body);
 }
 
