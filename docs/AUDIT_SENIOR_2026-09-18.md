@@ -394,21 +394,38 @@ La prose autour n'est validée par rien, et c'est là que la dérive s'installe.
 
 ### D17 — poids du dépôt et tension juridique
 
+Chiffres **mesurés** le 2026-09-18 (`find … -name '*.pdf' -printf '%s'`, `du -sm .git`),
+en remplacement des estimations initiales :
+
 ```
-M         15 fichiers   30 Mo     ← PDF bruts dzexams, référencés par AUCUN code
-SE        17 fichiers   51 Mo     ← idem
-subjects  59 fichiers   42 Mo     ← les seuls servis/shippés
-pack Git : 103,53 Mio
+M         15 PDF   29,92 Mio   ← PDF bruts dzexams, servis par AUCUN chemin local
+SE        17 PDF   50,08 Mio   ← idem
+subjects  58 PDF   41,10 Mio   ← les seuls servis/shippés
+pack Git : 105 Mio
 ```
 
-`M/` et `SE/` ne sont ni dans `PUBLIC_DIRECTORIES` (`server.mjs:31`), ni dans `dist`, ni
-référencés par les données : 81 Mo de matière première dans l'historique.
+`M/` et `SE/` ne sont ni dans `PUBLIC_DIRECTORIES` (`server.mjs:52`), ni dans `dist`,
+ni ignorés par `.gitignore` : **80 Mio de matière première suivie par Git**.
+
+**Précision apportée par la mesure.** L'affirmation initiale « référencés par AUCUN code »
+était inexacte. Sur les 32 PDF de `M/` + `SE/` :
+
+- **0** référence par **chemin local** ;
+- **21** références, mais uniquement comme **URL externe** `https://www.dzexams.com/…`
+  dans `data/archive.js` — donc des copies locales **redondantes** de fichiers que
+  l'application lie à distance ;
+- **10** sans aucune référence.
+
+La seule occurrence ressemblant à un chemin local est `tests/server.test.mjs:82`, qui est
+un **test négatif** : il exige `/BAC2025_SVT_Sujet1.pdf` → **404**. Autrement dit, le
+dépôt teste activement que ces fichiers ne sont pas servis — tout en les stockant.
 
 Point à trancher avec le porteur du projet : `LICENSE-CONTENT` et `NOTICE` excluent
 explicitement les sujets d'examen et les scans de la licence et écrivent qu'ils
-« *must not be redistributed without documented permission* », alors que 123 Mo de ces scans
-sont suivis par Git. `docs/CONTENT_RIGHTS.md` est cité comme référence — il faut soit une
-permission documentée, soit sortir ces binaires du dépôt (Git LFS ou stockage externe).
+« *must not be redistributed without documented permission* », alors que **121,10 Mio** de
+ces scans (90 PDF, mesuré) sont suivis par Git. `docs/CONTENT_RIGHTS.md` est cité comme
+référence — il faut soit une permission documentée, soit sortir ces binaires du dépôt
+(Git LFS ou stockage externe).
 
 ### D18 — divers
 
