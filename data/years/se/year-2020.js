@@ -35,7 +35,6 @@ export const YEAR_2020_SE = {
   stream: "se",
   calendarYear: "2020",
   label: "بكالوريا الجزائر دورة 2020 — شعبة علوم تجريبية",
-  badge: "دورة رسمية",
   theme: "emerald",
   enabled: true,
   sujets: [

@@ -4,7 +4,6 @@
 const YEAR_2025_SE = {
   id: "2025",
   label: "بكالوريا الجزائر دورة 2025 — شعبة علوم تجريبية",
-  badge: "دورة نموذجية",
   theme: "emerald",
   enabled: true,
   sujets: [

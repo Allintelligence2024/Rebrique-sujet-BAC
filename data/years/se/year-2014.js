@@ -15,7 +15,6 @@ const YEAR_2014_SE = {
   stream: "se",
   calendarYear: "2014",
   label: "بكالوريا الجزائر دورة 2014 — شعبة علوم تجريبية",
-  badge: "أرشيف مُعاد بناؤه",
   theme: "amber",
   enabled: true,
   sujets: [

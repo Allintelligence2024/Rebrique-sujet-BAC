@@ -31,7 +31,6 @@ export const YEAR_2022_M = {
   stream: "m",
   calendarYear: "2022",
   label: "بكالوريا الجزائر دورة 2022 — شعبة رياضيات",
-  badge: "دورة رسمية",
   theme: "indigo",
   enabled: true,
   sujets: [

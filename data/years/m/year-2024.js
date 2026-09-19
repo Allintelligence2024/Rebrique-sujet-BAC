@@ -31,7 +31,6 @@ export const YEAR_2024_M = {
   stream: "m",
   calendarYear: "2024",
   label: "بكالوريا الجزائر دورة 2024 — شعبة رياضيات",
-  badge: "دورة رسمية",
   theme: "indigo",
   enabled: true,
   sujets: [

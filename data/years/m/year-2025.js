@@ -31,7 +31,6 @@ export const YEAR_2025_M = {
   stream: "m",
   calendarYear: "2025",
   label: "بكالوريا الجزائر دورة 2025 — شعبة رياضيات",
-  badge: "دورة رسمية",
   theme: "indigo",
   enabled: true,
   sujets: [

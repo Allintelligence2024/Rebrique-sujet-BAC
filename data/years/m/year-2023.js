@@ -31,7 +31,6 @@ export const YEAR_2023_M = {
   stream: "m",
   calendarYear: "2023",
   label: "بكالوريا الجزائر دورة 2023 — شعبة رياضيات",
-  badge: "دورة رسمية",
   theme: "indigo",
   enabled: true,
   sujets: [

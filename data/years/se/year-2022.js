@@ -4,7 +4,6 @@
 const YEAR_2022_SE = {
   id: "2022",
   label: "بكالوريا الجزائر دورة 2022 — شعبة علوم تجريبية",
-  badge: "دورة رسمية",
   theme: "rose",
   enabled: true,
   sujets: [

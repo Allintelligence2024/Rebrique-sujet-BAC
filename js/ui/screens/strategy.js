@@ -172,7 +172,7 @@ export function createStrategyScreen(deps) {
         </div>
         <div class="stack mt-1">${inputs}</div>
         <div class="flex spread small mt-1 subject-estimate">
-          <span class="bold text-muted">تقدير الموضوع ${subject.id}:</span><span class="mono text-${theme}" id="s${subject.id}-total"></span>
+          <span class="bold text-muted">مجموع تقدير الموضوع ${subject.id}:</span><span class="mono text-${theme}" id="s${subject.id}-total"></span>
         </div>
       </div>
       <div class="stack subject-mode-actions">

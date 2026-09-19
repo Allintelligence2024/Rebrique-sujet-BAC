@@ -41,7 +41,11 @@ test("2021 SE reste cataloguée, sans contenu 4D inventé ni faux contentVerifie
   assert.ok(se2021 && se2021.enabled, "2021 ouvre une épreuve");
   const year2021 = await loadYear("2021");
   assert.equal(year2021.answerMode, "free");
-  assert.ok(year2021.answerModeNote.length > 20);
+  /* Le champ `answerModeNote` a été SUPPRIMÉ des payloads le 2026-09-19 :
+     il n'était rendu nulle part et son texte (« … بلا تصحيح ولا نقطة »)
+     comptait parmi ceux que le propriétaire ne veut plus voir. Ce que
+     l'élève doit savoir vit dans `freeMeasurements` et dans l'écran. */
+  assert.equal(year2021.answerModeNote, undefined);
   for (const sujet of year2021.sujets) {
     assert.deepEqual(
       sujet.exercises.map((ex) => ex.max),

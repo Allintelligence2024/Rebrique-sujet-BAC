@@ -15,7 +15,6 @@ const YEAR_2019_SE = {
   stream: "se",
   calendarYear: "2019",
   label: "بكالوريا الجزائر دورة 2019 — شعبة علوم تجريبية",
-  badge: "أرشيف مُعاد بناؤه",
   theme: "amber",
   enabled: true,
   sujets: [

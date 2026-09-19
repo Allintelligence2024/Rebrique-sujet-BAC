@@ -224,9 +224,10 @@ export function createHubScreen(deps) {
     const split = y.freeMeasurements?.exerciseSplitMeasured;
     const points = y.freeMeasurements?.pointsMeasured;
     /* L'infobulle reste le seul endroit où l'application dit ce qu'elle n'a
-       pas : aucune consigne encodée, aucun barème affiché. Le long paragraphe
-       « وضع «الورقة الحرة» » a été retiré à la demande du propriétaire ; ce
-       qui reste suffit à ne rien promettre de faux. */
+       pas : aucune consigne encodée, aucun barème affiché. Les longs
+       paragraphes qui expliquaient le mode « copie libre » ont été retirés à
+       la demande du propriétaire ; ce qui reste suffit à ne rien promettre de
+       faux. */
     return (
       `إمتحان الموضوع — تعليمات هذه الدورة غير مُشفَّرة: تقرأ الموضوع من الملف وتكتب إجابتك ` +
       (split === false

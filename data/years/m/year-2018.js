@@ -47,15 +47,12 @@ export const YEAR_2018_M = {
   stream: "m",
   calendarYear: "2018",
   label: "بكالوريا الجزائر دورة 2018 — شعبة رياضيات",
-  badge: "ورقة حرة",
   theme: "emerald",
   enabled: true,
   /* Marque l'année « copie libre » : l'épreuve est ouverte (chronomètre, PDF,
      rédaction, تسليم الورقة) mais aucune consigne n'est encodée et aucune note
      n'est calculée — il n'y a rien à corriger ici. */
   answerMode: "free",
-  answerModeNote:
-    "تعليمات هذه الدورة غير مُشفَّرة في التطبيق: تعرض الشاشة الموضوع الرسمي وخانة إجابة حرة لكل تمرين، بلا تصحيح ولا نقطة. بارم التمارين غير مُقاس على هذا الملف فلا يُعرض أي عدد نقاط.",
   /* Traceabilité : ce qui a été mesuré, et ce qui ne l'a pas été. */
   freeMeasurements: {
     measuredAt: "2026-09-19",

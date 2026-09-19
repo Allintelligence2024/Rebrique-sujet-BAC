@@ -50,15 +50,12 @@ export const YEAR_2017_EXCEPTIONAL_M = {
      session principale 2017 (id 2017-m). */
   session: "exceptional",
   label: "بكالوريا الجزائر دورة 2017 الاستثنائية — شعبة رياضيات",
-  badge: "ورقة حرة",
   theme: "rose",
   enabled: true,
   /* Marque l'armature « copie libre » : l'épreuve est ouverte (chronomètre,
      PDF, rédaction, تسليم الورقة) mais aucune consigne n'est encodée et
      aucune note n'est calculée — il n'y a rien à corriger ici. */
   answerMode: "free",
-  answerModeNote:
-    "تعليمات هذه الدورة الاستثنائية غير مُشفَّرة في التطبيق: تعرض الشاشة الموضوع الرسمي وخانة إجابة حرة لكل تمرين، بلا تصحيح ولا نقطة. بارم التمارين غير مُقاس على هذا الملف فلا يُعرض أي عدد نقاط.",
   /* Traceabilité : ce qui a été mesuré, et ce qui ne l'a pas été. */
   freeMeasurements: {
     measuredAt: "2026-09-19",

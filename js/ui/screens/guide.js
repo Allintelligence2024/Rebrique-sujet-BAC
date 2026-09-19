@@ -7,14 +7,11 @@
    ici, seulement la préparation avant le sujet.
 
    Retiré le 2026-09-19 à la demande du propriétaire, parce que ces textes
-   distraient l'élève au lieu de le préparer :
-     - le titre « ساس الهدوء والتركيز المنهجي » ;
-     - le sous-titre « جلسة التأطير النفسي والتنفس الموجه — بكالوريا … » ;
-     - la phrase « أنت تمتلك كافة المكتسبات، ركّز فقط على خطواتك الأربع » ;
-     - le rappel des quatre étapes de la méthode (اقرأ ← اجمع ← اربط ← اختُم),
-       ainsi que sa mention dans le paragraphe de durée.
-   La méthode reste enseignée là où l'élève en a besoin : dans l'épreuve,
-   tâche par tâche — pas dans un écran qu'il doit traverser.
+   distraient l'élève au lieu de le préparer : le titre de l'écran, son
+   sous-titre de « séance de cadrage psychologique », la phrase
+   d'encouragement et le rappel des quatre étapes de la méthode (اقرأ، اجمع،
+   اربط، اختُم). La méthode reste enseignée là où l'élève en a besoin : dans
+   l'épreuve, consigne par consigne — pas dans un écran qu'il doit traverser.
    ============================================================ */
 
 import { setInternalHTML } from "../dom.js";

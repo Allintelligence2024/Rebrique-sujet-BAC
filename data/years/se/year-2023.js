@@ -4,7 +4,6 @@
 const YEAR_2023_SE = {
   id: "2023",
   label: "بكالوريا الجزائر دورة 2023 — شعبة علوم تجريبية",
-  badge: "دورة رسمية",
   theme: "amber",
   enabled: true,
   sujets: [
