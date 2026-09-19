@@ -41,6 +41,17 @@ jobs:
         if: always()
         continue-on-error: true
         run: npm run p2:check
+      # Dossier juridique : deux documents générés depuis subjects/manifest.json
+      # et l'arbre de code. Ils décrivent le périmètre des contenus tiers et
+      # l'impact d'une bascule vers les liens externes — un dossier périmé
+      # ferait prendre une décision juridique sur des chiffres faux. Bloquants,
+      # donc : --check compare le document committé au document régénéré.
+      - name: Dossier de demande d'autorisation (généré, bloquant)
+        if: always()
+        run: npm run rights:check
+      - name: Impact des liens externes (généré, bloquant)
+        if: always()
+        run: npm run impact:check
       # P3 est fermé (6/6) : il devient bloquant, conformément à la règle ci-dessus.
       # `p3:check` ne lit que le système de fichiers du dépôt — ni réseau, ni
       # `process.env`, ni artefact de build — donc son résultat est déterministe.

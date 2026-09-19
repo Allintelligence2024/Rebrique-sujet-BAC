@@ -1,11 +1,11 @@
-# Analyse d'impact — bascule des 58 PDF locaux vers des liens externes
+# Analyse d'impact — bascule des PDF locaux vers des liens externes
 
-_Date : 19 septembre 2026. Tout est mesuré sur l'arbre (HEAD `db399d7`) : aucune estimation._
-_Mesure source : `node scripts/measure-external-links-impact.mjs`._
+_Tout est mesuré sur l'arbre : aucune estimation._
+_Document généré — ne pas éditer à la main._
 
 ## 1. Ce qui consomme les fichiers locaux de `subjects/`
 
-Commande : `node scripts/measure-external-links-impact.mjs` → 14/14 consommateurs confirmés `true`.
+Mesure : `node scripts/measure-external-links-impact.mjs` → **14/14 consommateurs confirmés `true`**.
 
 - `js/ui/pdf-viewer.js` — branche locale : `subject?.pdfLocalUrl`, rendu `<canvas>` via `data-pdf-src`, `<iframe class="pdf-frame">` masquée en repli, liens d'ouverture et `download`. Branche externe déjà existante : `if (external) {` → lien `فتح المصدر الخارجي` en `_blank`, sans `<iframe>` ni `download` (verrouillé par `tests/pdf-viewer.test.mjs` : « un sujet sans fichier local garde le lien source, sans cadre vide »).
 - `js/ui/pdf-renderer.js` — rendu pdf.js sur canvas (`fallbackToFrame`, `iframe.pdf-frame`) : ne sait lire qu'une URL même origine servie par l'application.
@@ -19,9 +19,9 @@ Commande : `node scripts/measure-external-links-impact.mjs` → 14/14 consommate
 
 ## 2. Ce qui existe déjà en externe (mesuré fichier par fichier)
 
-- `subjects/manifest.json` : **58 entrées · 44 avec URL directe `source` (`/uploads/sujets/officiels/*.pdf`) · 14 sans URL**.
-- `data/years/**` : 40 références `pdfLocalUrl` (20 payloads × 2 sujets), 40 `pdfExternalUrl` mesurés (page annales, PDF direct ou miroir eddirasa).
-- `data/archive.js` : 16 entrées de consultation, dont 12 avec `pdfUrl` direct observé.
+- `subjects/manifest.json` : **58 entrées · 44 avec URL source · 14 sans URL** · 221 pages · 41,10 Mio.
+- `data/years/**` : 20 payloads, 40 références `pdfLocalUrl`, 40 fichiers avec `pdfExternalUrl` mesuré (page annales, PDF direct ou miroir).
+- `data/archive.js` : 18 entrées de consultation, dont 12 avec `pdfUrl` direct observé.
 
 ## 3. Verdict chiffré
 
@@ -32,16 +32,41 @@ Commande : `node scripts/measure-external-links-impact.mjs` → 14/14 consommate
 node scripts/measure-external-links-impact.mjs  # champ "missing"
 ```
 
-`subjects/M/2016/sujet-1.pdf`, `subjects/M/2016/sujet-2.pdf`, `subjects/M/2020/sujet-1.pdf`, `subjects/M/2020/sujet-2.pdf`, `subjects/M/2021/sujet-1.pdf`, `subjects/M/2021/sujet-2.pdf`, `subjects/SE/2016/sujet-1.pdf`, `subjects/SE/2016/sujet-2.pdf`, `subjects/SE/2026/sujet-1.pdf`, `subjects/SE/2026/sujet-2.pdf`, `subjects/M/2017/exceptional/sujet-1.pdf`, `subjects/M/2017/exceptional/sujet-2.pdf`, `subjects/SE/2025/sujet-1.pdf`, `subjects/SE/2025/sujet-2.pdf`.
+| fichier | URL externes mesurées |
+| --- | --- |
+| `subjects/M/2016/sujet-1.pdf` | **aucune** |
+| `subjects/M/2016/sujet-2.pdf` | **aucune** |
+| `subjects/M/2020/sujet-1.pdf` | **aucune** |
+| `subjects/M/2020/sujet-2.pdf` | **aucune** |
+| `subjects/M/2021/sujet-1.pdf` | `https://www.dzexams.com/ar/annales/T2tYS3FTcFRwWCtCbXV2QmFyRTcydz09` |
+| `subjects/M/2021/sujet-2.pdf` | `https://www.dzexams.com/ar/annales/T2tYS3FTcFRwWCtCbXV2QmFyRTcydz09` |
+| `subjects/SE/2016/sujet-1.pdf` | `https://www.dzexams.com/ar/annales/M09NK2ZYVHFzQXg3KzZHazBaTk5IUT09` |
+| `subjects/SE/2016/sujet-2.pdf` | `https://www.dzexams.com/ar/annales/M09NK2ZYVHFzQXg3KzZHazBaTk5IUT09` |
+| `subjects/SE/2026/sujet-1.pdf` | `https://eddirasa.com/uploads/2026/08/bac-science-2026-se.pdf` |
+| `subjects/SE/2026/sujet-2.pdf` | `https://eddirasa.com/uploads/2026/08/bac-science-2026-se.pdf` |
+| `subjects/M/2017/exceptional/sujet-1.pdf` | **aucune** |
+| `subjects/M/2017/exceptional/sujet-2.pdf` | **aucune** |
+| `subjects/SE/2025/sujet-1.pdf` | `https://www.dzexams.com/ar/annales/S3VKb3UrRU9MUnJHVG5ndENaV1FIdz09` |
+| `subjects/SE/2025/sujet-2.pdf` | `https://www.dzexams.com/ar/annales/S3VKb3UrRU9MUnJHVG5ndENaV1FIdz09` |
 
-Cas mesurés : 2016/2020/2021-M et 2017-M exceptionnelle = sessions consultées avec pièces jointes dzexams mais sans PDF direct observé (`viewer: "ok"`, `attachments: true`, pas de `pdfUrl`) ; 2016-SE = page annales seulement ; 2026-SE = miroir eddirasa mesuré dans `data/years` (pas dzexams) ; 2025-SE = sujets strictement locaux, page annales seulement.
+Trois situations distinctes, à ne pas confondre : une **page d'annales** n'est pas un lien PDF direct ; un **miroir** (eddirasa) n'est pas la source officielle ; l'**absence** totale interdit toute bascule sans source nouvelle.
 
-Conséquence : sans autorisation, ces 14 sujets deviendraient inaccessibles en lecture intégrée, ou exigeraient une source alternative à documenter — jamais devinée.
+La cause de chaque absence doit être documentée avant toute bascule : une URL devinée est pire qu'une URL absente dans un dossier juridique. Aucune source alternative ne doit être inventée.
+
+Conséquence : sans autorisation, ces sujets deviendraient inaccessibles en lecture intégrée, ou exigeraient une source alternative à documenter.
 
 ## 4. Effets collatéraux d'une bascule
 
-- Lecture intégrée (canvas + iframe de repli même origine), téléchargement `⬇️ تنزيل PDF` et prévisualisation stratégie : perdus pour tout sujet sans local (le rendu pdf.js ne peut pas lire un domaine tiers via la CSP).
+- Lecture intégrée (canvas + iframe de repli même origine), téléchargement et prévisualisation stratégie : perdus pour tout sujet sans local (le rendu pdf.js ne peut pas lire un domaine tiers via la CSP).
 - Hors ligne : le cache runtime borné (`sw.js`) ne couvre qu'une même origine — les sujets externes ne sont plus disponibles hors connexion.
 - `dist/site` : −41,10 Mio de PDF ; le monofichier standalone est déjà sans PDF (aucun changement).
-- Tests à réécrire : `tests/pdf-content-integrity.test.mjs` (« aucun PDF orphelin », refs `data/` existantes), `tests/lazy-loading.test.mjs` (`pdfLocalUrl` de 2025), `tests/server.test.mjs` (Range PDF local), `tests/service-worker-runtime.test.mjs` (cache borné d'un PDF de sujet), `tests/e2e/offline-pwa.spec.mjs` (téléchargement PDF).
+- Tests à réécrire : `tests/pdf-content-integrity.test.mjs` (« aucun PDF orphelin », refs `data/` existantes), `tests/lazy-loading.test.mjs` (`pdfLocalUrl`), `tests/server.test.mjs` (Range PDF local), `tests/service-worker-runtime.test.mjs` (cache borné d'un PDF de sujet), `tests/e2e/offline-pwa.spec.mjs` (téléchargement PDF).
 - Le garde-fou P3.2 (`scripts/report-p3-status.mjs:71-77`) exige la branche externe sans iframe ni download — il resterait vert, la branche existe déjà.
+
+## Méthode de génération
+
+Document généré par `node scripts/measure-external-links-impact.mjs` depuis `subjects/manifest.json`, `data/years/**`, `data/archive.js` et les fichiers consommateurs. Contrôle :
+
+```bash
+node scripts/measure-external-links-impact.mjs --check
+```
