@@ -8,6 +8,21 @@ telle quelle à un agent pour exécution.
 
 ---
 
+## Décisions enregistrées le 19 septembre 2026
+
+| #   | Décision                                   | Choix retenu                                   | État                                                        |
+| --- | ------------------------------------------ | ---------------------------------------------- | ----------------------------------------------------------- |
+| 1   | Statut juridique des PDF                   | **B puis A**                                   | Étape **B faite** — 32 bruts retirés de l'index. **A reste à faire** pour les 58 PDF servis |
+| 2   | Copies réelles d'élèves                    | **Renoncement à la calibration**               | Enregistré. P1.5 et P2.7 restent bloqués volontairement      |
+| 3   | Statut du moteur d'évaluation              | **Option A** — actif d'audit                   | Vérifié exact, en-tête corrigé (2 342 lignes mesurées)       |
+
+Conséquence du point 2, à ne pas perdre de vue : **le score ne doit jamais être présenté
+comme une correction de professeur**, et les seuils du TRAVAIL 5 restent intouchables tant
+qu'aucune copie réelle n'existe. Un changement d'avis implique de rouvrir la décision 2
+avant de toucher au moindre seuil.
+
+---
+
 ## Mode d'emploi
 
 1. **Vous (propriétaire)** lisez les sections « DÉCISION 1 à 3 ». Ce sont les trois seuls
@@ -170,23 +185,29 @@ même après correction du paragraphe.
 80 Mio de contenus tiers inutilisés. A reste nécessaire pour les 58 PDF servis, sauf à
 basculer sur C.
 
-### Décision du propriétaire — cochez une case
+### Décision du propriétaire — ENREGISTRÉE le 19 septembre 2026
 
 ```
 [ ] Option A — autorisation écrite (documenter dans NOTICE + CONTENT_RIGHTS)
 [ ] Option B — retirer M/ et SE/ (recommandé, immédiat)
 [ ] Option C — retirer les 90 PDF du dépôt
 [ ] Option D — statu quo (déconseillé)
-[ ] B puis A  (recommandation)
+[X] B puis A  (recommandation)   <-- RETENU
 ```
 
-Complément à préciser si vous choisissez B ou C :
+Complément :
 
 ```
 [ ] Purger aussi l'historique Git (git filter-repo) — DESTRUCTIF, réécrit les SHA,
     impose une rotation de tous les clones. À n'activer qu'en connaissance de cause.
-[ ] Non, simple retrait de l'arbre (les fichiers restent dans l'historique)
+[X] Non, simple retrait de l'arbre (les fichiers restent dans l'historique)
 ```
+
+**Étape B exécutée le 2026-09-19.** Mesuré après coup : `git ls-files 'M/*.pdf' 'SE/*.pdf'`
+→ 0, 32 fichiers conservés sur disque, `subjects/manifest.json` sans aucune source locale
+(44 URL externes reprises du dépôt, 14 champs retirés faute d'URL documentée).
+**L'étape A reste entière :** les 58 PDF servis sous `subjects/` sont toujours des contenus
+tiers sans autorisation documentée.
 
 ### Plan d'exécution de l'agent — si option B retenue
 
@@ -307,14 +328,29 @@ npm run p1:check             # P1.5 doit passer de « bloqué » à « terminé 
 npm run p2:check             # P2.7 doit passer de « bloqué » à « terminé »
 ```
 
-### Décision du propriétaire
+### Décision du propriétaire — ENREGISTRÉE le 19 septembre 2026
 
 ```
 [ ] Je m'engage à fournir >= 5 copies conformes au protocole (échéance : __________)
 [ ] Je demande à l'agent de préparer d'abord le harnais et la documentation
-[ ] Je renonce à la calibration — alors le score ne doit jamais être présenté
+[X] Je renonce à la calibration — alors le score ne doit jamais être présenté   <-- RETENU
     comme une correction professeur, et P1.5 / P2.7 restent bloqués
 ```
+
+**Conséquences actées et vérifiées dans le dépôt :**
+
+- `tests/hard-benchmark/cases.json` = `{"cases": []}`,
+  `tests/hard-benchmark/audit-manifest.json` = `{"version": 1, "records": []}` — volontairement
+  vides ; `tests/hard-benchmark.test.mjs:56` verrouille ce vide pour qu'aucune copie ne soit
+  inventée.
+- `npm run calibration` → « Copies comparées : 0 », « STATUT : non calibré ».
+- P1.5 (`0/2235 copies`) et P2.7 (`0/5 élèves`) restent bloqués. Ces deux portes passent en
+  `exit 1`, ce qui est **attendu** et publié en CI sans bloquer.
+- Le harnais reste fonctionnel : `--dry-run` n'écrit rien, et l'import refuse une copie dont
+  l'audit ne correspond pas. La collecte peut donc être reprise à tout moment.
+
+**Rouvrir cette décision** implique de fournir les copies **avant** de toucher au moindre
+seuil (TRAVAIL 5).
 
 ---
 
@@ -360,16 +396,24 @@ décision produit, pas un chantier technique. Cela suppose aussi que la calibrat
 **A maintenant, B seulement après la calibration.** L'ordre importe : B avant la calibration
 reviendrait à afficher des notes qu'aucune copie réelle ne permet de défendre.
 
-### Décision du propriétaire
+### Décision du propriétaire — ENREGISTRÉE le 19 septembre 2026
 
 ```
-[ ] Option A — on assume le statut d'actif d'audit (recommandé)
+[X] Option A — on assume le statut d'actif d'audit (recommandé)                <-- RETENU
 [ ] Option B — on câble le moteur sur l'UI (implique de revoir la règle « aucune note »
                 et d'avoir terminé la calibration)
 ```
 
-Si option A, l'agent doit vérifier que l'en-tête de `js/engine.js` et le commentaire de
-`sw.js:23` restent exacts, et que `tests/engine*` couvre toujours le graphe.
+**Vérification effectuée** (option A = ne rien brancher, mais garantir que le statut déclaré
+est exact) :
+
+- `js/engine.js` — en-tête conforme ; le moteur n'est importé ni par `js/main.js` ni par
+  aucun module d'interface (`js/ui.js` le mentionne en commentaire seulement).
+- `sw.js:23` — le commentaire est exact, et `SHELL_ASSETS` (37 entrées) ne contient pas
+  `js/engine.js`. La seule entrée contenant « engine » est `js/services/sound-engine.js`,
+  qui est un module différent (audio), bien dans le graphe de démarrage.
+- Correction apportée : l'en-tête annonçait « ~2 600 lignes » ; la mesure donne
+  **2 342 lignes** (2 303 dans `js/domain/evaluation/**`, 39 dans `js/engine.js`).
 
 ---
 

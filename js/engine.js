@@ -6,7 +6,7 @@
    Import this file when a stable application-level API is preferable.
 
    STATUT — actif d'audit et de calibration, PAS code de production.
-   Ce graphe (engine.js + domain/evaluation/**, ~2 600 lignes) n'est
+   Ce graphe (engine.js + domain/evaluation/**, 2 342 lignes mesurées) n'est
    importé par aucun module d'interface ni par js/main.js : il est hors du
    graphe de démarrage, absent du précachage du service worker (sw.js:23 le
    documente) et absent du monofichier. Seuls les tests et le banc de
