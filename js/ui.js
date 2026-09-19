@@ -32,7 +32,7 @@ import {
   ensureLiveRegions
 } from "./ui/accessibility.js";
 import { createDialogManager } from "./ui/dialogs.js";
-import { escapeHTML, node, replaceContent, setInternalHTML } from "./ui/dom.js";
+import { escapeHTML, node, replaceContent, setInternalHTML, watchStickyHeaderOffset } from "./ui/dom.js";
 import { createScreenNavigator } from "./ui/navigation.js";
 import { mountOperationalStatus } from "./ui/operational-status.js";
 import { createGuideScreen } from "./ui/screens/guide.js";
@@ -363,6 +363,7 @@ export async function init() {
     );
     replaceContent(bar, [timerLabel, timerValue]);
     document.body.prepend(bar);
+    watchStickyHeaderOffset(bar);
   }
 
   timers.onChange = (which) => {

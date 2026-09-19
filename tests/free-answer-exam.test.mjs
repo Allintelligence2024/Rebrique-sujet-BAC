@@ -67,8 +67,12 @@ test("2021 ouvre une épreuve, pas une consultation", () => {
   const button = card.querySelector("[data-year]");
   assert.ok(button, "2021 doit avoir un bouton d'épreuve");
   assert.equal(button.disabled, false);
-  // L'épreuve est annoncée en copie libre, jamais comme du 4D.
-  assert.match(card.textContent, /وضع الإجابة الحرة|الورقة الحرة|غير مُشفَّرة/);
+  /* La carte est épurée : plus de badge ni de description affichée. L'annonce
+     « copie libre » reste portée par l'infobulle `title` (visible au survol)
+     et, surtout, par l'écran d'épreuve lui-même. */
+  assert.match(card.getAttribute("title"), /غير مُشفَّرة/);
+  assert.equal(card.querySelector(".badge"), null, "plus de badge sur la carte");
+  assert.equal(card.querySelector("p"), null, "plus de description sous le titre");
 });
 
 test("l'écran de choix annonce l'absence de consignes encodées", () => {

@@ -130,9 +130,11 @@ test("les neuf sessions Maths 2013–2020 ouvrent une épreuve, plus une consult
     const button = card.querySelector("[data-year]");
     assert.equal(button.dataset.year, id);
     assert.equal(button.disabled, false, `${id} doit être cliquable`);
-    assert.match(card.textContent, /الورقة الحرة|غير مُشفَّرة/, `${year} doit annoncer la copie libre`);
+    /* La carte est épurée (ni badge ni description) : elle garde l'information
+       en infobulle `title`, jamais en texte affiché. */
+    assert.match(card.getAttribute("title"), /غير مُشفَّرة/, `${year} garde l'honnêteté en infobulle`);
+    assert.equal(card.querySelector(".badge"), null, `${year} ne doit plus afficher de badge`);
   }
-  assert.match($("#hub-stream-caption").textContent, /2013–2026/);
 });
 
 test("la session exceptionnelle 2017 garde ses propres fichiers, pas ceux de juin", () => {

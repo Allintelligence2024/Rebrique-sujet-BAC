@@ -139,15 +139,24 @@ body {
   }
 }
 
+/* L'en-tête reste collé en haut du défilement : changer de شعبة ou couper le
+   son ne doit pas exiger de remonter la page. Le décalage `top` est piloté
+   par `--sticky-offset`, mesuré en JS sur la hauteur réelle du bandeau de
+   chronomètre (lui aussi collant) — sans quoi les deux se superposeraient.
+   Le fond est opaque : sans lui, les cartes défileraient au travers. */
 header.screen-head {
+  position: sticky;
+  top: var(--sticky-offset, 0px);
+  z-index: 30;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
-  padding: 0.5rem 0 1rem;
+  padding: 0.75rem 0 1rem;
   border-bottom: 1px solid var(--line);
   margin-bottom: 1.25rem;
+  background: var(--bg);
 }
 .brand {
   display: flex;
@@ -741,10 +750,6 @@ label.lbl {
 .year-card[data-kind="consult"] {
   border-color: rgba(99, 102, 241, 0.28);
 }
-.hub-stream-bar {
-  align-items: flex-start;
-}
-
 .card-vign {
   border-radius: 2rem;
   overflow: hidden;
@@ -1333,10 +1338,13 @@ footer.screen-foot {
 }
 
 /* Ambient sound button */
+/* Même vert que les boutons d'épreuve : l'élève ne devait pas avoir à
+   deviner quelle couleur fait quoi. L'état « son activé » reste distinguable
+   par le remplissage (et par l'icône 🔇 / 🔊). */
 .btn-sound {
-  background: var(--panel-2);
-  border: 1px solid var(--line);
-  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--emerald);
+  color: var(--emerald-soft);
   font-size: 0.78rem;
   font-weight: 700;
   border-radius: 0.7rem;
@@ -1348,13 +1356,14 @@ footer.screen-foot {
   transition: all 0.2s ease;
 }
 .btn-sound:hover {
-  color: var(--ink);
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--emerald-soft);
   border-color: var(--emerald);
 }
 .btn-sound.active {
-  background: rgba(16, 185, 129, 0.15);
-  border-color: var(--emerald);
-  color: var(--emerald-soft);
+  background: #047857;
+  border-color: #047857;
+  color: #fff;
 }
 
 /* --- Islamic Duas & Adkar (أدعية وأذكار الامتحان) -------------- */
@@ -1412,9 +1421,9 @@ footer.screen-foot {
   margin-top: auto;
 }
 .btn-adkar {
-  background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.35);
-  color: var(--emerald-soft);
+  background: #047857;
+  border: 1px solid #047857;
+  color: #fff;
   font-size: 0.78rem;
   font-weight: 800;
   border-radius: 0.7rem;
@@ -1426,9 +1435,9 @@ footer.screen-foot {
   transition: all 0.2s ease;
 }
 .btn-adkar:hover {
-  background: var(--emerald);
+  background: #065f46;
+  border-color: #065f46;
   color: #fff;
-  border-color: var(--emerald);
 }
 
 @media (prefers-reduced-motion: reduce) {

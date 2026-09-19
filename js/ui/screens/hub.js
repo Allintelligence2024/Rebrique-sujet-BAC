@@ -109,11 +109,10 @@ export function createHubScreen(deps) {
           <div class="brand-icon" aria-hidden="true">٤</div>
           <div>
             <h1>${APP_CONFIG.appTitle}</h1>
-            <p>${APP_CONFIG.appSubtitle}</p>
           </div>
         </div>
         <div class="flex gap-2 hub-tools">
-          <button class="btn btn-indigo btn-sm" id="btn-stream-fab" aria-live="polite">
+          <button class="btn btn-emerald btn-sm" id="btn-stream-fab" aria-live="polite">
             <span class="stream-fab-kicker">الشعبة:</span> <strong id="stream-fab-label"></strong>
           </button>
           <button class="btn-sound" id="btn-hub-sound">🔇 صوت</button>
@@ -121,21 +120,10 @@ export function createHubScreen(deps) {
         </div>
       </header>
 
-      <div class="flex spread mb-1 hub-stream-bar">
-        <p class="small text-muted mt-0 mb-1" id="hub-stream-caption"></p>
-      </div>
       <div class="grid grid-cards" id="year-grid"></div>
       <footer class="screen-foot">منصة إمتحان بكالوريا علوم الطبيعة والحياة. <a href="legal/privacy.html">الخصوصية</a> · <a href="legal/legal-notice.html">المعلومات القانونية</a></footer>
     </div>`
     );
-
-    const caption = $("#hub-stream-caption");
-    caption.textContent =
-      streamId === "se"
-        ? `الشعبة: ${stream.label} — مواضيع 2013–2026.`
-        : streamId === "m"
-          ? `الشعبة: ${stream.label} — مواضيع 2013–2026 (2021–2026 بتمارين مُشفَّرة، 2013–2020 بورقة حرة).`
-          : `${stream.label} — لا موضوع محمَّل بعد في هذا القسم.`;
 
     const fab = $("#btn-stream-fab");
     fab.setAttribute("aria-label", `القسم الحالي: ${stream.label}. اضغط للانتقال إلى ${other.label}`);
@@ -186,10 +174,7 @@ export function createHubScreen(deps) {
     });
     const stack = node("div", { className: "stack" });
     const header = node("div", { className: "flex spread" });
-    header.append(
-      node("span", { className: "badge badge-indigo", text: "غير متوفر" }),
-      node("span", { className: "mono bold year-number", text: "—" })
-    );
+    header.append(node("span", { className: "mono bold year-number", text: "—" }));
     const isForeign = stream.id === "foreign";
     const copy = node("div");
     copy.append(
@@ -257,20 +242,14 @@ export function createHubScreen(deps) {
     });
     const stack = node("div", { className: "stack" });
     const header = node("div", { className: "flex spread" });
-    header.append(
-      node("span", { className: `badge badge-${y.theme}`, text: y.badge }),
-      node("span", { className: "mono bold year-number", text: cardId })
-    );
+    header.append(node("span", { className: "mono bold year-number", text: cardId }));
     const copy = node("div");
-    copy.append(
-      node("h3", { className: "mt-0 mb-1", text: y.label }),
-      node("p", { className: "small text-muted mt-0", text: note })
-    );
+    copy.append(node("h3", { className: "mt-0 mb-1", text: y.label }));
     stack.append(header, copy);
-    const buttonTheme =
-      y.theme === "emerald" ? "btn-emerald" : y.theme === "indigo" ? "btn-indigo" : "btn-amber";
+    /* Un seul vert pour toutes les années : la couleur ne doit plus laisser
+       croire que deux boutons identiques ouvrent deux choses différentes. */
     const button = node("button", {
-      className: `btn btn-block ${buttonTheme}`,
+      className: "btn btn-block btn-emerald",
       text: disabled ? "غير متاح بعد" : "▶ ابدأ الإمتحان",
       attrs: disabled ? { disabled: "" } : {},
       dataset: { year: y.id }
@@ -288,29 +267,16 @@ export function createHubScreen(deps) {
     });
     const stack = node("div", { className: "stack" });
     const header = node("div", { className: "flex spread" });
-    header.append(
-      node("span", { className: "badge badge-indigo", text: "موضوع رسمي" }),
-      node("span", { className: "mono bold year-number", text: item.id })
-    );
-    // Le sujet est lu dans l'application dès qu'un PDF local existe ; le lien
-    // dzexams ne sert plus que de source de repli.
+    header.append(node("span", { className: "mono bold year-number", text: item.id }));
     const localPdfs = item.entries.flatMap((entry) => entry.localPdfUrls || []);
     const copy = node("div");
-    copy.append(
-      node("h3", { className: "mt-0 mb-1", text: `بكالوريا الجزائر دورة ${item.id}` }),
-      node("p", {
-        className: "small text-muted mt-0",
-        text: localPdfs.length
-          ? "يُقرأ الموضوعان داخل التطبيق. وضع الإمتحان غير متاح: لم تُشفَّر تعليمات هذه الدورة بعد."
-          : "الموضوعان والتصحيح النموذجي — للاستشارة فقط."
-      })
-    );
+    copy.append(node("h3", { className: "mt-0 mb-1", text: `بكالوريا الجزائر دورة ${item.id}` }));
     stack.append(header, copy);
     const actions = node("div", { className: "stack" });
     if (localPdfs.length) {
       localPdfs.forEach((href, index) => {
         const button = node("button", {
-          className: "btn btn-block btn-indigo",
+          className: "btn btn-block btn-emerald",
           text: `📄 قراءة الموضوع ${index + 1} في التطبيق`,
           dataset: { consultPdf: href }
         });
