@@ -318,16 +318,12 @@ export function createSimulationController(deps) {
      la visionneuse, un champ de rédaction par exercice — ou pour le sujet
      entier quand le découpage n'est pas mesurable — le chronomètre officiel
      et « ✓ تسليم الورقة ». Aucune note, aucun corrigé : il n'y a ici rien à
-     corriger, seulement l'armature mesurée sur le fichier. */
-  function freeModeNotice(subject) {
-    const wholeSubject = (subject.exercises || []).some((exercise) => exercise.wholeSubject === true);
-    return (
-      "وضع «الورقة الحرة»: تعليمات هذه الدورة غير مُشفَّرة لأن ملفها الرسمي غير قابل للاستخراج. " +
-      "اقرأ الموضوع من الملف أعلاه واكتب إجابتك الكاملة " +
-      (wholeSubject ? "في خانة الموضوع" : "لكل تمرين في الخانة المخصصة") +
-      ". لا يوجد تصحيح ولا نقطة في هذا الوضع."
-    );
-  }
+     corriger, seulement l'armature mesurée sur le fichier.
+
+     Le long encadré qui expliquait tout cela a été retiré le 2026-09-19 à la
+     demande du propriétaire. Ce qui reste affiché suffit à ne rien promettre
+     de faux : chaque espace de rédaction porte « البارم غير مُقاس », et
+     l'épreuve n'affiche ni corrigé ni note. */
 
   /* Barème MESURÉ ou barème NON MESURÉ : les deux s'affichent honnêtement.
      Sur un PDF scanné ou aux chiffres corrompus, le barème officiel n'est pas
@@ -379,7 +375,6 @@ export function createSimulationController(deps) {
             ? `<div class="feedback good mb-2" id="simulation-review-notice" role="status">تم التسليم. هذه شاشة إعادة القراءة؛ الإجابات مقفلة ولا تعرض أي نقطة آلية.</div>`
             : ""
         }
-        <div class="feedback mid mb-2" id="free-mode-notice" role="note">${escapeHTML(freeModeNotice(subject))}</div>
         <div class="workspace-tools" aria-label="أدوات الاختبار">
           <button class="btn btn-indigo btn-sm" id="simulation-pdf">📄 الموضوع</button>
           ${completed ? "" : `<button class="btn btn-rose btn-sm" id="simulation-finish">✓ تسليم الورقة</button>`}

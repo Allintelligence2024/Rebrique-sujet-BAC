@@ -14,7 +14,7 @@ const YEAR_2015_SE = {
   id: "2015",
   stream: "se",
   calendarYear: "2015",
-  label: "بكالوريا الجزائر دورة 2015",
+  label: "بكالوريا الجزائر دورة 2015 — شعبة علوم تجريبية",
   badge: "أرشيف مُعاد بناؤه",
   theme: "indigo",
   enabled: true,

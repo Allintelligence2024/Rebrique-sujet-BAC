@@ -86,8 +86,14 @@ test("l'écran de choix annonce l'absence de consignes encodées", () => {
     assert.equal(card.dataset.answerMode, "free");
     assert.equal(card.dataset.simulationEligible, "false", "aucune note n'est calculable");
   }
-  assert.match($("#view-strategy").textContent, /غير مُشفَّرة/);
   assert.doesNotMatch($("#view-strategy").textContent, /جرد المهام: \d+ مهمة/);
+  /* Le barème de 2021 SE EST mesuré (5 + 7 + 8) : la carte garde donc ses
+     champs d'estimation. Ce qu'elle ne doit plus afficher, c'est un `null`
+     là où un nombre est attendu (bug corrigé le 2026-09-19 : « 0.00 نقطة »
+     et « ت1: null (nullن) » sur toutes les armatures « copie libre »). */
+  assert.doesNotMatch($("#view-strategy").textContent, /null/);
+  assert.match($("#view-strategy .subject-card-head").textContent, /20\.00 نقطة/);
+  assert.equal($$("#view-strategy .calc-input").length, 6);
 });
 
 test("l'épreuve affiche le sujet officiel et un champ de rédaction par exercice", () => {
@@ -113,8 +119,10 @@ test("l'épreuve affiche le sujet officiel et un champ de rédaction par exercic
   assert.match($("#view-workspace").textContent, /7 نقطة/);
   assert.match($("#view-workspace").textContent, /8 نقطة/);
 
-  // Ce qui ne doit jamais apparaître : une consigne inventée, un corrigé, une note.
-  assert.match($("#view-workspace").textContent, /غير مُشفَّرة/);
+  /* Ce qui ne doit jamais apparaître : une consigne inventée, un corrigé, une
+     note. Le long encadré « وضع الورقة الحرة » a été retiré de l'écran à la
+     demande du propriétaire : ce qui reste affiché suffit à ne rien promettre
+     de faux (aucune consigne, aucun corrigé, aucune note, aucun barème). */
   assert.equal($("#view-workspace .bac-consigne"), null, "aucune consigne ne doit être affichée");
   assert.equal($("#view-workspace [data-task-answer]"), null, "aucune tâche inventée");
 

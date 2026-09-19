@@ -51,7 +51,7 @@ export const YEAR_2021_SE = {
   id: "2021",
   stream: "se",
   calendarYear: "2021",
-  label: "بكالوريا الجزائر دورة 2021",
+  label: "بكالوريا الجزائر دورة 2021 — شعبة علوم تجريبية",
   badge: "دورة رسمية",
   theme: "emerald",
   enabled: true,

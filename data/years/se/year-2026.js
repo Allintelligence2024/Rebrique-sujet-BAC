@@ -31,7 +31,7 @@ export const YEAR_2026_SE = {
   id: "2026",
   stream: "se",
   calendarYear: "2026",
-  label: "بكالوريا الجزائر دورة 2026",
+  label: "بكالوريا الجزائر دورة 2026 — شعبة علوم تجريبية",
   badge: "دورة رسمية",
   theme: "emerald",
   enabled: true,

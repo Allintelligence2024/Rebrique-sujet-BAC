@@ -102,8 +102,18 @@ export function createStrategyScreen(deps) {
     );
   }
 
+  /* Barème MESURÉ ou barème NON MESURÉ : une armature « copie libre » porte
+     `max: null`. L'additionner produisait « 0.00 نقطة » et « ت1: null (nullن) »
+     sous chaque exercice — un écran de choix illisible, vu en Maths 2013–2020
+     et en SE 2021. Quand le barème n'existe pas, il n'y a rien à estimer :
+     ni champ de saisie, ni total chiffré, ni comparaison entre sujets. */
+  function barèmeMeasurable(subject) {
+    return (subject.exercises || []).every((exercise) => exercise.max !== null);
+  }
+
   function calcCard(year, subject, theme) {
-    const total = subject.exercises.reduce((sum, exercise) => sum + exercise.max, 0);
+    const measurable = barèmeMeasurable(subject);
+    const total = measurable ? subject.exercises.reduce((sum, exercise) => sum + exercise.max, 0) : null;
     const coverage = officialCoverageForSubject(year, subject);
     const inputs = subject.exercises
       .map((exercise) => {
@@ -114,23 +124,29 @@ export function createStrategyScreen(deps) {
     const officialTasks = (officialTaskInventoryFor(store.state.yearId, subject.id)?.tasks || []).filter(
       (task) => task.promptSource === "official"
     ).length;
+    /* Armature « copie libre » : plus de note — la consigne à l'élève est
+       dans l'épreuve (et « البارم غير مُقاس » suffit ici). */
     const inventoryNote = coverage.freeAnswerEligible
-      ? `<p class="small text-muted inventory-note" id="inventory-note-${subject.id}">وضع الإجابة الحرة: تعليمات هذه الدورة غير مُشفَّرة (ملفها غير قابل للاستخراج). الإمتحان مفتوح — اقرأ الموضوع واكتب إجابتك — بلا تصحيح ولا نقطة.</p>`
+      ? ""
       : `<p class="small text-muted inventory-note" id="inventory-note-${subject.id}">جرد المهام: ${coverage.knownTaskCount} مهمة، منها ${officialTasks} تعليمة رسمية موثّقة.</p>`;
     return `
     <div class="card stack subject-card" data-subject-coverage="${coverage.inventoryStatus}" data-simulation-eligible="${coverage.simulationEligible}" data-exam-openable="${examOpenable(coverage)}" data-answer-mode="${coverage.freeAnswerEligible ? "free" : "inventory"}">
       <div>
         <div class="flex spread subject-card-head">
           <span class="badge badge-${theme}">الموضوع 0${subject.id}</span>
-          <span class="mono small text-dim">${total.toFixed(2)} نقطة</span>
+          <span class="mono small text-dim" data-bareme="${measurable ? "measured" : "unmeasured"}">${measurable ? `${total.toFixed(2)} نقطة` : "البارم غير مُقاس"}</span>
         </div>
-        <div class="stack mt-1">${inputs}</div>
-        <div class="flex spread small mt-1 subject-estimate">
+        ${measurable ? `<div class="stack mt-1">${inputs}</div>` : ""}
+        ${
+          measurable
+            ? `<div class="flex spread small mt-1 subject-estimate">
           <span class="bold text-muted">مجموع تقدير الموضوع ${subject.id}:</span><span class="mono text-${theme}" id="s${subject.id}-total"></span>
-        </div>
+        </div>`
+            : ""
+        }
       </div>
       <div class="stack subject-mode-actions">
-        <button class="btn btn-block btn-${theme}" data-confirm="${subject.id}" data-session-mode="bac">ابدأ الإمتحان</button>
+        <button class="btn btn-block btn-emerald" data-confirm="${subject.id}" data-session-mode="bac">ابدأ الإمتحان</button>
         ${inventoryNote}
       </div>
     </div>`;
@@ -162,6 +178,7 @@ export function createStrategyScreen(deps) {
 
   function subjectEstimate(subject) {
     return subject.exercises.reduce((sum, exercise) => {
+      if (exercise.max === null) return sum;
       const input = $(`[data-subject="${subject.id}"][data-exercise="${exercise.number}"]`);
       const value = Number.parseFloat(input?.value || "0");
       return sum + (Number.isFinite(value) ? Math.min(exercise.max, Math.max(0, value)) : 0);
@@ -172,18 +189,35 @@ export function createStrategyScreen(deps) {
     const year = yearObj(store.state.yearId);
     if (!year) return;
     const estimates = year.sujets.map((subject) => {
-      const total = subject.exercises.reduce((sum, exercise) => sum + exercise.max, 0);
-      const estimate = subjectEstimate(subject);
+      const measurable = barèmeMeasurable(subject);
+      const total = measurable ? subject.exercises.reduce((sum, exercise) => sum + exercise.max, 0) : null;
+      const estimate = measurable ? subjectEstimate(subject) : null;
       const output = $(`#s${subject.id}-total`);
-      if (output) output.textContent = `${estimate.toFixed(2)} / ${total.toFixed(2)}`;
-      return { subject, estimate, total, fraction: total ? estimate / total : 0 };
+      if (output) output.textContent = measurable ? `${estimate.toFixed(2)} / ${total.toFixed(2)}` : "";
+      return {
+        subject,
+        estimate,
+        total,
+        measurable,
+        fraction: measurable && total ? estimate / total : null
+      };
     });
-    const sorted = [...estimates].sort((a, b) => b.fraction - a.fraction);
-    const best = sorted[0];
-    const second = sorted[1];
     const recommendation = $("#recommendation-text");
     const gain = $("#recommendation-gain");
-    if (!best || !recommendation || !gain) return;
+    if (!recommendation || !gain) return;
+    /* Aucun barème mesurable : comparer des sujets sur 0 point n'a pas de
+       sens et affichait « 0.0% ثقة ذاتية ». On le dit à la place. */
+    const comparable = estimates.filter((entry) => entry.measurable && entry.total > 0);
+    if (comparable.length === 0) {
+      recommendation.textContent =
+        "لا تقدير ممكن: بارم هذه الدورة غير مُقاس — اختر الموضوع الذي تفهم وثائقه وتعليماته بوضوح أكبر.";
+      gain.textContent = "";
+      return;
+    }
+    const sorted = [...comparable].sort((a, b) => b.fraction - a.fraction);
+    const best = sorted[0];
+    const second = sorted[1];
+    if (!best) return;
     if (!second || Math.abs(best.fraction - second.fraction) < 0.0001) {
       recommendation.textContent = "التقديران متكافئان — اختر الموضوع الذي تفهم وثائقه وتعليماته بوضوح أكبر.";
       gain.textContent = `${(best.fraction * 100).toFixed(1)}% ثقة ذاتية`;

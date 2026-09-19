@@ -193,6 +193,35 @@ test("rien n'est encodé dans les huit armatures : aucun pôle, aucun inventaire
   }
 });
 
+/* Régression du 2026-09-19 (vue en épreuve Maths 2013–2020, et en SE 2021) :
+   l'écran de choix additionnait des `max: null` et affichait « 0.00 نقطة »,
+   « ت1: null (nullن) » et « 0.0% ثقة ذاتية ». Un barème non mesuré ne se
+   remplace pas par un zéro : il s'annonce, et il n'y a alors rien à estimer. */
+test("l'écran de choix d'une armature n'affiche aucun « null » et n'invite pas à estimer", () => {
+  for (const id of ["2016-m", "2013-m", "2017-em"]) {
+    goToMathsStream();
+    click(`#year-grid [data-year="${id}"]`);
+    click("#guide-next");
+
+    const text = $("#view-strategy").textContent;
+    assert.doesNotMatch(text, /null/, `${id} : aucun « null » ne doit fuiter dans l'écran`);
+    assert.doesNotMatch(text, /0\.00 نقطة/, `${id} : pas de total nul affiché comme un barème`);
+
+    for (const card of $$("#view-strategy [data-subject-coverage]")) {
+      assert.equal(card.dataset.answerMode, "free");
+      assert.equal(card.dataset.examOpenable, "true");
+      assert.match(card.querySelector(".subject-card-head").textContent, /البارم غير مُقاس/);
+      assert.equal(card.querySelector(".calc-input"), null, `${id} : rien à estimer sans barème`);
+      assert.equal(card.querySelector(".inventory-note"), null, `${id} : plus de note affichée`);
+      const button = card.querySelector("[data-confirm]");
+      assert.match(button.className, /btn-emerald/, "même vert que les autres boutons d'ouverture");
+    }
+    assert.match($("#recommendation-text").textContent, /بارم هذه الدورة غير مُقاس/);
+    assert.equal($("#recommendation-gain").textContent, "");
+    click("#strategy-exit");
+  }
+});
+
 test("2016 (découpage mesuré) : une copie par exercice, sans aucun nombre de points", () => {
   goToMathsStream();
   openExam("2016-m");
