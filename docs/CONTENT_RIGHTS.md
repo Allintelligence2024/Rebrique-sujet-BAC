@@ -12,6 +12,8 @@ _Version 1.1 — 19 septembre 2026._
 
 ### Retrait du 19 septembre 2026 — 32 PDF bruts, non servis
 
+Retrait effectué par le commit `97e60c4` — index Git uniquement.
+
 Les 32 PDF bruts (`M/` : 15 fichiers, 29,92 Mio ; `SE/` : 17 fichiers, 50,08 Mio ; soit
 80,00 Mio) ont été **retirés de l'index Git** faute de preuve de redistribution. Ils
 n'étaient ni servis (`PUBLIC_DIRECTORIES`, `server.mjs:52`) ni lus à l'exécution : un seul
