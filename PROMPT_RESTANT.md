@@ -26,8 +26,8 @@ Ne rien refaire de ce qui suit : c'est **terminé et vérifié sur le distant**.
 
 ### Les trois portes restantes et leur cause
 
-- **P1.1** — `0/40 inventaires complets`, 408 tâches connues → dépend de la **relecture humaine**.
-- **P1.2** — `0/40 sujets à 100 % de couverture explicite` → idem.
+- **P1.1** — `0/58 inventaires complets`, 408 tâches connues → dépend de la **relecture humaine**.
+- **P1.2** — `0/58 sujets à 100 % de couverture explicite` → idem.
 - **P1.5 / P2.7** — `0/2235 copies`, `0/5 élèves` → dépend de la **décision 2**
   (renoncement acté, donc volontairement bloqués).
 
@@ -147,14 +147,20 @@ npm run pdftext:status
 
 | classe             | sujets | sens                                     |
 | ------------------ | ------ | ---------------------------------------- |
-| `propre`           | 6      | arabe logique, en-tête officiel verbatim |
-| `transposé`        | 11     | ordre des ligatures inversé              |
+| `propre`           | 8      | arabe logique, en-tête officiel verbatim |
+| `transposé`        | 20     | ordre des ligatures inversé              |
 | `formes-visuelles` | 4      | Arabic Presentation Forms                |
-| `scan`             | 18     | aucune couche texte                      |
-| `indéterminé`      | 1      | aucun marqueur reconnu                   |
+| `scan`             | 24     | aucune couche texte                      |
+| `indéterminé`      | 2      | aucun marqueur reconnu                   |
 
-Les 6 sujets `propre` : `2020/SE1`, `2020/SE2`, `2021/SE1`, `2021/SE2`, `2021-m/M1`,
-`2021-m/M2`.
+Les 8 sujets `propre` : `2020/SE1`, `2020/SE2`, `2021/SE1`, `2021/SE2`, `2021-m/M1`,
+`2021-m/M2`, `2020-m/M1`, `2020-m/M2`.
+
+**Déjà tranché (décision 4)** : les 18 sujets Maths 2013–2020 (+ la session exceptionnelle
+2017) sont des armatures « copie libre » — épreuve ouverte, aucune consigne encodée, barème
+non mesuré. Ils ne sont donc **pas** une cible du TRAVAIL C : celui-ci concerne les 38 sujets
+encodés en 4D (58 − 18 armatures Maths − 2 armatures SE 2021) dont les inventaires
+doivent être complétés, puis certifiés par relecture.
 
 ### Pourquoi l'agent ne peut pas encoder de lui-même
 
@@ -163,6 +169,12 @@ Même sur les mieux classés, la mesure montre des **chiffres corrompus** — le
 (248 sur `2021/SE1`, 59,6 % des tokens font 3 lettres ou moins). Recopier sans relecture
 injecterait des consignes **et des barèmes faux**. La règle est intangible : **aucune
 consigne ne passe en `official` sans relecture humaine**.
+
+### Ce que l'agent NE doit PAS faire ici
+
+Ne pas « terminer » une armature en y recopiant des consignes ou un barème lu dans un PDF de
+ce corpus : les chiffres y sont corrompus et 6 des fichiers Maths 2013–2015 n'ont aucune
+couche texte. Une armature « copie libre » reste une armature jusqu'à la transcription relue.
 
 ### Procédure, une fois une transcription fournie
 

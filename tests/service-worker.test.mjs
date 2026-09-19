@@ -127,7 +127,9 @@ test("chaque entrée du shell existe et chaque module JS est justifié", () => {
 });
 
 test("tous les payloads d'année sont découpés, catalogués et importés dynamiquement", () => {
-  assert.equal(lazyYearFiles.length, 20);
+  /* 14 SE + 6 Maths 4D + 8 armatures « copie libre » Maths 2013–2020
+     + la session exceptionnelle 2017 Maths. */
+  assert.equal(lazyYearFiles.length, 29);
   assert.equal(new Set(lazyYearFiles).size, lazyYearFiles.length);
   const subjectsSource = readFileSync(join(root, "data/subjects.js"), "utf8");
   for (const path of lazyYearFiles) {

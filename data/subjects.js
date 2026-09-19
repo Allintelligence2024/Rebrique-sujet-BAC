@@ -134,6 +134,20 @@ export function examMinutesForYear(year) {
 
 const catalogEntry = (entry) => Object.freeze(entry);
 
+/** Armatures « copie libre » Maths 2013–2020 : thème de la carte et nombre
+ *  d'espaces de rédaction par sujet (1 = le découpage n'a pas pu être mesuré
+ *  sur le fichier, la copie porte alors sur le sujet entier). */
+const FREE_COPY_M_YEARS = Object.freeze({
+  2013: { theme: "emerald", exercises: 1 },
+  2014: { theme: "amber", exercises: 1 },
+  2015: { theme: "indigo", exercises: 1 },
+  2016: { theme: "purple", exercises: 2 },
+  2017: { theme: "rose", exercises: 2 },
+  2018: { theme: "emerald", exercises: 2 },
+  2019: { theme: "amber", exercises: 2 },
+  2020: { theme: "indigo", exercises: 2 }
+});
+
 /**
  * Métadonnées suffisantes pour afficher le hub sans télécharger les sujets.
  * `modulePath` est public afin que les audits PWA puissent prouver le découpage,
@@ -263,7 +277,46 @@ export const YEAR_CATALOG = Object.freeze([
       exerciseCounts: [2, 2],
       modulePath: `data/years/m/year-${calendarYear}.js`
     })
-  )
+  ),
+  /* Maths 2013–2020 : armatures « copie libre ». Aucune consigne encodée
+     (scan sans couche texte, ou chiffres corrompus) et barème non mesuré —
+     voir le champ `freeMeasurements` de chaque payload. Le découpage en
+     exercices n'est annoncé ici que lorsqu'il a été MESURÉ sur le fichier
+     (2 exercices) ; sinon la copie libre porte sur le sujet entier (1). */
+  ...Object.entries(FREE_COPY_M_YEARS).map(([calendarYear, shape]) =>
+    catalogEntry({
+      id: `${calendarYear}-m`,
+      stream: "m",
+      calendarYear,
+      label: `بكالوريا الجزائر دورة ${calendarYear} — شعبة رياضيات`,
+      badge: "ورقة حرة",
+      theme: shape.theme,
+      enabled: true,
+      // Doit rester identique au champ du payload (test de cohérence).
+      answerMode: "free",
+      subjectCount: 2,
+      exerciseCounts: [shape.exercises, shape.exercises],
+      modulePath: `data/years/m/year-${calendarYear}.js`
+    })
+  ),
+  /* Session exceptionnelle 2017 Maths : des fichiers et des sujets DISTINCTS
+     de la session principale (même millésime, deux épreuves). Sans cette
+     entrée, ces deux PDF servis par l'application devenaient inatteignables
+     dès lors que 2017 ne s'affiche plus en carte de consultation. */
+  catalogEntry({
+    id: "2017-em",
+    stream: "m",
+    calendarYear: "2017",
+    session: "exceptional",
+    label: "بكالوريا الجزائر دورة 2017 الاستثنائية — شعبة رياضيات",
+    badge: "ورقة حرة",
+    theme: "rose",
+    enabled: true,
+    answerMode: "free",
+    subjectCount: 2,
+    exerciseCounts: [2, 2],
+    modulePath: "data/years/m/year-2017-exceptional.js"
+  })
 ]);
 
 // Les spécificateurs littéraux sont intentionnels : le navigateur ne télécharge
@@ -289,7 +342,16 @@ const YEAR_LOADERS = Object.freeze({
   "2023-m": () => import("./years/m/year-2023.js"),
   "2024-m": () => import("./years/m/year-2024.js"),
   "2025-m": () => import("./years/m/year-2025.js"),
-  "2026-m": () => import("./years/m/year-2026.js")
+  "2026-m": () => import("./years/m/year-2026.js"),
+  "2013-m": () => import("./years/m/year-2013.js"),
+  "2014-m": () => import("./years/m/year-2014.js"),
+  "2015-m": () => import("./years/m/year-2015.js"),
+  "2016-m": () => import("./years/m/year-2016.js"),
+  "2017-m": () => import("./years/m/year-2017.js"),
+  "2017-em": () => import("./years/m/year-2017-exceptional.js"),
+  "2018-m": () => import("./years/m/year-2018.js"),
+  "2019-m": () => import("./years/m/year-2019.js"),
+  "2020-m": () => import("./years/m/year-2020.js")
 });
 
 const loadedYears = new Map();

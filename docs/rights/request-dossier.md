@@ -22,22 +22,22 @@ Les 58 fichiers ci-dessous sont des contenus tiers servis au public (`subjects/`
 
 | Fichier | Année | Filière | Session | Pages | URL source (manifeste) | URL externe mesurée (`data/years`) |
 | --- | --- | --- | --- | --- | --- | --- |
-| `subjects/M/2013/sujet-1.pdf` | 2013 | M | main | 2 | https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-2770867.pdf | non documenté |
-| `subjects/M/2013/sujet-2.pdf` | 2013 | M | main | 2 | https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-2770867.pdf | non documenté |
-| `subjects/M/2014/sujet-1.pdf` | 2014 | M | main | 2 | https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-2369148.pdf | non documenté |
-| `subjects/M/2014/sujet-2.pdf` | 2014 | M | main | 2 | https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-2369148.pdf | non documenté |
-| `subjects/M/2015/sujet-1.pdf` | 2015 | M | main | 2 | https://www.dzexams.com/uploads/sujets/officiels/bac/2015/dzexams-bac-sciences-2723927.pdf | non documenté |
-| `subjects/M/2015/sujet-2.pdf` | 2015 | M | main | 2 | https://www.dzexams.com/uploads/sujets/officiels/bac/2015/dzexams-bac-sciences-2723927.pdf | non documenté |
-| `subjects/M/2016/sujet-1.pdf` | 2016 | M | main | 2 | non documenté | non documenté |
-| `subjects/M/2016/sujet-2.pdf` | 2016 | M | main | 2 | non documenté | non documenté |
-| `subjects/M/2017/sujet-1.pdf` | 2017 | M | main | 2 | https://www.dzexams.com/uploads/sujets/officiels/bac/2017/dzexams-bac-sciences-2275712.pdf | non documenté |
-| `subjects/M/2017/sujet-2.pdf` | 2017 | M | main | 2 | https://www.dzexams.com/uploads/sujets/officiels/bac/2017/dzexams-bac-sciences-2275712.pdf | non documenté |
-| `subjects/M/2018/sujet-1.pdf` | 2018 | M | main | 3 | https://www.dzexams.com/uploads/sujets/officiels/bac/2018/dzexams-bac-sciences-1967487.pdf | non documenté |
-| `subjects/M/2018/sujet-2.pdf` | 2018 | M | main | 3 | https://www.dzexams.com/uploads/sujets/officiels/bac/2018/dzexams-bac-sciences-1967487.pdf | non documenté |
-| `subjects/M/2019/sujet-1.pdf` | 2019 | M | main | 3 | https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-2280992.pdf | non documenté |
-| `subjects/M/2019/sujet-2.pdf` | 2019 | M | main | 2 | https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-2280992.pdf | non documenté |
-| `subjects/M/2020/sujet-1.pdf` | 2020 | M | main | 3 | non documenté | non documenté |
-| `subjects/M/2020/sujet-2.pdf` | 2020 | M | main | 2 | non documenté | non documenté |
+| `subjects/M/2013/sujet-1.pdf` | 2013 | M | main | 2 | https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-2770867.pdf | https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-2770867.pdf |
+| `subjects/M/2013/sujet-2.pdf` | 2013 | M | main | 2 | https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-2770867.pdf | https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-2770867.pdf |
+| `subjects/M/2014/sujet-1.pdf` | 2014 | M | main | 2 | https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-2369148.pdf | https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-2369148.pdf |
+| `subjects/M/2014/sujet-2.pdf` | 2014 | M | main | 2 | https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-2369148.pdf | https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-2369148.pdf |
+| `subjects/M/2015/sujet-1.pdf` | 2015 | M | main | 2 | https://www.dzexams.com/uploads/sujets/officiels/bac/2015/dzexams-bac-sciences-2723927.pdf | https://www.dzexams.com/uploads/sujets/officiels/bac/2015/dzexams-bac-sciences-2723927.pdf |
+| `subjects/M/2015/sujet-2.pdf` | 2015 | M | main | 2 | https://www.dzexams.com/uploads/sujets/officiels/bac/2015/dzexams-bac-sciences-2723927.pdf | https://www.dzexams.com/uploads/sujets/officiels/bac/2015/dzexams-bac-sciences-2723927.pdf |
+| `subjects/M/2016/sujet-1.pdf` | 2016 | M | main | 2 | non documenté | https://www.dzexams.com/ar/annales/TW9GY3FMeVdkeFBBNGIwMmppdi9xQT09 |
+| `subjects/M/2016/sujet-2.pdf` | 2016 | M | main | 2 | non documenté | https://www.dzexams.com/ar/annales/TW9GY3FMeVdkeFBBNGIwMmppdi9xQT09 |
+| `subjects/M/2017/sujet-1.pdf` | 2017 | M | main | 2 | https://www.dzexams.com/uploads/sujets/officiels/bac/2017/dzexams-bac-sciences-2275712.pdf | https://www.dzexams.com/uploads/sujets/officiels/bac/2017/dzexams-bac-sciences-2275712.pdf |
+| `subjects/M/2017/sujet-2.pdf` | 2017 | M | main | 2 | https://www.dzexams.com/uploads/sujets/officiels/bac/2017/dzexams-bac-sciences-2275712.pdf | https://www.dzexams.com/uploads/sujets/officiels/bac/2017/dzexams-bac-sciences-2275712.pdf |
+| `subjects/M/2018/sujet-1.pdf` | 2018 | M | main | 3 | https://www.dzexams.com/uploads/sujets/officiels/bac/2018/dzexams-bac-sciences-1967487.pdf | https://www.dzexams.com/uploads/sujets/officiels/bac/2018/dzexams-bac-sciences-1967487.pdf |
+| `subjects/M/2018/sujet-2.pdf` | 2018 | M | main | 3 | https://www.dzexams.com/uploads/sujets/officiels/bac/2018/dzexams-bac-sciences-1967487.pdf | https://www.dzexams.com/uploads/sujets/officiels/bac/2018/dzexams-bac-sciences-1967487.pdf |
+| `subjects/M/2019/sujet-1.pdf` | 2019 | M | main | 3 | https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-2280992.pdf | https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-2280992.pdf |
+| `subjects/M/2019/sujet-2.pdf` | 2019 | M | main | 2 | https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-2280992.pdf | https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-2280992.pdf |
+| `subjects/M/2020/sujet-1.pdf` | 2020 | M | main | 3 | non documenté | https://www.dzexams.com/ar/annales/dlFvUnNHKzlTdm5xZHJHMm4vL2hYZz09 |
+| `subjects/M/2020/sujet-2.pdf` | 2020 | M | main | 2 | non documenté | https://www.dzexams.com/ar/annales/dlFvUnNHKzlTdm5xZHJHMm4vL2hYZz09 |
 | `subjects/M/2021/sujet-1.pdf` | 2021 | M | main | 3 | non documenté | https://www.dzexams.com/ar/annales/T2tYS3FTcFRwWCtCbXV2QmFyRTcydz09 |
 | `subjects/M/2021/sujet-2.pdf` | 2021 | M | main | 3 | non documenté | https://www.dzexams.com/ar/annales/T2tYS3FTcFRwWCtCbXV2QmFyRTcydz09 |
 | `subjects/M/2022/sujet-1.pdf` | 2022 | M | main | 3 | https://www.dzexams.com/uploads/sujets/officiels/bac/2022/dzexams-bac-sciences-1777391.pdf | https://eddirasa.com/wp-content/uploads/2022/06/eddirasa.com-bac-math-science-2022.pdf |
@@ -76,8 +76,8 @@ Les 58 fichiers ci-dessous sont des contenus tiers servis au public (`subjects/`
 | `subjects/SE/2024/sujet-2.pdf` | 2024 | SE | main | 5 | https://www.dzexams.com/uploads/sujets/officiels/bac/2024/dzexams-bac-sciences-naturelles-1751784.pdf | https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf |
 | `subjects/SE/2026/sujet-1.pdf` | 2026 | SE | main | 5 | non documenté | https://eddirasa.com/uploads/2026/08/bac-science-2026-se.pdf |
 | `subjects/SE/2026/sujet-2.pdf` | 2026 | SE | main | 5 | non documenté | https://eddirasa.com/uploads/2026/08/bac-science-2026-se.pdf |
-| `subjects/M/2017/exceptional/sujet-1.pdf` | 2017 | M | exceptional | 2 | non documenté | non documenté |
-| `subjects/M/2017/exceptional/sujet-2.pdf` | 2017 | M | exceptional | 2 | non documenté | non documenté |
+| `subjects/M/2017/exceptional/sujet-1.pdf` | 2017 | M | exceptional | 2 | non documenté | https://www.dzexams.com/ar/annales/eU1zMTNYMTJTLzROeWhLTkxaajRWZz09 |
+| `subjects/M/2017/exceptional/sujet-2.pdf` | 2017 | M | exceptional | 2 | non documenté | https://www.dzexams.com/ar/annales/eU1zMTNYMTJTLzROeWhLTkxaajRWZz09 |
 | `subjects/SE/2025/sujet-1.pdf` | 2025 | SE | main | 11 | non documenté | https://www.dzexams.com/ar/annales/S3VKb3UrRU9MUnJHVG5ndENaV1FIdz09 |
 | `subjects/SE/2025/sujet-2.pdf` | 2025 | SE | main | 11 | non documenté | https://www.dzexams.com/ar/annales/S3VKb3UrRU9MUnJHVG5ndENaV1FIdz09 |
 
@@ -85,18 +85,18 @@ Les 58 fichiers ci-dessous sont des contenus tiers servis au public (`subjects/`
 
 Aucune URL dans `source`. La colonne `data/years` peut contenir une URL observée (page annales ou miroir) ; un lien de page n'est pas un lien PDF direct, et aucun des deux ne prouve un droit de redistribution.
 
-- `subjects/M/2016/sujet-1.pdf` (M 2016 main, 2 pages) — aucune URL mesurée — non documenté
-- `subjects/M/2016/sujet-2.pdf` (M 2016 main, 2 pages) — aucune URL mesurée — non documenté
-- `subjects/M/2020/sujet-1.pdf` (M 2020 main, 3 pages) — aucune URL mesurée — non documenté
-- `subjects/M/2020/sujet-2.pdf` (M 2020 main, 2 pages) — aucune URL mesurée — non documenté
+- `subjects/M/2016/sujet-1.pdf` (M 2016 main, 2 pages) — https://www.dzexams.com/ar/annales/TW9GY3FMeVdkeFBBNGIwMmppdi9xQT09
+- `subjects/M/2016/sujet-2.pdf` (M 2016 main, 2 pages) — https://www.dzexams.com/ar/annales/TW9GY3FMeVdkeFBBNGIwMmppdi9xQT09
+- `subjects/M/2020/sujet-1.pdf` (M 2020 main, 3 pages) — https://www.dzexams.com/ar/annales/dlFvUnNHKzlTdm5xZHJHMm4vL2hYZz09
+- `subjects/M/2020/sujet-2.pdf` (M 2020 main, 2 pages) — https://www.dzexams.com/ar/annales/dlFvUnNHKzlTdm5xZHJHMm4vL2hYZz09
 - `subjects/M/2021/sujet-1.pdf` (M 2021 main, 3 pages) — https://www.dzexams.com/ar/annales/T2tYS3FTcFRwWCtCbXV2QmFyRTcydz09
 - `subjects/M/2021/sujet-2.pdf` (M 2021 main, 3 pages) — https://www.dzexams.com/ar/annales/T2tYS3FTcFRwWCtCbXV2QmFyRTcydz09
 - `subjects/SE/2016/sujet-1.pdf` (SE 2016 main, 5 pages) — https://www.dzexams.com/ar/annales/M09NK2ZYVHFzQXg3KzZHazBaTk5IUT09
 - `subjects/SE/2016/sujet-2.pdf` (SE 2016 main, 5 pages) — https://www.dzexams.com/ar/annales/M09NK2ZYVHFzQXg3KzZHazBaTk5IUT09
 - `subjects/SE/2026/sujet-1.pdf` (SE 2026 main, 5 pages) — https://eddirasa.com/uploads/2026/08/bac-science-2026-se.pdf
 - `subjects/SE/2026/sujet-2.pdf` (SE 2026 main, 5 pages) — https://eddirasa.com/uploads/2026/08/bac-science-2026-se.pdf
-- `subjects/M/2017/exceptional/sujet-1.pdf` (M 2017 exceptional, 2 pages) — aucune URL mesurée — non documenté
-- `subjects/M/2017/exceptional/sujet-2.pdf` (M 2017 exceptional, 2 pages) — aucune URL mesurée — non documenté
+- `subjects/M/2017/exceptional/sujet-1.pdf` (M 2017 exceptional, 2 pages) — https://www.dzexams.com/ar/annales/eU1zMTNYMTJTLzROeWhLTkxaajRWZz09
+- `subjects/M/2017/exceptional/sujet-2.pdf` (M 2017 exceptional, 2 pages) — https://www.dzexams.com/ar/annales/eU1zMTNYMTJTLzROeWhLTkxaajRWZz09
 - `subjects/SE/2025/sujet-1.pdf` (SE 2025 main, 11 pages) — https://www.dzexams.com/ar/annales/S3VKb3UrRU9MUnJHVG5ndENaV1FIdz09
 - `subjects/SE/2025/sujet-2.pdf` (SE 2025 main, 11 pages) — https://www.dzexams.com/ar/annales/S3VKb3UrRU9MUnJHVG5ndENaV1FIdz09
 

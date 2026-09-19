@@ -11,11 +11,15 @@ import {
 
 test("le catalogue initial reste léger et ne contient aucun sujet complet", () => {
   assert.equal(APP_CONFIG.dataLoading, "on-demand");
-  assert.equal(YEAR_CATALOG.length, 20);
+  assert.equal(YEAR_CATALOG.length, 29);
   assert.deepEqual(loadedYearIds(), []);
   for (const metadata of YEAR_CATALOG) {
     assert.equal("sujets" in metadata, false, `${metadata.id} embarque un payload dans le catalogue`);
-    assert.match(metadata.modulePath, /^data\/years\/(?:se|m)\/year-\d{4}\.js$/);
+    assert.match(
+      metadata.modulePath,
+      /^data\/years\/(?:se|m)\/year-\d{4}(?:-exceptional)?\.js$/,
+      `${metadata.id} : chemin de payload inattendu`
+    );
     assert.ok(Object.isFrozen(metadata));
   }
 });
@@ -42,10 +46,10 @@ test("une année inconnue est refusée sans modifier le cache", async () => {
   assert.deepEqual(loadedYearIds(), ["2025"]);
 });
 
-test("l'audit exhaustif peut charger les 20 payloads sans doublon", async () => {
+test("l'audit exhaustif peut charger les 29 payloads sans doublon", async () => {
   const years = await loadAllYears();
-  assert.equal(years.length, 20);
-  assert.equal(new Set(years.map((year) => year.id)).size, 20);
+  assert.equal(years.length, 29);
+  assert.equal(new Set(years.map((year) => year.id)).size, 29);
   assert.deepEqual(
     years.map((year) => year.id),
     YEAR_CATALOG.map((year) => year.id)

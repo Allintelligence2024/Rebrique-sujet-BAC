@@ -15,6 +15,40 @@ telle quelle à un agent pour exécution.
 | 1   | Statut juridique des PDF                   | **B puis A**                                   | Étape **B faite** — 32 bruts retirés de l'index. **A reste à faire** pour les 58 PDF servis |
 | 2   | Copies réelles d'élèves                    | **Renoncement à la calibration**               | Enregistré. P1.5 et P2.7 restent bloqués volontairement      |
 | 3   | Statut du moteur d'évaluation              | **Option A** — actif d'audit                   | Vérifié exact, en-tête corrigé (2 342 lignes mesurées)       |
+| 4   | Maths 2013–2020 (+ 2017 استثنائية)         | **Armature « copie libre »**                   | Fait le 2026-09-19 : l'épreuve s'ouvre, aucune consigne encodée, barème non mesuré |
+| 5   | Troisième onglet du hub                    | **باكالوريات أجنبية** (`foreign`)              | Fait le 2026-09-19 : espace vide assumé, 0 lien inventé      |
+
+### Décision 4 — pourquoi « copie libre » et pas 4D
+
+Le propriétaire a demandé que les millésimes Maths 2013–2020 ouvrent une épreuve comme les
+autres. Mesure du 2026-09-19 (`npm run pdftext:status`, 58 sujets) :
+
+| classe             | sujets | dont Maths 2013–2020 |
+| ------------------ | ------ | -------------------- |
+| `propre`           | 8      | 2 (2020)             |
+| `transposé`        | 20     | 9                    |
+| `formes-visuelles` | 4      | 0                    |
+| `scan`             | 24     | 6 (2013–2015)        |
+| `indéterminé`      | 2      | 1 (2016/M2)          |
+
+Aucun de ces fichiers ne permet de recopier des consignes **et** un barème sans inventer :
+2013–2015 n'ont pas de couche texte, 2016–2020 ont des chiffres corrompus (le barème de
+`2021/SE1` s'extrait `05 / 40 / 00` pour un barème réel `5 + 7 + 8`). L'armature ouvre donc
+l'épreuve — sujet officiel servi par l'application, chronomètre, copie rédigée,
+`✓ تسليم الورقة` — en n'annonçant que ce qui est mesuré : « البارم غير مُقاس » à la place
+d'un nombre de points, et une seule copie pour le sujet entier quand le découpage n'a pas pu
+être lu dans le fichier. **L'encodage des consignes reste le TRAVAIL C**, déclenché par le
+propriétaire sur transcription relue.
+
+### Décision 5 — le troisième onglet n'est plus une filière
+
+`tm` (« تقني رياضي ») documentait une absence : la filière n'a pas d'épreuve SVT au BAC
+algérien. Le propriétaire l'a reconverti en espace **باكالوريات أجنبية** (clé `foreign`),
+réservé à des baccalauréats non algériens. Il est **volontairement vide** : dzexams n'indexe
+que le BAC algérien, aucune source étrangère n'a été vérifiée, donc **aucun lien n'est
+affiché** — pas même l'index dzexams des SVT algériennes, qui serait trompeur ici. Les
+anciennes valeurs `tm` écrites dans `localStorage` sont converties en `foreign` au
+démarrage.
 
 Conséquence du point 2, à ne pas perdre de vue : **le score ne doit jamais être présenté
 comme une correction de professeur**, et les seuils du TRAVAIL 5 restent intouchables tant
@@ -422,23 +456,23 @@ est exact) :
 ### Constat mesuré
 
 ```bash
-npm run p1:check     # P1.1 bloqué : 0/40 inventaires complets ; 408 tâches connues
-                     # P1.2 bloqué : 0/40 sujets à 100 % de couverture explicite
+npm run p1:check     # P1.1 bloqué : 0/58 inventaires complets ; 408 tâches connues
+                     # P1.2 bloqué : 0/58 sujets à 100 % de couverture explicite
 npm run pdftext:status
 ```
 
-Sur les 40 sujets :
+Sur les 58 sujets (29 sessions × 2) :
 
 | classe             | sujets | sens                                             |
 | ------------------ | ------ | ------------------------------------------------ |
-| `propre`           | 6      | arabe logique, en-tête officiel verbatim         |
-| `transposé`        | 11     | ordre des ligatures inversé                      |
+| `propre`           | 8      | arabe logique, en-tête officiel verbatim         |
+| `transposé`        | 20     | ordre des ligatures inversé                      |
 | `formes-visuelles` | 4      | Arabic Presentation Forms                        |
-| `scan`             | 18     | aucune couche texte                              |
-| `indéterminé`      | 1      | aucun marqueur reconnu                           |
+| `scan`             | 24     | aucune couche texte                              |
+| `indéterminé`      | 2      | aucun marqueur reconnu                           |
 
-Les 6 sujets `propre` : `2020/SE1`, `2020/SE2`, `2021/SE1`, `2021/SE2`, `2021-m/M1`,
-`2021-m/M2`.
+Les 8 sujets `propre` : `2020/SE1`, `2020/SE2`, `2021/SE1`, `2021/SE2`, `2021-m/M1`,
+`2021-m/M2`, `2020-m/M1`, `2020-m/M2`.
 
 ### Ce qui dépend de vous — et pourquoi
 
@@ -468,8 +502,10 @@ recopiés mot à mot sur photos des pages 2, 6, 7, 10 »).
 `js/domain/subjects/official-coverage.js:221` définit `relaxedEligible`, repris ligne 233
 par `simulationEligible = strictEligible || relaxedEligible`. Ce mode relaxé n'exige ni
 inventaire `complete` ni `scoringReviewStatus === "verified"` — c'est ce qui explique
-**38 sujets éligibles malgré 0/40 inventaires complets**. À durcir une fois les inventaires
-réels en place.
+**38 sujets éligibles malgré 0/58 inventaires complets**. À durcir une fois les inventaires
+réels en place. (58 sujets = 29 sessions × 2 ; les 20 armatures « copie libre » — Maths
+2013–2020, Maths 2017 استثنائية, SE 2021 — n'ont par construction aucun inventaire et
+restent dans le dénominateur : un sujet non inventorié reste un sujet non inventorié.)
 
 ### Ce que le dépôt atteste déjà comme relu
 

@@ -3,17 +3,25 @@ import { mountPdfViewers, pdfViewerHTML } from "../pdf-viewer.js";
 import { ARCHIVE, catalogYearsForStream } from "../../../data/archive.js";
 
 const STREAM_KEY = "boussole4d.stream";
-const STREAM_ORDER = ["se", "m", "tm"];
+/* Le troisième onglet était « تقني رياضي » (clé `tm`) : une شعبة sans épreuve
+   SVT au BAC algérien, affichée comme un trou. Il devient « باكالوريات أجنبية »
+   — un espace pour des sujets non algériens, qui n'est donc PAS une شعبة.
+   L'identifiant suit le changement (`foreign`) ; une installation ayant déjà
+   écrit « tm » dans localStorage est ramenée à « foreign » au lieu de retomber
+   silencieusement sur « se ». */
+const LEGACY_STREAM_IDS = Object.freeze({ tm: "foreign" });
+const STREAM_ORDER = ["se", "m", "foreign"];
 const STREAMS = {
   se: { id: "se", label: "علوم تجريبية" },
   m: { id: "m", label: "رياضيات" },
-  tm: { id: "tm", label: "تقني رياضي" }
+  foreign: { id: "foreign", label: "باكالوريات أجنبية" }
 };
 
 function readStream() {
   try {
     const value = localStorage.getItem(STREAM_KEY);
     if (STREAMS[value]) return value;
+    if (LEGACY_STREAM_IDS[value]) return LEGACY_STREAM_IDS[value];
   } catch {
     /* storage unavailable */
   }
@@ -37,8 +45,12 @@ function examYearsForStream(appConfig, streamId) {
   return appConfig.years.filter((year) => year.enabled && (year.stream || "se") === streamId);
 }
 
+/* Deux sessions du même millésime (2017 Maths : principale + exceptionnelle)
+   doivent avoir deux cartes distinctes, sinon l'une masque l'autre — et les
+   PDF de la session exceptionnelle deviennent inatteignables. */
 function yearCardId(year) {
-  return year.calendarYear || year.id;
+  const base = year.calendarYear || year.id;
+  return year.session === "exceptional" ? `${base} (دورة استثنائية)` : base;
 }
 
 function buildHubCatalog(appConfig, streamId) {
@@ -47,8 +59,12 @@ function buildHubCatalog(appConfig, streamId) {
     kind: "exam",
     year
   }));
+  /* Le filtre se fait sur le MILLÉSIME, pas sur l'identifiant de carte : sans
+     cela, une session exceptionnelle laisserait réapparaître une carte de
+     consultation pour la même année. */
+  const usedYears = new Set(training.map((item) => item.year.calendarYear || item.year.id));
   const consult = catalogYearsForStream(streamId)
-    .filter((group) => !training.some((item) => item.id === group.year))
+    .filter((group) => !usedYears.has(group.year))
     .map((group) => ({
       id: group.year,
       kind: "consult",
@@ -118,12 +134,16 @@ export function createHubScreen(deps) {
       streamId === "se"
         ? `الشعبة: ${stream.label} — مواضيع 2013–2026.`
         : streamId === "m"
-          ? `الشعبة: ${stream.label} — مواضيع 2021–2026 + رسمية 2013–2020.`
-          : `الشعبة: ${stream.label} — لا موضوع SVT رسمي على المصادر المتاحة.`;
+          ? `الشعبة: ${stream.label} — مواضيع 2013–2026 (2021–2026 بتمارين مُشفَّرة، 2013–2020 بورقة حرة).`
+          : `${stream.label} — لا موضوع محمَّل بعد في هذا القسم.`;
 
     const fab = $("#btn-stream-fab");
-    fab.setAttribute("aria-label", `الشعبة الحالية: ${stream.label}. اضغط للانتقال إلى شعبة ${other.label}`);
+    fab.setAttribute("aria-label", `القسم الحالي: ${stream.label}. اضغط للانتقال إلى ${other.label}`);
     $("#stream-fab-label").textContent = stream.label;
+    /* « باكالوريات أجنبية » n'est pas une شعبة : lui coller le préfixe
+       « الشعبة: » afficherait une information fausse. */
+    const kicker = fab.querySelector(".stream-fab-kicker");
+    if (kicker) kicker.hidden = streamId === "foreign";
 
     const grid = $("#year-grid");
     if (catalog.length === 0) {
@@ -170,27 +190,38 @@ export function createHubScreen(deps) {
       node("span", { className: "badge badge-indigo", text: "غير متوفر" }),
       node("span", { className: "mono bold year-number", text: "—" })
     );
+    const isForeign = stream.id === "foreign";
     const copy = node("div");
     copy.append(
-      node("h3", { className: "mt-0 mb-1", text: `شعبة ${stream.label}` }),
+      node("h3", {
+        className: "mt-0 mb-1",
+        text: isForeign ? stream.label : `شعبة ${stream.label}`
+      }),
       node("p", {
         className: "small text-muted mt-0",
-        text: "لا يوجد موضوع SVT متاح لهذه الشعبة."
+        text: isForeign
+          ? "لم يُحمَّل أي موضوع بعد. هذا القسم مخصص للبكالوريات غير الجزائرية."
+          : "لا يوجد موضوع SVT متاح لهذه الشعبة."
       })
     );
     stack.append(header, copy);
     const actions = node("div", { className: "stack" });
-    actions.append(
-      node("a", {
-        className: "btn btn-block btn-ghost",
-        text: "📂 فهرس علوم الطبيعة والحياة",
-        attrs: {
-          href: ARCHIVE.sourceRoot,
-          target: "_blank",
-          rel: "noopener noreferrer"
-        }
-      })
-    );
+    /* Le bouton renvoie vers l'index dzexams des SVT ALGÉRIENNES : il n'a de
+       sens que pour une شعبة algérienne. Le montrer sous « باكالوريات أجنبية »
+       serait un lien trompeur — aucun index étranger n'a été vérifié ici. */
+    if (!isForeign) {
+      actions.append(
+        node("a", {
+          className: "btn btn-block btn-ghost",
+          text: "📂 فهرس علوم الطبيعة والحياة",
+          attrs: {
+            href: ARCHIVE.sourceRoot,
+            target: "_blank",
+            rel: "noopener noreferrer"
+          }
+        })
+      );
+    }
     card.append(stack, actions);
     return card;
   }
@@ -199,9 +230,20 @@ export function createHubScreen(deps) {
      pas annoncer un جرد المهام qu'elle n'a pas. Elle le dit à la place. */
   function examCardNote(y) {
     const duration = formatDuration(examMinutesForYear(y));
-    return y.answerMode === "free"
-      ? `إمتحان الموضوع — وضع «الورقة الحرة»: تعليمات هذه الدورة غير مُشفَّرة، تقرأ الموضوع من الملف وتكتب إجابتك. مدة الاختبار الرسمية: ${duration}.`
-      : `إمتحان الموضوع — جرد المهام جزئي: بعض التعليمات مُعاد بناؤها. مدة الاختبار الرسمية: ${duration}.`;
+    if (y.answerMode !== "free") {
+      return `إمتحان الموضوع — جرد المهام جزئي: بعض التعليمات مُعاد بناؤها. مدة الاختبار الرسمية: ${duration}.`;
+    }
+    /* Ce que la carte annonce dépend de ce qui a été MESURÉ sur le fichier :
+       le découpage en exercices (scan : non mesurable) et le barème (chiffres
+       corrompus sur ce corpus : jamais mesuré). Rien de plus n'est affirmé. */
+    const split = y.freeMeasurements?.exerciseSplitMeasured;
+    const points = y.freeMeasurements?.pointsMeasured;
+    return (
+      `إمتحان الموضوع — وضع «الورقة الحرة»: تعليمات هذه الدورة غير مُشفَّرة، تقرأ الموضوع من الملف وتكتب إجابتك ` +
+      (split === false ? "في ورقة واحدة للموضوع كاملاً" : "في خانة لكل تمرين") +
+      (points === false ? "، والبارم غير مُقاس فلا يُعرض أي عدد نقاط" : "") +
+      `. مدة الاختبار الرسمية: ${duration}.`
+    );
   }
 
   function examCard(y) {

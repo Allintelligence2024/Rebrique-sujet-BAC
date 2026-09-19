@@ -11,14 +11,20 @@
    - 1 entrée شعبة علوم تجريبية : 2021 uniquement.
    Les autres années SE (2013–2020 et 2022–2026) ne sont plus des cartes
    d'archive : elles sont encodées en entraînement 4D dans
-   data/years/se/year-*.js. Les années Maths 2021–2026 sont à la fois
-   cataloguées ici et encodées dans data/years/m/year-*.js, et le hub
-   les affiche en 4D (identifiants 2021-m … 2026-m).
-   2021 SE reste en consultation : son PDF officiel est chiffré, sans
-   couche texte exploitable — aucun énoncé n'a été fabriqué pour combler
-   ce trou, et le champ `notes` de l'entrée le rappelle.
-   Index racine : uniquement se et m — pas de catégorie تقني رياضي.
-   /ar/bac/sciences-naturelles/tm redirige vers /ar/bac ; aucun URL inventé.
+   data/years/se/year-*.js. Depuis le 2026-09-19, TOUTES les années Maths
+   2013–2026 sont également encodées dans data/years/m/year-*.js et le
+   hub les affiche comme épreuves (identifiants 2013-m … 2026-m) :
+   2021–2026 en 4D, 2013–2020 en armature « copie libre » (aucune consigne
+   encodée, barème non mesuré — voir PROMPT_RESTANT.md, TRAVAIL C).
+   Le hub ne propose donc PLUS de carte de consultation Maths : les
+   entrées ci-dessous servent de source (page annales + PDF direct), pas
+   d'écran. 2021 SE ouvre une épreuve en « copie libre » (armature seule,
+   aucune consigne encodée) : son PDF officiel est chiffré, sans couche
+   texte exploitable — aucun énoncé n'a été fabriqué pour combler ce trou,
+   et le champ `notes` de l'entrée le rappelle.
+   Index racine : uniquement se et m. Le troisième onglet du hub
+   (« باكالوريات أجنبية », clé `foreign`) n'a AUCUNE entrée ici : dzexams
+   n'indexe que le BAC algérien, et aucun lien étranger n'a été inventé.
 
    Répartition des contrôles au 2026-08-31 : 12 access_confirmed,
    4 consulted, 10 contentVerified=true, 12 viewers bloqués.
@@ -45,7 +51,12 @@
    « علوم الطبيعة والحياة » pour la شعبة تقني رياضي (page racine
    /ar/bac/sciences-naturelles : uniquement se et m, revérifié le
    2026-08-31). La filière n'a pas d'épreuve SVT au BAC national.
-   Aucun lien n'a donc été inventé. Le hub l'affiche comme trou.
+   Aucun lien n'a donc été inventé.
+   Cet ancien troisième onglet est devenu le 2026-09-19 l'espace
+   « باكالوريات أجنبية » (clé `foreign`), réservé à des sujets NON
+   algériens. Il est volontairement vide : aucun index étranger n'a été
+   vérifié, aucun énoncé ni barème n'a été recopiés. Le hub l'affiche
+   comme un espace à remplir, sans lien.
 
    La session exceptionnelle (« الدورة الاستثنائية ») n'existe sur
    dzexams que pour 2016 (se) et 2017 (se et m). 2016 Maths n'a
@@ -57,7 +68,7 @@ const ANNALES = "https://www.dzexams.com/ar/annales";
 export const ARCHIVE = {
   verifiedAt: "2026-08-31",
   years: "2013-2026",
-  streamOrder: ["se", "m", "tm"],
+  streamOrder: ["se", "m", "foreign"],
   sourceLabel: "dzexams.com — sujets officiels + تصحيح النموذجي (viewer / PDF)",
   sourceRoot: "https://www.dzexams.com/ar/bac/sciences-naturelles",
   /* Sessions absentes de la source — ne pas inventer de lien. */
@@ -74,10 +85,10 @@ export const ARCHIVE = {
     },
     {
       year: "all",
-      stream: "tm",
+      stream: "foreign",
       session: "main",
       reason:
-        "Index /ar/bac/sciences-naturelles (2026-08-31) : uniquement se (21 fichiers) et m (20). /ar/bac/sciences-naturelles/tm n'existe pas (redirige vers /ar/bac). La شعبة تقني رياضي n'a pas d'épreuve SVT au BAC national. Aucun URL d'annales inventé."
+        "Espace « باكالوريات أجنبية » ouvert le 2026-09-19 : aucun sujet non algérien n'a été vérifié ni chargé à ce jour. dzexams n'indexe que le BAC algérien (se et m) — il n'existe donc aucune source vérifiée à citer ici. Aucun lien, énoncé ni barème étranger n'a été inventé ; l'onglet reste vide en attendant un contenu dûment sourcé."
     }
   ],
   streams: {
@@ -91,10 +102,11 @@ export const ARCHIVE = {
       label: "شعبة رياضيات",
       indexUrl: "https://www.dzexams.com/ar/bac/sciences-naturelles/m"
     },
-    tm: {
-      id: "tm",
-      label: "شعبة تقني رياضي",
-      indexUrl: "https://www.dzexams.com/ar/bac/sciences-naturelles"
+    /* Pas de `indexUrl` : aucune source de sujets étrangers n'a été vérifiée.
+       Une URL inventée serait pire qu'un champ absent — cf. ARCHIVE.gaps. */
+    foreign: {
+      id: "foreign",
+      label: "باكالوريات أجنبية"
     }
   },
   sessions: {

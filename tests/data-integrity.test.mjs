@@ -173,7 +173,14 @@ test("toute année enabled=true a au moins un sujet, chaque sujet un exercice, c
         assert.ok(sujet.exercises.length > 0, `sujet ${year.id}/S${sujet.id} sans exercice`);
         for (const ex of sujet.exercises) {
           assert.deepEqual(ex.poles, {}, `${year.id}/S${sujet.id}/E${ex.number} ne doit rien encoder`);
-          assert.ok((Number(ex.max) || 0) > 0, `${year.id}/S${sujet.id}/E${ex.number} sans barème`);
+          /* Barème : soit MESURÉ (nombre > 0), soit explicitement NON MESURÉ
+             (`max: null`). Un PDF scanné ou aux chiffres corrompus n'autorise
+             aucun recopiage : coder 0 ou laisser `undefined` ferait croire à
+             un barème nul au lieu d'un barème inconnu. */
+          assert.ok(
+            ex.max === null || (Number(ex.max) || 0) > 0,
+            `${year.id}/S${sujet.id}/E${ex.number} : barème ni mesuré ni marqué non mesuré`
+          );
         }
       }
       continue;

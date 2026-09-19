@@ -312,16 +312,47 @@ export function createSimulationController(deps) {
   }
 
   /* Épreuve « copie libre » : session dont les consignes ne sont pas
-     encodées (couche texte du PDF illisible, rien n'a pu être recopié mot à
-     mot ni reconstitué sans inventer). Plutôt que de fermer la session, on
-     ouvre une épreuve honnête : le sujet officiel s'affiche dans la
-     visionneuse, un champ de rédaction par exercice, le chronomètre officiel
+     encodées (couche texte du PDF absente ou inexploitable, rien n'a pu être
+     recopié mot à mot ni reconstitué sans inventer). Plutôt que de fermer la
+     session, on ouvre une épreuve honnête : le sujet officiel s'affiche dans
+     la visionneuse, un champ de rédaction par exercice — ou pour le sujet
+     entier quand le découpage n'est pas mesurable — le chronomètre officiel
      et « ✓ تسليم الورقة ». Aucune note, aucun corrigé : il n'y a ici rien à
-     corriger — seulement l'armature (thème + barème) lue dans le fichier. */
-  const FREE_MODE_NOTICE =
-    "وضع «الورقة الحرة»: تعليمات هذه الدورة غير مُشفَّرة لأن ملفها الرسمي غير قابل للاستخراج. " +
-    "اقرأ الموضوع من الملف أعلاه واكتب إجابتك الكاملة لكل تمرين في الخانة المخصصة. " +
-    "لا يوجد تصحيح ولا نقطة في هذا الوضع.";
+     corriger, seulement l'armature mesurée sur le fichier. */
+  function freeModeNotice(subject) {
+    const wholeSubject = (subject.exercises || []).some((exercise) => exercise.wholeSubject === true);
+    return (
+      "وضع «الورقة الحرة»: تعليمات هذه الدورة غير مُشفَّرة لأن ملفها الرسمي غير قابل للاستخراج. " +
+      "اقرأ الموضوع من الملف أعلاه واكتب إجابتك الكاملة " +
+      (wholeSubject ? "في خانة الموضوع" : "لكل تمرين في الخانة المخصصة") +
+      ". لا يوجد تصحيح ولا نقطة في هذا الوضع."
+    );
+  }
+
+  /* Barème MESURÉ ou barème NON MESURÉ : les deux s'affichent honnêtement.
+     Sur un PDF scanné ou aux chiffres corrompus, le barème officiel n'est pas
+     extractible — écrire « 0 نقطة » ferait croire à une donnée absente
+     alors qu'elle est simplement inconnue. On le dit à la place. */
+  function pointsBadge(exercise) {
+    return exercise.max === null
+      ? `<span class="small text-muted">البارم غير مُقاس</span>`
+      : `<span class="small text-muted">${Number(exercise.max) || 0} نقطة</span>`;
+  }
+
+  /* Quand le découpage du sujet n'a pas pu être mesuré (scan sans couche
+     texte), la copie libre porte sur le sujet entier au lieu d'annoncer un
+     « تمرين » que personne n'a compté. */
+  function exerciseBadge(exercise) {
+    return exercise.wholeSubject === true
+      ? `<span class="badge badge-indigo">الموضوع كاملاً</span>`
+      : `<span class="badge badge-indigo">التمرين ${exercise.number}</span>`;
+  }
+
+  function exerciseHeading(exercise) {
+    return typeof exercise.label === "string" && exercise.label.trim()
+      ? `<h3>${escapeHTML(exercise.label)}</h3>`
+      : "";
+  }
 
   function renderFreeAnswerExam(subject) {
     const completed = store.state.sessionStatus === "completed";
@@ -348,7 +379,7 @@ export function createSimulationController(deps) {
             ? `<div class="feedback good mb-2" id="simulation-review-notice" role="status">تم التسليم. هذه شاشة إعادة القراءة؛ الإجابات مقفلة ولا تعرض أي نقطة آلية.</div>`
             : ""
         }
-        <div class="feedback mid mb-2" id="free-mode-notice" role="note">${escapeHTML(FREE_MODE_NOTICE)}</div>
+        <div class="feedback mid mb-2" id="free-mode-notice" role="note">${escapeHTML(freeModeNotice(subject))}</div>
         <div class="workspace-tools" aria-label="أدوات الاختبار">
           <button class="btn btn-indigo btn-sm" id="simulation-pdf">📄 الموضوع</button>
           ${completed ? "" : `<button class="btn btn-rose btn-sm" id="simulation-finish">✓ تسليم الورقة</button>`}
@@ -363,10 +394,10 @@ export function createSimulationController(deps) {
                 exercise
               ) => `<article class="card stack simulation-task" data-free-exercise="${exercise.number}">
             <div class="flex spread simulation-task-head">
-              <span class="badge badge-indigo">التمرين ${exercise.number}</span>
-              <span class="small text-muted">${Number(exercise.max) || 0} نقطة</span>
+              ${exerciseBadge(exercise)}
+              ${pointsBadge(exercise)}
             </div>
-            <h3>${escapeHTML(exercise.label)}</h3>
+            ${exerciseHeading(exercise)}
             <p class="small text-muted">${escapeHTML(exercise.desc || "")}</p>
             <label class="lbl" for="free-answer-${exercise.number}">إجابتك</label>
             <textarea class="field simulation-answer" id="free-answer-${exercise.number}" data-exercise-free="${exercise.number}" data-exercise="${exercise.number}" rows="10"${completed ? " disabled" : ""}></textarea>

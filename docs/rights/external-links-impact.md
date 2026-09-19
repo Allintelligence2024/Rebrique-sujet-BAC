@@ -20,7 +20,7 @@ Mesure : `node scripts/measure-external-links-impact.mjs` → **14/14 consommate
 ## 2. Ce qui existe déjà en externe (mesuré fichier par fichier)
 
 - `subjects/manifest.json` : **58 entrées · 44 avec URL source · 14 sans URL** · 221 pages · 41,10 Mio.
-- `data/years/**` : 20 payloads, 40 références `pdfLocalUrl`, 40 fichiers avec `pdfExternalUrl` mesuré (page annales, PDF direct ou miroir).
+- `data/years/**` : 29 payloads, 58 références `pdfLocalUrl`, 58 fichiers avec `pdfExternalUrl` mesuré (page annales, PDF direct ou miroir).
 - `data/archive.js` : 18 entrées de consultation, dont 12 avec `pdfUrl` direct observé.
 
 ## 3. Verdict chiffré
@@ -34,18 +34,18 @@ node scripts/measure-external-links-impact.mjs  # champ "missing"
 
 | fichier | URL externes mesurées |
 | --- | --- |
-| `subjects/M/2016/sujet-1.pdf` | **aucune** |
-| `subjects/M/2016/sujet-2.pdf` | **aucune** |
-| `subjects/M/2020/sujet-1.pdf` | **aucune** |
-| `subjects/M/2020/sujet-2.pdf` | **aucune** |
+| `subjects/M/2016/sujet-1.pdf` | `https://www.dzexams.com/ar/annales/TW9GY3FMeVdkeFBBNGIwMmppdi9xQT09` |
+| `subjects/M/2016/sujet-2.pdf` | `https://www.dzexams.com/ar/annales/TW9GY3FMeVdkeFBBNGIwMmppdi9xQT09` |
+| `subjects/M/2020/sujet-1.pdf` | `https://www.dzexams.com/ar/annales/dlFvUnNHKzlTdm5xZHJHMm4vL2hYZz09` |
+| `subjects/M/2020/sujet-2.pdf` | `https://www.dzexams.com/ar/annales/dlFvUnNHKzlTdm5xZHJHMm4vL2hYZz09` |
 | `subjects/M/2021/sujet-1.pdf` | `https://www.dzexams.com/ar/annales/T2tYS3FTcFRwWCtCbXV2QmFyRTcydz09` |
 | `subjects/M/2021/sujet-2.pdf` | `https://www.dzexams.com/ar/annales/T2tYS3FTcFRwWCtCbXV2QmFyRTcydz09` |
 | `subjects/SE/2016/sujet-1.pdf` | `https://www.dzexams.com/ar/annales/M09NK2ZYVHFzQXg3KzZHazBaTk5IUT09` |
 | `subjects/SE/2016/sujet-2.pdf` | `https://www.dzexams.com/ar/annales/M09NK2ZYVHFzQXg3KzZHazBaTk5IUT09` |
 | `subjects/SE/2026/sujet-1.pdf` | `https://eddirasa.com/uploads/2026/08/bac-science-2026-se.pdf` |
 | `subjects/SE/2026/sujet-2.pdf` | `https://eddirasa.com/uploads/2026/08/bac-science-2026-se.pdf` |
-| `subjects/M/2017/exceptional/sujet-1.pdf` | **aucune** |
-| `subjects/M/2017/exceptional/sujet-2.pdf` | **aucune** |
+| `subjects/M/2017/exceptional/sujet-1.pdf` | `https://www.dzexams.com/ar/annales/eU1zMTNYMTJTLzROeWhLTkxaajRWZz09` |
+| `subjects/M/2017/exceptional/sujet-2.pdf` | `https://www.dzexams.com/ar/annales/eU1zMTNYMTJTLzROeWhLTkxaajRWZz09` |
 | `subjects/SE/2025/sujet-1.pdf` | `https://www.dzexams.com/ar/annales/S3VKb3UrRU9MUnJHVG5ndENaV1FIdz09` |
 | `subjects/SE/2025/sujet-2.pdf` | `https://www.dzexams.com/ar/annales/S3VKb3UrRU9MUnJHVG5ndENaV1FIdz09` |
 

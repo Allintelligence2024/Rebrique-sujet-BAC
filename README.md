@@ -161,17 +161,29 @@ Le serveur applique une liste blanche d'assets publics. Ne pas remplacer cette c
 
 ## 📄 Contenu réel — épreuve
 
-**20 années** dans `APP_CONFIG.years` : **2013–2026 علوم تجريبية** (14 années) **+ 2021–2026
-رياضيات** (6 années). Le hub SE affiche ses années en cartes d'épreuve ; le hub Maths affiche
-2021–2026. Les sessions réellement absentes des sources ne sont pas inventées : elles sont
-documentées dans `ARCHIVE.gaps`, qui compte exactement deux entrées — la session
-exceptionnelle 2016 رياضيات et la filière تقني رياضي entière (`year: "all"`, aucune ligne
-n'existe dans la source). Un trou n'emporte aucun `localPdfUrls` : il documente une absence,
-il n'annonce pas de sujet.
-**2021 SE est bien ouvrable** (`enabled: true`), en armature « copie libre »
-(`answerMode: "free"`) : la couche texte du sujet n'a pas permis de recopier les consignes
-mot à mot, donc l'élève lit le sujet officiel dans l'application et rédige librement, sans
-note. L'archive 2013–2019 n'est pas un énoncé ministériel.
+**29 sessions** dans `APP_CONFIG.years` : **2013–2026 علوم تجريبية** (14 années) **+ 2013–2026
+رياضيات** (14 années) **+ la session exceptionnelle 2017 رياضيات**. Chaque millésime ouvre une
+épreuve dans l'application — il n'existe plus de carte qui se contente d'afficher un lien.
+
+Deux natures d'épreuve, jamais confondues :
+
+- **entraînement 4D** — les consignes du sujet sont encodées (`data/years/{se,m}/year-*.js`) ;
+- **armature « copie libre »** (`answerMode: "free"`) — aucune consigne encodée, parce que le
+  fichier officiel est un scan sans couche texte (**Maths 2013–2015**) ou que ses chiffres sont
+  corrompus (**Maths 2016–2020**, **2021 SE**). L'épreuve reste une épreuve : sujet officiel lu
+  dans l'application, chronomètre, copie rédigée, `✓ تسليم الورقة`. Ce qui n'est pas mesurable
+  n'est pas affiché : le barème de ces sessions n'étant pas extractible, l'écran affiche
+  « البارم غير مُقاس » au lieu d'un nombre de points, et le découpage en exercices n'est annoncé
+  que lorsqu'il a été lu dans le fichier (sinon : une copie pour le sujet entier).
+
+Les sessions réellement absentes des sources ne sont pas inventées : elles sont documentées
+dans `ARCHIVE.gaps`, qui compte exactement deux entrées — la session exceptionnelle 2016
+رياضيات et l'espace باكالوريات أجنبية (`year: "all"`, aucune ligne n'existe dans la source).
+Un trou n'emporte aucun `localPdfUrls` : il documente une absence, il n'annonce pas de sujet.
+**2021 SE est bien ouvrable** (`enabled: true`), en armature « copie libre » : la couche texte
+du sujet n'a pas permis de recopier les consignes mot à mot, donc l'élève lit le sujet officiel
+dans l'application et rédige librement, sans note. L'archive 2013–2019 n'est pas un énoncé
+ministériel.
 
 ### Contenu BAC 2025 (شعبة علوم تجريبية)
 
@@ -333,16 +345,20 @@ Fichier : `data/years/m/year-2021.js`.
 
 ---
 
-## 📚 Sujets officiels (consultation, hors cartes d'épreuve)
+## 📚 Onglets du hub — ce que chaque filière ouvre
 
-Le bouton coin **تغيير الشعبة** cycle **علوم تجريبية → رياضيات → تقني رياضي**.
-Les sujets de la filière choisie remplacent la grille.
+Le bouton **تغيير الشعبة** cycle **علوم تجريبية → رياضيات → باكالوريات أجنبية**.
+Les sujets de l'onglet choisi remplacent la grille. Chaque carte ouvre une épreuve : aucune
+n'est plus un simple renvoi vers un site tiers.
 
-| Filière                  | Épreuve               | Consultation (sujet + تصحيح)                    |
-| ------------------------ | --------------------- | ----------------------------------------------- |
-| شعبة علوم تجريبية (`se`) | 2013–2020 و 2022–2026 | 2021                                            |
-| شعبة رياضيات (`m`)       | 2021–2026             | 2013–2020 (+ 2017 exceptionnelle)               |
-| شعبة تقني رياضي (`tm`)   | —                     | **absente de la source** (trou affiché, 0 lien) |
+| Onglet                       | Épreuves ouvertes                        | Nature                                                                    |
+| ---------------------------- | ---------------------------------------- | ------------------------------------------------------------------------- |
+| شعبة علوم تجريبية (`se`)     | 2013–2026 (14 cartes)                    | 4D, sauf **2021 en copie libre**                                          |
+| شعبة رياضيات (`m`)           | 2013–2026 + 2017 exceptionnelle (15 cartes) | **2021–2026 en 4D** ; **2013–2020 et 2017 استثنائية en copie libre**    |
+| باكالوريات أجنبية (`foreign`) | —                                        | **espace vide, assumé** : aucune source étrangère vérifiée, **0 lien**     |
+
+Les entrées de `data/archive.js` ne sont plus des cartes : elles servent de **source**
+(page annales + lien PDF direct) aux sujets désormais ouverts en épreuve.
 
 Statut honnête :
 
@@ -353,10 +369,20 @@ Statut honnête :
 - **Maths 2022–2026** : viewer dzexams bloqué (`contentVerified: false`) ;
   Cartes encodées depuis les PDF officiels eddirasa (même papier ONEC).
 - **SE 2021** : pas de carte d'épreuve — couche texte / corrigé mot à mot absents sur dzexams.
-- **شعبة تقني رياضي** : pas d'épreuve SVT au BAC ; l'index dzexams n'a que
-  `se` et `m` (revérifié 2026-08-31). Le hub affiche le trou, **aucun lien
-  inventé**. Les filières Lettres / Langues / Gestion n'ont pas non plus
-  d'épreuve SVT — elles ne sont pas ajoutées.
+- **Maths 2013–2020 (+ 2017 استثنائية)** : armatures « copie libre ». Le sujet
+  officiel est servi par l'application et la copie se rédige à l'écran, mais
+  **rien n'est encodé** : aucune consigne, aucun thème, aucun barème. Mesure
+  du 2026-09-19 (`npm run pdftext:status`) : 2013–2015 sont des **scans** sans
+  couche texte ; 2016–2020 ont une couche **transposée** ou **propre** dont
+  les chiffres sont corrompus. Le découpage (2 exercices) n'est affiché que
+  lorsqu'il a été lu dans le fichier. L'encodage des consignes reste le
+  **TRAVAIL C**, déclenché par le propriétaire sur transcription relue.
+- **باكالوريات أجنبية** (`foreign`) : ancien onglet « تقني رياضي ». La شعبة
+  تقني رياضي n'a pas d'épreuve SVT au BAC et l'index dzexams n'a que `se` et
+  `m` (revérifié 2026-08-31) ; l'onglet a été reconverti en espace pour des
+  baccalauréats non algériens. Il est **volontairement vide** : aucune source
+  étrangère vérifiée, **aucun lien inventé**. Les filières Lettres / Langues /
+  Gestion n'ont pas non plus d'épreuve SVT — elles ne sont pas ajoutées.
 - **2016 Maths exceptionnelle** : absente de l'index — `ARCHIVE.gaps`.
 - **Aucun PDF d'archive versé** (droit d'auteur) — seule exception, assumée : les deux sujets
   officiels **SVT 2025** à la racine du dépôt. Ils sont servis sur demande et non précachés
@@ -376,9 +402,9 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **337** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Tests exécutés par `npm test` : **344** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
 - Copies vérifiées dans le hard benchmark : **0/2235 minimum** avant toute promotion numérique
-- Inventaires de tâches officielles commencés : **38/40 sujets** (**408 tâches connues**)
+- Inventaires de tâches officielles commencés : **38/58 sujets** (**408 tâches connues**)
 - Sujets éligibles à la simulation : **38**
 - Critères P1 fermés : **3/6** — statut global : **incomplet**
 - Critères P2 fermés : **6/7** — élèves distincts testés : **0/5**

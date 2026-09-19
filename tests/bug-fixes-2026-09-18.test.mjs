@@ -62,10 +62,22 @@ test("D2 : KNOWN_YEAR_IDS contient exactement les ids de YEAR_CATALOG", () => {
   }
 });
 
-test("D2 : les années maths antérieures à 2021 ne sont plus déclarées chargeables", () => {
-  // C'étaient les huit fantômes : acceptées par le store, sans aucun payload.
-  for (const id of ["2013-m", "2014-m", "2015-m", "2016-m", "2017-m", "2018-m", "2019-m", "2020-m"]) {
-    assert.equal(KNOWN_YEAR_IDS.has(id), false, `${id} n'a pas de chargeur et doit être absent`);
+test("D2 : les huit années maths 2013–2020 ont aujourd'hui un payload réel", async () => {
+  /* C'étaient les huit fantômes de l'audit du 2026-09-18 : des ids déclarés
+     dans YEAR_CATALOG sans aucun chargeur, acceptés par isCatalogYear() puis
+     refusés par loadYear() en cours de route.
+     Elles ont reçu le 2026-09-19 une armature « copie libre »
+     (data/years/m/year-2013.js … year-2020.js) : le contrat de la régression
+     reste le même — une année déclarée doit se charger —, seul le contenu
+     change (aucune consigne encodée, barème non mesuré). */
+  const ghosts = ["2013-m", "2014-m", "2015-m", "2016-m", "2017-m", "2018-m", "2019-m", "2020-m"];
+  for (const id of ghosts) {
+    assert.ok(KNOWN_YEAR_IDS.has(id), `${id} est au catalogue`);
+  }
+  const years = await Promise.all(ghosts.map((id) => loadYear(id)));
+  for (const year of years) {
+    assert.equal(year.answerMode, "free", `${year.id} est une armature, pas du 4D`);
+    assert.equal(year.sujets.length, 2, `${year.id} doit avoir 2 sujets`);
   }
 });
 
@@ -89,7 +101,7 @@ test("D2 : validateState conserve toute année du catalogue et rejette le reste"
     const valid = validateState({ schemaVersion: CURRENT_SCHEMA_VERSION, yearId: id });
     assert.equal(valid.yearId, id, `${id} doit être conservé`);
   }
-  for (const id of ["9999", "2013-m", "../etc/passwd", ""]) {
+  for (const id of ["9999", "1999-m", "../etc/passwd", ""]) {
     const valid = validateState({ schemaVersion: CURRENT_SCHEMA_VERSION, yearId: id });
     assert.equal(valid.yearId, "2025", `${id} doit retomber sur l'année par défaut`);
   }
@@ -104,9 +116,15 @@ test("D3 : enterSession rejette une année conforme au motif mais hors catalogue
   assert.equal(store.state.yearId, "2025", "l'année par défaut ne doit pas être écrasée");
 });
 
-test("D3 : enterSession rejette les huit années maths fantômes", () => {
+test("D3 : enterSession ouvre les huit armatures maths 2013–2020", () => {
+  /* Même contrat qu'en 2026-09-18 : enterSession n'ouvre que des années
+     réellement chargeables. La différence, c'est qu'elles le sont devenues. */
   for (const id of ["2013-m", "2016-m", "2020-m"]) {
-    assert.throws(() => store.enterSession(id, 1), /yearId invalide/, `${id} doit être refusé`);
+    localStorage.clear();
+    store.reset();
+    store.enterSession(id, 1);
+    assert.equal(store.state.yearId, id, `${id} doit ouvrir une session`);
+    assert.equal(store.state.sessionStatus, "active");
   }
 });
 

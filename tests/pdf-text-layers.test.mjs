@@ -59,7 +59,11 @@ test("une couche texte sans marqueur reconnu reste « indéterminé », pas « p
    ce test doit tomber. */
 test("le statut compte les sujets à relecture assistée possible, sans jamais certifier", async () => {
   const status = await buildPdfTextLayerStatus();
-  assert.equal(status.total, 40, "les 40 sujets du catalogue doivent être mesurés");
+  /* 58 sujets = 29 sessions × 2 (SE 2013–2026 + Maths 2013–2026 + la session
+     exceptionnelle 2017 Maths). Les armatures « copie libre » Maths 2013–2020
+     sont mesurées comme les autres : c'est cette mesure qui a décidé de leur
+     découpage (2 exercices ou sujet entier) et de l'absence de barème. */
+  assert.equal(status.total, 58, "les 58 sujets du catalogue doivent être mesurés");
   assert.equal(status.exploitable, status.parClasse["propre"] || 0);
   assert.ok(
     status.exploitable < status.total,

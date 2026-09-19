@@ -29,16 +29,26 @@ function taskIsMapped(task, exerciseByNumber) {
  * Audit an explicit official-task inventory against one training subject.
  * Unknown coverage is represented by null, never by a misleading zero or 100%.
  */
+/* Un barème d'exercice est soit un nombre strictement positif, soit
+   explicitement NON MESURÉ (`max: null`) : sur un PDF scanné ou aux chiffres
+   corrompus, le barème officiel n'est pas extractible et recopier un nombre
+   lu de travers produirait un barème faux. Un 0, un `undefined` ou un NaN
+   reste une erreur de données — jamais une absence de mesure. */
+export function exercisePointsKnown(exercise) {
+  return exercise?.max !== null && (Number(exercise?.max) || 0) > 0;
+}
+
 /* Un sujet « copie libre » ne porte aucune consigne : la couche texte du
-   PDF officiel est illisible, l'armature (thème + barème) seule est encodée.
-   L'épreuve reste ouverte — le sujet se lit dans l'application et l'élève
-   rédige — mais rien n'y est noté, faute de quoi corriger. */
+   PDF officiel est absente ou inexploitable, seule l'armature est encodée
+   (fichiers du sujet, découpage lorsqu'il est mesurable). L'épreuve reste
+   ouverte — le sujet se lit dans l'application et l'élève rédige — mais rien
+   n'y est noté, faute de quoi corriger. */
 export function isFreeAnswerSubject(subject) {
   const exercises = subjectExercises(subject);
   return (
     subject?.answerMode === "free" &&
     exercises.length > 0 &&
-    exercises.every((exercise) => (Number(exercise.max) || 0) > 0) &&
+    exercises.every((exercise) => exercise.max === null || exercisePointsKnown(exercise)) &&
     Boolean(subject?.pdfLocalUrl || subject?.pdfExternalUrl)
   );
 }

@@ -101,19 +101,33 @@ test('1b. SE 2013–2026 en épreuve : 4D partout, 2021 en armature "copie libre
   assert.ok(!$("#view-hub").classList.contains("hidden"));
 });
 
-test("1c. Le bouton filière affiche Maths puis le trou تقني رياضي", () => {
+test("1c. Le bouton filière affiche Maths puis l'espace باكالوريات أجنبية", () => {
   click("#btn-stream-fab");
   assert.match($("#stream-fab-label").textContent, /رياضيات/);
-  assert.equal($$("#year-grid [data-year]").length, 6, "six entraînements 4D Maths (2021–2026)");
+  /* 14 épreuves Maths : 6 entraînements 4D (2021–2026) + 8 armatures
+     « copie libre » (2013–2020, aucune consigne encodée). */
+  assert.equal($$("#year-grid [data-year]").length, 15);
   assert.equal($('#year-grid [data-hub-year="2021"]').dataset.kind, "exam");
   assert.equal($('#year-grid [data-year="2021-m"]').disabled, false);
-  assert.equal($$("#year-grid .year-card").length, 14);
+  /* 15 cartes = 14 millésimes + la session exceptionnelle 2017, qui a ses
+     propres fichiers et ses propres sujets. */
+  assert.equal($$("#year-grid .year-card").length, 15);
+  assert.ok($('#year-grid [data-year="2017-em"]'), "la session exceptionnelle doit rester atteignable");
   assert.ok($('#year-grid [data-hub-year="2026"]'));
   assert.ok($('#year-grid [data-hub-year="2022"]'));
   assert.ok($('#year-grid [data-hub-year="2021"]'));
   assert.ok($('#year-grid [data-hub-year="2013"]'));
+  // 2013–2020 ne sont plus des cartes de consultation : elles ouvrent l'épreuve.
+  for (const year of ["2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"]) {
+    assert.equal(
+      $('#year-grid [data-hub-year="' + year + '"]').dataset.kind,
+      "exam",
+      year + " Maths doit ouvrir une épreuve"
+    );
+    assert.equal($('#year-grid [data-year="' + year + '-m"]').disabled, false, year + " -m actif");
+  }
   const links = $$('#year-grid [data-kind="consult"] a[href*="dzexams.com/ar/annales/"]');
-  assert.equal(links.length, 9, "filière Maths : 8 principales 2013–2020 + 2017 exceptionnelle");
+  assert.equal(links.length, 0, "filière Maths : chaque millésime ouvre une épreuve dans l'application");
 
   click('#year-grid [data-year="2026-m"]');
   assert.match($("#view-guide").textContent, /2س30د/);
@@ -123,12 +137,12 @@ test("1c. Le bouton filière affiche Maths puis le trou تقني رياضي", ()
   click("#strategy-exit");
 
   click("#btn-stream-fab");
-  assert.match($("#stream-fab-label").textContent, /تقني رياضي/);
+  assert.match($("#stream-fab-label").textContent, /باكالوريات أجنبية/);
   assert.equal($$('#year-grid [data-kind="gap"]').length, 1);
   assert.equal(
     $$('#year-grid a[href*="dzexams.com/ar/annales/"]').length,
     0,
-    "aucun annales inventé pour TM"
+    "aucun lien dzexams pour un espace qui n'indexe pas le BAC algérien"
   );
   click("#btn-stream-fab");
   assert.match($("#stream-fab-label").textContent, /علوم تجريبية/);
