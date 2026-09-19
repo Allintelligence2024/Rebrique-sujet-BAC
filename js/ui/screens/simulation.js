@@ -5,9 +5,16 @@ import { disposeAllPdfViewers, mountPdfViewers, pdfViewerHTML } from "../pdf-vie
 import { debounce } from "../../application/debounce.js";
 import { BAC_MODE_NOTICES } from "../../../data/bac-mode-policy.js";
 
+/* QUESTIONS OFFICIELLES SEULEMENT (décision du propriétaire, 2026-09-19).
+   Une tâche « reconstructed » est une étape que l'application a fabriquée
+   faute de pouvoir relire la consigne dans le PDF : ce n'est pas une question
+   du sujet. La montrer dans une épreuve laissait croire à l'élève que ces
+   questions comptaient, alors que rien ne permet de l'affirmer. SE et Maths
+   n'affichent plus que les consignes dont la provenance est établie. */
 function tasksForExercise(inventory, exerciseNumber) {
   return (inventory?.tasks || [])
     .filter((task) => task.exerciseNumber === exerciseNumber)
+    .filter((task) => task.promptSource === "official")
     .sort((left, right) => left.order - right.order);
 }
 
@@ -24,10 +31,7 @@ function taskPageHTML(task) {
 }
 
 function taskProvenanceHTML(task) {
-  if (task.promptSource === "reconstructed") {
-    return `<span class="badge badge-amber" data-task-source="reconstructed">⚠️ ${escapeHTML(BAC_MODE_NOTICES.reconstructed)}</span>`;
-  }
-  return `<span class="badge badge-emerald" data-task-source="official">✓ تعليمة رسمية</span>`;
+  return `<span class="badge badge-emerald" data-task-source="${escapeHTML(task.promptSource)}">✓ تعليمة رسمية</span>`;
 }
 
 function taskReviewHTML(task, subject) {
@@ -52,6 +56,53 @@ function taskReviewHTML(task, subject) {
   </details>`;
 }
 
+/* Barème MESURÉ ou barème NON MESURÉ : les deux s'affichent honnêtement.
+   Sur un PDF scanné ou aux chiffres corrompus, le barème officiel n'est pas
+   extractible — écrire « 0 نقطة » ferait croire à une donnée absente
+   alors qu'elle est simplement inconnue. On le dit à la place. */
+function pointsBadge(exercise) {
+  return exercise.max === null
+    ? `<span class="small text-muted">البارم غير مُقاس</span>`
+    : `<span class="small text-muted">${Number(exercise.max) || 0} نقطة</span>`;
+}
+
+/* Quand le découpage du sujet n'a pas pu être mesuré (scan sans couche
+   texte), la copie libre porte sur le sujet entier au lieu d'annoncer un
+   « تمرين » que personne n'a compté. */
+function exerciseBadge(exercise) {
+  return exercise.wholeSubject === true
+    ? `<span class="badge badge-indigo">الموضوع كاملاً</span>`
+    : `<span class="badge badge-indigo">التمرين ${exercise.number}</span>`;
+}
+
+/* Aucune consigne n'a pu être relue dans le PDF pour cet exercice (c'est le
+   cas des SE 2013–2019 : 0 consigne vérifiée sur 24, et de 2 exercices du SE
+   2024). Plutôt que d'afficher une étape que l'application a fabriquée, on
+   ouvre une copie libre sur l'exercice et on le dit : l'élève lit le sujet
+   dans la visionneuse et rédige. Rien n'est inventé, rien n'est noté. */
+function freeExerciseHTML(exercise, completed, micButton) {
+  return `<article class="card stack simulation-task" data-free-exercise="${exercise.number}">
+    <div class="flex spread simulation-task-head">
+      ${exerciseBadge(exercise)}
+      ${pointsBadge(exercise)}
+    </div>
+    ${
+      typeof exercise.label === "string" && exercise.label.trim()
+        ? `<h3>${escapeHTML(exercise.label)}</h3>`
+        : ""
+    }
+    <p class="small text-muted">لا توجد تعليمة رسمية موثّقة لهذا التمرين في ملف الموضوع: اقرأه من الملف واكتب إجابتك كاملة.</p>
+    <label class="lbl" for="free-answer-${exercise.number}">إجابتك</label>
+    <textarea class="field simulation-answer" id="free-answer-${exercise.number}" data-exercise-free="${exercise.number}" data-exercise="${exercise.number}" rows="10"${completed ? " disabled" : ""}></textarea>
+    ${completed ? "" : micButton(`free-answer-${exercise.number}`)}
+    ${
+      completed
+        ? `<button class="btn btn-ghost btn-sm qualitative-check" data-qualitative-free="${exercise.number}">تقييم نوعي</button><div class="feedback small qualitative-feedback" data-qualitative-result-free="${exercise.number}" aria-live="polite"></div>`
+        : ""
+    }
+  </article>`;
+}
+
 /** Pure renderer used by browser code and regression tests. */
 export function simulationExamHTML({
   subject,
@@ -62,12 +113,10 @@ export function simulationExamHTML({
 }) {
   const exercise = subject.exercises.find((item) => item.number === activeExercise) || subject.exercises[0];
   const tasks = tasksForExercise(inventory, exercise.number);
-  const provisional = tasks.some((task) => task.scoringReviewStatus !== "verified");
-  const reconstructed = tasks.filter((task) => task.promptSource === "reconstructed").length;
-  const reconstructedNotice =
-    reconstructed > 0
-      ? `<div class="feedback mid mb-2" role="note">${reconstructed} من ${tasks.length} مهام معروضة خطوات مُعاد بناؤها (⚠️) وليست نصّ التعليمات الرسمية.</div>`
-      : "";
+  /* Le barème n'est vérifié nulle part : c'est une propriété de la session,
+     pas des seules questions affichées. L'avis reste donc affiché même sur un
+     exercice dont aucune consigne officielle n'a pu être relue. */
+  const provisional = (inventory?.tasks || []).some((task) => task.scoringReviewStatus !== "verified");
   const provisionalNotice = provisional
     ? `<div class="feedback mid mb-2" role="note">${escapeHTML(BAC_MODE_NOTICES.provisionalScoring)}</div>`
     : "";
@@ -99,7 +148,7 @@ export function simulationExamHTML({
       </article>`;
     })
     .join("");
-  return `${modeNotice}${reconstructedNotice}${provisionalNotice}
+  return `${modeNotice}${provisionalNotice}
     <div class="grid workspace-layout simulation-layout">
       <aside class="card stack">
         <span class="small bold text-muted">تمارين الموضوع الرسمي:</span>
@@ -113,7 +162,7 @@ export function simulationExamHTML({
           .join("")}</div>
       </aside>
       <section class="stack" id="simulation-task-list" aria-label="المهام الرسمية">
-        ${taskCards || `<div class="feedback bad">لا توجد مهمة رسمية لهذا التمرين؛ بيانات هذا الموضوع غير صالحة.</div>`}
+        ${taskCards || freeExerciseHTML(exercise, completed, micButton)}
       </section>
     </div>`;
 }
@@ -324,25 +373,6 @@ export function createSimulationController(deps) {
      demande du propriétaire. Ce qui reste affiché suffit à ne rien promettre
      de faux : chaque espace de rédaction porte « البارم غير مُقاس », et
      l'épreuve n'affiche ni corrigé ni note. */
-
-  /* Barème MESURÉ ou barème NON MESURÉ : les deux s'affichent honnêtement.
-     Sur un PDF scanné ou aux chiffres corrompus, le barème officiel n'est pas
-     extractible — écrire « 0 نقطة » ferait croire à une donnée absente
-     alors qu'elle est simplement inconnue. On le dit à la place. */
-  function pointsBadge(exercise) {
-    return exercise.max === null
-      ? `<span class="small text-muted">البارم غير مُقاس</span>`
-      : `<span class="small text-muted">${Number(exercise.max) || 0} نقطة</span>`;
-  }
-
-  /* Quand le découpage du sujet n'a pas pu être mesuré (scan sans couche
-     texte), la copie libre porte sur le sujet entier au lieu d'annoncer un
-     « تمرين » que personne n'a compté. */
-  function exerciseBadge(exercise) {
-    return exercise.wholeSubject === true
-      ? `<span class="badge badge-indigo">الموضوع كاملاً</span>`
-      : `<span class="badge badge-indigo">التمرين ${exercise.number}</span>`;
-  }
 
   function exerciseHeading(exercise) {
     return typeof exercise.label === "string" && exercise.label.trim()

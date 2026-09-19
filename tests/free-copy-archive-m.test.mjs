@@ -211,14 +211,52 @@ test("l'écran de choix d'une armature n'affiche aucun « null » et n'invite pa
       assert.equal(card.dataset.answerMode, "free");
       assert.equal(card.dataset.examOpenable, "true");
       assert.match(card.querySelector(".subject-card-head").textContent, /البارم غير مُقاس/);
-      assert.equal(card.querySelector(".calc-input"), null, `${id} : rien à estimer sans barème`);
       assert.equal(card.querySelector(".inventory-note"), null, `${id} : plus de note affichée`);
       const button = card.querySelector("[data-confirm]");
       assert.match(button.className, /btn-emerald/, "même vert que les autres boutons d'ouverture");
+      /* Sans barème mesurable, l'estimation reste possible : elle est
+         qualitative (ممتاز … يحتاج تعلّماً), jamais chiffrée en points. */
+      const selects = card.querySelectorAll("select.calc-input");
+      assert.ok(selects.length > 0, `${id} : l'élève peut dire comment il se sent`);
+      for (const select of selects) {
+        assert.equal(select.tagName, "SELECT");
+        assert.deepEqual(
+          [...select.options].map((option) => option.textContent),
+          ["ممتاز", "جيد جداً", "جيد", "متوسط", "يحتاج تعلّماً"]
+        );
+        assert.equal(select.getAttribute("data-max"), null, "aucun plafond de points");
+      }
+      for (const label of card.querySelectorAll("label")) {
+        assert.doesNotMatch(label.textContent, /ن\)/, `${id} : pas de barème entre parenthèses`);
+      }
     }
-    assert.match($("#recommendation-text").textContent, /بارم هذه الدورة غير مُقاس/);
-    assert.equal($("#recommendation-gain").textContent, "");
+    assert.doesNotMatch($("#recommendation-text").textContent, /%|\d+[.,]\d+ نقطة/);
     click("#strategy-exit");
+  }
+});
+
+/* L'estimation est qualitative (ممتاز … يحتاج تعلّماً) : elle doit faire
+   pencher la recommandation sans jamais afficher un compte de points — c'est
+   le seul moyen de comparer deux sujets dont le barème n'existe pas. */
+test("l'estimation qualitative fait pencher le choix, sans compter de points", () => {
+  goToMathsStream();
+  click('#year-grid [data-year="2016-m"]');
+  click("#guide-next");
+  const cards = $$("#view-strategy [data-subject-coverage]");
+  ["4", "0"].forEach((level, index) => {
+    for (const select of cards[index].querySelectorAll("select.calc-input")) {
+      select.value = level;
+      select.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
+    }
+  });
+  assert.match($("#recommendation-text").textContent, /يميل تقديرك إلى الموضوع 1/);
+  assert.match($("#recommendation-text").textContent, /ممتاز مقابل يحتاج تعلّماً/);
+  assert.match($("#s1-total").textContent, /ممتاز/);
+  assert.match($("#s2-total").textContent, /يحتاج تعلّماً/);
+  /* Aucun compte de points dans les cartes de sujet (le « % » de la
+     visionneuse PDF n'est pas un barème, d'où la cible restreinte). */
+  for (const card of cards) {
+    assert.doesNotMatch(card.textContent, /%|\d+[.,]\d+ نقطة/);
   }
 });
 

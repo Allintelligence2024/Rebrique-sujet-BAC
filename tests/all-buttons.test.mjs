@@ -32,6 +32,7 @@ await loadAllYears();
 const { init } = await import("../js/ui.js");
 const { store } = await import("../js/store.js");
 const { soundEngine, timers } = await import("../js/engine.js");
+const { officialTaskInventoryFor } = await import("../data/official-tasks.js");
 await init();
 
 after(() => {
@@ -238,27 +239,34 @@ test("5. Épreuve : les seuls outils sont le sujet, la sortie et la remise", () 
   assert.equal(store.state.sessionStatus, "active", "la session continue si l'élève refuse");
 });
 
-test("6. Épreuve : les tâches du sujet sont visibles et peuvent être rédigées", () => {
-  const taskText = $$("#view-workspace .simulation-task")
-    .map((task) => task.textContent)
-    .join(" ");
-  assert.match(taskText, /2025-S1-E1-Q1/);
-  assert.match(taskText, /2025-S1-E1-Q2/);
-  // Chaque tâche porte sa provenance ; aucune n'affiche de note.
+test("6. Épreuve : les questions officielles sont visibles et peuvent être rédigées", () => {
+  /* Questions OFFICIELLES seulement : Q1 et Q4 du ت1 sont des étapes
+     reconstruites, l'épreuve ne les montre plus. */
+  const inventory = officialTaskInventoryFor("2025", 1);
+  const shown = $$("#view-workspace [data-task-answer]").map((input) => input.dataset.taskAnswer);
+  assert.deepEqual(shown, ["2025-S1-E1-Q2", "2025-S1-E1-Q3"]);
+  for (const id of shown) {
+    assert.equal(
+      inventory.tasks.find((task) => task.id === id).promptSource,
+      "official",
+      `${id} affichée doit être une consigne officielle`
+    );
+  }
+  // Chaque question porte sa provenance ; aucune n'affiche de note.
   assert.equal(
     $$("#view-workspace [data-task-source]").length,
     $$("#view-workspace .simulation-task").length
   );
   assert.doesNotMatch($("#view-workspace").textContent, /\d+[.,]\d+\s*\/\s*\d+/);
   // Rédaction libre : le texte est conservé, sans validation de note.
-  const input = $('#view-workspace [data-task-answer="2025-S1-E1-Q1"]');
+  const input = $('#view-workspace [data-task-answer="2025-S1-E1-Q2"]');
   input.value = "إجابة الطالب في الإمتحان";
   input.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
-  assert.equal(store.exercise("2025", 1, 1).officialTaskAnswers["2025-S1-E1-Q1"], "إجابة الطالب في الإمتحان");
+  assert.equal(store.exercise("2025", 1, 1).officialTaskAnswers["2025-S1-E1-Q2"], "إجابة الطالب في الإمتحان");
   // « اختبار صامت » promet l'absence de diagnostic PENDANT l'épreuve : aucun
   // contrôle d'évaluation ne doit y être rendu. Il réapparaît en relecture.
   assert.equal(
-    $('#view-workspace [data-qualitative-for="2025-S1-E1-Q1"]'),
+    $('#view-workspace [data-qualitative-for="2025-S1-E1-Q2"]'),
     null,
     "aucune évaluation qualitative pendant l'épreuve"
   );

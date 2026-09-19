@@ -148,17 +148,25 @@ test("après تثبيت du sujet, entrée directe dans l'épreuve (aucun écran 
   assert.equal($("#stepnav"), null, "la navigation par étapes d'entraînement a disparu");
 });
 
-test("l'épreuve affiche les consignes avec leur provenance réelle", () => {
+test("l'épreuve n'affiche QUE les consignes officielles, avec leur provenance", () => {
+  /* Décision du propriétaire (2026-09-19) : une étape « reconstruite » est
+     une question que l'application a fabriquée, pas une question du sujet.
+     Elle n'a plus sa place dans une épreuve. Sur 2025/S1/E1 il reste deux
+     consignes officielles (Q2 et Q3) sur les quatre tâches inventoriées. */
   const tasks = $$("#view-workspace .simulation-task");
-  assert.equal(tasks.length, 4, "quatre tâches pour le ت1 de 2025/S1");
+  assert.equal(tasks.length, 2, "deux consignes officielles pour le ت1 de 2025/S1");
   const badges = $$("#view-workspace [data-task-source]");
-  assert.equal(badges.length, 4, "chaque tâche porte sa provenance");
-  const sources = badges.map((badge) => badge.dataset.taskSource);
-  assert.deepEqual(sources, ["reconstructed", "official", "official", "reconstructed"]);
-  // Les étapes reconstruites le disent ; les pages ne sont pas inventées.
-  assert.match(badges[0].textContent, /مُعاد بناؤها/);
-  assert.match(tasks[0].textContent, /صفحة غير موثّقة/);
-  assert.match(tasks[1].textContent, /الصفحة 1/);
+  assert.equal(badges.length, 2, "chaque consigne porte sa provenance");
+  assert.deepEqual(
+    badges.map((badge) => badge.dataset.taskSource),
+    ["official", "official"]
+  );
+  assert.match(badges[0].textContent, /تعليمة رسمية/);
+  // Les pages sont celles du document officiel, jamais inventées.
+  assert.doesNotMatch($("#view-workspace").textContent, /صفحة غير موثّقة/);
+  assert.match(tasks[0].textContent, /الصفحة 1/);
+  // Plus aucune étape reconstruite n'est montrée, donc plus son avertissement.
+  assert.doesNotMatch($("#view-workspace").textContent, /مُعاد بناؤها/);
   // Aucune note, aucun pourcentage dans l'écran d'épreuve.
   assert.doesNotMatch($("#view-workspace").textContent, /\d+[.,]\d+\s*\/\s*\d+/);
 });

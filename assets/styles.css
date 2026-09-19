@@ -1055,6 +1055,17 @@ footer.screen-foot {
   width: 5rem;
   text-align: center;
 }
+
+/* L'estimation est devenue un CHOIX QUALITATIF (ممتاز … يحتاج تعلّماً) :
+   un <select> ne se dimensionne pas comme un champ de points. Largeur du
+   contenu, mais bornée — sur un écran de 360 px l'intitulé de l'exercice
+   passe à la ligne et rien ne déborde. */
+select.calc-input {
+  width: auto;
+  min-width: 6.5rem;
+  max-width: 55%;
+  text-align: start;
+}
 .subject-card {
   justify-content: space-between;
 }
