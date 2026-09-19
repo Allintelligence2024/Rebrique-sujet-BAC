@@ -407,18 +407,28 @@ pack Git : 105 Mio
 `M/` et `SE/` ne sont ni dans `PUBLIC_DIRECTORIES` (`server.mjs:52`), ni dans `dist`,
 ni ignorés par `.gitignore` : **80 Mio de matière première suivie par Git**.
 
-**Précision apportée par la mesure.** L'affirmation initiale « référencés par AUCUN code »
-était inexacte. Sur les 32 PDF de `M/` + `SE/` :
+**Rectificatif du 2026-09-19.** Une première correction de ce bloc (commit `4de925a`)
+affirmait « 0 référence par chemin local » et « 21 URL externes ». Ces deux chiffres
+étaient **faux** : la recherche avait été faite avec un filtre d'extensions qui excluait
+`subjects/manifest.json`. Mesure refaite sur tout le dépôt, hors `.git`, `node_modules`
+et `dist`, en cherchant le nom de fichier de chacun des 32 bruts :
 
-- **0** référence par **chemin local** ;
-- **21** références, mais uniquement comme **URL externe** `https://www.dzexams.com/…`
-  dans `data/archive.js` — donc des copies locales **redondantes** de fichiers que
-  l'application lie à distance ;
-- **10** sans aucune référence.
+- **30** apparaissent en **chemin local** dans `subjects/manifest.json`, champ `"source"`
+  (par exemple `"source": "M/dzexams-bac-sciences-2770867.pdf"`). C'est de la
+  **provenance** : aucun module de `js/` ni script ne lit `manifest.json` à l'exécution —
+  vérifié par recherche de `manifest.json` dans `js/`, `scripts/`, `tests/`, `server.mjs`.
+- **12** apparaissent **à l'intérieur d'une URL externe** `https://www.dzexams.com/…`
+  dans `data/archive.js` (17 occurrences de cette forme au total) : l'application lie
+  ces sujets à distance, la copie locale n'est pas utilisée.
+- **1** n'a aucune référence : `SE/dzexams-bac-sciences-2116452.pdf`.
 
-La seule occurrence ressemblant à un chemin local est `tests/server.test.mjs:82`, qui est
-un **test négatif** : il exige `/BAC2025_SVT_Sujet1.pdf` → **404**. Autrement dit, le
-dépôt teste activement que ces fichiers ne sont pas servis — tout en les stockant.
+La conclusion pratique ne change pas — les bruts ne sont ni servis ni lus à l'exécution —
+mais le raisonnement qui y menait était faux, et `manifest.json` doit être mis à jour si
+`M/` et `SE/` sont retirés, sinon la provenance pointerait dans le vide.
+
+S'y ajoute un **test négatif** : `tests/server.test.mjs:82` exige
+`/BAC2025_SVT_Sujet1.pdf` → **404**. Le dépôt teste donc activement que ces fichiers ne
+sont pas servis — tout en les stockant.
 
 Point à trancher avec le porteur du projet : `LICENSE-CONTENT` et `NOTICE` excluent
 explicitement les sujets d'examen et les scans de la licence et écrivent qu'ils
@@ -426,6 +436,33 @@ explicitement les sujets d'examen et les scans de la licence et écrivent qu'ils
 ces scans (90 PDF, mesuré) sont suivis par Git. `docs/CONTENT_RIGHTS.md` est cité comme
 référence — il faut soit une permission documentée, soit sortir ces binaires du dépôt
 (Git LFS ou stockage externe).
+
+#### D17bis — `docs/CONTENT_RIGHTS.md` affirme un retrait qui n'a jamais eu lieu
+
+`docs/CONTENT_RIGHTS.md:13` écrit :
+
+> Les 32 PDF tiers auparavant suivis par Git ont été retirés de cette branche faute de
+> preuve de redistribution.
+
+C'est **faux**, et mesurable en une commande :
+
+```console
+$ git ls-tree -r --name-only HEAD | grep '\.pdf$' | grep -cE '^(M|SE)/'
+32
+```
+
+Les 32 fichiers sont présents dans `HEAD` (`b10b175`) **et** dans `origin/main` ; les
+90 PDF sont strictement identiques entre les deux (`diff` vide sur la liste triée). Le
+retrait décrit n'a donc été effectué sur aucune branche.
+
+Deux conséquences. D'abord, un document de conformité décrit une remédiation jamais
+réalisée : quiconque s'y fierait avant publication croirait le contenu tiers absent
+alors qu'il est servi. Ensuite, le périmètre réel est plus large que les « 32 PDF » :
+`subjects/manifest.json` rattache les **58 PDF servis** à ces bruts par son champ
+`"source"`, donc le sujet juridique porte sur 90 fichiers, dont 58 accessibles au public.
+
+Ni la décision de retirer ni la réécriture d'historique ne relèvent d'un audit. En
+revanche, **corriger l'affirmation fausse ne dépend de personne** : c'est un fait mesuré.
 
 ### D18 — divers
 
