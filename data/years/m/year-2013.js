@@ -13,10 +13,21 @@
      barème : NON MESURÉ (scan : aucune couche texte)
      consignes : aucune recopiée (TRAVAIL C — relecture humaine requise)
 
+   Deux exercices, comme les autres années de la شعبة — ce n'est PAS une
+   mesure de CE fichier (scan : rien à lire), c'est la structure constante
+   de la شعبة رياضيات, vérifiée ailleurs :
+     - 2016, 2017, 2018, 2019, 2020 : « التمرين الأول » + « التمرين الثاني »
+       extraits de la couche texte de chaque sujet ;
+     - 2021 à 2026 : deux exercices dans les données déjà encodées.
+   Dix années, dix fois deux exercices. Le barème, lui, N'EST PAS constant
+   dans cette شعبة (8+12 en 2021, 2022, 2025 ; 7+13 en 2023, 2024 ;
+   6+14 en 2026) : il reste donc non mesuré ici, jamais recopié d'une autre
+   année.
+
    Ce qui EST encodé, et rien d'autre :
      - les deux fichiers du sujet, servis par l'application ;
      - la page annales de la source, déjà documentée dans data/archive.js ;
-     - le découpage officiel NON mesurable (scan) : une copie libre pour le sujet entier.
+     - une copie libre par exercice (deux), sans consigne et sans barème.
    L'élève répond donc en « copie libre » : il lit le PDF dans la visionneuse
    intégrée et rédige sa réponse. `poles: {}` — aucun inventaire officiel
    n'est dérivé de cette année et aucune note n'est calculée.
@@ -31,16 +42,15 @@ const PDF_NOTE =
   "Aucune couche texte (scan) : ni barème ni consigne n'a été recopiés. " +
   "Le corrigé n'est pas dans l'application : seules les pages du sujet sont affichées.";
 
-/* Le découpage en exercices n'est pas mesurable sur un scan : une seule copie
-   libre pour le sujet entier. `max: null` n'est pas un zéro déguisé : c'est un
-   barème non mesuré, et l'écran d'épreuve le dit à la place d'un nombre faux. */
-const wholeSubjectCopy = () => ({
-  number: 1,
+/* Une copie libre par exercice : ni consigne, ni thème, ni barème.
+   `max: null` n'est pas un zéro déguisé : c'est un barème non mesuré, et
+   l'écran d'épreuve le dit à la place d'afficher un nombre faux. */
+const freeExercise = (number) => ({
+  number,
   ui: "text",
   label: null,
   max: null,
-  poles: {},
-  wholeSubject: true
+  poles: {}
 });
 
 export const YEAR_2013_M = {
@@ -56,10 +66,12 @@ export const YEAR_2013_M = {
      n'est calculée — il n'y a rien à corriger ici. */
   answerMode: "free",
   answerModeNote:
-    "تعليمات هذه الدورة غير مُشفَّرة في التطبيق: تعرض الشاشة الموضوع الرسمي وخانة إجابة حرة واحدة للموضوع كاملاً، بلا تصحيح ولا نقطة. بارم التمارين غير مُقاس على هذا الملف فلا يُعرض أي عدد نقاط.",
+    "تعليمات هذه الدورة غير مُشفَّرة في التطبيق: تعرض الشاشة الموضوع الرسمي وخانة إجابة حرة لكل تمرين، بلا تصحيح ولا نقطة. بارم التمارين غير مُقاس على هذا الملف فلا يُعرض أي عدد نقاط.",
   /* Traceabilité : ce qui a été mesuré, et ce qui ne l'a pas été. */
   freeMeasurements: {
     measuredAt: "2026-09-19",
+    /* false = non lu sur CE fichier (scan). Les deux exercices viennent de la
+       structure de la شعبة, pas d'une mesure de ce PDF. */
     exerciseSplitMeasured: false,
     pointsMeasured: false,
     promptsEncoded: false,
@@ -74,7 +86,7 @@ export const YEAR_2013_M = {
       pdfNote: PDF_NOTE,
       title: "الموضوع الأول",
       answerMode: "free",
-      exercises: [wholeSubjectCopy()]
+      exercises: [freeExercise(1), freeExercise(2)]
     },
     {
       id: 2,
@@ -84,7 +96,7 @@ export const YEAR_2013_M = {
       pdfNote: PDF_NOTE,
       title: "الموضوع الثاني",
       answerMode: "free",
-      exercises: [wholeSubjectCopy()]
+      exercises: [freeExercise(1), freeExercise(2)]
     }
   ]
 };

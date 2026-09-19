@@ -11,7 +11,8 @@
      - le titre « ساس الهدوء والتركيز المنهجي » ;
      - le sous-titre « جلسة التأطير النفسي والتنفس الموجه — بكالوريا … » ;
      - la phrase « أنت تمتلك كافة المكتسبات، ركّز فقط على خطواتك الأربع » ;
-     - le rappel « الخطوات الأربع: اقرأ ← اجمع ← اربط ← اختُم … ».
+     - le rappel des quatre étapes de la méthode (اقرأ ← اجمع ← اربط ← اختُم),
+       ainsi que sa mention dans le paragraphe de durée.
    La méthode reste enseignée là où l'élève en a besoin : dans l'épreuve,
    tâche par tâche — pas dans un écran qu'il doit traverser.
    ============================================================ */
@@ -44,7 +45,7 @@ export function createGuideScreen(deps) {
         <div class="card center stack">
           <p class="small text-muted mt-0 mb-0">مدة الاختبار الرسمية لهذه الشعبة: <b>${formatDuration(
             examMinutesForYear(y)
-          )}</b>. خطتك هنا: <b>25 د</b> لتصفح الموضوع وتقدير الثقة، ثم تطبيق الخطوات الأربع.</p>
+          )}</b>. خطتك هنا: <b>25 د</b> لتصفح الموضوع وتقدير ثقتك في كل تمرين.</p>
           <p class="small text-amber mt-0 mb-0">هذه مرحلة تحضير: اقرأ الموضوع كاملاً في الشاشة التالية قبل اختياره.</p>
         </div>
         <div class="flex justify-end">

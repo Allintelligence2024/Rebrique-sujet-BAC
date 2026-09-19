@@ -288,18 +288,42 @@ test("2016 (découpage mesuré) : une copie par exercice, sans aucun nombre de p
   assert.equal($("#simulation-finish").textContent.trim(), "✓ تسليم الورقة");
 });
 
-test("2013 (scan, découpage non mesurable) : une seule copie pour le sujet entier", () => {
+/* 2013 est un scan : le découpage n'est pas LISIBLE sur ce fichier. Il n'est
+   donc plus « une copie pour le sujet entier » mais deux copies, comme en SE
+   et comme les autres Maths — la structure de la شعبة est connue par ailleurs
+   (2016–2020 en couche texte, 2021–2026 dans les données). Seul le barème
+   reste non mesuré, parce que lui N'EST PAS constant dans cette شعبة. */
+test("2013 (scan) : deux copies comme les autres Maths, mais aucun barème", () => {
   goToMathsStream();
   openExam("2013-m");
   const fields = $$("#view-workspace [data-exercise-free]");
-  assert.equal(fields.length, 1, "le découpage n'étant pas mesurable, une seule copie");
-  assert.match($("#view-workspace").textContent, /الموضوع كاملاً/);
-  assert.doesNotMatch($("#view-workspace").textContent, /التمرين 1/);
+  assert.deepEqual(
+    fields.map((field) => Number(field.dataset.exercise)),
+    [1, 2]
+  );
+  assert.match($("#view-workspace").textContent, /التمرين 1/);
+  assert.match($("#view-workspace").textContent, /التمرين 2/);
+  assert.doesNotMatch($("#view-workspace").textContent, /الموضوع كاملاً/);
   assert.match($("#view-workspace").textContent, /البارم غير مُقاس/);
   assert.match(
     $("#view-workspace iframe.pdf-frame").getAttribute("src"),
     /^\/subjects\/M\/2013\/sujet-1\.pdf/
   );
+});
+
+test("les trois scans Maths gardent leur structure, mesurée ailleurs", () => {
+  for (const id of ["2013-m", "2014-m", "2015-m"]) {
+    goToMathsStream();
+    openExam(id);
+    assert.equal(
+      $$("#view-workspace [data-exercise-free]").length,
+      2,
+      `${id} : deux exercices, comme toute la شعبة رياضيات`
+    );
+    assert.match($("#view-workspace").textContent, /البارم غير مُقاس/, `${id} : aucun barème recopié`);
+    assert.doesNotMatch($("#view-workspace").textContent, /نقطة/, `${id} : aucun nombre de points`);
+    click("#simulation-home");
+  }
 });
 
 test("la copie est enregistrée puis verrouillée par la remise", () => {

@@ -25,6 +25,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { createRequire } from "node:module";
+import { pdfViewerHTML } from "../js/ui/pdf-viewer.js";
 
 const require = createRequire(import.meta.url);
 const { JSDOM } = require("jsdom");
@@ -140,4 +141,22 @@ test("le décalage collant est publié et suit la visibilité du bandeau", () =>
   const bar = $("#global-timer-bar");
   assert.ok(bar, "le bandeau de chronomètre doit exister");
   assert.ok(bar.classList.contains("hidden"), "aucune session ouverte au démarrage");
+});
+
+/* Retiré le 2026-09-19 à la demande du propriétaire, avec les autres textes
+   qui expliquent l'application au lieu de laisser l'élève travailler : le
+   bandeau « الملف المحلي — يُعرض داخل التطبيق » au-dessus de la visionneuse.
+   Le sujet s'ouvre dans l'application, cela se voit ; le dire en plus de
+   l'icône 📄 et des boutons était de trop. */
+test("la visionneuse du sujet n'affiche aucun bandeau explicatif", () => {
+  const html = pdfViewerHTML(
+    { id: 1, pdfLocalUrl: "/subjects/SE/2025/sujet-1.pdf", pdfExternalUrl: null },
+    { showCover: true }
+  );
+  assert.match(html, /📄 موضوع البكالوريا الأول/, "le titre du sujet reste");
+  assert.doesNotMatch(html, /الملف المحلي/);
+  assert.doesNotMatch(html, /يُعرض داخل التطبيق/);
+  // Les seuls textes restants sont le titre et les deux actions utiles.
+  const texts = [...html.matchAll(/>([^<>]{3,})</g)].map((match) => match[1].trim()).filter(Boolean);
+  assert.deepEqual(texts, ["📄 موضوع البكالوريا الأول", "📄 فتح في نافذة مستقلة", "⬇️ تنزيل PDF"]);
 });

@@ -138,9 +138,9 @@ const catalogEntry = (entry) => Object.freeze(entry);
  *  d'espaces de rédaction par sujet (1 = le découpage n'a pas pu être mesuré
  *  sur le fichier, la copie porte alors sur le sujet entier). */
 const FREE_COPY_M_YEARS = Object.freeze({
-  2013: { theme: "emerald", exercises: 1 },
-  2014: { theme: "amber", exercises: 1 },
-  2015: { theme: "indigo", exercises: 1 },
+  2013: { theme: "emerald", exercises: 2 },
+  2014: { theme: "amber", exercises: 2 },
+  2015: { theme: "indigo", exercises: 2 },
   2016: { theme: "purple", exercises: 2 },
   2017: { theme: "rose", exercises: 2 },
   2018: { theme: "emerald", exercises: 2 },
@@ -280,9 +280,15 @@ export const YEAR_CATALOG = Object.freeze([
   ),
   /* Maths 2013–2020 : armatures « copie libre ». Aucune consigne encodée
      (scan sans couche texte, ou chiffres corrompus) et barème non mesuré —
-     voir le champ `freeMeasurements` de chaque payload. Le découpage en
-     exercices n'est annoncé ici que lorsqu'il a été MESURÉ sur le fichier
-     (2 exercices) ; sinon la copie libre porte sur le sujet entier (1). */
+     voir le champ `freeMeasurements` de chaque payload.
+
+     Deux exercices PARTOUT, y compris sur les scans 2013–2015 : la شعبة
+     رياضيات ne présente que deux exercices, vérifié sur dix années (2016–2020
+     en couche texte, 2021–2026 dans les données encodées). Sur les scans,
+     `exerciseSplitMeasured` reste false — la structure est celle de la شعبة,
+     elle n'a pas été lue sur ce fichier. Le barème, lui, n'est PAS constant
+     dans cette شعبة (8+12, 7+13, 6+14 selon l'année) : il n'est jamais
+     recopié d'une autre année. */
   ...Object.entries(FREE_COPY_M_YEARS).map(([calendarYear, shape]) =>
     catalogEntry({
       id: `${calendarYear}-m`,

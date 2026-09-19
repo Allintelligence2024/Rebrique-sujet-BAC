@@ -223,10 +223,16 @@ export function createHubScreen(deps) {
        corrompus sur ce corpus : jamais mesuré). Rien de plus n'est affirmé. */
     const split = y.freeMeasurements?.exerciseSplitMeasured;
     const points = y.freeMeasurements?.pointsMeasured;
+    /* L'infobulle reste le seul endroit où l'application dit ce qu'elle n'a
+       pas : aucune consigne encodée, aucun barème affiché. Le long paragraphe
+       « وضع «الورقة الحرة» » a été retiré à la demande du propriétaire ; ce
+       qui reste suffit à ne rien promettre de faux. */
     return (
-      `إمتحان الموضوع — وضع «الورقة الحرة»: تعليمات هذه الدورة غير مُشفَّرة، تقرأ الموضوع من الملف وتكتب إجابتك ` +
-      (split === false ? "في ورقة واحدة للموضوع كاملاً" : "في خانة لكل تمرين") +
-      (points === false ? "، والبارم غير مُقاس فلا يُعرض أي عدد نقاط" : "") +
+      `إمتحان الموضوع — تعليمات هذه الدورة غير مُشفَّرة: تقرأ الموضوع من الملف وتكتب إجابتك ` +
+      (split === false
+        ? "في خانة لكل تمرين (بعدد تمارين الشعبة: غير مقروء على هذا الملف)"
+        : "في خانة لكل تمرين") +
+      (points === false ? ". البارم غير مُقاس فلا يُعرض أي عدد نقاط" : "") +
       `. مدة الاختبار الرسمية: ${duration}.`
     );
   }

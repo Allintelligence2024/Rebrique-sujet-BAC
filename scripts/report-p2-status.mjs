@@ -133,8 +133,15 @@ export function buildP2Status() {
     "شريط فيديو",
     "فكّ القفل"
   ];
+  /* Le lot « vocabulaire unifié » vérifiait que l'application n'employait
+     qu'une seule métaphore : les quatre étapes. Le propriétaire a retiré ce
+     rappel de l'écran de préparation le 2026-09-19 — il distrayait l'élève.
+     La preuve s'inverse donc : plus AUCUNE métaphore méthodologique n'est
+     affichée dans le parcours élève, ni ancienne (بوصلة, الأسنان…) ni nouvelle
+     (الخطوات الأربع). Ce que l'élève voit, ce sont les consignes officielles
+     et leur provenance. */
   const vocabularyUnified =
-    visibleUiSources.includes("الخطوات الأربع") &&
+    !visibleUiSources.includes("الخطوات الأربع") &&
     competingMetaphors.every((term) => !visibleUiSources.includes(term));
 
   const legacyFrenchCopy = [
