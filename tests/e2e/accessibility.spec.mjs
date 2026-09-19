@@ -17,10 +17,16 @@ test("le lien d’évitement est le premier arrêt clavier et cible le contenu",
   await expect(page.locator("#main-content")).toBeFocused();
 });
 
-test("le changement d’écran place le focus sur son titre", async ({ page }) => {
+test("le changement d’écran place le focus sur le nouvel écran", async ({ page }) => {
   await page.goto("/");
   await page.locator('#year-grid [data-year="2025"]').click();
-  await expect(page.locator("#guide-title")).toBeFocused();
+  /* L'écran de préparation n'a plus de titre : il a été retiré le 2026-09-19
+     avec les autres textes qui distrayaient l'élève. announceScreen retombe
+     alors sur le nom accessible de la section (SCREEN_NAMES) et c'est la
+     section elle-même qui reçoit le focus. Le contrat est inchangé : le focus
+     quitte l'écran précédent, et l'écran reste nommé pour un lecteur d'écran. */
+  await expect(page.locator("#view-guide")).toBeFocused();
+  await expect(page.locator("#view-guide")).toHaveAttribute("aria-label", "دليل الاستعداد");
   await page.locator("#guide-next").click();
   await expect(page.locator("#view-strategy h2")).toBeFocused();
 });
