@@ -64,6 +64,15 @@ const SHELL_ASSETS = [
   "./legal/legal-notice.html"
 ];
 
+/* `cache: "reload"` : quand le cache runtime ou le cache shell est vide, la
+   requête doit contourner le cache HTTP du navigateur. Sans cela, une année
+   servie naguère avec `max-age` restait valable des heures alors que son
+   fichier avait changé depuis : le catalogue, lui, était à jour, la validation
+   croisée échouait et l'année refusait de s'ouvrir — sans qu'aucun
+   rechargement n'y change rien. Cette directive rend le correctif indépendant
+   du serveur qui héberge l'application. */
+const NETWORK_FRESH = Object.freeze({ cache: "reload" });
+
 function isLocalRequest(request) {
   try {
     return new URL(request.url).origin === self.location.origin;
@@ -126,7 +135,7 @@ async function cacheRuntimeResponse(request, response) {
 async function fetchNavigation(request) {
   let response;
   try {
-    response = await fetch(request);
+    response = await fetch(request, NETWORK_FRESH);
   } catch {
     await notifyClients("offline-fallback", { resource: "navigation" });
     return (await caches.match("./index.html")) || Response.error();
@@ -148,7 +157,7 @@ async function fetchRuntime(request) {
   if (cached) return cached;
   let response;
   try {
-    response = await fetch(request);
+    response = await fetch(request, NETWORK_FRESH);
   } catch {
     await notifyClients("offline-miss", {
       resource: new URL(request.url).pathname.endsWith(".pdf") ? "subject-pdf" : "year-data"
@@ -192,7 +201,7 @@ async function fetchShellOrAsset(request) {
   if (cached) return cached;
   let response;
   try {
-    response = await fetch(request);
+    response = await fetch(request, NETWORK_FRESH);
   } catch {
     return Response.error();
   }

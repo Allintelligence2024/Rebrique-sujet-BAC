@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 import vm from "node:vm";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const source = `${readFileSync(join(root, "sw.js"), "utf8")}\nglobalThis.__swTest = { cacheRuntimeResponse, fetchNavigation, fetchRuntime, isCacheableResponse, isRuntimeAsset, trimRuntimeCache, RUNTIME_MAX_ENTRIES, RUNTIME_CACHE, SHELL_CACHE };`;
+const source = `${readFileSync(join(root, "sw.js"), "utf8")}\nglobalThis.__swTest = { cacheRuntimeResponse, fetchNavigation, fetchRuntime, fetchShellOrAsset, isCacheableResponse, isRuntimeAsset, trimRuntimeCache, RUNTIME_MAX_ENTRIES, RUNTIME_CACHE, SHELL_CACHE };`;
 
 class MemoryCache {
   constructor() {
@@ -165,4 +165,30 @@ test("les PDF de sujet sont évictables : runtime borné, jamais le cache shell 
   const shell = await caches.open(api.SHELL_CACHE);
   assert.ok(await runtime.match(pdf), "le PDF doit être dans le runtime");
   assert.equal(await shell.match(pdf), undefined, "le PDF ne doit pas gonfler le cache shell");
+});
+
+test("le cache HTTP du navigateur ne peut pas rejouer une année déjà remplacée", async () => {
+  /* Le cache runtime est « cache d'abord » : tant qu'il répond, aucun réseau.
+     Mais dès qu'il est vide — éviction, nouvelle version — la requête repart
+     sur le réseau, et là le cache HTTP du navigateur pouvait resservir
+     l'ancienne charge utile pendant des heures. `cache: "reload"` rend la
+     fraîcheur indépendante des en-têtes du serveur qui héberge l'app. */
+  const seen = [];
+  const { api } = harness(async (request, init) => {
+    seen.push({ url: request.url, init });
+    return new Response("export default {};", { status: 200 });
+  });
+  const year = new globalThis.Request("https://app.test/data/years/m/year-2013.js");
+  const shell = new globalThis.Request("https://app.test/js/main.js");
+
+  await api.fetchRuntime(year);
+  await api.fetchShellOrAsset(shell);
+  await api.fetchNavigation(new globalThis.Request("https://app.test/index.html"));
+
+  assert.equal(seen.length, 3, "les trois chemins réseau sont passés par fetch()");
+  for (const call of seen) {
+    // Comparaison par valeur : l'objet vient du contexte `vm`, son prototype
+    // n'est pas celui de ce fichier — un deepEqual échouerait pour rien.
+    assert.equal(call.init?.cache, "reload", `${call.url} doit contourner le cache HTTP du navigateur`);
+  }
 });

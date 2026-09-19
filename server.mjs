@@ -149,17 +149,24 @@ export function createStaticServer({ rootDirectory = root } = {}) {
 
     const extension = extname(canonicalPath);
     const stat = statSync(canonicalPath);
-    const stableEntryPoint =
-      extension === ".html" ||
-      extension === ".webmanifest" ||
-      canonicalPath.endsWith("sw.js") ||
-      canonicalPath.endsWith("app-version.js") ||
-      canonicalPath.endsWith("release.json");
-    const cacheControl = stableEntryPoint
-      ? "no-cache"
-      : extension === ".pdf"
-        ? "public, max-age=0, must-revalidate"
-        : "public, max-age=86400";
+    /* Politique de cache : rien de ce qui porte la LOGIQUE ou les DONNÉES ne
+       doit rester 24 h dans le cache HTTP sans revalidation.
+
+       Contre-exemple mesuré : `max-age=86400` sur `data/years/**` faisait
+       rejouer par le navigateur l'ancienne charge utile d'une année pourtant
+       déjà modifiée sur le serveur. Le catalogue (`data/subjects.js`), frais,
+       la validait contre une structure périmée, la validation échouait et
+       l'année refusait de s'ouvrir — jusqu'à 24 heures, rechargement compris.
+
+       Seules restent cacheables les icônes (leur URL porte déjà l'empreinte du
+       contenu, `?v=<sha256>`, donc un changement change l'URL) et les PDF,
+       immuables mais servis avec `must-revalidate`. */
+    const cacheControl =
+      extension === ".png"
+        ? "public, max-age=86400"
+        : extension === ".pdf"
+          ? "public, max-age=0, must-revalidate"
+          : "no-cache";
 
     // Minimal Range support so PDF viewers can seek and first-page rendering
     // doesn't have to wait for a full multi-megabyte download. Only a single

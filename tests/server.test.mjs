@@ -25,6 +25,33 @@ after(async () => {
   await new Promise((resolve, reject) => server.close((error) => (error ? reject(error) : resolve())));
 });
 
+test("aucune logique ni donnée d'année n'est servie 24 h sans revalidation", async () => {
+  /* Contre-exemple mesuré : `max-age=86400` sur `data/years/**` laissait le
+     navigateur rejouer l'ancienne charge utile d'une année déjà modifiée. Le
+     catalogue, frais, la validait contre une structure périmée : l'année
+     refusait de s'ouvrir jusqu'à 24 h, rechargement compris. Seules les
+     icônes — dont l'URL porte l'empreinte du contenu — et les PDF restent
+     cacheables. */
+  const cases = [
+    ["data/years/m/year-2013.js", /no-cache/],
+    ["data/subjects.js", /no-cache/],
+    ["js/main.js", /no-cache/],
+    ["sw.js", /no-cache/],
+    ["assets/styles.css", /no-cache/],
+    ["subjects/M/2013/sujet-1.pdf", /must-revalidate/],
+    ["assets/icon-192.png", /max-age=86400/]
+  ];
+  for (const [path, pattern] of cases) {
+    const response = await globalThis.fetch(`${origin}/${path}`);
+    assert.equal(response.status, 200, `${path} doit être servie`);
+    assert.match(
+      response.headers.get("cache-control") || "",
+      pattern,
+      `${path} → ${response.headers.get("cache-control")}`
+    );
+  }
+});
+
 test("la liste blanche ne reconnaît que les routes de déploiement", () => {
   for (const route of [
     "index.html",
