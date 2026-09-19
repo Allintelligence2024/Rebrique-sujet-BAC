@@ -3,15 +3,13 @@
  */
 const YEAR_2023_SE = {
   id: "2023",
-  label: "بكالوريا الجزائر دورة 2023",
-  badge: "دورة رسمية",
+  label: "بكالوريا الجزائر دورة 2023 — شعبة علوم تجريبية",
   theme: "amber",
   enabled: true,
   sujets: [
     {
       id: 1,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf",
       pdfLocalUrl: "/subjects/SE/2023/sujet-1.pdf",
@@ -334,7 +332,6 @@ const YEAR_2023_SE = {
     {
       id: 2,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf",
       pdfLocalUrl: "/subjects/SE/2023/sujet-2.pdf",

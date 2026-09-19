@@ -14,15 +14,13 @@ const YEAR_2014_SE = {
   id: "2014",
   stream: "se",
   calendarYear: "2014",
-  label: "بكالوريا الجزائر دورة 2014",
-  badge: "أرشيف مُعاد بناؤه",
+  label: "بكالوريا الجزائر دورة 2014 — شعبة علوم تجريبية",
   theme: "amber",
   enabled: true,
   sujets: [
     {
       id: 1,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-4380238.pdf",
       pdfLocalUrl: "/subjects/SE/2014/sujet-1.pdf",
@@ -300,7 +298,6 @@ const YEAR_2014_SE = {
     {
       id: 2,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-4380238.pdf",
       pdfLocalUrl: "/subjects/SE/2014/sujet-2.pdf",

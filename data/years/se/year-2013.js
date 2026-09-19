@@ -14,15 +14,13 @@ const YEAR_2013_SE = {
   id: "2013",
   stream: "se",
   calendarYear: "2013",
-  label: "بكالوريا الجزائر دورة 2013",
-  badge: "أرشيف مُعاد بناؤه",
+  label: "بكالوريا الجزائر دورة 2013 — شعبة علوم تجريبية",
   theme: "emerald",
   enabled: true,
   sujets: [
     {
       id: 1,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-4463279.pdf",
       pdfLocalUrl: "/subjects/SE/2013/sujet-1.pdf",
@@ -299,7 +297,6 @@ const YEAR_2013_SE = {
     {
       id: 2,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-4463279.pdf",
       pdfLocalUrl: "/subjects/SE/2013/sujet-2.pdf",

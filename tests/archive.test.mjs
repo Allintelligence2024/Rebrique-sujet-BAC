@@ -34,13 +34,18 @@ test("2021 SE reste cataloguée, sans contenu 4D inventé ni faux contentVerifie
   assert.equal(maths.contentVerified, true);
   /* 2021 est désormais une épreuve « copie libre » : le sujet officiel est lu
      dans l'application, mais AUCUNE consigne n'est encodée (couche texte
-     illisible). Ce n'est pas du 4D : aucun pôle, aucun inventaire, aucune note. */
+     lisible mais chiffres corrompus — mesuré par `npm run pdftext:status`).
+     Ce n'est pas du 4D : aucun pôle, aucun inventaire, aucune note. */
   const { APP_CONFIG, loadYear } = await import("../data/subjects.js");
   const se2021 = APP_CONFIG.years.find((y) => y.id === "2021" && (y.stream || "se") === "se");
   assert.ok(se2021 && se2021.enabled, "2021 ouvre une épreuve");
   const year2021 = await loadYear("2021");
   assert.equal(year2021.answerMode, "free");
-  assert.ok(year2021.answerModeNote.length > 20);
+  /* Le champ `answerModeNote` a été SUPPRIMÉ des payloads le 2026-09-19 :
+     il n'était rendu nulle part et son texte (« … بلا تصحيح ولا نقطة »)
+     comptait parmi ceux que le propriétaire ne veut plus voir. Ce que
+     l'élève doit savoir vit dans `freeMeasurements` et dans l'écran. */
+  assert.equal(year2021.answerModeNote, undefined);
   for (const sujet of year2021.sujets) {
     assert.deepEqual(
       sujet.exercises.map((ex) => ex.max),
@@ -189,13 +194,16 @@ test("Maths 2021–2026 et SE 2020/2026 sont du 4D ; Maths reste cataloguée (co
   }
 });
 
-test("la filière تقني رياضي n'a aucune entrée inventée", () => {
-  assert.equal(ARCHIVE.entries.filter((e) => e.stream === "tm").length, 0);
-  assert.ok(ARCHIVE.streams.tm);
-  const gap = ARCHIVE.gaps.find((g) => g.stream === "tm");
-  assert.ok(gap, "le trou TM doit rester documenté");
+test("l'espace باكالوريات أجنبية n'a aucune entrée inventée", () => {
+  assert.equal(ARCHIVE.entries.filter((e) => e.stream === "foreign").length, 0);
+  assert.ok(ARCHIVE.streams.foreign);
+  assert.equal(ARCHIVE.streams.foreign.label, "باكالوريات أجنبية");
+  // Aucune source étrangère n'a été vérifiée : pas d'indexUrl inventé.
+  assert.equal(ARCHIVE.streams.foreign.indexUrl, undefined);
+  const gap = ARCHIVE.gaps.find((g) => g.stream === "foreign");
+  assert.ok(gap, "l'espace vide doit rester documenté");
   assert.ok(gap.reason.length > 40);
-  assert.deepEqual(ARCHIVE.streamOrder, ["se", "m", "tm"]);
+  assert.deepEqual(ARCHIVE.streamOrder, ["se", "m", "foreign"]);
 });
 
 test("les entrées non vérifiées ont page=access_confirmed et viewer=blocked", () => {

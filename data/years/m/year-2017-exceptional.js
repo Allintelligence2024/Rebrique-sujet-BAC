@@ -1,0 +1,91 @@
+/* ============================================================
+   BAC SVT Algérie 2017 (دورة استثنائية) — شعبة رياضيات — COPIE LIBRE
+   ------------------------------------------------------------
+   Ce fichier n'encode AUCUNE consigne, aucun thème et aucun barème.
+
+   Mesures du 2026-09-19, faites avec le classifieur du dépôt
+   (scripts/report-pdf-text-layers.mjs — extractPdfText + classifyTextLayer,
+   le même que `npm run pdftext:status`) :
+
+     sujet 1 — couche texte : transposé (2 677 car.)
+     sujet 2 — couche texte : transposé (2 260 car.)
+     en-têtes « التمرين الأول » et « التمرين الثاني » extraits : oui
+     barème : NON MESURÉ (chiffres corrompus sur ce corpus)
+     consignes : aucune recopiée (TRAVAIL C — relecture humaine requise)
+
+   Ce qui EST encodé, et rien d'autre :
+     - les deux fichiers de la session exceptionnelle, servis par
+       l'application (distincts de ceux de la session principale 2017) ;
+     - la page annales de la source, déjà documentée dans data/archive.js ;
+     - le découpage officiel mesuré : 2 exercices par sujet.
+   L'élève répond donc en « copie libre » : il lit le PDF dans la visionneuse
+   intégrée et rédige sa réponse. `poles: {}` — aucun inventaire officiel
+   n'est dérivé de cette session et aucune note n'est calculée.
+   ============================================================ */
+
+const ANNALS_PAGE = "https://www.dzexams.com/ar/annales/eU1zMTNYMTJTLzROeWhLTkxaajRWZz09";
+
+const PDF_NOTE =
+  "PDF officiel servi par l'application : /subjects/M/2017/exceptional/sujet-N.pdf. " +
+  "Page annales de la source : https://www.dzexams.com/ar/annales/eU1zMTNYMTJTLzROeWhLTkxaajRWZz09. " +
+  "Couche texte : transposé — chiffres corrompus : aucun barème ni consigne n'a été recopié. " +
+  "Le corrigé n'est pas dans l'application : seules les pages du sujet sont affichées.";
+
+/* Une copie libre par exercice : ni consigne, ni thème, ni barème.
+   `max: null` n'est pas un zéro déguisé : c'est un barème non mesuré, et
+   l'écran d'épreuve le dit à la place d'afficher un nombre faux. */
+const freeExercise = (number) => ({
+  number,
+  ui: "text",
+  label: null,
+  max: null,
+  poles: {}
+});
+
+export const YEAR_2017_EXCEPTIONAL_M = {
+  id: "2017-em",
+  stream: "m",
+  calendarYear: "2017",
+  /* Session exceptionnelle : ni les fichiers ni les sujets ne sont ceux de la
+     session principale 2017 (id 2017-m). */
+  session: "exceptional",
+  label: "بكالوريا الجزائر دورة 2017 الاستثنائية — شعبة رياضيات",
+  theme: "rose",
+  enabled: true,
+  /* Marque l'armature « copie libre » : l'épreuve est ouverte (chronomètre,
+     PDF, rédaction, تسليم الورقة) mais aucune consigne n'est encodée et
+     aucune note n'est calculée — il n'y a rien à corriger ici. */
+  answerMode: "free",
+  /* Traceabilité : ce qui a été mesuré, et ce qui ne l'a pas été. */
+  freeMeasurements: {
+    measuredAt: "2026-09-19",
+    exerciseSplitMeasured: true,
+    pointsMeasured: false,
+    promptsEncoded: false,
+    method: "scripts/report-pdf-text-layers.mjs — extractPdfText + classifyTextLayer"
+  },
+  sujets: [
+    {
+      id: 1,
+      pdf: null,
+      pdfExternalUrl: ANNALS_PAGE,
+      pdfLocalUrl: "/subjects/M/2017/exceptional/sujet-1.pdf",
+      pdfNote: PDF_NOTE,
+      title: "الموضوع الأول",
+      answerMode: "free",
+      exercises: [freeExercise(1), freeExercise(2)]
+    },
+    {
+      id: 2,
+      pdf: null,
+      pdfExternalUrl: ANNALS_PAGE,
+      pdfLocalUrl: "/subjects/M/2017/exceptional/sujet-2.pdf",
+      pdfNote: PDF_NOTE,
+      title: "الموضوع الثاني",
+      answerMode: "free",
+      exercises: [freeExercise(1), freeExercise(2)]
+    }
+  ]
+};
+
+export default YEAR_2017_EXCEPTIONAL_M;

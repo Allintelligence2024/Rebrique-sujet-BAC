@@ -28,14 +28,12 @@ export const YEAR_2021_M = {
   stream: "m",
   calendarYear: "2021",
   label: "بكالوريا الجزائر دورة 2021 — شعبة رياضيات",
-  badge: "دورة رسمية",
   theme: "indigo",
   enabled: true,
   sujets: [
     {
       id: 1,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: "https://www.dzexams.com/ar/annales/T2tYS3FTcFRwWCtCbXV2QmFyRTcydz09",
       pdfLocalUrl: "/subjects/M/2021/sujet-1.pdf",
       pdfNote: PDF_NOTE,
@@ -231,7 +229,6 @@ export const YEAR_2021_M = {
     {
       id: 2,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: "https://www.dzexams.com/ar/annales/T2tYS3FTcFRwWCtCbXV2QmFyRTcydz09",
       pdfLocalUrl: "/subjects/M/2021/sujet-2.pdf",
       pdfNote: PDF_NOTE,

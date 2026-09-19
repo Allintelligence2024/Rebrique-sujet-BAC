@@ -31,14 +31,12 @@ export const YEAR_2023_M = {
   stream: "m",
   calendarYear: "2023",
   label: "بكالوريا الجزائر دورة 2023 — شعبة رياضيات",
-  badge: "دورة رسمية",
   theme: "indigo",
   enabled: true,
   sujets: [
     {
       id: 1,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: PDF,
       pdfLocalUrl: "/subjects/M/2023/sujet-1.pdf",
       pdfNote: PDF_NOTE,
@@ -235,7 +233,6 @@ export const YEAR_2023_M = {
     {
       id: 2,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: PDF,
       pdfLocalUrl: "/subjects/M/2023/sujet-2.pdf",
       pdfNote: PDF_NOTE,

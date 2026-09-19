@@ -3,15 +3,13 @@
  */
 const YEAR_2024_SE = {
   id: "2024",
-  label: "بكالوريا الجزائر دورة 2024",
-  badge: "دورة رسمية",
+  label: "بكالوريا الجزائر دورة 2024 — شعبة علوم تجريبية",
   theme: "indigo",
   enabled: true,
   sujets: [
     {
       id: 1,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: "https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf",
       pdfLocalUrl: "/subjects/SE/2024/sujet-1.pdf",
       pdfNote:
@@ -302,7 +300,6 @@ const YEAR_2024_SE = {
     {
       id: 2,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: "https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf",
       pdfLocalUrl: "/subjects/SE/2024/sujet-2.pdf",
       pdfNote:

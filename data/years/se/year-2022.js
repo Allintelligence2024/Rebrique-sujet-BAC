@@ -3,15 +3,13 @@
  */
 const YEAR_2022_SE = {
   id: "2022",
-  label: "بكالوريا الجزائر دورة 2022",
-  badge: "دورة رسمية",
+  label: "بكالوريا الجزائر دورة 2022 — شعبة علوم تجريبية",
   theme: "rose",
   enabled: true,
   sujets: [
     {
       id: 1,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2022/dzexams-bac-sciences-2311208.pdf",
       pdfLocalUrl: "/subjects/SE/2022/sujet-1.pdf",
@@ -295,7 +293,6 @@ const YEAR_2022_SE = {
     {
       id: 2,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2022/dzexams-bac-sciences-2311208.pdf",
       pdfLocalUrl: "/subjects/SE/2022/sujet-2.pdf",

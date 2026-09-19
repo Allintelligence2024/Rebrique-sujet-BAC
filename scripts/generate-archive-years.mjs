@@ -1355,11 +1355,14 @@ ${poles}
 }
 
 function emitSujet(id, title, meta, exercises) {
+  // `pdfAvailable` a été supprimé : le champ était mort (aucun module d'interface
+  // ne le lisait) et contredisait `pdfLocalUrl`, qui pointe vers un PDF local
+  // réellement affiché. L'invariant utile est porté par `pdf: null` (chargement
+  // paresseux) et vérifié par tests/data-integrity.test.mjs.
   return `        {
-          id: ${id},
-          pdf: null,
-          pdfAvailable: false,
-          pdfExternalUrl: ${jsString(meta.pdfUrl)},
+        id: ${id},
+        pdf: null,
+        pdfExternalUrl: ${jsString(meta.pdfUrl)},
           pdfNote: ${jsString(meta.pdfNote)},
           title: ${jsString(title)},
           exercises: [

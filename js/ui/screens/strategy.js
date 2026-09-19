@@ -1,8 +1,32 @@
 import { setInternalHTML } from "../dom.js";
 import { officialTaskInventoryFor } from "../../../data/official-tasks.js";
-import { mountPdfViewers, pdfViewerHTML } from "../pdf-viewer.js";
-import { assertSimulationEligible, examOpenable } from "../../domain/subjects/official-coverage.js";
+import { disposeAllPdfViewers, mountPdfViewers, pdfViewerHTML } from "../pdf-viewer.js";
+import { examOpenable } from "../../domain/subjects/official-coverage.js";
 import { simulationBlockersArabic } from "../coverage-messages.js";
+
+/* Estimation QUALITATIVE, pas un barème : l'élève ne note pas son sujet sur
+   20 points, il dit comment il se sent sur chaque exercice. Cinq niveaux,
+   décidés par le propriétaire le 2026-09-19 — « estimer sur excellent,
+   très bien, bien, moyen, besoin d'apprentissage ».
+
+   Deux raisons de ne plus compter des points : le barème n'est pas mesurable
+   sur les sessions en copie libre (Maths 2013–2020, SE 2021 — d'où
+   « 0.00 نقطة » et « ت1: null (nullن) », bug corrigé ce jour-là), et noter
+   sa propre copie sur 8 ou 12 points avant de l'avoir écrite n'a jamais rien
+   mesuré. Une échelle de confiance, si. */
+export const CONFIDENCE_LEVELS = [
+  { value: 4, label: "ممتاز" },
+  { value: 3, label: "جيد جداً" },
+  { value: 2, label: "جيد" },
+  { value: 1, label: "متوسط" },
+  { value: 0, label: "يحتاج تعلّماً" }
+];
+
+function confidenceLabel(mean) {
+  return CONFIDENCE_LEVELS.reduce((closest, level) =>
+    Math.abs(level.value - mean) < Math.abs(closest.value - mean) ? level : closest
+  ).label;
+}
 
 export function createStrategyScreen(deps) {
   const {
@@ -102,27 +126,49 @@ export function createStrategyScreen(deps) {
     );
   }
 
+  /* Barème MESURÉ ou barème NON MESURÉ : une armature « copie libre » porte
+     `max: null`. L'additionner produisait « 0.00 نقطة » et « ت1: null (nullن) »
+     sous chaque exercice — un écran de choix illisible, vu en Maths 2013–2020
+     et en SE 2021. Quand le barème n'existe pas, il n'y a rien à estimer :
+     ni champ de saisie, ni total chiffré, ni comparaison entre sujets. */
+  function barèmeMeasurable(subject) {
+    return (subject.exercises || []).every((exercise) => exercise.max !== null);
+  }
+
   function calcCard(year, subject, theme) {
-    const total = subject.exercises.reduce((sum, exercise) => sum + exercise.max, 0);
+    const measurable = barèmeMeasurable(subject);
+    const total = measurable ? subject.exercises.reduce((sum, exercise) => sum + exercise.max, 0) : null;
     const coverage = officialCoverageForSubject(year, subject);
     const inputs = subject.exercises
       .map((exercise) => {
-        const initial = Math.round(exercise.max * 0.75 * 4) / 4;
-        return `<div class="flex spread"><label class="small" for="strategy-s${subject.id}-e${exercise.number}">ت${exercise.number}: ${exercise.label} (${exercise.max}ن)</label><input class="field calc-input" id="strategy-s${subject.id}-e${exercise.number}" data-subject="${subject.id}" data-exercise="${exercise.number}" data-max="${exercise.max}" type="number" min="0" max="${exercise.max}" step="0.25" value="${initial}"></div>`;
+        const name =
+          exercise.wholeSubject === true
+            ? "الموضوع كاملاً"
+            : typeof exercise.label === "string" && exercise.label.trim()
+              ? `ت${exercise.number}: ${exercise.label}`
+              : `التمرين ${exercise.number}`;
+        const points = exercise.max === null ? "" : ` (${exercise.max}ن)`;
+        const options = CONFIDENCE_LEVELS.map(
+          (level) =>
+            `<option value="${level.value}"${level.value === 2 ? " selected" : ""}>${level.label}</option>`
+        ).join("");
+        return `<div class="flex spread"><label class="small" for="strategy-s${subject.id}-e${exercise.number}">${name}${points}</label><select class="field calc-input" id="strategy-s${subject.id}-e${exercise.number}" data-subject="${subject.id}" data-exercise="${exercise.number}" aria-label="تقدير الثقة في ${name}">${options}</select></div>`;
       })
       .join("");
     const officialTasks = (officialTaskInventoryFor(store.state.yearId, subject.id)?.tasks || []).filter(
       (task) => task.promptSource === "official"
     ).length;
+    /* Armature « copie libre » : plus de note — la consigne à l'élève est
+       dans l'épreuve (et « البارم غير مُقاس » suffit ici). */
     const inventoryNote = coverage.freeAnswerEligible
-      ? `<p class="small text-muted inventory-note" id="inventory-note-${subject.id}">وضع الإجابة الحرة: تعليمات هذه الدورة غير مُشفَّرة (ملفها غير قابل للاستخراج). الإمتحان مفتوح — اقرأ الموضوع واكتب إجابتك — بلا تصحيح ولا نقطة.</p>`
+      ? ""
       : `<p class="small text-muted inventory-note" id="inventory-note-${subject.id}">جرد المهام: ${coverage.knownTaskCount} مهمة، منها ${officialTasks} تعليمة رسمية موثّقة.</p>`;
     return `
     <div class="card stack subject-card" data-subject-coverage="${coverage.inventoryStatus}" data-simulation-eligible="${coverage.simulationEligible}" data-exam-openable="${examOpenable(coverage)}" data-answer-mode="${coverage.freeAnswerEligible ? "free" : "inventory"}">
       <div>
         <div class="flex spread subject-card-head">
           <span class="badge badge-${theme}">الموضوع 0${subject.id}</span>
-          <span class="mono small text-dim">${total.toFixed(2)} نقطة</span>
+          <span class="mono small text-dim" data-bareme="${measurable ? "measured" : "unmeasured"}">${measurable ? `${total.toFixed(2)} نقطة` : "البارم غير مُقاس"}</span>
         </div>
         <div class="stack mt-1">${inputs}</div>
         <div class="flex spread small mt-1 subject-estimate">
@@ -130,7 +176,7 @@ export function createStrategyScreen(deps) {
         </div>
       </div>
       <div class="stack subject-mode-actions">
-        <button class="btn btn-block btn-${theme}" data-confirm="${subject.id}" data-session-mode="bac">ابدأ الإمتحان</button>
+        <button class="btn btn-block btn-emerald" data-confirm="${subject.id}" data-session-mode="bac">ابدأ الإمتحان</button>
         ${inventoryNote}
       </div>
     </div>`;
@@ -141,6 +187,10 @@ export function createStrategyScreen(deps) {
     const subject = year?.sujets.find((item) => item.id === subjectId) || year?.sujets[0];
     const box = $("#pdf-preview-container");
     if (box && subject) {
+      // Chaque changement d'aperçu remplaçait le contenu sans libérer le
+      // visionneur précédent : un document pdf.js et un listener resize
+      // s'accumulaient à chaque clic.
+      disposeAllPdfViewers(box);
       setInternalHTML(box, pdfFallbackHTML(subject));
       mountPdfViewers(box);
     }
@@ -156,40 +206,50 @@ export function createStrategyScreen(deps) {
     if (timer) timer.textContent = helpers.fmt(store.state.strategyRemaining);
   }
 
-  function subjectEstimate(subject) {
-    return subject.exercises.reduce((sum, exercise) => {
-      const input = $(`[data-subject="${subject.id}"][data-exercise="${exercise.number}"]`);
-      const value = Number.parseFloat(input?.value || "0");
-      return sum + (Number.isFinite(value) ? Math.min(exercise.max, Math.max(0, value)) : 0);
-    }, 0);
+  function subjectConfidence(subject) {
+    const values = subject.exercises
+      .map((exercise) => {
+        const input = $(`[data-subject="${subject.id}"][data-exercise="${exercise.number}"]`);
+        const value = Number.parseFloat(input?.value ?? "");
+        return Number.isFinite(value) ? Math.min(4, Math.max(0, value)) : null;
+      })
+      .filter((value) => value !== null);
+    if (!values.length) return null;
+    return values.reduce((sum, value) => sum + value, 0) / values.length;
   }
 
   function calculateStrategicScores() {
     const year = yearObj(store.state.yearId);
     if (!year) return;
     const estimates = year.sujets.map((subject) => {
-      const total = subject.exercises.reduce((sum, exercise) => sum + exercise.max, 0);
-      const estimate = subjectEstimate(subject);
+      const confidence = subjectConfidence(subject);
       const output = $(`#s${subject.id}-total`);
-      if (output) output.textContent = `${estimate.toFixed(2)} / ${total.toFixed(2)}`;
-      return { subject, estimate, total, fraction: total ? estimate / total : 0 };
+      if (output) {
+        output.textContent =
+          confidence === null ? "" : `${confidenceLabel(confidence)} · ${confidence.toFixed(1)}/4`;
+      }
+      return { subject, confidence };
     });
-    const sorted = [...estimates].sort((a, b) => b.fraction - a.fraction);
-    const best = sorted[0];
-    const second = sorted[1];
     const recommendation = $("#recommendation-text");
     const gain = $("#recommendation-gain");
-    if (!best || !recommendation || !gain) return;
-    if (!second || Math.abs(best.fraction - second.fraction) < 0.0001) {
-      recommendation.textContent = "التقديران متكافئان — اختر الموضوع الذي تفهم وثائقه وتعليماته بوضوح أكبر.";
-      gain.textContent = `${(best.fraction * 100).toFixed(1)}% ثقة ذاتية`;
+    if (!recommendation || !gain) return;
+    const ranked = estimates.filter((entry) => entry.confidence !== null);
+    if (!ranked.length) {
+      recommendation.textContent = "قدّر ثقتك في كل تمرين ليظهر ميل الاختيار.";
+      gain.textContent = "";
       return;
     }
-    recommendation.textContent = `يميل تقديرك الذاتي إلى الموضوع ${best.subject.id} بفارق ${(
-      (best.fraction - second.fraction) *
-      100
-    ).toFixed(1)} نقطة مئوية.`;
-    gain.textContent = `${(best.fraction * 100).toFixed(1)}% ثقة ذاتية`;
+    const sorted = [...ranked].sort((a, b) => b.confidence - a.confidence);
+    const best = sorted[0];
+    const second = sorted[1];
+    if (!second || Math.abs(best.confidence - second.confidence) < 0.05) {
+      recommendation.textContent = "التقديران متكافئان — اختر الموضوع الذي تفهم وثائقه وتعليماته بوضوح أكبر.";
+    } else {
+      recommendation.textContent = `يميل تقديرك إلى الموضوع ${best.subject.id} (${confidenceLabel(
+        best.confidence
+      )} مقابل ${confidenceLabel(second.confidence)}).`;
+    }
+    gain.textContent = `${confidenceLabel(best.confidence)} · ${best.confidence.toFixed(1)}/4`;
   }
 
   function confirmChoice(sujetNum, mode = "bac") {
@@ -200,15 +260,12 @@ export function createStrategyScreen(deps) {
     // Filet de sécurité : un sujet sans inventaire exploitable reste fermé,
     // sauf armature « copie libre » — là, rien n'est noté mais l'épreuve est
     // réelle : le sujet se lit dans l'application et l'élève rédige.
+    // Le `try/catch` qui enveloppait assertSimulationEligible était inatteignable :
+    // cette fonction ne lève que si !simulationEligible, et l'appel était placé
+    // dans la branche `if (coverage.simulationEligible)`. Le garde réel est le
+    // test booléen ci-dessous — même table de vérité, une branche morte en moins.
     const coverage = officialCoverageForSubject(year, subject);
-    if (coverage.simulationEligible) {
-      try {
-        assertSimulationEligible(coverage);
-      } catch {
-        toast(`الإمتحان مرفوض: ${simulationBlockersArabic(coverage.blockers)}`, "error");
-        return;
-      }
-    } else if (!coverage.freeAnswerEligible) {
+    if (!coverage.simulationEligible && !coverage.freeAnswerEligible) {
       toast(`الإمتحان مرفوض: ${simulationBlockersArabic(coverage.blockers)}`, "error");
       return;
     }

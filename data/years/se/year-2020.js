@@ -34,15 +34,13 @@ export const YEAR_2020_SE = {
   id: "2020",
   stream: "se",
   calendarYear: "2020",
-  label: "بكالوريا الجزائر دورة 2020",
-  badge: "دورة رسمية",
+  label: "بكالوريا الجزائر دورة 2020 — شعبة علوم تجريبية",
   theme: "emerald",
   enabled: true,
   sujets: [
     {
       id: 1,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: PDF,
       pdfLocalUrl: "/subjects/SE/2020/sujet-1.pdf",
       pdfNote: PDF_NOTE,
@@ -327,7 +325,6 @@ export const YEAR_2020_SE = {
     {
       id: 2,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: PDF,
       pdfLocalUrl: "/subjects/SE/2020/sujet-2.pdf",
       pdfNote: PDF_NOTE,

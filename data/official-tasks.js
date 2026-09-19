@@ -7642,6 +7642,2269 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       }
     ]
   },
+  "2016-m/S1": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/uploads/sujets/officiels/bac/2016/dzexams-bac-sciences-2369148.pdf",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2016/sujet-1.pdf",
+      pages: 2,
+      pageOffset: 0
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: []
+    },
+    tasks: [
+      {
+        id: "2016-m-S1-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "اكتب أسماء البيانات المرقمة، وسمّ كلا من العمليتين (س) و(ص) وحدد العناصر الضرورية لحدوث كل عملية.",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2016-m-S1-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 1,
+        prompt:
+          "وضّح في جدول القواعد الأزوتية للعنصر (7) وما يقابلها من العناصر (6)، ومثّل بمعادلة كيميائية كيفية تشكل الرابطة الببتيدية.",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2016-m-S1-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 1,
+        prompt:
+          "أنجز رسما تخطيطيا توضح فيه نهاية عملية الترجمة، ووضّح كيف يكتسب البروتين المتشكل تلقائيا بنية ثلاثية الأبعاد وظيفية.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2016-m-S1-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: 1,
+        prompt:
+          "اكتب نصا علميا تبيّن فيه دور العناصر المتدخلة في تركيب البروتين انطلاقا مما استخلصته ومن معلوماتك.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2016-m-S1-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "سمّ هذه الخلية واكتب بياناتها، حدد النشاط وتعرّف على المرحلتين (أ) و(ب)، وعلل عدم توقف النشاط عند (ب).",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2016-m-S1-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 2,
+        prompt:
+          "حلّل نتائج الجدول، واستخرج العلاقة بين تركيز الأجسام المضادة وعدد الخلايا البلازمية والخلايا اللمفاوية LB.",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2016-m-S1-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 2,
+        prompt:
+          "قارن النتائج المحصل عليها في برنامج Anagène، ماذا تستنتج؟ وأنجز رسما تخطيطيا للجسم المضاد (ضد M) و(ضد Z).",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2016-m-S1-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: 2,
+        prompt:
+          "اذكر أربعة أنواع من البروتينات المتدخلة في إقصاء اللاذات مبرزا مصدرها ودورها انطلاقا مما سبق ومعارفك.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      }
+    ]
+  },
+  "2016-m/S2": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/uploads/sujets/officiels/bac/2016/dzexams-bac-sciences-2369148.pdf",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2016/sujet-2.pdf",
+      pages: 2,
+      pageOffset: 2
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: []
+    },
+    tasks: [
+      {
+        id: "2016-m-S2-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "بيّن أهمية استعمال مبرمج Anagène، تعرّف على الجزيئتين (س) و(ع) مع التعليل، ووضّح برسم تخطيطي الظاهرة المسؤولة عن الانتقال بينهما.",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2016-m-S2-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 3,
+        prompt: "سمّ الآلية واكتب البيانات، حدد خطوة الاستطالة مع التعليل، وبيّن بدقة دور العنصرين (1) و(3).",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2016-m-S2-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 3,
+        prompt: "احسب باستدلال منطقي عدد وحدات العنصر (4) وعدد وحدات الجزيئة الوظيفية للعنصر (5).",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2016-m-S2-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: 3,
+        prompt: "اكتب نصا علميا تصف فيه تسلسل الأحداث التي سمحت بالانتقال من الجزيئة (س) إلى الجزيئة (ص).",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2016-m-S2-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "اكتب بيانات العناصر المرقمة في الشكل (أ)، وبيّن هل ترتبط مادة الكونكافالين A بالسطح الخارجي أم الداخلي مع التعليل.",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2016-m-S2-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 4,
+        prompt:
+          "فسّر نتيجة تجربة استرجاع الفلورة بعد الإشعاع بالليزر، ماذا تستنتج؟ واستخرج مميزات الغشاء الهيولي.",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2016-m-S2-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 4,
+        prompt:
+          "أنسب الأغشية إلى الخلايا الثلاث في الشكل (1) مع التعليل، وقارن نمط الأب والأم واحسب التوافق ومثّل نمطا وراثيا للابن.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2016-m-S2-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: 4,
+        prompt:
+          "اكتب نصا علميا تبرز فيه كيف تتفرد كل عضوية بهوية بيولوجية خاصة بها انطلاقا مما سبق ومعلوماتك.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      }
+    ]
+  },
+  "2017-m/S1": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/uploads/sujets/officiels/bac/2017/dzexams-bac-sciences-1967487.pdf",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2017/sujet-1.pdf",
+      pages: 2,
+      pageOffset: 0
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: []
+    },
+    tasks: [
+      {
+        id: "2017-m-S1-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt: "سمّ الجزيئتين (س) و(ع)، ثم ضع عنوانا مناسبا للوثيقة.",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2017-m-S1-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 1,
+        prompt: "قدّم رسما تخطيطيا تفسيريا لما تمثله الوثيقة يحمل كافة البيانات.",
+        promptSource: "official",
+        maxPoints: 1.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2017-m-S1-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 1,
+        prompt: "حدّد نمط الرد المناعي المقصود، مع التعليل.",
+        promptSource: "official",
+        maxPoints: 2.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2017-m-S1-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: 1,
+        prompt:
+          "وضّح أن التخصص النوعي للجزيئات (ع) مرتبط بتنوع الجزيئات (س)، مبرزا دور الجزيئات (ع) في إقصاء المستضد.",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2017-m-S1-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "تعرّف على سلسلة الـ ADN المقترحة مع التعليل، حدد اتجاه الترجمة، أوجد دور الـ ARNm، وعرّف المورثة.",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2017-m-S1-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 2,
+        prompt:
+          "تعرّف على الجزيئات (س، ع، ص) والبيانات، وضّح التخصص الوظيفي المزدوج لـ (س)، وسمّ آلية ارتباط (س) بـ (ص) مع عناصرها.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2017-m-S1-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 2,
+        prompt:
+          "تعرّف بدقة على المرحلة في الشكل (ب)، استخرج تسلسل الأحماض الأمينية الثمانية، واكتب معادلة تشكل الرابطة الببتيدية.",
+        promptSource: "official",
+        maxPoints: 6,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2017-m-S1-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: 2,
+        prompt:
+          "بيّن في نص علمي أن تركيب البروتين يتم وفق آليات منظمة وتدخل عناصر حيوية انطلاقا من الوثائق ومكتسباتك.",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      }
+    ]
+  },
+  "2017-m/S2": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/uploads/sujets/officiels/bac/2017/dzexams-bac-sciences-1967487.pdf",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2017/sujet-2.pdf",
+      pages: 2,
+      pageOffset: 2
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: []
+    },
+    tasks: [
+      {
+        id: "2017-m-S2-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt: "اكتب الصيغة المفصلة لكل حمض أميني عند pH = 3.2، مبرزا سلوكه في هذا الوسط.",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2017-m-S2-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 3,
+        prompt: "قدّم تعريفا لـ pHi، وقارن pHi للحمض الأميني (س) بالنسبة لـ pH الوسط = 3.2.",
+        promptSource: "official",
+        maxPoints: 1.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2017-m-S2-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 3,
+        prompt: "اكتب معادلة ارتباط الأحماض الأمينية حسب الترتيب التالي: Lys-Glu-Gly.",
+        promptSource: "official",
+        maxPoints: 2.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2017-m-S2-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: 3,
+        prompt: "بيّن في نص علمي علاقة تنوع الأحماض الأمينية وسلوكها في تحديد بنية البروتين ووظيفته.",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2017-m-S2-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "تعرّف على العناصر (A, B, C) والبيانات، رتّب الملاحظات في وسط الزرع وفق تسلسلها الزمني، وحدد الخلية المنتجة لـ (C) مع التعليل.",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2017-m-S2-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 4,
+        prompt:
+          "علّل استئصال الغدة التيموسية وتخريب النخاع العظمي للفئران، وفسّر النتائج التجريبية في الشكل (أ) واستنتج العلاقة بين اللمفاويات.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2017-m-S2-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 4,
+        prompt:
+          "تأكد من العلاقة بين الخلايا اللمفاوية بتفسيرك لنتائج غرفة Marbrook، واستنتج معلومة إضافية تدعم تلك العلاقة.",
+        promptSource: "official",
+        maxPoints: 6,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2017-m-S2-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: 4,
+        prompt:
+          "وضّح في رسم تخطيطي وظيفي وخلاصة علمية شروط إنتاج الجزيئات الدفاعية وتمايز الخلايا البلازمية انطلاقا مما سبق ومعلوماتك.",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      }
+    ]
+  },
+  "2018-m/S1": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/ar/annales/eVR1a1Jjdmkvak1QZlpuUjcxSVVqdz09",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2018/sujet-1.pdf",
+      pages: 3,
+      pageOffset: 0
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: []
+    },
+    tasks: [
+      {
+        id: "2018-m-S1-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt: "اكتب البيانات المرقمة من 1 إلى 10، ثم سمّ الظاهرتين (س) و(ص) وحدد مقرهما في الخلية.",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2018-m-S1-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 2,
+        prompt: "تعرّف على مرحلتي الظاهرة (ص) المشار إليهما في الشكلين (أ) و(ب).",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2018-m-S1-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 2,
+        prompt: "قدّم تفسيرا لاختلاف نتائج الهجرة الكهربائية للعنصرين 5 و 8 عند pH=7.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2018-m-S1-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: 2,
+        prompt: "وضّح العلاقة بين المورثة والبروتين انطلاقا مما سبق ومعلوماتك.",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2018-m-S1-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt: "قارن بين تطور شحنة فيروس VIH وعدد الخلايا LT4 في الأسابيع الستة الأولى، وماذا تستنتج؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2018-m-S1-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 3,
+        prompt:
+          "تعرّف على العنصرين (a) و(b) من الوثيقة (3)، واشرح الأهمية البيولوجية للشكل (ب) انطلاقا من الوثيقة (2).",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      },
+      {
+        id: "2018-m-S1-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 3,
+        prompt: "حلّل نتائج الوثيقتين (2) و(4)، وماذا تستنتج حول دور الإنترلوكين 2 وخلايا LT4؟",
+        promptSource: "official",
+        maxPoints: 6,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      },
+      {
+        id: "2018-m-S1-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: 3,
+        prompt: "اكتب نصا علميا توضح فيه سبب العجز المناعي الذي يحدثه فيروس الـــ VIH في عضوية الإنسان.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      }
+    ]
+  },
+  "2018-m/S2": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/ar/annales/eVR1a1Jjdmkvak1QZlpuUjcxSVVqdz09",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2018/sujet-2.pdf",
+      pages: 3,
+      pageOffset: 3
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: []
+    },
+    tasks: [
+      {
+        id: "2018-m-S2-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt: "تعرّف على الجزيئة الدفاعية الممثلة في الشكل (أ)، ثم مثّلها برسم تخطيطي عليه كافة البيانات.",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2018-m-S2-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 4,
+        prompt: "سمّ الظاهرة الناتجة عن ارتباط جزيئات الشكل (أ) بعصيات الكزاز، ثم حدد أهمية هذا الارتباط.",
+        promptSource: "official",
+        maxPoints: 1.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2018-m-S2-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 4,
+        prompt: "حدّد ما يميّز الاستجابة المناعية الثانوية من الشكل (ب).",
+        promptSource: "official",
+        maxPoints: 2.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2018-m-S2-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: 4,
+        prompt:
+          "بيّن في نص علمي كيف يؤدي اللقاح إلى مساعدة العضوية في التصدي للمستضدات المميتة كعصيات الكزاز انطلاقا من الوثيقة ومعلوماتك.",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2018-m-S2-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt: "تعرّف على البيانات المرقمة من 1 إلى 3، وحدد مستوى البنية الفراغية لهذا البروتين مع التعليل.",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2018-m-S2-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 5,
+        prompt:
+          "مثّل الصيغة الكيميائية للجزء (س) الموضح في الشكل (أ)، مبرزا باقي الروابط الكيميائية المساهمة في تشكيل واستقرار هذه البنية.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2018-m-S2-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 6,
+        prompt:
+          "استخرج جزء المورثة المسؤول عن متتالية الأحماض الأمينية، وحدد سبب تركيب ريبونوكلياز غير عادي والنتيجة على المستوى الجزيئي.",
+        promptSource: "official",
+        maxPoints: 6,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [6]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      },
+      {
+        id: "2018-m-S2-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: 6,
+        prompt: "وضّح في نص علمي العلاقة بين المورثة ووظيفة البروتين من خلال ما توصلت إليه ومعلوماتك.",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [6]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      }
+    ]
+  },
+  "2019-m/S1": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/ar/annales/K3Y0NkZkaVpnNmdicFZaVkx5VytCdz09",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2019/sujet-1.pdf",
+      pages: 3,
+      pageOffset: 0
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: [2]
+    },
+    tasks: [
+      {
+        id: "2019-m-S1-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt: "كيف يضمن استقرار البنية الفراغية للبروتين وتعدد مستوياتها اكتسابه لتخصصه الوظيفي؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2019-m-S1-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 1,
+        prompt: "اكتب البيانات المرقمة، ثم حدد المستوى البنائي لهذا البروتين مع التعليل.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2019-m-S1-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 1,
+        prompt:
+          "مثّل الصيغة الكيميائية للجزء المؤطر مبرزا الرابطة الشاردية بين Lys و Glu، ثم احسب كتلته المولية.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2019-m-S1-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: 1,
+        prompt:
+          "اكتب نصا علميا تبيّن فيه العلاقة بين بنية ووظيفة البروتين من خلال ما توصلت إليه في هذه الدراسة ومعلوماتك.",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2019-m-S1-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: 2,
+        prompt:
+          "تعرّف على الخلايا (س)، (ص)، (ع)، (ل) مع ذكر الأسس المعتمدة في ذلك، واستنتج العلاقة الوظيفية بين (س) و(ل).",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2019-m-S1-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 3,
+        prompt:
+          "أنجز تحليلا مقارنا للمنحنيات المحصل عليها في الغرفتين (1) و(3)، ثم فسّر النتائج المحصل عليها.",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      },
+      {
+        id: "2019-m-S1-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 3,
+        prompt:
+          "استخلص مع التعليل نمط الاستجابة المناعية التي حرّض المستضد على حدوثها في كل من الغرفتين (1) و(3).",
+        promptSource: "official",
+        maxPoints: 6,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      },
+      {
+        id: "2019-m-S1-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: 3,
+        prompt:
+          "اكتب نصا علميا تبيّن فيه دور مختلف الجزيئات البروتينية المتدخلة في التعرف وإقصاء اللاذات انطلاقا من النتائج ومكتسباتك.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      }
+    ]
+  },
+  "2019-m/S2": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/ar/annales/K3Y0NkZkaVpnNmdicFZaVkx5VytCdz09",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2019/sujet-2.pdf",
+      pages: 2,
+      pageOffset: 3
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: [2]
+    },
+    tasks: [
+      {
+        id: "2019-m-S2-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt: "كيف تتدخل مختلف الجزيئات الغشائية السطحية للخلية البالعة في أداء أدوارها المناعية المتعددة؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2019-m-S2-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 4,
+        prompt: "تعرّف على مختلف الجزيئات الغشائية السطحية للبالعة الموضحة في الوثيقة.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2019-m-S2-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 4,
+        prompt: "استخرج من الوثيقة النشاطات التي تقوم بها الخلية البالعة.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2019-m-S2-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: 4,
+        prompt: "اشرح في نص علمي دور مختلف الجزيئات الغشائية في قيام البالعة بوظائفها المختلفة.",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2019-m-S2-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: 4,
+        prompt:
+          "حدّد أصغر قيمة لـ n تسمح بتعيين مختلف الأحماض الأمينية في الببتيد مع التبرير، ثم أعد صياغة الفرضية على ضوء ذلك.",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2019-m-S2-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 4,
+        prompt:
+          "أثبت باستدلال منطقي صحة الفرضية المقترحة باستغلال النتائج التجريبية لـ Crick و Brenner في الوثيقة (1).",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2019-m-S2-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 5,
+        prompt:
+          "بيّن العلاقة بين النيكليوتيدات والأحماض الأمينية وعيّن الرامزات، توقّع عدد الرامزات الممكن كشفها، وفسّر نتائج Khorana.",
+        promptSource: "official",
+        maxPoints: 6,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2019-m-S2-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: 5,
+        prompt:
+          "وضّح كيف تتحكم مجموع الرامزات الممكنة في الـ ARNm في استعمال الأحماض الأمينية المعروفة في تركيب البروتينات انطلاقا من مكتسباتك.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      }
+    ]
+  },
+  "2020-m/S1": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/ar/annales/dlFvUnNHKzlTdm5xZHJHMm4vL2hYZz09",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2020/sujet-1.pdf",
+      pages: 3,
+      pageOffset: 0
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: [2]
+    },
+    tasks: [
+      {
+        id: "2020-m-S1-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "كيف تساهم الروابط الكيميائية وسلوك الأحماض الأمينية في ثبات واستقرار البنية الفراغية للبروتين؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2020-m-S1-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 1,
+        prompt: "تعرّف على البيانات المرقمة في الشكل (أ)، ثم صنف الوحدات الأربعة حسب السلسلة الجانبية.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2020-m-S1-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 1,
+        prompt: "أنسب البقع (س، ع، ص، ي) إلى الوحدات ذات الجذور R1، R2، R3، R4 مع التعليل.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2020-m-S1-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: 1,
+        prompt:
+          "اكتب نصا علميا تبيّن فيه تأثير درجة pH الوسط على استقرار البنية الفراغية للبروتينات انطلاقا من نتائج هذه الدراسة ومعلوماتك.",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2020-m-S1-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: 2,
+        prompt: "صغ المشكل العلمي المطروح، ثم اقترح فرضية تفسر بها سبب حدوث سرطان الجلد.",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2020-m-S1-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 3,
+        prompt:
+          "بيّن أن النتائج المحصل عليها في الوثيقة (1) تسمح باختبار صحة الفرضية، وترجم جزء مورثة Ras إلى تتالي أحماض أمينية.",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      },
+      {
+        id: "2020-m-S1-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 3,
+        prompt: "اشرح النتائج المحصل عليها بالوثيقة (2) لتأكيد صحة الفرضية.",
+        promptSource: "official",
+        maxPoints: 6,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      },
+      {
+        id: "2020-m-S1-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: 3,
+        prompt:
+          "اكتب نصا علميا تبرز من خلاله مخاطر التعرض المستمر لأشعة الشمس على عضوية الإنسان مستعينا بالمعارف المبنية في هذه الدراسة ومكتسباتك.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      }
+    ]
+  },
+  "2020-m/S2": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/ar/annales/dlFvUnNHKzlTdm5xZHJHMm4vL2hYZz09",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/M/2020/sujet-2.pdf",
+      pages: 2,
+      pageOffset: 3
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2],
+      taskCompleteExerciseNumbers: [2]
+    },
+    tasks: [
+      {
+        id: "2020-m-S2-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt: "كيف تؤمن بروتينات الغشاء الهيولي التمييز الدقيق بين مكونات الذات واللاذات؟",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2020-m-S2-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 4,
+        prompt: "تعرّف على البيانات المرقمة من 1 إلى 8 في الوثيقة.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2020-m-S2-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 4,
+        prompt:
+          "اذكر نوع الخلايا التي تحمل البنية (3) وتلك التي تحمل البنية (4)، وحدد المنشأ الوراثي لكل منهما.",
+        promptSource: "official",
+        maxPoints: 4,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2020-m-S2-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: 4,
+        prompt:
+          "اكتب نصا علميا تبرز من خلاله دور البنيتين (3) و(4) في التمييز بين الذات واللاذات انطلاقا مما سبق ومعلوماتك.",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2020-m-S2-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: 5,
+        prompt:
+          "قارن بين النتائج المحصل عليها عند الشخصين، حدد البنية الفراغية للبروتينين مع التعليل، ثم أبرز المشكلة المطروحة.",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2020-m-S2-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 5,
+        prompt: "اقترح فرضية تفسر بها سبب الاختلال الوظيفي لبروتين (HbS).",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2020-m-S2-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 5,
+        prompt: "تحقق من صحة الفرضية المقترحة باستغلال نتائج الوثيقة (2).",
+        promptSource: "official",
+        maxPoints: 6,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2020-m-S2-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: 5,
+        prompt: "وضّح في نص علمي العلاقة بين بنية ووظيفة البروتين انطلاقا مما توصلت إليه ومعلوماتك.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      }
+    ]
+  },
   "2021-m/S1": {
     schemaVersion: 1,
     status: "partial",

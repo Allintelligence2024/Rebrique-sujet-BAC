@@ -10,11 +10,7 @@
    échoue. Le lien dzexams et le téléchargement complètent l'ensemble.
    ============================================================ */
 
-const escapeHTML = (value = "") =>
-  String(value).replace(
-    /[&<>'"]/g,
-    (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[character]
-  );
+import { escapeHTML } from "./dom.js";
 
 export function pdfViewerHTML(subject, { showCover = true, page = null } = {}) {
   const local = subject?.pdfLocalUrl;
@@ -25,7 +21,7 @@ export function pdfViewerHTML(subject, { showCover = true, page = null } = {}) {
   const anchor = Number.isInteger(page) && page > 0 ? `#page=${page}` : "#view=FitH";
   if (local) {
     return `<div class="pdf-reader stack">
-      ${showCover ? `<div class="pdf-viewer-head"><strong>📄 ${escapeHTML(label)}</strong><span class="small text-muted">الملف المحلي — يُعرض داخل التطبيق</span></div>` : ""}
+      ${showCover ? `<div class="pdf-viewer-head"><strong>📄 ${escapeHTML(label)}</strong></div>` : ""}
       <div class="pdf-canvas-host" data-pdf-canvas data-pdf-src="${escapeHTML(local)}" data-pdf-page="${Number.isInteger(page) && page > 0 ? page : 1}" role="group" aria-label="${escapeHTML(label)}"></div>
       <iframe class="pdf-frame" title="${escapeHTML(label)}" src="${escapeHTML(local)}${anchor}" hidden></iframe>
       <div class="flex wrap pdf-viewer-actions">
@@ -48,4 +44,4 @@ export function pdfViewerHTML(subject, { showCover = true, page = null } = {}) {
   return `<div class="center stack preview-empty"><p class="small text-muted">لا يوجد ملف موضوع متاح لهذه الدورة في التطبيق.</p></div>`;
 }
 
-export { mountPdfViewer, mountPdfViewers } from "./pdf-renderer.js";
+export { disposeAllPdfViewers, disposePdfViewer, mountPdfViewer, mountPdfViewers } from "./pdf-renderer.js";

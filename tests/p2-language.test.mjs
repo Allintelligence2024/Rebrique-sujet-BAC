@@ -30,7 +30,10 @@ test("la présentation visible n’emploie plus les anciennes métaphores concur
   ]) {
     assert.doesNotMatch(visibleUi, new RegExp(term), `ancienne métaphore encore visible: ${term}`);
   }
-  assert.match(visibleUi, /الخطوات الأربع/);
+  /* Le rappel des « quatre étapes » a été retiré de l'écran de préparation à
+     la demande du propriétaire : il distrait l'élève au lieu de le préparer.
+     La méthode reste enseignée dans l'épreuve, consigne par consigne. */
+  assert.doesNotMatch(visibleUi, /الخطوات الأربع/);
 });
 
 test("les anciens avertissements français du parcours élève ont une version arabe", () => {
@@ -47,7 +50,10 @@ test("les anciens avertissements français du parcours élève ont une version a
   ]) {
     assert.doesNotMatch(visibleUi, new RegExp(term), `texte français encore visible: ${term}`);
   }
-  assert.match(visibleUi, /الخطوات الأربع/);
+  /* Le rappel des « quatre étapes » a été retiré de l'écran de préparation à
+     la demande du propriétaire : il distrait l'élève au lieu de le préparer.
+     La méthode reste enseignée dans l'épreuve, consigne par consigne. */
+  assert.doesNotMatch(visibleUi, /الخطوات الأربع/);
   assert.match(visibleUi, /لا يوجد ملف موضوع متاح لهذه الدورة في التطبيق/);
   // Les avis d'épreuve sont en arabe : provenance des consignes et barème.
   assert.match(visibleUi, /مُعاد بناؤها/);

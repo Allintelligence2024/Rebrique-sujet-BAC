@@ -14,15 +14,13 @@ const YEAR_2018_SE = {
   id: "2018",
   stream: "se",
   calendarYear: "2018",
-  label: "بكالوريا الجزائر دورة 2018",
-  badge: "أرشيف مُعاد بناؤه",
+  label: "بكالوريا الجزائر دورة 2018 — شعبة علوم تجريبية",
   theme: "emerald",
   enabled: true,
   sujets: [
     {
       id: 1,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: "https://www.dzexams.com/ar/annales/RGZmd0lTRW0xNmZTRUFjR0F5QzMwZz09",
       pdfLocalUrl: "/subjects/SE/2018/sujet-1.pdf",
       pdfNote:
@@ -296,7 +294,6 @@ const YEAR_2018_SE = {
     {
       id: 2,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: "https://www.dzexams.com/ar/annales/RGZmd0lTRW0xNmZTRUFjR0F5QzMwZz09",
       pdfLocalUrl: "/subjects/SE/2018/sujet-2.pdf",
       pdfNote:

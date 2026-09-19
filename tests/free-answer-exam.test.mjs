@@ -1,10 +1,12 @@
 /* ============================================================
    Épreuve « copie libre » — 2021 شعبة علوم تجريبية
    ------------------------------------------------------------
-   Le PDF officiel de cette session a une couche texte illisible :
+   Le PDF officiel de cette session a une couche texte lisible mais
+   aux chiffres corrompus (barème extrait « 05 / 40 / 00 » pour un
+   barème réel 5 + 7 + 8 — mesuré par `npm run pdftext:status`) :
    aucune consigne n'a pu être recopiée mot à mot ni reconstituée
-   sans inventer des formulations scientifiques. Plutôt que de
-   fermer l'année, on ouvre une épreuve honnête : le sujet officiel
+   sans risquer d'inventer des formulations scientifiques. Plutôt que
+   de fermer l'année, on ouvre une épreuve honnête : le sujet officiel
    est lu dans l'application, l'élève rédige une réponse par
    exercice, le chronomètre officiel tourne et il rend sa copie.
    Ce test verrouille ce qui doit l'être :
@@ -65,8 +67,12 @@ test("2021 ouvre une épreuve, pas une consultation", () => {
   const button = card.querySelector("[data-year]");
   assert.ok(button, "2021 doit avoir un bouton d'épreuve");
   assert.equal(button.disabled, false);
-  // L'épreuve est annoncée en copie libre, jamais comme du 4D.
-  assert.match(card.textContent, /وضع الإجابة الحرة|الورقة الحرة|غير مُشفَّرة/);
+  /* La carte est épurée : plus de badge ni de description affichée. L'annonce
+     « copie libre » reste portée par l'infobulle `title` (visible au survol)
+     et, surtout, par l'écran d'épreuve lui-même. */
+  assert.match(card.getAttribute("title"), /غير مُشفَّرة/);
+  assert.equal(card.querySelector(".badge"), null, "plus de badge sur la carte");
+  assert.equal(card.querySelector("p"), null, "plus de description sous le titre");
 });
 
 test("l'écran de choix annonce l'absence de consignes encodées", () => {
@@ -80,8 +86,14 @@ test("l'écran de choix annonce l'absence de consignes encodées", () => {
     assert.equal(card.dataset.answerMode, "free");
     assert.equal(card.dataset.simulationEligible, "false", "aucune note n'est calculable");
   }
-  assert.match($("#view-strategy").textContent, /غير مُشفَّرة/);
   assert.doesNotMatch($("#view-strategy").textContent, /جرد المهام: \d+ مهمة/);
+  /* Le barème de 2021 SE EST mesuré (5 + 7 + 8) : la carte garde donc ses
+     champs d'estimation. Ce qu'elle ne doit plus afficher, c'est un `null`
+     là où un nombre est attendu (bug corrigé le 2026-09-19 : « 0.00 نقطة »
+     et « ت1: null (nullن) » sur toutes les armatures « copie libre »). */
+  assert.doesNotMatch($("#view-strategy").textContent, /null/);
+  assert.match($("#view-strategy .subject-card-head").textContent, /20\.00 نقطة/);
+  assert.equal($$("#view-strategy .calc-input").length, 6);
 });
 
 test("l'épreuve affiche le sujet officiel et un champ de rédaction par exercice", () => {
@@ -107,8 +119,10 @@ test("l'épreuve affiche le sujet officiel et un champ de rédaction par exercic
   assert.match($("#view-workspace").textContent, /7 نقطة/);
   assert.match($("#view-workspace").textContent, /8 نقطة/);
 
-  // Ce qui ne doit jamais apparaître : une consigne inventée, un corrigé, une note.
-  assert.match($("#view-workspace").textContent, /غير مُشفَّرة/);
+  /* Ce qui ne doit jamais apparaître : une consigne inventée, un corrigé, une
+     note. Le long encadré « وضع الورقة الحرة » a été retiré de l'écran à la
+     demande du propriétaire : ce qui reste affiché suffit à ne rien promettre
+     de faux (aucune consigne, aucun corrigé, aucune note, aucun barème). */
   assert.equal($("#view-workspace .bac-consigne"), null, "aucune consigne ne doit être affichée");
   assert.equal($("#view-workspace [data-task-answer]"), null, "aucune tâche inventée");
 

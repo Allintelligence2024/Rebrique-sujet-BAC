@@ -39,8 +39,12 @@ test("l'expiration globale termine la session et verrouille la copie affichée",
 
   assert.equal(store.state.sessionStatus, "completed");
   assert.equal(store.state.sessionEndReason, "time-expired");
-  // La copie est verrouillée : les champs de réponse de l'épreuve sont désactivés.
-  const answers = [...document.querySelectorAll("#view-workspace [data-task-answer]")];
+  /* La copie est verrouillée : les champs de réponse de l'épreuve sont
+     désactivés. Le ت1 de 2024/S1 n'a aucune consigne officielle : l'épreuve y
+     ouvre une copie libre (data-exercise-free) au lieu d'une liste de tâches. */
+  const answers = [
+    ...document.querySelectorAll("#view-workspace [data-task-answer], #view-workspace [data-exercise-free]")
+  ];
   assert.ok(answers.length > 0, "aucun champ de réponse rendu après expiration");
   assert.ok(
     answers.every((input) => input.disabled),

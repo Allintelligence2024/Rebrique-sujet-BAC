@@ -52,6 +52,24 @@ PUBLIC_ROOT=dist/site HOST=0.0.0.0 PORT=8080 npm start
 
 Vérifier au minimum : accueil, chargement d’une année Sciences, chargement d’une année Maths, téléchargement explicite d’un PDF, rechargement hors ligne après ouverture d’une année, et affichage de l’identifiant de build.
 
+### Intégration dans un cadre (`frame-ancestors`)
+
+Par défaut, la CSP n’autorise que l’origine propre : `frame-ancestors 'self'`. Aucun hôte
+tiers — en particulier aucun hôte de prévisualisation — n’est codé en dur dans l’en-tête de
+production.
+
+Un déploiement qui doit être intégré dans un cadre le déclare explicitement :
+
+```bash
+CSP_FRAME_ANCESTORS="'self' https://hote.exemple" npm start
+```
+
+La valeur est validée au démarrage. Seuls `'self'` et les origines `https://` explicites
+(wildcard de sous-domaine `https://*.hote.exemple` admis) sont acceptés ; `*`, `https://*`,
+`http://…` et toute autre source sont refusés et **le serveur ne démarre pas**. Il n’existe
+donc pas de repli permissif silencieux : une valeur mal formée échoue bruyamment plutôt que
+d’élargir la surface d’intégration.
+
 ## Publication atomique
 
 La plateforme d’hébergement doit conserver les releases par identifiant au lieu d’écraser une arborescence en place.

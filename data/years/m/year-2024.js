@@ -31,14 +31,12 @@ export const YEAR_2024_M = {
   stream: "m",
   calendarYear: "2024",
   label: "بكالوريا الجزائر دورة 2024 — شعبة رياضيات",
-  badge: "دورة رسمية",
   theme: "indigo",
   enabled: true,
   sujets: [
     {
       id: 1,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: PDF,
       pdfLocalUrl: "/subjects/M/2024/sujet-1.pdf",
       pdfNote: PDF_NOTE,
@@ -228,7 +226,6 @@ export const YEAR_2024_M = {
     {
       id: 2,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: PDF,
       pdfLocalUrl: "/subjects/M/2024/sujet-2.pdf",
       pdfNote: PDF_NOTE,

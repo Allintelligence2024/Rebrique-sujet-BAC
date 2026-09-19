@@ -14,15 +14,13 @@ const YEAR_2019_SE = {
   id: "2019",
   stream: "se",
   calendarYear: "2019",
-  label: "بكالوريا الجزائر دورة 2019",
-  badge: "أرشيف مُعاد بناؤه",
+  label: "بكالوريا الجزائر دورة 2019 — شعبة علوم تجريبية",
   theme: "amber",
   enabled: true,
   sujets: [
     {
       id: 1,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-3051478.pdf",
       pdfLocalUrl: "/subjects/SE/2019/sujet-1.pdf",
@@ -294,7 +292,6 @@ const YEAR_2019_SE = {
     {
       id: 2,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-3051478.pdf",
       pdfLocalUrl: "/subjects/SE/2019/sujet-2.pdf",

@@ -3,8 +3,7 @@
  */
 const YEAR_2025_SE = {
   id: "2025",
-  label: "بكالوريا الجزائر دورة 2025",
-  badge: "دورة نموذجية",
+  label: "بكالوريا الجزائر دورة 2025 — شعبة علوم تجريبية",
   theme: "emerald",
   enabled: true,
   sujets: [
@@ -12,7 +11,6 @@ const YEAR_2025_SE = {
       id: 1,
       pdf: null,
       pdfFilename: null,
-      pdfAvailable: false,
       pdfExternalUrl: "https://www.dzexams.com/ar/annales/S3VKb3UrRU9MUnJHVG5ndENaV1FIdz09",
       pdfLocalUrl: "/subjects/SE/2025/sujet-1.pdf",
       pdfNote: "Source externe DzExams 2025 ; le dépôt ne redistribue pas le PDF tiers.",
@@ -428,7 +426,6 @@ const YEAR_2025_SE = {
       id: 2,
       pdf: null,
       pdfFilename: null,
-      pdfAvailable: false,
       pdfExternalUrl: "https://www.dzexams.com/ar/annales/S3VKb3UrRU9MUnJHVG5ndENaV1FIdz09",
       pdfLocalUrl: "/subjects/SE/2025/sujet-2.pdf",
       pdfNote: "Source externe DzExams 2025 ; le dépôt ne redistribue pas le PDF tiers.",

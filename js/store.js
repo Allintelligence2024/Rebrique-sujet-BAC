@@ -2,6 +2,7 @@
    STORE — état applicatif, persistance et migrations validées
    ============================================================ */
 
+import { EXAM_MINUTES_BY_STREAM, YEAR_CATALOG } from "../data/subjects.js";
 import { reportDiagnostic } from "./services/diagnostics.js";
 
 const KEY = "boussole4d.v4";
@@ -9,41 +10,32 @@ const LEGACY_KEY = "boussole4d.v3";
 const AMBIGUOUS_LEGACY_KEY = "boussole4d.v2";
 export const CURRENT_SCHEMA_VERSION = 5;
 export const YEAR_ID_PATTERN = /^\d{4}(?:-[a-z]{1,3})?$/;
-/** Plage d'années effectivement présentes dans le catalogue applicatif
- *  (2013-2026 sciences expérimentales + 2013-2026 maths). Une année hors de
- *  cette plage (par exemple "9999" issue d'un localStorage corrompu) n'a
- *  aucun payload chargeable : loadYear jetterait RangeError. Bug #B2 :
- *  YEAR_ID_PATTERN seul validait la forme sans garantir l'existence. */
-export const KNOWN_YEAR_IDS = new Set([
-  "2013",
-  "2014",
-  "2015",
-  "2016",
-  "2017",
-  "2018",
-  "2019",
-  "2020",
-  "2021",
-  "2022",
-  "2023",
-  "2024",
-  "2025",
-  "2026",
-  "2013-m",
-  "2014-m",
-  "2015-m",
-  "2016-m",
-  "2017-m",
-  "2018-m",
-  "2019-m",
-  "2020-m",
-  "2021-m",
-  "2022-m",
-  "2023-m",
-  "2024-m",
-  "2025-m",
-  "2026-m"
-]);
+/** Borne unique de tous les textes persistés par exercice. Bug #B15 : un
+ *  localStorage corrompu (ou un copier-coller massif) pouvait accumuler des
+ *  dizaines de Mo par pôle et rendre le rechargement inutilisable. La borne
+ *  est nommée pour qu'aucun champ ne puisse être oublié par inadvertance. */
+export const MAX_PERSISTED_TEXT = 60000;
+/** Cardinalité maximale des tables libres d'un exercice (`fields`,
+ *  `officialTaskAnswers`). Sans elle, un localStorage corrompu pouvait
+ *  multiplier les entrées indéfiniment : borner la longueur des valeurs ne
+ *  suffit pas si leur nombre ne l'est pas. */
+export const MAX_PERSISTED_KEYS = 200;
+/** Plages d'identifiants persistés — identiques à celles de store.exercise().
+ *  sanitizeProgress acceptait auparavant /^[1-9]\d*$/ sans plafond : un
+ *  localStorage corrompu pouvait créer un nombre illimité de sujets et
+ *  d'exercices fantômes, chacun portant ses propres champs texte. */
+export const MAX_SUBJECT_ID = 9;
+export const MAX_EXERCISE_ID = 9;
+/** Années réellement chargeables : dérivées du catalogue applicatif, jamais
+ *  recopiées à la main. Bug #B2 : YEAR_ID_PATTERN seul validait la forme sans
+ *  garantir l'existence — "9999" issu d'un localStorage corrompu n'a aucun
+ *  payload et loadYear jetterait RangeError.
+ *  Le correctif initial remplaçait le pattern par une liste tenue à la main,
+ *  qui a fini par dériver du catalogue : elle déclarait 2013-m…2020-m alors
+ *  que data/subjects.js ne charge que 2021-m…2026-m. enterSession("2013-m")
+ *  était donc accepté, puis loadYear("2013-m") levait RangeError. La seule
+ *  source de vérité est désormais YEAR_CATALOG (mêmes ids, mêmes chargeurs). */
+export const KNOWN_YEAR_IDS = new Set(YEAR_CATALOG.map((entry) => entry.id));
 /** Année connue (catalogue) ET conforme au pattern. */
 function isCatalogYear(id) {
   return typeof id === "string" && YEAR_ID_PATTERN.test(id) && KNOWN_YEAR_IDS.has(id);
@@ -62,6 +54,23 @@ const isRecord = (value) => !!value && typeof value === "object" && !Array.isArr
 const asString = (value) => (typeof value === "string" ? value : "");
 const asFiniteNumber = (value, fallback, min = -Infinity, max = Infinity) =>
   typeof value === "number" && Number.isFinite(value) ? Math.min(max, Math.max(min, value)) : fallback;
+/** Clé numérique persistable, dans la même plage que store.exercise(). */
+function isBoundedId(value, max) {
+  if (typeof value !== "string" || !/^[1-9]\d*$/.test(value)) return false;
+  const parsed = Number(value);
+  return Number.isSafeInteger(parsed) && parsed <= max;
+}
+/** Copie au plus `limit` entrées valides d'une table libre. */
+function copyBoundedEntries(source, target, isValidKey, limit = MAX_PERSISTED_KEYS) {
+  let kept = 0;
+  for (const [key, value] of Object.entries(source)) {
+    if (kept >= limit) break;
+    if (typeof value !== "string" || !isValidKey(key)) continue;
+    target[key] = value.slice(0, MAX_PERSISTED_TEXT);
+    kept += 1;
+  }
+  return kept;
+}
 
 function emptyExercise() {
   return {
@@ -116,27 +125,30 @@ function sanitizeExercise(value) {
   for (const pole of POLES) {
     safe.scores[pole] = asFiniteNumber(raw.scores?.[pole], 0, 0, 20);
     // Bug #B15 : scratch et text peuvent accumuler des blocs copiés-collés
-    // dépassant la dizaine de MB ; on borne à 60 000 caractères par pôle pour
-    // éviter qu'un localStorage corrompu ralentisse le rechargement (et que
-    // la session prenne >30s pour validerState).
-    safe.text[pole] = asString(raw.text?.[pole]).slice(0, 60000);
-    safe.scratch[pole] = asString(raw.scratch?.[pole]).slice(0, 60000);
+    // dépassant la dizaine de MB ; on borne à MAX_PERSISTED_TEXT caractères
+    // par pôle pour éviter qu'un localStorage corrompu ralentisse le
+    // rechargement (et que la session prenne >30s pour validerState).
+    safe.text[pole] = asString(raw.text?.[pole]).slice(0, MAX_PERSISTED_TEXT);
+    safe.scratch[pole] = asString(raw.scratch?.[pole]).slice(0, MAX_PERSISTED_TEXT);
   }
-  safe.scratch.free = asString(raw.scratch?.free);
+  // Bug #B15 (suite) : scratch.free était un champ texte non borné —
+  // 5 000 000 caractères traversaient sanitizeExercise alors que text[pole],
+  // scratch[pole] et freeAnswer étaient déjà plafonnés.
+  safe.scratch.free = asString(raw.scratch?.free).slice(0, MAX_PERSISTED_TEXT);
   if (isRecord(raw.fields)) {
-    for (const [key, value] of Object.entries(raw.fields)) {
-      if (typeof value === "string" && key.length <= 100) safe.fields[key] = value;
-    }
+    // Champ historique que l'application n'écrit plus, mais sanitizeExercise
+    // est une frontière : la valeur ET le nombre de clés doivent être bornés.
+    copyBoundedEntries(raw.fields, safe.fields, (key) => key.length <= 100);
   }
   if (isRecord(raw.officialTaskAnswers)) {
-    for (const [taskId, value] of Object.entries(raw.officialTaskAnswers)) {
-      if (/^\d{4}(?:-[a-z]{1,3})?-S\d+-E\d+-Q\d+$/.test(taskId) && typeof value === "string") {
-        safe.officialTaskAnswers[taskId] = value;
-      }
-    }
+    // C'est ici que persistAnswers() écrit la réponse de l'élève en mode
+    // épreuve : valeur et nombre de tâches sont bornés tous les deux.
+    copyBoundedEntries(raw.officialTaskAnswers, safe.officialTaskAnswers, (taskId) =>
+      /^\d{4}(?:-[a-z]{1,3})?-S\d+-E\d+-Q\d+$/.test(taskId)
+    );
   }
   // Free-form exercise-level answer (bac-reading-mode) — plain string, length-capped.
-  safe.freeAnswer = typeof raw.freeAnswer === "string" ? raw.freeAnswer.slice(0, 60000) : "";
+  safe.freeAnswer = typeof raw.freeAnswer === "string" ? raw.freeAnswer.slice(0, MAX_PERSISTED_TEXT) : "";
   for (const stream of ["stream1", "stream2"]) {
     const values = Array.isArray(raw.pipeline?.[stream]) ? raw.pipeline[stream] : [];
     safe.pipeline[stream] = Array.from({ length: 4 }, (_, index) => {
@@ -158,10 +170,13 @@ function sanitizeProgress(value) {
     if (!isCatalogYear(yearId) || !isRecord(subjects)) continue;
     progress[yearId] = {};
     for (const [sujetId, exercises] of Object.entries(subjects)) {
-      if (!/^[1-9]\d*$/.test(sujetId) || !isRecord(exercises)) continue;
+      // Même plage que store.exercise() (1..9) : sans plafond, un localStorage
+      // corrompu pouvait créer un nombre illimité de sujets et d'exercices
+      // fantômes, chacun portant ses propres champs texte.
+      if (!isBoundedId(sujetId, MAX_SUBJECT_ID) || !isRecord(exercises)) continue;
       progress[yearId][sujetId] = {};
       for (const [exerciseId, exercise] of Object.entries(exercises)) {
-        if (!/^[1-9]\d*$/.test(exerciseId)) continue;
+        if (!isBoundedId(exerciseId, MAX_EXERCISE_ID)) continue;
         progress[yearId][sujetId][exerciseId] = sanitizeExercise(exercise);
       }
     }
@@ -238,7 +253,11 @@ export function migrateState(candidate) {
                           : existing || merged;
                       return [
                         exId,
-                        { ...ex, officialTaskAnswers: official, freeAnswer: freeAnswer.slice(0, 60000) }
+                        {
+                          ...ex,
+                          officialTaskAnswers: official,
+                          freeAnswer: freeAnswer.slice(0, MAX_PERSISTED_TEXT)
+                        }
                       ];
                     })
                   )
@@ -293,7 +312,9 @@ export function validateState(candidate) {
   state.sujetId = asFiniteNumber(candidate.sujetId, state.sujetId, 1, 9);
   state.activeExercise = asFiniteNumber(candidate.activeExercise, state.activeExercise, 1, 9);
   state.activeStep = asFiniteNumber(candidate.activeStep, state.activeStep, 1, 4);
-  const inferredDuration = state.yearId.endsWith("-m") ? 150 * 60 : state.globalDuration;
+  // La durée maths vient du catalogue (EXAM_MINUTES_BY_STREAM.m) et non d'un
+  // 150 recopié ici : une surcharge par année ne peut plus faire diverger les deux.
+  const inferredDuration = state.yearId.endsWith("-m") ? EXAM_MINUTES_BY_STREAM.m * 60 : state.globalDuration;
   state.globalDuration = asFiniteNumber(candidate.globalDuration, inferredDuration, 60, 24 * 60 * 60);
   state.globalRemaining = asFiniteNumber(
     candidate.globalRemaining,
@@ -451,7 +472,12 @@ export const store = {
   },
 
   enterSession(yearId, sujetId, durationSeconds = 270 * 60, strategySeconds = 25 * 60, options = {}) {
-    if (!YEAR_ID_PATTERN.test(yearId)) throw new Error(`yearId invalide: ${String(yearId)}`);
+    // Bug #B2 (suite) : le contrôle de forme seul laissait passer une année
+    // conforme au motif mais absente du catalogue — enterSession("9999")
+    // ouvrait une session "active" et persistée que exercise(), validateState()
+    // et loadYear() rejettent toutes les trois. On applique ici la même règle
+    // que partout ailleurs : l'année doit être chargeable.
+    if (!isCatalogYear(yearId)) throw new Error(`yearId invalide: ${String(yearId)}`);
     const duration = asFiniteNumber(durationSeconds, 270 * 60, 60, 24 * 60 * 60);
     const strategyDuration = asFiniteNumber(strategySeconds, 25 * 60, 0, 60 * 60);
     const requestedMode = normalizeSessionMode(options?.mode) || "bac";

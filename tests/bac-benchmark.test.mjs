@@ -35,9 +35,13 @@ const BENCHMARK_CASES = [
       },
       acceptable: {
         answer: "يرتبط الريبوزوم بالـ ARNm ثم تنقل الأحماض الأمينية فيتوقف التركيب بمركب Tetracycline.",
-        fraction: [0.75, 0.9],
-        methodology: [0.9, 1],
-        scoreRatio: [0.75, 0.9]
+        // D5 : cette copie ne contient QU'UN vrai connecteur (« يرتبط »). Avant le
+        // correctif, « في » était compté à l'intérieur de « فيتوقف » (فـ + يتوقف),
+        // ce qui gonflait artificiellement la cohérence. Les bornes suivent la
+        // mesure corrigée : 0.675 / 0.667 / 0.670.
+        fraction: [0.6, 0.8],
+        methodology: [0.6, 0.8],
+        scoreRatio: [0.6, 0.8]
       },
       falseAnswer: {
         answer: "البروتين مفيد.",
@@ -113,8 +117,15 @@ const BENCHMARK_CASES = [
       },
       acceptable: {
         answer: "تؤدي طفرة P53 إلى فقدان وظيفة البروتين الكابحة للأورام فتتكاثر الخلايا السرطانية.",
+        // D5 : un seul vrai connecteur ici (« إلى »). Avant le correctif, « ان »
+        // était compté à l'intérieur de « فقدان ». Le seuil méthodologique
+        // « connectorHits >= 2 » (methodology.js:800) était de fait inopérant :
+        // n'importe quel texte de 12 mots atteignait 2 correspondances
+        // accidentelles. Il discrimine réellement pour la première fois, et son
+        // calibre n'est validé par aucune copie réelle (calibration : 0/149
+        // pôles) — à trancher avec le lot calibration, pas à desserrer ici.
         fraction: [0.95, 1],
-        methodology: [0.25, 0.45],
+        methodology: [0, 0.1],
         scoreRatio: [0.95, 1]
       },
       falseAnswer: {

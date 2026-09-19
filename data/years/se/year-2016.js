@@ -14,15 +14,13 @@ const YEAR_2016_SE = {
   id: "2016",
   stream: "se",
   calendarYear: "2016",
-  label: "بكالوريا الجزائر دورة 2016",
-  badge: "أرشيف مُعاد بناؤه",
+  label: "بكالوريا الجزائر دورة 2016 — شعبة علوم تجريبية",
   theme: "purple",
   enabled: true,
   sujets: [
     {
       id: 1,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: "https://www.dzexams.com/ar/annales/M09NK2ZYVHFzQXg3KzZHazBaTk5IUT09",
       pdfLocalUrl: "/subjects/SE/2016/sujet-1.pdf",
       pdfNote:
@@ -299,7 +297,6 @@ const YEAR_2016_SE = {
     {
       id: 2,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: "https://www.dzexams.com/ar/annales/M09NK2ZYVHFzQXg3KzZHazBaTk5IUT09",
       pdfLocalUrl: "/subjects/SE/2016/sujet-2.pdf",
       pdfNote:

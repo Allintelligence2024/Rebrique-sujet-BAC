@@ -32,6 +32,7 @@ await loadAllYears();
 const { init } = await import("../js/ui.js");
 const { store } = await import("../js/store.js");
 const { soundEngine, timers } = await import("../js/engine.js");
+const { officialTaskInventoryFor } = await import("../data/official-tasks.js");
 await init();
 
 after(() => {
@@ -101,19 +102,33 @@ test('1b. SE 2013–2026 en épreuve : 4D partout, 2021 en armature "copie libre
   assert.ok(!$("#view-hub").classList.contains("hidden"));
 });
 
-test("1c. Le bouton filière affiche Maths puis le trou تقني رياضي", () => {
+test("1c. Le bouton filière affiche Maths puis l'espace باكالوريات أجنبية", () => {
   click("#btn-stream-fab");
   assert.match($("#stream-fab-label").textContent, /رياضيات/);
-  assert.equal($$("#year-grid [data-year]").length, 6, "six entraînements 4D Maths (2021–2026)");
+  /* 14 épreuves Maths : 6 entraînements 4D (2021–2026) + 8 armatures
+     « copie libre » (2013–2020, aucune consigne encodée). */
+  assert.equal($$("#year-grid [data-year]").length, 15);
   assert.equal($('#year-grid [data-hub-year="2021"]').dataset.kind, "exam");
   assert.equal($('#year-grid [data-year="2021-m"]').disabled, false);
-  assert.equal($$("#year-grid .year-card").length, 14);
+  /* 15 cartes = 14 millésimes + la session exceptionnelle 2017, qui a ses
+     propres fichiers et ses propres sujets. */
+  assert.equal($$("#year-grid .year-card").length, 15);
+  assert.ok($('#year-grid [data-year="2017-em"]'), "la session exceptionnelle doit rester atteignable");
   assert.ok($('#year-grid [data-hub-year="2026"]'));
   assert.ok($('#year-grid [data-hub-year="2022"]'));
   assert.ok($('#year-grid [data-hub-year="2021"]'));
   assert.ok($('#year-grid [data-hub-year="2013"]'));
+  // 2013–2020 ne sont plus des cartes de consultation : elles ouvrent l'épreuve.
+  for (const year of ["2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"]) {
+    assert.equal(
+      $('#year-grid [data-hub-year="' + year + '"]').dataset.kind,
+      "exam",
+      year + " Maths doit ouvrir une épreuve"
+    );
+    assert.equal($('#year-grid [data-year="' + year + '-m"]').disabled, false, year + " -m actif");
+  }
   const links = $$('#year-grid [data-kind="consult"] a[href*="dzexams.com/ar/annales/"]');
-  assert.equal(links.length, 9, "filière Maths : 8 principales 2013–2020 + 2017 exceptionnelle");
+  assert.equal(links.length, 0, "filière Maths : chaque millésime ouvre une épreuve dans l'application");
 
   click('#year-grid [data-year="2026-m"]');
   assert.match($("#view-guide").textContent, /2س30د/);
@@ -123,12 +138,12 @@ test("1c. Le bouton filière affiche Maths puis le trou تقني رياضي", ()
   click("#strategy-exit");
 
   click("#btn-stream-fab");
-  assert.match($("#stream-fab-label").textContent, /تقني رياضي/);
+  assert.match($("#stream-fab-label").textContent, /باكالوريات أجنبية/);
   assert.equal($$('#year-grid [data-kind="gap"]').length, 1);
   assert.equal(
     $$('#year-grid a[href*="dzexams.com/ar/annales/"]').length,
     0,
-    "aucun annales inventé pour TM"
+    "aucun lien dzexams pour un espace qui n'indexe pas le BAC algérien"
   );
   click("#btn-stream-fab");
   assert.match($("#stream-fab-label").textContent, /علوم تجريبية/);
@@ -224,28 +239,38 @@ test("5. Épreuve : les seuls outils sont le sujet, la sortie et la remise", () 
   assert.equal(store.state.sessionStatus, "active", "la session continue si l'élève refuse");
 });
 
-test("6. Épreuve : les tâches du sujet sont visibles et peuvent être rédigées", () => {
-  const taskText = $$("#view-workspace .simulation-task")
-    .map((task) => task.textContent)
-    .join(" ");
-  assert.match(taskText, /2025-S1-E1-Q1/);
-  assert.match(taskText, /2025-S1-E1-Q2/);
-  // Chaque tâche porte sa provenance ; aucune n'affiche de note.
+test("6. Épreuve : les questions officielles sont visibles et peuvent être rédigées", () => {
+  /* Questions OFFICIELLES seulement : Q1 et Q4 du ت1 sont des étapes
+     reconstruites, l'épreuve ne les montre plus. */
+  const inventory = officialTaskInventoryFor("2025", 1);
+  const shown = $$("#view-workspace [data-task-answer]").map((input) => input.dataset.taskAnswer);
+  assert.deepEqual(shown, ["2025-S1-E1-Q2", "2025-S1-E1-Q3"]);
+  for (const id of shown) {
+    assert.equal(
+      inventory.tasks.find((task) => task.id === id).promptSource,
+      "official",
+      `${id} affichée doit être une consigne officielle`
+    );
+  }
+  // Chaque question porte sa provenance ; aucune n'affiche de note.
   assert.equal(
     $$("#view-workspace [data-task-source]").length,
     $$("#view-workspace .simulation-task").length
   );
   assert.doesNotMatch($("#view-workspace").textContent, /\d+[.,]\d+\s*\/\s*\d+/);
   // Rédaction libre : le texte est conservé, sans validation de note.
-  const input = $('#view-workspace [data-task-answer="2025-S1-E1-Q1"]');
+  const input = $('#view-workspace [data-task-answer="2025-S1-E1-Q2"]');
   input.value = "إجابة الطالب في الإمتحان";
   input.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
-  assert.equal(store.exercise("2025", 1, 1).officialTaskAnswers["2025-S1-E1-Q1"], "إجابة الطالب في الإمتحان");
-  // Le contrôle qualité n'est pas un corrigé : il ne rend pas de note.
-  click('#view-workspace [data-qualitative-for="2025-S1-E1-Q1"]');
-  const result = $('#view-workspace [data-qualitative-result="2025-S1-E1-Q1"]');
-  assert.notEqual(result.textContent.trim(), "");
-  assert.doesNotMatch(result.textContent, /\d+[.,]\d+\s*\/\s*\d+/);
+  assert.equal(store.exercise("2025", 1, 1).officialTaskAnswers["2025-S1-E1-Q2"], "إجابة الطالب في الإمتحان");
+  // « اختبار صامت » promet l'absence de diagnostic PENDANT l'épreuve : aucun
+  // contrôle d'évaluation ne doit y être rendu. Il réapparaît en relecture.
+  assert.equal(
+    $('#view-workspace [data-qualitative-for="2025-S1-E1-Q2"]'),
+    null,
+    "aucune évaluation qualitative pendant l'épreuve"
+  );
+  assert.equal($("#view-workspace .qualitative-check"), null, "aucun bouton تقييم نوعي en épreuve");
 });
 
 test("7. Épreuve : transition vers l'exercice 3 et rédaction complète", () => {
@@ -278,6 +303,15 @@ test("8-9. Ni rapport, ni réinitialisation : la remise est la seule sortie", ()
   assert.equal($("#view-workspace").dataset.reviewMode, "true");
   assert.equal($("#view-workspace [data-task-answer]").disabled, true);
   assert.equal($("#simulation-finish"), null, "plus de remise après remise");
+  // L'évaluation qualitative a été déplacée ici : en relecture le diagnostic
+  // est permis, et il ne reste pas un corrigé — aucune note n'est rendue.
+  // (La relecture affiche l'exercice actif, on ne présuppose donc pas un id.)
+  const reviewButton = $("#view-workspace [data-qualitative-for]");
+  assert.ok(reviewButton, "l'évaluation qualitative doit être disponible en relecture");
+  click(`#view-workspace [data-qualitative-for="${reviewButton.dataset.qualitativeFor}"]`);
+  const result = $(`#view-workspace [data-qualitative-result="${reviewButton.dataset.qualitativeFor}"]`);
+  assert.notEqual(result.textContent.trim(), "");
+  assert.doesNotMatch(result.textContent, /\d+[.,]\d+\s*\/\s*\d+/);
   // Retour au hub.
   click("#simulation-home");
   assert.ok(!$("#view-hub").classList.contains("hidden"));

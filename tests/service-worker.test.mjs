@@ -127,7 +127,9 @@ test("chaque entrée du shell existe et chaque module JS est justifié", () => {
 });
 
 test("tous les payloads d'année sont découpés, catalogués et importés dynamiquement", () => {
-  assert.equal(lazyYearFiles.length, 20);
+  /* 14 SE + 6 Maths 4D + 8 armatures « copie libre » Maths 2013–2020
+     + la session exceptionnelle 2017 Maths. */
+  assert.equal(lazyYearFiles.length, 29);
   assert.equal(new Set(lazyYearFiles).size, lazyYearFiles.length);
   const subjectsSource = readFileSync(join(root, "data/subjects.js"), "utf8");
   for (const path of lazyYearFiles) {
@@ -219,7 +221,7 @@ test("le shell précache tout le graphe de démarrage et rien de plus", () => {
     (match) => match[1]
   );
   const startup = staticImportClosure(join(root, "js/main.js")).map(
-    (file) => "./" + file.slice(root.length + 1)
+    (file) => "./" + relative(root, file).split(sep).join("/")
   );
   assert.ok(startup.length > 10, "le graphe de démarrage doit être détecté");
   for (const file of startup) {

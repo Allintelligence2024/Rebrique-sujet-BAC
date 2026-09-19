@@ -14,15 +14,13 @@ const YEAR_2017_SE = {
   id: "2017",
   stream: "se",
   calendarYear: "2017",
-  label: "بكالوريا الجزائر دورة 2017",
-  badge: "أرشيف مُعاد بناؤه",
+  label: "بكالوريا الجزائر دورة 2017 — شعبة علوم تجريبية",
   theme: "rose",
   enabled: true,
   sujets: [
     {
       id: 1,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2017/dzexams-bac-sciences-2581269.pdf",
       pdfLocalUrl: "/subjects/SE/2017/sujet-1.pdf",
@@ -300,7 +298,6 @@ const YEAR_2017_SE = {
     {
       id: 2,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2017/dzexams-bac-sciences-2581269.pdf",
       pdfLocalUrl: "/subjects/SE/2017/sujet-2.pdf",
