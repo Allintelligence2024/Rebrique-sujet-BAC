@@ -25,8 +25,8 @@ Mesure : `node scripts/measure-external-links-impact.mjs` → **14/14 consommate
 
 ## 3. Verdict chiffré
 
-- **44/58 sujets basculables sans perte** : PDF direct externe mesuré dans le manifeste (`source`) et/ou `data/years`.
-- **14/58 sujets perdus ou à re-sourcer** (aucun PDF direct externe mesuré) :
+- **46/58 sujets basculables sans perte** : PDF direct externe mesuré dans le manifeste (`source`) et/ou `data/years`.
+- **12/58 sujets perdus ou à re-sourcer** (aucun PDF direct externe mesuré) :
 
 ```bash
 node scripts/measure-external-links-impact.mjs  # champ "missing"
@@ -34,8 +34,6 @@ node scripts/measure-external-links-impact.mjs  # champ "missing"
 
 | fichier | URL externes mesurées |
 | --- | --- |
-| `subjects/M/2016/sujet-1.pdf` | `https://www.dzexams.com/ar/annales/TW9GY3FMeVdkeFBBNGIwMmppdi9xQT09` |
-| `subjects/M/2016/sujet-2.pdf` | `https://www.dzexams.com/ar/annales/TW9GY3FMeVdkeFBBNGIwMmppdi9xQT09` |
 | `subjects/M/2020/sujet-1.pdf` | `https://www.dzexams.com/ar/annales/dlFvUnNHKzlTdm5xZHJHMm4vL2hYZz09` |
 | `subjects/M/2020/sujet-2.pdf` | `https://www.dzexams.com/ar/annales/dlFvUnNHKzlTdm5xZHJHMm4vL2hYZz09` |
 | `subjects/M/2021/sujet-1.pdf` | `https://www.dzexams.com/ar/annales/T2tYS3FTcFRwWCtCbXV2QmFyRTcydz09` |

@@ -68,34 +68,18 @@ function type(sel, value) {
   input.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
 }
 
-const FREE_M_IDS = [
-  "2013-m",
-  "2014-m",
-  "2015-m",
-  "2016-m",
-  "2017-m",
-  "2018-m",
-  "2019-m",
-  "2020-m",
-  "2017-em"
-];
+const FREE_M_IDS = ["2013-m", "2014-m", "2015-m", "2017-em"];
 /* Identifiant de carte dans le hub : une session exceptionnelle du même
    millésime doit avoir sa propre carte, sinon elle est masquée. */
 const CARD_BY_ID = Object.freeze({
   "2013-m": "2013",
   "2014-m": "2014",
   "2015-m": "2015",
-  "2016-m": "2016",
-  "2017-m": "2017",
-  "2018-m": "2018",
-  "2019-m": "2019",
-  "2020-m": "2020",
   "2017-em": "2017 (دورة استثنائية)"
 });
 /* Découpage mesuré sur la couche texte : 2 en-têtes « التمرين » extraits pour
-   2016–2020 et pour la session exceptionnelle 2017, aucun pour 2013–2015
-   (scan sans couche texte). */
-const SPLIT_MEASURED = ["2016-m", "2017-m", "2018-m", "2019-m", "2020-m", "2017-em"];
+   la session exceptionnelle 2017, aucun pour 2013–2015 (scan sans couche texte). */
+const SPLIT_MEASURED = ["2017-em"];
 
 /* Le hub mémorise la filière dans localStorage et les tests s'enchaînent dans
    le même DOM : on part donc de l'état affiché, on revient au hub si une
@@ -198,7 +182,7 @@ test("rien n'est encodé dans les huit armatures : aucun pôle, aucun inventaire
    « ت1: null (nullن) » et « 0.0% ثقة ذاتية ». Un barème non mesuré ne se
    remplace pas par un zéro : il s'annonce, et il n'y a alors rien à estimer. */
 test("l'écran de choix d'une armature n'affiche aucun « null » et n'invite pas à estimer", () => {
-  for (const id of ["2016-m", "2013-m", "2017-em"]) {
+  for (const id of ["2015-m", "2013-m", "2017-em"]) {
     goToMathsStream();
     click(`#year-grid [data-year="${id}"]`);
     click("#guide-next");
@@ -240,7 +224,7 @@ test("l'écran de choix d'une armature n'affiche aucun « null » et n'invite pa
    le seul moyen de comparer deux sujets dont le barème n'existe pas. */
 test("l'estimation qualitative fait pencher le choix, sans compter de points", () => {
   goToMathsStream();
-  click('#year-grid [data-year="2016-m"]');
+  click('#year-grid [data-year="2017-em"]');
   click("#guide-next");
   const cards = $$("#view-strategy [data-subject-coverage]");
   ["4", "0"].forEach((level, index) => {
@@ -260,15 +244,15 @@ test("l'estimation qualitative fait pencher le choix, sans compter de points", (
   }
 });
 
-test("2016 (découpage mesuré) : une copie par exercice, sans aucun nombre de points", () => {
+test("2017-em (découpage mesuré) : une copie par exercice, sans aucun nombre de points", () => {
   goToMathsStream();
-  openExam("2016-m");
+  openExam("2017-em");
   assert.equal($("#view-workspace").dataset.answerMode, "free");
   assert.equal($("#view-workspace").dataset.sessionMode, "bac");
 
   const frame = $("#view-workspace iframe.pdf-frame");
   assert.ok(frame, "le sujet doit être affiché dans une visionneuse");
-  assert.match(frame.getAttribute("src"), /^\/subjects\/M\/2016\/sujet-1\.pdf/);
+  assert.match(frame.getAttribute("src"), /^\/subjects\/M\/2017\/exceptional\/sujet-1\.pdf/);
 
   const fields = $$("#view-workspace [data-exercise-free]");
   assert.equal(fields.length, 2, "deux exercices mesurés");
@@ -328,7 +312,7 @@ test("les trois scans Maths gardent leur structure, mesurée ailleurs", () => {
 
 test("la copie est enregistrée puis verrouillée par la remise", () => {
   goToMathsStream();
-  openExam("2017-m");
+  openExam("2015-m");
   const answer = "إجابة حرة: استغلال الوثائق ثم صياغة نص علمي حول الإستجابة المناعية.";
   type('#view-workspace [data-exercise-free="2"]', answer);
   assert.equal(

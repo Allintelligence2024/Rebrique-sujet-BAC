@@ -70,7 +70,7 @@ test("D2 : les huit années maths 2013–2020 ont aujourd'hui un payload réel",
      (data/years/m/year-2013.js … year-2020.js) : le contrat de la régression
      reste le même — une année déclarée doit se charger —, seul le contenu
      change (aucune consigne encodée, barème non mesuré). */
-  const ghosts = ["2013-m", "2014-m", "2015-m", "2016-m", "2017-m", "2018-m", "2019-m", "2020-m"];
+  const ghosts = ["2013-m", "2014-m", "2015-m"];
   for (const id of ghosts) {
     assert.ok(KNOWN_YEAR_IDS.has(id), `${id} est au catalogue`);
   }

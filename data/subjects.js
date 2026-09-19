@@ -140,12 +140,7 @@ const catalogEntry = (entry) => Object.freeze(entry);
 const FREE_COPY_M_YEARS = Object.freeze({
   2013: { theme: "emerald", exercises: 2 },
   2014: { theme: "amber", exercises: 2 },
-  2015: { theme: "indigo", exercises: 2 },
-  2016: { theme: "purple", exercises: 2 },
-  2017: { theme: "rose", exercises: 2 },
-  2018: { theme: "emerald", exercises: 2 },
-  2019: { theme: "amber", exercises: 2 },
-  2020: { theme: "indigo", exercises: 2 }
+  2015: { theme: "indigo", exercises: 2 }
 });
 
 /**
@@ -256,18 +251,19 @@ export const YEAR_CATALOG = Object.freeze([
       modulePath: `data/years/se/year-${id}.js`
     })
   ),
-  ...["2021", "2022", "2023", "2024", "2025", "2026"].map((calendarYear) =>
-    catalogEntry({
-      id: `${calendarYear}-m`,
-      stream: "m",
-      calendarYear,
-      label: `بكالوريا الجزائر دورة ${calendarYear} — شعبة رياضيات`,
-      theme: "indigo",
-      enabled: true,
-      subjectCount: 2,
-      exerciseCounts: [2, 2],
-      modulePath: `data/years/m/year-${calendarYear}.js`
-    })
+  ...["2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026"].map(
+    (calendarYear) =>
+      catalogEntry({
+        id: `${calendarYear}-m`,
+        stream: "m",
+        calendarYear,
+        label: `بكالوريا الجزائر دورة ${calendarYear} — شعبة رياضيات`,
+        theme: "indigo",
+        enabled: true,
+        subjectCount: 2,
+        exerciseCounts: [2, 2],
+        modulePath: `data/years/m/year-${calendarYear}.js`
+      })
   ),
   /* Maths 2013–2020 : armatures « copie libre ». Aucune consigne encodée
      (scan sans couche texte, ou chiffres corrompus) et barème non mesuré —
