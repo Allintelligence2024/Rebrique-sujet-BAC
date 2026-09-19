@@ -148,6 +148,15 @@ test("les PDF de sujet sont évictables : runtime borné, jamais le cache shell 
   assert.equal(api.isRuntimeAsset(pdf), true, "un PDF de sujet doit passer par le cache borné");
   assert.equal(api.isRuntimeAsset(pdfMaths), true);
   assert.equal(api.isRuntimeAsset(payload), true);
+  /* `year-2017-exceptional.js` : 11 lettres après le tiret. Avec l'ancienne
+     borne `(?:-[a-z]{1,3})?` il échappait au cache borné et atterrissait dans
+     le cache shell — donc sans éviction, et sans le cycle de vie par version
+     qui garantit qu'un payload périmé n'est plus jamais servi. */
+  assert.equal(
+    api.isRuntimeAsset(new globalThis.Request("https://app.test/data/years/m/year-2017-exceptional.js")),
+    true,
+    "le payload de la session exceptionnelle doit passer par le cache borné"
+  );
   assert.equal(api.isRuntimeAsset(new globalThis.Request("https://app.test/assets/styles.css")), false);
   assert.equal(api.isRuntimeAsset(new globalThis.Request("https://app.test/index.html")), false);
 

@@ -25,6 +25,11 @@ const ALLOWED_SCOPES = new Set([
   "store.reset",
   "store.save",
   "subjects.load-year",
+  /* Ouverture d'une année dont les données ont bien été chargées : l'échec vient
+     du démarrage de session (rendu ou persistance), pas du chargement. Le
+     distinguer de `subjects.load-year` évite de chercher la panne au mauvais
+     endroit — les deux n'ont ni la même cause ni le même message. */
+  "subjects.start-session",
   "subjects.restore-year",
   "theme.load",
   "theme.save"

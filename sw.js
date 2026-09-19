@@ -37,6 +37,7 @@ const SHELL_ASSETS = [
   "./js/application/debounce.js",
   "./js/application/timers.js",
   "./js/application/subject-session.js",
+  "./js/application/year-load-error.js",
   "./js/domain/subjects/official-coverage.js",
   "./js/services/sound-engine.js",
   "./js/services/speech-recognition.js",
@@ -78,7 +79,11 @@ function isLocalRequest(request) {
 function isRuntimeAsset(request) {
   const pathname = new URL(request.url).pathname;
   return (
-    /\/data\/years\/(?:se|m)\/year-\d{4}(?:-[a-z]{1,3})?\.js$/.test(pathname) ||
+    // `(?:-[a-z]+)?` et non `(?:-[a-z]{1,3})?` : la session exceptionnelle
+    // s'appelle `year-2017-exceptional.js` (11 lettres). Avec l'ancienne borne
+    // elle échappait au cache runtime — donc à son éviction et à son cycle de
+    // vie par version — et atterrissait dans le cache shell, qui n'a aucune borne.
+    /\/data\/years\/(?:se|m)\/year-\d{4}(?:-[a-z]+)?\.js$/.test(pathname) ||
     // (?:\/exceptional)? : les PDF de session exceptionnelle vivent dans un
     // sous-dossier. Sans ce segment ils échappaient au cache runtime borné et
     // retombaient dans le cache shell, qui n'a aucune borne.
