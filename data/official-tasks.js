@@ -7690,10 +7690,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 2,
         pole: "S",
         page: 1,
-        prompt:
-          "أ- عرّف الحروف والكلمات في اللغة (غ1) والكلمات في اللغة (غ2). ب- سمّ اللغة (غ1) واللغة (غ2) والقاموس اللازم لقراءة اللغة (غ1).",
+        prompt: "سمّ اللغة (غ1) واللغة (غ2) والقاموس اللازم لقراءة اللغة (غ1).",
         promptSource: "official",
-        maxPoints: 3,
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -7718,7 +7717,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "E",
         page: 1,
         prompt:
-          "ج- رُكّب مخبريا لغة (غ1) بواسطة نوعين من الحروف فقط بنسب متساوية: احسب عدد أنواع كلمات هذه اللغة. د- إن تركيب سلسلة ببتيدية يحتاج إلى إشارات بداية ونهاية على مستوى اللغة (غ1): استخرج هذه الإشارات من جدول الوثيقة (1). ثم سمّ البيانات المرقمة والأحماض الأمينية وثلاثيات القواعد الممثلة في الوثيقة (2).",
+          "رُكّب مخبريا لغة (غ1) بواسطة نوعين من الحروف فقط بنسب متساوية، احسب عدد أنواع كلمات هذه اللغة.",
         promptSource: "official",
         maxPoints: 4,
         scoringReviewStatus: "provisional",
@@ -7744,10 +7743,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 4,
         pole: "W",
         page: 1,
-        prompt:
-          "أ- بالاعتماد على الصيغة الكيميائية العامة للحمض الأميني، اكتب الصيغة الكيميائية للجزء المؤطر (م). ب- صف الأحداث التي سمحت بالانتقال من الشكل (أ) إلى الشكل (ب) من الوثيقة (2).",
+        prompt: "صف الأحداث التي سمحت بالانتقال من الشكل (أ) إلى الشكل (ب) من الوثيقة (2).",
         promptSource: "official",
-        maxPoints: 2,
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -7792,17 +7790,16 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 2,
         order: 2,
         pole: "S",
-        page: 1,
-        prompt:
-          "أ- سمّ العنصر (س) ثم بيّن ماذا يمثل. ب- دعم إجابتك برسم تخطيطي مع وضع البيانات اللازمة. ج- ما هي المعلومة المستخلصة من نتائج هذه التجربة؟",
+        page: 2,
+        prompt: "سمّ العنصر (س)، ثم بيّن ماذا يمثل.",
         promptSource: "official",
-        maxPoints: 3,
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [1]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -7812,7 +7809,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: 1
+        pageInPdf: 2
       },
       {
         id: "2013-m-S1-E2-Q3",
@@ -7820,8 +7817,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 3,
         pole: "E",
         page: 2,
-        prompt:
-          "في اللحظة t0 استُؤصلت الغدة السعترية لفئران خضعت من قبل للأشعة X، ثم وُزعت إلى 4 مجموعات: علّل تعريض الفئران للأشعة X، واستئصال الغدة السعترية، وأخذ الخلايا اللمفاوية من فئران من نفس السلالة، ثم فسّر النتائج الممثلة في الوثيقة (2).",
+        prompt: "فسّر النتائج الممثلة في الوثيقة (2).",
         promptSource: "official",
         maxPoints: 4,
         scoringReviewStatus: "provisional",
@@ -7847,10 +7843,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 4,
         pole: "W",
         page: 2,
-        prompt:
-          "أ- ما نوع الاستجابة المناعية المدروسة؟ ب- أنجز رسما تخطيطيا توضح من خلاله مراحل آلية هذه الاستجابة المناعية.",
+        prompt: "أنجز رسما تخطيطيا توضح من خلاله مراحل آلية هذه الاستجابة المناعية.",
         promptSource: "official",
-        maxPoints: 2,
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -7918,10 +7913,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 2,
         pole: "S",
         page: 1,
-        prompt:
-          "الوثيقة (1) تمثل نوعين من الخلايا التي تلعب دورا في الرد المناعي الخلطي ونتائج فصل أنماط الهيولى للخليتين: 1- سمّ خلية الشكل (أ) والشكل (ب) ثم اكتب البيانات المرقمة. 2- ما هو مصدر الخليتين؟ 3- أ- قارن نتائج الفصل. ب- وضّح العلاقة بين هذه النتائج وبنية كل خلية.",
+        prompt: "سمّ خلية الشكل (أ) والشكل (ب)، ثم اكتب البيانات المرقمة.",
         promptSource: "official",
-        maxPoints: 3,
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -7945,8 +7939,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 3,
         pole: "E",
         page: 1,
-        prompt:
-          "1- سمّ هذه الجزيئة مع ذكر طبيعتها الكيميائية. 2- أ- ماذا يمثل الجزء المؤطر؟ ب- اعتمادا على الصيغة الكيميائية العامة للوحدات البنائية، مثّل الجزء المؤطر.",
+        prompt: "وضّح العلاقة بين هذه النتائج وبنية كل خلية.",
         promptSource: "official",
         maxPoints: 4,
         scoringReviewStatus: "provisional",
@@ -7973,9 +7966,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "W",
         page: 1,
         prompt:
-          "3- إن وظيفة البروتين مرتبطة باستقرار وثبات بنيته الفراغية: أ- كيف تحافظ هذه الجزيئة على ثبات واستقرار بنيتها الفراغية الوظيفية؟ ب- وضّح العلاقة بين بنية هذه الجزيئة وتخصصها الوظيفي، مدعما إجابتك برسم تخطيطي عليه البيانات المناسبة.",
+          "وضّح العلاقة بين بنية هذه الجزيئة وتخصصها الوظيفي، مدعما إجابتك برسم تخطيطي عليه البيانات المناسبة.",
         promptSource: "official",
-        maxPoints: 2,
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -8020,17 +8013,16 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 2,
         order: 2,
         pole: "S",
-        page: 1,
-        prompt:
-          "فأر من سلالة C حُقن بفيروس V وبعد 10 أيام استُخلصت منه خلايا لمفاوية (س) لإنجاز التجربة الممثلة في الوثيقة (1): 1- سمّ الخلية (س) ثم بيّن مصدرها. 2- أ- انطلاقا من النتائج المبينة في الجدول، استخرج شروط عمل الخلية (س). ب- بناء على نتيجة التجربة (1) ومعلوماتك، صف آلية عمل الخلية (س).",
+        page: 2,
+        prompt: "سمّ الخلية (س)، ثم بيّن مصدرها.",
         promptSource: "official",
-        maxPoints: 3,
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [1]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -8040,7 +8032,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: 1
+        pageInPdf: 2
       },
       {
         id: "2013-m-S2-E2-Q3",
@@ -8048,8 +8040,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 3,
         pole: "E",
         page: 2,
-        prompt:
-          "أعطت نتائج التحليل الكيميائي الكمي لدم فئران السلالة C المصابة بالفيروس V النتائج المبينة في الوثيقة (2): أ- حلّل المنحنى البياني. ب- علّل النتائج المحصل عليها بين لحظة الإصابة والأسبوع الثاني، ثم بين الأسبوع الثاني والأسبوع الثالث. ج- أ- ظهور الخلايا (س) في العضوية مرتبط بعمل الأنترلوكين: وضّح ذلك. ب- عند الشخص المصاب بفيروس VIH تتناقص مع مرور السنوات كمية الأنترلوكينات في الدم: علّل ذلك.",
+        prompt: "انطلاقا من النتائج المبيّنة في الجدول، استخرج شروط عمل الخلية (س).",
         promptSource: "official",
         maxPoints: 4,
         scoringReviewStatus: "provisional",
@@ -8077,7 +8068,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         page: 2,
         prompt: "حدّد نوع الاستجابة المناعية المدروسة، مدعما إجابتك برسم تخطيطي يوضح مراحلها.",
         promptSource: "official",
-        maxPoints: 2,
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -8145,10 +8136,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 2,
         pole: "S",
         page: 1,
-        prompt:
-          "الوثيقة (1): يمثل الشكل (أ) جذور بعض الوحدات البنائية، بينما يمثل الشكل (ب) قيم الـ pI لهذه الوحدات: أ- انسب لكل حمض أميني قيمة الـ pI المناسبة مع التعليل. ب- ما هي نتائج الهجرة الكهربائية للأحماض الأمينية التي جذورها معينة في الشكل (أ) عند وسط ذي pH=5؟ علّل. ج- اكتب الصيغ الكيميائية لهذين الحمضين الأمينيين في نفس الوسط pH=5.",
+        prompt: "انسب لكل حمض أميني قيمة الـ pHi المناسبة مع التعليل.",
         promptSource: "official",
-        maxPoints: 3,
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -8173,7 +8163,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "E",
         page: 1,
         prompt:
-          "ج- اكتب الصيغة الكيميائية لرباعي الببتيد الذي جذور أحماضه الأمينية معطاة في الوثيقة (1). د- احسب عدد أنواع رباعي الببتيد الذي يمكن تركيبه من الوحدات البنائية ذات الجذور المبينة في الشكل (أ) من الوثيقة (1)، بدون تكرار الحمض الأميني ثم بتكراره. 2- أ- تعرّف على مستوى البنية الممثل في الشكل (ج) من الوثيقة (1). ب- تنشأ بين الأحماض الأمينية أنواع من الروابط بعضها ممثل في الشكل (ج): استنتج أنواع هذه الروابط، ثم اقترح أنواعا أخرى. ج- ما أهمية هذه الروابط؟",
+          "احسب عدد أنواع رباعي الببتيد الذي يمكن تركيبه من الوحدات البنائية ذات الجذور المبينة في الشكل (أ) من الوثيقة (1)، بدون تكرار الحمض الأميني وبتكرار الحمض الأميني.",
         promptSource: "official",
         maxPoints: 4,
         scoringReviewStatus: "provisional",
@@ -8199,10 +8189,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 4,
         pole: "W",
         page: 1,
-        prompt:
-          "عُومل بروتين وظيفي باليوريا وبيتا مركبتو إيثانول كما هو ممثل في التجربة 1 و2 للوثيقة (2): أ- حلّل الوثيقة. ب- من خلال تحليلك للوثيقة وما سبق، بيّن على ماذا تتوقف البنية الفراغية الوظيفية للبروتين.",
+        prompt: "من خلال تحليلك للوثيقة (2) وما سبق، بيّن على ماذا تتوقف البنية الفراغية الوظيفية للبروتين.",
         promptSource: "official",
-        maxPoints: 2,
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -8247,17 +8236,16 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 2,
         order: 2,
         pole: "S",
-        page: 1,
-        prompt:
-          "تبيّن الوثيقة (1) توضع الجزيئات الكيميائية في الغشاء الهيولي، وبالاعتماد عليها: أ- اكتب البيانات المرقمة من 1 إلى 6. ب- قدّم وصفا لتموضع الجزيئات الكيميائية ضمن الغشاء. ج- علّل تسمية النموذج بالفسيفسائي المائع. د- حدّد الجزيئات الكيميائية المميزة للذات مدعما إجابتك بتجربة تؤكد ذلك.",
+        page: 2,
+        prompt: "اكتب البيانات المرقمة من 1 إلى 6.",
         promptSource: "official",
-        maxPoints: 3,
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [1]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -8267,16 +8255,15 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: 1
+        pageInPdf: 2
       },
       {
         id: "2014-m-S1-E2-Q3",
         exerciseNumber: 2,
         order: 3,
         pole: "E",
-        page: 1,
-        prompt:
-          "1- لإبراز دور البنية الممثلة في الوثيقة (1) في تحديد الهوية البيولوجية، يُقترح الشكل (أ) من الوثيقة (2) الذي يمثل الشروط التجريبية والنتائج المحصل عليها: أ- فسّر النتائج المحصل عليها. ب- باستغلال النتيجة المحصل عليها، بيّن كيف تمنح البنية الممثلة في الوثيقة (1) الهوية البيولوجية للفرد. 2- في إطار نفس الدراسة تؤخذ كمية من مصل دم شخص (س) مجهول الزمرة الدموية وتوضع على قطرة دم: أ- علّل النتائج المحصل عليها مدعما إجابتك برسم تخطيطي. ب- ما هي زمرة الشخص (س)؟ علّل ذلك.",
+        page: 2,
+        prompt: "فسّر النتائج المحصل عليها.",
         promptSource: "official",
         maxPoints: 4,
         scoringReviewStatus: "provisional",
@@ -8284,7 +8271,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [1]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -8294,7 +8281,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: 1
+        pageInPdf: 2
       },
       {
         id: "2014-m-S1-E2-Q4",
@@ -8304,7 +8291,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         page: 2,
         prompt: "معتمدا على النتائج المتوصل إليها، قدّم تعريفا دقيقا للذات واللاذات.",
         promptSource: "official",
-        maxPoints: 2,
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -8372,10 +8359,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 2,
         pole: "S",
         page: 1,
-        prompt:
-          "حُضّر مستخلص خلوي يحتوي على جميع العناصر اللازمة لتركيب السلسلة الببتيدية كما هو ممثل في الوثيقة (1)، حيث الشكل (أ) يظهر أهم هذه العناصر، أما الشكل (ب) فيمثل النتيجة المحصل عليها بعد دقائق: 1- أ- قدّم أسماء البيانات المرقمة من 1 إلى 8. ب- سمّ الظاهرة التي سمحت بظهور العنصر (ص) في الشكل (ب) وحدد مقرها في الخلية. ج- العنصر (س) هو نتيجة نشاط خلوي يحدث على مستوى النواة: صف مراحل هذا النشاط الخلوي.",
+        prompt: "قدّم أسماء البيانات المرقمة من 1 إلى 8.",
         promptSource: "official",
-        maxPoints: 3,
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -8399,8 +8385,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 3,
         pole: "E",
         page: 1,
-        prompt:
-          "2- من خلال معطيات الشكل (أ) والشكل (ب): استخرج عدد القواعد الأزوتية للعنصر رقم 6 وعدد الوحدات البنائية للعنصر (ص)، ثم علّل إجابتك. 3- خلال النشاط الممثل في الوثيقة (1) يرتبط العنصر (3) بالرامزة الموافقة: أ- في أي مرحلة من النشاط المدروس يحدث هذا الارتباط؟ ب- أنجز رسما تخطيطيا تعبر من خلاله عن هذه المرحلة.",
+        prompt: "استخرج عدد القواعد الأزوتية للعنصر رقم 6 وعدد الوحدات البنائية للعنصر (ص)، ثم علّل إجابتك.",
         promptSource: "official",
         maxPoints: 4,
         scoringReviewStatus: "provisional",
@@ -8426,10 +8411,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 4,
         pole: "W",
         page: 1,
-        prompt:
-          "4- عملية تركيب البروتين مرتبطة كذلك بحدوث النشاط الخلوي الممثل في الوثيقة (2): أ- سمّ هذا النشاط الخلوي ثم اذكر أهميته. ب- لخّص في جدول أهم الاختلافات بين العنصر 1 والعنصر 2. ج- صف في نص علمي الظاهرة التي تحدث على مستوى الجزء المؤطر (ع).",
+        prompt: "صف في نص علمي الظاهرة التي تحدث على مستوى الجزء المؤطر (ع).",
         promptSource: "official",
-        maxPoints: 2,
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -8474,17 +8458,17 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 2,
         order: 2,
         pole: "S",
-        page: 1,
+        page: 2,
         prompt:
-          "1- أ- أعط مثالا لكل حالة من حالات اللاذات. ب- اذكر أسماء البروتينات الغشائية الأساسية التي تمكن الجسم من التعرف على ما هو ذاتي وما هو غير ذاتي. 2- لإبراز دور بعض عناصر الجهاز المناعي لإقصاء اللاذات، استُخلصت خلايا مناعية من طحال فأر وأنجزت التجربة الممثلة في الوثيقة (1): أ- بواسطة رسم تخطيطي، عبّر عن ما حدث في الوسط 1. ب- صف ما حدث في الوسط 2.",
+          "اذكر أسماء البروتينات الغشائية الأساسية التي تمكن الجسم من التعرف على ما هو ذاتي وما هو غير ذاتي.",
         promptSource: "official",
-        maxPoints: 3,
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [1]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -8494,7 +8478,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: 1
+        pageInPdf: 2
       },
       {
         id: "2014-m-S2-E2-Q3",
@@ -8502,8 +8486,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 3,
         pole: "E",
         page: 2,
-        prompt:
-          "ج- فسّر نتائج معايرة إنتاج الأجسام المضادة في الأوسطين 3 و4. د- ما هي المعلومات التي يمكن استخلاصها من نتائج هذه التجربة؟ 3- يفقد الجهاز المناعي لجسم مصاب بفيروس السيدا (VIH) فعاليته بصورة تدريجية، مما يترتب عنه ظهور أمراض انتهازية: يمثل الشكل (أ) من الوثيقة تطور نسبة اللمفاويات LT4 و LT8 المزروعة في وسط فيزيولوجي يحتوي على فيروس VIH، أما الشكل (ب) فيمثل تطور كمية الأجسام المضادة في دم شخص مصاب منذ 8 سنوات: أ- فسّر النتائج المحصل عليها في الشكل (أ). ب- ما هي المشكلة المطروحة من مقارنة نتائج الشكل (أ) والشكل (ب)؟",
+        prompt: "فسّر نتائج معايرة إنتاج الأجسام المضادة في الأوساط 3 و4.",
         promptSource: "official",
         maxPoints: 4,
         scoringReviewStatus: "provisional",
@@ -8531,7 +8514,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         page: 2,
         prompt: "مما سبق ومعتمدا على معلوماتك، اقترح حلا منطقيا لهذه المشكلة العلمية.",
         promptSource: "official",
-        maxPoints: 2,
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -8599,10 +8582,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 2,
         pole: "S",
         page: 1,
-        prompt:
-          "1- خُضعت الوحدات البنائية لببتيد وظيفي كتلته المولية معينة للفصل بتقنية الهجرة الكهربائية في وسط ذي pH=6.8، والنتائج مبينة في الوثيقة (1): حلّل نتائج الوثيقة (1)، ماذا تستنتج؟ ثم اقترح فرضية تحدد من خلالها عدد الوحدات البنائية المشكلة لهذا الببتيد. 2- يمثل الشكل (أ) من الوثيقة (2) السلسلة الناسخة لقطعة ADN تشرف على تركيب الببتيد الوظيفي المدروس وجزء من جدول الشفرة الوراثية: أ- حدّد المتتالية البنائية المشكلة لهذا الببتيد الوظيفي. ب- هل تأكدت من صحة الفرضية المقترحة سابقا؟",
+        prompt: "انسب الوحدة البنائية الموافقة بالحروف (أ)، (ب)، (ج) من الوثيقة (1)، علّل.",
         promptSource: "official",
-        maxPoints: 3,
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -8626,8 +8608,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 3,
         pole: "E",
         page: 1,
-        prompt:
-          "يلخص الشكل (ب) من الوثيقة (2) نزوح الوحدات البنائية المشكلة للببتيد المدروس وجذورها (R) وكتلتها المولية: أ- انسب الوحدة البنائية الموافقة بالحروف (أ)، (ب)، (ج) من الوثيقة (1)، علّل إجابتك.",
+        prompt: "حلّل نتائج الوثيقة (1). ماذا تستنتج؟",
         promptSource: "official",
         maxPoints: 4,
         scoringReviewStatus: "provisional",
@@ -8653,10 +8634,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 4,
         pole: "W",
         page: 1,
-        prompt:
-          "ب- اكتب الصيغة الكيميائية المفصلة للببتيد الوظيفي المدروس. ج- هل تتوافق النتيجة المحصل عليها في الوثيقة (2) والكتلة المولية للببتيد الوظيفي المدروس؟ علّل إجابتك. ملاحظة: الكتلة المولية للعناصر: H=1، C=12، O=16، N=14.",
+        prompt: "اكتب الصيغة الكيميائية المفصلة للببتيد الوظيفي المدروس.",
         promptSource: "official",
-        maxPoints: 2,
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -8701,17 +8681,17 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 2,
         order: 2,
         pole: "S",
-        page: 1,
+        page: 2,
         prompt:
-          "تبيّن اختبارات تحديد الزمر الدموية لعائلة النتائج الموضحة في الوثيقة (1): 1- ما الهدف من استعمال المصل والكريات الدموية الحمراء في هذين الاختبارين؟ 2- أ- حدّد زمرة كل فرد من أفراد هذه العائلة، ثم علّل إجابتك معتمدا على نتائج الاختبار (1) باستعمال المصل. ب- هل نتائج الاختبار (1) باستعمال المصل تؤكد نتائج الاختبار (2) باستعمال الكريات الدموية الحمراء؟ وضّح ذلك.",
+          "حدّد زمرة كل فرد من أفراد هذه العائلة، ثم علّل إجابتك معتمدا على نتائج الاختبار (1) باستعمال المصل.",
         promptSource: "official",
-        maxPoints: 3,
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [1]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -8721,16 +8701,15 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: 1
+        pageInPdf: 2
       },
       {
         id: "2015-m-S1-E2-Q3",
         exerciseNumber: 2,
         order: 3,
         pole: "E",
-        page: 1,
-        prompt:
-          "3- وضّح برسم تخطيطي نتيجة الاختبار الحاصل عند الأم باستعمال المصل المضاد. 2- تمثل الوثيقة (2) نمذجة جزيئية للمستقبلات الموجودة على سطح أغشية الكريات الدموية الحمراء (أستيل غلوكو أمين وأستيل غلاكتو أمين): 1- قارن بين المستقبلات الغشائية لهذه الزمر الدموية، ماذا تستنتج؟",
+        page: 2,
+        prompt: "قارن بين المستقبلات الغشائية لهذه الزمر الدموية. ماذا تستنتج؟",
         promptSource: "official",
         maxPoints: 4,
         scoringReviewStatus: "provisional",
@@ -8738,7 +8717,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [1]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -8748,7 +8727,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: 1
+        pageInPdf: 2
       },
       {
         id: "2015-m-S1-E2-Q4",
@@ -8758,7 +8737,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         page: 2,
         prompt: "مثّل بمخطط يبيّن نقل الدم بين أفراد هذه العائلة.",
         promptSource: "official",
-        maxPoints: 2,
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -8826,10 +8805,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 2,
         pole: "S",
         page: 1,
-        prompt:
-          "1- يختلف سلوك البروتينات تبعا لدرجة حموضة الوسط؛ لإثبات ذلك أُخضع بروتين لتقنية الرحلان الكهربائي باستعمال محاليل ذات pH متزايدة، وقيس مسافة تحرك البروتين نحو القطب الموجب أو السالب: أ- مثّل بمنحنى بياني النتائج المتحصل عليها في الوثيقة (1) واستخرج قيمة الـ pI لهذه الجزيئة. ب- فسّر شكل المنحنى، ثم ما هي الخاصية التي تتميز بها البروتينات اعتمادا على هذه التقنية؟",
+        prompt: "استخرج قيمة الـ pHi لهذه الجزيئة.",
         promptSource: "official",
-        maxPoints: 3,
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -8854,7 +8832,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "E",
         page: 1,
         prompt:
-          "2- لإظهار علاقة الأحماض الأمينية بالبنية الفراغية للبروتين، أُنجزت أشكال الوثيقة (2) حيث يمثل الشكل (أ) البنية الفراغية لبروتين باستعمال مبرمج محاكاة، والشكل (ب) رسما تخطيطيا لهذا البروتين، والشكل (ج) الصيغة الكيميائية لكل من حمض الجلوتاميك رقم (63) وأرجنين رقم (87): 1- حدّد المستوى البنائي لهذا البروتين، علّل إجابتك. 2- اكتب الصيغة الكيميائية للجزء المؤطر في الشكل (ب) باستعمال الصيغة العامة للحمض الأميني. 3- أ- مستعينا بمعطيات الشكل (ب) و(ج) من الوثيقة (2)، بيّن كيف يساهم الحمضان الأمينيان رقم (63) ورقم (87) في استقرار البنية الفراغية لهذا البروتين. ب- ما مصدر الكبريت المشار إليه بالحرف (S) في الشكل (ب)؟ وما دوره؟",
+          "مستعينا بمعطيات الشكل (ب) و(ج) من الوثيقة (2)، بيّن كيف يساهم الحمضان الأمينيان رقم (63) ورقم (87) في استقرار البنية الفراغية لهذا البروتين.",
         promptSource: "official",
         maxPoints: 4,
         scoringReviewStatus: "provisional",
@@ -8881,9 +8859,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "W",
         page: 1,
         prompt:
-          "4- أحدث خلل على مستوى المورثة المشرفة على تركيب هذا البروتين أدى إلى فقدان نشاطه الطبيعي: من مكتسباتك والمعارف المبنية من هذه الدراسة، وضّح في نص علمي العلاقة بين بنية البروتين ووظيفته.",
+          "من مكتسباتك والمعارف المبنية من هذه الدراسة، وضّح في نص علمي العلاقة بين بنية البروتين ووظيفته.",
         promptSource: "official",
-        maxPoints: 2,
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -8928,17 +8906,16 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 2,
         order: 2,
         pole: "S",
-        page: 1,
-        prompt:
-          "1- يمثل الشكل (أ) من الوثيقة (1) رسما تخطيطيا لبنية فيروس الالتهاب الكبدي من النمط (B)، بينما يمثل الشكل (ب) من نفس الوثيقة نتائج اختبار تقنية الانتشار المناعي حيث إن الحفرة (1) فيها مصل شخص مصاب بفيروس الالتهاب الكبدي من النمط (B)، والحفرة (2) فيها محلول به عناصر من عناصر الفيروس، والحفرة (3) فيها محلول بعناصر أخرى، والحفرة (4) فيها محلول به الفيروس: 1- صف بنية الفيروس الموضحة في الشكل (أ) من الوثيقة (1). 2- فسّر النتائج المتحصل عليها في الشكل (ب) من الوثيقة (1). 3- أ- ما هي الخاصية المناعية التي أظهرتها هذه التقنية؟ ب- وضّح برسم تخطيطي ما حدث في المنطقة (س).",
+        page: 2,
+        prompt: "صف بنية الفيروس الموضحة في الشكل (أ) من الوثيقة (1).",
         promptSource: "official",
-        maxPoints: 3,
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [1]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -8948,16 +8925,15 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: 1
+        pageInPdf: 2
       },
       {
         id: "2015-m-S2-E2-Q3",
         exerciseNumber: 2,
         order: 3,
         pole: "E",
-        page: 1,
-        prompt:
-          "2- لمعرفة نوع آخر من الطرق المناعية المتدخلة في التصدي لمرض الالتهاب الكبدي، أجريت التجربة التالية: حُضرت أربعة أوساط زرع مزودة بالتيميدين المشع (T: قاعدة أزوتية تدخل في تركيب الـ ADN) الذي يسمح بقياس عدد الخلايا الناتجة عن انقسام الخلايا اللمفاوية المتدخلة في هذه الطريقة المناعية، واستعملت في التجربة خلايا لمفاوية تائية (LT) وخلايا كبدية أخذت من شخصين أحدهما مصاب بفيروس الالتهاب الكبدي من النمط (B) والآخر سليم: 1- فسّر نتائج جدول الوثيقة (2). 2- صف مراحل الآلية التي سمحت بتخريب الخلايا الكبدية في الوسط الموافق.",
+        page: 2,
+        prompt: "فسّر نتائج جدول الوثيقة (2).",
         promptSource: "official",
         maxPoints: 4,
         scoringReviewStatus: "provisional",
@@ -8965,7 +8941,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [1]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -8975,7 +8951,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: 1
+        pageInPdf: 2
       },
       {
         id: "2015-m-S2-E2-Q4",
@@ -8984,9 +8960,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "W",
         page: 2,
         prompt:
-          "3- مما سبق، استخرج الطرائق التي تتصدى بها العضوية للمرض الذي يسببه فيروس الالتهاب الكبدي من النمط (B).",
+          "مما سبق، استخرج الطرائق التي تتصدى بها العضوية للمرض الذي يسببه فيروس الالتهاب الكبدي من النمط (B).",
         promptSource: "official",
-        maxPoints: 2,
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -13974,10 +13950,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 3,
         pole: "E",
         page: 1,
-        prompt:
-          "وضّح الجزء المؤطر في (م2) من الوثيقة برسم تخطيطي تفسيري يحمل البيانات اللازمة، ثم حدّد نوع الاستجابة المناعية الممثلة في هذه الحالة.",
+        prompt: "وضّح الجزء المؤطر في (م2) من الوثيقة برسم تخطيطي تفسيري يحمل البيانات اللازمة.",
         promptSource: "official",
-        maxPoints: 3,
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -14001,10 +13976,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 4,
         pole: "W",
         page: 1,
-        prompt:
-          "يُعتبر التلامس بين الخليتين (س) و(ع) الملاحظ في (م2) خطوة أساسية في الاستجابة المناعية المدروسة: بيّن في نص علمي الآلية المؤدية إلى الحصول على النتيجة الموضحة في (م3) من الوثيقة.",
+        prompt: "بيّن في نص علمي الآلية المؤدية إلى الحصول على النتيجة الموضحة في (م3) من الوثيقة.",
         promptSource: "official",
-        maxPoints: 1,
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -14049,9 +14023,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 2,
         order: 2,
         pole: "S",
-        page: 1,
-        prompt:
-          "الجزء 1: تمثل الوثيقة (1) رسما تفسيريا لجزء من بنية الـ ADN المتدخل في تركيب بروتين: 1) اكتب بيانات العناصر المرقمة من 1 إلى 5 والبنية (س) من الوثيقة (1). 2) افترض تجربة تثبت بها فرضية أن الجزيئة التي تؤمن انتقال المعلومة الوراثية من النواة إلى الهيولى هي الـ ARNm وليس الـ ADN.",
+        page: 2,
+        prompt: "اكتب بيانات العناصر المرقمة من 1 إلى 5 والبنية (س) من الوثيقة (1).",
         promptSource: "official",
         maxPoints: 4,
         scoringReviewStatus: "provisional",
@@ -14059,7 +14032,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [1]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -14069,7 +14042,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: 1
+        pageInPdf: 2
       },
       {
         id: "2017-em-S1-E2-Q3",
@@ -14077,10 +14050,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 3,
         pole: "E",
         page: 2,
-        prompt:
-          "الجزء 2: لتحديد شروط تركيب البروتين أجريت الدراسات التالية: 1) وُضعت 3 مجموعات من الخلايا في وسط يحتوي على أحماض أمينية مشعة: المجموعة 1 خلايا إنشائية لكريات الدم الحمراء لأرنب تنتج الهيموغلوبين Hb، والمجموعة 2 خلايا بيضية لضفدع تنتج بروتينين، والمجموعة 3 خلايا بيضية لضفدع منزوعة النواة منذ مدة ومحقونة بـ ARNm عُزل من الخلايا الإنشائية للكريات الحمراء للأرنب: استخرج المعلومة التي تؤكدها معطيات الشكل (أ) من الوثيقة (2). 2) يوضح الشكل (ب) صورة أخذت عن المجهر الإلكتروني لموقع تركيب البروتين، أما الشكل (ج) فيمثل رسما تخطيطيا يترجم عمل جزء من العنصر الموضح في الشكل (ب): أ) احسب عدد السلاسل الببتيدية المركبة في الشكل (ب) من الوثيقة (2) مع التعليل. ب) اكتب البيانات المرقمة من 1 إلى 6. ج) استنتج أهمية العنصر الموضح في الشكل (ب) في تصنيع البروتين.",
+        prompt: "احسب عدد السلاسل الببتيدية المركبة في الشكل (ب) من الوثيقة (2) مع التعليل.",
         promptSource: "official",
-        maxPoints: 6,
+        maxPoints: 5,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -14105,9 +14077,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "W",
         page: 2,
         prompt:
-          "الجزء 3: اعتمادا على ما جاء في الموضوع ومعلوماتك، أنجز حصيلة تخطيطية تلخّص فيها العناصر الأساسية المتدخلة في آليات تركيب البروتين.",
+          "اعتمادا على ما جاء في الموضوع ومعلوماتك، أنجز حصيلة تخطيطية تلخّص فيها العناصر الأساسية المتدخلة في آليات تركيب البروتين.",
         promptSource: "official",
-        maxPoints: 2,
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -14175,8 +14147,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 2,
         pole: "S",
         page: 1,
-        prompt:
-          "1) اشرح دور الخلية العارضة في انطلاق الاستجابة المناعية النوعية وفي مرحلة القضاء على مولد الضد. 2) مثّل برسم تخطيطي مرفق بالبيانات بنية العنصر المشار إليه بنجمة.",
+        prompt: "سمّ الخلية (ب) واذكر مميزاتها البنيوية التي تسمح لها بأداء وظيفتها.",
         promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
@@ -14202,10 +14173,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 3,
         pole: "E",
         page: 1,
-        prompt:
-          "وضّح فعالية العناصر المشار إليها بنجمة في الاستجابة المناعية النوعية، ثم سمّ الخلية البلازمية واذكر مميزاتها البنيوية التي تسمح لها بأداء وظيفتها.",
+        prompt: "اشرح دور الخلية (ت4) في انطلاق الاستجابة المناعية النوعية وفي مرحلة القضاء على مولد الضد.",
         promptSource: "official",
-        maxPoints: 4,
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -14232,7 +14202,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         prompt:
           "باستغلالك لمعطيات الوثيقة ومستعينا بمعلوماتك، اكتب نصا علميا توضّح فيه خصائص الخلايا المساعدة التي تسمح لها بأن تلعب دورا محوريا في الاستجابة المناعية النوعية.",
         promptSource: "official",
-        maxPoints: 1,
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -14277,9 +14247,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 2,
         order: 2,
         pole: "S",
-        page: 1,
-        prompt:
-          "الجزء 1: تمثل الوثيقة (1) جزيئة الأنترلوكين التي تتركب من تحت وحدتين، وقد حُصل عليها ببرمجية محاكاة: 1) انطلاقا من معطيات الوثيقة (1) ومعلوماتك: أ) حدّد المستوى البنيوي والمميزات لكل من البنيات الموضحة في الوثيقة (1). ب) استنتج المستوى البنائي لجزيئة الأنترلوكين. 2) اقترح فرضية تفسيرية لاختلاف البنى الفراغية للبروتينات.",
+        page: 2,
+        prompt: "حدّد المستوى البنيوي والمميزات لكل من البنيات الموضحة في الوثيقة (1).",
         promptSource: "official",
         maxPoints: 3,
         scoringReviewStatus: "provisional",
@@ -14287,7 +14256,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [1]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -14297,7 +14266,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: 1
+        pageInPdf: 2
       },
       {
         id: "2017-em-S2-E2-Q3",
@@ -14305,10 +14274,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 3,
         pole: "E",
         page: 2,
-        prompt:
-          "الجزء 2: 1) من أجل التحقق من مدى صحة الفرضية السابقة، دُرست البنية 1 من الوثيقة (1) التي تكون متعادلة كهربائيا في وسط ذي pH=7: أ) اكتب الصيغة الكيميائية المفصلة للبنية 1 في هذا الوسط معتمدا على السلاسل الجانبية للأحماض الأمينية المعطاة. ب) اشرح أهمية السلاسل الجانبية في تحديد البنية الفراغية للبروتين. 2) أجريت دراسة تجريبية لسلوك حمض الغلوتاميك من أجل تحديد شحنته الإجمالية في أوساط متغيرة الـ pH، والنتائج الممثلة في الوثيقة (2): مثّل الأشكال الشاردية لهذا الحمض في أوساط الـ pH المعطاة.",
+        prompt: "مثّل الأشكال الشاردية لهذا الحمض في أوساط الـ pH التالية: 1، 7، 13.",
         promptSource: "official",
-        maxPoints: 6,
+        maxPoints: 5,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -14333,9 +14301,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "W",
         page: 2,
         prompt:
-          "الجزء 3: انطلاقا مما توصلت إليه ومعلوماتك، قدّم حكما على الفرضية المقترحة في الجزء 1، مبرزا العلاقة بين البنية الفراغية للبروتينات وتخصصها الوظيفي.",
+          "انطلاقا مما توصلت إليه ومعلوماتك، قدّم حكما على الفرضية المقترحة في الجزء 1، مبرزا العلاقة بين البنية الفراغية للبروتينات وتخصصها الوظيفي.",
         promptSource: "official",
-        maxPoints: 2,
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [

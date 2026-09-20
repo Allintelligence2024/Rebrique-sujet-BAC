@@ -378,7 +378,10 @@ Extraction **Tesseract OCR (arabe)** des PDF officiels versés au dépôt
 `subjects/M/2017/exceptional/sujet-{1,2}.pdf` — couche transposée), décision 6 du
 propriétaire, 2026-09-20. Format Maths : 2 sujets × 2 exercices. id `YYYY-m`,
 session exceptionnelle `2017-em`. Notation `provisional` (`scoringReviewStatus`),
-preuves OCR dans `scripts/extracted/M/**`.
+preuves OCR dans `scripts/extracted/M/**`. Chaque consigne officielle est **la
+question du sujet elle-même, une seule par tâche, texte verbatim nettoyé de l'OCR**
+(motif des sujets SE, correction du propriétaire 2026-09-20) ; chaque sujet totalise
+**20 points** (barème lu sur le sujet : 10+10, ou 7+13 / 8+12 pour la 2017 استثنائية).
 
 | Année                | Fichier                                 | Barème        | Thèmes                                                                                          |
 | -------------------- | --------------------------------------- | ------------- | ----------------------------------------------------------------------------------------------- |

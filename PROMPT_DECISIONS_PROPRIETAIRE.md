@@ -70,10 +70,15 @@ Ce qui a été fait :
    Les preuves brutes sont conservées dans le dépôt et citées dans le `bacPromptNotes` de
    chaque consigne officielle.
 2. **Encodage 4D** — `data/years/m/year-{2013,2014,2015,2017-exceptional}.js` :
-   2 sujets × 2 exercices × 4 pôles (N/S/E/W), `bacPrompt` reconstruit depuis le texte OCR,
-   `modelAnswer` complet, `placeholder`, `minLength`, `rule{keywords, minHits}` — le motif
-   exact des millésimes 2016–2020 déjà encodés. Barèmes lus à l'OCR : **10+10** par sujet pour
-   2013–2015, **7+13 / 8+12** pour la 2017 استثنائية.
+   2 sujets × 2 exercices × 4 pôles (N/S/E/W), `modelAnswer` complet, `placeholder`,
+   `minLength`, `rule{keywords, minHits}` — le motif exact des millésimes 2016–2020 déjà
+   encodés. Barèmes lus à l'OCR : **10+10** par sujet pour 2013–2015, **7+13 / 8+12** pour la
+   2017 استثنائية. **Complément du propriétaire (2026-09-20, correction)** : chaque
+   `bacPrompt` doit être **la question du sujet, une seule par tâche, texte verbatim nettoyé
+   de l'OCR** — exactement le motif des sujets SE. Une première version regroupait plusieurs
+   sous-questions par consigne avec des résumés des documents : c'était une faute (l'énoncé
+   recomposé se lisait comme une réponse) ; les 48 consignes officielles ont été réécrites
+   en questions verbatim, une par tâche, barème par sujet maintenu à 20 pts.
 3. **Marquage d'honnêteté** — toutes les consignes de ces 4 millésimes portent
    `scoringReviewStatus: "provisional"` et `bacPromptSource: "official"` (lisible dans le PDF),
    l'inventaire les déclare `status: "partial"` (consignes officielles, barème OCR non relu).
