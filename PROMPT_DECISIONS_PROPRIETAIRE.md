@@ -641,7 +641,7 @@ discrimination que ce seuil vient d'acquérir.
 
 ```bash
 npm ci --no-audit --no-fund      # node_modules disparaît entre les sessions sandbox
-npm test                          # attendu : 369 tests, 368 pass, 0 fail, 1 skipped
+npm test                          # attendu : 374 tests, 373 pass, 0 fail, 1 skipped (après fusion main : tests sound-engine de #26 adoptés)
 for s in lint typecheck format:check build release:verify docs:check \
          calibration:check inventory:check p3:check; do npm run $s; done
 npm run pwa:version               # après toute édition de js/** ou sw.js
