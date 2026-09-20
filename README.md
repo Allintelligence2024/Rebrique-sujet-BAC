@@ -444,10 +444,10 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **365** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
-- Copies vérifiées dans le hard benchmark : **0/3795 minimum** avant toute promotion numérique
-- Inventaires de tâches officielles commencés : **54/56 sujets** (**536 tâches connues**)
-- Sujets éligibles à la simulation : **54**
+- Tests exécutés par `npm test` : **273** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Copies vérifiées dans le hard benchmark : **0/2235 minimum** avant toute promotion numérique
+- Inventaires de tâches officielles commencés : **38/40 sujets** (**408 tâches connues**)
+- Sujets éligibles à la simulation : **38**
 - Critères P1 fermés : **3/6** — statut global : **incomplet**
 - Critères P2 fermés : **6/7** — élèves distincts testés : **0/5**
 - Critères P3 fermés : **5/6** — statut global : **incomplet**

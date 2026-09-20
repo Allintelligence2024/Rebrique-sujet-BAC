@@ -7,8 +7,12 @@
    uniquement lorsque l'élève ouvre l'année correspondante.
    ============================================================ */
 
-/** Normalisation du texte arabe : variantes, tatweel, ponctuation. */
+/** Normalisation du texte arabe : variantes, tatweel, ponctuation.
+ * Bug #B13 : avant le fix, normalizeArabic(42) renvoyait "42" parce que
+ * String(42) === "42" et que la chaîne de remplacements s'appliquait sans
+ * broncher. On rejette désormais tout ce qui n'est pas une string. */
 export function normalizeArabic(text) {
+  if (typeof text !== "string") return "";
   if (!text) return "";
   return String(text)
     .replace(/[إأآاٱ]/g, "ا")

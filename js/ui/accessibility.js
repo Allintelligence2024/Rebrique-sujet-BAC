@@ -117,12 +117,13 @@ export function associateFieldsWithInstructions(root = document) {
   });
 }
 
-function diagnosticMessage(code = "") {
-  if (code.startsWith("store.")) return "تعذر حفظ البيانات محلياً";
-  if (code.startsWith("speech.")) return "تعذر تشغيل الإملاء الصوتي";
-  if (code.startsWith("sound.")) return "تعذر تشغيل الصوت";
-  if (code.startsWith("theme.")) return "تعذر حفظ إعداد العرض";
-  if (code.startsWith("service-worker.")) return "تعذر تحديث وضع العمل دون اتصال";
+function diagnosticMessage(code) {
+  const safeCode = typeof code === "string" ? code : "";
+  if (safeCode.startsWith("store.")) return "تعذر حفظ البيانات محلياً";
+  if (safeCode.startsWith("speech.")) return "تعذر تشغيل الإملاء الصوتي";
+  if (safeCode.startsWith("sound.")) return "تعذر تشغيل الصوت";
+  if (safeCode.startsWith("theme.")) return "تعذر حفظ إعداد العرض";
+  if (safeCode.startsWith("service-worker.")) return "تعذر تحديث وضع العمل دون اتصال";
   return "حدث خطأ تقني غير متوقع";
 }
 

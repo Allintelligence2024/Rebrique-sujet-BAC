@@ -141,6 +141,18 @@ export function evaluateText(text, rule = {}, poleType = "") {
       fraction = 1;
     }
     fraction = Math.min(1, fraction);
+  } else if (req === 0 && hits === 0 && !structure.isKeywordDump) {
+    // Bug #B9 : règle sans keywords + réponse longue bien structurée →
+    // on note par méthodologie + richesse + overlap, sinon fraction=0
+    // même pour un texte de 100 mots correctement structuré.
+    const lengthFactor = minLen ? Math.min(1, norm.length / minLen) : norm.length >= 80 ? 1 : 0.3;
+    fraction =
+      methodology.score * weights.methodology +
+      richnessScore * weights.richness +
+      overlap.ratio * weights.content;
+    fraction *= lengthFactor;
+    if (!toleratesShortAnswer && methodology.score < 0.25 && poleType) fraction *= 0.55;
+    fraction = Math.min(1, fraction);
   }
 
   const thinContent = !toleratesShortAnswer && keywords.length >= 4 && hits <= 2 && overlap.ratio < 0.45;
@@ -229,10 +241,22 @@ export function evaluateText(text, rule = {}, poleType = "") {
 }
 
 export function scoreFromFraction(points, fraction, options = {}) {
-  const raw = Number(points) * Number(fraction);
+  // Bug #B11 + #B22 : avant le fix :
+  //   - scoreFromFraction(5, 0.49) → Math.round(2.45 * 4) / 4 = Math.round(9.8) / 4 = 10/4 = 2.5
+  //     alors que la troncature officielle au quart inférieur attend 2.25.
+  //   - scoreFromFraction(5, undefined) → NaN (Number(undefined) === NaN ; NaN * 5 = NaN).
+  // On nettoie points/fraction et on applique Math.floor(x * 1/step) * step
+  // pour respecter la troncature au quart inférieur.
+  const safePoints = Number.isFinite(Number(points)) && Number(points) > 0 ? Number(points) : 0;
+  let safeFraction = Number(fraction);
+  if (!Number.isFinite(safeFraction)) safeFraction = 0;
+  if (safeFraction < 0) safeFraction = 0;
+  if (safeFraction > 1) safeFraction = 1;
   const step = options.step ?? 0.01;
-  if (step === 0.25) return Math.round(raw * 4) / 4;
-  return Math.round(raw * 100) / 100;
+  if (!Number.isFinite(step) || step <= 0) return Math.round(safePoints * safeFraction * 100) / 100;
+  const raw = safePoints * safeFraction;
+  if (step === 0.25) return Math.floor(raw * 4) / 4;
+  return Math.floor(raw / step) * step;
 }
 
 export function scoreBac(points, fraction) {
