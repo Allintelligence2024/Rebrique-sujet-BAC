@@ -21,7 +21,7 @@ Mesure : `node scripts/measure-external-links-impact.mjs` → **14/14 consommate
 
 - `subjects/manifest.json` : **58 entrées · 44 avec URL source · 14 sans URL** · 221 pages · 41,10 Mio.
 - `data/years/**` : 29 payloads, 58 références `pdfLocalUrl`, 58 fichiers avec `pdfExternalUrl` mesuré (page annales, PDF direct ou miroir).
-- `data/archive.js` : 18 entrées de consultation, dont 12 avec `pdfUrl` direct observé.
+- `data/archive.js` : 17 entrées de consultation, dont 11 avec `pdfUrl` direct observé.
 
 ## 3. Verdict chiffré
 
