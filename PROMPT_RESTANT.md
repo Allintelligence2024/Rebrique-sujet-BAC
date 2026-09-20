@@ -26,7 +26,7 @@ Ne rien refaire de ce qui suit : c'est **terminé et vérifié sur le distant**.
 
 ### Les trois portes restantes et leur cause
 
-- **P1.1** — `0/58 inventaires complets`, 408 tâches connues → dépend de la **relecture humaine**.
+- **P1.1** — `0/58 inventaires complets`, 552 tâches connues → dépend de la **relecture humaine**.
 - **P1.2** — `0/58 sujets à 100 % de couverture explicite` → idem.
 - **P1.5 / P2.7** — `0/2235 copies`, `0/5 élèves` → dépend de la **décision 2**
   (renoncement acté, donc volontairement bloqués).
@@ -156,25 +156,33 @@ npm run pdftext:status
 Les 8 sujets `propre` : `2020/SE1`, `2020/SE2`, `2021/SE1`, `2021/SE2`, `2021-m/M1`,
 `2021-m/M2`, `2020-m/M1`, `2020-m/M2`.
 
-**Déjà tranché (décision 4)** : les 18 sujets Maths 2013–2020 (+ la session exceptionnelle
-2017) sont des armatures « copie libre » — épreuve ouverte, aucune consigne encodée, barème
-non mesuré. Ils ne sont donc **pas** une cible du TRAVAIL C : celui-ci concerne les 38 sujets
-encodés en 4D (58 − 18 armatures Maths − 2 armatures SE 2021) dont les inventaires
-doivent être complétés, puis certifiés par relecture.
+**Déjà tranché (décision 4, puis commit `ac206be`, puis décision 6)** : la décision 4
+(2026-09-19) avait fait des 18 sujets Maths 2013–2020 (+ la session exceptionnelle 2017)
+des armatures « copie libre ». Ce statut a été rapporté en deux temps : **Maths 2016–2020**
+structurées en 4D le 2026-09-19 (commit `ac206be`, demande du propriétaire), puis les
+**8 sujets Maths 2013–2015 + 2017 استثنائية** encodés en 4D le 2026-09-20 (décision 6,
+`PROMPT_DECISIONS_PROPRIETAIRE.md`) depuis une extraction Tesseract OCR
+(`scripts/lib/ocr.mjs`, preuves dans `scripts/extracted/M/**`, notation `provisional`).
+Reste une seule armature « copie libre » : **SE 2021 (2 sujets)**. Le TRAVAIL C concerne
+donc les 56 sujets encodés en 4D (58 − 2) dont les inventaires doivent être complétés, puis
+certifiés par relecture.
 
 ### Pourquoi l'agent ne peut pas encoder de lui-même
 
 Même sur les mieux classés, la mesure montre des **chiffres corrompus** — le barème de
 `2021/SE1` s'extrait `05 / 40 / 00` au lieu de `5 + 7 + 8` — et des **coupures parasites**
 (248 sur `2021/SE1`, 59,6 % des tokens font 3 lettres ou moins). Recopier sans relecture
-injecterait des consignes **et des barèmes faux**. La règle est intangible : **aucune
-consigne ne passe en `official` sans relecture humaine**.
+injecterait des consignes **et des barèmes faux**. La règle reste : **aucune consigne ne
+passe en `official` sans source lisible** — l'exception est tranchée par le propriétaire,
+pas par l'agent (la décision 6 du 2026-09-20 est ce cas exact, assumé et marqué
+`provisional`).
 
 ### Ce que l'agent NE doit PAS faire ici
 
 Ne pas « terminer » une armature en y recopiant des consignes ou un barème lu dans un PDF de
-ce corpus : les chiffres y sont corrompus et 6 des fichiers Maths 2013–2015 n'ont aucune
-couche texte. Une armature « copie libre » reste une armature jusqu'à la transcription relue.
+ce corpus : les chiffres y sont corrompus. Une armature « copie libre » (**SE 2021**)
+reste une armature jusqu'à la transcription relue ou une décision du propriétaire dans le
+sillage de la décision 6.
 
 ### Procédure, une fois une transcription fournie
 
@@ -184,10 +192,11 @@ couche texte. Une armature « copie libre » reste une armature jusqu'à la tran
 
 ### Durcissement à faire ENSUITE
 
-`js/domain/subjects/official-coverage.js:221` définit `relaxedEligible`, repris ligne 233 par
+`js/domain/subjects/official-coverage.js` définit `relaxedEligible`, repris par
 `simulationEligible = strictEligible || relaxedEligible`. Ce mode relaxé n'exige ni inventaire
-`complete` ni `scoringReviewStatus === "verified"` — d'où **38 sujets éligibles malgré 0/40
-inventaires complets**. À durcir quand les inventaires réels existent, pas avant.
+`complete` ni `scoringReviewStatus === "verified"` — d'où **56 sujets éligibles malgré 0/56
+inventaires complets** (48/488/213 jusqu'au 2026-09-19, 56/552/261 après la structuration
+Maths 2013–2015 + 2017 استثنائية). À durcir quand les inventaires réels existent, pas avant.
 
 Référence utile : `data/official-tasks.js` porte `source.humanVerified`, à `false` par défaut.
 Une seule entrée est vérifiée à ce jour : `2025/S1`.
@@ -222,7 +231,7 @@ Contenu attendu : une procédure pas à pas destinée aux correcteurs humains, f
 
 ```bash
 npm ci --no-audit --no-fund
-npm test                         # attendu : 337 tests, 336 pass, 0 fail, 1 skipped
+npm test                         # attendu : 366 tests, 365 pass, 0 fail, 1 skipped
 for s in lint typecheck format:check build release:verify docs:check \
          calibration:check inventory:check p3:check; do npm run $s; done
 npm run pwa:version              # après toute édition de js/** ou des data/ servis

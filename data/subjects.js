@@ -134,15 +134,6 @@ export function examMinutesForYear(year) {
 
 const catalogEntry = (entry) => Object.freeze(entry);
 
-/** Armatures « copie libre » Maths 2013–2020 : thème de la carte et nombre
- *  d'espaces de rédaction par sujet (1 = le découpage n'a pas pu être mesuré
- *  sur le fichier, la copie porte alors sur le sujet entier). */
-const FREE_COPY_M_YEARS = Object.freeze({
-  2013: { theme: "emerald", exercises: 2 },
-  2014: { theme: "amber", exercises: 2 },
-  2015: { theme: "indigo", exercises: 2 }
-});
-
 /**
  * Métadonnées suffisantes pour afficher le hub sans télécharger les sujets.
  * `modulePath` est public afin que les audits PWA puissent prouver le découpage,
@@ -251,50 +242,35 @@ export const YEAR_CATALOG = Object.freeze([
       modulePath: `data/years/se/year-${id}.js`
     })
   ),
-  ...["2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026"].map(
-    (calendarYear) =>
-      catalogEntry({
-        id: `${calendarYear}-m`,
-        stream: "m",
-        calendarYear,
-        label: `بكالوريا الجزائر دورة ${calendarYear} — شعبة رياضيات`,
-        theme: "indigo",
-        enabled: true,
-        subjectCount: 2,
-        exerciseCounts: [2, 2],
-        modulePath: `data/years/m/year-${calendarYear}.js`
-      })
-  ),
-  /* Maths 2013–2020 : armatures « copie libre ». Aucune consigne encodée
-     (scan sans couche texte, ou chiffres corrompus) et barème non mesuré —
-     voir le champ `freeMeasurements` de chaque payload.
-
-     Deux exercices PARTOUT, y compris sur les scans 2013–2015 : la شعبة
-     رياضيات ne présente que deux exercices, vérifié sur dix années (2016–2020
-     en couche texte, 2021–2026 dans les données encodées). Sur les scans,
-     `exerciseSplitMeasured` reste false — la structure est celle de la شعبة,
-     elle n'a pas été lue sur ce fichier. Le barème, lui, n'est PAS constant
-     dans cette شعبة (8+12, 7+13, 6+14 selon l'année) : il n'est jamais
-     recopié d'une autre année. */
-  ...Object.entries(FREE_COPY_M_YEARS).map(([calendarYear, shape]) =>
+  /* Maths 2013–2026 : entraînement 4D complet. Les millésimes 2013–2015 et la
+     session exceptionnelle 2017 ont été structurés le 2026-09-20 à partir
+     d'une extraction OCR des documents officiels (pipeline
+     scripts/ocr-extract-sujets.mjs, preuves brutes dans scripts/extracted/) :
+     questions officielles, réponses modèles et barème lu sur le document
+     (20 pts par sujet). */
+  ...[
+    ["2013", "emerald"],
+    ["2014", "amber"],
+    ["2015", "indigo"],
+    ...["2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026"].map(
+      (calendarYear) => [calendarYear, "indigo"]
+    )
+  ].map(([calendarYear, theme]) =>
     catalogEntry({
       id: `${calendarYear}-m`,
       stream: "m",
       calendarYear,
       label: `بكالوريا الجزائر دورة ${calendarYear} — شعبة رياضيات`,
-      theme: shape.theme,
+      theme,
       enabled: true,
-      // Doit rester identique au champ du payload (test de cohérence).
-      answerMode: "free",
       subjectCount: 2,
-      exerciseCounts: [shape.exercises, shape.exercises],
+      exerciseCounts: [2, 2],
       modulePath: `data/years/m/year-${calendarYear}.js`
     })
   ),
   /* Session exceptionnelle 2017 Maths : des fichiers et des sujets DISTINCTS
-     de la session principale (même millésime, deux épreuves). Sans cette
-     entrée, ces deux PDF servis par l'application devenaient inatteignables
-     dès lors que 2017 ne s'affiche plus en carte de consultation. */
+     de la session principale (même millésime, deux épreuves). Structurée en
+     4D le 2026-09-20 comme les autres millésimes (OCR du document officiel). */
   catalogEntry({
     id: "2017-em",
     stream: "m",
@@ -303,7 +279,6 @@ export const YEAR_CATALOG = Object.freeze([
     label: "بكالوريا الجزائر دورة 2017 الاستثنائية — شعبة رياضيات",
     theme: "rose",
     enabled: true,
-    answerMode: "free",
     subjectCount: 2,
     exerciseCounts: [2, 2],
     modulePath: "data/years/m/year-2017-exceptional.js"

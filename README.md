@@ -115,13 +115,13 @@ Le disclaimers du hard benchmark (0 copie réelle doublement annotée) reste la 
 Les questions BAC ne sont plus supposées équivalentes aux quatre étapes N/S/E/W. Un inventaire indépendant déclare désormais chaque tâche : sa provenance (`official` quand le texte vient de l'énoncé, `reconstructed` quand il s'agit d'une étape pédagogique), sa page quand elle est connue, ses références documentaires et son maximum — **provisoire** partout, puisqu'aucun barème n'a été relu par un humain.
 
 ```bash
-npm run coverage:official # détail des 38 sujets (tous ouverts à l'épreuve)
+npm run coverage:official # détail des 56 sujets (tous ouverts à l'épreuve)
 npm run inventory:check    # data/official-tasks.js doit être régénéré, jamais édité à la main
 npm run p1:status         # verdict des six critères P1
 npm run p1:check          # échoue tant que P1 n'est pas réellement terminé
 ```
 
-Les inventaires couvrent les **38 sujets** et **408 tâches** : **149** consignes officielles (avec page) et **259** étapes reconstruites (sans page — on n'invente pas un numéro de page). Les 38 sujets sont ouverts à l'épreuve, conformément à la décision produit consignée dans `data/bac-mode-policy.js` : le contenu doit être inventorié, mappé et borné (règle stricte), mais les certifications humaines — relecture des documents, barème vérifié — peuvent manquer, à condition que l'écran le dise. La règle stricte reste implémentée (`strictEligible`) et continuera de décider seule dès que les preuves humaines existeront. La couverture globale vaut `unknown` tant que l'inventaire d'un sujet est partiel : elle n'est jamais transformée en 0 % ou 100 %. Les exports chiffrés restent interdits tant que la calibration humaine n'est pas faite.
+Les inventaires couvrent les **56 sujets** et **552 tâches** : **261** consignes officielles (avec page) et **291** étapes reconstruites (sans page — on n'invente pas un numéro de page). Les 56 sujets sont ouverts à l'épreuve, conformément à la décision produit consignée dans `data/bac-mode-policy.js` : le contenu doit être inventorié, mappé et borné (règle stricte), mais les certifications humaines — relecture des documents, barème vérifié — peuvent manquer, à condition que l'écran le dise. La règle stricte reste implémentée (`strictEligible`) et continuera de décider seule dès que les preuves humaines existeront. La couverture globale vaut `unknown` tant que l'inventaire d'un sujet est partiel : elle n'est jamais transformée en 0 % ou 100 %. Les exports chiffrés restent interdits tant que la calibration humaine n'est pas faite.
 
 Le code du parcours est en place : une épreuve silencieuse fondée sur les tâches inventoriées, puis une relecture verrouillée après remise. La CSP n'autorise plus `unsafe-inline` et les sources publiques ne contiennent plus de style inline. Cela ne clôt pas P1 : les inventaires complets et le corpus humain sont des preuves externes absentes, pas des cases que le code peut cocher seul. Le volume et le format des apports nécessaires sont détaillés dans [`docs/P1_EVIDENCE_REQUIREMENTS.md`](docs/P1_EVIDENCE_REQUIREMENTS.md).
 
@@ -168,13 +168,27 @@ Le serveur applique une liste blanche d'assets publics. Ne pas remplacer cette c
 Deux natures d'épreuve, jamais confondues :
 
 - **entraînement 4D** — les consignes du sujet sont encodées (`data/years/{se,m}/year-*.js`) ;
-- **armature « copie libre »** (`answerMode: "free"`) — aucune consigne encodée, parce que le
-  fichier officiel est un scan sans couche texte (**Maths 2013–2015**) ou que ses chiffres sont
-  corrompus (**Maths 2016–2020**, **2021 SE**). L'épreuve reste une épreuve : sujet officiel lu
+- **armature « copie libre »** (`answerMode: "free"`) — aucune consigne encodée, parce que la
+  couche texte du fichier ne permet pas de recopier les consignes mot à mot (**2021 SE**
+  uniquement). L'épreuve reste une épreuve : sujet officiel lu
   dans l'application, chronomètre, copie rédigée, `✓ تسليم الورقة`. Ce qui n'est pas mesurable
   n'est pas affiché : le barème de ces sessions n'étant pas extractible, l'écran affiche
   « البارم غير مُقاس » au lieu d'un nombre de points, et le découpage en exercices n'est annoncé
   que lorsqu'il a été lu dans le fichier (sinon : une copie pour le sujet entier).
+
+Toute la filière رياضيات est désormais en 4D, en deux vagues :
+
+- **Maths 2016–2020** — structurées le 2026-09-19 (commit `ac206be`, demande du propriétaire) :
+  questions officielles, réponses modèles et barème mesuré (20 pts par sujet : 8+12, 6+14 ou
+  10+10 selon le millésime).
+- **Maths 2013–2015 et la session exceptionnelle 2017** — structurées le **2026-09-20**
+  (décision 6 du propriétaire, `PROMPT_DECISIONS_PROPRIETAIRE.md`) à partir d'une extraction
+  **Tesseract OCR (arabe)** des sujets officiels — pipeline `scripts/lib/ocr.mjs` +
+  `scripts/ocr-extract-sujets.mjs`, preuves brutes dans `scripts/extracted/M/**`. Les
+  2013–2015 sont des **scans** sans couche texte ; la 2017 استثنائية est **transposée**.
+  Leur notation est marquée `provisional` (`scoringReviewStatus`) : l'audition OCR des
+  chiffres du barème (10+10 pour 2013–2015 ; 7+13 / 8+12 pour 2017) n'a pas la certitude
+  d'une relecture humaine.
 
 Les sessions réellement absentes des sources ne sont pas inventées : elles sont documentées
 dans `ARCHIVE.gaps`, qui compte exactement deux entrées — la session exceptionnelle 2016
@@ -330,6 +344,20 @@ sessions distinctes ne partagent jamais les mêmes fichiers, et tout PDF est rec
 | **2025** | `data/years/m/year-2025.js` | 8+12 / 8+12 | مضادان Q/D والريبوزوم ؛ TAP / HLA I ؛ **HLA-DRB1** Arg74Trp ؛ UV-C Spike ACE2  |
 | **2026** | `data/years/m/year-2026.js` | 6+14 / 8+12 | LTc / CMH I ؛ HCF LDLR/PCSK9 ؛ IL-2 NDNA11 ؛ غيتلمان **SLC12A3** Leu892Pro     |
 
+### Contenu BAC 2016–2020 (شعبة رياضيات)
+
+Structurées le 2026-09-19 (commit `ac206be`) à la demande du propriétaire, depuis les PDF
+officiels versés au dépôt (`subjects/M/{2016..2020}/sujet-{1,2}.pdf`), exactement le motif
+des millésimes 2021–2026. Format Maths : 2 sujets × 2 exercices, 20 pts par sujet. id `YYYY-m`.
+
+| Année    | Fichier                     | Barème        | Thèmes                                                                                          |
+| -------- | --------------------------- | ------------- | ----------------------------------------------------------------------------------------------- |
+| **2016** | `data/years/m/year-2016.js` | 10+10 / 10+10 | الشفرة الوراثية والرابطة الببتيدية ؛ الرد الخلطي والبلعمة ؛ Anagène وHbA ؛ CMH والغشاء الهيولي    |
+| **2017** | `data/years/m/year-2017.js` | 6+14 / 6+14   | تنوع محددات المستضد ؛ التعبير المورثي والترجمة ؛ الهجرة الكهربائية ؛ غرفة ماربروك والتعاون المناعي |
+| **2018** | `data/years/m/year-2018.js` | 8+12 / 6+14   | الاستنساخ والهجرة الكهربائية ؛ VIH ؛ الكزاز واللقاح ؛ الريبونوكلياز والمورثة                       |
+| **2019** | `data/years/m/year-2019.js` | 8+12 / 8+12   | ثبات البنية الفراغية ؛ ماربروك وإقصاء اللاذات ؛ البلعميات والغشاء ؛ Crick/Brenner/Nirenberg       |
+| **2020** | `data/years/m/year-2020.js` | 8+12 / 8+12   | الروابط الكيميائية ؛ Ras/p53 والأشعة فوق البنفسجية ؛ الذات واللاذات ؛ فقر الدم المنجلي              |
+
 ### Contenu BAC 2021 (شعبة رياضيات)
 
 Énoncé + corrigé dzexams (viewer 12 pages, couche inversée reconstituée,
@@ -343,6 +371,22 @@ Fichier : `data/years/m/year-2021.js`.
 | **2** | ت1 (8ن)  | عناصر **تركيب البروتين** (ARN بوليميراز / ريبوزوم) |
 | **2** | ت2 (12ن) | **الهيموغلوبين** والبنيتان **R** و **T**           |
 
+### Contenu BAC 2013–2015 + 2017 استثنائية (شعبة رياضيات)
+
+Extraction **Tesseract OCR (arabe)** des PDF officiels versés au dépôt
+(`subjects/M/{2013,2014,2015}/sujet-{1,2}.pdf` — scans — et
+`subjects/M/2017/exceptional/sujet-{1,2}.pdf` — couche transposée), décision 6 du
+propriétaire, 2026-09-20. Format Maths : 2 sujets × 2 exercices. id `YYYY-m`,
+session exceptionnelle `2017-em`. Notation `provisional` (`scoringReviewStatus`),
+preuves OCR dans `scripts/extracted/M/**`.
+
+| Année                | Fichier                                 | Barème        | Thèmes                                                                                          |
+| -------------------- | --------------------------------------- | ------------- | ----------------------------------------------------------------------------------------------- |
+| **2013**             | `data/years/m/year-2013.js`             | 10+10 / 10+10 | لغات المعلومة والقاموس الوراثي ؛ LB/LT والغدة السعترية ؛ الرد الخلطي ؛ الرد الخلوي و VIH         |
+| **2014**             | `data/years/m/year-2014.js`             | 10+10 / 10+10 | البنية الفراغية واليوريا ؛ CMH والزمر الدموية ؛ عناصر الترجمة ؛ غشاءي وإقصاء اللاذات LT4/LT8    |
+| **2015**             | `data/years/m/year-2015.js`             | 10+10 / 10+10 | الرحلان والشفرة الوراثية ؛ الزمر الدموية ونقل الدم ؛ Glu63/Arg87 ؛ الالتهاب الكبدي B             |
+| **2017 استثنائية**   | `data/years/m/year-2017-exceptional.js` | 7+13 / 8+12   | الخلية السامة والتلامس المناعي ؛ من المورثة إلى الريبوزومات ؛ LT4 المحوري ؛ الأنترلوكين والبنية  |
+
 ---
 
 ## 📚 Onglets du hub — ce que chaque filière ouvre
@@ -354,7 +398,7 @@ n'est plus un simple renvoi vers un site tiers.
 | Onglet                       | Épreuves ouvertes                        | Nature                                                                    |
 | ---------------------------- | ---------------------------------------- | ------------------------------------------------------------------------- |
 | شعبة علوم تجريبية (`se`)     | 2013–2026 (14 cartes)                    | 4D, sauf **2021 en copie libre**                                          |
-| شعبة رياضيات (`m`)           | 2013–2026 + 2017 exceptionnelle (15 cartes) | **2021–2026 en 4D** ; **2013–2020 et 2017 استثنائية en copie libre**    |
+| شعبة رياضيات (`m`)           | 2013–2026 + 2017 exceptionnelle (15 cartes) | **toutes en 4D** : 2021–2026 et 2016–2020 (2026-09-19), 2013–2015 + 2017 استثنائية par OCR Tesseract (2026-09-20) |
 | باكالوريات أجنبية (`foreign`) | —                                        | **espace vide, assumé** : aucune source étrangère vérifiée, **0 lien**     |
 
 Les entrées de `data/archive.js` ne sont plus des cartes : elles servent de **source**
@@ -363,20 +407,23 @@ Les entrées de `data/archive.js` ne sont plus des cartes : elles servent de **s
 Statut honnête :
 
 - **2013–2019 SE** : sujets reconstruits (`data/years/se/`). Toutes consignes `reconstructed`. **2018** : thèmes relus OCR dzexams. **2013–2017, 2019** : thèmes pédagogiques 3AS, **non certifiables** comme énoncés officiels. Confiance UI basse.
-- **2020 et 2022–2026 SE** et **2021–2026 Maths** : sujets chargés à la demande depuis `data/years/{se,m}/`, indexés par le catalogue `data/subjects.js`.
+- **2020 et 2022–2026 SE** et **2013–2026 Maths (+ 2017 استثنائية)** : sujets chargés à la demande depuis `data/years/{se,m}/`, indexés par le catalogue `data/subjects.js`.
 - **Consultation** : sujet officiel + تصحيح النموذجي via dzexams. Aucun
   barème, mot-clé ou réponse modèle : le moteur ne s'applique pas.
 - **Maths 2022–2026** : viewer dzexams bloqué (`contentVerified: false`) ;
   Cartes encodées depuis les PDF officiels eddirasa (même papier ONEC).
 - **SE 2021** : pas de carte d'épreuve — couche texte / corrigé mot à mot absents sur dzexams.
-- **Maths 2013–2020 (+ 2017 استثنائية)** : armatures « copie libre ». Le sujet
-  officiel est servi par l'application et la copie se rédige à l'écran, mais
-  **rien n'est encodé** : aucune consigne, aucun thème, aucun barème. Mesure
-  du 2026-09-19 (`npm run pdftext:status`) : 2013–2015 sont des **scans** sans
-  couche texte ; 2016–2020 ont une couche **transposée** ou **propre** dont
-  les chiffres sont corrompus. Le découpage (2 exercices) n'est affiché que
-  lorsqu'il a été lu dans le fichier. L'encodage des consignes reste le
-  **TRAVAIL C**, déclenché par le propriétaire sur transcription relue.
+- **Maths 2013–2015 (+ 2017 استثنائية)** : encodées en 4D le 2026-09-20 (décision 6 du
+  propriétaire — `PROMPT_DECISIONS_PROPRIETAIRE.md`) à partir d'une extraction **Tesseract
+  OCR (arabe)** des PDF officiels ; preuves brutes (texte + JSON par page) dans
+  `scripts/extracted/M/{2013,2014,2015,2017-exceptional}/`. Mesure du 2026-09-19
+  (`npm run pdftext:status`) : 2013–2015 sont des **scans** sans couche texte ; la 2017
+  استثنائية est **transposée**. La notation reste `provisional` (`scoringReviewStatus`) :
+  les barèmes (10+10 ; 7+13 / 8+12) sont lus à l'OCR, sans relecture humaine.
+- **Maths 2016–2020** : encodées en 4D le 2026-09-19 (commit `ac206be`, demande du
+  propriétaire) — questions officielles, réponses modèles, mots-clés et barème 20 pts par
+  sujet (2016 : 10+10 ; 2017 : 6+14 ; 2018 : 8+12 et 6+14 ; 2019 : 8+12 ; 2020 : 8+12),
+  exactement le motif des millésimes 2021–2026.
 - **باكالوريات أجنبية** (`foreign`) : ancien onglet « تقني رياضي ». La شعبة
   تقني رياضي n'a pas d'épreuve SVT au BAC et l'index dzexams n'a que `se` et
   `m` (revérifié 2026-08-31) ; l'onglet a été reconverti en espace pour des
@@ -402,10 +449,10 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **369** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
-- Copies vérifiées dans le hard benchmark : **0/3195 minimum** avant toute promotion numérique
-- Inventaires de tâches officielles commencés : **48/58 sujets** (**488 tâches connues**)
-- Sujets éligibles à la simulation : **48**
+- Tests exécutés par `npm test` : **366** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Copies vérifiées dans le hard benchmark : **0/3915 minimum** avant toute promotion numérique
+- Inventaires de tâches officielles commencés : **56/58 sujets** (**552 tâches connues**)
+- Sujets éligibles à la simulation : **56**
 - Critères P1 fermés : **3/6** — statut global : **incomplet**
 - Critères P2 fermés : **6/7** — élèves distincts testés : **0/5**
 - Critères P3 fermés : **6/6** — statut global : **terminé**

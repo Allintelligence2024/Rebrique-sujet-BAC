@@ -66,18 +66,30 @@ test("D2 : les huit années maths 2013–2020 ont aujourd'hui un payload réel",
   /* C'étaient les huit fantômes de l'audit du 2026-09-18 : des ids déclarés
      dans YEAR_CATALOG sans aucun chargeur, acceptés par isCatalogYear() puis
      refusés par loadYear() en cours de route.
-     Elles ont reçu le 2026-09-19 une armature « copie libre »
-     (data/years/m/year-2013.js … year-2020.js) : le contrat de la régression
-     reste le même — une année déclarée doit se charger —, seul le contenu
-     change (aucune consigne encodée, barème non mesuré). */
+     Elles ont reçu le 2026-09-19 une armature « copie libre », puis le
+     2026-09-20 une structuration 4D complète pour 2013–2015 (extraction OCR
+     des scans officiels — scripts/ocr-extract-sujets.mjs) : le contrat de la
+     régression reste le même — une année déclarée doit se charger —, et le
+     contenu est désormais encodé (consignes, pôles, barème mesuré). */
   const ghosts = ["2013-m", "2014-m", "2015-m"];
   for (const id of ghosts) {
     assert.ok(KNOWN_YEAR_IDS.has(id), `${id} est au catalogue`);
   }
   const years = await Promise.all(ghosts.map((id) => loadYear(id)));
   for (const year of years) {
-    assert.equal(year.answerMode, "free", `${year.id} est une armature, pas du 4D`);
+    assert.notEqual(year.answerMode, "free", `${year.id} est structurée en 4D, plus une armature`);
     assert.equal(year.sujets.length, 2, `${year.id} doit avoir 2 sujets`);
+    for (const sujet of year.sujets) {
+      for (const exercise of sujet.exercises) {
+        assert.ok(
+          (Number(exercise.max) || 0) > 0,
+          `${year.id}/S${sujet.id}/E${exercise.number} : barème mesuré`
+        );
+        for (const pole of ["N", "S", "E", "W"]) {
+          assert.ok(exercise.poles[pole], `${year.id}/S${sujet.id}/E${exercise.number} sans pôle ${pole}`);
+        }
+      }
+    }
   }
 });
 

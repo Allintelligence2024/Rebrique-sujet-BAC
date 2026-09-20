@@ -63,7 +63,9 @@ test("une armature « copie libre » n'invente aucune tâche et n'ouvre aucune n
 
 test("chaque sujet chargé possède un inventaire, et inversement", () => {
   const rows = eachSubject();
-  assert.equal(rows.length, 48);
+  // 48 sujets jusqu'au 2026-09-19 ; 56 depuis la structuration OCR de Maths
+  // 2013–2015 + 2017 استثنائية (2026-09-20).
+  assert.equal(rows.length, 56);
   for (const { yearId, subject, inventory } of rows) {
     assert.ok(inventory, `${yearId}/S${subject.id} sans inventaire`);
     assert.equal(inventory.schemaVersion, 1);
@@ -123,7 +125,8 @@ test("les identifiants de tâches sont uniques et dérivés de l'ordre réel", (
       seen.add(task.id);
     }
   }
-  assert.equal(seen.size, 488);
+  // 488 tâches jusqu'au 2026-09-19 ; 552 avec les 8 sujets OCR (64 pôles nouveaux).
+  assert.equal(seen.size, 552);
 });
 
 test("aucune provenance n'est survendue : official ⇒ page connue, barème toujours provisoire", () => {
@@ -158,7 +161,8 @@ test("les pages annoncées restent utilisables dans le PDF livré", () => {
   }
   // Le générateur rattache la très grande majorité des consignes à une page du
   // fichier ; les autres restent annotées « (الأصل) » plutôt que d'être devinées.
-  assert.equal(declared, 213);
+  // 213 consignes officielles jusqu'au 2026-09-19 ; 261 avec les 48 consignes OCR.
+  assert.equal(declared, 261);
   assert.ok(located / declared > 0.8, `trop de pages non locables: ${declared - located}`);
 });
 
@@ -177,7 +181,7 @@ test("la pagination déclarée n'est jamais silencieusement fausse", () => {
   }
 });
 
-test("les 48 sujets restent éligibles à l'épreuve sans inventaire invalide", () => {
+test("les 56 sujets restent éligibles à l'épreuve sans inventaire invalide", () => {
   let invalid = 0;
   for (const { yearId, subject, inventory } of eachSubject()) {
     const report = buildOfficialCoverageReport({ yearId, subject, inventory });

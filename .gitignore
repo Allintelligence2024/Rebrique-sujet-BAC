@@ -15,5 +15,6 @@ playwright-report/
 # NE PAS RÉINTÉGRER sans autorisation écrite documentée dans docs/CONTENT_RIGHTS.md.
 # Attention : ces fichiers restent dans l'HISTORIQUE Git (git rm --cached ne purge
 # rien) ; seul git filter-repo les supprimerait, au prix d'une réécriture des SHA.
-M/
+# Ancré à la racine (/M/) pour ne pas ignorer scripts/extracted/M/** (preuves OCR).
+/M/
 SE/

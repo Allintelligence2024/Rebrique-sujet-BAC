@@ -48,6 +48,7 @@
   },
   "dependencies": {
     "@napi-rs/canvas": "^1.0.9",
+    "@tesseract.js-data/ara": "^1.0.0",
     "pdf-parse": "^1.1.4",
     "pdfjs-dist": "^3.11.174",
     "tesseract.js": "^7.0.0",
