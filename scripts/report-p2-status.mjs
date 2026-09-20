@@ -112,15 +112,17 @@ export function buildP2Status() {
     dialogs.includes("isolateDialog") &&
     dialogs.includes("returnFocus.focus()");
 
-  // P2.2 — l'ordre des exercices est libre. La preuve vit maintenant dans
-  // l'écran d'épreuve (js/ui/screens/simulation.js), seul écran de session
-  // depuis la suppression du mode entraînement.
-  const switchExerciseSource =
-    simulation.match(/\$\$\("#view-workspace \[data-simulation-exercise\]"\)[\s\S]*?\n    \);/)?.[0] || "";
+  // P2.2 — l'ordre des exercices est libre. Depuis le 2026-09-20 (décision
+  // du propriétaire), TOUS les exercices du sujet sont rédigés sur la même
+  // copie : un champ par exercice, aucun verrou, aucune navigation imposée.
+  // La preuve vit dans le gabarit de l'épreuve (js/ui/screens/simulation.js).
+  const examPaperTemplate = simulation.match(/function examPaperHTML[\s\S]*?\n}\n/)?.[0] || "";
   const exerciseOrderFree =
-    simulation.includes("data-simulation-exercise") &&
-    switchExerciseSource.includes("store.setActiveExercise(Number(button.dataset.simulationExercise))") &&
-    !/(locked|answeredAny|openModal)/.test(switchExerciseSource);
+    examPaperTemplate.includes('data-free-exercise="') &&
+    examPaperTemplate.includes('data-exercise-free="') &&
+    /* « disabled » reste légitime : c'est le verrou de la relecture après
+       remise, pas une contrainte pendant l'épreuve. */
+    !/(locked|answeredAny|openModal)/.test(examPaperTemplate);
 
   const competingMetaphors = [
     "السنّ",
@@ -133,8 +135,15 @@ export function buildP2Status() {
     "شريط فيديو",
     "فكّ القفل"
   ];
+  /* Le lot « vocabulaire unifié » vérifiait que l'application n'employait
+     qu'une seule métaphore : les quatre étapes. Le propriétaire a retiré ce
+     rappel de l'écran de préparation le 2026-09-19 — il distrayait l'élève.
+     La preuve s'inverse donc : plus AUCUNE métaphore méthodologique n'est
+     affichée dans le parcours élève, ni ancienne (بوصلة, الأسنان…) ni nouvelle
+     (الخطوات الأربع). Ce que l'élève voit, ce sont les consignes officielles
+     et leur provenance. */
   const vocabularyUnified =
-    visibleUiSources.includes("الخطوات الأربع") &&
+    !visibleUiSources.includes("الخطوات الأربع") &&
     competingMetaphors.every((term) => !visibleUiSources.includes(term));
 
   const legacyFrenchCopy = [
@@ -165,7 +174,8 @@ export function buildP2Status() {
   const examPaperComplete =
     pdfViewer.includes('<iframe class="pdf-frame"') &&
     pdfViewer.includes("download") &&
-    simulation.includes("input.value = progress.officialTaskAnswers[task.id]") &&
+    simulation.includes('input.value = progress.freeAnswer || ""') &&
+    simulation.includes('id="exam-paper-notice"') &&
     simulation.includes('id="simulation-finish-yes"') &&
     simulation.includes('id="simulation-finish-no"') &&
     simulation.includes('id="simulation-review-notice"') &&
@@ -205,7 +215,7 @@ export function buildP2Status() {
       id: "P2.6",
       complete: examPaperComplete,
       evidence:
-        "sujet lisible dans l'app, réponse restaurée et enregistrée, remise confirmée (oui/non), relecture verrouillée"
+        "sujet lisible dans l'app, réponse par exercice enregistrée et restaurée, remise confirmée (oui/non), relecture verrouillée"
     },
     {
       id: "P2.7",

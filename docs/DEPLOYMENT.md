@@ -5,8 +5,8 @@
 La cible de production est **uniquement** `dist/site/`. Elle est reconstruite à partir de la liste publique explicite du dépôt et contient :
 
 - le shell (`index.html`, CSS, modules statiques, manifeste et icônes) ;
-- les 28 payloads d’années chargés à la demande (14 filière علوم تجريبية, 14 filière رياضيات) ;
-- les 58 PDF de sujets servis localement sous `subjects/` (42 Mo), ouverts uniquement après une action de l’élève ;
+- les 19 payloads d’années chargés à la demande ;
+- les deux PDF 2025, téléchargés uniquement après une action de l’élève ;
 - `release.json`, manifeste déterministe avec l’identifiant de build, la taille et le SHA-256 de chaque fichier.
 
 Elle ne contient ni `.git`, ni tests, ni documentation, ni scripts de build, ni `package.json`. Le monofichier `dist/boussole-4d-standalone.html` est un livrable séparé pour `file://` ; ce n’est pas la racine du site PWA.
@@ -52,6 +52,24 @@ PUBLIC_ROOT=dist/site HOST=0.0.0.0 PORT=8080 npm start
 
 Vérifier au minimum : accueil, chargement d’une année Sciences, chargement d’une année Maths, téléchargement explicite d’un PDF, rechargement hors ligne après ouverture d’une année, et affichage de l’identifiant de build.
 
+### Intégration dans un cadre (`frame-ancestors`)
+
+Par défaut, la CSP n’autorise que l’origine propre : `frame-ancestors 'self'`. Aucun hôte
+tiers — en particulier aucun hôte de prévisualisation — n’est codé en dur dans l’en-tête de
+production.
+
+Un déploiement qui doit être intégré dans un cadre le déclare explicitement :
+
+```bash
+CSP_FRAME_ANCESTORS="'self' https://hote.exemple" npm start
+```
+
+La valeur est validée au démarrage. Seuls `'self'` et les origines `https://` explicites
+(wildcard de sous-domaine `https://*.hote.exemple` admis) sont acceptés ; `*`, `https://*`,
+`http://…` et toute autre source sont refusés et **le serveur ne démarre pas**. Il n’existe
+donc pas de repli permissif silencieux : une valeur mal formée échoue bruyamment plutôt que
+d’élargir la surface d’intégration.
+
 ## Publication atomique
 
 La plateforme d’hébergement doit conserver les releases par identifiant au lieu d’écraser une arborescence en place.
@@ -78,4 +96,4 @@ Pour GitHub Pages ou un hébergeur sans symlink, publier **le contenu** de `dist
 
 L’observabilité navigateur reste locale et agrégée : identifiant de build, état online/offline, compteurs par portée technique et événements de cache autorisés. Aucun message d’erreur, stack, URL, réponse, nom, adresse IP ou contexte arbitraire n’est persisté ou envoyé. Il n’existe volontairement aucun endpoint de télémétrie.
 
-Le cache runtime est limité à 20 entrées (`RUNTIME_MAX_ENTRIES`) et n’accepte que les payloads d’années et PDF locaux ayant répondu HTTP 200. Les erreurs, redirections opaques, réponses partielles et ressources externes ne sont jamais mises en cache. Une année non encore ouverte reste indisponible hors ligne ; l’interface l’annonce sans prétendre que tout le catalogue a été téléchargé.
+Le cache runtime est limité à 12 entrées et n’accepte que les payloads d’années et PDF locaux ayant répondu HTTP 200. Les erreurs, redirections opaques, réponses partielles et ressources externes ne sont jamais mises en cache. Une année non encore ouverte reste indisponible hors ligne ; l’interface l’annonce sans prétendre que tout le catalogue a été téléchargé.

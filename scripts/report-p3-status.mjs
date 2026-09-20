@@ -36,7 +36,7 @@ function revisionMatches(versionSource, path) {
 
 export function buildP3Status() {
   const subjects = read("data/subjects.js");
-  const strategy = read("js/ui/screens/strategy.js");
+  const pdfViewer = read("js/ui/pdf-viewer.js");
   const serviceWorker = read("sw.js");
   const diagnostics = read("js/services/diagnostics.js");
   const build = read("build.mjs");
@@ -58,12 +58,23 @@ export function buildP3Status() {
         subjects.includes(`import("./${year.modulePath.replace(/^data\//, "")}")`)
     ) &&
     !/^import .*years\//m.test(subjects);
+  /* Le repli vers la source officielle doit rester explicite : construit par la
+     visionneuse, ouvert dans un onglet distinct, jamais téléchargé d'office ni
+     embarqué dans une iframe. La branche « source externe » est isolée parce
+     que la branche « fichier local » contient légitimement une iframe masquée
+     (repli du rendu <canvas>, même origine, autorisée par frame-src 'self') et
+     un lien de téléchargement. Si l'ancre disparaît, `externalBranch` vaut ""
+     et toutes les conditions positives échouent : le garde-fou tombe en échec
+     plutôt que de passer à vide. */
+  const externalBranchAt = pdfViewer.indexOf("if (external) {");
+  const externalBranch = externalBranchAt >= 0 ? pdfViewer.slice(externalBranchAt) : "";
   const explicitPdf =
     !shell.some((asset) => asset.endsWith(".pdf") || asset.includes("data/years/")) &&
-    strategy.includes("pdfExternalUrl") &&
-    strategy.includes("فتح المصدر الخارجي") &&
-    !strategy.includes("download=") &&
-    !strategy.includes("<iframe");
+    pdfViewer.includes("pdfExternalUrl") &&
+    externalBranch.includes("فتح المصدر الخارجي") &&
+    externalBranch.includes('target="_blank"') &&
+    !externalBranch.includes("download") &&
+    !externalBranch.includes("<iframe");
   const versionedAssets = revisioned.every((path) => revisionMatches(version, path));
   const runtimeMaximum = Number(serviceWorker.match(/const RUNTIME_MAX_ENTRIES = (\d+);/)?.[1]);
   const boundedRuntime =

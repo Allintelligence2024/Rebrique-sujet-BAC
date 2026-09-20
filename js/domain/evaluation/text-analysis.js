@@ -67,6 +67,36 @@ const CONNECTORS = [
   "رغم"
 ];
 
+/* D5 — la détection se faisait par `normText.includes(connecteur)`. Sur un
+   connecteur de deux lettres comme « ان », cela compte n'importe quel mot qui
+   le contient : ان ⊂ انزيم، من ⊂ مناعه، في ⊂ فيزيائيه. Un simple empilement de
+   mots-clés de SVT accumulait donc assez de faux connecteurs pour être lu
+   comme une réponse structurée (mesuré : un « keyword dump » obtenait 1.000
+   alors qu'une vraie réponse rédigée obtenait 0.000 — l'anti-récitation était
+   inversé). On ne compte plus que des tokens entiers. */
+const CONNECTOR_FORMS = CONNECTORS.map((connector) => normalizeArabic(connector)).filter(Boolean);
+const CONNECTOR_TOKENS = new Set(CONNECTOR_FORMS.filter((form) => !form.includes(" ")));
+const MULTIWORD_CONNECTORS = CONNECTOR_FORMS.filter((form) => form.includes(" "));
+
+/**
+ * Nombre de connecteurs distincts réellement présents.
+ * @param {string} normText texte déjà normalisé
+ * @param {string[]} words tokens du texte normalisé
+ */
+function countConnectorHits(normText, words) {
+  const hits = new Set();
+  for (const word of words) {
+    if (CONNECTOR_TOKENS.has(word)) hits.add(word);
+  }
+  // Les locutions (« عن طريق ») ne sont pas des tokens : bornées par des
+  // espaces, elles ne peuvent plus mordre sur un mot voisin.
+  const padded = ` ${normText} `;
+  for (const connector of MULTIWORD_CONNECTORS) {
+    if (padded.includes(` ${connector} `)) hits.add(connector);
+  }
+  return hits.size;
+}
+
 const ARABIC_STOPWORDS = new Set([
   "من",
   "في",
@@ -354,7 +384,7 @@ export function analyzeSentenceStructure(normText, poleType) {
   const words = normText.split(/\s+/).filter(Boolean);
   const wordCount = words.length;
   const informativeWords = extractInformativeTokens(normText).length;
-  const connectorHits = CONNECTORS.filter((c) => normText.includes(c)).length;
+  const connectorHits = countConnectorHits(normText, words);
   // Heuristique verbe arabe : mot qui commence par une marque du présent
   // (أ/ي/ت/ن) ET dont la fin n'est PAS une marque nominale typique (ة/ى/ا
   // final de nom : نواة، تركيب، سنة، تلميذ، سائل، سطح). Les suffixes verbaux

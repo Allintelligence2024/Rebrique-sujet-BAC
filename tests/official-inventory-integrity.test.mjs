@@ -35,35 +35,37 @@ function eachSubject() {
   return rows;
 }
 
-test("une armature « copie libre » n'invente aucune tâche et n'ouvre aucune note", () => {
+test("plus aucune armature « copie libre » : chaque année est structurée et inventoriée", () => {
+  /* Depuis la structuration 4D de SE 2021 (2026-09-20, OCR du sujet
+     officiel), aucune année n'est plus en copie libre. Le garde-fou
+     historique reste : une année « copie libre » ne doit avoir ni pôle,
+     ni inventaire, ni note — vérifié sur un sujet synthétique. */
   const freeYears = loaded.filter(({ year }) => year.answerMode === "free");
-  assert.ok(freeYears.length >= 1, "aucune année en copie libre");
-  for (const { year } of freeYears) {
-    for (const subject of year.sujets) {
-      assert.equal(isFreeAnswerSubject(subject), true, `${year.id}/S${subject.id}`);
-      assert.equal(
-        officialTaskInventoryFor(year.id, subject.id),
-        null,
-        `${year.id}/S${subject.id} ne doit pas avoir d'inventaire inventé`
-      );
-      const report = buildOfficialCoverageReport({ yearId: year.id, subject, inventory: null });
-      assert.equal(report.freeAnswerEligible, true);
-      assert.equal(report.simulationEligible, false, "aucune note ne peut être calculée");
-      assert.equal(examOpenable(report), true, "l'épreuve reste ouverte");
-      for (const exercise of subject.exercises) {
-        assert.deepEqual(
-          Object.keys(exercise.poles || {}),
-          [],
-          `${year.id}/S${subject.id}/E${exercise.number} encode une consigne`
-        );
-      }
-    }
-  }
+  assert.equal(freeYears.length, 0, "aucune année ne doit rester en copie libre");
+  const synthetic = {
+    id: 1,
+    answerMode: "free",
+    pdfLocalUrl: "/subjects/X/2099/sujet-1.pdf",
+    exercises: [
+      { number: 1, max: 5, poles: {} },
+      { number: 2, max: 7, poles: {} },
+      { number: 3, max: 8, poles: {} }
+    ]
+  };
+  assert.equal(isFreeAnswerSubject(synthetic), true);
+  assert.equal(officialTaskInventoryFor("2099", synthetic.id), null, "aucun inventaire inventé");
+  const report = buildOfficialCoverageReport({ yearId: "2099", subject: synthetic, inventory: null });
+  assert.equal(report.freeAnswerEligible, true);
+  assert.equal(report.simulationEligible, false, "aucune note ne peut être calculée");
+  assert.equal(examOpenable(report), true, "l'épreuve reste ouverte");
 });
 
 test("chaque sujet chargé possède un inventaire, et inversement", () => {
   const rows = eachSubject();
-  assert.equal(rows.length, 54);
+  // 48 sujets jusqu'au 2026-09-19 ; 56 depuis la structuration OCR de Maths
+  // 2013–2015 + 2017 استثنائية ; 58 depuis celle de SE 2021 (2026-09-20) —
+  // soit TOUS les sujets du catalogue.
+  assert.equal(rows.length, 58);
   for (const { yearId, subject, inventory } of rows) {
     assert.ok(inventory, `${yearId}/S${subject.id} sans inventaire`);
     assert.equal(inventory.schemaVersion, 1);
@@ -123,7 +125,9 @@ test("les identifiants de tâches sont uniques et dérivés de l'ordre réel", (
       seen.add(task.id);
     }
   }
-  assert.equal(seen.size, 536);
+  // 488 tâches jusqu'au 2026-09-19 ; 552 avec les 8 sujets OCR Maths (64 pôles)
+  // ; 576 avec les 2 sujets OCR de SE 2021 (48 pôles).
+  assert.equal(seen.size, 576);
 });
 
 test("aucune provenance n'est survendue : official ⇒ page connue, barème toujours provisoire", () => {
@@ -158,7 +162,9 @@ test("les pages annoncées restent utilisables dans le PDF livré", () => {
   }
   // Le générateur rattache la très grande majorité des consignes à une page du
   // fichier ; les autres restent annotées « (الأصل) » plutôt que d'être devinées.
-  assert.equal(declared, 253);
+  // 213 consignes officielles jusqu'au 2026-09-19 ; 261 avec les 48 consignes
+  // OCR Maths ; 277 avec les 16 consignes OCR de SE 2021.
+  assert.equal(declared, 277);
   assert.ok(located / declared > 0.8, `trop de pages non locables: ${declared - located}`);
 });
 
@@ -177,7 +183,7 @@ test("la pagination déclarée n'est jamais silencieusement fausse", () => {
   }
 });
 
-test("les 40 sujets restent éligibles à l'épreuve sans inventaire invalide", () => {
+test("les 58 sujets restent éligibles à l'épreuve sans inventaire invalide", () => {
   let invalid = 0;
   for (const { yearId, subject, inventory } of eachSubject()) {
     const report = buildOfficialCoverageReport({ yearId, subject, inventory });

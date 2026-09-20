@@ -3,8 +3,7 @@
  */
 const YEAR_2025_SE = {
   id: "2025",
-  label: "بكالوريا الجزائر دورة 2025",
-  badge: "دورة نموذجية",
+  label: "بكالوريا الجزائر دورة 2025 — شعبة علوم تجريبية",
   theme: "emerald",
   enabled: true,
   sujets: [
@@ -12,7 +11,6 @@ const YEAR_2025_SE = {
       id: 1,
       pdf: null,
       pdfFilename: null,
-      pdfAvailable: false,
       pdfExternalUrl: "https://www.dzexams.com/ar/annales/S3VKb3UrRU9MUnJHVG5ndENaV1FIdz09",
       pdfLocalUrl: "/subjects/SE/2025/sujet-1.pdf",
       pdfNote: "Source externe DzExams 2025 ; le dépôt ne redistribue pas le PDF tiers.",
@@ -47,12 +45,12 @@ const YEAR_2025_SE = {
             S: {
               points: 1,
               prompt: "انتقاء المفاهيم: أنواع ARN المتواجدة في الهيولى خلال وخارج فترة تركيب البروتين",
-              bacPrompt: "1 ــ اذكر مختلف أنواع الـ ARN المتواجدة في الهيولى خلال وخارج فترة تركيب البروتين.",
+              bacPrompt: "اذكر مختلف أنواع الـ ARN المتواجدة في الهيولى خلال وخارج فترة تركيب البروتين.",
               bacPromptSource: "official",
               bacPromptPage: 1,
-              bacPromptVerifiedAt: "2026-09-16",
+              bacPromptVerifiedAt: "2026-08-23",
               bacPromptNotes:
-                "Recopiée sur l'image de la page 1 du scan local (2026-09-16) : question 1 du التمرين الأول, avec son numéro imprimé. Transcription identique à la relecture du 2026-08-23.",
+                "Relecture visuelle du scan page 1 (Sujet 1). Verbe officiel : اذكر. Question 1 du التمرين الأول.",
               placeholder: "رسول، ناقل، ريبوزومي، ريبوزوم، هيولى...",
               minLength: 30,
               modelAnswer:
@@ -69,19 +67,19 @@ const YEAR_2025_SE = {
               prompt:
                 "هيكلة العرض السببي: دور كل نوع من ARN + أثر المادة المعطِّلة (كسر الرابطة أدنين–ريبوز)",
               bacPrompt:
-                "2 ــ اشرح في نصٍ علميٍ دور مختلف أنواع الـ ARN في تركيب البروتين مبرزا تأثير مادة الـ RIP في علاج بعض الأورام السرطانية، (النص العلمي مُهيكل بمقدمة وعرض وخاتمة)",
+                "اشرح في نصٍ علميٍ دور مختلف أنواع الـ ARN في تركيب البروتين مبرزا تأثير مادة الـ RIP في علاج بعض الأورام السرطانية. (النص العلمي مُهيكل بمقدمة وعرض وخاتمة)",
               bacPromptSource: "official",
               bacPromptPage: 1,
-              bacPromptVerifiedAt: "2026-09-16",
+              bacPromptVerifiedAt: "2026-08-23",
               bacPromptNotes:
-                "Recopiée sur l'image de la page 1 du scan local (2026-09-16) : question 2 du التمرين الأول. Le numéro « 2 ــ » et la mention imprimée « (النص العلمي مُهيكل بمقدمة وعرض وخاتمة) » — imprimée après une virgule — ont été ajoutés à la transcription.",
+                "Relecture visuelle du scan page 1. Verbe officiel : اشرح. Question 2 du التمرين الأول.",
               placeholder: "الـARN الرسول ينقل المعلومة، الـARN الناقل يحمل الأحماض الأمينية...",
               minLength: 120,
               modelAnswer:
                 "ينقل ARN الرسول المعلومة الوراثية، وينقل ARN الناقل الأحماض الأمينية إلى الريبوزوم حيث يضمن ARN الريبوزومي الترجمة. تكسر مادة RIP الرابطة أدنين–ريبوز فتتوقف الاستطالة ويتوقف تكاثر الخلايا السرطانية.",
               rule: {
                 prompt: "اشرح دور أنواع ARN وأثر RIP",
-                keywords: ["الرسول", "الناقل", "الريبوزوم", "الأدنين", "السكر", "العرض"],
+                keywords: ["الرسول", "الناقل", "الريبوزوم", "الادنين", "السكر", "العرض"],
                 minHits: 3,
                 forbidden: [],
                 wrongConcepts: ["SOD", "RUBISCO"]
@@ -101,7 +99,7 @@ const YEAR_2025_SE = {
                 "في الختام، بتكسير الرابطة أدنين–ريبوز يتوقف تركيب البروتين فتتوقف الخلايا السرطانية عن التكاثر.",
               rule: {
                 prompt: "اكتب خاتمة حول تأثير RIP",
-                keywords: ["الأنواع", "الثلاثة", "البروتين", "يتوقف"],
+                keywords: ["الانواع", "الثلاثه", "البروتين", "يتوقف"],
                 minHits: 2,
                 forbidden: []
               }
@@ -129,7 +127,7 @@ const YEAR_2025_SE = {
                 "المشكل العلمي: كيف تسمح البنية النسيجية للصانعة الخضراء (البيرينويد) باستغلال تراكيز منخفضة من CO₂؟",
               rule: {
                 prompt: "حدد العلاقة بين بنية الصانعات واستغلال CO2",
-                keywords: ["الصانعات", "الخضراء", "أكسيد", "الكربون", "الضوئية"],
+                keywords: ["الصانعات", "الخضراء", "اكسيد", "الكربون", "الضوئيه"],
                 minHits: 2,
                 forbidden: []
               }
@@ -138,20 +136,19 @@ const YEAR_2025_SE = {
               points: 2.5,
               prompt:
                 "مصفوفة استغلال الوثائق بالأرقام: مقارنة النمو بين النمط الطبيعي والطافر عند تراكيز CO₂ مختلفة",
-              bacPrompt:
-                "1 ــ حلّل نتائج الشكل(أ) من الوثيقة1. 2 ــ أبرز أثر الخصائص البنيوية للصانعات الخضراء على النمو عند كل من الطحالب T.P من النمط الطبيعي والنمط الطافر باستغلال الشكل(ب) والمعلومة المستخلصة من الشكل(أ) من الوثيقة1.",
+              bacPrompt: "حلّل نتائج الشكل(أ) من الوثيقة1.",
               bacPromptSource: "official",
               bacPromptPage: 2,
-              bacPromptVerifiedAt: "2026-09-16",
+              bacPromptVerifiedAt: "2026-08-23",
               bacPromptNotes:
-                "Les deux questions du الجزء الأول sont recopiées sur l'image de la page 2 du scan local (2026-09-16) et regroupées sur ce pôle : « 1 ــ حلّل نتائج الشكل(أ)… » et « 2 ــ أبرز أثر الخصائص البنيوية… ». La question 2 était auparavant hors inventaire ; aucune question de cadrage n'est imprimée sur cette page.",
-              placeholder: "حلّل الشكل (أ): قارن بين النمط الطبيعي والطافر...",
+                "Relecture visuelle page 2. Verbe officiel : حلّل. Question 1 du الجزء الأول. Consigne page 2 « أبرز أثر الخصائص البنيوية… » non mappée (un pôle = une consigne).",
+              placeholder: "حلّل الشكل (أ): قارن بالتوازي النطبيعي والطافر...",
               minLength: 90,
               modelAnswer:
-                "تمثل الوثيقة نسبة نمو النمط الطبيعي والطافر بدلالة تركيز HCO3⁻. نلاحظ نموا مرتفعا عند الطبيعي في التركيز المنخفض بينما ينخفض نمو الطافر، ومنه نستنتج أن النمط الطبيعي يستغل التراكيز المنخفضة بكفاءة أعلى. ويعود ذلك إلى الخصائص البنيوية للصانعات الخضراء: تعددها وتوضعها قريبا من غشاء الخلية وكثافة التيليكوئيدات ووجود البيرينوئيد وأنزيم CA يرفع مردود استغلال CO2 في النمط الطبيعي، بينما يقلّ عدد الصانعات والتيليكوئيدات في النمط الطافر فينخفض نموه في الأوساط الفقيرة بـ CO2.",
+                "تمثل الوثيقة نسبة نمو النمط الطبيعي والطافر بدلالة تركيز HCO3⁻. نلاحظ نموا مرتفعا عند الطبيعي في التركيز المنخفض بينما ينخفض نمو الطافر، ومنه نستنتج أن النمط الطبيعي يستغل التراكيز المنخفضة بكفاءة أعلى.",
               rule: {
                 prompt: "حلل نتائج الشكل أ من الوثيقة 1",
-                keywords: ["نمو", "طبيعي", "طافر", "التركيز", "نسبة"],
+                keywords: ["نمو", "طبيعي", "طافر", "التركيز", "نسبه"],
                 minHits: 3,
                 forbidden: ["بسبب"],
                 document: {
@@ -185,7 +182,7 @@ const YEAR_2025_SE = {
                       b: "طافر"
                     }
                   ],
-                  values: ["منخفض", "مرتفع", "نسبة"],
+                  values: ["منخفض", "مرتفع", "نسبه"],
                   strictValues: true
                 }
               }
@@ -194,42 +191,41 @@ const YEAR_2025_SE = {
               points: 2.5,
               prompt: "الربط السببي: دور أنزيم RUBISCO والبِرينويد والتيلاكوئيد في تثبيت CO₂ وتحويل الطاقة",
               bacPrompt:
-                "1 ــ اشرح الآلية التي تسمح للطحالب T.P من النمط الطبيعي بتحويل الطاقة الضوئية في أوساط ذات تراكيز CO2 منخفضة. وذلك باستغلالك لأشكال الوثيقة 2 ومكتسباتك.",
+                "اشرح الآلية التي تسمح للطحالب T.P من النمط الطبيعي بتحويل الطاقة الضوئية في أوساط ذات تراكيز CO₂ منخفضة، وذلك باستغلالك لأشكال الوثيقة 2 ومكتسباتك.",
               bacPromptSource: "official",
               bacPromptPage: 3,
-              bacPromptVerifiedAt: "2026-09-16",
-              bacPromptNotes:
-                "Recopiée sur l'image de la page 3 du scan local (2026-09-16) : question 1 après الوثيقة 2. La ponctuation imprimée (« منخفضة. وذلك باستغلالك ») a été respectée, ainsi que le numéro « 1 ــ ».",
+              bacPromptVerifiedAt: "2026-08-23",
+              bacPromptNotes: "Relecture visuelle page 3. Verbe officiel : اشرح. Question 1 après الوثيقة 2.",
               placeholder: "يتشرب CO₂ من الوسط، أنزيم RUBISCO يثبّته على RuBP...",
               minLength: 110,
               modelAnswer:
                 "يعود ذلك إلى تجميع HCO3⁻ في البيرينويد وتحويله إلى CO₂ بواسطة CA ثم تثبيته بأنزيم RUBISCO على RudIP مما يسمح بتحويل الطاقة الضوئية رغم انخفاض CO₂ الخارجي.",
               rule: {
                 prompt: "اشرح آلية تحويل الطاقة عند النمط الطبيعي",
-                keywords: ["الأنزيم", "تثبيت", "البيرينويد", "التيلاكوئيد", "الضوئية"],
+                keywords: ["الانزيم", "تثبيت", "البيرينويد", "التيلاكوئيد", "الضوئيه"],
                 minHits: 3,
                 forbidden: [],
                 wrongConcepts: ["SOD", "اميلاد", "هيموغلوبين"],
-                causalOrder: ["البيرينويد", "تثبيت", "الضوئية"]
+                causalOrder: ["البيرينويد", "تثبيت", "الضوئيه"]
               }
             },
             W: {
               points: 1,
               prompt: "الاستخلاص: تبرير حماية الطحالب الطبيعية حفاظاً على البيئة البحرية",
               bacPrompt:
-                "2 ــ برر تأكيد الباحثين على حماية الطحالب T.P الطبيعية حفاظا على البيئة البحرية، انطلاقا من الدراسة السابقة.",
+                "برر تأكيد الباحثين على حماية الطحالب T.P الطبيعية حفاظا على البيئة البحرية، انطلاقا من الدراسة السابقة.",
               bacPromptSource: "official",
               bacPromptPage: 3,
-              bacPromptVerifiedAt: "2026-09-16",
+              bacPromptVerifiedAt: "2026-08-23",
               bacPromptNotes:
-                "Recopiée sur l'image de la page 3 du scan local (2026-09-16) : question 2, dernière question du التمرين الثاني, avec son numéro imprimé.",
+                "Relecture visuelle page 3. Verbe officiel : برر. Question 2 de clôture du التمرين الثاني.",
               placeholder: "الطاقة الكيميائية الكامنة رغم انخفاض CO₂...",
               minLength: 40,
               modelAnswer:
                 "في الختام يجب حماية الطحالب الطبيعية لأنها تثبّت CO₂ وتنتج O₂ وتحفظ توازن البيئة البحرية حتى عند انخفاض التركيز.",
               rule: {
                 prompt: "برر حماية الطحالب الطبيعية",
-                keywords: ["حماية", "تلوث", "أكسجين", "يثبت", "طحالب", "طبيعي", "بيئة"],
+                keywords: ["حمايه", "تلوث", "اكسجين", "يثبت", "طحالب", "طبيعي", "بيئه"],
                 minHits: 2,
                 forbidden: []
               }
@@ -250,15 +246,15 @@ const YEAR_2025_SE = {
                 "اقترح فرضيتين حول آلية تأثير مادة الـ Mtb على دور الـ Ado في النشاط العصبي الخاص باليقظة والنوم باستغلالك لشكلي الوثيقة1 ومعلوماتك.",
               bacPromptSource: "official",
               bacPromptPage: 4,
-              bacPromptVerifiedAt: "2026-09-16",
+              bacPromptVerifiedAt: "2026-08-23",
               bacPromptNotes:
-                "Recopiée sur l'image de la page 4 du scan local (2026-09-16) : seule consigne imprimée du الجزء الأول, présentée avec un tiret (pas de numéro). La relecture du 2026-08-23 est confirmée mot à mot.",
+                "Relecture visuelle page 4. Verbe officiel : اقترح فرضيتين. Seule consigne chiffrée du الجزء الأول.",
               minLength: 30,
               modelAnswer:
                 "الفرضية 1: يتنافس Mtb مع Ado على المستقبل A1R. الفرضية 2: يثبط Mtb إفراز Ado نفسه.",
               rule: {
                 prompt: "اقترح فرضيتين حول تأثير Mtb",
-                keywords: ["فرضية", "أدينوزين", "مستقبل"],
+                keywords: ["فرضيه", "ادينوزين", "مستقبل"],
                 minHits: 1,
                 forbidden: [],
                 hypotheses: {
@@ -307,12 +303,11 @@ const YEAR_2025_SE = {
               points: 4,
               prompt:
                 "الاستدلال: تتبّع سلسلة A1R → Gi/Go → قنوات K⁺/Ca²⁺ → إفراز النورإبينفرين (NE) مع المصادقة",
-              bacPrompt: "1 ــ تأكد من صحة إحدى الفرضيتين المقترحتين باستغلالك لشكلي الوثيقة2 ومعلوماتك.",
+              bacPrompt: "تأكد من صحة إحدى الفرضيتين المقترحتين باستغلالك لشكلي الوثيقة2 ومعلوماتك.",
               bacPromptSource: "official",
               bacPromptPage: 5,
-              bacPromptVerifiedAt: "2026-09-16",
-              bacPromptNotes:
-                "Recopiée sur l'image de la page 5 du scan local (2026-09-16) : question 1 du الجزء الثاني ; la question 2 (نصيحتان صحيتان) est regroupée sur le pôle suivant.",
+              bacPromptVerifiedAt: "2026-08-23",
+              bacPromptNotes: "Relecture visuelle page 5. Verbe officiel : تأكد. Question 1 du الجزء الثاني.",
               minLength: 80,
               modelAnswer:
                 "تتأكد الفرضية الأولى لأن Mtb ينافس Ado على A1R فلا تُفعَّل Gi/Go ويستمر تدفق Ca²⁺ فيتحرر NE وترتفع اليقظة.",
@@ -328,18 +323,18 @@ const YEAR_2025_SE = {
               prompt:
                 "المصادقة والمخطط المقارن: الحالة الطبيعية (نقص اليقظة) مقابل وجود الكافيين (زيادة اليقظة)",
               bacPrompt:
-                "2 ــ قدّم على ضوء ما سبق ومعرفتك نصيحتين صحيتين لمستهلكي الشاي. وضّح في مخطط كيف يؤدي تراكم الـ Ado إلى الشعور بالنعاس وتأثير استهلاك مادة Methylthéobromine (Mtb) على ذلك، بناءً على ما توصلت إليه من نتائج هذه الدراسة ومعلوماتك.",
+                "وضّح في مخطط كيف يؤدي تراكم الـ Ado إلى الشعور بالنعاس وتأثير استهلاك مادة Methylthéobromine (Mtb) على ذلك، بناءً على ما توصلت إليه من نتائج هذه الدراسة ومعلوماتك.",
               bacPromptSource: "official",
               bacPromptPage: 5,
-              bacPromptVerifiedAt: "2026-09-16",
+              bacPromptVerifiedAt: "2026-08-23",
               bacPromptNotes:
-                "Deux consignes recopiées sur l'image de la page 5 du scan local (2026-09-16) et regroupées : question 2 du الجزء الثاني (« 2 ــ قدّم على ضوء ما سبق ومعرفتك نصيحتين صحيتين لمستهلكي الشاي. ») et consigne du الجزء الثالث (وضّح في مخطط…). Le pôle E porte la question 1.",
+                "Relecture visuelle page 5. Verbe officiel : وضّح في مخطط. Consigne du الجزء الثالث. Consigne « قدّم نصيحتين » non mappée (un pôle = une consigne).",
               minLength: 0,
               modelAnswer:
-                "Ado → A1R → Gi/Go → انخفاض Ca²⁺ → انخفاض NE → نعاس. في وجود Mtb ينعكس المسار فترتفع اليقظة. ونصيحتان صحيتان لمستهلكي الشاي: عدم الإفراط في تناوله وتجنّبه في الفترة المسائية وعند اقتراب وقت النوم.",
+                "Ado → A1R → Gi/Go → انخفاض Ca²⁺ → انخفاض NE → نعاس. في وجود Mtb ينعكس المسار فترتفع اليقظة.",
               rule: {
                 prompt: "وضح في مخطط مسار Ado و Mtb",
-                keywords: ["مخطط", "نعاس", "يقظة"],
+                keywords: ["مخطط", "نعاس", "يقظه"],
                 minHits: 1,
                 forbidden: [],
                 schema: {
@@ -431,7 +426,6 @@ const YEAR_2025_SE = {
       id: 2,
       pdf: null,
       pdfFilename: null,
-      pdfAvailable: false,
       pdfExternalUrl: "https://www.dzexams.com/ar/annales/S3VKb3UrRU9MUnJHVG5ndENaV1FIdz09",
       pdfLocalUrl: "/subjects/SE/2025/sujet-2.pdf",
       pdfNote: "Source externe DzExams 2025 ; le dépôt ne redistribue pas le PDF tiers.",
@@ -458,7 +452,7 @@ const YEAR_2025_SE = {
                 "المشكل العلمي: كيف تُحوَّل طاقة الجلوكوز إلى ATP خلال التحلل السكري، وما أثر تثبيط الخطوة 1 بـ 2-DG؟",
               rule: {
                 prompt: "حدد المشكل العلمي حول التحلل السكري",
-                keywords: ["التحلل", "السكري", "الجلوكوز", "الطاقة"],
+                keywords: ["التحلل", "السكري", "الجلوكوز", "الطاقه"],
                 minHits: 2,
                 forbidden: []
               }
@@ -466,12 +460,12 @@ const YEAR_2025_SE = {
             S: {
               points: 1,
               prompt: "التعرف على المركبات (أ، ب، ج، د، هـ) في المخطط + كتابة المعادلة الإجمالية",
-              bacPrompt: "1 ــ تعرّف على المركبات المشار إليها بالأحرف: A.B.C.D.D′",
+              bacPrompt: "تعرّف على المركبات المشار إليها بالأحرف: A.B.C.D.D′",
               bacPromptSource: "official",
               bacPromptPage: 6,
-              bacPromptVerifiedAt: "2026-09-16",
+              bacPromptVerifiedAt: "2026-08-23",
               bacPromptNotes:
-                "Recopiée sur l'image de la page 6 du scan local (2026-09-16) : question 1 du التمرين الأول. Transcription identique à la relecture du 2026-08-23 ; le numéro imprimé « 1 ــ » a été ajouté.",
+                "Relecture visuelle page 1 du sujet 2 (page 6 du PDF). Verbe officiel : تعرّف. Question 1.",
               placeholder: "جلوكوز، فركتوز ثنائي الفوسفات، حمض البيروفيك...",
               minLength: 40,
               modelAnswer:
@@ -487,19 +481,19 @@ const YEAR_2025_SE = {
               points: 2,
               prompt: "العرض السببي: تسلسل تفاعلات التحلل السكري وإنتاج ATP + أثر الدواء على الخطوة 1",
               bacPrompt:
-                "2 ــ اشرح في نصٍ علميٍ مدعّم بمعادلة كيميائية إجمالية تفاعلات تحويل الطاقة الكيميائية الكامنة في جزيئة الغلوكوز خلال مرحلة التحلل السكري المشار إليها في الوثيقة وأثر مادة 2-Désoxyglucose على ذلك. (النص العلمي مُهيكل بمقدمة وعرض وخاتمة)",
+                "اشرح في نصٍ علميٍ مدعّم بمعادلة كيميائية إجمالية تفاعلات تحويل الطاقة الكيميائية الكامنة في جزيئة الغلوكوز خلال مرحلة التحلل السكري المشار إليها في الوثيقة وأثر مادة 2-Désoxyglucose على ذلك.",
               bacPromptSource: "official",
               bacPromptPage: 6,
-              bacPromptVerifiedAt: "2026-09-16",
+              bacPromptVerifiedAt: "2026-08-23",
               bacPromptNotes:
-                "Recopiée sur l'image de la page 6 du scan local (2026-09-16) : question 2 du التمرين الأول. Le numéro « 2 ــ » et la mention imprimée « (النص العلمي مُهيكل بمقدمة وعرض وخاتمة) » ont été ajoutés à la transcription.",
+                "Relecture visuelle page 6. Verbe officiel : اشرح. Question 2 — texte scientifique structuré.",
               placeholder: "الخطوة 1/الخطوة 2، أنزيم، ATP، البيروفيك...",
               minLength: 120,
               modelAnswer:
-                "خلال التحلل السكري يُفسفر الغلوكوز ثم يُشق إلى جزيئتي حمض بيروفيك مع إنتاج صافٍ من ATP. يثبط 2-DG الأنزيم المنشط للخطوة 1 فيتوقف التحويل وتتوقف الخلايا السرطانية عن التكاثر.",
+                "خلال التحلل السكري يُفسفر الغلوكوز ثم يُشق إلى جزيئتي حمض بيروفيك مع إنتاج صافٍ من ATP. يثبط 2-DG الإنزيم المنشط للخطوة 1 فيتوقف التحويل وتتوقف الخلايا السرطانية عن التكاثر.",
               rule: {
                 prompt: "اشرح تفاعلات التحلل السكري وأثر 2-DG",
-                keywords: ["الخطوة", "أنزيم", "فوسفات", "ثنائي", "الطاقة"],
+                keywords: ["الخطوه", "انزيم", "فوسفات", "ثنائي", "الطاقه"],
                 minHits: 3,
                 forbidden: [],
                 equation: {
@@ -523,7 +517,7 @@ const YEAR_2025_SE = {
                 "في الختام يتوقف إنتاج الطاقة القابلة للاستعمال فتتوقف الخلايا السرطانية عن التكاثر.",
               rule: {
                 prompt: "اكتب خاتمة حول أثر 2-DG",
-                keywords: ["الطاقة", "يتوقف", "الخلايا", "تتكاثر"],
+                keywords: ["الطاقه", "يتوقف", "الخلايا", "تتكاثر"],
                 minHits: 2,
                 forbidden: []
               }
@@ -549,7 +543,7 @@ const YEAR_2025_SE = {
                 "المشكل العلمي: كيف يحمي SOD الخلايا العصبية من ROS، وما سبب الخلل عند المصاب بـ ALS؟",
               rule: {
                 prompt: "حدد المشكل العلمي حول SOD و ALS",
-                keywords: ["الأنزيم", "الأكسجين", "التفاعلي", "الخلايا", "العصبية"],
+                keywords: ["الانزيم", "الاكسجين", "التفاعلي", "الخلايا", "العصبيه"],
                 minHits: 2,
                 forbidden: []
               }
@@ -557,12 +551,12 @@ const YEAR_2025_SE = {
             S: {
               points: 2.5,
               prompt: "تحليل الشكل (أ): نسبة نشاط SOD وتراكيز ROS ونسبة تلف الخلايا عند السليم والمصاب",
-              bacPrompt: "1 ــ حلّل النتائج الممثّلة في الشكل(أ) من الوثيقة1.",
+              bacPrompt: "حلّل النتائج الممثّلة في الشكل(أ) من الوثيقة1.",
               bacPromptSource: "official",
               bacPromptPage: 7,
-              bacPromptVerifiedAt: "2026-09-16",
+              bacPromptVerifiedAt: "2026-08-23",
               bacPromptNotes:
-                "Recopiée sur l'image de la page 7 du scan local (2026-09-16) : question 1 du التمرين الثاني, avec son numéro imprimé.",
+                "Relecture visuelle page 7 (2e page du sujet 2). Verbe officiel : حلّل. Question 1.",
               placeholder: "قارن بالتوازي: نشاط SOD، تراكيز ROS، تلف الخلايا...",
               minLength: 90,
               modelAnswer:
@@ -613,16 +607,15 @@ const YEAR_2025_SE = {
               prompt:
                 "الربط السببي: دور الموقع الفعّال وشوارد النحاس/الزّنك وسبب الخلل في وظيفة الأنزيم عند المصاب",
               bacPrompt:
-                "2 ــ بيّن سبب الخلل في وظيفة الأنزيم SOD عند الشخص المصاب باستغلالك للشكل(ب) والمعلومة المستخلصة من الشكل(أ) من الوثيقة1.",
+                "بيّن سبب الخلل في وظيفة الأنزيم SOD عند الشخص المصاب باستغلالك للشكل(ب) والمعلومة المستخلصة من الشكل(أ) من الوثيقة1.",
               bacPromptSource: "official",
               bacPromptPage: 7,
-              bacPromptVerifiedAt: "2026-09-16",
-              bacPromptNotes:
-                "Recopiée sur l'image de la page 7 du scan local (2026-09-16) : question 2 du التمرين الثاني, avec son numéro imprimé.",
+              bacPromptVerifiedAt: "2026-08-23",
+              bacPromptNotes: "Relecture visuelle page 7. Verbe officiel : بيّن. Question 2.",
               placeholder: "الموقع الفعّال، النحاس، الزنك، طفرة/خلل...",
               minLength: 110,
               modelAnswer:
-                "يعود الخلل إلى تغير بقايا الموقع الفعال فلا تُثبَّت شوارد النحاس/الزنك فيفقد الأنزيم قدرته على تحويل O₂⁻.",
+                "يعود الخلل إلى تغير بقايا الموقع الفعال فلا تُثبَّت شوارد النحاس/الزنك فيفقد الإنزيم قدرته على تحويل O₂⁻.",
               rule: {
                 prompt: "بين سبب الخلل في وظيفة SOD",
                 keywords: ["الموقع", "الفعال", "النحاس", "الزنك", "خلل"],
@@ -636,18 +629,18 @@ const YEAR_2025_SE = {
               points: 1,
               prompt: "التبرير: استعمال (SOD) كدواء لعلاج ALS واقتراح علاج آخر",
               bacPrompt:
-                "1 ــ برّر استعمال EDA كدواء لعلاج التصلّب الجانبي الضموري ALS باستغلالك لأشكال الوثيقة2 ومعلوماتك. 2 ــ اقترح علاجا آخر لمرض التصلب الجانبي الضموري ALS.",
+                "برّر استعمال EDA كدواء لعلاج التصلّب الجانبي الضموري ALS باستغلالك لأشكال الوثيقة2 ومعلوماتك.",
               bacPromptSource: "official",
               bacPromptPage: 8,
-              bacPromptVerifiedAt: "2026-09-16",
+              bacPromptVerifiedAt: "2026-08-23",
               bacPromptNotes:
-                "Relue sur l'image de la page 8 du scan local (2026-09-16). Les deux questions du الجزء الثاني sont regroupées ici : « 1 ــ برّر استعمال EDA كدواء… » et « 2 ــ اقترح علاجا آخر لمرض التصلب الجانبي الضموري ALS. »",
+                "Relecture visuelle page 8. Verbe officiel : برّر. Question 1 après الوثيقة 2. Consigne « اقترح علاجا آخر » non mappée (un pôle = une consigne).",
               placeholder: "...",
               minLength: 40,
               modelAnswer: "EDA يلتقط O₂⁻ ويعوّض نقص SOD فتنخفض السمية ويتراجع تلف الخلايا العصبية الحركية.",
               rule: {
                 prompt: "برر استعمال EDA كدواء لـ ALS",
-                keywords: ["علاج", "أكسدة", "سمية", "اقترح", "دواء", "استعمال", "EDA"],
+                keywords: ["علاج", "اكسده", "سميه", "اقترح", "دواء", "استعمال", "EDA"],
                 minHits: 2,
                 forbidden: []
               }
@@ -664,21 +657,21 @@ const YEAR_2025_SE = {
             N: {
               points: 1,
               prompt:
-                "تأطير الإشكالية: آلية تحقيق التسامح المناعي عند نقل الدم من مانح زمرته A إلى مستقبل زمرته O",
+                "تأطير الإشكالية: آلية تحقيق التسامح المناعي عند نقل الدم من مانح زمرته A إلى مستقل زمرته O",
               bacPrompt:
                 "اقترح فرضية حول الآلية المستخدمة لتحقيق التسامح المناعي عند نقل الدم من مانح زمرته A إلى مستقبل زمرته O باستغلالك لشكلي الوثيقة1 ومعلوماتك.",
               bacPromptSource: "official",
               bacPromptPage: 9,
-              bacPromptVerifiedAt: "2026-09-16",
+              bacPromptVerifiedAt: "2026-08-23",
               bacPromptNotes:
-                "Recopiée sur l'image de la page 9 du scan local (2026-09-16) : seule consigne imprimée du الجزء الأول, présentée avec un tiret (pas de numéro). La relecture du 2026-08-23 est confirmée mot à mot.",
+                "Relecture visuelle page 9. Verbe officiel : اقترح فرضية. Consigne unique du الجزء الأول.",
               placeholder: "...",
               minLength: 30,
               modelAnswer:
-                "نفترض أن تحويلا أنزيميا للمستضد A إلى مستضد H يلغي التعرف بالـ anti-A فيصبح النقل آمنا.",
+                "نفترض أن تحويلا إنزيميا للمستضد A إلى مستضد H يلغي التعرف بالـ anti-A فيصبح النقل آمنا.",
               rule: {
                 prompt: "اقترح فرضية حول التسامح المناعي",
-                keywords: ["الزمر", "المستضد", "الأجسام", "المضادة"],
+                keywords: ["الزمر", "المستضد", "الاجسام", "المضاده"],
                 minHits: 2,
                 forbidden: []
               }
@@ -698,12 +691,12 @@ const YEAR_2025_SE = {
                 "نلاحظ ارتفاع الهيموغلوبين والبيليروبين عند نقل الزمرة A إلى O مقارنة بالعكس، مما يدل على انحلال أقوى.",
               rule: {
                 prompt: "حلل الشكل أ حول انحلال الدم",
-                keywords: ["انحلال", "هيموغلوبين", "بيليروبين", "زمر"],
+                keywords: ["انحلال", "هيموغلوبين", "بيليروبين", "زمري"],
                 minHits: 3,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "table",
-                  axes: ["انحلال", "زمرة"],
+                  axes: ["انحلال", "زمره"],
                   comparisons: [["هيموغلوبين", "بيليروبين"]],
                   cells: [
                     ["A", "انحلال"],
@@ -718,19 +711,19 @@ const YEAR_2025_SE = {
               points: 2.5,
               prompt:
                 "الفرضية والربط: دور الجسم المضاد anti-A/anti-B ونشاط الأنزيم المُعدَّل وراثياً (تحويل المستضد)",
-              bacPrompt: "1 ــ ناقش صحة الفرضية المقترحة باستغلالك لشكلي الوثيقة2.",
+              bacPrompt: "ناقش صحة الفرضية المقترحة باستغلالك لشكلي الوثيقة2.",
               bacPromptSource: "official",
               bacPromptPage: 10,
-              bacPromptVerifiedAt: "2026-09-16",
+              bacPromptVerifiedAt: "2026-08-23",
               bacPromptNotes:
-                "Relue sur l'image de la page 10 du scan local (2026-09-16). Verbe officiel : ناقش. Question 1 du الجزء الثاني ; la question 2 (proposition d'une autre méthode) est portée par le pôle W.",
+                "Relecture visuelle page 10. Verbe officiel : ناقش. Question 1 du الجزء الثاني.",
               placeholder: "فرضية حول آلية التحمل المناعي + دور الأنزيم...",
               minLength: 110,
               modelAnswer:
-                "تتأكد الفرضية لأن الأنزيم NAGA يزيل السكر الطرفي للمستضد A فيختفي التعرف بـ anti-A ولا يحدث انحلال.",
+                "تتأكد الفرضية لأن الإنزيم NAGA يزيل السكر الطرفي للمستضد A فيختفي التعرف بـ anti-A ولا يحدث انحلال.",
               rule: {
                 prompt: "ناقش صحة الفرضية باستغلال الوثيقة 2",
-                keywords: ["فرضية", "أنزيم", "مستضد", "الأجسام", "التحول"],
+                keywords: ["فرضيه", "انزيم", "مستضد", "الاجسام", "التحول"],
                 minHits: 3,
                 forbidden: []
               }
@@ -739,16 +732,16 @@ const YEAR_2025_SE = {
               points: 2,
               prompt: "الاستخلاص: كيف يُحقَّق التسامح المناعي لنقل آمن بين الزمرتين",
               bacPrompt:
-                "2 ــ اقترح طريقة أخرى لضمان نقل آمن للدم من شخص زمرته A إلى آخر زمرته O. وضّح في فقرة علمية الخطوات التي اتّبعها الباحثون في تحقيق التسامح المناعي عند نقل الدم من شخص زمرته A إلى آخر زمرته O من خلال ما توصلت إليه من هذه الدراسة ومعارفك.",
+                "وضّح في فقرة علمية الخطوات التي اتّبعها الباحثون في تحقيق التسامح المناعي عند نقل الدم من شخص زمرته A إلى آخر زمرته O من خلال ما توصلت إليه من هذه الدراسة ومعارفك.",
               bacPromptSource: "official",
               bacPromptPage: 10,
-              bacPromptVerifiedAt: "2026-09-16",
+              bacPromptVerifiedAt: "2026-08-23",
               bacPromptNotes:
-                "Relue sur l'image de la page 10 du scan local (2026-09-16). Question 2 du الجزء الثاني (« 2 ــ اقترح طريقة أخرى… ») et consigne du الجزء الثالث (« وضّح في فقرة علمية… ») regroupées ; le pôle E porte la question 1 (ناقش).",
+                "Relecture visuelle page 10. Verbe officiel : وضّح في فقرة علمية. Consigne du الجزء الثالث.",
               placeholder: "التسامح المناعي: إمكانية نقل الدم بين الزمرتين...",
               minLength: 40,
               modelAnswer:
-                "في الختام يتحقق التسامح بتحويل المستضد A أنزيميا إلى شكل غير متعرف عليه من anti-A فيصبح النقل آمنا.",
+                "في الختام يتحقق التسامح بتحويل المستضد A إنزيميا إلى شكل غير متعرف عليه من anti-A فيصبح النقل آمنا.",
               rule: {
                 prompt: "وضح فقرة علمية حول التسامح المناعي",
                 keywords: ["التسامح", "المناعي", "مانح", "مستقبل"],

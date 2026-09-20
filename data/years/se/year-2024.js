@@ -3,19 +3,17 @@
  */
 const YEAR_2024_SE = {
   id: "2024",
-  label: "بكالوريا الجزائر دورة 2024",
-  badge: "دورة رسمية",
+  label: "بكالوريا الجزائر دورة 2024 — شعبة علوم تجريبية",
   theme: "indigo",
   enabled: true,
   sujets: [
     {
       id: 1,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: "https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf",
       pdfLocalUrl: "/subjects/SE/2024/sujet-1.pdf",
       pdfNote:
-        "PDF non redistribué dans le dépôt ; source: https://eddirasa.com/bac-science-2024-se/ (consulté 2026-08-25). Miroir dzexams: https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09 · PDF: https://www.dzexams.com/uploads/sujets/officiels/bac/2024/dzexams-bac-sciences-naturelles-1751784.pdf. Sujet 1 relu sur le sujet officiel : page 1 : scan local, 2026-09-16 ; pages 3, 4 et 5 : scan local, 2026-09-16 ; page 2 : photo, 2026-08-31. Sujet 2 : pages 6, 7 et 10 relues sur photos, 2026-08-31 ; pages 8 et 9 : scan local, 2026-09-16. Viewer dzexams bloqué (0 pages) dans la sandbox. Session de remplacement non localisée.",
+        "PDF non redistribué dans le dépôt ; source: https://eddirasa.com/bac-science-2024-se/ (consulté 2026-08-25). Miroir dzexams: https://www.dzexams.com/ar/annales/bkVXVzlvRTlpV1RMYUk5cGNyS3oxdz09 · PDF: https://www.dzexams.com/uploads/sujets/officiels/bac/2024/dzexams-bac-sciences-naturelles-1751784.pdf. Pages 2, 6, 7 et 10 relues sur photos du sujet officiel (2026-08-31). Viewer dzexams bloqué (0 pages) dans la sandbox. Session de remplacement non localisée.",
       title: "الموضوع الأول",
       exercises: [
         {
@@ -32,14 +30,14 @@ const YEAR_2024_SE = {
                 "كيف يتطور فيروس VIH داخل الخلايا LT4 مسببا فقدان المناعة المكتسبة، وما أثر تثبيط إحدى مراحل هذا التطور بدواء Zalcitabine؟",
               bacPromptSource: "reconstructed",
               bacPromptNotes:
-                "Aucune question autonome de cadrage : le préambule est un énoncé (vérifié sur l'image de la page 1, 2026-09-16). Reformulation pédagogique assumée (badge ⚠️).",
+                "Thème lu sur la couche texte bruitée (2026-08-25). Pas de question autonome de cadrage ; reformulation pédagogique du préambule.",
               placeholder: "صياغة المشكل العلمي...",
               minLength: 40,
               modelAnswer:
                 "المشكل العلمي: كيف يتطور فيروس VIH داخل الخلايا التائية LT4 مسببا فقدان المناعة المكتسبة، وما أثر تثبيط إحدى مراحل تطوره بدواء Zalcitabine على تكاثره؟",
               rule: {
                 prompt: "حدد المشكل العلمي حول تطور VIH في LT4",
-                keywords: ["فيروس", "LT4", "مناعة", "تطور"],
+                keywords: ["فيروس", "LT4", "مناعه", "تطور"],
                 minHits: 2,
                 forbidden: []
               }
@@ -47,19 +45,17 @@ const YEAR_2024_SE = {
             S: {
               points: 1,
               prompt: "استخراج مراحل تطور الفيروس من الوثيقة",
-              bacPrompt: "1 ــ تعرَّف على المراحل الممثَّلة بالأرقام من ① إلى ⑥.",
-              bacPromptSource: "official",
-              bacPromptPage: 1,
-              bacPromptVerifiedAt: "2026-09-16",
+              bacPrompt: "استخرج من الوثيقة المراحل المختلفة لتطور فيروس VIH داخل الخلايا LT4.",
+              bacPromptSource: "reconstructed",
               bacPromptNotes:
-                "Question 1 officielle, recopiée sur l'image de la page 1 du scan local (subjects/SE/2024/sujet-1.pdf, relecture 2026-09-16).",
+                "Reconstruction pédagogique 2024 — thème (VIH/LT4/Zalcitabine) lu sur la couche texte bruitée.",
               placeholder: "التصاق، نسخ عكسي، إدماج، تبرعم...",
               minLength: 40,
               modelAnswer:
                 "تمثل الوثيقة رسما تخطيطيا لمراحل تطور فيروس VIH داخل الخلية LT4: الالتصاق بالخلية، النسخ العكسي للـ ARN الفيروسي، إدماج الـ ADN في مورثة الخلية، التعبير وتشكل فيروسات جديدة ثم تبرعمها خارج الخلية.",
               rule: {
                 prompt: "استخرج مراحل تطور فيروس VIH",
-                keywords: ["التصاق", "نسخ", "عكسي", "إدماج", "تبرعم"],
+                keywords: ["التصاق", "نسخ", "عكسي", "ادماج", "تبرعم"],
                 minHits: 2,
                 forbidden: ["بسبب"]
               }
@@ -68,12 +64,10 @@ const YEAR_2024_SE = {
               points: 2,
               prompt: "النص العلمي: مراحل تطور الفيروس وتأثير Zalcitabine",
               bacPrompt:
-                "2 ــ اشرح في نص علمي مراحل تطور الفيروس (VIH) داخل الخلايا (LT4) وتأثير دواء Zalcitabine على ذلك باستغلال الوثيقة ومعلوماتك. (النص العلمي مُهيكل بمقدّمة وعرض وخاتمة).",
-              bacPromptSource: "official",
-              bacPromptPage: 1,
-              bacPromptVerifiedAt: "2026-09-16",
+                "بيّن في نص علمي مراحل تطور فيروس VIH في الخلايا LT4 وتأثير دواء Zalcitabine على ذلك.",
+              bacPromptSource: "reconstructed",
               bacPromptNotes:
-                "Question 2 officielle, recopiée sur l'image de la page 1 du scan local (subjects/SE/2024/sujet-1.pdf, relecture 2026-09-16) — le verbe, le cadre du texte scientifique et la mention (مقدّمة وعرض وخاتمة) sont ceux du sujet.",
+                "Verbe officiel lu (بيّن في نص علمي) sur la couche texte bruitée ; wording reconstruit mot à mot.",
               placeholder: "مقدمة، عرض، خاتمة...",
               minLength: 120,
               modelAnswer:
@@ -91,14 +85,14 @@ const YEAR_2024_SE = {
               bacPrompt: "ما أثر تثبيط النسخ العكسي بدواء Zalcitabine على فقدان المناعة المكتسبة؟",
               bacPromptSource: "reconstructed",
               bacPromptNotes:
-                "Aucune question de clôture imprimée (vérifié sur l'image de la page 1, 2026-09-16) : la synthèse demandée est portée par la question 2 (pôle E). Reconstruction assumée (badge ⚠️).",
+                "La clôture est incluse dans le texte scientifique officiel (pôle E). Pas une question BAC autonome.",
               placeholder: "في الختام...",
               minLength: 40,
               modelAnswer:
                 "في الختام، بتثبيط النسخ العكسي يحد دواء Zalcitabine من تكاثر الفيروس داخل LT4 فيحمي الخلايا التائية من التلف ويحد من فقدان المناعة المكتسبة.",
               rule: {
                 prompt: "اكتب خاتمة حول أثر Zalcitabine",
-                keywords: ["نسخ", "تكاثر", "مناعة"],
+                keywords: ["نسخ", "تكاثر", "مناعه"],
                 minHits: 2,
                 forbidden: []
               }
@@ -119,7 +113,7 @@ const YEAR_2024_SE = {
                 "ما أصل اختلال التوازن بين التنبيه والتثبيط في اضطرابات الصرع، وما دور طفرة الجين Scn1a في ذلك؟",
               bacPromptSource: "reconstructed",
               bacPromptNotes:
-                "Aucune question de cadrage imprimée : relecture de l'image de la page 2 (scan local, 2026-09-16) — l'énoncé annonce l'objectif (« نبحث من خلال هذه الدراسة في أصل إحدى حالات هذا المرض ») sans poser de question. Les deux questions du الجزء الثاني (page 3) sont rattachées au pôle W. Reformulation pédagogique.",
+                "Thème (Excitation/Inhibition, Glutamate/GABA, Scn1a) lu sur la couche texte bruitée ; pas de question autonome de cadrage.",
               placeholder: "صياغة المشكل العلمي...",
               minLength: 40,
               modelAnswer:
@@ -194,22 +188,19 @@ const YEAR_2024_SE = {
             },
             W: {
               points: 1,
-              prompt: "الجزء الثاني: أصل الاعتلال الدماغي والاقتراح العلاجي",
-              bacPrompt:
-                "1 ــ بيّن أصل الاعتلال الدماغي المُسبّب لحالة الصُّرع المدروسة باستغلال النتائج المُثبتة في شكلي الوثيقة 2. 2 ــ اقترح حلا علاجيًا للتخفيف من أعراض نوبات الصُّرع بناءً على ما توصلت إليه من خلال هذه الدراسة.",
-              bacPromptSource: "official",
-              bacPromptPage: 3,
-              bacPromptVerifiedAt: "2026-09-16",
+              prompt: "الخلاصة: دور طفرة Scn1a في الصرع",
+              bacPrompt: "ما دور طفرة الجين Scn1a في ظهور اضطرابات الصرع؟",
+              bacPromptSource: "reconstructed",
               bacPromptNotes:
-                "Questions 1 et 2 du الجزء الثاني recopiées mot à mot sur l'image de la page 3 du sujet officiel 2024 (scan local, 2026-09-16). Les deux questions de cette partie sont regroupées dans le pôle de clôture ; l'énoncé du التمرين الثاني (page 2) n'imprime aucune question de cadrage (pôle N). Aucun corrigé local pour la session 2024 : réponse rédigée à partir des documents du sujet, sans correction officielle revendiquée.",
-              placeholder: "طفرة المورثة Scn1a، قناة الصوديوم، اقتراح علاجي...",
-              minLength: 80,
+                "La clôture est incluse dans l'explication officielle (pôle E). Pas une question BAC autonome.",
+              placeholder: "في الختام...",
+              minLength: 40,
               modelAnswer:
-                "يُعزى أصل الاعتلال الدماغي المُسبّب لحالة الصُّرع المدروسة إلى طفرة في المورثة (Scn1a) المشرفة على تركيب قناة الصوديوم الفولطية في الخلايا العصبية قبل المشبكية، فيتغيّر الحمض الأميني في البروتينة فتختل مراحل عمل القناة (الشكل أ)، ويصبح دخول شوارد الصوديوم غير منتظم فيرتفع تواتر كمونات العمل ويزداد إفراز المبلّغ العصبي المُنبّه (Glutamate) مقارنة بالمثبّط (GABA)، فتختل العلاقة بين التنبيه والتثبيط وتظهر نوبات الصُّرع. ومن الحلول العلاجية المقترحة: استعمال أدوية مضادة للصُّرع تُعيد تنظيم عمل قنوات الصوديوم الفولطية أو تُقوّي التثبيط الغابي، مما يخفّف من أعراض نوبات الصُّرع.",
+                "في الختام، تؤدي طفرة الجين Scn1a المشفّر لقناة الصوديوم إلى خلل في نقل الإشارة العصبية فتختل وظيفة العصبونات المثبطة ويسود التنبيه فتظهر نوبات الصرع.",
               rule: {
-                prompt: "بين أصل الاعتلال الدماغي واقترح حلا علاجيا",
-                keywords: ["طفرة", "Scn1a", "صوديوم", "GABA", "علاج"],
-                minHits: 3,
+                prompt: "اكتب خلاصة حول دور طفرة Scn1a",
+                keywords: ["طفره", "Scn1a", "قناه", "صرع"],
+                minHits: 2,
                 forbidden: []
               }
             }
@@ -224,49 +215,43 @@ const YEAR_2024_SE = {
           poles: {
             N: {
               points: 0.5,
-              prompt: "تأطير الإشكالية: علاقة مكوّنات التبغ بسرطان الرئة",
-              bacPrompt:
-                "فما هي العلاقة بين مكوّنات التبغ وارتفاع نسبة احتمال الإصابة بسرطان الرئة عند المدخّنين؟",
-              bacPromptSource: "official",
-              bacPromptPage: 3,
-              bacPromptVerifiedAt: "2026-09-16",
+              prompt: "تأطير الإشكالية: علاقة طفرة P53 بسرطان الرئة",
+              bacPrompt: "كيف تؤدي طفرة الجين P53 الناتجة عن التعرض للبنزوبيرين إلى نشأة سرطان الرئة؟",
+              bacPromptSource: "reconstructed",
               bacPromptNotes:
-                "Question de cadrage imprimée dans l'énoncé du التمرين الثالث (page 3), recopiée mot à mot sur l'image du scan local (2026-09-16) ; l'introduction (« يتوقف التخصص الوظيفي للبروتين ... ») précède la question. Aucun corrigé local pour la session 2024.",
+                "Thème (P53, Benzopyrène, cancer du poumon) lu sur la couche texte bruitée ; pas de question autonome de cadrage.",
               placeholder: "صياغة المشكل العلمي...",
               minLength: 30,
               modelAnswer:
-                "المشكل العلمي: ما العلاقة بين مكوّنات التبغ (البنزوبيرين BZP) وارتفاع نسبة احتمال الإصابة بسرطان الرئة عند المدخّنين؟",
+                "المشكل العلمي: كيف تؤدي طفرة الجين P53 الناتجة عن التعرض للبنزوبيرين إلى فقدان وظيفة البروتين الكابحة للأورام ونشأة سرطان الرئة؟",
               rule: {
-                prompt: "حدد المشكل العلمي حول مكوّنات التبغ وسرطان الرئة",
-                keywords: ["بنزوبيرين", "سرطان", "احتمال"],
+                prompt: "حدد المشكل العلمي حول P53 والبنزوبيرين",
+                keywords: ["P53", "طفره", "بنزوبيرين", "سرطان"],
                 minHits: 2,
                 forbidden: []
               }
             },
             S: {
               points: 2,
-              prompt: "الجزء الأول: اقتراح فرضية حول علاقة البنزوبيرين بسرطان الرئة",
+              prompt: "استغلال الوثائق: تتابع الجين P53 السليم والسرطاني وعلاقة البنزوبيرين بالإصابة",
               bacPrompt:
-                "اقترح فرضية توضّح من خلالها العلاقة بين Benzopyrène وارتفاع نسبة احتمال الإصابة بسرطان الرئة عند المدخّنين باستغلالك شكلي الوثيقة 1 ومعلوماتك.",
-              bacPromptSource: "official",
-              bacPromptPage: 4,
-              bacPromptVerifiedAt: "2026-09-16",
-              bacPromptNotes:
-                "Question du الجزء الأول recopiée mot à mot sur l'image de la page 4 du sujet officiel 2024 (scan local, 2026-09-16). Le tableau du الشكل (أ) donne : 0 سيجارة → 0.02 µg/mL → %1 ; 10 → 0.34 → %20 ; 20 → 0.68 → %32 ; 30 → 1.02 → %57 ; 40 → 1.36 → %80 ; 50 → 1.70 → %85. Aucun corrigé local : réponse rédigée à partir des documents.",
+                "استغل الوثائق: مقارنة تتابع الجين P53 السليم والسرطاني (Anagène) وتغير تركيز البنزوبيرين بدلالة نسبة احتمال الإصابة بسرطان الرئة.",
+              bacPromptSource: "reconstructed",
+              bacPromptNotes: "Reconstruction pédagogique 2024 — thème lu sur la couche texte bruitée.",
               placeholder: "تتابع، طفرة، تركيز، نسبة إصابة...",
               minLength: 60,
               modelAnswer:
-                "الفرضية: يُحدِث البنزوبيرين (BZP) المتأتي من التبغ طفرة في مورثة P53 فتفقد البروتينة وظيفتها الكابحة للانقسام الخلوي، فلا يتوقف انقسام الخلية التي أصابها العامل المسبب للسرطان (FC)، فتتكاثر انقسامات متتالية مشكّلة ورما سرطانيا. ويُدعم ذلك بأن نسبة احتمال الإصابة بسرطان الرئة ترتفع بدلالة ارتفاع تركيز البنزوبيرين وعدد السجائر المستهلكة في اليوم (جدول الشكل أ)، وأن تتابع المورثة P53 عند المدخّن يختلف عن تتابعها عند غير المدخّن (الشكل ب).",
+                "تمثل الوثائق مقارنة تتابع الجين P53 السليم والسرطاني وتغير نسبة احتمال الإصابة بسرطان الرئة بدلالة عدد السجائر وتركيز البنزوبيرين. نلاحظ ظهور طفرة نقطية في التتابع السرطاني وارتفاع نسبة احتمال الإصابة بارتفاع تركيز البنزوبيرين، ومنه نستنتج علاقة البنزوبيرين بطفرة P53 ونشأة السرطان.",
               rule: {
-                prompt: "اقترح فرضية حول البنزوبيرين وسرطان الرئة",
-                keywords: ["فرضية", "بنزوبيرين", "طفرة", "P53", "سرطان"],
+                prompt: "استغل الوثائق حول P53 والبنزوبيرين",
+                keywords: ["تتابع", "طفره", "بنزوبيرين", "اصابه"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "table",
-                  axes: ["تركيز", "سجائر"],
-                  comparisons: [],
-                  cells: [["سجائر", "بنزوبيرين"]],
+                  axes: ["تتابع", "تركيز"],
+                  comparisons: [["سليم", "سرطاني"]],
+                  cells: [["P53", "طفره"]],
                   values: [],
                   strictValues: false
                 }
@@ -275,41 +260,36 @@ const YEAR_2024_SE = {
             E: {
               points: 4,
               prompt: "تفسير أثر طفرة P53 على وظيفته الكابحة للورم",
-              bacPrompt: "1 ــ صادق على صحة الفرضية المقترحة باستغلالك لأشكال الوثيقة 2 ومعلوماتك.",
-              bacPromptSource: "official",
-              bacPromptPage: 5,
-              bacPromptVerifiedAt: "2026-09-16",
-              bacPromptNotes:
-                "Question 1 du الجزء الثاني recopiée mot à mot sur l'image de la page 5 du sujet officiel 2024 (scan local, 2026-09-16). La réponse modèle (mécanisme de la mutation de P53) valide la hypothèse ; la question du الجزء الثالث (لخّص في مخطط) est rattachée au pôle W. Aucun corrigé local : réponse rédigée à partir des documents.",
+              bacPrompt:
+                "فسّر كيف تفقد بروتينة P53 وظيفتها الكابحة للأورام عند حدوث طفرة ناتجة عن البنزوبيرين.",
+              bacPromptSource: "reconstructed",
+              bacPromptNotes: "Reconstruction pédagogique 2024 — thème lu sur la couche texte bruitée.",
               placeholder: "الموقع الفعال، تتابع، وظيفة كابحة...",
               minLength: 110,
               modelAnswer:
                 "يعود فقدان الوظيفة الكابحة للأورام إلى طفرة نقطية في الجين P53 (استبدال نوكليوتيد) تغيّر حمضا أمينيا في البروتين، فيتغير تتابع الأحماض الأمينية وتفقد البروتينة قدرتها على تثبيط الانقسامات الشاذة، فتتكاثر الخلايا السرطانية ويتكون ورم الرئة تحت تأثير البنزوبيرين.",
               rule: {
                 prompt: "فسر أثر طفرة P53 على وظيفته الكابحة",
-                keywords: ["طفرة", "P53", "بروتين", "انقسام", "ورم"],
+                keywords: ["طفره", "P53", "بروتين", "انقسام", "ورم"],
                 minHits: 3,
                 forbidden: []
               }
             },
             W: {
               points: 1.5,
-              prompt: "الجزء الثاني والثالث: إرشادات الوقاية ولخّص دور P53",
-              bacPrompt:
-                "2 ــ قدّم إرشادات للمدخّنين وغير المدخّنين لتقادي الإصابة بمرض السرطان الرئوي. لخّص في مخطط دور البروتينين P53 في إصلاح اختلال الـ ADN المسبب للسرطان عند المدخّنين وغير المدخّنين بناءً على ما سبق ومعلوماتك.",
-              bacPromptSource: "official",
-              bacPromptPage: 5,
-              bacPromptVerifiedAt: "2026-09-16",
+              prompt: "الخلاصة: مسار البنزوبيرين نحو الورم",
+              bacPrompt: "لخّص المسار الذي يربط البنزوبيرين بطفرة P53 ونشأة ورم الرئة.",
+              bacPromptSource: "reconstructed",
               bacPromptNotes:
-                "Question 2 du الجزء الثاني et question du الجزء الثالث recopiées mot à mot sur l'image de la page 5 du sujet officiel 2024 (scan local, 2026-09-16), regroupées dans le pôle de clôture. Aucun corrigé local : réponse rédigée à partir des documents.",
-              placeholder: "الامتناع عن التدخين، تفادي البنزوبيرين، P53 يصلح الاختلال...",
-              minLength: 60,
+                "La clôture est incluse dans l'explication (pôle E). Pas une question BAC autonome.",
+              placeholder: "بنزوبيرين → طفرة → فقدان الوظيفة → ورم...",
+              minLength: 40,
               modelAnswer:
-                "من الإرشادات: الامتناع عن التدخين وتفادي التعرض لمصادر البنزوبيرين الأخرى (دخان المصانع والسيارات والأغذية الملوثة)، والكشف المبكر عن سرطان الرئة. ويُبيّن المخطط أن العامل المسبب للسرطان (FC) يُحدث اختلالا في الـ ADN، فعند غير المدخّن يرتبط بروتين P53 السليم بالـ ADN ويصلح الاختلال فيتوقف انقسام الخلية المصابة، أما عند المدخّن فيُحدث البنزوبيرين طفرة في مورثة P53 فيصبح البروتين غير وظيفي فلا يُصلح الاختلال ولا يوقف الانقسام، فتتكاثر الخلايا انقسامات متتالية وينشأ الورم السرطاني.",
+                "في الختام، يحدث البنزوبيرين طفرة في الجين P53 فتفقد البروتينة وظيفتها الكابحة للأورام، فتتكاثر الخلايا دون رقابة ويتكون ورم الرئة.",
               rule: {
-                prompt: "قدم إرشادات ولخص دور P53 في إصلاح الاختلال",
-                keywords: ["تدخين", "بنزوبيرين", "P53", "ADN", "ورم"],
-                minHits: 3,
+                prompt: "لخص مسار البنزوبيرين نحو الورم",
+                keywords: ["بنزوبيرين", "طفره", "ورم"],
+                minHits: 2,
                 forbidden: []
               }
             }
@@ -320,11 +300,10 @@ const YEAR_2024_SE = {
     {
       id: 2,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: "https://eddirasa.com/wp-content/uploads/2024/06/bac-sc-sciences-2024.pdf",
       pdfLocalUrl: "/subjects/SE/2024/sujet-2.pdf",
       pdfNote:
-        "PDF non redistribué dans le dépôt ; même fichier que le sujet 1 (session normale, sujets 1 et 2). Pages 6, 7 et 10 relues sur photos du sujet officiel (2026-08-31) ; pages 8 et 9 relues sur le scan local (images lues une à une, 2026-09-16). Viewer dzexams bloqué dans la sandbox.",
+        "PDF non redistribué dans le dépôt ; même fichier que le sujet 1 (session normale, sujets 1 et 2). Pages 6, 7 et 10 relues sur photos du sujet officiel (2026-08-31). Viewer dzexams bloqué dans la sandbox.",
       title: "الموضوع الثاني",
       exercises: [
         {
@@ -348,7 +327,7 @@ const YEAR_2024_SE = {
                 "المشكل العلمي: كيف تُترجم المعلومة الوراثية المحمولة على ARNm إلى متتالية أحماض أمينية في الهيولى، وما أثر تثبيط الترجمة بمركبات كيميائية مختلفة؟",
               rule: {
                 prompt: "حدد المشكل العلمي حول الترجمة",
-                keywords: ["ترجمة", "ARNm", "أحماض", "هيولي"],
+                keywords: ["ترجمه", "ARNm", "احماض", "هيولي"],
                 minHits: 2,
                 forbidden: []
               }
@@ -359,16 +338,16 @@ const YEAR_2024_SE = {
               bacPrompt: "اذكر العناصر المتدخّلة في حدوث هذه المرحلة.",
               bacPromptSource: "official",
               bacPromptPage: 6,
-              bacPromptVerifiedAt: "2026-09-16",
+              bacPromptVerifiedAt: "2026-08-31",
               bacPromptNotes:
-                "Relue aussi sur le scan local (image page 6, 2026-09-16) : transcription identique. Verbe officiel : اذكر. Question 1 du التمرين الأول (Sujet 2).",
+                "Relecture visuelle photo page 6 du sujet officiel 2024 (ONEC). Verbe officiel : اذكر. Question 1 du التمرين الأول (Sujet 2).",
               placeholder: "ARNm، ريبوزوم، ARNt...",
               minLength: 30,
               modelAnswer:
                 "العناصر المتدخلة في الترجمة: ARNm، الريبوزوم، ARNt، الأحماض الأمينية المنشطة، الأنزيمات المنشطة وطاقة ATP.",
               rule: {
                 prompt: "اذكر العناصر المتدخلة في الترجمة",
-                keywords: ["ARNm", "ريبوزوم", "ARNt", "أحماض"],
+                keywords: ["ARNm", "ريبوزوم", "ARNt", "احماض"],
                 minHits: 2,
                 forbidden: []
               }
@@ -380,16 +359,16 @@ const YEAR_2024_SE = {
                 "اشرح في نص علمي خطوات الترجمة وتأثير كل من Oxazolidinone و Tetracycline عليها باستغلال الوثيقة ومعلوماتك (النص العلمي مهيكل في مقدمة وعرض وخاتمة).",
               bacPromptSource: "official",
               bacPromptPage: 6,
-              bacPromptVerifiedAt: "2026-09-16",
+              bacPromptVerifiedAt: "2026-08-31",
               bacPromptNotes:
-                "Relue aussi sur le scan local (image page 6, 2026-09-16) : transcription identique. Verbe officiel : اشرح. Question 2 du التمرين الأول (Sujet 2).",
+                "Relecture visuelle photo page 6 du sujet officiel 2024 (ONEC). Verbe officiel : اشرح. Question 2 du التمرين الأول (Sujet 2).",
               placeholder: "مقدمة، عرض، خاتمة...",
               minLength: 120,
               modelAnswer:
                 "تبدأ الترجمة بارتباط الريبوزوم بالـ ARNm ثم تنقل أحماض أمينية منشطة محمولة على ARNt وفق الرامزات فتتشكل روابط بيبتيدية وتستطيل السلسلة. يثبط مركب Tetracycline تثبيت ARNt على الريبوزوم فيتوقف البدء أو الاستطالة، بينما يمنع مركب Oxazolidinone تشكل المركب البدئي للترجمة، فيتوقف تركيب البروتين.",
               rule: {
                 prompt: "اشرح خطوات الترجمة وتأثير المركبين",
-                keywords: ["ريبوزوم", "ARNt", "ترجمة", "Tetracycline", "Oxazolidinone"],
+                keywords: ["ريبوزوم", "ARNt", "ترجمه", "Tetracycline", "Oxazolidinone"],
                 minHits: 3,
                 forbidden: []
               }
@@ -407,7 +386,7 @@ const YEAR_2024_SE = {
                 "في الختام، بتثبيط الترجمة بمركب Tetracycline أو Oxazolidinone يتوقف تركيب البروتين في الخلية.",
               rule: {
                 prompt: "اكتب خاتمة حول أثر تثبيط الترجمة",
-                keywords: ["ترجمة", "تثبيط", "بروتين"],
+                keywords: ["ترجمه", "تثبيط", "بروتين"],
                 minHits: 2,
                 forbidden: []
               }
@@ -428,7 +407,7 @@ const YEAR_2024_SE = {
                 "كيف يؤثر عامل الظلام على تفاعلات تثبيت جزيئة CO2 بأنزيم RUBISCO عند أوراق نبات الفاصولياء؟",
               bacPromptSource: "reconstructed",
               bacPromptNotes:
-                "Aucune question de cadrage imprimée : l'énoncé du التمرين الثاني (page 6, relu sur le scan local le 2026-09-16) annonce seulement l'objectif — « نهدف من خلال هذه الدراسة إلى تفسير آلية تأثير عامل الظلام على تفاعلات تثبيت جزيئة الـ CO2 على أوراق من نبات الفاصولياء Phaseolus.v » — puis décrit les expériences, sans phrase interrogative. Reformulation pédagogique : jamais présentée comme consigne officielle.",
+                "Thème (RUBISCO, CO2, RuBP, Phaseolus, CA1P) lu sur la couche texte bruitée ; pas de question autonome de cadrage.",
               placeholder: "صياغة المشكل العلمي...",
               minLength: 40,
               modelAnswer:
@@ -446,9 +425,9 @@ const YEAR_2024_SE = {
               bacPrompt: "حلّل النتائج الممثّلة في الشكل (أ) من الوثيقة 1.",
               bacPromptSource: "official",
               bacPromptPage: 7,
-              bacPromptVerifiedAt: "2026-09-16",
+              bacPromptVerifiedAt: "2026-08-31",
               bacPromptNotes:
-                "Relue aussi sur le scan local (image page 7, 2026-09-16) : transcription identique, aucun écart. Verbe officiel : حلّل. Question 1 du الجزء الأول (Sujet 2, Ex2).",
+                "Relecture visuelle photo page 7 du sujet officiel 2024 (ONEC). Verbe officiel : حلّل. Question 1 du الجزء الأول (Sujet 2, Ex2).",
               placeholder: "نشاط RUBISCO، CA1P، تثبيت CO2...",
               minLength: 90,
               modelAnswer:
@@ -484,12 +463,12 @@ const YEAR_2024_SE = {
               points: 2.5,
               prompt: "شرح أثر الظلام على نشاط RUBISCO عبر CA1P",
               bacPrompt:
-                "أبرز العلاقة بين كمية (CA1P) ونسبة نشاط الأنزيم (Rubisco) انطلاقا من نتائج الشكل (ب) والمعلومة المستخلصة من الشكل (أ) من الوثيقة 1.",
+                "أبرز العلاقة بين كمية (CA1P) في الأوراق ونسبة نشاط الأنزيم (Rubisco) انطلاقا من نتائج الشكل (ب) والمعلومة المستخلصة من الشكل (أ) من الوثيقة 1.",
               bacPromptSource: "official",
               bacPromptPage: 7,
-              bacPromptVerifiedAt: "2026-09-16",
+              bacPromptVerifiedAt: "2026-08-31",
               bacPromptNotes:
-                "Relue sur le scan local (image page 7, 2026-09-16) : « في الأوراق » retiré, la question imprimée disant « بين كمية (CA1P) ونسبة نشاط الأنزيم (Rubisco) ». Verbe officiel : أبرز. Question 2 du الجزء الأول (Sujet 2, Ex2) ; la consigne du الجزء الثاني (mécanisme du الظلام) est portée par le pôle W.",
+                "Relecture visuelle photo page 7 du sujet officiel 2024 (ONEC). Verbe officiel : أبرز. Question 2 du الجزء الأول (Sujet 2, Ex2). Consigne du الجزء الثاني (mécanisme du الظلام) non mappée (un pôle = une consigne).",
               placeholder: "CA1P، الموقع الفعال، تثبيط...",
               minLength: 110,
               modelAnswer:
@@ -503,31 +482,20 @@ const YEAR_2024_SE = {
             },
             W: {
               points: 1,
-              prompt: "الجزء الثاني: آلية تأثير عامل الظلام على تثبيت CO2",
-              bacPrompt:
-                "اشرح آلية تأثير عامل الظلام على تفاعلات تثبيت جزيئة الـ CO2 باستغلال أشكال الوثيقة 2 ومعلوماتك.",
-              bacPromptSource: "official",
-              bacPromptPage: 8,
-              bacPromptVerifiedAt: "2026-09-16",
+              prompt: "الخلاصة: أهمية الضوء لتثبيت CO2",
+              bacPrompt: "ما أهمية الضوء في الحفاظ على نشاط RUBISCO وتثبيت CO2؟",
+              bacPromptSource: "reconstructed",
               bacPromptNotes:
-                "Recopiée sur l'image de la page 8 du scan local (sujet 2, 2026-09-16) : seule consigne imprimée du الجزء الثاني (الوثيقة 2 = tableau du الشكل (أ), courbe du الشكل (ب), modélisation du الشكل (ج)). Le pôle de clôture regroupe la fin de l'exercice ; le cadrage N reste reconstruit faute de question imprimée. Aucun corrigé local pour la session 2024 : réponse modèle rédigée d'après les documents du sujet.",
-              placeholder: "CA1P، الموقع الفعال، Rudip، توقف التثبيت...",
-              minLength: 60,
+                "La clôture est incluse dans l'explication (pôle E). Pas une question BAC autonome.",
+              placeholder: "في الختام...",
+              minLength: 40,
               modelAnswer:
-                "في الظلام يتراكم المركب CA1P في الأوراق فيرتبط بالمواقع الفعالة لأنزيم Rubisco، ويُبيّن الشكل (ب) من الوثيقة 2 أن ارتفاع كمية CA1P يرافقه انخفاض عدد المواقع الفعالة للأنزيم؛ وعندما تحتلّ CA1P الموقع الفعال لا يتثبت Rudip ولا يثبّت جزيئة الـ CO2، وهو ما يؤكده جدول الشكل (أ): في الوسط الثاني (أُضيفت إليه CA1P قبل Rudip) يبقى مقدار CO2 المثبَّت ضعيفا جدا (0.05 µmol/min) مهما ارتفع تركيز Rudip، بينما يرتفع في الوسط الأول (Rudip و Rubisco فقط) من 00 إلى 0.8 µmol/min. ويوضّح الشكل (ج) هذه الآلية: في الضوء يرتبط Rudip بالأنزيم فيُثبَّت CO2، وفي الظلام يحتلّ CA1P الموقع الفعال فيتوقف تثبيت جزيئة الـ CO2.",
+                "في الختام، يحافظ الضوء على نشاط أنزيم RUBISCO بمنع تراكم مثبط CA1P، فيستمر تثبيت CO2 وإنتاج المادة العضوية عند النبات.",
               rule: {
-                prompt: "اشرح آلية تأثير الظلام على تثبيت CO2",
-                keywords: ["CA1P", "Rudip", "تثبيت", "ظلام"],
-                minHits: 3,
-                forbidden: ["بسبب"],
-                document: {
-                  kind: "table",
-                  axes: ["CO2", "Rudip"],
-                  comparisons: [["الضوء", "الظلام"]],
-                  cells: [["CA1P", "Rudip"]],
-                  values: [],
-                  strictValues: false
-                }
+                prompt: "اكتب خلاصة حول أهمية الضوء لتثبيت CO2",
+                keywords: ["ضوء", "RUBISCO", "تثبيت"],
+                minHits: 2,
+                forbidden: []
               }
             }
           }
@@ -546,42 +514,39 @@ const YEAR_2024_SE = {
                 "كيف تقضي المناعة على البكتيريا الممرضة (Corynebacterium وStaphylococcus aureus)، وما دور بروتين SPA في ذلك؟",
               bacPromptSource: "reconstructed",
               bacPromptNotes:
-                "Aucune question de cadrage imprimée : l'énoncé du التمرين الثالث (page 3 du scan local, relu le 2026-09-16) se termine par « لفهم إحدى تلك الآليات نقترح الدراسة التالية » — une annonce, pas une question. Reformulation pédagogique : jamais présentée comme consigne officielle.",
+                "Thème (diphtérie, S. aureus, SPA) lu sur la couche texte bruitée ; pas de question autonome de cadrage.",
               placeholder: "صياغة المشكل العلمي...",
               minLength: 30,
               modelAnswer:
                 "المشكل العلمي: كيف تقضي المناعة على البكتيريا الممرضة Corynebacterium وStaphylococcus aureus، وما دور بروتين SPA في تحديد أفضل سيرورة للقضاء عليها؟",
               rule: {
                 prompt: "حدد المشكل العلمي حول المناعة ضد البكتيريا",
-                keywords: ["مناعة", "بكتيريا", "مستضد", "ممرضة"],
+                keywords: ["مناعه", "بكتيريا", "مستضد", "ممرضه"],
                 minHits: 2,
                 forbidden: []
               }
             },
             S: {
               points: 2,
-              prompt: "الجزء الأول: اقتراح فرضيتين حول آلية تأثير البكتيريا",
+              prompt: "استغلال الوثائق: نسبة الروابط الميكروبية ضد الممرضين",
               bacPrompt:
-                "اقترح فرضيتين تُبيّن من خلالهما آلية تأثير البكتيريا Staphylococcus aureus على الاستجابة المناعية باستغلالك شكلي الوثيقة 1 ومعلوماتك.",
-              bacPromptSource: "official",
-              bacPromptPage: 9,
-              bacPromptVerifiedAt: "2026-09-16",
-              bacPromptNotes:
-                "Recopiée sur l'image de la page 9 du scan local (sujet 2, 2026-09-16) : question du الجزء الأول (الوثيقة 1 = tableau des معقدات + schéma des cellules spléniques). Elle remplace la reconstruction antérieure. Aucun corrigé local pour la session 2024 : la réponse modèle propose deux hypothèses lues sur les documents, sans correction officielle revendiquée.",
-              placeholder: "فرضيتان: تعطّل تشكّل المعقدات المناعية، تعطّل البلعمة...",
-              minLength: 90,
+                "استغل الوثائق: نسبة الارتباط بالمستضدات (AgCd) و(AgSa) والبروتينات المناعية ضد Corynebacterium وStaphylococcus aureus.",
+              bacPromptSource: "reconstructed",
+              bacPromptNotes: "Reconstruction pédagogique 2024 — thème lu sur la couche texte bruitée.",
+              placeholder: "أجسام مضادة، مستضد، نسبة ارتباط...",
+              minLength: 60,
               modelAnswer:
-                "الفرضية الأولى: يُعطّل Staphylococcus aureus تشكّل المعقدات المناعية مع المستضدات الأخرى فيمنع تعرّف البلعميات عليها؛ ويؤيد ذلك الجدول حيث بلغت نسبة تشكّل المعقد المناعي في المجموعة 2 %100 بينما كانت نسبة التخلص منه %00، في مقابل %100 في المجموعة 1. الفرضية الثانية: تُغيّر هذه البكتيريا المستقبلات الغشائية للبلعميات فتُفقدها القدرة على الارتباط بالمعقدات المناعية؛ ويؤيد ذلك الشكل (ب) حيث تبقى المعقدات المناعية خارج البلعميات في خلايا فئران المجموعة 2.",
+                "تمثل الوثائق نسبة ارتباط الأجسام المضادة بمستضدات البكتيريا Corynebacterium (AgCd) وStaphylococcus aureus (AgSa). نلاحظ ارتباطا نوعيا مرتفعا للأجسام المضادة بمستضدها الموافق، ومنه نستنتج خصوصية الاستجابة المناعية الخلطية ضد كل بكتيريا.",
               rule: {
-                prompt: "اقترح فرضيتين حول آلية تأثير البكتيريا على الاستجابة المناعية",
-                keywords: ["فرضية", "معقد", "بلعم", "مستضد"],
-                minHits: 3,
+                prompt: "استغل الوثائق حول المناعة ضد البكتيريا",
+                keywords: ["مستضد", "اجسام", "مضاده", "ارتباط"],
+                minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "table",
-                  axes: ["مستضد", "تخلص"],
-                  comparisons: [["المجموعة 1", "المجموعة 2"]],
-                  cells: [["معقد", "مناعي"]],
+                  axes: ["ارتباط", "مستضد"],
+                  comparisons: [["AgCd", "AgSa"]],
+                  cells: [["مستضد", "ارتباط"]],
                   values: [],
                   strictValues: false
                 }
@@ -593,43 +558,43 @@ const YEAR_2024_SE = {
               bacPrompt: "ناقش صحة إحدى الفرضيتين المقترحتين باستغلالك لأشكال الوثيقة 2 ومعلوماتك.",
               bacPromptSource: "official",
               bacPromptPage: 10,
-              bacPromptVerifiedAt: "2026-09-16",
+              bacPromptVerifiedAt: "2026-08-31",
               bacPromptNotes:
-                "Relue aussi sur le scan local (image page 10, 2026-09-16) : transcription identique. Verbe officiel : ناقش. Question 1 du الجزء الثاني (Sujet 2, Ex3) ; la question 2 du même الجزء (اقترح حلا للمشكل) est portée par le pôle W.",
+                "Relecture visuelle photo page 10 du sujet officiel 2024 (ONEC). Verbe officiel : ناقش. Question 1 du الجزء الثاني (Sujet 2, Ex3). Consigne اقترح حلا للمشكل non mappée (un pôle = une consigne).",
               placeholder: "SPA، جسم مضاد، بلعمة...",
               minLength: 110,
               modelAnswer:
                 "يرتبط بروتين SPA الموجود على جدار Staphylococcus aureus بالقطعة Fc للأجسام المضادة فيمنع تثبيتها عبر مواقعها المتغيرة على المستضد ويعطل البلعمة، فتستفيد البكتيريا من الإفلات المناعي. وللقضاء عليها تُستعمل سيرورة تحييد SPA لاستعادة التعرف النوعي وتسهيل البلعمة.",
               rule: {
                 prompt: "ناقش صحة الفرضية باستغلال الوثيقة 2",
-                keywords: ["SPA", "جسم", "مضاد", "بلعمة", "مستضد"],
+                keywords: ["SPA", "جسم", "مضاد", "بلعمه", "مستضد"],
                 minHits: 3,
                 forbidden: []
               }
             },
             W: {
               points: 1.5,
-              prompt: "الجزء الثاني والثالث: حلّ علمي ولخّص المخطط",
+              prompt: "مخطط الاستجابة المناعية الخلطية في وجود وغياب البكتيريا",
               bacPrompt:
-                "2 ــ اقترح بناءً على أساس علمي حلاً للمشكل الذي تثيره بكتيريا Staphylococcus aureus. لخّص في مخطط مراحل الاستجابة المناعية المدروسة في وجود وغياب بكتيريا Staphylococcus aureus اعتمادا على ما سبق ومعلوماتك.",
+                "لخّص في مخطط مراحل الاستجابة المناعية الخلطية في وجود وغياب بكتيريا Staphylococcus aureus اعتمادا على ما سبق ومعلوماتك.",
               bacPromptSource: "official",
               bacPromptPage: 10,
-              bacPromptVerifiedAt: "2026-09-16",
+              bacPromptVerifiedAt: "2026-08-31",
               bacPromptNotes:
-                "Recopiées sur l'image de la page 10 du scan local (sujet 2, 2026-09-16) : question 2 du الجزء الثاني (proposition de solution, imprimée « 2 ــ ») et question du الجزء الثالث (schéma de synthèse). Le pôle E porte la question 1 du الجزء الثاني (ناقش). La consigne imprimée dit « الاستجابة المناعية المدروسة » : la formulation « الخلطية », qui venait d'une lecture antérieure, est retirée. Aucun corrigé local : réponse modèle rédigée d'après les documents.",
-              placeholder: "تحييد SPA، مخطط: مستضد ← جسم مضاد ← بلعمة...",
-              minLength: 60,
+                "Relecture visuelle photo page 10 du sujet officiel 2024 (ONEC). Verbe officiel : لخّص في مخطط. Question du الجزء الثالث (Sujet 2, Ex3).",
+              placeholder: "في الختام...",
+              minLength: 0,
               modelAnswer:
-                "عنوان المخطط: مراحل الاستجابة المناعية في وجود وغياب Staphylococcus aureus. في غياب البكتيريا: مستضد → جسم مضاد → معقد مناعي → ارتباط بالمستقبل الغشائي للبالعة → بلعمة والتخلص من المستضد. في وجود البكتيريا: يرتبط بروتين SPA بالقطعة Fc للجسم المضاد فيمنع ارتباط المعقد المناعي بالمستقبل الغشائي للبالعة فلا تحدث البلعمة وتُفلت البكتيريا من الاستجابة المناعية. ومن الحلول المقترحة على أساس علمي: تحييد بروتين SPA باستعمال أجسام مضادة مضادة له أو تثبيط إنتاجه، فيستعيد المعقد المناعي قدرته على الارتباط بالبالعة وتحدث البلعمة.",
+                "عنوان المخطط: الاستجابة المناعية الخلطية. في غياب SPA: مستضد → جسم مضاد → بلعمة. في وجود Staphylococcus aureus و SPA: ارتباط SPA بالقطعة Fc يعطل البلعمة.",
               rule: {
-                prompt: "اقترح حلاً للمشكل ولخّص مراحل الاستجابة المناعية",
-                keywords: ["SPA", "بلعم", "معقد", "مضاد"],
-                minHits: 3,
+                prompt: "لخص في مخطط الاستجابة المناعية الخلطية",
+                keywords: ["مخطط", "SPA", "بلعمه"],
+                minHits: 1,
                 forbidden: [],
                 schema: {
                   arrows: true,
                   title: "استجابة",
-                  ordered: ["مستضد", "جسم", "بلعم"]
+                  ordered: ["مستضد", "جسم", "بلعمه"]
                 }
               }
             }

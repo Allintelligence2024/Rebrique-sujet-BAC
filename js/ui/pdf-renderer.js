@@ -25,6 +25,15 @@ const DEFAULT_ZOOM_INDEX = 1;
 const states = new WeakMap();
 let libraryPromise = null;
 
+/* Cible des écouteurs globaux. Sous Node (donc en test) `globalThis` n'est pas
+   une EventTarget : sans cette résolution, l'accroche « resize » est
+   silencieusement ignorée — la fuite devient invisible et son nettoyage
+   impossible à vérifier. Dans un navigateur `globalThis.window === globalThis`,
+   le comportement est strictement identique. */
+function eventTarget() {
+  return globalThis.window || globalThis;
+}
+
 /* Erreurs qui ne justifient pas de second essai : le fichier est absent ou
    injoignable, le worker n'y est pour rien et relancer le téléchargement ne
    ferait que doubler l'attente de l'élève. */
@@ -41,11 +50,24 @@ const FETCH_FAILURE =
  */
 async function openDocument(pdfjs, src) {
   pdfjs.GlobalWorkerOptions.workerSrc = vendorUrl("pdf.worker.min.js");
+  /* CMaps + polices standard : sans ces données servies depuis la même
+     origine, pdf.js abandonne les glyphes qu'il ne sait pas décoder —
+     polices CID des PDF arabes retraités, Helvetica/Times non intégrées.
+     Mesuré le 2026-09-20 : 42 PDF sur 58 perdaient du texte à l'affichage
+     (« getPathGenerator - ignoring character », jusqu'à 14 % d'encre
+     manquante par page). On ne négocie pas : le sujet doit être lisible. */
+  const params = {
+    url: src,
+    isEvalSupported: false,
+    cMapUrl: vendorUrl("cmaps/"),
+    cMapPacked: true,
+    standardFontDataUrl: vendorUrl("standard_fonts/")
+  };
   try {
-    return await pdfjs.getDocument({ url: src, isEvalSupported: false }).promise;
+    return await pdfjs.getDocument(params).promise;
   } catch (workerError) {
     if (FETCH_FAILURE.test(String(workerError?.message || ""))) throw workerError;
-    return await pdfjs.getDocument({ url: src, isEvalSupported: false, disableWorker: true }).promise;
+    return await pdfjs.getDocument({ ...params, disableWorker: true }).promise;
   }
 }
 
@@ -217,17 +239,22 @@ function bindToolbar(state) {
   });
   // Rotation du téléphone / redimensionnement : on re-rend à la bonne largeur
   // plutôt que d'étirer un canvas devenu flou.
-  let resizeTimer = null;
+  // Le minuteur vit sur `state` (pas dans la fermeture) : disposePdfViewer doit
+  // pouvoir l'annuler, sinon il se déclenche après le nettoyage et re-rend un
+  // document pdf.js déjà détruit.
+  state.resizeTimer = null;
   state.onResize = () => {
-    globalThis.clearTimeout(resizeTimer);
-    resizeTimer = globalThis.setTimeout(() => {
+    globalThis.clearTimeout(state.resizeTimer);
+    state.resizeTimer = globalThis.setTimeout(() => {
+      state.resizeTimer = null;
+      if (state.disposed || !state.pdf) return;
       const width = state.host.clientWidth || state.width;
       if (Math.abs(width - state.width) < 40) return;
       state.width = width;
       renderAll(state.pdf, state);
     }, 500);
   };
-  globalThis.addEventListener?.("resize", state.onResize);
+  eventTarget().addEventListener?.("resize", state.onResize);
   host.addEventListener("scroll", () => {
     const top = host.scrollTop + 8;
     let current = 1;
@@ -280,9 +307,7 @@ export async function mountPdfViewer(host, options = {}) {
     if (state.current > 1) goToPage(state, state.current);
   } catch (error) {
     host.dataset.pdfState = "failed";
-    if (state.onResize) globalThis.removeEventListener?.("resize", state.onResize);
-    state.pdf?.destroy?.();
-    states.delete(host);
+    disposePdfViewer(host);
     fallbackToFrame(
       host,
       "تعذّر عرض الموضوع داخل التطبيق. استخدم «فتح في نافذة مستقلة» أو «تنزيل PDF» أدناه لقراءته."
@@ -297,9 +322,14 @@ export async function mountPdfViewer(host, options = {}) {
  *  jamais destroy() → fuite mémoire cumulative à chaque consultation. */
 export function disposePdfViewer(host) {
   const state = states.get(host);
-  if (state?.onResize) globalThis.removeEventListener?.("resize", state.onResize);
-  if (state?.resizeTimer) clearTimeout(state.resizeTimer);
-  state?.pdf?.destroy?.();
+  if (!state) return;
+  state.disposed = true;
+  if (state.onResize) eventTarget().removeEventListener?.("resize", state.onResize);
+  state.onResize = null;
+  globalThis.clearTimeout(state.resizeTimer);
+  state.resizeTimer = null;
+  state.pdf?.destroy?.();
+  state.pdf = null;
   states.delete(host);
   // Note : on NE supprime PAS la note de fallback pour qu'elle reste
   // affichée tant que le DOM parent n'est pas démonté.

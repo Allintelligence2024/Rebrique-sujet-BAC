@@ -77,4 +77,6 @@ SE 2026 : `data/year-2026-se.js`. SE 2020 : `data/year-2020-se.js`.
 
 **2016 / Maths / session exceptionnelle** : une seule ligne 2016 sur l'index.
 **تقني رياضي** : pas de catégorie SVT (index racine = se + m seulement).
-Aucun URL inventé (`ARCHIVE.gaps`).
+Aucun URL inventé (`ARCHIVE.gaps`). Depuis le 2026-09-19, l'onglet n'est plus
+une filière : il est devenu l'espace **باكالوريات أجنبية** (clé `foreign`),
+volontairement vide — aucune source non algérienne n'a été vérifiée.

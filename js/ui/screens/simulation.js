@@ -1,138 +1,107 @@
 import { assertSimulationEligible } from "../../domain/subjects/official-coverage.js";
 import { simulationBlockersArabic } from "../coverage-messages.js";
-import { setInternalHTML } from "../dom.js";
-import { mountPdfViewers, pdfViewerHTML } from "../pdf-viewer.js";
+import { escapeHTML, setInternalHTML } from "../dom.js";
+import { disposeAllPdfViewers, mountPdfViewers, pdfViewerHTML } from "../pdf-viewer.js";
+import { debounce } from "../../application/debounce.js";
 import { BAC_MODE_NOTICES } from "../../../data/bac-mode-policy.js";
 
-const escapeHTML = (value = "") =>
-  String(value).replace(
-    /[&<>'"]/g,
-    (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[character]
-  );
-
-function tasksForExercise(inventory, exerciseNumber) {
-  return (inventory?.tasks || [])
-    .filter((task) => task.exerciseNumber === exerciseNumber)
-    .sort((left, right) => left.order - right.order);
+/* ÉPREUVE = LES EXERCICES DU SUJET, PAS LES QUESTIONS (décision du
+   propriétaire, 2026-09-20). L'écran d'épreuve n'affiche plus AUCUNE
+   question — ni officielle ni reconstruite. Comme le jour de l'examen,
+   l'élève lit les questions dans le sujet officiel (PDF rendu lisible
+   par l'application : CMaps + polices standard servies depuis la même
+   origine) et rédige une réponse par exercice. L'écran porte :
+     - les exercices DU sujet choisi (jamais ceux de l'autre sujet) ;
+     - le barème mesuré de chaque exercice — dépendant de l'année et de
+       la filière (SE : 5+7+8 ; Maths : 8+12, 10+10, 7+13… toujours
+       20 pts par sujet) et le total quand il est entièrement mesuré.
+   Les questions officielles restent encodées dans les inventaires
+   (جرد المهام, calibration, tests d'intégrité) — elles ne sont simplement
+   plus affichées à l'élève pendant l'épreuve. */
+/* Barème MESURÉ ou barème NON MESURÉ : les deux s'affichent honnêtement.
+   Sur un PDF scanné ou aux chiffres corrompus, le barème officiel n'est pas
+   extractible — écrire « 0 نقطة » ferait croire à une donnée absente
+   alors qu'elle est simplement inconnue. On le dit à la place. */
+function pointsBadge(exercise) {
+  return exercise.max === null
+    ? `<span class="small text-muted">البارم غير مُقاس</span>`
+    : `<span class="small text-muted">${Number(exercise.max) || 0} نقطة</span>`;
 }
 
-/* La page enregistrée est celle du document officiel ; le PDF local ne
-   contient souvent qu'un sujet, d'où un décalage calculé à la génération
-   (pageInPdf). Quand les deux diffèrent, on montre les deux plutôt que
-   d'envoyer l'élève chercher une page absente de son fichier. */
-function taskPageHTML(task) {
-  const local = Number.isInteger(task.pageInPdf) ? task.pageInPdf : null;
-  if (local !== null && local === task.page) return `الصفحة ${task.page}`;
-  if (local !== null) return `ص ${local} في الملف · ${task.page} في الأصل`;
-  if (Number.isInteger(task.page)) return `الصفحة ${task.page} (الأصل)`;
-  return "صفحة غير موثّقة";
+/* Quand le découpage du sujet n'a pas pu être mesuré (scan sans couche
+   texte), la copie libre porte sur le sujet entier au lieu d'annoncer un
+   « تمرين » que personne n'a compté. */
+function exerciseBadge(exercise) {
+  return exercise.wholeSubject === true
+    ? `<span class="badge badge-indigo">الموضوع كاملاً</span>`
+    : `<span class="badge badge-indigo">التمرين ${exercise.number}</span>`;
 }
 
-function taskProvenanceHTML(task) {
-  if (task.promptSource === "reconstructed") {
-    return `<span class="badge badge-amber" data-task-source="reconstructed">⚠️ ${escapeHTML(BAC_MODE_NOTICES.reconstructed)}</span>`;
-  }
-  return `<span class="badge badge-emerald" data-task-source="official">✓ تعليمة رسمية</span>`;
+function exerciseHeading(exercise) {
+  return typeof exercise.label === "string" && exercise.label.trim()
+    ? `<h3>${escapeHTML(exercise.label)}</h3>`
+    : "";
 }
 
-function taskReviewHTML(task, subject) {
-  let syntheticCount = 0;
-  const references = (task.trainingMappings || [])
-    .map((mapping) => {
-      const exercise = subject.exercises.find((item) => item.number === mapping.exerciseNumber);
-      const pole = exercise?.poles?.[mapping.pole];
-      if (!pole?.modelAnswer) return "";
-      /* Les payloads de la filière sciences expérimentales 2013–2017 portent
-         des « réponses modèle » fabriquées par concaténation de mots-clés
-         (answerStatus: "synthetic", 120 pôles). Elles servent au moteur
-         d'audit, jamais à l'élève : afficher « تغيرات راحه بدلالة الزمن »
-         comme un corrigé serait pire que rien. Les payloads maths et les
-         sessions SE 2018–2026 n'en contiennent plus (réponses relues sur les
-         corrigés, answerStatus: "authored" ou réponse officielle). */
-      if (pole.answerStatus === "synthetic") {
-        syntheticCount += 1;
-        return "";
-      }
-      return `<li><b>${escapeHTML(mapping.pole)}</b> — ${escapeHTML(pole.modelAnswer)}</li>`;
-    })
-    .filter(Boolean)
-    .join("");
-  if (!references) {
-    return `<div class="feedback mid simulation-review-reference">${
-      syntheticCount
-        ? "لا توجد إجابة نموذجية مشفّرة لهذه المهمة: أرشيف مُعاد بناؤه، وصياغته الآلية لا تُعرض كتصحيح. لا تُخترع إجابة بعد التسليم."
-        : "لا يوجد مرجع تدريبي مراجع لهذه المهمة. لا تُخترع إجابة بعد التسليم."
-    }</div>`;
-  }
-  return `<details class="model-box simulation-review-reference">
-    <summary class="model-summary">مراجع التدريب المرتبطة بهذه المهمة</summary>
-    <div class="model-body">
-      <p class="small text-muted mt-0">هذه عناصر تدريبية مرتبطة بالمهمة، وليست تصحيحاً وزارياً ولا تنقيطاً للنسخة.</p>
-      <ul class="small simulation-reference-list">${references}</ul>
-    </div>
-  </details>`;
+/* Total du sujet quand le barème de chaque exercice est mesuré. C'est le
+   barème officiel de la session : il dépend de l'année et de la filière
+   (toujours 20 pts par sujet dans le corpus actuel). Si un seul exercice
+   n'est pas mesuré, on n'affiche pas de total faux. */
+function examTotalBadge(subject) {
+  const exercises = subject?.exercises || [];
+  if (!exercises.length) return "";
+  if (!exercises.every((exercise) => Number.isFinite(Number(exercise.max)))) return "";
+  const total = exercises.reduce((sum, exercise) => sum + (Number(exercise.max) || 0), 0);
+  const shown = Number.isInteger(total) ? String(total) : String(Number(total.toFixed(2)));
+  return `<div class="flex spread mb-2"><span class="small bold text-muted">بارم الموضوع (${exercises.length} تمارين):</span><span class="badge badge-indigo" data-exam-total="${shown}">${shown} نقطة</span></div>`;
 }
 
 /** Pure renderer used by browser code and regression tests. */
-export function simulationExamHTML({
-  subject,
-  inventory,
-  activeExercise,
-  completed = false,
-  micButton = () => ""
-}) {
-  const exercise = subject.exercises.find((item) => item.number === activeExercise) || subject.exercises[0];
-  const tasks = tasksForExercise(inventory, exercise.number);
-  const provisional = tasks.some((task) => task.scoringReviewStatus !== "verified");
-  const reconstructed = tasks.filter((task) => task.promptSource === "reconstructed").length;
-  const reconstructedNotice =
-    reconstructed > 0
-      ? `<div class="feedback mid mb-2" role="note">${reconstructed} من ${tasks.length} مهام معروضة خطوات مُعاد بناؤها (⚠️) وليست نصّ التعليمات الرسمية — وقد تكون بعض تعليمات الموضوع الرسمية غير مُدرجة في هذا الجرد الجزئي.</div>`
-      : "";
+export function examPaperHTML({ subject, inventory, completed = false, micButton = () => "" }) {
+  /* Le barème n'est vérifié nulle part : c'est une propriété de la session.
+     L'avis reste donc affiché même quand tout est mesuré. */
+  const provisional = (inventory?.tasks || []).some((task) => task.scoringReviewStatus !== "verified");
   const provisionalNotice = provisional
     ? `<div class="feedback mid mb-2" role="note">${escapeHTML(BAC_MODE_NOTICES.provisionalScoring)}</div>`
     : "";
   const modeNotice = completed
-    ? `<div class="feedback good mb-2" id="simulation-review-notice" role="status">تم التسليم. هذه شاشة إعادة القراءة؛ الإجابات مقفلة والمراجع لا تعرض أي نقطة آلية.</div>`
+    ? `<div class="feedback good mb-2" id="simulation-review-notice" role="status">تم التسليم. هذه شاشة إعادة القراءة؛ الإجابات مقفلة ولا تعرض أي نقطة آلية.</div>`
     : `<div class="feedback bad mb-2" id="simulation-active-notice" role="note">اختبار صامت: لا تلميح، لا إجابة نموذجية، لا تشخيص ولا نقطة أثناء الاختبار.</div>`;
-  const taskCards = tasks
-    .map((task) => {
-      const documents = (task.documentRefs || [])
-        .map((reference) => `${escapeHTML(reference.id)}، ص ${reference.pages.join("، ")}`)
-        .join(" · ");
-      return `<article class="card simulation-task" data-official-task="${escapeHTML(task.id)}">
+  /* Les questions vivent dans le sujet officiel, pas dans l'écran. */
+  const paperNotice = `<div class="feedback mid mb-2" role="note" id="exam-paper-notice">الأسئلة كلها في ملف الموضوع الرسمي المعروض أدناه: اقرأ كل تمرين من الملف، ثم اكتب إجابتك الكاملة في حقله. لا تعرض هذه الشاشة أي سؤال ولا أي تصحيح.</div>`;
+  const exercises = (subject?.exercises || [])
+    .map(
+      (exercise) => `<article class="card stack simulation-task" data-free-exercise="${exercise.number}">
         <div class="flex spread simulation-task-head">
-          <span class="badge badge-indigo">${escapeHTML(task.id)}</span>
-          <span class="small text-muted">${taskPageHTML(task)}</span>
+          ${exerciseBadge(exercise)}
+          ${pointsBadge(exercise)}
         </div>
-        <div class="flex">${taskProvenanceHTML(task)}</div>
-        <h3 class="bac-consigne">${escapeHTML(task.prompt)}</h3>
-        ${documents ? `<p class="small text-muted">السندات: ${documents}</p>` : ""}
-        <label class="lbl" for="simulation-answer-${escapeHTML(task.id)}">إجابتك</label>
-        <textarea class="field simulation-answer" id="simulation-answer-${escapeHTML(task.id)}" data-task-answer="${escapeHTML(task.id)}" data-exercise="${task.exerciseNumber}" rows="8"${completed ? " disabled" : ""}></textarea>
-        ${completed ? "" : micButton(`simulation-answer-${task.id}`)}
-        ${completed ? "" : `<button class="btn btn-ghost btn-sm qualitative-check" data-qualitative-for="${escapeHTML(task.id)}">تقييم نوعي</button><div class="feedback small qualitative-feedback" data-qualitative-result="${escapeHTML(task.id)}" aria-live="polite"></div>`}
-        ${completed ? taskReviewHTML(task, subject) : ""}
-      </article>`;
-    })
+        ${exerciseHeading(exercise)}
+        ${
+          typeof exercise.desc === "string" && exercise.desc.trim()
+            ? `<p class="small text-muted">${escapeHTML(exercise.desc)}</p>`
+            : ""
+        }
+        <button type="button" class="btn btn-ghost btn-sm" data-exercise-pdf="${exercise.number}">📄 أسئلة التمرين ${exercise.number} في الملف</button>
+        <label class="lbl" for="free-answer-${exercise.number}">إجابتك عن التمرين ${exercise.number}</label>
+        <textarea class="field simulation-answer" id="free-answer-${exercise.number}" data-exercise-free="${exercise.number}" data-exercise="${exercise.number}" rows="10"${completed ? " disabled" : ""}></textarea>
+        ${completed ? "" : micButton(`free-answer-${exercise.number}`)}
+        ${
+          completed
+            ? `<button type="button" class="btn btn-ghost btn-sm qualitative-check" data-qualitative-free="${exercise.number}">تقييم نوعي</button><div class="feedback small qualitative-feedback" data-qualitative-result-free="${exercise.number}" aria-live="polite"></div>`
+            : ""
+        }
+      </article>`
+    )
     .join("");
-  return `${modeNotice}${reconstructedNotice}${provisionalNotice}
-    <div class="grid workspace-layout simulation-layout">
-      <aside class="card stack">
-        <span class="small bold text-muted">تمارين الموضوع الرسمي:</span>
-        <div class="stack">${subject.exercises
-          .map(
-            (item) => `<button class="btn btn-ghost quick-exercise" data-simulation-exercise="${item.number}">
-              <span>ت${item.number}: ${escapeHTML(item.label)}</span>
-              <span>${item.number === exercise.number ? "●" : ""}</span>
-            </button>`
-          )
-          .join("")}</div>
-      </aside>
-      <section class="stack" id="simulation-task-list" aria-label="المهام الرسمية">
-        ${taskCards || `<div class="feedback bad">لا توجد مهمة رسمية لهذا التمرين؛ بيانات هذا الموضوع غير صالحة.</div>`}
-      </section>
-    </div>`;
+  return `${modeNotice}${provisionalNotice}${paperNotice}
+    ${examTotalBadge(subject)}
+    <section class="card center stack bac-reading-card">
+      ${pdfViewerHTML(subject, { showCover: false })}
+    </section>
+    <section class="stack bac-answers" aria-label="إجابات الموضوع">
+      ${exercises}
+    </section>`;
 }
 
 export function createSimulationController(deps) {
@@ -164,15 +133,6 @@ export function createSimulationController(deps) {
     return { year, subject, inventory, report };
   }
 
-  function restoreAnswers(inventory) {
-    for (const task of inventory.tasks) {
-      const input = $(`[data-task-answer="${task.id}"]`);
-      if (!input) continue;
-      const progress = store.exercise(store.state.yearId, store.state.sujetId, task.exerciseNumber);
-      input.value = progress.officialTaskAnswers[task.id] || "";
-    }
-  }
-
   function restoreFreeAnswers(subject) {
     for (const exercise of subject.exercises) {
       const input = $(`[data-exercise-free="${exercise.number}"]`);
@@ -182,16 +142,11 @@ export function createSimulationController(deps) {
     }
   }
 
-  function persistAnswers() {
-    $$("#view-workspace [data-task-answer]").forEach((input) => {
-      const progress = store.exercise(
-        store.state.yearId,
-        store.state.sujetId,
-        Number(input.dataset.exercise)
-      );
-      progress.officialTaskAnswers[input.dataset.taskAnswer] = input.value;
-      if (input.value.trim()) progress.answeredAny = true;
-    });
+  /* Synchronise le DOM vers l'état, sans rien sérialiser : c'est la partie
+     bon marché, elle peut tourner à chaque frappe. */
+  function collectAnswers() {
+    /* Un champ de rédaction PAR EXERCICE (décision du propriétaire,
+       2026-09-20) : plus aucun champ par tâche. */
     $$("#view-workspace [data-exercise-free]").forEach((input) => {
       const progress = store.exercise(
         store.state.yearId,
@@ -201,7 +156,42 @@ export function createSimulationController(deps) {
       progress.freeAnswer = input.value;
       if (input.value.trim()) progress.answeredAny = true;
     });
+  }
+
+  /* store.save() resérialise TOUT l'état : le déclencher à chaque frappe
+     saccade la saisie sur téléphone. Le regroupement est sans risque parce que
+     chaque point de sortie appelle flushAnswers(). */
+  const scheduleSave = debounce(() => store.save(), 350);
+
+  /** Frappe en cours : état mis à jour tout de suite, écriture regroupée. */
+  function persistAnswers() {
+    collectAnswers();
+    scheduleSave();
+  }
+
+  /** Écriture garantie et immédiate — remise de copie, changement d'exercice,
+   *  page masquée. L'élève se voit promettre « حُفظت الإجابات محلياً » : cette
+   *  promesse ne peut pas dépendre d'un minuteur. */
+  function flushAnswers() {
+    collectAnswers();
+    scheduleSave.cancel();
     store.save();
+  }
+
+  /* Un onglet mis en arrière-plan ou fermé ne déclenchera pas le minuteur :
+     on vide la file avant de perdre la main. `window` plutôt que `globalThis`
+     parce que sous Node globalThis n'est pas une EventTarget : le filet serait
+     silencieusement absent — donc impossible à tester, donc jamais vérifié. */
+  let unloadGuardBound = false;
+  function bindUnloadFlush() {
+    if (unloadGuardBound) return;
+    const target = globalThis.window || globalThis;
+    if (!target?.addEventListener) return;
+    unloadGuardBound = true;
+    target.addEventListener("pagehide", flushAnswers);
+    target.addEventListener("visibilitychange", () => {
+      if (globalThis.document?.visibilityState === "hidden") flushAnswers();
+    });
   }
 
   function qualitativeLabel(value) {
@@ -212,15 +202,7 @@ export function createSimulationController(deps) {
     return "ممتاز — A — إجابة مفصلة ومنظمة.";
   }
 
-  function bindQualitativeChecks(freeMode = false) {
-    $$("#view-workspace [data-qualitative-for]").forEach((button) => {
-      button.addEventListener("click", () => {
-        const id = button.dataset.qualitativeFor;
-        const input = $(`[data-task-answer="${id}"]`);
-        const output = $(`[data-qualitative-result="${id}"]`);
-        if (output) output.textContent = qualitativeLabel(input?.value);
-      });
-    });
+  function bindQualitativeChecks() {
     $$("#view-workspace [data-qualitative-free]").forEach((button) => {
       button.addEventListener("click", () => {
         const exNum = Number(button.dataset.qualitativeFree);
@@ -236,11 +218,11 @@ export function createSimulationController(deps) {
      mode lecture — en l'annonçant explicitement, jamais à l'insu de l'élève. */
   const FALLBACK_NOTICE = {
     missing:
-      "لا يوجد جرد رسمي لمهام هذا الموضوع: وضع الامتحان غير متاح. تعرض هذه الشاشة الموضوع للقراءة وكتابة إجابات حرة فقط.",
+      "لا يوجد جرد رسمي لمهام هذا الموضوع: وضع الإمتحان غير متاح. تعرض هذه الشاشة الموضوع للقراءة وكتابة إجابات حرة فقط.",
     partial:
-      "جرد المهام الرسمية لهذا الموضوع غير مكتمل: وضع الامتحان غير متاح حتى اكتماله. تعرض هذه الشاشة الموضوع للقراءة وكتابة إجابات حرة فقط.",
+      "جرد المهام الرسمية لهذا الموضوع غير مكتمل: وضع الإمتحان غير متاح حتى اكتماله. تعرض هذه الشاشة الموضوع للقراءة وكتابة إجابات حرة فقط.",
     blocked:
-      "لم يستوفِ هذا الموضوع شروط الأهلية للامتحان. تعرض هذه الشاشة الموضوع للقراءة وكتابة إجابات حرة فقط."
+      "لم يستوفِ هذا الموضوع شروط الأهلية للإمتحان. تعرض هذه الشاشة الموضوع للقراءة وكتابة إجابات حرة فقط."
   };
 
   function renderBacReadingMode(subject, fallbackReason = "") {
@@ -249,11 +231,10 @@ export function createSimulationController(deps) {
       : "";
     const screen = $("#view-workspace");
     screen?.setAttribute("data-session-mode", "bac");
-    // Le mode de réponse est un état d'écran : il doit être réécrit à chaque
-    // rendu, sinon la valeur « free » d'une session précédente reste collée
-    // (un sujet à inventaire complet héritait du mode copie libre).
-    screen?.setAttribute("data-answer-mode", "reading");
     screen?.setAttribute("data-review-mode", "false");
+    // Avant de remplacer le contenu : un visionneur monté reste sinon accroché
+    // à `resize` et garde son document pdf.js ouvert sur un DOM déjà jeté.
+    if (screen) disposeAllPdfViewers(screen);
     setInternalHTML(
       screen,
       `<div class="app app-wide bac-reading-mode">
@@ -283,48 +264,32 @@ export function createSimulationController(deps) {
     );
     $("#bac-reading-home")?.addEventListener("click", goHome);
     restoreFreeAnswers(subject);
-    $$("#view-workspace [data-task-answer], #view-workspace [data-exercise-free]").forEach((input) =>
+    $$("#view-workspace [data-exercise-free]").forEach((input) =>
       input.addEventListener("input", persistAnswers)
     );
-    bindQualitativeChecks(true);
+    bindQualitativeChecks();
     showScreen("view-workspace");
     // Après l'affichage : le conteneur a sa largeur réelle, le rendu est net.
     mountPdfViewers(screen);
   }
 
-  /* Épreuve « copie libre » : session dont les consignes ne sont pas
-     notées (ni pôle, ni inventaire, ni corrigé local — rien à corriger).
-     Les questions officielles, recopiées page par page depuis le PDF, sont
-     affichées sous chaque exercice avec leur page source : les documents
-     (tableaux, courbes, protocoles) restent dans la visionneuse. */
-  const FREE_MODE_NOTICE =
-    "وضع «الورقة الحرة»: لا يوجد تصحيح آلي ولا نقطة في هذا الوضع. " +
-    "الأسئلة الرسمية منقولة أسفل كل تمرين، والموضوع الكامل (الوثائق والجداول) في الملف أعلاه. " +
-    "اقرأ الموضوع واكتب إجابتك الكاملة لكل تمرين في الخانة المخصصة.";
+  /* L'épreuve universelle (décision du propriétaire, 2026-09-20) : les
+     exercices du sujet + leur barème + le sujet officiel rendu lisible.
+     Un champ de rédaction par exercice, le chronomètre officiel et
+     « ✓ تسليم الورقة ». Aucune question affichée, aucun corrigé, aucune
+     note automatique : les questions se lisent dans le sujet, comme le
+     jour de l'examen. */
 
-  /* Les questions officielles recopiées : affichées telles quelles, jamais
-     notées. Le bloc porte sa source pour que l'élève sache ce qu'il lit. */
-  function freeConsignesHTML(exercise) {
-    const lines = Array.isArray(exercise.consignes) ? exercise.consignes.filter((l) => l && l.trim()) : [];
-    if (!lines.length) return "";
-    const pages = exercise.consignesPages ? ` — ${exercise.consignesPages}` : "";
-    return `<div class="stack free-consignes" data-consigne-source="transcription">
-            <p class="small text-dim">النص الرسمي للأسئلة${escapeHTML(pages)}</p>
-            ${lines
-              .map(
-                (line) =>
-                  `<p class="free-consigne-line${/^الجزء/.test(line) ? " free-consigne-part" : ""}">${escapeHTML(line)}</p>`
-              )
-              .join("")}
-          </div>`;
-  }
-
-  function renderFreeAnswerExam(subject) {
+  function renderExamPaper(subject, inventory) {
     const completed = store.state.sessionStatus === "completed";
     const screen = $("#view-workspace");
     screen?.setAttribute("data-session-mode", "bac");
-    screen?.setAttribute("data-answer-mode", "free");
     screen?.setAttribute("data-review-mode", String(completed));
+    /* Plus de mode « copie libre » : l'attribut data-answer-mode libre
+       disparaît de l'écran — toutes les épreuves sont des copies
+       d'exercices notées sur le barème officiel. */
+    screen?.removeAttribute?.("data-answer-mode");
+    if (screen) disposeAllPdfViewers(screen);
     setInternalHTML(
       screen,
       `<div class="app app-wide">
@@ -332,56 +297,39 @@ export function createSimulationController(deps) {
           <div class="brand">
             <button class="btn btn-rose btn-sm" id="simulation-home">الرئيسية</button>
             <div>
-              <h2>الامتحان · الموضوع ${subject.id === 1 ? "الأول" : "الثاني"}</h2>
-              <p>${completed ? "إعادة القراءة بعد التسليم" : "الامتحان جارٍ — إجابة حرة انطلاقاً من الموضوع الرسمي"}</p>
+              <h2>الإمتحان · الموضوع ${subject.id === 1 ? "الأول" : "الثاني"}</h2>
+              <p>${completed ? "إعادة القراءة بعد التسليم" : "الأسئلة في ملف الموضوع — أجب عن كل تمرين في حقله"}</p>
             </div>
           </div>
-          <span class="badge ${completed ? "badge-emerald" : "badge-rose"}">${completed ? "مُسلَّم" : "امتحان"}</span>
+          <span class="badge ${completed ? "badge-emerald" : "badge-rose"}">${completed ? "مُسلَّم" : "إمتحان"}</span>
         </header>
-        ${
-          completed
-            ? `<div class="feedback good mb-2" id="simulation-review-notice" role="status">تم التسليم. هذه شاشة إعادة القراءة؛ الإجابات مقفلة ولا تعرض أي نقطة آلية.</div>`
-            : ""
-        }
-        <div class="feedback mid mb-2" id="free-mode-notice" role="note">${escapeHTML(FREE_MODE_NOTICE)}</div>
         <div class="workspace-tools" aria-label="أدوات الاختبار">
           <button class="btn btn-indigo btn-sm" id="simulation-pdf">📄 الموضوع</button>
           ${completed ? "" : `<button class="btn btn-rose btn-sm" id="simulation-finish">✓ تسليم الورقة</button>`}
         </div>
-        <section class="card center stack bac-reading-card">
-          ${pdfViewerHTML(subject, { showCover: false })}
-        </section>
-        <section class="stack bac-answers" aria-label="إجابات الموضوع">
-          ${subject.exercises
-            .map(
-              (
-                exercise
-              ) => `<article class="card stack simulation-task" data-free-exercise="${exercise.number}">
-            <div class="flex spread simulation-task-head">
-              <span class="badge badge-indigo">التمرين ${exercise.number}</span>
-              <span class="small text-muted">${Number(exercise.max) || 0} نقطة</span>
-            </div>
-            <h3>${escapeHTML(exercise.label)}</h3>
-            <p class="small text-muted">${escapeHTML(exercise.desc || "")}</p>
-            ${freeConsignesHTML(exercise)}
-            <label class="lbl" for="free-answer-${exercise.number}">إجابتك</label>
-            <textarea class="field simulation-answer" id="free-answer-${exercise.number}" data-exercise-free="${exercise.number}" data-exercise="${exercise.number}" rows="10"${completed ? " disabled" : ""}></textarea>
-            ${completed ? "" : micButton(`free-answer-${exercise.number}`)}
-            ${completed ? "" : `<button class="btn btn-ghost btn-sm qualitative-check" data-qualitative-free="${exercise.number}">تقييم نوعي</button><div class="feedback small qualitative-feedback" data-qualitative-result-free="${exercise.number}" aria-live="polite"></div>`}
-          </article>`
-            )
-            .join("")}
-        </section>
+        ${examPaperHTML({
+          subject,
+          inventory,
+          completed,
+          micButton
+        })}
       </div>`
     );
     $("#simulation-home")?.addEventListener("click", goHome);
-    $("#simulation-pdf")?.addEventListener("click", openSubjectPdf);
+    $("#simulation-pdf")?.addEventListener("click", () => openSubjectPdf());
     $("#simulation-finish")?.addEventListener("click", confirmFinish);
+    /* Chaque exercice pointe vers sa page dans le fichier du sujet : le
+       PDF est la source des questions, on y va directement. */
+    $$("#view-workspace [data-exercise-pdf]").forEach((button) =>
+      button.addEventListener("click", () => openSubjectPdf(Number(button.dataset.exercisePdf)))
+    );
     restoreFreeAnswers(subject);
-    $$("#view-workspace [data-task-answer], #view-workspace [data-exercise-free]").forEach((input) =>
+    $$("#view-workspace [data-exercise-free]").forEach((input) =>
       input.addEventListener("input", persistAnswers)
     );
-    bindQualitativeChecks(true);
+    bindQualitativeChecks();
+    bindMics($("#view-workspace"));
+    bindUnloadFlush();
     showScreen("view-workspace");
     // Après l'affichage : le conteneur a sa largeur réelle, le rendu est net.
     mountPdfViewers(screen);
@@ -393,86 +341,34 @@ export function createSimulationController(deps) {
       denyInvalidSimulation(report);
       return;
     }
+    /* Décision du propriétaire (2026-09-20) : l'épreuve affiche les
+       EXERCICES du sujet et leur barème — jamais les questions, qui se
+       lisent dans le PDF officiel. */
+    if (report?.simulationEligible) {
+      try {
+        assertSimulationEligible(report);
+      } catch {
+        renderBacReadingMode(subject, "blocked");
+        return;
+      }
+      renderExamPaper(subject, inventory);
+      return;
+    }
     if (report?.freeAnswerEligible) {
-      renderFreeAnswerExam(subject);
+      renderExamPaper(subject, inventory);
       return;
     }
-    if (!inventory || !report.simulationEligible) {
-      renderBacReadingMode(subject, inventory ? "partial" : "missing");
-      return;
-    }
-    try {
-      assertSimulationEligible(report);
-    } catch {
-      renderBacReadingMode(subject, "blocked");
-      return;
-    }
-    const completed = store.state.sessionStatus === "completed";
-    const screen = $("#view-workspace");
-    // L'état de l'épreuve est porté par l'écran : un seul endroit, lisible
-    // par les tests et par les feuilles de style.
-    screen?.setAttribute("data-session-mode", "bac");
-    screen?.setAttribute("data-answer-mode", "inventory");
-    screen?.setAttribute("data-review-mode", String(completed));
-    setInternalHTML(
-      screen,
-      `<div class="app app-wide">
-        <header class="screen-head">
-          <div class="brand">
-            <button class="btn btn-rose btn-sm" id="simulation-home">الرئيسية</button>
-            <div>
-              <h2>الامتحان · الموضوع ${subject.id === 1 ? "الأول" : "الثاني"}</h2>
-              <p>${completed ? "إعادة القراءة بعد التسليم" : "الامتحان جارٍ — لا تلميح ولا إجابة نموذجية"}</p>
-            </div>
-          </div>
-          <span class="badge ${completed ? "badge-emerald" : "badge-rose"}">${completed ? "مُسلَّم" : "امتحان"}</span>
-        </header>
-            <div class="workspace-tools" aria-label="أدوات الاختبار">
-              <button class="btn btn-indigo btn-sm" id="simulation-pdf">📄 الموضوع</button>
-              ${completed ? "" : `<button class="btn btn-rose btn-sm" id="simulation-finish">✓ تسليم الورقة</button>`}
-            </div>
-        ${simulationExamHTML({
-          subject,
-          inventory,
-          activeExercise: store.state.activeExercise,
-          completed,
-          micButton
-        })}
-      </div>`
-    );
-    restoreAnswers(inventory);
-    bind(completed);
-    showScreen("view-workspace");
-    // Après l'affichage : le conteneur a sa largeur réelle, le rendu est net.
-    mountPdfViewers(screen);
+    renderBacReadingMode(subject, inventory ? "partial" : "missing");
   }
 
-  function bind(completed) {
-    $("#simulation-home")?.addEventListener("click", goHome);
-    $("#simulation-pdf")?.addEventListener("click", openSubjectPdf);
-    $("#simulation-finish")?.addEventListener("click", confirmFinish);
-    $$("#view-workspace [data-simulation-exercise]").forEach((button) =>
-      button.addEventListener("click", () => {
-        if (!completed) persistAnswers();
-        store.setActiveExercise(Number(button.dataset.simulationExercise));
-        renderSimulation();
-      })
-    );
-    if (!completed) {
-      $$("#view-workspace [data-task-answer]").forEach((input) =>
-        input.addEventListener("input", persistAnswers)
-      );
-      bindQualitativeChecks();
-      bindMics($("#view-workspace"));
-    }
-  }
-
-  function openSubjectPdf() {
+  function openSubjectPdf(exerciseNumber = null) {
     const subject = sujetObj();
     if (!subject) return;
     const { inventory } = context();
+    /* Ouvre le sujet à la première page de l'exercice demandé quand elle
+       est connue (pageInPdf de l'inventaire) — sinon à la première page. */
     const firstPage = (inventory?.tasks || [])
-      .filter((task) => task.exerciseNumber === store.state.activeExercise)
+      .filter((task) => Number.isInteger(exerciseNumber) && task.exerciseNumber === exerciseNumber)
       .map((task) => task.pageInPdf)
       .find((page) => Number.isInteger(page));
     const drawer = openDrawer(
@@ -486,7 +382,7 @@ export function createSimulationController(deps) {
   function denyInvalidSimulation(report) {
     timers.stopAll();
     if (store.isSessionActive()) store.leaveSession();
-    toast(`الامتحان مرفوض: ${simulationBlockersArabic(report?.blockers)}`, "error");
+    toast(`الإمتحان مرفوض: ${simulationBlockersArabic(report?.blockers)}`, "error");
     goHome();
   }
 
@@ -496,10 +392,12 @@ export function createSimulationController(deps) {
       "تسليم الورقة",
       "بعد التسليم تُقفل الإجابات نهائياً وتبدأ إعادة القراءة. لا توجد نقطة آلية.",
       `<button class="btn btn-rose" id="simulation-finish-yes">نعم، سلّم الورقة</button>
-       <button class="btn btn-ghost" id="simulation-finish-no" data-close="btn">لا، أكمل الامتحان</button>`
+       <button class="btn btn-ghost" id="simulation-finish-no" data-close="btn">لا، أكمل الإمتحان</button>`
     );
     $("#simulation-finish-yes")?.addEventListener("click", () => {
-      persistAnswers();
+      // « حُفظت الإجابات محلياً » est affiché juste après : l'écriture doit
+      // être effective avant, pas programmée.
+      flushAnswers();
       store.finishSession("manual");
       timers.stopAll();
       // Le chronomètre s'efface avec la remise : il ne doit plus rien décompter.
@@ -515,7 +413,7 @@ export function createSimulationController(deps) {
     if (completionNoticeShown) return;
     completionNoticeShown = true;
     openModal(
-      reason === "time-expired" ? "انتهى وقت الامتحان" : "تم تسليم الورقة",
+      reason === "time-expired" ? "انتهى وقت الإمتحان" : "تم تسليم الورقة",
       `<p>حُفظت الإجابات محلياً وأُغلقت الكتابة.</p>
        <p class="feedback mid">تبدأ الآن إعادة القراءة دون نقطة آلية. المراجع المعروضة تدريبية وليست تصحيحاً وزارياً.</p>`
     );
@@ -524,12 +422,13 @@ export function createSimulationController(deps) {
   }
 
   function handleSessionCompletion(reason = store.state.sessionEndReason) {
-    persistAnswers();
+    // Fin de temps ou remise automatique : même promesse d'enregistrement.
+    flushAnswers();
     timers.stopAll();
     $("#global-timer-bar")?.classList.add("hidden");
     renderSimulation();
     showCompletionNotice(reason);
   }
 
-  return { renderSimulation, handleSessionCompletion, persistAnswers };
+  return { renderSimulation, handleSessionCompletion, persistAnswers, flushAnswers };
 }

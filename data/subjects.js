@@ -144,8 +144,7 @@ export const YEAR_CATALOG = Object.freeze([
     id: "2025",
     stream: "se",
     calendarYear: "2025",
-    label: "بكالوريا الجزائر دورة 2025",
-    badge: "دورة نموذجية",
+    label: "بكالوريا الجزائر دورة 2025 — شعبة علوم تجريبية",
     theme: "emerald",
     enabled: true,
     subjectCount: 2,
@@ -156,8 +155,7 @@ export const YEAR_CATALOG = Object.freeze([
     id: "2024",
     stream: "se",
     calendarYear: "2024",
-    label: "بكالوريا الجزائر دورة 2024",
-    badge: "دورة رسمية",
+    label: "بكالوريا الجزائر دورة 2024 — شعبة علوم تجريبية",
     theme: "indigo",
     enabled: true,
     subjectCount: 2,
@@ -168,8 +166,7 @@ export const YEAR_CATALOG = Object.freeze([
     id: "2023",
     stream: "se",
     calendarYear: "2023",
-    label: "بكالوريا الجزائر دورة 2023",
-    badge: "دورة رسمية",
+    label: "بكالوريا الجزائر دورة 2023 — شعبة علوم تجريبية",
     theme: "amber",
     enabled: true,
     subjectCount: 2,
@@ -180,8 +177,7 @@ export const YEAR_CATALOG = Object.freeze([
     id: "2022",
     stream: "se",
     calendarYear: "2022",
-    label: "بكالوريا الجزائر دورة 2022",
-    badge: "دورة رسمية",
+    label: "بكالوريا الجزائر دورة 2022 — شعبة علوم تجريبية",
     theme: "rose",
     enabled: true,
     subjectCount: 2,
@@ -192,13 +188,12 @@ export const YEAR_CATALOG = Object.freeze([
     id: "2021",
     stream: "se",
     calendarYear: "2021",
-    label: "بكالوريا الجزائر دورة 2021",
-    badge: "دورة رسمية",
+    label: "بكالوريا الجزائر دورة 2021 — شعبة علوم تجريبية",
     theme: "emerald",
     enabled: true,
-    // Armature « copie libre » : aucune consigne encodée (couche texte du PDF
-    // illisible). Doit rester identique au champ du payload (test de cohérence).
-    answerMode: "free",
+    // Structurée 4D le 2026-09-20 : consignes extraites par OCR du PDF
+    // officiel (scripts/extracted/SE/2021) — voir data/years/se/year-2021.js.
+    // Doit rester identique au champ du payload (test de cohérence).
     subjectCount: 2,
     exerciseCounts: [3, 3],
     modulePath: "data/years/se/year-2021.js"
@@ -207,8 +202,7 @@ export const YEAR_CATALOG = Object.freeze([
     id: "2026",
     stream: "se",
     calendarYear: "2026",
-    label: "بكالوريا الجزائر دورة 2026",
-    badge: "دورة رسمية",
+    label: "بكالوريا الجزائر دورة 2026 — شعبة علوم تجريبية",
     theme: "emerald",
     enabled: true,
     subjectCount: 2,
@@ -219,8 +213,7 @@ export const YEAR_CATALOG = Object.freeze([
     id: "2020",
     stream: "se",
     calendarYear: "2020",
-    label: "بكالوريا الجزائر دورة 2020",
-    badge: "دورة رسمية",
+    label: "بكالوريا الجزائر دورة 2020 — شعبة علوم تجريبية",
     theme: "emerald",
     enabled: true,
     subjectCount: 2,
@@ -240,8 +233,7 @@ export const YEAR_CATALOG = Object.freeze([
       id,
       stream: "se",
       calendarYear: id,
-      label: `بكالوريا الجزائر دورة ${id}`,
-      badge: "أرشيف مُعاد بناؤه",
+      label: `بكالوريا الجزائر دورة ${id} — شعبة علوم تجريبية`,
       theme,
       enabled: true,
       subjectCount: 2,
@@ -249,37 +241,47 @@ export const YEAR_CATALOG = Object.freeze([
       modulePath: `data/years/se/year-${id}.js`
     })
   ),
-  // La filière maths est encodée de 2013 à 2026 : chaque année a été relue page
-  // à page sur le dossier dzexams local (sujet + corrigé officiel).
+  /* Maths 2013–2026 : entraînement 4D complet. Les millésimes 2013–2015 et la
+     session exceptionnelle 2017 ont été structurés le 2026-09-20 à partir
+     d'une extraction OCR des documents officiels (pipeline
+     scripts/ocr-extract-sujets.mjs, preuves brutes dans scripts/extracted/) :
+     questions officielles, réponses modèles et barème lu sur le document
+     (20 pts par sujet). */
   ...[
-    "2013",
-    "2014",
-    "2015",
-    "2016",
-    "2017",
-    "2018",
-    "2019",
-    "2020",
-    "2021",
-    "2022",
-    "2023",
-    "2024",
-    "2025",
-    "2026"
-  ].map((calendarYear) =>
+    ["2013", "emerald"],
+    ["2014", "amber"],
+    ["2015", "indigo"],
+    ...["2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026"].map(
+      (calendarYear) => [calendarYear, "indigo"]
+    )
+  ].map(([calendarYear, theme]) =>
     catalogEntry({
       id: `${calendarYear}-m`,
       stream: "m",
       calendarYear,
       label: `بكالوريا الجزائر دورة ${calendarYear} — شعبة رياضيات`,
-      badge: "دورة رسمية",
-      theme: "indigo",
+      theme,
       enabled: true,
       subjectCount: 2,
       exerciseCounts: [2, 2],
       modulePath: `data/years/m/year-${calendarYear}.js`
     })
-  )
+  ),
+  /* Session exceptionnelle 2017 Maths : des fichiers et des sujets DISTINCTS
+     de la session principale (même millésime, deux épreuves). Structurée en
+     4D le 2026-09-20 comme les autres millésimes (OCR du document officiel). */
+  catalogEntry({
+    id: "2017-em",
+    stream: "m",
+    calendarYear: "2017",
+    session: "exceptional",
+    label: "بكالوريا الجزائر دورة 2017 الاستثنائية — شعبة رياضيات",
+    theme: "rose",
+    enabled: true,
+    subjectCount: 2,
+    exerciseCounts: [2, 2],
+    modulePath: "data/years/m/year-2017-exceptional.js"
+  })
 ]);
 
 // Les spécificateurs littéraux sont intentionnels : le navigateur ne télécharge
@@ -300,20 +302,21 @@ const YEAR_LOADERS = Object.freeze({
   2024: () => import("./years/se/year-2024.js"),
   2025: () => import("./years/se/year-2025.js"),
   2026: () => import("./years/se/year-2026.js"),
-  "2013-m": () => import("./years/m/year-2013.js"),
-  "2014-m": () => import("./years/m/year-2014.js"),
-  "2015-m": () => import("./years/m/year-2015.js"),
-  "2016-m": () => import("./years/m/year-2016.js"),
-  "2017-m": () => import("./years/m/year-2017.js"),
-  "2018-m": () => import("./years/m/year-2018.js"),
-  "2019-m": () => import("./years/m/year-2019.js"),
-  "2020-m": () => import("./years/m/year-2020.js"),
   "2021-m": () => import("./years/m/year-2021.js"),
   "2022-m": () => import("./years/m/year-2022.js"),
   "2023-m": () => import("./years/m/year-2023.js"),
   "2024-m": () => import("./years/m/year-2024.js"),
   "2025-m": () => import("./years/m/year-2025.js"),
-  "2026-m": () => import("./years/m/year-2026.js")
+  "2026-m": () => import("./years/m/year-2026.js"),
+  "2013-m": () => import("./years/m/year-2013.js"),
+  "2014-m": () => import("./years/m/year-2014.js"),
+  "2015-m": () => import("./years/m/year-2015.js"),
+  "2016-m": () => import("./years/m/year-2016.js"),
+  "2017-m": () => import("./years/m/year-2017.js"),
+  "2017-em": () => import("./years/m/year-2017-exceptional.js"),
+  "2018-m": () => import("./years/m/year-2018.js"),
+  "2019-m": () => import("./years/m/year-2019.js"),
+  "2020-m": () => import("./years/m/year-2020.js")
 });
 
 const loadedYears = new Map();
@@ -382,10 +385,7 @@ export function loadedYearIds() {
 
 export const APP_CONFIG = Object.freeze({
   appTitle: "مفتاح الكنز",
-  // Le sous-titre ne nomme aucune filière : l'application couvre les
-  // sciences expérimentales ET les mathématiques (l'ancien libellé « SVT »
-  // affiché sur les cartes Maths était trompeur).
-  appSubtitle: "منهجية الإجابة — بكالوريا علوم الطبيعة والحياة ورياضيات",
+  appSubtitle: "منهجية الإجابة — بكالوريا علوم الطبيعة والحياة",
   examMinutesByStream: EXAM_MINUTES_BY_STREAM,
   strategyMinutes: 25,
   dataLoading: "on-demand",

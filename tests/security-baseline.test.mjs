@@ -5,10 +5,13 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const ui =
-  readFileSync(join(root, "js", "ui.js"), "utf8") +
-  readFileSync(join(root, "js", "ui", "screens", "simulation.js"), "utf8") +
-  readFileSync(join(root, "js", "ui", "pdf-viewer.js"), "utf8");
+const dom = readFileSync(join(root, "js", "ui", "dom.js"), "utf8");
+const uiSources = {
+  "js/ui.js": readFileSync(join(root, "js", "ui.js"), "utf8"),
+  "js/ui/screens/simulation.js": readFileSync(join(root, "js", "ui", "screens", "simulation.js"), "utf8"),
+  "js/ui/pdf-viewer.js": readFileSync(join(root, "js", "ui", "pdf-viewer.js"), "utf8")
+};
+const ui = Object.values(uiSources).join("");
 const dialogs = readFileSync(join(root, "js", "ui", "dialogs.js"), "utf8");
 const server = readFileSync(join(root, "server.mjs"), "utf8");
 
@@ -16,10 +19,23 @@ test("les contenus persistés sont échappés ou posés comme valeur DOM", () =>
   // Les réponses de l'élève reviennent par input.value (jamais parsées en HTML) ;
   // tout ce qui est interpolé — consigne, URL du sujet, références — passe par
   // escapeHTML avant d'entrer dans le gabarit.
-  assert.match(ui, /const escapeHTML/);
-  assert.match(ui, /input\.value = progress\.officialTaskAnswers\[task\.id\] \|\| ""/);
+  assert.match(dom, /export const escapeHTML/);
+  // D15 — l'échappement a une seule implémentation : trois copies identiques
+  // faisaient trois endroits à corriger si la liste de caractères changeait.
+  for (const [path, source] of Object.entries(uiSources)) {
+    assert.doesNotMatch(
+      source,
+      /const escapeHTML =|function escapeHTML/,
+      `${path} ne doit plus redéfinir escapeHTML`
+    );
+    assert.match(source, /import \{[^}]*escapeHTML[^}]*\} from/, `${path} doit l'importer`);
+  }
+  /* Décision du propriétaire (2026-09-20) : plus aucune question affichée
+     dans l'épreuve — les textes de consignes ne sont plus interpolés du
+     tout (garantie plus forte que l'échappement). Restent à échapper :
+     intitulés d'exercices et URL du sujet. */
   assert.match(ui, /input\.value = progress\.freeAnswer \|\| ""/);
-  assert.match(ui, /escapeHTML\(task\.prompt\)/);
+  assert.match(ui, /escapeHTML\(exercise\.label\)/);
   assert.match(ui, /escapeHTML\(local\)/);
 });
 

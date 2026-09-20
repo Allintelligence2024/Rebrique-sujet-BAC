@@ -79,7 +79,7 @@ test("[phone] parcours Maths : durée 2 h 30 et deux exercices", async ({ page }
   await expect(page.locator("#view-guide")).toContainText("2س30د");
   await page.locator("#guide-next").click();
   await page.locator('#view-strategy [data-confirm="1"][data-session-mode="bac"]').click();
-  await expect(page.locator("#view-workspace [data-simulation-exercise]")).toHaveCount(2);
+  await expect(page.locator("#view-workspace [data-exercise-free]")).toHaveCount(2);
   await expectNoHorizontalOverflow(page);
 });
 

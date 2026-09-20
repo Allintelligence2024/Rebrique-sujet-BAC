@@ -3,17 +3,25 @@ import { mountPdfViewers, pdfViewerHTML } from "../pdf-viewer.js";
 import { ARCHIVE, catalogYearsForStream } from "../../../data/archive.js";
 
 const STREAM_KEY = "boussole4d.stream";
-const STREAM_ORDER = ["se", "m", "tm"];
+/* Le troisième onglet était « تقني رياضي » (clé `tm`) : une شعبة sans épreuve
+   SVT au BAC algérien, affichée comme un trou. Il devient « باكالوريات أجنبية »
+   — un espace pour des sujets non algériens, qui n'est donc PAS une شعبة.
+   L'identifiant suit le changement (`foreign`) ; une installation ayant déjà
+   écrit « tm » dans localStorage est ramenée à « foreign » au lieu de retomber
+   silencieusement sur « se ». */
+const LEGACY_STREAM_IDS = Object.freeze({ tm: "foreign" });
+const STREAM_ORDER = ["se", "m", "foreign"];
 const STREAMS = {
   se: { id: "se", label: "علوم تجريبية" },
   m: { id: "m", label: "رياضيات" },
-  tm: { id: "tm", label: "تقني رياضي" }
+  foreign: { id: "foreign", label: "باكالوريات أجنبية" }
 };
 
 function readStream() {
   try {
     const value = localStorage.getItem(STREAM_KEY);
     if (STREAMS[value]) return value;
+    if (LEGACY_STREAM_IDS[value]) return LEGACY_STREAM_IDS[value];
   } catch {
     /* storage unavailable */
   }
@@ -37,8 +45,12 @@ function examYearsForStream(appConfig, streamId) {
   return appConfig.years.filter((year) => year.enabled && (year.stream || "se") === streamId);
 }
 
+/* Deux sessions du même millésime (2017 Maths : principale + exceptionnelle)
+   doivent avoir deux cartes distinctes, sinon l'une masque l'autre — et les
+   PDF de la session exceptionnelle deviennent inatteignables. */
 function yearCardId(year) {
-  return year.calendarYear || year.id;
+  const base = year.calendarYear || year.id;
+  return year.session === "exceptional" ? `${base} (دورة استثنائية)` : base;
 }
 
 function buildHubCatalog(appConfig, streamId) {
@@ -47,27 +59,17 @@ function buildHubCatalog(appConfig, streamId) {
     kind: "exam",
     year
   }));
-  const trainingIds = new Set(training.map((item) => item.id));
+  /* Le filtre se fait sur le MILLÉSIME, pas sur l'identifiant de carte : sans
+     cela, une session exceptionnelle laisserait réapparaître une carte de
+     consultation pour la même année. */
+  const usedYears = new Set(training.map((item) => item.year.calendarYear || item.year.id));
   const consult = catalogYearsForStream(streamId)
-    .map((group) => {
-      // Une année encodée en épreuve masque sa carte de consultation de
-      // session principale — jamais une autre session : la copie 2017
-      // exceptionnelle (شعبة رياضيات) reste consultable même quand la
-      // session principale 2017 ouvre l'épreuve.
-      const entries = trainingIds.has(group.year)
-        ? group.entries.filter((entry) => entry.session !== "main")
-        : group.entries;
-      if (!entries.length) return null;
-      return {
-        id: group.year,
-        // La carte-épreuve porte déjà l'année : le reliquat reçoit une clé
-        // DOM distincte sans changer le titre affiché.
-        key: entries.length === group.entries.length ? group.year : `${group.year}-exceptionnelle`,
-        kind: "consult",
-        entries
-      };
-    })
-    .filter(Boolean);
+    .filter((group) => !usedYears.has(group.year))
+    .map((group) => ({
+      id: group.year,
+      kind: "consult",
+      entries: group.entries
+    }));
   return [...training, ...consult].sort((a, b) => (a.id < b.id ? 1 : -1));
 }
 
@@ -107,11 +109,10 @@ export function createHubScreen(deps) {
           <div class="brand-icon" aria-hidden="true">٤</div>
           <div>
             <h1>${APP_CONFIG.appTitle}</h1>
-            <p>${APP_CONFIG.appSubtitle}</p>
           </div>
         </div>
         <div class="flex gap-2 hub-tools">
-          <button class="btn btn-indigo btn-sm" id="btn-stream-fab" aria-live="polite">
+          <button class="btn btn-emerald btn-sm" id="btn-stream-fab" aria-live="polite">
             <span class="stream-fab-kicker">الشعبة:</span> <strong id="stream-fab-label"></strong>
           </button>
           <button class="btn-sound" id="btn-hub-sound">🔇 صوت</button>
@@ -119,25 +120,18 @@ export function createHubScreen(deps) {
         </div>
       </header>
 
-      <div class="flex spread mb-1 hub-stream-bar">
-        <p class="small text-muted mt-0 mb-1" id="hub-stream-caption"></p>
-      </div>
       <div class="grid grid-cards" id="year-grid"></div>
-      <footer class="screen-foot">منصة امتحان بكالوريا علوم الطبيعة والحياة ورياضيات. <a href="legal/privacy.html">الخصوصية</a> · <a href="legal/legal-notice.html">المعلومات القانونية</a></footer>
+      <footer class="screen-foot">منصة إمتحان بكالوريا علوم الطبيعة والحياة. <a href="legal/privacy.html">الخصوصية</a> · <a href="legal/legal-notice.html">المعلومات القانونية</a></footer>
     </div>`
     );
 
-    const caption = $("#hub-stream-caption");
-    caption.textContent =
-      streamId === "se"
-        ? `الشعبة: ${stream.label} — مواضيع 2013–2026 (دورة 2021 في وضع الورقة الحرة).`
-        : streamId === "m"
-          ? `الشعبة: ${stream.label} — مواضيع 2013–2026 (كل الدورات في وضع الامتحان) + الدورة الاستثنائية 2017 للقراءة.`
-          : `الشعبة: ${stream.label} — لا موضوع SVT رسمي على المصادر المتاحة.`;
-
     const fab = $("#btn-stream-fab");
-    fab.setAttribute("aria-label", `الشعبة الحالية: ${stream.label}. اضغط للانتقال إلى شعبة ${other.label}`);
+    fab.setAttribute("aria-label", `القسم الحالي: ${stream.label}. اضغط للانتقال إلى ${other.label}`);
     $("#stream-fab-label").textContent = stream.label;
+    /* « باكالوريات أجنبية » n'est pas une شعبة : lui coller le préfixe
+       « الشعبة: » afficherait une information fausse. */
+    const kicker = fab.querySelector(".stream-fab-kicker");
+    if (kicker) kicker.hidden = streamId === "foreign";
 
     const grid = $("#year-grid");
     if (catalog.length === 0) {
@@ -180,43 +174,68 @@ export function createHubScreen(deps) {
     });
     const stack = node("div", { className: "stack" });
     const header = node("div", { className: "flex spread" });
-    header.append(
-      node("span", { className: "badge badge-indigo", text: "غير متوفر" }),
-      node("span", { className: "mono bold year-number", text: "—" })
-    );
+    header.append(node("span", { className: "mono bold year-number", text: "—" }));
+    const isForeign = stream.id === "foreign";
     const copy = node("div");
     copy.append(
-      node("h3", { className: "mt-0 mb-1", text: `شعبة ${stream.label}` }),
+      node("h3", {
+        className: "mt-0 mb-1",
+        text: isForeign ? stream.label : `شعبة ${stream.label}`
+      }),
       node("p", {
         className: "small text-muted mt-0",
-        text: "لا يوجد موضوع SVT متاح لهذه الشعبة."
+        text: isForeign
+          ? "لم يُحمَّل أي موضوع بعد. هذا القسم مخصص للبكالوريات غير الجزائرية."
+          : "لا يوجد موضوع SVT متاح لهذه الشعبة."
       })
     );
     stack.append(header, copy);
     const actions = node("div", { className: "stack" });
-    actions.append(
-      node("a", {
-        className: "btn btn-block btn-ghost",
-        text: "📂 فهرس علوم الطبيعة والحياة",
-        attrs: {
-          href: ARCHIVE.sourceRoot,
-          target: "_blank",
-          rel: "noopener noreferrer"
-        }
-      })
-    );
+    /* Le bouton renvoie vers l'index dzexams des SVT ALGÉRIENNES : il n'a de
+       sens que pour une شعبة algérienne. Le montrer sous « باكالوريات أجنبية »
+       serait un lien trompeur — aucun index étranger n'a été vérifié ici. */
+    if (!isForeign) {
+      actions.append(
+        node("a", {
+          className: "btn btn-block btn-ghost",
+          text: "📂 فهرس علوم الطبيعة والحياة",
+          attrs: {
+            href: ARCHIVE.sourceRoot,
+            target: "_blank",
+            rel: "noopener noreferrer"
+          }
+        })
+      );
+    }
     card.append(stack, actions);
     return card;
   }
 
-  /* Une année « copie libre » n'a aucun inventaire : la carte ne peut pas
-     annoncer un جرد المهام qu'elle n'a pas. Elle dit ce qui est vrai —
-     épreuve ouverte, questions officielles recopiées, aucune note. */
+  /* Une année « copie libre » n'a aucune consigne encodée : la carte ne peut
+     pas annoncer un جرد المهام qu'elle n'a pas. Elle le dit à la place. */
   function examCardNote(y) {
     const duration = formatDuration(examMinutesForYear(y));
-    return y.answerMode === "free"
-      ? `امتحان الموضوع — وضع «الورقة الحرة»: لا تصحيح آلي ولا نقطة؛ الأسئلة الرسمية منقولة، والموضوع الكامل في الملف. مدة الاختبار الرسمية: ${duration}.`
-      : `امتحان الموضوع — جرد المهام جزئي: بعض تعليمات الموضوع الرسمية غير مُدرجة بعد، وبعض الخطوات مُعاد بناؤها. مدة الاختبار الرسمية: ${duration}.`;
+    if (y.answerMode !== "free") {
+      return `إمتحان الموضوع — جرد المهام جزئي: بعض التعليمات مُعاد بناؤها. مدة الاختبار الرسمية: ${duration}.`;
+    }
+    /* Ce que la carte annonce dépend de ce qui a été MESURÉ sur le fichier :
+       le découpage en exercices (scan : non mesurable) et le barème (chiffres
+       corrompus sur ce corpus : jamais mesuré). Rien de plus n'est affirmé. */
+    const split = y.freeMeasurements?.exerciseSplitMeasured;
+    const points = y.freeMeasurements?.pointsMeasured;
+    /* L'infobulle reste le seul endroit où l'application dit ce qu'elle n'a
+       pas : aucune consigne encodée, aucun barème affiché. Les longs
+       paragraphes qui expliquaient le mode « copie libre » ont été retirés à
+       la demande du propriétaire ; ce qui reste suffit à ne rien promettre de
+       faux. */
+    return (
+      `إمتحان الموضوع — تعليمات هذه الدورة غير مُشفَّرة: تقرأ الموضوع من الملف وتكتب إجابتك ` +
+      (split === false
+        ? "في خانة لكل تمرين (بعدد تمارين الشعبة: غير مقروء على هذا الملف)"
+        : "في خانة لكل تمرين") +
+      (points === false ? ". البارم غير مُقاس فلا يُعرض أي عدد نقاط" : "") +
+      `. مدة الاختبار الرسمية: ${duration}.`
+    );
   }
 
   function examCard(y) {
@@ -230,21 +249,15 @@ export function createHubScreen(deps) {
     });
     const stack = node("div", { className: "stack" });
     const header = node("div", { className: "flex spread" });
-    header.append(
-      node("span", { className: `badge badge-${y.theme}`, text: y.badge }),
-      node("span", { className: "mono bold year-number", text: cardId })
-    );
+    header.append(node("span", { className: "mono bold year-number", text: cardId }));
     const copy = node("div");
-    copy.append(
-      node("h3", { className: "mt-0 mb-1", text: y.label }),
-      node("p", { className: "small text-muted mt-0", text: note })
-    );
+    copy.append(node("h3", { className: "mt-0 mb-1", text: y.label }));
     stack.append(header, copy);
-    const buttonTheme =
-      y.theme === "emerald" ? "btn-emerald" : y.theme === "indigo" ? "btn-indigo" : "btn-amber";
+    /* Un seul vert pour toutes les années : la couleur ne doit plus laisser
+       croire que deux boutons identiques ouvrent deux choses différentes. */
     const button = node("button", {
-      className: `btn btn-block ${buttonTheme}`,
-      text: disabled ? "غير متاح بعد" : "▶ ابدأ الامتحان",
+      className: "btn btn-block btn-emerald",
+      text: disabled ? "غير متاح بعد" : "▶ ابدأ الإمتحان",
       attrs: disabled ? { disabled: "" } : {},
       dataset: { year: y.id }
     });
@@ -257,33 +270,20 @@ export function createHubScreen(deps) {
   function consultCard(item) {
     const card = node("div", {
       className: "card year-card",
-      dataset: { hubYear: item.key || item.id, kind: "consult" }
+      dataset: { hubYear: item.id, kind: "consult" }
     });
     const stack = node("div", { className: "stack" });
     const header = node("div", { className: "flex spread" });
-    header.append(
-      node("span", { className: "badge badge-indigo", text: "موضوع رسمي" }),
-      node("span", { className: "mono bold year-number", text: item.id })
-    );
-    // Le sujet est lu dans l'application dès qu'un PDF local existe ; le lien
-    // dzexams ne sert plus que de source de repli.
+    header.append(node("span", { className: "mono bold year-number", text: item.id }));
     const localPdfs = item.entries.flatMap((entry) => entry.localPdfUrls || []);
     const copy = node("div");
-    copy.append(
-      node("h3", { className: "mt-0 mb-1", text: `بكالوريا الجزائر دورة ${item.id}` }),
-      node("p", {
-        className: "small text-muted mt-0",
-        text: localPdfs.length
-          ? "يُقرأ الموضوعان داخل التطبيق. وضع الامتحان غير متاح: لم تُشفَّر تعليمات هذه الدورة بعد."
-          : "الموضوعان والتصحيح النموذجي — للاستشارة فقط."
-      })
-    );
+    copy.append(node("h3", { className: "mt-0 mb-1", text: `بكالوريا الجزائر دورة ${item.id}` }));
     stack.append(header, copy);
     const actions = node("div", { className: "stack" });
     if (localPdfs.length) {
       localPdfs.forEach((href, index) => {
         const button = node("button", {
-          className: "btn btn-block btn-indigo",
+          className: "btn btn-block btn-emerald",
           text: `📄 قراءة الموضوع ${index + 1} في التطبيق`,
           dataset: { consultPdf: href }
         });
@@ -300,8 +300,7 @@ export function createHubScreen(deps) {
     }
     for (const entry of item.entries) {
       const session = ARCHIVE.sessions[entry.session] || entry.session;
-      const label =
-        item.entries.length > 1 || entry.session !== "main" ? `🔗 ${session} (المصدر)` : "🔗 المصدر والتصحيح";
+      const label = item.entries.length > 1 ? `🔗 ${session} (المصدر)` : "🔗 المصدر والتصحيح";
       if (entry.url) {
         actions.append(
           node("a", {

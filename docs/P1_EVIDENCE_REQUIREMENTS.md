@@ -2,10 +2,9 @@
 
 Le dépôt peut contrôler les preuves, mais il ne peut pas les fabriquer. `npm run p1:check` doit rester rouge tant que les éléments ci-dessous ne sont pas fournis et audités.
 
-## P1.1 / P1.2 — 56 couples année/sujet, 54 ouverts à l'épreuve
+## P1.1 / P1.2 — 58 inventaires officiels
 
-Pour chacun des 56 couples année/sujet du catalogue (54 avec inventaire ; les deux
-sujets 2021 SE restent sans données, leur PDF étant chiffré) :
+Pour chacun des 58 couples année/sujet configurés (29 sessions × 2, SE 2021 comprise depuis sa structuration OCR du 2026-09-20) :
 
 1. énoncé officiel identifiable et date de vérification ;
 2. liste exhaustive des exercices, questions et sous-questions, dans l'ordre ;
@@ -19,7 +18,7 @@ Un thème, un corrigé non attribué ou une consigne reconstruite ne suffit pas.
 
 ## P1.5 — corpus humain
 
-Le périmètre numérique actuel contient 253 pôles dont la consigne est marquée officielle. La politique exige au minimum 15 copies par pôle : **3 795 réponses réelles** au minimum, chacune avec :
+Le périmètre numérique actuel contient 277 pôles dont la consigne est marquée officielle (213 jusqu'au 2026-09-19 ; +48 par la structuration OCR des Maths 2013–2015 + 2017 استثنائية ; +16 par celle de SE 2021, toutes le 2026-09-20). La politique exige au minimum 15 copies par pôle : **4 155 réponses réelles** au minimum, chacune avec :
 
 - consentement et anonymisation vérifiables ;
 - transcription fidèle ;

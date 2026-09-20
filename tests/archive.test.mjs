@@ -22,38 +22,53 @@ import { ARCHIVE } from "../data/archive.js";
 
 const BAD_KEYWORDS = ["synthetic", "généré", "LLM", "GPT", "Claude", "Gemini", "chatbot", "fabriqué"];
 
-test("2021 SE reste cataloguée, sans contenu 4D inventé ni faux contentVerified", async () => {
+test("2021 SE : plus de carte d'archive — entraînement 4D structuré depuis l'OCR du sujet officiel", async () => {
   const se = ARCHIVE.entries.find((e) => e.year === "2021" && e.stream === "se");
   const maths = ARCHIVE.entries.find((e) => e.year === "2021" && e.stream === "m");
-  assert.ok(se && maths, "2021 se et m doivent exister");
-  assert.equal(se.viewer, "blocked");
-  assert.equal(se.contentVerified, false);
-  assert.equal(se.page, "access_confirmed");
-  assert.ok(se.pdfUrl.includes("2021/dzexams-bac-sciences-2728849.pdf"));
+  assert.equal(se, undefined, "2021/se n'est plus une carte d'archive (année 4D)");
+  assert.ok(maths, "2021 m doit rester cataloguée");
   assert.equal(maths.viewer, "ok");
   assert.equal(maths.contentVerified, true);
-  /* 2021 est désormais une épreuve « copie libre » : le sujet officiel est lu
-     dans l'application, mais AUCUNE consigne n'est encodée (couche texte
-     illisible). Ce n'est pas du 4D : aucun pôle, aucun inventaire, aucune note. */
+  /* 2021 est structurée 4D depuis le 2026-09-20 : consignes extraites par le
+     pipeline OCR du PDF officiel (scripts/extracted/SE/2021) — couche texte
+     aux chiffres corrompus. Une consigne officielle = LA question du sujet,
+     une seule par tâche (décision 6 du propriétaire). */
   const { APP_CONFIG, loadYear } = await import("../data/subjects.js");
   const se2021 = APP_CONFIG.years.find((y) => y.id === "2021" && (y.stream || "se") === "se");
   assert.ok(se2021 && se2021.enabled, "2021 ouvre une épreuve");
   const year2021 = await loadYear("2021");
-  assert.equal(year2021.answerMode, "free");
-  assert.ok(year2021.answerModeNote.length > 20);
+  assert.equal(year2021.answerMode, undefined, "plus d'armature « copie libre »");
+  /* Le champ `answerModeNote` a été SUPPRIMÉ des payloads le 2026-09-19. */
+  assert.equal(year2021.answerModeNote, undefined);
   for (const sujet of year2021.sujets) {
     assert.deepEqual(
       sujet.exercises.map((ex) => ex.max),
       [5, 7, 8]
     );
     for (const ex of sujet.exercises) {
-      assert.deepEqual(ex.poles, {}, `${sujet.id}/E${ex.number} ne doit encoder aucune consigne`);
+      assert.deepEqual(
+        Object.keys(ex.poles),
+        ["N", "S", "E", "W"],
+        `${sujet.id}/E${ex.number} doit avoir les 4 pôles`
+      );
+      for (const [key, pole] of Object.entries(ex.poles)) {
+        assert.ok(
+          pole.bacPrompt && pole.bacPrompt.length > 10,
+          `${sujet.id}/E${ex.number}/${key} doit porter une consigne`
+        );
+        assert.ok(
+          pole.modelAnswer && pole.modelAnswer.length >= pole.minLength,
+          `${sujet.id}/E${ex.number}/${key} doit avoir un corrigé`
+        );
+      }
     }
     assert.ok(sujet.pdfLocalUrl.startsWith("/subjects/SE/2021/"));
   }
   const { officialTaskInventoryFor } = await import("../data/official-tasks.js");
   for (const sujet of year2021.sujets) {
-    assert.equal(officialTaskInventoryFor("2021", sujet.id), null, "aucun inventaire inventé pour 2021");
+    const inventory = officialTaskInventoryFor("2021", sujet.id);
+    assert.ok(inventory, "inventaire généré pour 2021");
+    assert.equal(inventory.tasks.length, 12, "3 exercices × 4 pôles par sujet");
   }
 });
 
@@ -67,8 +82,8 @@ test("la session exceptionnelle 2016 Maths n'est pas inventée", () => {
   assert.ok(gap.reason.length > 20);
 });
 
-test("chaque année 2013–2021 a une session principale pour se et m, sauf SE 4D (2013–2020)", () => {
-  const seFourD = new Set(["2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"]);
+test("chaque année 2013–2021 a une session principale pour se et m, sauf SE 4D (2013–2021)", () => {
+  const seFourD = new Set(["2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021"]);
   for (let y = 2013; y <= 2021; y++) {
     const year = String(y);
     for (const stream of ["se", "m"]) {
@@ -189,13 +204,16 @@ test("Maths 2021–2026 et SE 2020/2026 sont du 4D ; Maths reste cataloguée (co
   }
 });
 
-test("la filière تقني رياضي n'a aucune entrée inventée", () => {
-  assert.equal(ARCHIVE.entries.filter((e) => e.stream === "tm").length, 0);
-  assert.ok(ARCHIVE.streams.tm);
-  const gap = ARCHIVE.gaps.find((g) => g.stream === "tm");
-  assert.ok(gap, "le trou TM doit rester documenté");
+test("l'espace باكالوريات أجنبية n'a aucune entrée inventée", () => {
+  assert.equal(ARCHIVE.entries.filter((e) => e.stream === "foreign").length, 0);
+  assert.ok(ARCHIVE.streams.foreign);
+  assert.equal(ARCHIVE.streams.foreign.label, "باكالوريات أجنبية");
+  // Aucune source étrangère n'a été vérifiée : pas d'indexUrl inventé.
+  assert.equal(ARCHIVE.streams.foreign.indexUrl, undefined);
+  const gap = ARCHIVE.gaps.find((g) => g.stream === "foreign");
+  assert.ok(gap, "l'espace vide doit rester documenté");
   assert.ok(gap.reason.length > 40);
-  assert.deepEqual(ARCHIVE.streamOrder, ["se", "m", "tm"]);
+  assert.deepEqual(ARCHIVE.streamOrder, ["se", "m", "foreign"]);
 });
 
 test("les entrées non vérifiées ont page=access_confirmed et viewer=blocked", () => {

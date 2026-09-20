@@ -14,15 +14,13 @@ const YEAR_2014_SE = {
   id: "2014",
   stream: "se",
   calendarYear: "2014",
-  label: "بكالوريا الجزائر دورة 2014",
-  badge: "أرشيف مُعاد بناؤه",
+  label: "بكالوريا الجزائر دورة 2014 — شعبة علوم تجريبية",
   theme: "amber",
   enabled: true,
   sujets: [
     {
       id: 1,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-4380238.pdf",
       pdfLocalUrl: "/subjects/SE/2014/sujet-1.pdf",
@@ -48,10 +46,9 @@ const YEAR_2014_SE = {
               minLength: 40,
               modelAnswer:
                 "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ مراحل تركيب البروتين في الظاهرة المدروسة؟",
-              answerStatus: "synthetic",
               rule: {
                 prompt: "تأطير الإشكالية حول: مراحل تركيب البروتين",
-                keywords: ["استنساخ", "ترجمة"],
+                keywords: ["استنساخ", "ترجمه"],
                 minHits: 2,
                 forbidden: []
               }
@@ -66,18 +63,17 @@ const YEAR_2014_SE = {
               placeholder: "نلاحظ... بينما... ومنه نستنتج...",
               minLength: 40,
               modelAnswer:
-                "تمثل الوثيقة تغيرات استنساخ بدلالة الزمن مقارنة بـ ترجمة. نلاحظ تغيرا واضحا في استنساخ مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع ترجمة.",
-              answerStatus: "synthetic",
+                "تمثل الوثيقة تغيرات استنساخ بدلالة الزمن مقارنة بـ ترجمه. نلاحظ تغيرا واضحا في استنساخ مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع ترجمه.",
               rule: {
                 prompt: "استغلال الوثيقة المتعلقة بـ مراحل تركيب البروتين",
-                keywords: ["استنساخ", "ترجمة", "نلاحظ"],
+                keywords: ["استنساخ", "ترجمه", "نلاحظ"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
                   axes: ["استنساخ", "زمن"],
-                  comparisons: [["استنساخ", "ترجمة"]],
-                  trends: [{ about: "استنساخ", expect: ["استنساخ", "ترجمة"] }],
+                  comparisons: [["استنساخ", "ترجمه"]],
+                  trends: [{ about: "استنساخ", expect: ["استنساخ", "ترجمه"] }],
                   values: [],
                   strictValues: false
                 }
@@ -93,11 +89,10 @@ const YEAR_2014_SE = {
               placeholder: "يعود ذلك إلى...",
               minLength: 120,
               modelAnswer:
-                "يعود ذلك إلى تدخل استنساخ وترجمة عبر آلية دقيقة تؤدي إلى بروتين، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
-              answerStatus: "synthetic",
+                "يعود ذلك إلى تدخل استنساخ وترجمه عبر آلية دقيقة تؤدي إلى بروتين، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ مراحل تركيب البروتين",
-                keywords: ["استنساخ", "ترجمة", "بروتين"],
+                keywords: ["استنساخ", "ترجمه", "بروتين"],
                 minHits: 3,
                 forbidden: []
               }
@@ -111,8 +106,7 @@ const YEAR_2014_SE = {
               ),
               placeholder: "في الختام...",
               minLength: 40,
-              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ استنساخ وترجمة فتُغلق الظاهرة على بروتين.",
-              answerStatus: "synthetic",
+              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ استنساخ وترجمه فتُغلق الظاهرة على بروتين.",
               rule: {
                 prompt: "الخاتمة التركيبية حول مراحل تركيب البروتين",
                 keywords: ["استنساخ", "بروتين", "ختام"],
@@ -125,24 +119,23 @@ const YEAR_2014_SE = {
         {
           number: 2,
           ui: "text",
-          label: "التثبيط الأنزيمي",
+          label: "التثبيط الإنزيمي",
           max: 7,
           desc: "تثبيط تنافسي وغير تنافسي على الموقع الفعال",
           poles: {
             N: {
               points: 1,
-              prompt: "تأطير الإشكالية حول: التثبيط الأنزيمي",
-              bacPrompt: "ما المشكل العلمي المرتبط بـ التثبيط الأنزيمي؟",
+              prompt: "تأطير الإشكالية حول: التثبيط الإنزيمي",
+              bacPrompt: "ما المشكل العلمي المرتبط بـ التثبيط الإنزيمي؟",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
               placeholder: "صياغة المشكل العلمي...",
               minLength: 40,
               modelAnswer:
-                "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ التثبيط الأنزيمي في الظاهرة المدروسة؟",
-              answerStatus: "synthetic",
+                "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ التثبيط الإنزيمي في الظاهرة المدروسة؟",
               rule: {
-                prompt: "تأطير الإشكالية حول: التثبيط الأنزيمي",
+                prompt: "تأطير الإشكالية حول: التثبيط الإنزيمي",
                 keywords: ["تثبيط", "موقع"],
                 minHits: 2,
                 forbidden: []
@@ -150,8 +143,8 @@ const YEAR_2014_SE = {
             },
             S: {
               points: 2.5,
-              prompt: "استغلال الوثيقة المتعلقة بـ التثبيط الأنزيمي",
-              bacPrompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ التثبيط الأنزيمي.",
+              prompt: "استغلال الوثيقة المتعلقة بـ التثبيط الإنزيمي",
+              bacPrompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ التثبيط الإنزيمي.",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
@@ -159,9 +152,8 @@ const YEAR_2014_SE = {
               minLength: 90,
               modelAnswer:
                 "تمثل الوثيقة تغيرات تثبيط بدلالة الزمن مقارنة بـ موقع. نلاحظ تغيرا واضحا في تثبيط مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع موقع.",
-              answerStatus: "synthetic",
               rule: {
-                prompt: "استغلال الوثيقة المتعلقة بـ التثبيط الأنزيمي",
+                prompt: "استغلال الوثيقة المتعلقة بـ التثبيط الإنزيمي",
                 keywords: ["تثبيط", "موقع", "نلاحظ"],
                 minHits: 2,
                 forbidden: ["بسبب"],
@@ -177,37 +169,35 @@ const YEAR_2014_SE = {
             },
             E: {
               points: 2.5,
-              prompt: "تفسير الآلية المرتبطة بـ التثبيط الأنزيمي",
-              bacPrompt: "اشرح الآلية التي تفسر التثبيط الأنزيمي انطلاقا من الوثيقة ومعلوماتك.",
+              prompt: "تفسير الآلية المرتبطة بـ التثبيط الإنزيمي",
+              bacPrompt: "اشرح الآلية التي تفسر التثبيط الإنزيمي انطلاقا من الوثيقة ومعلوماتك.",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
               placeholder: "يعود ذلك إلى...",
               minLength: 110,
               modelAnswer:
-                "يعود ذلك إلى تدخل تثبيط وموقع عبر آلية دقيقة تؤدي إلى ركيزة، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
-              answerStatus: "synthetic",
+                "يعود ذلك إلى تدخل تثبيط وموقع عبر آلية دقيقة تؤدي إلى ركيزه، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
               rule: {
-                prompt: "تفسير الآلية المرتبطة بـ التثبيط الأنزيمي",
-                keywords: ["تثبيط", "موقع", "ركيزة"],
+                prompt: "تفسير الآلية المرتبطة بـ التثبيط الإنزيمي",
+                keywords: ["تثبيط", "موقع", "ركيزه"],
                 minHits: 3,
                 forbidden: []
               }
             },
             W: {
               points: 1,
-              prompt: "الخاتمة التركيبية حول التثبيط الأنزيمي",
-              bacPrompt: "لخّص النتيجة النهائية المرتبطة بـ التثبيط الأنزيمي.",
+              prompt: "الخاتمة التركيبية حول التثبيط الإنزيمي",
+              bacPrompt: "لخّص النتيجة النهائية المرتبطة بـ التثبيط الإنزيمي.",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
               placeholder: "في الختام...",
               minLength: 40,
-              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ تثبيط وموقع فتُغلق الظاهرة على ركيزة.",
-              answerStatus: "synthetic",
+              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ تثبيط وموقع فتُغلق الظاهرة على ركيزه.",
               rule: {
-                prompt: "الخاتمة التركيبية حول التثبيط الأنزيمي",
-                keywords: ["تثبيط", "ركيزة", "ختام"],
+                prompt: "الخاتمة التركيبية حول التثبيط الإنزيمي",
+                keywords: ["تثبيط", "ركيزه", "ختام"],
                 minHits: 2,
                 forbidden: []
               }
@@ -232,7 +222,6 @@ const YEAR_2014_SE = {
               minLength: 30,
               modelAnswer:
                 "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ الدفاع عن الذات في الظاهرة المدروسة؟",
-              answerStatus: "synthetic",
               rule: {
                 prompt: "تأطير الإشكالية حول: الدفاع عن الذات",
                 keywords: ["ذات", "لاذات"],
@@ -251,7 +240,6 @@ const YEAR_2014_SE = {
               minLength: 60,
               modelAnswer:
                 "تمثل الوثيقة تغيرات ذات بدلالة الزمن مقارنة بـ لاذات. نلاحظ تغيرا واضحا في ذات مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع لاذات.",
-              answerStatus: "synthetic",
               rule: {
                 prompt: "استغلال الوثيقة المتعلقة بـ الدفاع عن الذات",
                 keywords: ["ذات", "لاذات", "نلاحظ"],
@@ -278,7 +266,6 @@ const YEAR_2014_SE = {
               minLength: 110,
               modelAnswer:
                 "يعود ذلك إلى تدخل ذات ولاذات عبر آلية دقيقة تؤدي إلى تعرف، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
-              answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ الدفاع عن الذات",
                 keywords: ["ذات", "لاذات", "تعرف"],
@@ -296,7 +283,6 @@ const YEAR_2014_SE = {
               placeholder: "ذات → لاذات → تعرف",
               minLength: 40,
               modelAnswer: "عنوان المخطط: ذات. ذات → لاذات → تعرف.",
-              answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول الدفاع عن الذات",
                 keywords: ["مخطط", "ذات", "تعرف"],
@@ -312,7 +298,6 @@ const YEAR_2014_SE = {
     {
       id: 2,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl:
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-4380238.pdf",
       pdfLocalUrl: "/subjects/SE/2014/sujet-2.pdf",
@@ -337,10 +322,9 @@ const YEAR_2014_SE = {
               placeholder: "صياغة المشكل العلمي...",
               minLength: 40,
               modelAnswer: "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ كمون الراحة في الظاهرة المدروسة؟",
-              answerStatus: "synthetic",
               rule: {
                 prompt: "تأطير الإشكالية حول: كمون الراحة",
-                keywords: ["راحة", "مضخة"],
+                keywords: ["راحه", "مضخه"],
                 minHits: 2,
                 forbidden: []
               }
@@ -355,18 +339,17 @@ const YEAR_2014_SE = {
               placeholder: "نلاحظ... بينما... ومنه نستنتج...",
               minLength: 40,
               modelAnswer:
-                "تمثل الوثيقة تغيرات راحة بدلالة الزمن مقارنة بـ مضخة. نلاحظ تغيرا واضحا في راحة مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع مضخة.",
-              answerStatus: "synthetic",
+                "تمثل الوثيقة تغيرات راحه بدلالة الزمن مقارنة بـ مضخه. نلاحظ تغيرا واضحا في راحه مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع مضخه.",
               rule: {
                 prompt: "استغلال الوثيقة المتعلقة بـ كمون الراحة",
-                keywords: ["راحة", "مضخة", "نلاحظ"],
+                keywords: ["راحه", "مضخه", "نلاحظ"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
-                  axes: ["راحة", "زمن"],
-                  comparisons: [["راحة", "مضخة"]],
-                  trends: [{ about: "راحة", expect: ["راحة", "مضخة"] }],
+                  axes: ["راحه", "زمن"],
+                  comparisons: [["راحه", "مضخه"]],
+                  trends: [{ about: "راحه", expect: ["راحه", "مضخه"] }],
                   values: [],
                   strictValues: false
                 }
@@ -382,11 +365,10 @@ const YEAR_2014_SE = {
               placeholder: "يعود ذلك إلى...",
               minLength: 120,
               modelAnswer:
-                "يعود ذلك إلى تدخل راحة ومضخة عبر آلية دقيقة تؤدي إلى شوارد، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
-              answerStatus: "synthetic",
+                "يعود ذلك إلى تدخل راحه ومضخه عبر آلية دقيقة تؤدي إلى شوارد، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ كمون الراحة",
-                keywords: ["راحة", "مضخة", "شوارد"],
+                keywords: ["راحه", "مضخه", "شوارد"],
                 minHits: 3,
                 forbidden: []
               }
@@ -400,11 +382,10 @@ const YEAR_2014_SE = {
               ),
               placeholder: "في الختام...",
               minLength: 40,
-              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ راحة ومضخة فتُغلق الظاهرة على شوارد.",
-              answerStatus: "synthetic",
+              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ راحه ومضخه فتُغلق الظاهرة على شوارد.",
               rule: {
                 prompt: "الخاتمة التركيبية حول كمون الراحة",
-                keywords: ["راحة", "شوارد", "ختام"],
+                keywords: ["راحه", "شوارد", "ختام"],
                 minHits: 2,
                 forbidden: []
               }
@@ -429,7 +410,6 @@ const YEAR_2014_SE = {
               minLength: 40,
               modelAnswer:
                 "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ تحويل الطاقة في الميتوكوندري في الظاهرة المدروسة؟",
-              answerStatus: "synthetic",
               rule: {
                 prompt: "تأطير الإشكالية حول: تحويل الطاقة في الميتوكوندري",
                 keywords: ["ميتوكوندري", "نواقل"],
@@ -448,7 +428,6 @@ const YEAR_2014_SE = {
               minLength: 90,
               modelAnswer:
                 "تمثل الوثيقة تغيرات ميتوكوندري بدلالة الزمن مقارنة بـ نواقل. نلاحظ تغيرا واضحا في ميتوكوندري مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع نواقل.",
-              answerStatus: "synthetic",
               rule: {
                 prompt: "استغلال الوثيقة المتعلقة بـ تحويل الطاقة في الميتوكوندري",
                 keywords: ["ميتوكوندري", "نواقل", "نلاحظ"],
@@ -475,7 +454,6 @@ const YEAR_2014_SE = {
               minLength: 110,
               modelAnswer:
                 "يعود ذلك إلى تدخل ميتوكوندري ونواقل عبر آلية دقيقة تؤدي إلى ATP، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
-              answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ تحويل الطاقة في الميتوكوندري",
                 keywords: ["ميتوكوندري", "نواقل", "ATP"],
@@ -493,7 +471,6 @@ const YEAR_2014_SE = {
               placeholder: "في الختام...",
               minLength: 40,
               modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ ميتوكوندري ونواقل فتُغلق الظاهرة على ATP.",
-              answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول تحويل الطاقة في الميتوكوندري",
                 keywords: ["ميتوكوندري", "ATP", "ختام"],
@@ -521,7 +498,6 @@ const YEAR_2014_SE = {
               minLength: 30,
               modelAnswer:
                 "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ النشاط التكتوني في الظاهرة المدروسة؟",
-              answerStatus: "synthetic",
               rule: {
                 prompt: "تأطير الإشكالية حول: النشاط التكتوني",
                 keywords: ["زلزال", "حدود"],
@@ -540,7 +516,6 @@ const YEAR_2014_SE = {
               minLength: 60,
               modelAnswer:
                 "تمثل الوثيقة تغيرات زلزال بدلالة الزمن مقارنة بـ حدود. نلاحظ تغيرا واضحا في زلزال مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع حدود.",
-              answerStatus: "synthetic",
               rule: {
                 prompt: "استغلال الوثيقة المتعلقة بـ النشاط التكتوني",
                 keywords: ["زلزال", "حدود", "نلاحظ"],
@@ -567,7 +542,6 @@ const YEAR_2014_SE = {
               minLength: 110,
               modelAnswer:
                 "يعود ذلك إلى تدخل زلزال وحدود عبر آلية دقيقة تؤدي إلى صفائح، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
-              answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ النشاط التكتوني",
                 keywords: ["زلزال", "حدود", "صفائح"],
@@ -585,7 +559,6 @@ const YEAR_2014_SE = {
               placeholder: "زلزال → حدود → صفائح",
               minLength: 40,
               modelAnswer: "عنوان المخطط: زلزال. زلزال → حدود → صفائح.",
-              answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول النشاط التكتوني",
                 keywords: ["مخطط", "زلزال", "صفائح"],

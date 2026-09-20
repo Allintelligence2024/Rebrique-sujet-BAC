@@ -32,6 +32,7 @@ await loadAllYears();
 const { init } = await import("../js/ui.js");
 const { store } = await import("../js/store.js");
 const { soundEngine, timers } = await import("../js/engine.js");
+const { officialTaskInventoryFor } = await import("../data/official-tasks.js");
 await init();
 
 after(() => {
@@ -101,54 +102,33 @@ test('1b. SE 2013–2026 en épreuve : 4D partout, 2021 en armature "copie libre
   assert.ok(!$("#view-hub").classList.contains("hidden"));
 });
 
-test("1c. Le bouton filière affiche Maths puis le trou تقني رياضي", () => {
+test("1c. Le bouton filière affiche Maths puis l'espace باكالوريات أجنبية", () => {
   click("#btn-stream-fab");
   assert.match($("#stream-fab-label").textContent, /رياضيات/);
-  assert.equal(
-    $$("#year-grid [data-year]").length,
-    14,
-    "quatorze entraînements 4D Maths (2013–2026) ; la filière maths est complète"
-  );
+  /* 14 épreuves Maths : 6 entraînements 4D (2021–2026) + 8 armatures
+     « copie libre » (2013–2020, aucune consigne encodée). */
+  assert.equal($$("#year-grid [data-year]").length, 15);
   assert.equal($('#year-grid [data-hub-year="2021"]').dataset.kind, "exam");
   assert.equal($('#year-grid [data-year="2021-m"]').disabled, false);
-  // 14 cartes-épreuve (2013-m … 2026-m) + 1 carte de consultation
-  // (la session exceptionnelle 2017) : chaque carte 20xx principale devient
-  // celle de l'épreuve dès que l'année est encodée, la consultation de la
-  // session exceptionnelle 2017 restant attachée à sa propre carte.
+  /* 15 cartes = 14 millésimes + la session exceptionnelle 2017, qui a ses
+     propres fichiers et ses propres sujets. */
   assert.equal($$("#year-grid .year-card").length, 15);
-  assert.equal(
-    $('#year-grid [data-hub-year="2017-exceptionnelle"]').dataset.kind,
-    "consult",
-    "la session exceptionnelle 2017 reste consultable"
-  );
+  assert.ok($('#year-grid [data-year="2017-em"]'), "la session exceptionnelle doit rester atteignable");
   assert.ok($('#year-grid [data-hub-year="2026"]'));
   assert.ok($('#year-grid [data-hub-year="2022"]'));
   assert.ok($('#year-grid [data-hub-year="2021"]'));
   assert.ok($('#year-grid [data-hub-year="2013"]'));
-  assert.ok($('#year-grid [data-hub-year="2014"]'));
+  // 2013–2020 ne sont plus des cartes de consultation : elles ouvrent l'épreuve.
+  for (const year of ["2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"]) {
+    assert.equal(
+      $('#year-grid [data-hub-year="' + year + '"]').dataset.kind,
+      "exam",
+      year + " Maths doit ouvrir une épreuve"
+    );
+    assert.equal($('#year-grid [data-year="' + year + '-m"]').disabled, false, year + " -m actif");
+  }
   const links = $$('#year-grid [data-kind="consult"] a[href*="dzexams.com/ar/annales/"]');
-  assert.equal(
-    links.length,
-    1,
-    "filière Maths : seule la session exceptionnelle 2017 reste en consultation ; 2013 à 2026 sont des épreuves"
-  );
-  assert.equal($('#year-grid [data-hub-year="2020"]').dataset.kind, "exam", "2020-m ouvre une épreuve");
-  assert.equal($('#year-grid [data-hub-year="2016"]').dataset.kind, "exam", "2016-m ouvre une épreuve");
-  assert.equal($('#year-grid [data-year="2016-m"]').disabled, false, "2016-m ouvre une épreuve");
-  assert.equal($('#year-grid [data-hub-year="2015"]').dataset.kind, "exam", "2015-m ouvre une épreuve");
-  assert.equal($('#year-grid [data-year="2015-m"]').disabled, false, "2015-m ouvre une épreuve");
-  assert.equal($('#year-grid [data-hub-year="2014"]').dataset.kind, "exam", "2014-m ouvre une épreuve");
-  assert.equal($('#year-grid [data-year="2014-m"]').disabled, false, "2014-m ouvre une épreuve");
-  assert.equal($('#year-grid [data-hub-year="2013"]').dataset.kind, "exam", "2013-m ouvre une épreuve");
-  assert.equal($('#year-grid [data-year="2013-m"]').disabled, false, "2013-m ouvre une épreuve");
-  assert.equal($('#year-grid [data-year="2017-m"]').disabled, false, "2017-m ouvre une épreuve");
-  assert.equal($('#year-grid [data-year="2018-m"]').disabled, false, "2018-m ouvre une épreuve");
-  assert.equal($('#year-grid [data-year="2019-m"]').disabled, false, "2019-m ouvre une épreuve");
-  assert.equal(
-    $('#year-grid [data-hub-year="2019"]').dataset.kind,
-    "exam",
-    "la carte 2019 est celle de l'épreuve"
-  );
+  assert.equal(links.length, 0, "filière Maths : chaque millésime ouvre une épreuve dans l'application");
 
   click('#year-grid [data-year="2026-m"]');
   assert.match($("#view-guide").textContent, /2س30د/);
@@ -158,12 +138,12 @@ test("1c. Le bouton filière affiche Maths puis le trou تقني رياضي", ()
   click("#strategy-exit");
 
   click("#btn-stream-fab");
-  assert.match($("#stream-fab-label").textContent, /تقني رياضي/);
+  assert.match($("#stream-fab-label").textContent, /باكالوريات أجنبية/);
   assert.equal($$('#year-grid [data-kind="gap"]').length, 1);
   assert.equal(
     $$('#year-grid a[href*="dzexams.com/ar/annales/"]').length,
     0,
-    "aucun annales inventé pour TM"
+    "aucun lien dzexams pour un espace qui n'indexe pas le BAC algérien"
   );
   click("#btn-stream-fab");
   assert.match($("#stream-fab-label").textContent, /علوم تجريبية/);
@@ -223,23 +203,21 @@ test("3. Stratégie : calculatrice, inventaire officiel et confirmation", () => 
   click('#view-strategy [data-confirm="1"][data-session-mode="bac"]');
   assert.equal(store.state.sessionMode, "bac");
   assert.ok(!$("#view-workspace").classList.contains("hidden"));
-  // Régression : l'écran gardait le « data-answer-mode » de la session
-  // précédente (un sujet inventorié s'affichait comme une copie libre).
-  assert.equal($("#view-workspace").dataset.answerMode, "inventory");
 });
 
 test("4. L'écran onboarding n'existe plus et les exercices restent librement accessibles", () => {
   assert.equal($("#view-onboarding"), null, "view-onboarding supprimé du DOM");
   assert.equal($("#ws-onb"), null, "le bouton vers l'ancien écran est retiré de la copie");
-  click('#view-workspace [data-simulation-exercise="2"]');
-  assert.equal(
-    store.state.activeExercise,
-    2,
-    "le changement d'exercice ne doit pas être artificiellement verrouillé"
+  /* Tous les exercices du sujet sont sur la même copie : aucun verrou, aucun
+     changement d'écran artificiel. Décision du propriétaire (2026-09-20) :
+     l'épreuve affiche les EXERCICES du sujet, jamais les questions. */
+  const fields = $$("#view-workspace [data-exercise-free]");
+  assert.equal(fields.length, 3, "2025 SE : trois exercices, trois champs");
+  assert.deepEqual(
+    fields.map((field) => Number(field.dataset.exercise)),
+    [1, 2, 3]
   );
-  assert.ok(!$("#view-workspace").classList.contains("hidden"));
-  click('#view-workspace [data-simulation-exercise="1"]');
-  assert.equal(store.state.activeExercise, 1);
+  for (const field of fields) assert.equal(field.disabled, false);
 });
 
 test("5. Épreuve : les seuls outils sont le sujet, la sortie et la remise", () => {
@@ -262,45 +240,51 @@ test("5. Épreuve : les seuls outils sont le sujet, la sortie et la remise", () 
   assert.equal(store.state.sessionStatus, "active", "la session continue si l'élève refuse");
 });
 
-test("6. Épreuve : les tâches du sujet sont visibles et peuvent être rédigées", () => {
-  const taskText = $$("#view-workspace .simulation-task")
-    .map((task) => task.textContent)
-    .join(" ");
-  assert.match(taskText, /2025-S1-E1-Q1/);
-  assert.match(taskText, /2025-S1-E1-Q2/);
-  // Chaque tâche porte sa provenance ; aucune n'affiche de note.
-  assert.equal(
-    $$("#view-workspace [data-task-source]").length,
-    $$("#view-workspace .simulation-task").length
-  );
+test("6. Épreuve : les exercices avec leur barème, AUCUNE question affichée", () => {
+  /* Décision du propriétaire (2026-09-20) : l'écran d'épreuve n'affiche plus
+     aucune question — officielle ou reconstruite. Les questions se lisent
+     dans le sujet officiel (PDF), l'écran porte les exercices et le barème. */
+  assert.equal($$("#view-workspace [data-task-answer]").length, 0, "aucune tâche affichée");
+  assert.equal($$("#view-workspace .bac-consigne").length, 0, "aucune consigne affichée");
+  const inventory = officialTaskInventoryFor("2025", 1);
+  for (const task of inventory.tasks) {
+    const prompt = String(task.prompt || "");
+    if (prompt.length < 20) continue;
+    assert.ok(
+      !$("#view-workspace").textContent.includes(prompt.slice(0, 25)),
+      "le texte d'une consigne ne doit pas apparaître dans l'épreuve"
+    );
+  }
+  // Le barème officiel dépendant de l'année et de la filière : 5+7+8 = 20.
+  assert.match($("#view-workspace").textContent, /5 نقطة/);
+  assert.match($("#view-workspace").textContent, /7 نقطة/);
+  assert.match($("#view-workspace").textContent, /8 نقطة/);
+  assert.match($("#view-workspace").textContent, /بارم الموضوع/);
   assert.doesNotMatch($("#view-workspace").textContent, /\d+[.,]\d+\s*\/\s*\d+/);
-  // Rédaction libre : le texte est conservé, sans validation de note.
-  const input = $('#view-workspace [data-task-answer="2025-S1-E1-Q1"]');
+  // Rédaction par exercice : le texte est conservé, sans validation de note.
+  const input = $('#view-workspace [data-exercise-free="1"]');
   input.value = "إجابة الطالب في الإمتحان";
   input.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
-  assert.equal(store.exercise("2025", 1, 1).officialTaskAnswers["2025-S1-E1-Q1"], "إجابة الطالب في الإمتحان");
-  // Le contrôle qualité n'est pas un corrigé : il ne rend pas de note.
-  click('#view-workspace [data-qualitative-for="2025-S1-E1-Q1"]');
-  const result = $('#view-workspace [data-qualitative-result="2025-S1-E1-Q1"]');
-  assert.notEqual(result.textContent.trim(), "");
-  assert.doesNotMatch(result.textContent, /\d+[.,]\d+\s*\/\s*\d+/);
+  assert.equal(store.exercise("2025", 1, 1).freeAnswer, "إجابة الطالب في الإمتحان");
+  // « اختبار صامت » promet l'absence de diagnostic PENDANT l'épreuve : aucun
+  // contrôle d'évaluation ne doit y être rendu. Il réapparaît en relecture.
+  assert.equal($("#view-workspace .qualitative-check"), null, "aucun bouton تقييم نوعي en épreuve");
 });
 
-test("7. Épreuve : transition vers l'exercice 3 et rédaction complète", () => {
-  click('#view-workspace [data-simulation-exercise="3"]');
-  assert.equal(store.state.activeExercise, 3);
-  const tasks = $$("#view-workspace .simulation-task");
-  assert.ok(tasks.length > 0, "l'exercice 3 propose ses tâches");
-  for (const input of $$("#view-workspace [data-task-answer]")) {
+test("7. Épreuve : rédaction complète de tous les exercices du sujet", () => {
+  const fields = $$("#view-workspace [data-exercise-free]");
+  assert.equal(fields.length, 3);
+  for (const input of fields) {
     input.value = "إجابة كاملة";
     input.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
   }
-  const progress = store.exercise("2025", 1, 3);
-  assert.equal(Object.keys(progress.officialTaskAnswers).length, tasks.length);
-  assert.ok(
-    Object.values(progress.officialTaskAnswers).every((answer) => answer === "إجابة كاملة"),
-    "toutes les réponses de l'exercice sont conservées"
-  );
+  for (const exerciseNumber of [1, 2, 3]) {
+    assert.equal(
+      store.exercise("2025", 1, exerciseNumber).freeAnswer,
+      "إجابة كاملة",
+      `la réponse de l'exercice ${exerciseNumber} est conservée`
+    );
+  }
 });
 
 test("8-9. Ni rapport, ni réinitialisation : la remise est la seule sortie", () => {
@@ -314,8 +298,19 @@ test("8-9. Ni rapport, ni réinitialisation : la remise est la seule sortie", ()
   assert.equal(store.state.sessionStatus, "completed");
   assert.equal(store.state.sessionEndReason, "manual");
   assert.equal($("#view-workspace").dataset.reviewMode, "true");
-  assert.equal($("#view-workspace [data-task-answer]").disabled, true);
+  assert.equal($("#view-workspace [data-exercise-free]").disabled, true);
   assert.equal($("#simulation-finish"), null, "plus de remise après remise");
+  // L'évaluation qualitative a été déplacée ici : en relecture le diagnostic
+  // est permis, et il ne reste pas un corrigé — aucune note n'est rendue.
+  // (Un bouton par exercice : on ne présuppose donc pas un id.)
+  const reviewButton = $("#view-workspace [data-qualitative-free]");
+  assert.ok(reviewButton, "l'évaluation qualitative doit être disponible en relecture");
+  click(`#view-workspace [data-qualitative-free="${reviewButton.dataset.qualitativeFree}"]`);
+  const result = $(
+    `#view-workspace [data-qualitative-result-free="${reviewButton.dataset.qualitativeFree}"]`
+  );
+  assert.notEqual(result.textContent.trim(), "");
+  assert.doesNotMatch(result.textContent, /\d+[.,]\d+\s*\/\s*\d+/);
   // Retour au hub.
   click("#simulation-home");
   assert.ok(!$("#view-hub").classList.contains("hidden"));
@@ -329,25 +324,4 @@ test("10. La copie n'affiche aucun indice de confiance ni barème", () => {
   assert.equal($$("#view-workspace .confidence-chip").length, 0, "aucun indice de confiance en épreuve");
   assert.doesNotMatch($("#view-workspace").textContent, /ثقة (مرتفعة|متوسطة|منخفضة)/);
   assert.match($("#view-workspace").textContent, /اختبار صامت/);
-});
-
-test("l'écran de choix n'ancre aucune estimation : les champs partent vides", async () => {
-  // Biais relevé dans l'analyse (§5, `strategy.js:130`) : chaque champ était
-  // pré-rempli à 75 % du maximum, ce qui suggérait une estimation que l'élève
-  // n'avait pas faite. Les champs sont vides, le maximum reste visible en
-  // indication, et la somme part de zéro tant que l'élève n'a rien saisi.
-  click('#year-grid [data-year="2025"]');
-  click("#guide-next");
-  const inputs = $$("#view-strategy .calc-input");
-  assert.ok(inputs.length >= 2, "les estimations doivent rester saisissables");
-  for (const input of inputs) {
-    assert.equal(input.value, "", `champ pré-rempli : ${input.id} = ${input.value}`);
-    assert.equal(input.getAttribute("placeholder"), `من ${input.dataset.max}`);
-  }
-  assert.match($("#s1-total").textContent, /^0\.00 \/ \d+\.\d{2}$/);
-  const input = inputs[0];
-  input.value = "4";
-  input.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
-  assert.match($("#s1-total").textContent, /^4\.00 \/ \d+\.\d{2}$/);
-  click("#strategy-exit");
 });

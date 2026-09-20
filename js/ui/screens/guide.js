@@ -1,10 +1,17 @@
 /* ============================================================
-   GUIDE SCREEN — أساس الهدوء (écran de calme, flux examen)
+   GUIDE SCREEN — préparation avant le sujet (flux examen)
    ------------------------------------------------------------
    Règle de simplicité : cet écran appartient au flux d'examen.
-   Trois éléments maximum : respiration, plan de session, suite.
+   Trois éléments : respiration, durée officielle, suite.
    L'épreuve est le seul mode : aucune aide méthodologique n'est affichée
-   ici, seulement la préparation ( respiration + plan ) avant le sujet.
+   ici, seulement la préparation avant le sujet.
+
+   Retiré le 2026-09-19 à la demande du propriétaire, parce que ces textes
+   distraient l'élève au lieu de le préparer : le titre de l'écran, son
+   sous-titre de « séance de cadrage psychologique », la phrase
+   d'encouragement et le rappel des quatre étapes de la méthode (اقرأ، اجمع،
+   اربط، اختُم). La méthode reste enseignée là où l'élève en a besoin : dans
+   l'épreuve, consigne par consigne — pas dans un écran qu'il doit traverser.
    ============================================================ */
 
 import { setInternalHTML } from "../dom.js";
@@ -20,9 +27,7 @@ export function createGuideScreen(deps) {
       <header class="screen-head">
         <div class="brand">
           <button class="btn btn-rose btn-sm" id="guide-exit">✕ إلغاء والعودة</button>
-          <div class="brand-icon">🌿</div>
-          <div><h2 id="guide-title">أساس الهدوء والتركيز المنهجي</h2>
-          <p class="small text-emerald">جلسة التأطير النفسي والتنفس الموجه — بكالوريا ${y.calendarYear || y.id}</p></div>
+          <div class="brand-icon" aria-hidden="true">🌿</div>
         </div>
       </header>
 
@@ -30,21 +35,14 @@ export function createGuideScreen(deps) {
         <div class="card center stack">
           <div class="breath">تنفس بعمق</div>
           <div>
-            <h3 class="mt-0">أنت تمتلك كافة المكتسبات، ركّز فقط على خطواتك الأربع.</h3>
-            <p class="small text-muted">خذ شهيقاً 4 ثوانٍ، احبس 4 ثوانٍ، ثم ازفر ببطء 4 ثوانٍ لطرد التوتر.</p>
+            <p class="small text-muted mt-0">خذ شهيقاً 4 ثوانٍ، احبس 4 ثوانٍ، ثم ازفر ببطء 4 ثوانٍ لطرد التوتر.</p>
           </div>
         </div>
         ${adkarHTML()}
         <div class="card center stack">
-          <p class="mt-0 mb-0"><b>الخطوات الأربع:</b>
-          <span class="text-emerald">اقرأ</span> ← <span class="text-indigo">اجمع</span> ←
-          <span class="text-amber">اربط</span> ← <span class="text-purple">اختُم</span>
-          <span class="small text-muted"> — خطوة واحدة في كل مرة، والقرار قبل الكتابة.</span></p>
-        </div>
-        <div class="card center stack">
           <p class="small text-muted mt-0 mb-0">مدة الاختبار الرسمية لهذه الشعبة: <b>${formatDuration(
             examMinutesForYear(y)
-          )}</b>. خطتك هنا: <b>25 د</b> لتصفح الموضوع وتقدير الثقة، ثم تطبيق الخطوات الأربع.</p>
+          )}</b>. خطتك هنا: <b>25 د</b> لتصفح الموضوع وتقدير ثقتك في كل تمرين.</p>
           <p class="small text-amber mt-0 mb-0">هذه مرحلة تحضير: اقرأ الموضوع كاملاً في الشاشة التالية قبل اختياره.</p>
         </div>
         <div class="flex justify-end">

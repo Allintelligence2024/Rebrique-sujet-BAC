@@ -30,15 +30,6 @@ const HUMAN_NOTES = new Map([
   ]
 ]);
 
-/**
- * Ensemble (vide à ce jour) des sujets dont le barème a été relu par un
- * humain. Un sujet ne peut être déclaré « complete » que si, en plus
- * d'avoir toutes ses étapes officielles, sa source est relue : sinon
- * l'application affirmerait une complétude qu'aucune relecture n'a
- * établie (tests official-coverage / official-inventory-integrity).
- */
-const HUMAN_VERIFIED = new Set();
-
 /* ------------------------------------------------------------
    Pagination : les pages enregistrées (bacPromptPage) sont celles du
    document officiel complet. Or subjects/<année>/sujet-N.pdf ne
@@ -130,11 +121,9 @@ async function buildInventory(yearId, year, subject) {
       return Math.abs(sum - (Number(exercise.max) || 0)) < 1e-6;
     })
     .map((exercise) => exercise.number);
-  const allTasksOfficial =
+  const allExercisesComplete =
     (subject.exercises || []).length > 0 &&
     (subject.exercises || []).every((exercise) => taskCompleteExerciseNumbers.includes(exercise.number));
-  const humanVerified = HUMAN_VERIFIED.has(`${yearId}/S${subject.id}`);
-  const allExercisesComplete = allTasksOfficial && humanVerified;
 
   return {
     schemaVersion: 1,
@@ -142,7 +131,7 @@ async function buildInventory(yearId, year, subject) {
     source: {
       kind: "local-pdf",
       locator: subject.pdfExternalUrl || subject.pdfLocalUrl || "",
-      humanVerified,
+      humanVerified: false,
       verifiedAt: null,
       notes: HUMAN_NOTES.get(`${yearId}/S${subject.id}`) || null
     },

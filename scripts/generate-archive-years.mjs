@@ -1244,18 +1244,12 @@ const REST = [
   }
 ];
 
-/* Les pôles ci-dessous sont des GABARITS : leurs « réponses modèle » sont des
-   phrases fabriquées par concaténation de mots-clés, pas des corrigés rédigés.
-   Elles restent utiles au moteur d'audit (qui les évalue contre leur propre
-   règle) mais ne doivent JAMAIS être montrées à l'élève comme un modèle :
-   d'où `answerStatus: "synthetic"`, lu par l'écran de relecture. */
 function genericPoles(max, k1, k2, k3, label) {
   const n = {
     prompt: `تأطير الإشكالية حول: ${label}`,
     bacPrompt: `ما المشكل العلمي المرتبط بـ ${label}؟`,
     notes: NOTE_SEC,
     placeholder: "صياغة المشكل العلمي...",
-    answerStatus: "synthetic",
     modelAnswer: `المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ ${label} في الظاهرة المدروسة؟`,
     keywords: [k1, k2]
   };
@@ -1264,7 +1258,6 @@ function genericPoles(max, k1, k2, k3, label) {
     bacPrompt: `حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ ${label}.`,
     notes: NOTE_SEC,
     placeholder: "نلاحظ... بينما... ومنه نستنتج...",
-    answerStatus: "synthetic",
     modelAnswer: `تمثل الوثيقة تغيرات ${k1} بدلالة الزمن مقارنة بـ ${k2}. نلاحظ تغيرا واضحا في ${k1} مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع ${k2}.`,
     keywords: [k1, k2, "نلاحظ"],
     extra: {
@@ -1283,7 +1276,6 @@ function genericPoles(max, k1, k2, k3, label) {
     bacPrompt: `اشرح الآلية التي تفسر ${label} انطلاقا من الوثيقة ومعلوماتك.`,
     notes: NOTE_SEC,
     placeholder: "يعود ذلك إلى...",
-    answerStatus: "synthetic",
     modelAnswer: `يعود ذلك إلى تدخل ${k1} و${k2} عبر آلية دقيقة تؤدي إلى ${k3}، فتتغير الوظيفة النهائية للظاهرة المدروسة.`,
     keywords: [k1, k2, k3]
   };
@@ -1292,7 +1284,6 @@ function genericPoles(max, k1, k2, k3, label) {
     bacPrompt: `لخّص النتيجة النهائية المرتبطة بـ ${label}.`,
     notes: NOTE_SEC,
     placeholder: "في الختام...",
-    answerStatus: "synthetic",
     modelAnswer: `في الختام، ترتبط النتيجة النهائية بـ ${k1} و${k2} فتُغلق الظاهرة على ${k3}.`,
     keywords: [k1, k3, "ختام"]
   };
@@ -1301,7 +1292,6 @@ function genericPoles(max, k1, k2, k3, label) {
   const w8 = {
     ...w,
     extra: { schema: { arrows: true, title: k1, ordered: [k1, k2, k3] } },
-    answerStatus: "synthetic",
     modelAnswer: `عنوان المخطط: ${k1}. ${k1} → ${k2} → ${k3}.`,
     keywords: ["مخطط", k1, k3],
     placeholder: `${k1} → ${k2} → ${k3}`
@@ -1341,7 +1331,6 @@ function emitPole(letter, pole) {
           placeholder: ${jsString(pole.placeholder)},
           minLength: ${pole.minLength},
           modelAnswer: ${jsString(pole.modelAnswer)},
-          answerStatus: ${jsString(pole.answerStatus || "authored")},
           rule: {
             prompt: ${jsString(pole.prompt)},
             keywords: ${JSON.stringify(pole.keywords)},
@@ -1365,17 +1354,15 @@ ${poles}
           }`;
 }
 
-function emitSujet(id, title, meta, exercises, yearId) {
-  /* pdfLocalUrl : les scans locaux sont versionnés dans subjects/SE/<année>/.
-     Le générateur l'omettait, si bien que régénérer l'archive supprimait
-     silencieusement la lecture du sujet dans l'application (le champ avait
-     été rajouté à la main dans les payloads). On l'émet désormais. */
+function emitSujet(id, title, meta, exercises) {
+  // `pdfAvailable` a été supprimé : le champ était mort (aucun module d'interface
+  // ne le lisait) et contredisait `pdfLocalUrl`, qui pointe vers un PDF local
+  // réellement affiché. L'invariant utile est porté par `pdf: null` (chargement
+  // paresseux) et vérifié par tests/data-integrity.test.mjs.
   return `        {
-          id: ${id},
-          pdf: null,
-          pdfAvailable: false,
-          pdfExternalUrl: ${jsString(meta.pdfUrl)},
-          pdfLocalUrl: ${jsString(`/subjects/SE/${yearId}/sujet-${id}.pdf`)},
+        id: ${id},
+        pdf: null,
+        pdfExternalUrl: ${jsString(meta.pdfUrl)},
           pdfNote: ${jsString(meta.pdfNote)},
           title: ${jsString(title)},
           exercises: [
@@ -1396,8 +1383,8 @@ function emitYear(entry) {
       theme: ${jsString(meta.theme)},
       enabled: true,
       sujets: [
-${emitSujet(1, "الموضوع الأول", meta, s1, meta.id)},
-${emitSujet(2, "الموضوع الثاني", meta, s2, meta.id)}
+${emitSujet(1, "الموضوع الأول", meta, s1)},
+${emitSujet(2, "الموضوع الثاني", meta, s2)}
       ]
     }`;
 }

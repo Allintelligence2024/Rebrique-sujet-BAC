@@ -52,21 +52,22 @@ test("pdfExternalUrl, si défini, est une URL https:// valide", () => {
   }
 });
 
-test("pdfAvailable et pdfExternalUrl sont cohérents", () => {
+test("PDF : chargement paresseux, source externe et aucune résurrection de pdfAvailable", () => {
   for (const year of APP_CONFIG.years) {
     for (const sujet of year.sujets) {
-      if (sujet.pdfAvailable) {
-        assert.ok(
-          sujet.pdf && sujet.pdf.length > 0,
-          `pdfAvailable=true mais pdf vide pour ${year.id}/S${sujet.id}`
-        );
-      }
-      if (!sujet.pdfAvailable && !sujet.pdfExternalUrl) {
-        assert.ok(
-          sujet.pdfNote && sujet.pdfNote.length > 0,
-          `pdf non disponible sans URL ni note pour ${year.id}/S${sujet.id}`
-        );
-      }
+      // Le payload n'embarque plus le PDF : c'est ce que pdfAvailable:false
+      // prétendait exprimer, en contredisant pdfLocalUrl au passage.
+      assert.equal(sujet.pdf, null, `PDF inline inattendu pour ${year.id}/S${sujet.id}`);
+      assert.equal(
+        sujet.pdfAvailable,
+        undefined,
+        `pdfAvailable est un champ mort et contradictoire (${year.id}/S${sujet.id})`
+      );
+      // L'élève garde toujours une sortie : source externe ou note explicite.
+      assert.ok(
+        (sujet.pdfExternalUrl || "").startsWith("https://") || (sujet.pdfNote || "").length > 0,
+        `ni URL externe ni note pour ${year.id}/S${sujet.id}`
+      );
     }
   }
 });
@@ -172,7 +173,14 @@ test("toute année enabled=true a au moins un sujet, chaque sujet un exercice, c
         assert.ok(sujet.exercises.length > 0, `sujet ${year.id}/S${sujet.id} sans exercice`);
         for (const ex of sujet.exercises) {
           assert.deepEqual(ex.poles, {}, `${year.id}/S${sujet.id}/E${ex.number} ne doit rien encoder`);
-          assert.ok((Number(ex.max) || 0) > 0, `${year.id}/S${sujet.id}/E${ex.number} sans barème`);
+          /* Barème : soit MESURÉ (nombre > 0), soit explicitement NON MESURÉ
+             (`max: null`). Un PDF scanné ou aux chiffres corrompus n'autorise
+             aucun recopiage : coder 0 ou laisser `undefined` ferait croire à
+             un barème nul au lieu d'un barème inconnu. */
+          assert.ok(
+            ex.max === null || (Number(ex.max) || 0) > 0,
+            `${year.id}/S${sujet.id}/E${ex.number} : barème ni mesuré ni marqué non mesuré`
+          );
         }
       }
       continue;

@@ -22,11 +22,20 @@ test("l'archive 2013-2019 SE est branchée dans APP_CONFIG ; 2020 SE reste le mo
     const year = APP_CONFIG.years.find((y) => y.id === id);
     assert.ok(year && year.enabled && (year.stream || "se") === "se", `${id} SE 4D manquant`);
   }
-  /* 2021 n'est pas une année 4D : c'est une armature « copie libre »
-     (épreuve ouverte, aucune consigne encodée). */
+  /* 2021 est structurée 4D depuis le 2026-09-20 (OCR du sujet officiel —
+     scripts/extracted/SE/2021) : plus d'armature « copie libre ». */
   const se2021 = APP_CONFIG.years.find((y) => y.id === "2021");
   assert.ok(se2021 && se2021.enabled, "2021 ouvre une épreuve");
-  assert.equal(se2021.answerMode, "free");
+  assert.notEqual(se2021.answerMode, "free", "2021 n'est plus une armature");
+  for (const sujet of se2021.sujets) {
+    for (const exercise of sujet.exercises) {
+      assert.deepEqual(
+        Object.keys(exercise.poles),
+        ["N", "S", "E", "W"],
+        `2021/S${sujet.id}/E${exercise.number} doit être structuré`
+      );
+    }
+  }
 });
 
 test("chaque année reconstruite 2013–2019 est activée avec 2 sujets × 3 exercices 5/7/8", () => {
@@ -41,7 +50,7 @@ test("chaque année reconstruite 2013–2019 est activée avec 2 sujets × 3 exe
         [5, 7, 8],
         `${year.id}/S${sujet.id} barème 5/7/8`
       );
-      assert.equal(sujet.pdfAvailable, false);
+      assert.equal(sujet.pdf, null, `${year.id}/S${sujet.id} : PDF chargé à part, jamais inline`);
       assert.ok(sujet.pdfExternalUrl.startsWith("https://"));
       assert.ok(sujet.pdfNote && sujet.pdfNote.length > 20);
     }

@@ -31,14 +31,12 @@ export const YEAR_2024_M = {
   stream: "m",
   calendarYear: "2024",
   label: "بكالوريا الجزائر دورة 2024 — شعبة رياضيات",
-  badge: "دورة رسمية",
   theme: "indigo",
   enabled: true,
   sujets: [
     {
       id: 1,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: PDF,
       pdfLocalUrl: "/subjects/M/2024/sujet-1.pdf",
       pdfNote: PDF_NOTE,
@@ -69,22 +67,19 @@ export const YEAR_2024_M = {
             },
             S: {
               points: 2,
-              prompt: "التعرف على العناصر وتسمية العنصر (س) ثم إكمال التتابع في غياب الكورديسبين",
-              // Les deux questions officielles de la page 1 (scan relu en image) :
-              // Q1 تعرّف/سمّ + Q2 أكمل التتابع النيكليوتيدي في حالة غياب (COR).
-              bacPrompt:
-                "تعرّف على العناصر المشار إليها بالأرقام من 1 إلى 4 مع تسمية العنصر (س) ومكوناته. أكمل التتابع النيكليوتيدي للعنصر 4 في حالة غياب (COR).",
+              prompt: "التعرف على العناصر من 1 إلى 4 وتسمية العنصر (س) ومكوناته",
+              bacPrompt: "تعرّف على العناصر المشار إليها بالأرقام من 1 إلى 4 مع تسمية العنصر (س) ومكوناته.",
               ...OFFICIAL(
                 1,
-                "Relecture du scan local subjects/M/2024/sujet-1.pdf (page 1, relu en image le 2026-09-14) et du corrigé (page 1). Questions 1 et 2 du التمرين الأول, recopiées mot à mot. Trame lue sur la figure : brin matrice G A C A T C T G C A A + (س) C ; ARNm déjà dessiné C U G U, puis la cordycépine (case noire) en face du T. En son absence les nukléotides ajoutés sont donc A G A C G U U G, la séquence que donne le corrigé (OCR « AGACGUUG », le fragment C U G U étant déjà sur la figure)."
+                "Relecture du PDF eddirasa 2024 Maths (page 1) et du corrigé (page 1). Verbe officiel : تعرّف. Question 1 du التمرين الأول."
               ),
               placeholder: "1 أنزيم ARN بوليميراز، 2 السلسلة المستنسخة...",
               minLength: 40,
               modelAnswer:
-                "1 أنزيم ARN بوليميراز. 2 السلسلة المستنسخة. 3 روابط هيدروجينية. 4 سلسلة ARNm المتشكلة. العنصر (س): نيكليوتيدة مكوناتها سكر خماسي منقوص الأكسجين وقاعدة آزوتية (سيتوزين) وفوسفات. إكمال التتابع النيكليوتيدي للعنصر 4 في غياب (COR): تُضاف النيكليوتيدات المكمّلة للسلسلة المستنسخة بدل إدماج الكورديسبين، أي A G A C G U U G، فيصبح تتابع الـ ARNm كاملا C U G U A G A C G U U G.",
+                "1 أنزيم ARN بوليميراز. 2 السلسلة المستنسخة. 3 روابط هيدروجينية. 4 سلسلة ARNm المتشكلة. العنصر (س): نيكليوتيدة مكوناتها سكر خماسي منقوص الأكسجين وقاعدة آزوتية (سيتوزين) وفوسفات.",
               rule: {
                 prompt: "تعرف على عناصر الاستنساخ والعنصر س",
-                keywords: ["بوليميراز", "مستنسخة", "ARNm"],
+                keywords: ["بوليميراز", "مستنسخه", "ARNm"],
                 minHits: 2,
                 forbidden: []
               }
@@ -96,7 +91,7 @@ export const YEAR_2024_M = {
                 "اشرح في نص علمي خطوات الاستنساخ وتأثير (COR) على تركيب البروتين باستغلال الوثيقة ومعلوماتك.",
               ...OFFICIAL(
                 1,
-                "Relecture du scan 2024 Maths (page 1, relu en image) et du corrigé (page 1). Verbe officiel : اشرح في نص علمي. Question 3 du التمرين الأول ; la consigne أكمل التتابع النيكليوتيدي (question 2) est portée par la tâche S."
+                "Relecture du PDF eddirasa 2024 Maths (page 1) et du corrigé (page 1). Verbe officiel : اشرح في نص علمي. Question 3 du التمرين الأول. Consigne أكمل التتابع النيكليوتيدي non mappée."
               ),
               placeholder: "مقدمة، عرض: بداية واستطالة ونهاية، وجود COR، خاتمة...",
               minLength: 120,
@@ -104,7 +99,7 @@ export const YEAR_2024_M = {
                 "يثبت أنزيم ARN بوليميراز على بداية المورثة ويفكك الروابط الهيدروجينية بين سلسلتي ADN ويبدأ تركيب ARNm. ينتقل الأنزيم على طول السلسلة المستنسخة ويربط النيكليوتيدات وفق تتابع القواعد الآزوتية لسلسلة ADN فتستطيل سلسلة ARNm. عند نهاية المورثة تتوقف الاستطالة وينفصل الأنزيم وARNm وتلتحم سلسلتا ADN. في وجود مادة cordycepin تتوضع هذه المادة مكان النيكليوتيدة الحاملة للقاعدة مقابل النيكليوتيدة T من السلسلة المستنسخة فتتوقف الاستطالة ويتوقف الاستنساخ وتركيب البروتين.",
               rule: {
                 prompt: "اشرح خطوات الاستنساخ وأثر الكورديسبين",
-                keywords: ["بوليميراز", "استنساخ", "كورديسبين", "استطالة"],
+                keywords: ["بوليميراز", "استنساخ", "كورديسبين", "استطاله"],
                 minHits: 3,
                 forbidden: []
               }
@@ -138,10 +133,10 @@ export const YEAR_2024_M = {
               points: 1,
               prompt: "اقتراح فرضيتين تفسران سبب القصور المناعي في المرحلة المتقدمة",
               bacPrompt:
-                "اقترح فرضيتين تُبيّن بهما سبب القصور في الرد المناعي عند الشخص المصاب بالورم في المرحلة المتقدمة من السرطان باستغلال الوثيقة 1 ومعلوماتك.",
+                "اقترح فرضيتين تفسر بهما سبب القصور في الرد المناعي عند الشخص المصاب بالورم في المرحلة المتقدمة من السرطان باستغلال الوثيقة 1 ومعلوماتك.",
               ...OFFICIAL(
                 2,
-                "Relecture du scan local subjects/M/2024/sujet-1.pdf (page 2, relu en image le 2026-09-14) et du corrigé (page 1). Verbe officiel : اقترح فرضيتين تُبيّن بهما. Question du الجزء الأول ; la transcription du 2026-08-31 portait تفسر, corrigé sur l'image."
+                "Relecture du PDF eddirasa 2024 Maths (page 2) et du corrigé (page 1). Verbe officiel : اقترح فرضيتين. Question du الجزء الأول."
               ),
               placeholder: "الفرضية 1: عدم تعرف LTc (عدم تعرف مزدوج)... الفرضية 2: عدم إفراز البيرفورين...",
               minLength: 30,
@@ -149,7 +144,7 @@ export const YEAR_2024_M = {
                 "الفرضية 1: سبب القصور المناعي عند الشخص المصاب بالورم المتقدم هو عدم تعرف الخلايا LTc على الخلايا السرطانية (عدم حدوث تعرف مزدوج). الفرضية 2: عدم قدرة الخلايا LTc على إفراز البيرفورين.",
               rule: {
                 prompt: "اقترح فرضيتين حول قصور الرد المناعي",
-                keywords: ["فرضية", "LTc", "قصور"],
+                keywords: ["فرضيه", "LTc", "قصور"],
                 minHits: 2,
                 forbidden: [],
                 hypotheses: { min: 2, distinct: true }
@@ -160,13 +155,11 @@ export const YEAR_2024_M = {
               prompt: "استغلال الوثيقة 1: تغيرات حجم الورم في الوسطين",
               bacPrompt:
                 "استغل الوثيقة 1: تغيرات حجم الورم السرطاني في الوسط 1 (ورم حديث) والوسط 2 (ورم متقدم).",
-              ...RECON(
-                "Le corrigé analyse la courbe avant les hypothèses (4.00 + 0.50). Valeurs relues sur la courbe du scan local (2026-09-14) : الوسط 1 de 250 à ~330 (اليوم 6) puis ~180 ; الوسط 2 de 250 à ~1180. Le corrigé imprimé arrondit (≈100 ; 1250) et la transcription du 2026-08-31 avait gardé 1250."
-              ),
+              ...RECON("Le corrigé analyse d'abord la courbe (250→1250 mm³) avant les hypothèses."),
               placeholder: "الوسط 1: تزايد بطيء ثم تناقص إلى 100... الوسط 2: من 250 إلى 1250...",
               minLength: 90,
               modelAnswer:
-                "تمثل الوثيقة تغير حجم الورم السرطاني بدلالة الزمن (بالأيام). في الوسط 1 (ورم حديث): تزايد بطيء جدا لحجم الورم من 250 إلى حوالي 330 مم³ خلال الأيام السبعة الأولى، ثم تناقص ليصل إلى حوالي 180 مم³ عند اليوم 12، بينما في الوسط 2 (ورم متقدم) يتزايد حجم الورم باستمرار من 250 مم³ إلى حوالي 1180 مم³ عند اليوم 12. ومنه الخلايا LTc غير قادرة على القضاء على الخلايا السرطانية للورم المتقدم.",
+                "تمثل الوثيقة تغير حجم الورم بدلالة الزمن. في الوسط 1 (ورم حديث) من 0 إلى 7 أيام تزايد بطيء جدا لحجم الورم ثم من 7 إلى 12 يوما تناقص الحجم إلى حوالي 100 مم³، بينما في الوسط 2 (ورم متقدم) من 0 إلى 12 يوما يزداد حجم الورم من 250 إلى 1250 مم³. ومنه الخلايا LTc غير قادرة على القضاء على الخلايا السرطانية للورم المتقدم.",
               rule: {
                 prompt: "استغل تغيرات حجم الورم في الوسطين",
                 keywords: ["ورم", "1250", "حديث", "متقدم"],
@@ -178,10 +171,10 @@ export const YEAR_2024_M = {
                   comparisons: [["حديث", "متقدم"]],
                   trends: [
                     { about: "حديث", expect: ["تناقص", "100"] },
-                    { about: "متقدم", expect: ["تزايد", "1180"] }
+                    { about: "متقدم", expect: ["تزايد", "1250"] }
                   ],
                   relations: [{ type: "parallel", a: "حديث", b: "متقدم" }],
-                  values: ["1180", "250"],
+                  values: ["1250"],
                   strictValues: true
                 }
               }
@@ -200,7 +193,7 @@ export const YEAR_2024_M = {
                 "على سطح غشاء خلية الورم الحديث يوجد المعقد بينما لا تقدر خلية الورم المتقدم على عرض المعقد (ببتيد مستضدي–HLA I). السلسلة B2m ذات بنية فراغية ثالثية من وريقات. عند المصاب بورم حديث تتكون الوريقة A من ستة أحماض أمينية (6 إلى 11) بينما عند المتقدم تُفقد أحماض أمينية. بمقارنة تتابع الثلاثيات يظهر غياب أربع ثلاثيات عند المصاب بورم متقدم (GTG وثلاث ثلاثيات مقابلة للترتيب 7 و8 و9). طفرة حذف أربع ثلاثيات في مورثة خلايا LB للورم المتقدم تُفقد الوريقة A من B2m فلا يُعرض المعقد على الغشاء فلا تتعرف LTc (عدم تعرف مزدوج). تتأكد الفرضية الأولى.",
               rule: {
                 prompt: "ناقش الفرضية باستغلال الوثيقة 2",
-                keywords: ["فرضية", "B2m", "HLA", "حذف"],
+                keywords: ["فرضيه", "B2m", "HLA", "حذف"],
                 minHits: 3,
                 forbidden: [],
                 causalOrder: ["حذف", "عرض"]
@@ -233,7 +226,6 @@ export const YEAR_2024_M = {
     {
       id: 2,
       pdf: null,
-      pdfAvailable: false,
       pdfExternalUrl: PDF,
       pdfLocalUrl: "/subjects/M/2024/sujet-2.pdf",
       pdfNote: PDF_NOTE,
@@ -264,19 +256,17 @@ export const YEAR_2024_M = {
             },
             S: {
               points: 2,
-              prompt: "التعرف على الخلايا المفتقدة ودورها، وجدول منشأ الخلايا اللمفاوية ومقر اكتساب الكفاءة",
-              // Questions 1 et 2 de la page 4 (scan relu en image), recopiées mot à mot.
+              prompt: "التعرف على نوع الخلايا المناعية التي يفتقدها النسيج وذكر دورها",
               bacPrompt:
-                "تعرّف على نوع الخلايا المناعية التي يفتقدُها نسيج المولود المصاب بـ(PID) مع ذكر دورها. حدِّد في جدول منشأ الخلايا اللمفاوية ومقر اكتسابها لكفاءتها المناعية.",
+                "تعرّف على نوع الخلايا المناعية التي يفتقدها نسيج المولود المصاب (PID) مع ذكر دورها.",
               ...OFFICIAL(
                 4,
-                "Relecture du scan local subjects/M/2024/sujet-2.pdf (page 1 du sujet 2 = page 4 du dossier, relue en image le 2026-09-14) et du corrigé (page 4). Verbes officiels : تعرّف / حدِّد. Questions 1 et 2 du التمرين الأول. Le corrigé attribue aux الخلايا LT8 le rôle de source des LTc ; la transcription du 2026-08-31 écrivait LTh/IL et a été corrigée."
+                "Relecture du PDF eddirasa 2024 Maths (page 4) et du corrigé (page 4). Verbe officiel : تعرّف. Question 1 du التمرين الأول (Sujet 2). Consigne جدول المنشأ ومقر اكتساب الكفاءة non mappée."
               ),
-              placeholder:
-                "الخلايا LT... الجدول: المنشأ نقي العظم، مقر الاكتساب الغدة التيموسية لـ LT ونقي العظم لـ LB...",
+              placeholder: "الخلايا LT: التعرف على محدد المستضد وتنشيط الاستجابة...",
               minLength: 40,
               modelAnswer:
-                "يفتقد النسيج الخلايا اللمفاوية التائية LT. دورها: التعرف على محدد المستضد وتنشيط الاستجابة المناعية النوعية. الخلايا LT8 دورها: التعرف على محدد المستضد وهي مصدر الخلايا LTc المتدخلة في الاستجابة الخلوية. الجدول: منشأ الخلايا اللمفاوية نقي العظام؛ مقر اكتساب الكفاءة المناعية: الغدة التيموسية بالنسبة إلى الخلايا اللمفاوية LT ونقي العظام بالنسبة إلى الخلايا اللمفاوية LB.",
+                "يفتقد النسيج الخلايا LT. دورها: التعرف على محدد المستضد وتنشيط الاستجابة المناعية النوعية. الخلايا LTh مصدر IL المحفز للرد الخلطي، والخلايا LTc مصدر الخلايا المتدخلة في الاستجابة الخلوية.",
               rule: {
                 prompt: "تعرف على الخلايا المفتقدة ودورها",
                 keywords: ["LT", "مستضد", "تنشيط"],
@@ -288,10 +278,10 @@ export const YEAR_2024_M = {
               points: 3,
               prompt: "النص العلمي: دور الخلايا المناعية في الرد الخلطي وتأثير PID",
               bacPrompt:
-                "بيّن في نص علمي دور الخلايا المناعية في الرد المناعي الخلطي وتأثير العوز المناعي الخلقي الأولي (PID) على ذلك. (النص العلمي مُهيكل بمقدّمة، عرض وخاتمة).",
+                "بيّن في نص علمي دور الخلايا المناعية في الرد المناعي الخلطي وتأثير العوز المناعي الخلقي (PID).",
               ...OFFICIAL(
                 4,
-                "Relecture du scan local subjects/M/2024/sujet-2.pdf (page 1 du sujet 2 = page 4 du dossier, relue en image le 2026-09-14) et du corrigé (page 4). Verbe officiel : بيّن في نص علمي. Question 3 du التمرين الأول (Sujet 2), recopiée mot à mot ; la transcription du 2026-08-31 avait perdu الأولي et la mention du نص علمي مُهيكل."
+                "Relecture du PDF eddirasa 2024 Maths (page 4) et du corrigé (page 4). Verbe officiel : بيّن في نص علمي. Question 3 du التمرين الأول (Sujet 2)."
               ),
               placeholder: "مقدمة، عرض: بالعات، LT4، LB، تأثير غياب LT4، خاتمة...",
               minLength: 120,
@@ -315,7 +305,7 @@ export const YEAR_2024_M = {
                 "في الختام، يختل التعاون بين الخلايا المناعية بغياب LT4 فلا يُنتج المحفز الضروري للرد الخلطي كما في العوز المناعي الخلقي الأولي.",
               rule: {
                 prompt: "اكتب خاتمة حول أثر PID",
-                keywords: ["LT", "خلطي", "مضادة"],
+                keywords: ["LT", "خلطي", "مضاده"],
                 minHits: 2,
                 forbidden: []
               }
@@ -343,7 +333,7 @@ export const YEAR_2024_M = {
                 "الفرضية: تغير بنية بروتين الكولاجين المكون للغشاء القاعدي هو سبب الإصابة بمتلازمة ألبورت.",
               rule: {
                 prompt: "اقترح سببا لمتلازمة ألبورت",
-                keywords: ["كولاجين", "ألبورت", "غشاء"],
+                keywords: ["كولاجين", "البورت", "غشاء"],
                 minHits: 2,
                 forbidden: []
               }
@@ -394,7 +384,7 @@ export const YEAR_2024_M = {
                 keywords: ["COL4A5", "Gly", "Glu", "كولاجين"],
                 minHits: 3,
                 forbidden: [],
-                causalOrder: ["طفرة", "كولاجين"]
+                causalOrder: ["طفره", "كولاجين"]
               }
             },
             W: {
@@ -407,11 +397,11 @@ export const YEAR_2024_M = {
               modelAnswer:
                 "عنوان المخطط: تعبير COL4A5. شخص عادي: مورثة COL4A5 → استنساخ وترجمة → بروتين كولاجين به Gly → ألياف طبيعية. شخص مصاب: مورثة طافرة → استنساخ وترجمة → بروتين به Glu بدل Gly → ألياف غير طبيعية → خلل وتليف في وحدة التصفية → ظهور المتلازمة.",
               rule: {
-                prompt: "أنجز مخطط مسار COL4A5",
+                prompt: "انجز مخطط مسار COL4A5",
                 keywords: ["مخطط", "COL4A5", "تليف"],
                 minHits: 1,
                 forbidden: [],
-                schema: { arrows: true, title: "ألبورت", ordered: ["مورثة", "كولاجين", "تليف"] }
+                schema: { arrows: true, title: "البورت", ordered: ["مورثه", "كولاجين", "تليف"] }
               }
             }
           }

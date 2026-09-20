@@ -77,10 +77,11 @@ test("le shell fournit un lien d’évitement arabe vers le contenu principal", 
 test("les contrôles interactifs personnalisés restent des éléments clavier natifs", async () => {
   const simulation = await import("../js/ui/screens/simulation.js");
   const pdfViewer = await import("../js/ui/pdf-viewer.js");
-  // Les commandes de l'épreuve (changement d'exercice, contrôle qualité, remise)
-  // sont des <button> natifs : atteignables au clavier, sans gestionnaire maison.
-  assert.match(simulation.simulationExamHTML.toString(), /<button class=\\?"btn/);
-  assert.doesNotMatch(simulation.simulationExamHTML.toString(), /<div class=\\?"btn/);
+  // Les commandes de l'épreuve (ouverture du sujet par exercice, contrôle
+  // qualité, remise) sont des <button> natifs : atteignables au clavier,
+  // sans gestionnaire maison.
+  assert.match(simulation.examPaperHTML.toString(), /<button type=\\?"button\\?" class=\\?"btn/);
+  assert.doesNotMatch(simulation.examPaperHTML.toString(), /<div class=\\?"btn/);
   // La visionneuse du sujet reste un iframe titré, complété par des liens natifs.
   assert.match(pdfViewer.pdfViewerHTML.toString(), /<iframe[^>]+title=/);
   assert.match(pdfViewer.pdfViewerHTML.toString(), /<a class=\\?"btn/);

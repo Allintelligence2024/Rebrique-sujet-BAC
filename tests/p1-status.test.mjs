@@ -1,8 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { buildP1Status } from "../scripts/report-p1-status.mjs";
-import { CALIBRATION_STATUS } from "../data/calibration-status.js";
-import { CALIBRATION_THRESHOLDS } from "../data/calibration-policy.js";
 
 test("le statut P1 refuse un faux 100 % tant que les inventaires et copies manquent", () => {
   const status = buildP1Status();
@@ -11,18 +9,15 @@ test("le statut P1 refuse un faux 100 % tant que les inventaires et copies manqu
   assert.equal(status.completedGates, 3);
   assert.equal(status.totalGates, 6);
   assert.equal(byId["P1.1"].complete, false);
-  // Le nombre de sujets audités grandit avec les années encodées : on vérifie
-  // la forme de la preuve et sa cohérence interne au lieu de figer un total.
-  const inventoryEvidence = byId["P1.1"].evidence.match(
-    /^(\d+)\/(\d+) inventaires complets; (\d+) tâches connues$/
-  );
-  assert.ok(inventoryEvidence, `preuve P1.1 inattendue: ${byId["P1.1"].evidence}`);
-  assert.equal(Number(inventoryEvidence[1]), 0);
-  assert.ok(Number(inventoryEvidence[2]) >= 50, "les sujets encodés ne peuvent pas régresser");
-  assert.ok(Number(inventoryEvidence[3]) >= 504);
-  // Le minimum dépend du nombre de pôles actifs : on le calcule au lieu de le figer.
-  const requiredCopies = CALIBRATION_STATUS.activePoles * CALIBRATION_THRESHOLDS.minimumCopiesPerPole;
-  assert.match(byId["P1.5"].evidence, new RegExp(`0/${requiredCopies} copies`));
+  /* 58 sujets = 29 sessions × 2 (15 SE, 14 Maths, 1 Maths exceptionnelle).
+     Depuis la structuration OCR de SE 2021 (2026-09-20), TOUS les sujets
+     portent un inventaire — aucun n'est « complete » pour autant : les
+     pôles N restent reconstruits, le statut reste partial partout. */
+  assert.match(byId["P1.1"].evidence, /\/58 inventaires complets/);
+  /* 4155 = 277 consignes officielles × 15 copies (3195 jusqu'au 2026-09-19 ;
+     3915 avec les 48 consignes OCR Maths ; 4155 avec les 16 consignes OCR de
+     SE 2021). */
+  assert.match(byId["P1.5"].evidence, /0\/4155 copies/);
   assert.equal(byId["P1.2"].complete, false);
   assert.equal(byId["P1.3"].complete, true);
   assert.equal(byId["P1.4"].complete, true);

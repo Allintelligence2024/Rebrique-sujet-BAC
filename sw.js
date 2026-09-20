@@ -34,8 +34,10 @@ const SHELL_ASSETS = [
   "./js/main.js",
   "./js/ui.js",
   "./js/store.js",
+  "./js/application/debounce.js",
   "./js/application/timers.js",
   "./js/application/subject-session.js",
+  "./js/application/year-load-error.js",
   "./js/domain/subjects/official-coverage.js",
   "./js/services/sound-engine.js",
   "./js/services/speech-recognition.js",
@@ -62,6 +64,15 @@ const SHELL_ASSETS = [
   "./legal/legal-notice.html"
 ];
 
+/* `cache: "reload"` : quand le cache runtime ou le cache shell est vide, la
+   requête doit contourner le cache HTTP du navigateur. Sans cela, une année
+   servie naguère avec `max-age` restait valable des heures alors que son
+   fichier avait changé depuis : le catalogue, lui, était à jour, la validation
+   croisée échouait et l'année refusait de s'ouvrir — sans qu'aucun
+   rechargement n'y change rien. Cette directive rend le correctif indépendant
+   du serveur qui héberge l'application. */
+const NETWORK_FRESH = Object.freeze({ cache: "reload" });
+
 function isLocalRequest(request) {
   try {
     return new URL(request.url).origin === self.location.origin;
@@ -77,8 +88,15 @@ function isLocalRequest(request) {
 function isRuntimeAsset(request) {
   const pathname = new URL(request.url).pathname;
   return (
-    /\/data\/years\/(?:se|m)\/year-\d{4}(?:-[a-z]{1,3})?\.js$/.test(pathname) ||
-    /\/subjects\/(?:SE|M|TM)\/(?:\d{4}|\d{4}-[a-z]{1,3})\/sujet-\d+\.pdf$/.test(pathname)
+    // `(?:-[a-z]+)?` et non `(?:-[a-z]{1,3})?` : la session exceptionnelle
+    // s'appelle `year-2017-exceptional.js` (11 lettres). Avec l'ancienne borne
+    // elle échappait au cache runtime — donc à son éviction et à son cycle de
+    // vie par version — et atterrissait dans le cache shell, qui n'a aucune borne.
+    /\/data\/years\/(?:se|m)\/year-\d{4}(?:-[a-z]+)?\.js$/.test(pathname) ||
+    // (?:\/exceptional)? : les PDF de session exceptionnelle vivent dans un
+    // sous-dossier. Sans ce segment ils échappaient au cache runtime borné et
+    // retombaient dans le cache shell, qui n'a aucune borne.
+    /\/subjects\/(?:SE|M|TM)\/(?:\d{4}|\d{4}-[a-z]{1,3})(?:\/exceptional)?\/sujet-\d+\.pdf$/.test(pathname)
   );
 }
 
@@ -117,7 +135,7 @@ async function cacheRuntimeResponse(request, response) {
 async function fetchNavigation(request) {
   let response;
   try {
-    response = await fetch(request);
+    response = await fetch(request, NETWORK_FRESH);
   } catch {
     await notifyClients("offline-fallback", { resource: "navigation" });
     return (await caches.match("./index.html")) || Response.error();
@@ -139,7 +157,7 @@ async function fetchRuntime(request) {
   if (cached) return cached;
   let response;
   try {
-    response = await fetch(request);
+    response = await fetch(request, NETWORK_FRESH);
   } catch {
     await notifyClients("offline-miss", {
       resource: new URL(request.url).pathname.endsWith(".pdf") ? "subject-pdf" : "year-data"
@@ -183,7 +201,7 @@ async function fetchShellOrAsset(request) {
   if (cached) return cached;
   let response;
   try {
-    response = await fetch(request);
+    response = await fetch(request, NETWORK_FRESH);
   } catch {
     return Response.error();
   }

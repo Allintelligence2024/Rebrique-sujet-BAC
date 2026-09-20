@@ -32,14 +32,14 @@ import {
   ensureLiveRegions
 } from "./ui/accessibility.js";
 import { createDialogManager } from "./ui/dialogs.js";
-import { node, replaceContent, setInternalHTML } from "./ui/dom.js";
+import { escapeHTML, node, replaceContent, setInternalHTML, watchStickyHeaderOffset } from "./ui/dom.js";
 import { createScreenNavigator } from "./ui/navigation.js";
 import { mountOperationalStatus } from "./ui/operational-status.js";
 import { createGuideScreen } from "./ui/screens/guide.js";
 import { createHubScreen } from "./ui/screens/hub.js";
 import { createStrategyScreen } from "./ui/screens/strategy.js";
 import { createWorkspaceController } from "./ui/screens/workspace.js";
-import { mountPdfViewers, pdfViewerHTML } from "./ui/pdf-viewer.js";
+import { disposeAllPdfViewers, mountPdfViewers, pdfViewerHTML } from "./ui/pdf-viewer.js";
 import { reportDiagnostic } from "./services/diagnostics.js";
 
 const POLE = {
@@ -55,33 +55,27 @@ let strategyScreen;
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
-const dialogs = createDialogManager({ $, $$ });
+// Les tiroirs affichent les sujets en PDF : fermer un tiroir doit libérer le
+// document pdf.js et son listener resize, sinon chaque consultation s'accumule.
+const dialogs = createDialogManager({ $, $$, onClose: (element) => disposeAllPdfViewers(element) });
 const { openModal, closeModal, openDrawer } = dialogs;
 const showScreen = createScreenNavigator({
   screens: () => $$(".screen"),
   onNavigate: (id, { initial = false } = {}) => {
     store.setActiveScreen(id);
+    // Un écran masqué garde son DOM : sans cela, l'aperçu de sujet laissé sur
+    // l'écran de stratégie restait accroché à « resize » pendant toute
+    // l'épreuve. Sans risque parce que chaque showScreen(id) est précédé d'un
+    // rendu de cet écran (renderHub/renderGuide/renderStrategy/renderWorkspace
+    // et les trois rendus de simulation.js) : l'écran cible est toujours
+    // remonté, donc jamais dépouillé de ses visionneuses.
+    for (const screen of $$(".screen")) {
+      if (screen.id !== id) disposeAllPdfViewers(screen);
+    }
     associateFieldsWithInstructions(document.getElementById(id));
     announceScreen(document, id, { focus: !initial });
   }
 });
-
-// Any value that can originate from localStorage or user input must cross this
-// boundary before being interpolated in HTML. Prefer .textContent/.value elsewhere.
-function escapeHTML(value = "") {
-  return String(value).replace(
-    /[&<>'"]/g,
-    (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[char]
-  );
-}
-
-function debounce(fn, wait = 350) {
-  let timer = null;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn(...args), wait);
-  };
-}
 
 function yearObj(id) {
   return getLoadedYear(id);
@@ -103,14 +97,15 @@ function exDef(num) {
   return sujetObj()?.exercises.find((e) => e.number === num);
 }
 
-/* La zone d'annonces est créée à la demande. Avant, `toast()` sortait
-   silencieusement si `#toast-zone` n'existait pas encore : le minuteur
-   installait son rappel (plus haut dans `init`) avant la création de la zone,
-   et un tir précoce aurait perdu le message. Aucun minuteur ne démarre aussi
-   tôt aujourd'hui, mais la dépendance d'ordre disparaît. */
+/* La zone de notifications est une région aria-live : créée en même temps que
+   son contenu, elle n'est pas annoncée de façon fiable. `init()` la crée donc
+   tôt. `toast()` la recrée au besoin plutôt que de sortir silencieusement —
+   avant cela, toute notification émise avant `init()` était perdue sans trace
+   (mesuré : `notify("…")` pré-init ne rendait rien). */
 function ensureToastZone() {
   const existing = $("#toast-zone");
   if (existing) return existing;
+  if (!document.body) return null;
   const zone = document.createElement("div");
   zone.id = "toast-zone";
   zone.className = "toast-zone";
@@ -123,6 +118,7 @@ function ensureToastZone() {
 
 function toast(msg, type = "info", ms = 3500) {
   const zone = ensureToastZone();
+  if (!zone) return;
   const t = node("div", {
     className: `toast ${type}`,
     attrs: { role: type === "error" || type === "warn" ? "alert" : "status", "aria-atomic": "true" }
@@ -220,6 +216,9 @@ export function renderHub() {
 function goHome() {
   timers.stopAll();
   soundEngine.stop();
+  // Un visionneur monté dans l'espace de travail resterait accroché à `resize`
+  // pendant tout le temps passé sur le hub : on le libère en quittant l'écran.
+  disposeAllPdfViewers();
   if (store.isSessionActive()) store.leaveSession();
   renderHub();
   showScreen("view-hub");
@@ -364,6 +363,7 @@ export async function init() {
     );
     replaceContent(bar, [timerLabel, timerValue]);
     document.body.prepend(bar);
+    watchStickyHeaderOffset(bar);
   }
 
   timers.onChange = (which) => {

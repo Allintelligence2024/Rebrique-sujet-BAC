@@ -39,8 +39,12 @@ test("l'expiration globale termine la session et verrouille la copie affichée",
 
   assert.equal(store.state.sessionStatus, "completed");
   assert.equal(store.state.sessionEndReason, "time-expired");
-  // La copie est verrouillée : les champs de réponse de l'épreuve sont désactivés.
-  const answers = [...document.querySelectorAll("#view-workspace [data-task-answer]")];
+  /* La copie est verrouillée : les champs de réponse de l'épreuve sont
+     désactivés. Le ت1 de 2024/S1 n'a aucune consigne officielle : l'épreuve y
+     ouvre une copie libre (data-exercise-free) au lieu d'une liste de tâches. */
+  const answers = [
+    ...document.querySelectorAll("#view-workspace [data-task-answer], #view-workspace [data-exercise-free]")
+  ];
   assert.ok(answers.length > 0, "aucun champ de réponse rendu après expiration");
   assert.ok(
     answers.every((input) => input.disabled),
@@ -52,7 +56,7 @@ test("l'expiration globale termine la session et verrouille la copie affichée",
   assert.ok(document.querySelector("#simulation-review-notice"));
   assert.match(document.querySelector("#view-workspace").textContent, /لا تُعرض أي علامة رقمية/);
   // Le motif de fin est annoncé dans une boîte de dialogue, pas dans un toast.
-  assert.match(document.querySelector(".modal").textContent, /انتهى وقت الامتحان/);
+  assert.match(document.querySelector(".modal").textContent, /انتهى وقت الإمتحان/);
   assert.match(document.querySelector(".modal").textContent, /راجع الإجابات/);
   assert.ok(document.querySelector("#global-timer-bar").classList.contains("hidden"));
 });
