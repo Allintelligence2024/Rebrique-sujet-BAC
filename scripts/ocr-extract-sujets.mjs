@@ -48,7 +48,7 @@ const PSM_LIST = opt("psm", "3,6")
   .map((v) => Number(v.trim()))
   .filter((v) => Number.isInteger(v) && v > 0);
 
-/** Cibles par défaut : les 8 PDF armatures de la شعبة رياضيات. */
+/** Cibles par défaut : les 8 PDF de la شعبة رياضيات + les 2 PDF SE 2021. */
 const DEFAULT_TARGETS = [
   ["subjects/M/2013/sujet-1.pdf", "M/2013/sujet-1"],
   ["subjects/M/2013/sujet-2.pdf", "M/2013/sujet-2"],
@@ -57,7 +57,9 @@ const DEFAULT_TARGETS = [
   ["subjects/M/2015/sujet-1.pdf", "M/2015/sujet-1"],
   ["subjects/M/2015/sujet-2.pdf", "M/2015/sujet-2"],
   ["subjects/M/2017/exceptional/sujet-1.pdf", "M/2017-exceptional/sujet-1"],
-  ["subjects/M/2017/exceptional/sujet-2.pdf", "M/2017-exceptional/sujet-2"]
+  ["subjects/M/2017/exceptional/sujet-2.pdf", "M/2017-exceptional/sujet-2"],
+  ["subjects/SE/2021/sujet-1.pdf", "SE/2021/sujet-1"],
+  ["subjects/SE/2021/sujet-2.pdf", "SE/2021/sujet-2"]
 ];
 
 const targetsArg = opt("targets", "");

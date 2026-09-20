@@ -124,26 +124,43 @@ test("les inventaires réels ouvrent l'épreuve sans jamais se prétendre comple
   }
 });
 
-test("l'armature « copie libre » ouvre l'épreuve sans rien inventer", () => {
-  const freeYear = APP_CONFIG.years.find((year) => year.answerMode === "free");
-  assert.ok(freeYear, "aucune année en copie libre");
-  for (const subject of freeYear.sujets) {
-    assert.equal(isFreeAnswerSubject(subject), true, `S${subject.id} devrait être en copie libre`);
-    const report = buildOfficialCoverageReport({ yearId: freeYear.id, subject, inventory: null });
-    assert.equal(report.simulationEligible, false, "aucune note sans inventaire");
-    assert.equal(report.freeAnswerEligible, true, "l'épreuve doit rester ouverte");
-    assert.equal(examOpenable(report), true);
-    // Rien n'est inventé : ni tâche, ni pôle, ni consigne.
-    assert.equal(officialTaskInventoryFor(freeYear.id, subject.id), null);
-    for (const exercise of subject.exercises) {
-      assert.deepEqual(exercise.poles, {}, `S${subject.id}/E${exercise.number} encode une consigne`);
-    }
-  }
+test("le mécanisme « copie libre » ouvre l'épreuve sans rien inventer (sujet synthétique)", () => {
+  /* Plus aucune année réelle en copie libre depuis la structuration 4D de
+     SE 2021 (2026-09-20, OCR du sujet officiel) : le mécanisme reste gardé
+     pour une future armature, sur un sujet synthétique. */
+  const freeYears = APP_CONFIG.years.filter((year) => year.answerMode === "free");
+  assert.equal(freeYears.length, 0, "aucune année en copie libre");
+  const syntheticYearId = "2099";
+  const subject = {
+    id: 1,
+    answerMode: "free",
+    pdfLocalUrl: "/subjects/X/2099/sujet-1.pdf",
+    exercises: [
+      { number: 1, max: 5, poles: {} },
+      { number: 2, max: 7, poles: {} },
+      { number: 3, max: 8, poles: {} }
+    ]
+  };
+  assert.equal(isFreeAnswerSubject(subject), true, "l'armature synthétique est en copie libre");
+  const report = buildOfficialCoverageReport({ yearId: syntheticYearId, subject, inventory: null });
+  assert.equal(report.simulationEligible, false, "aucune note sans inventaire");
+  assert.equal(report.freeAnswerEligible, true, "l'épreuve doit rester ouverte");
+  assert.equal(examOpenable(report), true);
+  // Rien n'est inventé : ni tâche, ni pôle, ni consigne.
+  assert.equal(officialTaskInventoryFor(syntheticYearId, subject.id), null);
 });
 
 test("une armature sans PDF ni barème ne peut pas ouvrir d'épreuve", () => {
-  const freeYear = APP_CONFIG.years.find((year) => year.answerMode === "free");
-  const subject = { ...freeYear.sujets[0] };
+  const subject = {
+    id: 1,
+    answerMode: "free",
+    pdfLocalUrl: "/subjects/X/2099/sujet-1.pdf",
+    exercises: [
+      { number: 1, max: 5, poles: {} },
+      { number: 2, max: 7, poles: {} },
+      { number: 3, max: 8, poles: {} }
+    ]
+  };
   assert.equal(isFreeAnswerSubject({ ...subject, pdfLocalUrl: null, pdfExternalUrl: null }), false);
   assert.equal(isFreeAnswerSubject({ ...subject, answerMode: undefined }), false);
   assert.equal(isFreeAnswerSubject({ ...subject, exercises: [] }), false);

@@ -115,13 +115,13 @@ Le disclaimers du hard benchmark (0 copie réelle doublement annotée) reste la 
 Les questions BAC ne sont plus supposées équivalentes aux quatre étapes N/S/E/W. Un inventaire indépendant déclare désormais chaque tâche : sa provenance (`official` quand le texte vient de l'énoncé, `reconstructed` quand il s'agit d'une étape pédagogique), sa page quand elle est connue, ses références documentaires et son maximum — **provisoire** partout, puisqu'aucun barème n'a été relu par un humain.
 
 ```bash
-npm run coverage:official # détail des 56 sujets (tous ouverts à l'épreuve)
+npm run coverage:official # détail des 58 sujets (tous ouverts à l'épreuve)
 npm run inventory:check    # data/official-tasks.js doit être régénéré, jamais édité à la main
 npm run p1:status         # verdict des six critères P1
 npm run p1:check          # échoue tant que P1 n'est pas réellement terminé
 ```
 
-Les inventaires couvrent les **56 sujets** et **552 tâches** : **261** consignes officielles (avec page) et **291** étapes reconstruites (sans page — on n'invente pas un numéro de page). Les 56 sujets sont ouverts à l'épreuve, conformément à la décision produit consignée dans `data/bac-mode-policy.js` : le contenu doit être inventorié, mappé et borné (règle stricte), mais les certifications humaines — relecture des documents, barème vérifié — peuvent manquer, à condition que l'écran le dise. La règle stricte reste implémentée (`strictEligible`) et continuera de décider seule dès que les preuves humaines existeront. La couverture globale vaut `unknown` tant que l'inventaire d'un sujet est partiel : elle n'est jamais transformée en 0 % ou 100 %. Les exports chiffrés restent interdits tant que la calibration humaine n'est pas faite.
+Les inventaires couvrent les **58 sujets** et **576 tâches** : **277** consignes officielles (avec page) et **299** étapes reconstruites (sans page — on n'invente pas un numéro de page). Les 58 sujets sont ouverts à l'épreuve, conformément à la décision produit consignée dans `data/bac-mode-policy.js` : le contenu doit être inventorié, mappé et borné (règle stricte), mais les certifications humaines — relecture des documents, barème vérifié — peuvent manquer, à condition que l'écran le dise. La règle stricte reste implémentée (`strictEligible`) et continuera de décider seule dès que les preuves humaines existeront. La couverture globale vaut `unknown` tant que l'inventaire d'un sujet est partiel : elle n'est jamais transformée en 0 % ou 100 %. Les exports chiffrés restent interdits tant que la calibration humaine n'est pas faite.
 
 Le code du parcours est en place : une épreuve silencieuse fondée sur les tâches inventoriées, puis une relecture verrouillée après remise. La CSP n'autorise plus `unsafe-inline` et les sources publiques ne contiennent plus de style inline. Cela ne clôt pas P1 : les inventaires complets et le corpus humain sont des preuves externes absentes, pas des cases que le code peut cocher seul. Le volume et le format des apports nécessaires sont détaillés dans [`docs/P1_EVIDENCE_REQUIREMENTS.md`](docs/P1_EVIDENCE_REQUIREMENTS.md).
 
@@ -165,18 +165,15 @@ Le serveur applique une liste blanche d'assets publics. Ne pas remplacer cette c
 رياضيات** (14 années) **+ la session exceptionnelle 2017 رياضيات**. Chaque millésime ouvre une
 épreuve dans l'application — il n'existe plus de carte qui se contente d'afficher un lien.
 
-Deux natures d'épreuve, jamais confondues :
+Une seule nature d'épreuve — l'**entraînement 4D** : les consignes du sujet sont encodées
+(`data/years/{se,m}/year-*.js`), chaque session ouvre une épreuve chronométrée avec consignes
+officielles, copie rédigée et `✓ تسليم الورقة`. L'ancienne **armature « copie libre »**
+(`answerMode: "free"` — aucune consigne encodée faute de couche texte lisible), qui n'a servi
+qu'à **SE 2021**, a disparu le 2026-09-20 : son sujet a été structuré par OCR (voir plus bas).
+Le mécanisme reste implémenté et gardé par des tests (sujet synthétique) si une future session
+devait n'être qu'ouvrable en lecture-rédaction.
 
-- **entraînement 4D** — les consignes du sujet sont encodées (`data/years/{se,m}/year-*.js`) ;
-- **armature « copie libre »** (`answerMode: "free"`) — aucune consigne encodée, parce que la
-  couche texte du fichier ne permet pas de recopier les consignes mot à mot (**2021 SE**
-  uniquement). L'épreuve reste une épreuve : sujet officiel lu
-  dans l'application, chronomètre, copie rédigée, `✓ تسليم الورقة`. Ce qui n'est pas mesurable
-  n'est pas affiché : le barème de ces sessions n'étant pas extractible, l'écran affiche
-  « البارم غير مُقاس » au lieu d'un nombre de points, et le découpage en exercices n'est annoncé
-  que lorsqu'il a été lu dans le fichier (sinon : une copie pour le sujet entier).
-
-Toute la filière رياضيات est désormais en 4D, en deux vagues :
+Toutes les sessions sont désormais en 4D, en trois vagues :
 
 - **Maths 2016–2020** — structurées le 2026-09-19 (commit `ac206be`, demande du propriétaire) :
   questions officielles, réponses modèles et barème mesuré (20 pts par sujet : 8+12, 6+14 ou
@@ -189,14 +186,21 @@ Toute la filière رياضيات est désormais en 4D, en deux vagues :
   Leur notation est marquée `provisional` (`scoringReviewStatus`) : l'audition OCR des
   chiffres du barème (10+10 pour 2013–2015 ; 7+13 / 8+12 pour 2017) n'a pas la certitude
   d'une relecture humaine.
+- **SE 2021** — structurée le **2026-09-20** (prolongement de la décision 6, même pipeline) :
+  la dernière armature « copie libre » est devenue une épreuve 4D complète à partir d'une
+  extraction **Tesseract OCR (arabe)** de ses deux sujets — preuves brutes dans
+  `scripts/extracted/SE/2021/`. Barème lu sur le sujet : **5+7+8 = 20 pts** par sujet.
+  16 consignes officielles (une par question affichée), 48 pôles par année, notation
+  `provisional`.
 
 Les sessions réellement absentes des sources ne sont pas inventées : elles sont documentées
 dans `ARCHIVE.gaps`, qui compte exactement deux entrées — la session exceptionnelle 2016
 رياضيات et l'espace باكالوريات أجنبية (`year: "all"`, aucune ligne n'existe dans la source).
 Un trou n'emporte aucun `localPdfUrls` : il documente une absence, il n'annonce pas de sujet.
-**2021 SE est bien ouvrable** (`enabled: true`), en armature « copie libre » : la couche texte
-du sujet n'a pas permis de recopier les consignes mot à mot, donc l'élève lit le sujet officiel
-dans l'application et rédige librement, sans note. L'archive 2013–2019 n'est pas un énoncé
+**2021 SE est une épreuve 4D** (`enabled: true`) : les consignes ont été extraites par OCR du
+sujet officiel servi dans l'application (2026-09-20) — l'élève passe l'épreuve notée
+(`provisional`) comme pour toute autre session. Sa carte d'archive a été retirée : toutes les
+sessions SE sont des années d'entraînement 4D. L'archive 2013–2019 n'est pas un énoncé
 ministériel.
 
 ### Contenu BAC 2025 (شعبة علوم تجريبية)
@@ -332,6 +336,25 @@ sessions distinctes ne partagent jamais les mêmes fichiers, et tout PDF est rec
 | **2** | ت2 (7ن)  | مادة **الريسين** وتثبيط تركيب البروتين (ARNr 28s)              |
 | **2** | ت3 (8ن)  | المشبك المثبط ونضج **GABA** (NKCC1 → KCC2)                     |
 
+### Contenu BAC 2021 (شعبة علوم تجريبية)
+
+Structurée le **2026-09-20** par extraction **Tesseract OCR (arabe)** des deux sujets officiels
+servis par l'application (`subjects/SE/2021/sujet-{1,2}.pdf`, couche texte aux chiffres
+corrompus) — preuves brutes dans `scripts/extracted/SE/2021/`. 2 sujets × 3 exercices
+(**5+7+8 = 20 pts** par sujet, barème lu sur le sujet). Fichier : `data/years/se/year-2021.js`.
+
+| Sujet | Exercice | Thème                                                                       |
+| ----- | -------- | --------------------------------------------------------------------------- |
+| **1** | ت1 (5ن)  | **تركيب البروتين** والبنية الفراغية (الجزيئة س، الروابط 1–4)                 |
+| **1** | ت2 (7ن)  | أنزيم **الريبونكلياز البنكرياسي** : الموقع الفعال، pH الوسط، تخريب الروابط   |
+| **1** | ت3 (8ن)  | **VIH** والخلايا **LT4** : تعطيل الآليات المناعية والأمراض الانتهازية        |
+| **2** | ت1 (5ن)  | مراحل **الاستجابة المناعية النوعية** ومؤهلات الخلايا المؤهلة                |
+| **2** | ت2 (7ن)  | **وحدة الشفرة الوراثية** واستثناءاتها : ARNt معدلة وعلاج غياب الكازيين      |
+| **2** | ت3 (8ن)  | **الإحساس بالألم** والقرن الخلفي : المورفين مقابل **سم العنكبوت**           |
+
+> ⚠️ Notation `provisional` : les consignes officielles sont le fruit de l'OCR (audition sans
+> relecture humaine) ; les pôles N/W restent des cadrages `reconstructed`.
+
 ### Contenu BAC 2022–2026 (شعبة رياضيات)
 
 Énoncé + corrigé officiels eddirasa (OCR, 2026-08-31). Format Maths : 2 sujets × 2 exercices. id `YYYY-m`.
@@ -400,7 +423,7 @@ n'est plus un simple renvoi vers un site tiers.
 
 | Onglet                       | Épreuves ouvertes                        | Nature                                                                    |
 | ---------------------------- | ---------------------------------------- | ------------------------------------------------------------------------- |
-| شعبة علوم تجريبية (`se`)     | 2013–2026 (14 cartes)                    | 4D, sauf **2021 en copie libre**                                          |
+| شعبة علوم تجريبية (`se`)     | 2013–2026 (14 cartes)                    | **toutes en 4D** — 2013–2020/2022–2026 (2026-08-31), **2021 par OCR Tesseract** (2026-09-20) |
 | شعبة رياضيات (`m`)           | 2013–2026 + 2017 exceptionnelle (15 cartes) | **toutes en 4D** : 2021–2026 et 2016–2020 (2026-09-19), 2013–2015 + 2017 استثنائية par OCR Tesseract (2026-09-20) |
 | باكالوريات أجنبية (`foreign`) | —                                        | **espace vide, assumé** : aucune source étrangère vérifiée, **0 lien**     |
 
@@ -410,12 +433,18 @@ Les entrées de `data/archive.js` ne sont plus des cartes : elles servent de **s
 Statut honnête :
 
 - **2013–2019 SE** : sujets reconstruits (`data/years/se/`). Toutes consignes `reconstructed`. **2018** : thèmes relus OCR dzexams. **2013–2017, 2019** : thèmes pédagogiques 3AS, **non certifiables** comme énoncés officiels. Confiance UI basse.
-- **2020 et 2022–2026 SE** et **2013–2026 Maths (+ 2017 استثنائية)** : sujets chargés à la demande depuis `data/years/{se,m}/`, indexés par le catalogue `data/subjects.js`.
+- **2013–2026 SE** et **2013–2026 Maths (+ 2017 استثنائية)** : sujets chargés à la demande depuis `data/years/{se,m}/`, indexés par le catalogue `data/subjects.js`.
 - **Consultation** : sujet officiel + تصحيح النموذجي via dzexams. Aucun
   barème, mot-clé ou réponse modèle : le moteur ne s'applique pas.
 - **Maths 2022–2026** : viewer dzexams bloqué (`contentVerified: false`) ;
   Cartes encodées depuis les PDF officiels eddirasa (même papier ONEC).
-- **SE 2021** : pas de carte d'épreuve — couche texte / corrigé mot à mot absents sur dzexams.
+- **SE 2021** : encodée en 4D le 2026-09-20 (prolongement de la décision 6 du propriétaire —
+  `PROMPT_DECISIONS_PROPRIETAIRE.md`) à partir d'une extraction **Tesseract OCR (arabe)** des
+  deux sujets officiels servis par l'application ; preuves brutes dans
+  `scripts/extracted/SE/2021/`. Mesure du 2026-09-19 (`npm run pdftext:status`) : couche texte
+  aux **chiffres corrompus** (barème lu « 05 / 40 / 00 » pour un barème réel 5+7+8, lui-même
+  confirmé par OCR). 16 consignes officielles sur 24 tâches (les cadrages N/W restent
+  `reconstructed`), notation `provisional` sans relecture humaine.
 - **Maths 2013–2015 (+ 2017 استثنائية)** : encodées en 4D le 2026-09-20 (décision 6 du
   propriétaire — `PROMPT_DECISIONS_PROPRIETAIRE.md`) à partir d'une extraction **Tesseract
   OCR (arabe)** des PDF officiels ; preuves brutes (texte + JSON par page) dans
@@ -452,10 +481,10 @@ Statut honnête :
 
 <!-- AUTO-METRICS:START -->
 
-- Tests exécutés par `npm test` : **366** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
-- Copies vérifiées dans le hard benchmark : **0/3915 minimum** avant toute promotion numérique
-- Inventaires de tâches officielles commencés : **56/58 sujets** (**552 tâches connues**)
-- Sujets éligibles à la simulation : **56**
+- Tests exécutés par `npm test` : **369** (comptage statique des `test()` déclarés dans `tests/*.test.mjs`, boucle `BENCHMARK_CASES` comprise)
+- Copies vérifiées dans le hard benchmark : **0/4155 minimum** avant toute promotion numérique
+- Inventaires de tâches officielles commencés : **58/58 sujets** (**576 tâches connues**)
+- Sujets éligibles à la simulation : **58**
 - Critères P1 fermés : **3/6** — statut global : **incomplet**
 - Critères P2 fermés : **6/7** — élèves distincts testés : **0/5**
 - Critères P3 fermés : **6/6** — statut global : **terminé**

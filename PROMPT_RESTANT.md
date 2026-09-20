@@ -26,7 +26,7 @@ Ne rien refaire de ce qui suit : c'est **terminé et vérifié sur le distant**.
 
 ### Les trois portes restantes et leur cause
 
-- **P1.1** — `0/58 inventaires complets`, 552 tâches connues → dépend de la **relecture humaine**.
+- **P1.1** — `0/58 inventaires complets`, 576 tâches connues → dépend de la **relecture humaine**.
 - **P1.2** — `0/58 sujets à 100 % de couverture explicite` → idem.
 - **P1.5 / P2.7** — `0/2235 copies`, `0/5 élèves` → dépend de la **décision 2**
   (renoncement acté, donc volontairement bloqués).
@@ -163,8 +163,11 @@ structurées en 4D le 2026-09-19 (commit `ac206be`, demande du propriétaire), p
 **8 sujets Maths 2013–2015 + 2017 استثنائية** encodés en 4D le 2026-09-20 (décision 6,
 `PROMPT_DECISIONS_PROPRIETAIRE.md`) depuis une extraction Tesseract OCR
 (`scripts/lib/ocr.mjs`, preuves dans `scripts/extracted/M/**`, notation `provisional`).
-Reste une seule armature « copie libre » : **SE 2021 (2 sujets)**. Le TRAVAIL C concerne
-donc les 56 sujets encodés en 4D (58 − 2) dont les inventaires doivent être complétés, puis
+Puis **SE 2021 (2 sujets)** — la dernière armature « copie libre » — a été structurée en 4D
+le **2026-09-20** (prolongement de la décision 6 demandé par le propriétaire, même pipeline
+OCR ; preuves dans `scripts/extracted/SE/2021/`, barème 5+7+8 lu sur le sujet, notation
+`provisional`). **Il n'existe plus aucune armature « copie libre »** : le TRAVAIL C concerne
+donc les **58 sujets** encodés en 4D dont les inventaires doivent être complétés, puis
 certifiés par relecture.
 
 ### Pourquoi l'agent ne peut pas encoder de lui-même
@@ -180,9 +183,10 @@ pas par l'agent (la décision 6 du 2026-09-20 est ce cas exact, assumé et marqu
 ### Ce que l'agent NE doit PAS faire ici
 
 Ne pas « terminer » une armature en y recopiant des consignes ou un barème lu dans un PDF de
-ce corpus : les chiffres y sont corrompus. Une armature « copie libre » (**SE 2021**)
-reste une armature jusqu'à la transcription relue ou une décision du propriétaire dans le
-sillage de la décision 6.
+ce corpus sans décision du propriétaire : les chiffres y sont corrompus. C'est exactement ce
+qui a été tranché deux fois par le propriétaire (décision 6 pour les Maths 2013–2015 + 2017
+استثنائية, puis son prolongement pour SE 2021, toutes le 2026-09-20) : encodage OCR assumé,
+marqué `provisional`. Il ne reste plus aucune armature à trancher.
 
 ### Procédure, une fois une transcription fournie
 
@@ -194,9 +198,10 @@ sillage de la décision 6.
 
 `js/domain/subjects/official-coverage.js` définit `relaxedEligible`, repris par
 `simulationEligible = strictEligible || relaxedEligible`. Ce mode relaxé n'exige ni inventaire
-`complete` ni `scoringReviewStatus === "verified"` — d'où **56 sujets éligibles malgré 0/56
-inventaires complets** (48/488/213 jusqu'au 2026-09-19, 56/552/261 après la structuration
-Maths 2013–2015 + 2017 استثنائية). À durcir quand les inventaires réels existent, pas avant.
+`complete` ni `scoringReviewStatus === "verified"` — d'où **58 sujets éligibles malgré 0/58
+inventaires complets** (48/488/213 jusqu'au 2026-09-19 ; 56/552/261 après la structuration
+Maths 2013–2015 + 2017 استثنائية ; 58/576/277 après celle de SE 2021). À durcir quand les
+inventaires réels existent, pas avant.
 
 Référence utile : `data/official-tasks.js` porte `source.humanVerified`, à `false` par défaut.
 Une seule entrée est vérifiée à ce jour : `2025/S1`.

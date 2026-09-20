@@ -17,4 +17,6 @@ playwright-report/
 # rien) ; seul git filter-repo les supprimerait, au prix d'une réécriture des SHA.
 # Ancré à la racine (/M/) pour ne pas ignorer scripts/extracted/M/** (preuves OCR).
 /M/
-SE/
+# Ancré à la racine (/SE/) pour ne pas ignorer data/years/se/** (les fichiers
+# d'années SVT passent bien par Prettier — angle mort fermé le 2026-09-20).
+/SE/

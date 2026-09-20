@@ -13,9 +13,9 @@
    d'archive : elles sont encodées en entraînement 4D dans
    data/years/se/year-*.js. Depuis le 2026-09-19, TOUTES les années Maths
    2013–2026 sont également encodées dans data/years/m/year-*.js et le
-   hub les affiche comme épreuves (identifiants 2013-m … 2026-m) :
-   2021–2026 en 4D, 2013–2020 en armature « copie libre » (aucune consigne
-   encodée, barème non mesuré — voir PROMPT_RESTANT.md, TRAVAIL C).
+   hub les affiche comme épreuves (identifiants 2013-m … 2026-m), toutes en
+   4D (2013–2015 + 2017 استثنائية et SE 2021 par OCR Tesseract, 2026-09-20 —
+   plus aucune armature « copie libre » ; voir PROMPT_DECISIONS_PROPRIETAIRE.md).
    Le hub ne propose donc PLUS de carte de consultation Maths : les
    entrées ci-dessous servent de source (page annales + PDF direct), pas
    d'écran. 2021 SE ouvre une épreuve en « copie libre » (armature seule,
@@ -114,21 +114,13 @@ export const ARCHIVE = {
     exceptional: "الدورة الاستثنائية"
   },
   entries: [
-    /* ---------------- شعبة علوم تجريبية ---------------- */
-    {
-      year: "2021",
-      stream: "se",
-      session: "main",
-      url: `${ANNALES}/alFTTFJIRFZuTFd4QnAvelFTQWRqUT09`,
-      localPdfUrls: ["/subjects/SE/2021/sujet-1.pdf", "/subjects/SE/2021/sujet-2.pdf"],
-      pdfUrl: "https://www.dzexams.com/uploads/sujets/officiels/bac/2021/dzexams-bac-sciences-2728849.pdf",
-      page: "access_confirmed",
-      contentVerified: false,
-      attachments: false,
-      viewer: "blocked",
-      notes:
-        "Page ouverte (2026-08-31) : titre BAC 2021 filière SE confirmé ; viewer en ligne 0 pages (PDF chiffré) ; lien تحميل observé. Octets PDF non récupérés depuis la sandbox (TLS). 4D non encodé : pas de couche texte lisible ni corrigé mot à mot."
-    },
+    /* ---------------- شعبة علوم تجريبية ----------------
+       Aucune entrée : toutes les sessions SE (2013-2026) sont des
+       années d'entraînement 4D activées dans l'application — la règle
+       « une année 4D SE n'a pas de carte d'archive » (pas de confusion
+       de produits). La dernière armature « copie libre », SE 2021, a
+       été structurée le 2026-09-20 à partir de l'OCR du sujet officiel
+       (scripts/extracted/SE/2021) et son entrée d'archive retirée. */
 
     /* ---------------- شعبة رياضيات ---------------- */
     {

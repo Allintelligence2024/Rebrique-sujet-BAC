@@ -191,10 +191,9 @@ export const YEAR_CATALOG = Object.freeze([
     label: "بكالوريا الجزائر دورة 2021 — شعبة علوم تجريبية",
     theme: "emerald",
     enabled: true,
-    // Armature « copie libre » : aucune consigne encodée (couche texte du PDF
-    // lisible mais chiffres corrompus — voir data/years/se/year-2021.js).
+    // Structurée 4D le 2026-09-20 : consignes extraites par OCR du PDF
+    // officiel (scripts/extracted/SE/2021) — voir data/years/se/year-2021.js.
     // Doit rester identique au champ du payload (test de cohérence).
-    answerMode: "free",
     subjectCount: 2,
     exerciseCounts: [3, 3],
     modulePath: "data/years/se/year-2021.js"

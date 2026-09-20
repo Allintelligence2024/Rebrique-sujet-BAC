@@ -2522,6 +2522,647 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
       }
     ]
   },
+  "2021/S1": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/uploads/sujets/officiels/bac/2021/dzexams-bac-sciences-2728849.pdf",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2021/sujet-1.pdf",
+      pages: 5,
+      pageOffset: 0
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2, 3],
+      taskCompleteExerciseNumbers: []
+    },
+    tasks: [
+      {
+        id: "2021-S1-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "تركب الخلايا الحية بآليات محددة بروتينات متنوعة ذات أهمية حيوية، تخصصها الوظيفي مرتبط ببنيتها الفراغية — صُغ المشكل العلمي المطروح في هذا التمرين.",
+        promptSource: "reconstructed",
+        maxPoints: 0.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2021-S1-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 1,
+        prompt:
+          "تعرّف على المرحلتين (أ) و(ب) من الشكل (أ) وعلى الروابط المرقمة من 1 إلى 4 من الشكل (ج)، ثم حدّد مستوى البنية الفراغية للبروتين (س) الممثلة في الشكل (ب) مع التعليل.",
+        promptSource: "official",
+        maxPoints: 1.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2021-S1-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 1,
+        prompt:
+          "بيّن في نص علمي آليات تركيب البروتين وكيفية اكتسابه تخصصا وظيفيا من معطيات الوثيقة ومكتسباتك.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2021-S1-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: null,
+        prompt: "استنتج من هذه الدراسة العلاقة بين البنية الفراغية للبروتين وتخصصه الوظيفي.",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2021-S1-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "ينشط الريبونكلياز البنكرياسي طبيعيا في العصارة المعوية ويفقد نشاطه في العصارة المعدية، مع اختلاف نتائج تخريب بعض روابط بنيته — صُغ المشكل العلمي المطروح في هذا التمرين.",
+        promptSource: "reconstructed",
+        maxPoints: 0.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2021-S1-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 3,
+        prompt: "بيّن أن معطيات الشكل (أ) من الوثيقة (1) تسمح بتحديد المستوى البنيوي لجزيئة الريبونكلياز.",
+        promptSource: "official",
+        maxPoints: 1.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      },
+      {
+        id: "2021-S1-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 3,
+        prompt:
+          "حلّل النتائج الممثلة في الوثيقة (2) ثم بيّن اعتمادا على بنية الموقع الفعال سبب النشاط الطبيعي للأنزيم في العصارة المعوية وعدم نشاطه في العصارة المعدية.",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      },
+      {
+        id: "2021-S1-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: 3,
+        prompt: "استخلص شروط عمل الموقع الفعال للأنزيم التي تم إبرازها في هذه الدراسة.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      },
+      {
+        id: "2021-S1-E3-Q1",
+        exerciseNumber: 3,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "يؤدي دخول فيروس الـ VIH إلى استجابة مناعية سريعة وقوية، إلا أن مراقبة الجهاز المناعي للإصابة لن تكون مجدية على المدى البعيد — صُغ المشكل العلمي المطروح في هذا التمرين.",
+        promptSource: "reconstructed",
+        maxPoints: 0.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 3,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2021-S1-E3-Q2",
+        exerciseNumber: 3,
+        order: 2,
+        pole: "S",
+        page: 5,
+        prompt: "حدّد هدف كل من التجارب (1) و(2) و(3) الممثلة في البروتوكول التجريبي للوثيقة (2).",
+        promptSource: "official",
+        maxPoints: 1.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 3,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 5
+      },
+      {
+        id: "2021-S1-E3-Q3",
+        exerciseNumber: 3,
+        order: 3,
+        pole: "E",
+        page: 5,
+        prompt:
+          "باستغلالك للوثيقتين (2) و(3) وباستدلال علمي دقيق، استخرج المعلومات الأساسية التي تمكنك من تأكيد صحة الفرضية وحل مشكلة تعطيل الآليات المناعية إثر إصابة العضوية بالـ VIH.",
+        promptSource: "official",
+        maxPoints: 3.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 3,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 5
+      },
+      {
+        id: "2021-S1-E3-Q4",
+        exerciseNumber: 3,
+        order: 4,
+        pole: "W",
+        page: 5,
+        prompt:
+          "أنجز مخططا تفسيريا للتغيرات التي تطرأ على الاستجابة المناعية النوعية إثر إصابة العضوية بفيروس الـ VIH، مستعينا بنتائج هذه الدراسات ومكتسباتك.",
+        promptSource: "official",
+        maxPoints: 2.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 3,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 5
+      }
+    ]
+  },
+  "2021/S2": {
+    schemaVersion: 1,
+    status: "partial",
+    source: {
+      kind: "local-pdf",
+      locator: "https://www.dzexams.com/uploads/sujets/officiels/bac/2021/dzexams-bac-sciences-2728849.pdf",
+      humanVerified: false,
+      verifiedAt: null,
+      notes: null
+    },
+    document: {
+      localPath: "/subjects/SE/2021/sujet-2.pdf",
+      pages: 5,
+      pageOffset: 0
+    },
+    scope: {
+      inventoriedExerciseNumbers: [1, 2, 3],
+      taskCompleteExerciseNumbers: []
+    },
+    tasks: [
+      {
+        id: "2021-S2-E1-Q1",
+        exerciseNumber: 1,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "يمتلك الجهاز المناعي خلايا مؤهلة لها قدرة التمييز بين مكونات الذات واللاذات، تنتج جزيئات تساهم في إقصاء اللاذات — صُغ المشكل العلمي المطروح في هذا التمرين.",
+        promptSource: "reconstructed",
+        maxPoints: 0.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2021-S2-E1-Q2",
+        exerciseNumber: 1,
+        order: 2,
+        pole: "S",
+        page: 1,
+        prompt: "تعرّف على البيانات المرقمة والمراحل المعبر عنها بالأحرف.",
+        promptSource: "official",
+        maxPoints: 1.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2021-S2-E1-Q3",
+        exerciseNumber: 1,
+        order: 3,
+        pole: "E",
+        page: 1,
+        prompt: "اكتب نصا علميا توضح فيه المؤهلات التي سمحت للخلايا المبيّنة في الوثيقة بأداء وظائفها.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2021-S2-E1-Q4",
+        exerciseNumber: 1,
+        order: 4,
+        pole: "W",
+        page: null,
+        prompt: "استنتج كيف تتعاون هذه الخلايا والجزيئات لإقصاء اللاذات.",
+        promptSource: "reconstructed",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2021-S2-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "تخضع وحدة الشفرة الوراثية لاستثناءات يسعى الباحثون لاستغلالها في علاج بعض الاختلالات الوظيفية الوراثية — صُغ المشكل العلمي المطروح في هذا التمرين.",
+        promptSource: "reconstructed",
+        maxPoints: 0.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2021-S2-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 2,
+        prompt: "حلّل نتائج المرحلتين الأولى والثانية.",
+        promptSource: "official",
+        maxPoints: 1.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2021-S2-E2-Q3",
+        exerciseNumber: 2,
+        order: 3,
+        pole: "E",
+        page: 2,
+        prompt: "باستغلال شكلي الوثيقة (1) اشرح سبب الاختلاف الملاحظ في نتائج المرحلتين الأولى والثانية.",
+        promptSource: "official",
+        maxPoints: 3,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2021-S2-E2-Q4",
+        exerciseNumber: 2,
+        order: 4,
+        pole: "W",
+        page: 2,
+        prompt: "افترض حلا يؤدي إلى تركيب الكازيين في حليب الأم العاجزة عن تركيبه.",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2021-S2-E3-Q1",
+        exerciseNumber: 3,
+        order: 1,
+        pole: "N",
+        page: null,
+        prompt:
+          "يضطر الأطباء لعلاج الألم الحاد إلى استعمال مواد مخدرة مثل المورفين ذات آثار جانبية خطيرة، بينما يبدو سم العنكبوت واعدا كعلاج مسكن أكثر فعالية وأقل ضررا — صُغ المشكل العلمي المطروح في هذا التمرين.",
+        promptSource: "reconstructed",
+        maxPoints: 0.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "not-required",
+        documentRefs: [],
+        trainingMappings: [
+          {
+            exerciseNumber: 3,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: null
+      },
+      {
+        id: "2021-S2-E3-Q2",
+        exerciseNumber: 3,
+        order: 2,
+        pole: "S",
+        page: 3,
+        prompt:
+          "حدّد في جدول مقر ودور الجزيئات الغشائية المتدخلة على مستوى القرن الخلفي في نقل الرسالة العصبية للإحساس بالألم، ثم استنتج تأثير هذا السم.",
+        promptSource: "official",
+        maxPoints: 1.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 3,
+            pole: "S",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 3
+      },
+      {
+        id: "2021-S2-E3-Q3",
+        exerciseNumber: 3,
+        order: 3,
+        pole: "E",
+        page: 5,
+        prompt: "فسّر نتائج التجارب الموضحة في الوثيقتين (2) و(3) ثم تحقّق من مدى صحة الفرضيات المقترحة.",
+        promptSource: "official",
+        maxPoints: 3.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 3,
+            pole: "E",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 5
+      },
+      {
+        id: "2021-S2-E3-Q4",
+        exerciseNumber: 3,
+        order: 4,
+        pole: "W",
+        page: 5,
+        prompt:
+          "لخّص في مخطط نتائج تأثير سم العنكبوت على آلية نقل الرسالة العصبية المتدخلة في الإحساس بالألم على مستوى المشبك العصبي.",
+        promptSource: "official",
+        maxPoints: 2.5,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 3,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 5
+      }
+    ]
+  },
   "2026/S1": {
     schemaVersion: 1,
     status: "partial",

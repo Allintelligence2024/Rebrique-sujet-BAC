@@ -17,7 +17,7 @@ telle quelle à un agent pour exécution.
 | 3   | Statut du moteur d'évaluation              | **Option A** — actif d'audit                   | Vérifié exact, en-tête corrigé (2 342 lignes mesurées)       |
 | 4   | Maths 2013–2020 (+ 2017 استثنائية)         | **Armature « copie libre »**                   | **Rapportée entièrement** : 2016–2020 structurées en 4D le 2026-09-19 (commit `ac206be`, demande du propriétaire), 2013–2015 + 2017 استثنائية le 2026-09-20 (décision 6, OCR Tesseract) |
 | 5   | Troisième onglet du hub                    | **باكالوريات أجنبية** (`foreign`)              | Fait le 2026-09-19 : espace vide assumé, 0 lien inventé      |
-| 6   | OCR Tesseract des sujets Maths 2013–2015 + 2017 استثنائية | **Extraction immédiate + encodage 4D `provisional`** | Fait le 2026-09-20 : 8 sujets × 2 exercices × 4 pôles = 64 consignes officielles |
+| 6   | OCR Tesseract des sujets sans couche texte fiable (Maths 2013–2015 + 2017 استثنائية, puis **SE 2021**) | **Extraction immédiate + encodage 4D `provisional`** | Fait le 2026-09-20 : 8 sujets Maths (64 consignes) + 2 sujets SE 2021 (16 consignes) — **plus aucune armature « copie libre »** |
 
 ### Décision 4 — pourquoi « copie libre » et pas 4D
 
@@ -59,8 +59,16 @@ de passer outre la règle « aucun encodage sans transcription relue » qui fond
 pour **une partie** de son périmètre : **Maths 2013–2015 (scans sans couche texte) et la
 session exceptionnelle 2017 (couche transposée)**, soit 8 sujets. Les Maths 2016–2020 avaient
 déjà été structurées en 4D le 2026-09-19 (commit `ac206be`, même demande du propriétaire) ;
-la décision 4 ne décrit plus aucune épreuve réelle. Seule **SE 2021** reste une armature
-« copie libre ».
+la décision 4 ne décrit plus aucune épreuve réelle.
+
+**Prolongement (2026-09-20, même journée)** : après la correction verbatim des consignes
+Maths, le propriétaire a dit de continuer — le même traitement s'applique à la dernière
+armature restante, **SE 2021 (2 sujets, couche texte « propre » mais aux chiffres corrompus :
+barème lu « 05 / 40 / 00 » pour un barème réel 5+7+8, confirmé à l'OCR)**. Fait le jour même :
+`data/years/se/year-2021.js` réécrit en 4D (2 sujets × 3 exercices × 4 pôles), 16 consignes
+officielles verbatim (une par question affichée), preuves dans `scripts/extracted/SE/2021/`,
+sa carte d'archive retirée (toutes les sessions SE sont des années 4D). **Il n'existe plus
+aucune armature « copie libre » dans l'application.**
 
 Ce qui a été fait :
 
@@ -87,11 +95,13 @@ Ce qui a été fait :
 4. **Intégration** — catalogue `data/subjects.js` réécrit (15 cartes Maths, toutes 4D pour
    2013–2015/2017-em/2021–2026), inventaires régénérés
    (`npm run inventory:generate` : 56 sujets inventoriés, 552 tâches, 261 consignes
-   officielles) et statut de calibration rafraîchi (`npm run calibration:update`).
+   officielles ; **58/576/277** après le prolongement SE 2021 du même jour) et statut de
+   calibration rafraîchi (`npm run calibration:update`).
 
-La règle reste valable pour tout ce qui n'est pas couvert ici (SE 2021 notamment) :
-**aucune consigne ne passe en 4D sans source lisible**. La différence est que le 2026-09-20,
-le propriétaire a jugé l'OCR Tesseract suffisant pour ces 8 sujets et en assume la
+La règle reste valable pour tout ce qui n'est pas couvert ici :
+**aucune consigne ne passe en 4D sans source lisible** (ou sans décision explicite du
+propriétaire). La différence est que le 2026-09-20, le propriétaire a jugé l'OCR Tesseract
+suffisant pour ces 8 sujets Maths puis pour SE 2021 (prolongement) et en assume la
 responsabilité, d'où le marquage `provisional` plutôt qu'un statut « relu ».
 
 Conséquence du point 2, à ne pas perdre de vue : **le score ne doit jamais être présenté
@@ -341,12 +351,12 @@ Sortie :
 
 ```
 Copies comparées : 0
-Couverture : 0/261 pôles
+Couverture : 0/277 pôles
 STATUT : non calibré — aucune copie réelle doublement annotée.
          Ne pas présenter le score comme une correction professeur.
 ```
 
-- **P1.5** — `0/3915 copies vérifiées minimales` ; promotion numérique interdite.
+- **P1.5** — `0/4155 copies vérifiées minimales` (277 pôles × 15) ; promotion numérique interdite.
 - **P2.7** — `0/5 élèves distincts avec session réelle, consentie et valide`.
 
 Fichiers concernés : `tests/hard-benchmark/cases.json` vaut `{"cases": []}` et
@@ -500,7 +510,7 @@ est exact) :
 ### Constat mesuré
 
 ```bash
-npm run p1:check     # P1.1 bloqué : 0/58 inventaires complets ; 552 tâches connues
+npm run p1:check     # P1.1 bloqué : 0/58 inventaires complets ; 576 tâches connues
                      # P1.2 bloqué : 0/58 sujets à 100 % de couverture explicite
 npm run pdftext:status
 ```
@@ -546,10 +556,10 @@ recopiés mot à mot sur photos des pages 2, 6, 7, 10 »).
 `js/domain/subjects/official-coverage.js` définit `relaxedEligible`, repris par
 `simulationEligible = strictEligible || relaxedEligible`. Ce mode relaxé n'exige ni
 inventaire `complete` ni `scoringReviewStatus === "verified"` — c'est ce qui explique
-**56 sujets éligibles malgré 0/58 inventaires complets**. À durcir une fois les inventaires
-réels en place. (58 sujets = 29 sessions × 2 ; seule l'armature « copie libre » restante —
-SE 2021, 2 sujets — n'a par construction aucun inventaire et
-reste dans le dénominateur : un sujet non inventorié reste un sujet non inventorié.)
+**58 sujets éligibles malgré 0/58 inventaires complets**. À durcir une fois les inventaires
+réels en place. (58 sujets = 29 sessions × 2 ; depuis la structuration OCR de SE 2021 le
+2026-09-20, tous les sujets — y compris l'ancienne armature — portent un inventaire
+`partial` : aucun n'est « complete » pour autant.)
 
 ### Ce que le dépôt atteste déjà comme relu
 

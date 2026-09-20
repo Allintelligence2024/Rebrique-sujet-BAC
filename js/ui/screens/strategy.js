@@ -9,9 +9,10 @@ import { simulationBlockersArabic } from "../coverage-messages.js";
    décidés par le propriétaire le 2026-09-19 — « estimer sur excellent,
    très bien, bien, moyen, besoin d'apprentissage ».
 
-   Deux raisons de ne plus compter des points : le barème n'est pas mesurable
-   sur les sessions en copie libre (Maths 2013–2020, SE 2021 — d'où
-   « 0.00 نقطة » et « ت1: null (nullن) », bug corrigé ce jour-là), et noter
+   Deux raisons de ne plus compter des points : le barème n'était pas mesurable
+   sur les sessions alors en copie libre (Maths 2013–2020, SE 2021 — d'où
+   « 0.00 نقطة » et « ت1: null (nullن) », bug corrigé ce jour-là ; toutes sont
+   structurées 4D depuis le 2026-09-20), et noter
    sa propre copie sur 8 ou 12 points avant de l'avoir écrite n'a jamais rien
    mesuré. Une échelle de confiance, si. */
 export const CONFIDENCE_LEVELS = [

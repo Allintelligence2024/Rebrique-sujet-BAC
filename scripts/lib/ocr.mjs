@@ -26,7 +26,15 @@ export function getPdfjs() {
 
 /** @napi-rs/canvas — canvas natif précompilé, aucune dépendance système. */
 export function getCanvasFactory() {
-  if (!napiCanvas) napiCanvas = require("@napi-rs/canvas");
+  if (!napiCanvas) {
+    napiCanvas = require("@napi-rs/canvas");
+    /* Les PDF vectoriels (dégradés RadialAxialShadingPattern, p.ex. SE 2021)
+       exigent DOMMatrix, API navigateur absente de Node : @napi-rs/canvas en
+       fournit une implémentation native qu'on expose globalement pour pdfjs. */
+    if (napiCanvas.DOMMatrix && typeof globalThis.DOMMatrix === "undefined") {
+      globalThis.DOMMatrix = napiCanvas.DOMMatrix;
+    }
+  }
   class NodeCanvasFactory {
     create(w, h) {
       const canvas = napiCanvas.createCanvas(w, h);
