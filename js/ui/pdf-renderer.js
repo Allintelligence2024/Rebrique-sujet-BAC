@@ -50,11 +50,24 @@ const FETCH_FAILURE =
  */
 async function openDocument(pdfjs, src) {
   pdfjs.GlobalWorkerOptions.workerSrc = vendorUrl("pdf.worker.min.js");
+  /* CMaps + polices standard : sans ces données servies depuis la même
+     origine, pdf.js abandonne les glyphes qu'il ne sait pas décoder —
+     polices CID des PDF arabes retraités, Helvetica/Times non intégrées.
+     Mesuré le 2026-09-20 : 42 PDF sur 58 perdaient du texte à l'affichage
+     (« getPathGenerator - ignoring character », jusqu'à 14 % d'encre
+     manquante par page). On ne négocie pas : le sujet doit être lisible. */
+  const params = {
+    url: src,
+    isEvalSupported: false,
+    cMapUrl: vendorUrl("cmaps/"),
+    cMapPacked: true,
+    standardFontDataUrl: vendorUrl("standard_fonts/")
+  };
   try {
-    return await pdfjs.getDocument({ url: src, isEvalSupported: false }).promise;
+    return await pdfjs.getDocument(params).promise;
   } catch (workerError) {
     if (FETCH_FAILURE.test(String(workerError?.message || ""))) throw workerError;
-    return await pdfjs.getDocument({ url: src, isEvalSupported: false, disableWorker: true }).promise;
+    return await pdfjs.getDocument({ ...params, disableWorker: true }).promise;
   }
 }
 

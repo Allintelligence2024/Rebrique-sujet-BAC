@@ -3,30 +3,20 @@ import assert from "node:assert/strict";
 import { loadAllYears } from "../data/subjects.js";
 import { APP_CONFIG as FULL_APP_CONFIG } from "./helpers/full-app-config.mjs";
 import { officialTaskInventoryFor } from "../data/official-tasks.js";
-import { simulationExamHTML } from "../js/ui/screens/simulation.js";
+import { examPaperHTML } from "../js/ui/screens/simulation.js";
 
 /* ============================================================================
-   Règle énoncée par le propriétaire (2026-09-19) : « les SE aussi doivent
-   avoir SEULEMENT les questions officielles, comme les Maths ».
-
-   Une tâche « reconstructed » est une étape que l'application a fabriquée
-   faute de pouvoir relire la consigne dans le PDF. Ce n'est pas une question
-   du sujet : la montrer dans une épreuve laissait croire à l'élève qu'elle
-   comptait. Ce test verrouille les deux faces de la règle :
-     1. aucune étape reconstruite n'est jamais rendue dans une épreuve ;
-     2. un exercice sans consigne officielle ouvre une copie libre et LE DIT,
-        au lieu d'afficher une question inventée ou un écran vide.
+   Règle du propriétaire (2026-09-20) : l'écran d'épreuve n'affiche PLUS
+   AUCUNE question — ni officielle ni reconstruite. L'élève lit les questions
+   dans le sujet officiel (PDF rendu lisible par l'application) et rédige une
+   réponse par exercice. Les questions officielles restent encodées dans les
+   inventaires (جرد المهام, calibration) — jamais à l'écran d'épreuve.
+   Ce test verrouille les deux faces de la règle :
+     1. l'épreuve rend un champ par exercice, avec le barème, sans question ;
+     2. aucun texte de consigne de l'inventaire ne fuite dans l'épreuve.
    ========================================================================== */
 
 await loadAllYears();
-
-const FREE_NOTE = "لا توجد تعليمة رسمية موثّقة لهذا التمرين";
-
-function parse(html) {
-  const sources = [...html.matchAll(/data-task-source="([^"]+)"/g)].map((match) => match[1]);
-  const answers = [...html.matchAll(/data-task-answer="([^"]+)"/g)].map((match) => match[1]);
-  return { sources, answers };
-}
 
 const sessions = [];
 for (const year of FULL_APP_CONFIG.years) {
@@ -35,66 +25,55 @@ for (const year of FULL_APP_CONFIG.years) {
   }
 }
 
-test("aucune épreuve n'affiche une étape reconstruite", () => {
+test("aucune épreuve n'affiche de question : un champ par exercice, avec le barème", () => {
   let checked = 0;
   for (const { year, sujet } of sessions) {
+    const inventory = officialTaskInventoryFor(year.id, sujet.id);
+    const html = examPaperHTML({ subject: sujet, inventory });
+    // Aucune structure de tâche ni de question affichée.
+    assert.doesNotMatch(html, /data-task-answer|data-official-task|bac-consigne/, `${year.id}/S${sujet.id}`);
+    // L'annonce : les questions vivent dans le sujet officiel.
+    assert.match(html, /exam-paper-notice/, `${year.id}/S${sujet.id} doit annoncer le sujet comme source`);
+    assert.match(html, /data-pdf-canvas|لا يوجد ملف موضوع/, `${year.id}/S${sujet.id} doit rendre le sujet`);
+    // Un champ par exercice, avec le barème officiel (année + filière).
     for (const exercise of sujet.exercises) {
-      const html = simulationExamHTML({
-        subject: sujet,
-        inventory: officialTaskInventoryFor(year.id, sujet.id),
-        activeExercise: exercise.number
-      });
-      const { sources, answers } = parse(html);
-      for (const source of sources) {
-        assert.equal(
-          source,
-          "official",
-          `${year.id}/S${sujet.id}/E${exercise.number} affiche une étape ${source}`
+      assert.match(
+        html,
+        new RegExp(`data-free-exercise="${exercise.number}"`),
+        `${year.id}/S${sujet.id}/E${exercise.number} doit avoir un champ de rédaction`
+      );
+      if (Number.isFinite(Number(exercise.max))) {
+        assert.match(
+          html,
+          new RegExp(`${Number(exercise.max)} نقطة`),
+          `${year.id}/S${sujet.id}/E${exercise.number} barème`
         );
       }
-      const inventory = officialTaskInventoryFor(year.id, sujet.id);
-      const official = inventory.tasks.filter(
-        (task) => task.exerciseNumber === exercise.number && task.promptSource === "official"
-      );
-      assert.deepEqual(
-        answers,
-        official.map((task) => task.id),
-        `${year.id}/S${sujet.id}/E${exercise.number} : exactement les consignes officielles`
-      );
       checked++;
+    }
+    // Le total du sujet est affiché quand tout est mesuré : 20 pts partout.
+    const allMeasured = sujet.exercises.every((exercise) => Number.isFinite(Number(exercise.max)));
+    if (allMeasured) {
+      assert.match(html, /data-exam-total="20"/, `${year.id}/S${sujet.id} total /20`);
     }
   }
   assert.ok(checked >= 100, `${checked} exercices vérifiés`);
 });
 
-test("un exercice sans consigne officielle ouvre une copie libre et le dit", () => {
-  let withoutOfficial = 0;
+test("aucun texte de consigne de l'inventaire ne fuite dans l'écran d'épreuve", () => {
+  let verified = 0;
   for (const { year, sujet } of sessions) {
     const inventory = officialTaskInventoryFor(year.id, sujet.id);
-    for (const exercise of sujet.exercises) {
-      const official = inventory.tasks.filter(
-        (task) => task.exerciseNumber === exercise.number && task.promptSource === "official"
+    const html = examPaperHTML({ subject: sujet, inventory });
+    for (const task of inventory.tasks) {
+      const prompt = String(task.prompt || "").trim();
+      if (prompt.length < 12) continue; // trop court pour être discriminant
+      assert.ok(
+        !html.includes(prompt),
+        `${year.id}/S${sujet.id}: la consigne « ${prompt.slice(0, 30)}… » ne doit pas être affichée`
       );
-      if (official.length > 0) continue;
-      withoutOfficial++;
-      const html = simulationExamHTML({
-        subject: sujet,
-        inventory,
-        activeExercise: exercise.number
-      });
-      // Ni question inventée, ni écran mort : un champ de rédaction et l'aveu.
-      assert.equal(parse(html).answers.length, 0, `${year.id}/S${sujet.id}/E${exercise.number}`);
-      assert.match(
-        html,
-        new RegExp(`data-exercise-free="${exercise.number}"`),
-        `${year.id}/S${sujet.id}/E${exercise.number} : une copie libre`
-      );
-      assert.match(html, new RegExp(FREE_NOTE), `${year.id}/S${sujet.id}/E${exercise.number} : annoncé`);
-      assert.doesNotMatch(html, /بيانات هذا الموضوع غير صالحة/, "plus d'écran « données invalides »");
+      verified++;
     }
   }
-  /* Le nombre est un fait, pas une opinion : c'est la mesure qui oblige à
-     garder le repli. Seul un inventaire relu à la main le fera baisser. */
-  assert.ok(withoutOfficial > 0, "au moins un exercice sans consigne officielle");
-  console.log(`      → ${withoutOfficial} exercices sans consigne officielle (copie libre)`);
+  assert.ok(verified >= 250, `${verified} consignes vérifiées absentes de l'écran`);
 });

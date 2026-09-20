@@ -30,9 +30,12 @@ test("les contenus persistés sont échappés ou posés comme valeur DOM", () =>
     );
     assert.match(source, /import \{[^}]*escapeHTML[^}]*\} from/, `${path} doit l'importer`);
   }
-  assert.match(ui, /input\.value = progress\.officialTaskAnswers\[task\.id\] \|\| ""/);
+  /* Décision du propriétaire (2026-09-20) : plus aucune question affichée
+     dans l'épreuve — les textes de consignes ne sont plus interpolés du
+     tout (garantie plus forte que l'échappement). Restent à échapper :
+     intitulés d'exercices et URL du sujet. */
   assert.match(ui, /input\.value = progress\.freeAnswer \|\| ""/);
-  assert.match(ui, /escapeHTML\(task\.prompt\)/);
+  assert.match(ui, /escapeHTML\(exercise\.label\)/);
   assert.match(ui, /escapeHTML\(local\)/);
 });
 

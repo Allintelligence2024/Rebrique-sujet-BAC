@@ -198,28 +198,31 @@ test("l'écran de choix de 2021 affiche l'inventaire, le barème et la simulatio
   assert.equal($$("#view-strategy .calc-input").length, 6);
 });
 
-test("l'épreuve 2021 affiche les consignes officielles et le sujet en PDF", () => {
+test("l'épreuve 2021 affiche les exercices, leur barème et le sujet en PDF", () => {
   goToSeStream();
   click('#year-grid [data-year="2021"]');
   click("#guide-next");
   click('#view-strategy [data-confirm="1"][data-session-mode="bac"]');
   assert.ok(!$("#view-workspace").classList.contains("hidden"));
   assert.equal($("#view-workspace").dataset.sessionMode, "bac");
-  assert.notEqual($("#view-workspace").dataset.answerMode, "free");
+  assert.equal($("#view-workspace").dataset.answerMode, undefined, "plus d'attribut data-answer-mode");
 
-  // Une consigne officielle par tâche affichée ; les pôles reconstruits
-  // (N, W) restent cachés de l'épreuve — seules les questions officielles
-  // du sujet s'affichent (E1: 2, E2: 3, E3: 3 = 8 par sujet).
-  const switchButtons = $$("#view-workspace [data-simulation-exercise]");
-  assert.equal(switchButtons.length, 3, "trois exercices par sujet");
-  const fields = () => $$("#view-workspace [data-task-answer]");
-  assert.equal(fields().length, 2, "E1 : 2 consignes officielles (S, E)");
-  assert.equal($$("#view-workspace .bac-consigne").length, 2, "une consigne par tâche affichée");
-  for (const field of fields()) assert.equal(field.disabled, false);
-  click('#view-workspace [data-simulation-exercise="2"]');
-  assert.equal(fields().length, 3, "E2 : 3 consignes officielles (S, E, W)");
-  click('#view-workspace [data-simulation-exercise="1"]');
-  assert.equal($$("#view-workspace [data-exercise-free]").length, 0, "plus de champ « copie libre »");
+  /* Décision du propriétaire (2026-09-20) : AUCUNE question à l'écran —
+     les trois exercices du sujet, leur barème (5+7+8) et le sujet en PDF. */
+  const fields = $$("#view-workspace [data-exercise-free]");
+  assert.equal(fields.length, 3, "un champ de rédaction par exercice");
+  assert.deepEqual(
+    fields.map((field) => Number(field.dataset.exercise)),
+    [1, 2, 3]
+  );
+  for (const field of fields) assert.equal(field.disabled, false);
+  assert.equal($$("#view-workspace [data-task-answer]").length, 0, "aucune tâche affichée");
+  assert.equal($$("#view-workspace .bac-consigne").length, 0, "aucune consigne affichée");
+  const paper = $("#view-workspace").textContent;
+  assert.match(paper, /5 نقطة/);
+  assert.match(paper, /7 نقطة/);
+  assert.match(paper, /8 نقطة/);
+  assert.match(paper, /بارم الموضوع/);
 
   // Le sujet officiel s'ouvre dans l'application, en visionneuse intégrée.
   click("#simulation-pdf");
@@ -239,12 +242,12 @@ test("la copie 2021 est enregistrée puis verrouillée par la remise", () => {
   click('#year-grid [data-year="2021"]');
   click("#guide-next");
   click('#view-strategy [data-confirm="1"][data-session-mode="bac"]');
-  const fields = $$("#view-workspace [data-task-answer]");
-  const taskId = fields[0].dataset.taskAnswer;
+  const fields = $$("#view-workspace [data-exercise-free]");
+  const exerciseNumber = Number(fields[0].dataset.exercise);
   const answer = "إجابة التلميذ: تحليل معطيات الوثائق ثم الاستدلال العلمي للإجابة عن التمرين الأول.";
-  type(`[data-task-answer="${taskId}"]`, answer);
+  type(`[data-exercise-free="${exerciseNumber}"]`, answer);
   assert.equal(
-    store.exercise("2021", 1, 1).officialTaskAnswers[taskId],
+    store.exercise("2021", 1, exerciseNumber).freeAnswer,
     answer,
     "la réponse doit être enregistrée localement"
   );
@@ -255,15 +258,11 @@ test("la copie 2021 est enregistrée puis verrouillée par la remise", () => {
 
   assert.equal(store.state.sessionStatus, "completed");
   assert.equal(
-    $("#view-workspace [data-task-answer]").disabled,
+    $("#view-workspace [data-exercise-free]").disabled,
     true,
     "la copie est verrouillée après la remise"
   );
-  assert.equal(
-    store.exercise("2021", 1, 1).officialTaskAnswers[taskId],
-    answer,
-    "la réponse survit à la remise"
-  );
+  assert.equal(store.exercise("2021", 1, exerciseNumber).freeAnswer, answer, "la réponse survit à la remise");
   assert.ok($("#global-timer-bar").classList.contains("hidden"), "le chronomètre s'arrête");
   assert.equal($("#view-workspace").dataset.reviewMode, "true");
 });

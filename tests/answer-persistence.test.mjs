@@ -63,18 +63,20 @@ test("D11 : la frappe met l'état à jour tout de suite et regroupe l'écriture"
   click("#guide-next");
   click('#view-strategy [data-confirm="1"][data-session-mode="bac"]');
 
-  const field = $("#view-workspace [data-task-answer]");
-  assert.ok(field, "une zone de réponse est proposée");
-  const taskId = field.dataset.taskAnswer;
+  /* Décision du propriétaire (2026-09-20) : un champ de rédaction PAR
+     EXERCICE — les questions se lisent dans le sujet officiel en PDF. */
+  const field = $('#view-workspace [data-exercise-free="1"]');
+  assert.ok(field, "une zone de réponse par exercice est proposée");
   const exerciseNumber = Number(field.dataset.exercise);
+  assert.equal(exerciseNumber, 1);
   const ANSWER = "إجابة مكتوبة أثناء الإمتحان";
 
-  type(`[data-task-answer="${taskId}"]`, ANSWER);
+  type('[data-exercise-free="1"]', ANSWER);
 
   // 1. L'état en mémoire est à jour immédiatement : la suite du parcours
-  //    (changement d'exercice, remise) ne dépend pas du minuteur.
+  //    (remise, relecture) ne dépend pas du minuteur.
   assert.equal(
-    store.exercise(store.state.yearId, store.state.sujetId, exerciseNumber).officialTaskAnswers[taskId],
+    store.exercise(store.state.yearId, store.state.sujetId, exerciseNumber).freeAnswer,
     ANSWER,
     "l'état doit être à jour dès la frappe"
   );
@@ -91,16 +93,13 @@ test("D11 : la frappe met l'état à jour tout de suite et regroupe l'écriture"
 });
 
 test("D11 : la remise de copie écrit immédiatement, sans attendre le minuteur", async () => {
-  const field = $("#view-workspace [data-task-answer]");
-  const taskId = field.dataset.taskAnswer;
+  const field = $('#view-workspace [data-exercise-free="1"]');
+  assert.ok(field, "une zone de réponse par exercice est disponible");
   const exerciseNumber = Number(field.dataset.exercise);
   const FINAL = "الجملة الأخيرة المكتوبة قبل التسليم";
 
-  type(`[data-task-answer="${taskId}"]`, FINAL);
-  assert.equal(
-    store.exercise(store.state.yearId, store.state.sujetId, exerciseNumber).officialTaskAnswers[taskId],
-    FINAL
-  );
+  type('[data-exercise-free="1"]', FINAL);
+  assert.equal(store.exercise(store.state.yearId, store.state.sujetId, exerciseNumber).freeAnswer, FINAL);
 
   click("#simulation-finish");
   click("#simulation-finish-yes");
@@ -119,12 +118,11 @@ test("D11 : la page masquée vide la file d'écriture en attente", async () => {
     click("#guide-next");
     click('#view-strategy [data-confirm="2"][data-session-mode="bac"]');
   }
-  const active = $("#view-workspace [data-task-answer]");
+  const active = $('#view-workspace [data-exercise-free="1"]');
   assert.ok(active && !active.disabled, "une zone de réponse éditable est disponible");
 
-  const taskId = active.dataset.taskAnswer;
   const HIDDEN = "إجابة محفوظة عند إخفاء الصفحة";
-  type(`[data-task-answer="${taskId}"]`, HIDDEN);
+  type('[data-exercise-free="1"]', HIDDEN);
   assert.ok(!persisted().includes(HIDDEN), "l'écriture est en attente");
 
   // Ce que fait un navigateur qui met l'onglet en arrière-plan.
@@ -141,12 +139,11 @@ test("D11 : la page masquée vide la file d'écriture en attente", async () => {
 });
 
 test("D11 : le déchargement de la page vide aussi la file", async () => {
-  const active = $("#view-workspace [data-task-answer]");
+  const active = $('#view-workspace [data-exercise-free="1"]');
   assert.ok(active && !active.disabled, "une zone de réponse éditable est disponible");
 
-  const taskId = active.dataset.taskAnswer;
   const UNLOAD = "إجابة محفوظة عند مغادرة الصفحة";
-  type(`[data-task-answer="${taskId}"]`, UNLOAD);
+  type('[data-exercise-free="1"]', UNLOAD);
   assert.ok(!persisted().includes(UNLOAD), "l'écriture est en attente");
 
   globalThis.window.dispatchEvent(new globalThis.window.Event("pagehide"));

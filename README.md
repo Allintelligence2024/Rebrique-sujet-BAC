@@ -18,7 +18,7 @@ Parcours en cinq temps pensé pour la **gestion du stress** et la **méthode** �
 2. **Sérénité** _(parcours guidé uniquement)_ — volontairement dépouillé : respiration, rappel des quatre étapes (اقرأ ← اجمع ← اربط ← اختُم), plan de session. Cet écran prépare à l'épreuve, il n'est pas une simulation certifiée.
 3. ~~**تدريب الخطوات الأربع**~~ _(retiré le 2026-09-13)_ — l'exercice rapide, l'أطلس التقنيات et le تشخيص تجريبي ont été supprimés avec le mode entraînement. Le hub ne garde que les cartes d'épreuve et la consultation des annales.
 4. **Stratégie** _(optionnelle)_ — le sujet s'affiche **dans l'application** (visionneuse PDF intégrée, les fichiers suivis dans `subjects/**` étant servis par la même origine), avec estimation personnelle et choix du sujet. Chaque carte rappelle l'état réel de l'inventaire : `جرد المهام: N مهمة، منها M تعليمة رسمية موثّقة`. Le lien dzexams ne reste qu'en source de repli, et `⬇️ تنزيل PDF` permet de travailler hors ligne.
-5. **Épreuve — le seul mode** — l'application propose uniquement l'épreuve : les tâches inventoriées du sujet, un champ de réponse par tâche, le chronomètre officiel et **✓ تسليم الورقة** pour rendre la copie avant la fin. Aucune aide, aucun modèle, aucun diagnostic pendant l'épreuve ; après remise, les réponses sont verrouillées et une relecture distincte devient disponible. Aucune note BAC n'est affichée : le moteur n'est pas calibré, et l'écran le dit (`التنقيط غير معاير`).
+5. **Épreuve — le seul mode** — l'application propose uniquement l'épreuve : le sujet officiel rendu lisible **dans la copie** (visionneuse PDF intégrée), **la liste des exercices du sujet avec leur barème** (dépendant de l'année et de la filière, total /20), un champ de rédaction par exercice, le chronomètre officiel et **✓ تسليم الورقة** pour rendre la copie avant la fin. **Aucune question n'est affichée à l'écran** (décision du propriétaire, 2026-09-20) : l'élève lit chaque exercice dans le sujet officiel, exactement comme le jour de l'examen. Aucune aide, aucun modèle, aucun diagnostic pendant l'épreuve ; après remise, les réponses sont verrouillées et une relecture distincte devient disponible. Aucune note BAC n'est affichée : le moteur n'est pas calibré, et l'écran le dit (`التنقيط غير معاير`).
 
 > 📱 **Responsive** : l'interface est utilisable sur téléphone (grilles qui se replient, cibles tactiles ≥ 44 px, champs 16 px sans zoom iOS, modales scrollables). Verrouillé par `tests/e2e/responsive.spec.mjs` (3 viewports réels, zéro défilement horizontal) dans la CI.
 
@@ -41,7 +41,7 @@ quatre étapes) ont été retirés avec lui. Ce qui reste de la méthode :
 | ---------------------------------- | ----------------------------------------------------------------------------------- | ---------------------------- |
 | الخطوات 1-4 (اقرأ/اجمع/اربط/اختُم) | écran **Sérénité** (guide) : rappel des quatre étapes avant l'épreuve               | `ui.test.mjs`                |
 | وضع الحفظ (عرّف / اذكر)            | canevas `definition`/`listing` de `js/method-scripts.js`, utilisés par l'évaluation | `method-coach.test.mjs`      |
-| Provenance des consignes           | inventaires `data/official-tasks.js` + badge ⚠️/✓ dans chaque tâche de l'épreuve    | `official-coverage.test.mjs` |
+| Provenance des consignes           | inventaires `data/official-tasks.js` (les consignes restent encodées avec leur preuve ; l'écran d'épreuve n'affiche plus aucune question depuis le 2026-09-20) | `official-coverage.test.mjs` |
 
 **Hors périmètre, volontairement :** la colonne « 📝 المصحح » de la fiche (pourcentages, « نصف النقطة
 دائما », « إجابة بلا رقم = 0 »…) : aucune source officielle (`عناصر الإجابة والعلامة المترتبة`) ne
@@ -165,9 +165,12 @@ Le serveur applique une liste blanche d'assets publics. Ne pas remplacer cette c
 رياضيات** (14 années) **+ la session exceptionnelle 2017 رياضيات**. Chaque millésime ouvre une
 épreuve dans l'application — il n'existe plus de carte qui se contente d'afficher un lien.
 
-Une seule nature d'épreuve — l'**entraînement 4D** : les consignes du sujet sont encodées
-(`data/years/{se,m}/year-*.js`), chaque session ouvre une épreuve chronométrée avec consignes
-officielles, copie rédigée et `✓ تسليم الورقة`. L'ancienne **armature « copie libre »**
+Une seule nature d'épreuve — l'**épreuve 4D** : les consignes du sujet sont encodées
+(`data/years/{se,m}/year-*.js`) pour l'inventaire et la calibration ; chaque session ouvre une
+épreuve chronométrée où l'élève lit les questions **dans le sujet officiel** (PDF rendu dans la
+copie), rédige un champ par exercice et rend sa copie avec `✓ تسليم الورقة`. Depuis le
+2026-09-20 (décision du propriétaire), l'écran d'épreuve affiche les exercices du sujet et leur
+barème officiel — **jamais les questions**. L'ancienne **armature « copie libre »**
 (`answerMode: "free"` — aucune consigne encodée faute de couche texte lisible), qui n'a servi
 qu'à **SE 2021**, a disparu le 2026-09-20 : son sujet a été structuré par OCR (voir plus bas).
 Le mécanisme reste implémenté et gardé par des tests (sujet synthétique) si une future session
@@ -473,6 +476,7 @@ Statut honnête :
 
 - `data/subjects.js` expose un catalogue léger ; `loadYear()` importe un seul module `data/years/**`, déduplique les requêtes concurrentes et ne mémorise que les payloads validés.
 - `sw.js` précache uniquement le graphe statique nécessaire au shell. Le cache runtime accepte exclusivement les modules d'années répondant HTTP 200 et contourne les requêtes `Range`, et évince au-delà de 12 entrées. Les caches MIFTAH d'un ancien build sont nettoyés sans toucher ceux d'autres applications.
+- **Lisibilité PDF (correctif du 2026-09-20)** : `pdfjs-dist` est vendé dans `assets/vendor/pdfjs/` avec ses **tables CMap** et **polices standard** (`npm run vendor:pdfjs`). Sans elles, les PDF arabes à polices CID et les polices non intégrées (Helvetica/Times) rendaient des glyphes manquants ou un texte illisible dans la visionneuse embarquée (42 des 58 sujets étaient touchés). `js/ui/pdf-renderer.js` passe désormais `cMapUrl`, `cMapPacked` et `standardFontDataUrl` à `getDocument()` ; ces ressources sont chargées à la demande, même origine, et suivent le build déterministe.
 - `npm run build` calcule un identifiant de contenu, produit `dist/site/` et le monofichier, puis écrit `dist/site/release.json` avec la liste exacte des fichiers, octets et SHA-256. `npm run release:verify` refuse tout fichier ajouté, absent, altéré ou incohérent avec le build.
 - L'observabilité reste locale : seulement des compteurs bornés par périmètre, noms d'erreurs autorisés, changements de connectivité et événements du service worker. Ni réponse élève, ni sujet, ni texte d'erreur, ni URL ne sont enregistrés.
 - La procédure de déploiement atomique, les contrôles post-déploiement et le rollback sont documentés dans [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).

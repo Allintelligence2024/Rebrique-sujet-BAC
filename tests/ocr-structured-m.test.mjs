@@ -246,17 +246,21 @@ test("la session exceptionnelle 2017 garde ses propres fichiers et une épreuve 
     /^\/subjects\/M\/2017\/exceptional\/sujet-1\.pdf/,
     "la session exceptionnelle a ses propres PDF"
   );
-  assert.notEqual($("#view-workspace").dataset.answerMode, "free", "l'épreuve n'est plus en copie libre");
-  /* L'épreuve 4D n'affiche QUE les consignes officielles (S, E, W) :
-     le pôle N reconstruit n'apparaît pas. */
-  const shown = $$("#view-workspace [data-task-answer]").map((input) => input.dataset.taskAnswer);
-  assert.equal(shown.length, 3, "trois consignes officielles pour le تمرين 1");
-  assert.ok(
-    shown.every((taskId) => taskId.startsWith("2017-em-S1-E1-")),
-    `identifiants de tâches inattendus : ${shown.join(",")}`
+  assert.equal($("#view-workspace").dataset.answerMode, undefined, "plus d'attribut data-answer-mode");
+  /* Décision du propriétaire (2026-09-20) : AUCUNE question à l'écran —
+     les exercices du sujet, leur barème et le PDF. Un champ par exercice. */
+  const fields = $$("#view-workspace [data-exercise-free]");
+  assert.equal(fields.length, 2, "2017-em : deux exercices, deux champs");
+  assert.deepEqual(
+    fields.map((field) => Number(field.dataset.exercise)),
+    [1, 2]
   );
-  assert.equal($$("#view-workspace [data-exercise-free]").length, 0, "plus de champ de copie libre");
-  assert.ok($$("#view-workspace .bac-consigne").length > 0, "les consignes officielles sont affichées");
+  assert.equal($$("#view-workspace [data-task-answer]").length, 0, "aucune tâche affichée");
+  assert.equal($$("#view-workspace .bac-consigne").length, 0, "aucune consigne affichée");
+  /* Le barème de la session exceptionnelle (7+13) est affiché, total 20. */
+  assert.match($("#view-workspace").textContent, /7 نقطة/);
+  assert.match($("#view-workspace").textContent, /13 نقطة/);
+  assert.match($("#view-workspace").textContent, /بارم الموضوع/);
   /* Le barème est MESURÉ désormais : aucun « البارم غير مُقاس » ne doit fuir. */
   assert.doesNotMatch($("#view-workspace").textContent, /البارم غير مُقاس/);
   /* Garde-fou produit : jamais de note numérique visible pendant l'épreuve. */
@@ -278,13 +282,15 @@ test("le troisième onglet est « باكالوريات أجنبية », sans lie
 test("la copie d'une épreuve OCR est enregistrée puis verrouillée par la remise", () => {
   goToMathsStream();
   openExam("2015-m");
-  const fields = $$("#view-workspace [data-task-answer]");
-  assert.ok(fields.length > 0, "l'épreuve 2015 affiche ses consignes officielles");
-  const taskId = fields[0].dataset.taskAnswer;
+  /* Un champ de rédaction par exercice (2015 M : 10+10), aucune question
+     affichée — elles se lisent dans le sujet officiel en PDF. */
+  const fields = $$("#view-workspace [data-exercise-free]");
+  assert.equal(fields.length, 2, "2015-m : deux exercices, deux champs");
+  const exerciseNumber = Number(fields[0].dataset.exercise);
   const answer = "إجابة التلميذ: تحليل نتائج الرحلان الكهربائي ثم استخراج المتتالية البنائية.";
-  type(`[data-task-answer="${taskId}"]`, answer);
+  type(`[data-exercise-free="${exerciseNumber}"]`, answer);
   assert.equal(
-    store.exercise("2015-m", 1, 1).officialTaskAnswers[taskId],
+    store.exercise("2015-m", 1, exerciseNumber).freeAnswer,
     answer,
     "la réponse doit être enregistrée localement"
   );
@@ -295,12 +301,12 @@ test("la copie d'une épreuve OCR est enregistrée puis verrouillée par la remi
 
   assert.equal(store.state.sessionStatus, "completed");
   assert.equal(
-    $("#view-workspace [data-task-answer]").disabled,
+    $("#view-workspace [data-exercise-free]").disabled,
     true,
     "la copie est verrouillée après la remise"
   );
   assert.equal(
-    store.exercise("2015-m", 1, 1).officialTaskAnswers[taskId],
+    store.exercise("2015-m", 1, exerciseNumber).freeAnswer,
     answer,
     "la réponse survit à la remise"
   );

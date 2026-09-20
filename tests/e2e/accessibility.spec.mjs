@@ -38,14 +38,19 @@ test("les exercices restent accessibles dans n’importe quel ordre sans répons
   await page.locator('#year-grid [data-year="2025"]').click();
   await page.locator("#guide-next").click();
   await page.locator('#view-strategy [data-confirm="1"][data-session-mode="bac"]').click();
-  const exercises = page.locator("#view-workspace [data-simulation-exercise]");
-  await expect(exercises).toHaveCount(3);
-  await expect(exercises.nth(2)).toBeEnabled();
-  // Le troisième exercice s'ouvre directement : aucune réponse préalable exigée.
-  await exercises.nth(2).click();
-  await expect(page.locator('[data-official-task^="2025-S1-E3-"]').first()).toBeVisible();
-  await page.locator('#view-workspace [data-simulation-exercise="1"]').click();
-  await expect(page.locator('[data-official-task^="2025-S1-E1-"]').first()).toBeVisible();
+  /* Décision du propriétaire (2026-09-20) : la copie affiche les exercices du
+     sujet et leur barème, jamais les questions — elles se lisent dans le PDF.
+     Tous les exercices sont rédigables en même temps, sans verrou. */
+  const fields = page.locator("#view-workspace [data-exercise-free]");
+  await expect(fields).toHaveCount(3);
+  for (let index = 0; index < 3; index += 1) {
+    await expect(fields.nth(index)).toBeEnabled();
+  }
+  // Le champ du troisième exercice est là dès l'ouverture : aucune réponse préalable exigée.
+  await expect(page.locator('#view-workspace [data-exercise-free="3"]')).toBeVisible();
+  await expect(page.locator('#view-workspace [data-exercise-pdf="3"]')).toBeVisible();
+  // Aucune question affichée : la source des questions est le sujet officiel.
+  await expect(page.locator("#view-workspace [data-task-answer]")).toHaveCount(0);
 });
 
 test("la remise de copie est confirmée par une boîte de dialogue accessible", async ({ page }) => {

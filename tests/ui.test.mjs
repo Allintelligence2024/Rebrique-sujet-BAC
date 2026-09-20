@@ -148,27 +148,23 @@ test("après تثبيت du sujet, entrée directe dans l'épreuve (aucun écran 
   assert.equal($("#stepnav"), null, "la navigation par étapes d'entraînement a disparu");
 });
 
-test("l'épreuve n'affiche QUE les consignes officielles, avec leur provenance", () => {
-  /* Décision du propriétaire (2026-09-19) : une étape « reconstruite » est
-     une question que l'application a fabriquée, pas une question du sujet.
-     Elle n'a plus sa place dans une épreuve. Sur 2025/S1/E1 il reste deux
-     consignes officielles (Q2 et Q3) sur les quatre tâches inventoriées. */
-  const tasks = $$("#view-workspace .simulation-task");
-  assert.equal(tasks.length, 2, "deux consignes officielles pour le ت1 de 2025/S1");
-  const badges = $$("#view-workspace [data-task-source]");
-  assert.equal(badges.length, 2, "chaque consigne porte sa provenance");
-  assert.deepEqual(
-    badges.map((badge) => badge.dataset.taskSource),
-    ["official", "official"]
-  );
-  assert.match(badges[0].textContent, /تعليمة رسمية/);
-  // Les pages sont celles du document officiel, jamais inventées.
-  assert.doesNotMatch($("#view-workspace").textContent, /صفحة غير موثّقة/);
-  assert.match(tasks[0].textContent, /الصفحة 1/);
-  // Plus aucune étape reconstruite n'est montrée, donc plus son avertissement.
-  assert.doesNotMatch($("#view-workspace").textContent, /مُعاد بناؤها/);
-  // Aucune note, aucun pourcentage dans l'écran d'épreuve.
-  assert.doesNotMatch($("#view-workspace").textContent, /\d+[.,]\d+\s*\/\s*\d+/);
+test("l'épreuve n'affiche AUCUNE question : les exercices et leur barème", () => {
+  /* Décision du propriétaire (2026-09-20) : plus AUCUNE consigne à l'écran,
+     officielle ou reconstruite. Les questions se lisent dans le sujet
+     officiel (PDF embarqué dans la copie) ; l'écran porte les exercices,
+     leur barème (5+7+8 pour 2025 SE) et l'annonce du total du sujet. */
+  assert.equal($$("#view-workspace [data-task-answer]").length, 0, "aucune tâche affichée");
+  assert.equal($$("#view-workspace .bac-consigne").length, 0, "aucune consigne affichée");
+  assert.equal($$("#view-workspace [data-task-source]").length, 0, "aucun badge de provenance à l'écran");
+  const cards = $$("#view-workspace [data-free-exercise]");
+  assert.equal(cards.length, 3, "un article par exercice du sujet 2025/S1");
+  const paper = $("#view-workspace").textContent;
+  assert.match(paper, /5 نقطة/);
+  assert.match(paper, /7 نقطة/);
+  assert.match(paper, /8 نقطة/);
+  assert.match(paper, /بارم الموضوع/);
+  assert.match(paper, /الأسئلة كلها في ملف الموضوع الرسمي/);
+  assert.doesNotMatch(paper, /\d+[.,]\d+\s*\/\s*\d+/);
 });
 
 test("le sujet s'ouvre dans l'application (PDF local) et non sur un lien externe", () => {
@@ -183,13 +179,12 @@ test("le sujet s'ouvre dans l'application (PDF local) et non sur un lien externe
 
 test("la réponse est enregistrée automatiquement, sans confirmation", async () => {
   const { store } = await import("../js/store.js");
-  const input = $("#view-workspace [data-task-answer]");
+  const input = $('#view-workspace [data-exercise-free="1"]');
   input.value = "إجابة محفوظة آلياً";
   input.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
   await new Promise((resolve) => setTimeout(resolve, 400));
-  const taskId = input.dataset.taskAnswer;
   const progress = store.exercise("2025", 1, 1);
-  assert.equal(progress.officialTaskAnswers[taskId], "إجابة محفوظة آلياً");
+  assert.equal(progress.freeAnswer, "إجابة محفوظة آلياً");
 });
 
 test("la dictée vocale reste disponible sur les champs de réponse", async () => {
@@ -245,7 +240,7 @@ test("la remise verrouille la copie et ouvre la relecture", async () => {
   assert.equal(store.state.sessionEndReason, "manual");
   assert.equal($("#view-workspace").dataset.reviewMode, "true");
   // Réponses conservées mais verrouillées.
-  assert.equal($("#view-workspace [data-task-answer]").disabled, true);
+  assert.equal($("#view-workspace [data-exercise-free]").disabled, true);
   assert.equal($("#simulation-finish"), null, "plus de remise après remise");
   // Aucune note : le barème reste provisoire.
   assert.match($("#view-workspace").textContent, /التنقيط غير معاير/);

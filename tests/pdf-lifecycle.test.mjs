@@ -107,11 +107,13 @@ test("D7 : fermer le tiroir du sujet pendant l'épreuve libère le visionneur", 
   click('#view-strategy [data-confirm="1"][data-session-mode="bac"]');
   await settle();
 
-  // Quitter l'écran de stratégie libère son aperçu : un écran masqué ne doit
-  // pas garder un document pdf.js ouvert pendant toute l'épreuve.
-  assert.equal(resizeListeners.size, 0, "l'aperçu de stratégie doit être libéré dès le changement d'écran");
+  /* Quitter l'écran de stratégie libère son aperçu. Depuis le 2026-09-20,
+     la copie embarque le sujet officiel directement (décision du
+     propriétaire) : le SEUL visionneur restant est celui de l'épreuve. */
+  assert.equal(resizeListeners.size, 1, "seul le visionneur du sujet embarqué dans la copie reste monté");
+  assert.ok($("#view-workspace [data-pdf-canvas]"), "le sujet est rendu dans la copie");
 
-  // L'épreuve n'affiche pas le sujet en ligne : il s'ouvre dans un tiroir.
+  // Le tiroir « الموضوع » ouvre le sujet à la page de l'exercice choisi.
   const avant = resizeListeners.size;
   click("#simulation-pdf");
   await settle();

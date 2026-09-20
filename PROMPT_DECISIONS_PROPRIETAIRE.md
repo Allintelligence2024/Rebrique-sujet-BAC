@@ -70,6 +70,27 @@ officielles verbatim (une par question affichée), preuves dans `scripts/extract
 sa carte d'archive retirée (toutes les sessions SE sont des années 4D). **Il n'existe plus
 aucune armature « copie libre » dans l'application.**
 
+### Décision 7 — épreuve sans questions affichées, barème visible, PDF lisibles (2026-09-20)
+
+Trois demandes du propriétaire, enregistrées le 2026-09-20 :
+
+1. **Fixer les PDF illisibles dans la visionneuse embarquée.** Mesure : sans CMap ni polices
+   standard, 42 des 58 sujets perdaient des glyphes (polices CID arabes, Helvetica/Times non
+   intégrées). Correctif : `pdfjs-dist` est vendé avec `cmaps/` et `standard_fonts/`
+   (`npm run vendor:pdfjs`, `assets/vendor/pdfjs/`), et `js/ui/pdf-renderer.js` passe
+   `cMapUrl`/`cMapPacked`/`standardFontDataUrl` à `getDocument()`. Les sujets se lisent dans
+   l'application, même origine, sans réseau externe.
+2. **Le barème apparaît dans TOUS les BAC**, dépendant de l'année et de la filière : chaque
+   exercice porte son badge « N نقطة » et le sujet son total /20 (vérifié sur les 58 sujets :
+   tous totalisent 20 — SE 5+7+8 toutes années ; Maths 10+10, 6+14, 7+13 ou 8+12 selon le
+   millésime). Le total ne s'affiche que si le barème de chaque exercice est mesuré.
+3. **Supprimer les questions de l'écran d'épreuve** : la copie affiche uniquement les
+   exercices du sujet choisi (titre, barème, champ de rédaction) et le sujet officiel en PDF.
+   Les questions officielles restent encodées dans les inventaires (`data/official-tasks.js`)
+   pour l'audit et la calibration — jamais rendues à l'écran. Garde-fous conservés : aucun
+   corrigé, aucune note numérique, aucun indice pendant l'épreuve (`اختبار صامت`), verrouillage
+   à la remise, relecture qualitative après remise.
+
 Ce qui a été fait :
 
 1. **Pipeline reproductible** — `scripts/lib/ocr.mjs` (nœud OCR : tesseract.js + données
@@ -620,7 +641,7 @@ discrimination que ce seuil vient d'acquérir.
 
 ```bash
 npm ci --no-audit --no-fund      # node_modules disparaît entre les sessions sandbox
-npm test                          # attendu : 366 tests, 365 pass, 0 fail, 1 skipped
+npm test                          # attendu : 369 tests, 368 pass, 0 fail, 1 skipped
 for s in lint typecheck format:check build release:verify docs:check \
          calibration:check inventory:check p3:check; do npm run $s; done
 npm run pwa:version               # après toute édition de js/** ou sw.js

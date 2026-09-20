@@ -208,15 +208,16 @@ test("3. Stratégie : calculatrice, inventaire officiel et confirmation", () => 
 test("4. L'écran onboarding n'existe plus et les exercices restent librement accessibles", () => {
   assert.equal($("#view-onboarding"), null, "view-onboarding supprimé du DOM");
   assert.equal($("#ws-onb"), null, "le bouton vers l'ancien écran est retiré de la copie");
-  click('#view-workspace [data-simulation-exercise="2"]');
-  assert.equal(
-    store.state.activeExercise,
-    2,
-    "le changement d'exercice ne doit pas être artificiellement verrouillé"
+  /* Tous les exercices du sujet sont sur la même copie : aucun verrou, aucun
+     changement d'écran artificiel. Décision du propriétaire (2026-09-20) :
+     l'épreuve affiche les EXERCICES du sujet, jamais les questions. */
+  const fields = $$("#view-workspace [data-exercise-free]");
+  assert.equal(fields.length, 3, "2025 SE : trois exercices, trois champs");
+  assert.deepEqual(
+    fields.map((field) => Number(field.dataset.exercise)),
+    [1, 2, 3]
   );
-  assert.ok(!$("#view-workspace").classList.contains("hidden"));
-  click('#view-workspace [data-simulation-exercise="1"]');
-  assert.equal(store.state.activeExercise, 1);
+  for (const field of fields) assert.equal(field.disabled, false);
 });
 
 test("5. Épreuve : les seuls outils sont le sujet, la sortie et la remise", () => {
@@ -239,55 +240,51 @@ test("5. Épreuve : les seuls outils sont le sujet, la sortie et la remise", () 
   assert.equal(store.state.sessionStatus, "active", "la session continue si l'élève refuse");
 });
 
-test("6. Épreuve : les questions officielles sont visibles et peuvent être rédigées", () => {
-  /* Questions OFFICIELLES seulement : Q1 et Q4 du ت1 sont des étapes
-     reconstruites, l'épreuve ne les montre plus. */
+test("6. Épreuve : les exercices avec leur barème, AUCUNE question affichée", () => {
+  /* Décision du propriétaire (2026-09-20) : l'écran d'épreuve n'affiche plus
+     aucune question — officielle ou reconstruite. Les questions se lisent
+     dans le sujet officiel (PDF), l'écran porte les exercices et le barème. */
+  assert.equal($$("#view-workspace [data-task-answer]").length, 0, "aucune tâche affichée");
+  assert.equal($$("#view-workspace .bac-consigne").length, 0, "aucune consigne affichée");
   const inventory = officialTaskInventoryFor("2025", 1);
-  const shown = $$("#view-workspace [data-task-answer]").map((input) => input.dataset.taskAnswer);
-  assert.deepEqual(shown, ["2025-S1-E1-Q2", "2025-S1-E1-Q3"]);
-  for (const id of shown) {
-    assert.equal(
-      inventory.tasks.find((task) => task.id === id).promptSource,
-      "official",
-      `${id} affichée doit être une consigne officielle`
+  for (const task of inventory.tasks) {
+    const prompt = String(task.prompt || "");
+    if (prompt.length < 20) continue;
+    assert.ok(
+      !$("#view-workspace").textContent.includes(prompt.slice(0, 25)),
+      "le texte d'une consigne ne doit pas apparaître dans l'épreuve"
     );
   }
-  // Chaque question porte sa provenance ; aucune n'affiche de note.
-  assert.equal(
-    $$("#view-workspace [data-task-source]").length,
-    $$("#view-workspace .simulation-task").length
-  );
+  // Le barème officiel dépendant de l'année et de la filière : 5+7+8 = 20.
+  assert.match($("#view-workspace").textContent, /5 نقطة/);
+  assert.match($("#view-workspace").textContent, /7 نقطة/);
+  assert.match($("#view-workspace").textContent, /8 نقطة/);
+  assert.match($("#view-workspace").textContent, /بارم الموضوع/);
   assert.doesNotMatch($("#view-workspace").textContent, /\d+[.,]\d+\s*\/\s*\d+/);
-  // Rédaction libre : le texte est conservé, sans validation de note.
-  const input = $('#view-workspace [data-task-answer="2025-S1-E1-Q2"]');
+  // Rédaction par exercice : le texte est conservé, sans validation de note.
+  const input = $('#view-workspace [data-exercise-free="1"]');
   input.value = "إجابة الطالب في الإمتحان";
   input.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
-  assert.equal(store.exercise("2025", 1, 1).officialTaskAnswers["2025-S1-E1-Q2"], "إجابة الطالب في الإمتحان");
+  assert.equal(store.exercise("2025", 1, 1).freeAnswer, "إجابة الطالب في الإمتحان");
   // « اختبار صامت » promet l'absence de diagnostic PENDANT l'épreuve : aucun
   // contrôle d'évaluation ne doit y être rendu. Il réapparaît en relecture.
-  assert.equal(
-    $('#view-workspace [data-qualitative-for="2025-S1-E1-Q2"]'),
-    null,
-    "aucune évaluation qualitative pendant l'épreuve"
-  );
   assert.equal($("#view-workspace .qualitative-check"), null, "aucun bouton تقييم نوعي en épreuve");
 });
 
-test("7. Épreuve : transition vers l'exercice 3 et rédaction complète", () => {
-  click('#view-workspace [data-simulation-exercise="3"]');
-  assert.equal(store.state.activeExercise, 3);
-  const tasks = $$("#view-workspace .simulation-task");
-  assert.ok(tasks.length > 0, "l'exercice 3 propose ses tâches");
-  for (const input of $$("#view-workspace [data-task-answer]")) {
+test("7. Épreuve : rédaction complète de tous les exercices du sujet", () => {
+  const fields = $$("#view-workspace [data-exercise-free]");
+  assert.equal(fields.length, 3);
+  for (const input of fields) {
     input.value = "إجابة كاملة";
     input.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
   }
-  const progress = store.exercise("2025", 1, 3);
-  assert.equal(Object.keys(progress.officialTaskAnswers).length, tasks.length);
-  assert.ok(
-    Object.values(progress.officialTaskAnswers).every((answer) => answer === "إجابة كاملة"),
-    "toutes les réponses de l'exercice sont conservées"
-  );
+  for (const exerciseNumber of [1, 2, 3]) {
+    assert.equal(
+      store.exercise("2025", 1, exerciseNumber).freeAnswer,
+      "إجابة كاملة",
+      `la réponse de l'exercice ${exerciseNumber} est conservée`
+    );
+  }
 });
 
 test("8-9. Ni rapport, ni réinitialisation : la remise est la seule sortie", () => {
@@ -301,15 +298,17 @@ test("8-9. Ni rapport, ni réinitialisation : la remise est la seule sortie", ()
   assert.equal(store.state.sessionStatus, "completed");
   assert.equal(store.state.sessionEndReason, "manual");
   assert.equal($("#view-workspace").dataset.reviewMode, "true");
-  assert.equal($("#view-workspace [data-task-answer]").disabled, true);
+  assert.equal($("#view-workspace [data-exercise-free]").disabled, true);
   assert.equal($("#simulation-finish"), null, "plus de remise après remise");
   // L'évaluation qualitative a été déplacée ici : en relecture le diagnostic
   // est permis, et il ne reste pas un corrigé — aucune note n'est rendue.
-  // (La relecture affiche l'exercice actif, on ne présuppose donc pas un id.)
-  const reviewButton = $("#view-workspace [data-qualitative-for]");
+  // (Un bouton par exercice : on ne présuppose donc pas un id.)
+  const reviewButton = $("#view-workspace [data-qualitative-free]");
   assert.ok(reviewButton, "l'évaluation qualitative doit être disponible en relecture");
-  click(`#view-workspace [data-qualitative-for="${reviewButton.dataset.qualitativeFor}"]`);
-  const result = $(`#view-workspace [data-qualitative-result="${reviewButton.dataset.qualitativeFor}"]`);
+  click(`#view-workspace [data-qualitative-free="${reviewButton.dataset.qualitativeFree}"]`);
+  const result = $(
+    `#view-workspace [data-qualitative-result-free="${reviewButton.dataset.qualitativeFree}"]`
+  );
   assert.notEqual(result.textContent.trim(), "");
   assert.doesNotMatch(result.textContent, /\d+[.,]\d+\s*\/\s*\d+/);
   // Retour au hub.

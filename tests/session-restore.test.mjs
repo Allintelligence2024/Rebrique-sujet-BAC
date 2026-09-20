@@ -78,8 +78,11 @@ test("parcours complet : épreuve, réponse, puis remise de la copie", () => {
   assert.ok(!$("#view-workspace").classList.contains("hidden"));
   assert.equal($("#view-workspace").dataset.reviewMode, "false");
 
-  const field = $$("#view-workspace [data-task-answer]")[0];
-  type(`[data-task-answer="${field.dataset.taskAnswer}"]`, ANSWER);
+  /* Un champ de rédaction par exercice (décision du propriétaire 2026-09-20) :
+     aucune question n'est affichée — elles se lisent dans le sujet en PDF. */
+  const field = $('#view-workspace [data-exercise-free="1"]');
+  assert.ok(field, "un champ de rédaction par exercice");
+  type('[data-exercise-free="1"]', ANSWER);
   click("#simulation-finish");
   click("#simulation-finish-yes");
   assert.equal(store.state.sessionStatus, "completed");
@@ -94,7 +97,7 @@ test("après remise, un rechargement ramène la relecture et la copie", async ()
   assert.deepEqual(visible, ["view-workspace"], "la relecture doit être restaurée, pas le hub");
   assert.equal($("#view-workspace").dataset.reviewMode, "true");
   assert.equal($("#simulation-finish"), null, "une copie rendue ne se rend pas deux fois");
-  const locked = $$("#view-workspace [data-task-answer]");
+  const locked = $$("#view-workspace [data-exercise-free]");
   assert.ok(locked.length > 0, "les réponses rendues doivent être affichées");
   for (const field of locked) assert.equal(field.disabled, true);
   assert.ok(
