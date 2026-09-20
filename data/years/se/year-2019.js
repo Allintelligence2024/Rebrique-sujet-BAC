@@ -35,7 +35,7 @@ const YEAR_2019_SE = {
           ui: "text",
           label: "الاستنساخ وتركيب ARNm",
           max: 5,
-          desc: "آلية الاستنساخ ودور إنزيم ARN بوليميراز في تركيب ARNm",
+          desc: "آلية الاستنساخ ودور أنزيم ARN بوليميراز في تركيب ARNm",
           poles: {
             N: {
               points: 1,
@@ -47,6 +47,7 @@ const YEAR_2019_SE = {
               placeholder: "صياغة المشكل العلمي...",
               minLength: 40,
               modelAnswer: "المشكل العلمي: كيف يقرأ ARN بوليميراز السلسلة الناسخة فيركب ARNm مكملا؟",
+              answerStatus: "authored",
               rule: {
                 prompt: "تأطير الإشكالية: كيف يُستنسخ ARNm من ADN؟",
                 keywords: ["استنساخ", "ARNm", "بوليميراز"],
@@ -65,9 +66,10 @@ const YEAR_2019_SE = {
               minLength: 40,
               modelAnswer:
                 "البداية: يرتبط ARN بوليميراز ببداية المورثة ويفتح السلسلتين. الاستطالة: يقرأ السلسلة الناسخة ويربط نوكليوتيدات مكملة. النهاية: يصل إلى نهاية المورثة فينفصل ARNm.",
+              answerStatus: "authored",
               rule: {
                 prompt: "تعرف على مراحل الاستنساخ",
-                keywords: ["بدايه", "استطاله", "نهايه"],
+                keywords: ["بداية", "استطالة", "نهاية"],
                 minHits: 2,
                 forbidden: ["بسبب"]
               }
@@ -83,9 +85,10 @@ const YEAR_2019_SE = {
               minLength: 120,
               modelAnswer:
                 "في النواة يرتبط ARN بوليميراز بالمورثة ويكسر الروابط الهيدروجينية، ثم يركب ARNm وفق تتابع السلسلة الناسخة حتى نهاية المورثة فينفصل الجزيء حاملا المعلومة إلى الهيولى.",
+              answerStatus: "authored",
               rule: {
                 prompt: "نص علمي حول الاستنساخ",
-                keywords: ["نواه", "بوليميراز", "ARNm", "ناسخه", "هيولي"],
+                keywords: ["نواة", "بوليميراز", "ARNm", "ناسخة", "هيولي"],
                 minHits: 3,
                 forbidden: []
               }
@@ -100,9 +103,10 @@ const YEAR_2019_SE = {
               placeholder: "في الختام...",
               minLength: 40,
               modelAnswer: "في الختام، ينتقل ARNm إلى الهيولى ليُترجم إلى بروتين ثم يُهدم بعد استعماله.",
+              answerStatus: "authored",
               rule: {
                 prompt: "الخاتمة: مصير ARNm",
-                keywords: ["ARNm", "هيولي", "ترجمه"],
+                keywords: ["ARNm", "هيولي", "ترجمة"],
                 minHits: 2,
                 forbidden: []
               }
@@ -112,14 +116,14 @@ const YEAR_2019_SE = {
         {
           number: 2,
           ui: "text",
-          label: "الموقع الفعال والتخصص الإنزيمي",
+          label: "الموقع الفعال والتخصص الأنزيمي",
           max: 7,
           desc: "العلاقة بين بنية الموقع الفعال ومادة التفاعل وتأثير درجة الحرارة وpH",
           poles: {
             N: {
               points: 1,
-              prompt: "تأطير الإشكالية: ما أصل التخصص الإنزيمي؟",
-              bacPrompt: "كيف تضمن البنية الفراغية للإنزيم تخصصه الوظيفي؟",
+              prompt: "تأطير الإشكالية: ما أصل التخصص الأنزيمي؟",
+              bacPrompt: "كيف تضمن البنية الفراغية للأنزيم تخصصه الوظيفي؟",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
@@ -127,8 +131,9 @@ const YEAR_2019_SE = {
               minLength: 40,
               modelAnswer:
                 "المشكل العلمي: كيف يتكامل الموقع الفعال مع مادة التفاعل فيحدد التخصص، وكيف تؤثر الحرارة وpH؟",
+              answerStatus: "authored",
               rule: {
-                prompt: "تأطير الإشكالية: ما أصل التخصص الإنزيمي؟",
+                prompt: "تأطير الإشكالية: ما أصل التخصص الأنزيمي؟",
                 keywords: ["موقع", "فعال", "تخصص"],
                 minHits: 2,
                 forbidden: []
@@ -144,17 +149,18 @@ const YEAR_2019_SE = {
               placeholder: "درجة مثلى، انخفاض على الطرفين...",
               minLength: 90,
               modelAnswer:
-                "نلاحظ سرعة أعظمية عند درجة pH وحرارة مثلى، بينما تنخفض السرعة في الطرفين، ومنه نستنتج وجود ظروف مثلى للنشاط الإنزيمي.",
+                "نلاحظ سرعة أعظمية عند درجة pH وحرارة مثلى، بينما تنخفض السرعة في الطرفين، ومنه نستنتج وجود ظروف مثلى للنشاط الأنزيمي.",
+              answerStatus: "authored",
               rule: {
                 prompt: "تحليل تغيرات السرعة بدلالة pH والحرارة",
-                keywords: ["سرعه", "حراره", "نشاط"],
+                keywords: ["سرعة", "حرارة", "نشاط"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
-                  axes: ["سرعه", "PH"],
+                  axes: ["سرعة", "PH"],
                   comparisons: [["مثلى", "طرف"]],
-                  trends: [{ about: "مثلى", expect: ["اعظميه", "سرعه"] }],
+                  trends: [{ about: "مثلى", expect: ["أعظمية", "سرعة"] }],
                   values: [],
                   strictValues: false
                 }
@@ -170,10 +176,11 @@ const YEAR_2019_SE = {
               placeholder: "شحنات، تشوه، تخريب...",
               minLength: 110,
               modelAnswer:
-                "يغيّر pH شحنات الأحماض الأمينية في الموقع الفعال فيضعف التكامل مع الركيزة. وارتفاع الحرارة يخرب البنية الفراغية فيفقد الإنزيم تخصصه.",
+                "يغيّر pH شحنات الأحماض الأمينية في الموقع الفعال فيضعف التكامل مع الركيزة. وارتفاع الحرارة يخرب البنية الفراغية فيفقد الأنزيم تخصصه.",
+              answerStatus: "authored",
               rule: {
                 prompt: "تفسير تأثير pH والحرارة على الموقع الفعال",
-                keywords: ["موقع", "فعال", "شحنات", "بنيه", "تخريب"],
+                keywords: ["موقع", "فعال", "شحنات", "بنية", "تخريب"],
                 minHits: 3,
                 forbidden: []
               }
@@ -181,7 +188,7 @@ const YEAR_2019_SE = {
             W: {
               points: 1,
               prompt: "الخاتمة: شروط النشاط",
-              bacPrompt: "ما الشروط التي تحفظ النشاط الإنزيمي؟",
+              bacPrompt: "ما الشروط التي تحفظ النشاط الأنزيمي؟",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
@@ -189,6 +196,7 @@ const YEAR_2019_SE = {
               minLength: 40,
               modelAnswer:
                 "في الختام، يحفظ النشاط عند pH وحرارة قريبين من الوسط الخلوي حتى يبقى الموقع الفعال متكاملا.",
+              answerStatus: "authored",
               rule: {
                 prompt: "الخاتمة: شروط النشاط",
                 keywords: ["نشاط", "موقع", "خلوي"],
@@ -216,9 +224,10 @@ const YEAR_2019_SE = {
               minLength: 30,
               modelAnswer:
                 "الفرضية 1: تستجيب LB بإنتاج أجسام مضادة نوعية. الفرضية 2: تستجيب LTc بتخريب الخلايا المصابة.",
+              answerStatus: "authored",
               rule: {
                 prompt: "اقتراح فرضيتين حول آلية القضاء على المستضد",
-                keywords: ["فرضيه", "مستضد", "مضاده"],
+                keywords: ["فرضية", "مستضد", "مضادة"],
                 minHits: 2,
                 forbidden: [],
                 hypotheses: { min: 2, distinct: true }
@@ -235,16 +244,17 @@ const YEAR_2019_SE = {
               minLength: 60,
               modelAnswer:
                 "تمثل الوثيقة كمية الأجسام المضادة وعدد LTc بدلالة الزمن. نلاحظ بعد الحقن طورا كمونيا ثم ارتفاع كمية الأجسام المضادة وعدد LTc، ومنه نستنتج استجابة نوعية خلطية وخلوية.",
+              answerStatus: "authored",
               rule: {
                 prompt: "استغلال نتائج حقن المستضد",
-                keywords: ["اجسام", "مضاده", "LTc"],
+                keywords: ["أجسام", "مضادة", "LTc"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
-                  axes: ["كميه", "زمن"],
-                  comparisons: [["مضاده", "LTc"]],
-                  trends: [{ about: "مضاده", expect: ["ارتفاع", "كميه"] }],
+                  axes: ["كمية", "زمن"],
+                  comparisons: [["مضادة", "LTc"]],
+                  trends: [{ about: "مضادة", expect: ["ارتفاع", "كمية"] }],
                   values: [],
                   strictValues: false
                 }
@@ -257,13 +267,14 @@ const YEAR_2019_SE = {
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
-              placeholder: "إنترلوكينات، تكاثر، تمايز...",
+              placeholder: "أنترلوكينات، تكاثر، تمايز...",
               minLength: 110,
               modelAnswer:
-                "تتعرف LT4 على الببتيد المعروض مع CMH II فتفرز إنترلوكينات تحفّز تكاثر LB وتمايزها إلى بلاسموسيت وتكاثر LTc، فتتأكد الفرضيتان بالتعاون المناعي.",
+                "تتعرف LT4 على الببتيد المعروض مع CMH II فتفرز أنترلوكينات تحفّز تكاثر LB وتمايزها إلى بلازموسيت وتكاثر LTc، فتتأكد الفرضيتان بالتعاون المناعي.",
+              answerStatus: "authored",
               rule: {
                 prompt: "تفسير التعاون المناعي",
-                keywords: ["LT4", "انترلوكين", "LB", "LTc", "تعاون"],
+                keywords: ["LT4", "أنترلوكين", "LB", "LTc", "تعاون"],
                 minHits: 3,
                 forbidden: []
               }
@@ -278,13 +289,14 @@ const YEAR_2019_SE = {
               placeholder: "مستضد → LT4 → LB/LTc...",
               minLength: 40,
               modelAnswer:
-                "عنوان المخطط: استجابة نوعية. مستضد → عرض على CMH → LT4 → إنترلوكينات → أجسام مضادة وتخريب خلوي.",
+                "عنوان المخطط: استجابة نوعية. مستضد → عرض على CMH → LT4 → أنترلوكينات → أجسام مضادة وتخريب خلوي.",
+              answerStatus: "authored",
               rule: {
                 prompt: "مخطط الاستجابة النوعية",
                 keywords: ["مخطط", "مستضد", "LT4"],
                 minHits: 2,
                 forbidden: [],
-                schema: { arrows: true, title: "استجابة نوعية", ordered: ["مستضد", "LT4", "مضاده"] }
+                schema: { arrows: true, title: "استجابة نوعية", ordered: ["مستضد", "LT4", "مضادة"] }
               }
             }
           }
@@ -319,6 +331,7 @@ const YEAR_2019_SE = {
               placeholder: "صياغة المشكل العلمي...",
               minLength: 40,
               modelAnswer: "المشكل العلمي: كيف يؤدي تتابع انفتاح قنوات Na⁺ ثم K⁺ الفولطية إلى كمون العمل؟",
+              answerStatus: "authored",
               rule: {
                 prompt: "تأطير الإشكالية: كيف يتولد كمون العمل؟",
                 keywords: ["كمون", "عمل", "قنوات"],
@@ -337,6 +350,7 @@ const YEAR_2019_SE = {
               minLength: 40,
               modelAnswer:
                 "زوال الاستقطاب بدخول Na⁺ عبر قنوات فولطية، ثم عودة الاستقطاب بخروج K⁺، يليه فرط استقطاب عابر قبل العودة إلى كمون الراحة.",
+              answerStatus: "authored",
               rule: {
                 prompt: "تعرف على أطوار كمون العمل",
                 keywords: ["استقطاب", "صوديوم", "بوتاسيوم"],
@@ -355,9 +369,10 @@ const YEAR_2019_SE = {
               minLength: 120,
               modelAnswer:
                 "عند بلوغ العتبة تنفتح قنوات Na⁺ الفولطية فيدخل الصوديوم ويزول الاستقطاب، ثم تنفتح قنوات K⁺ فيخرج البوتاسيوم وتعود القطبية، فينتشر كمون العمل على طول الليف.",
+              answerStatus: "authored",
               rule: {
                 prompt: "نص علمي حول آلية كمون العمل",
-                keywords: ["عتبه", "قنوات", "صوديوم", "بوتاسيوم", "ليف"],
+                keywords: ["عتبة", "قنوات", "صوديوم", "بوتاسيوم", "ليف"],
                 minHits: 3,
                 forbidden: []
               }
@@ -372,6 +387,7 @@ const YEAR_2019_SE = {
               placeholder: "في الختام...",
               minLength: 40,
               modelAnswer: "في الختام، تبقى قابلية التنبيه مرتبطة بوجود كمون راحة وقنوات فولطية وظيفية.",
+              answerStatus: "authored",
               rule: {
                 prompt: "الخاتمة: قابلية التنبيه",
                 keywords: ["تنبيه", "كمون", "قنوات"],
@@ -399,6 +415,7 @@ const YEAR_2019_SE = {
               minLength: 40,
               modelAnswer:
                 "المشكل العلمي: كيف تتكامل التحلل السكري وحلقة كريبس والفسفرة التأكسدية لإنتاج ATP؟",
+              answerStatus: "authored",
               rule: {
                 prompt: "تأطير الإشكالية: كيف تُحوَّل طاقة الغلوكوز إلى ATP؟",
                 keywords: ["غلوكوز", "ATP", "تنفس"],
@@ -417,14 +434,15 @@ const YEAR_2019_SE = {
               minLength: 90,
               modelAnswer:
                 "تمثل الوثيقة تغيرات الأكسجين وATP بدلالة الزمن. نلاحظ انخفاض O2 وارتفاع CO2 وATP في وجود الغلوكوز، ومنه نستنتج أكسدة الغلوكوز المقترنة بإنتاج طاقة قابلة للاستعمال.",
+              answerStatus: "authored",
               rule: {
                 prompt: "تحليل استهلاك O2 وإنتاج CO2 وATP",
-                keywords: ["اكسجين", "ATP", "غلوكوز"],
+                keywords: ["أكسجين", "ATP", "غلوكوز"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
-                  axes: ["اكسجين", "زمن"],
+                  axes: ["أكسجين", "زمن"],
                   comparisons: [["O2", "ATP"]],
                   trends: [{ about: "ATP", expect: ["ارتفاع", "ATP"] }],
                   values: [],
@@ -443,9 +461,10 @@ const YEAR_2019_SE = {
               minLength: 110,
               modelAnswer:
                 "يتحلل الغلوكوز في الهيولى إلى حمض بيروفيك، ثم تتأكسد في المادة الأساسية للميتوكوندري داخل حلقة كريبس، وتُؤكسَد النواقل في السلسلة التنفسية فينتج ATP وماء.",
+              answerStatus: "authored",
               rule: {
                 prompt: "شرح مراحل التنفس",
-                keywords: ["تحلل", "كريبس", "سلسله", "بيروفيك", "ATP"],
+                keywords: ["تحلل", "كريبس", "سلسلة", "بيروفيك", "ATP"],
                 minHits: 3,
                 forbidden: []
               }
@@ -461,9 +480,10 @@ const YEAR_2019_SE = {
               minLength: 40,
               modelAnswer:
                 "في الختام، يستقبل O2 الإلكترونات في نهاية السلسلة فيستمر تدرج البروتونات وتشكل ATP.",
+              answerStatus: "authored",
               rule: {
                 prompt: "الخاتمة: أهمية O2",
-                keywords: ["اكسجين", "ATP", "الكترون"],
+                keywords: ["أكسجين", "ATP", "الكترون"],
                 minHits: 2,
                 forbidden: []
               }
@@ -488,9 +508,10 @@ const YEAR_2019_SE = {
               minLength: 30,
               modelAnswer:
                 "الفرضية: تيارات الحمل الحراري في الرداء تحرك الصفائح عند الظهرة والمناطق الهابطة.",
+              answerStatus: "authored",
               rule: {
                 prompt: "اقتراح فرضية حول محرك الصفائح",
-                keywords: ["فرضيه", "صفائح", "حمل"],
+                keywords: ["فرضية", "صفائح", "حمل"],
                 minHits: 2,
                 forbidden: []
               }
@@ -506,16 +527,17 @@ const YEAR_2019_SE = {
               minLength: 60,
               modelAnswer:
                 "تمثل الوثيقة عمر البازلت وتدفق الحرارة بدلالة المسافة. نلاحظ عند الظهرة حرارة أعلى وعمرا أصغر، بينما عند الطرف يزداد العمر وتنخفض الحرارة، ومنه نستنتج توسعا محيطيا.",
+              answerStatus: "authored",
               rule: {
                 prompt: "استغلال أعمار البازلت وتدفق الحرارة",
-                keywords: ["ظهره", "بازلت", "حراره"],
+                keywords: ["ظهره", "بازلت", "حرارة"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "table",
-                  axes: ["عمر", "مسافه"],
+                  axes: ["عمر", "مسافة"],
                   comparisons: [["ظهره", "طرف"]],
-                  cells: [["بازلت", "حراره"]],
+                  cells: [["بازلت", "حرارة"]],
                   values: [],
                   strictValues: false
                 }
@@ -532,6 +554,7 @@ const YEAR_2019_SE = {
               minLength: 110,
               modelAnswer:
                 "تصعد مادة ساخنة قليلة الكثافة عند الظهرة فتتكون قشرة جديدة، وتهبط الصفيحة الباردة في مناطق الغوص، فتتأكد فرضية الحمل الحراري كمحرك.",
+              answerStatus: "authored",
               rule: {
                 prompt: "تفسير محرك الصفائح",
                 keywords: ["حمل", "ظهره", "غوص", "صفائح", "رداء"],
@@ -549,6 +572,7 @@ const YEAR_2019_SE = {
               placeholder: "ظهرة → صفيحة → غوص...",
               minLength: 40,
               modelAnswer: "عنوان المخطط: دورة تكتونية. ظهرة → صفائح → غوص.",
+              answerStatus: "authored",
               rule: {
                 prompt: "مخطط دورة الصفيحة",
                 keywords: ["مخطط", "ظهره", "غوص"],

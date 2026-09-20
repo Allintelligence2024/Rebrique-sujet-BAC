@@ -126,3 +126,30 @@ test("le contrôleur persiste la copie puis bascule réellement en relecture apr
   assert.match($("#view-workspace").textContent, /مرجع تدريبي سري حتى التسليم/);
   assert.equal($("#simulation-finish"), null);
 });
+
+test("la relecture ne présente jamais une réponse de gabarit comme un corrigé", () => {
+  const syntheticSubject = {
+    id: 1,
+    exercises: [
+      {
+        number: 1,
+        label: "أرشيف مُعاد بناؤه",
+        max: 5,
+        poles: {
+          E: {
+            modelAnswer: "تمثل الوثيقة تغيرات راحه بدلالة الزمن مقارنة بـ مضخه.",
+            answerStatus: "synthetic"
+          }
+        }
+      }
+    ]
+  };
+  const html = simulationExamHTML({
+    subject: syntheticSubject,
+    inventory,
+    activeExercise: 1,
+    completed: true
+  });
+  assert.doesNotMatch(html, /تغيرات راحه/, "la phrase-gabarit ne doit pas être montrée");
+  assert.match(html, /لا توجد إجابة نموذجية مشفّرة لهذه المهمة/);
+});

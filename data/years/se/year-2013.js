@@ -47,9 +47,10 @@ const YEAR_2013_SE = {
               placeholder: "صياغة المشكل العلمي...",
               minLength: 40,
               modelAnswer: "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ النسخ والترجمة في الظاهرة المدروسة؟",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "تأطير الإشكالية حول: النسخ والترجمة",
-                keywords: ["مورثه", "نسخ"],
+                keywords: ["مورثة", "نسخ"],
                 minHits: 2,
                 forbidden: []
               }
@@ -64,17 +65,18 @@ const YEAR_2013_SE = {
               placeholder: "نلاحظ... بينما... ومنه نستنتج...",
               minLength: 40,
               modelAnswer:
-                "تمثل الوثيقة تغيرات مورثه بدلالة الزمن مقارنة بـ نسخ. نلاحظ تغيرا واضحا في مورثه مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع نسخ.",
+                "تمثل الوثيقة تغيرات مورثة بدلالة الزمن مقارنة بـ نسخ. نلاحظ تغيرا واضحا في مورثة مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع نسخ.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "استغلال الوثيقة المتعلقة بـ النسخ والترجمة",
-                keywords: ["مورثه", "نسخ", "نلاحظ"],
+                keywords: ["مورثة", "نسخ", "نلاحظ"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
-                  axes: ["مورثه", "زمن"],
-                  comparisons: [["مورثه", "نسخ"]],
-                  trends: [{ about: "مورثه", expect: ["مورثه", "نسخ"] }],
+                  axes: ["مورثة", "زمن"],
+                  comparisons: [["مورثة", "نسخ"]],
+                  trends: [{ about: "مورثة", expect: ["مورثة", "نسخ"] }],
                   values: [],
                   strictValues: false
                 }
@@ -90,10 +92,11 @@ const YEAR_2013_SE = {
               placeholder: "يعود ذلك إلى...",
               minLength: 120,
               modelAnswer:
-                "يعود ذلك إلى تدخل مورثه ونسخ عبر آلية دقيقة تؤدي إلى ترجمه، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+                "يعود ذلك إلى تدخل مورثة ونسخ عبر آلية دقيقة تؤدي إلى ترجمة، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ النسخ والترجمة",
-                keywords: ["مورثه", "نسخ", "ترجمه"],
+                keywords: ["مورثة", "نسخ", "ترجمة"],
                 minHits: 3,
                 forbidden: []
               }
@@ -107,10 +110,11 @@ const YEAR_2013_SE = {
               ),
               placeholder: "في الختام...",
               minLength: 40,
-              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ مورثه ونسخ فتُغلق الظاهرة على ترجمه.",
+              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ مورثة ونسخ فتُغلق الظاهرة على ترجمة.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول النسخ والترجمة",
-                keywords: ["مورثه", "ترجمه", "ختام"],
+                keywords: ["مورثة", "ترجمة", "ختام"],
                 minHits: 2,
                 forbidden: []
               }
@@ -120,49 +124,51 @@ const YEAR_2013_SE = {
         {
           number: 2,
           ui: "text",
-          label: "الموقع الفعال للإنزيم",
+          label: "الموقع الفعال للأنزيم",
           max: 7,
           desc: "الأحماض الأمينية المحددة للتخصص",
           poles: {
             N: {
               points: 1,
-              prompt: "تأطير الإشكالية حول: الموقع الفعال للإنزيم",
-              bacPrompt: "ما المشكل العلمي المرتبط بـ الموقع الفعال للإنزيم؟",
+              prompt: "تأطير الإشكالية حول: الموقع الفعال للأنزيم",
+              bacPrompt: "ما المشكل العلمي المرتبط بـ الموقع الفعال للأنزيم؟",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
               placeholder: "صياغة المشكل العلمي...",
               minLength: 40,
               modelAnswer:
-                "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ الموقع الفعال للإنزيم في الظاهرة المدروسة؟",
+                "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ الموقع الفعال للأنزيم في الظاهرة المدروسة؟",
+              answerStatus: "synthetic",
               rule: {
-                prompt: "تأطير الإشكالية حول: الموقع الفعال للإنزيم",
-                keywords: ["امينيه", "موقع"],
+                prompt: "تأطير الإشكالية حول: الموقع الفعال للأنزيم",
+                keywords: ["أمينية", "موقع"],
                 minHits: 2,
                 forbidden: []
               }
             },
             S: {
               points: 2.5,
-              prompt: "استغلال الوثيقة المتعلقة بـ الموقع الفعال للإنزيم",
-              bacPrompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ الموقع الفعال للإنزيم.",
+              prompt: "استغلال الوثيقة المتعلقة بـ الموقع الفعال للأنزيم",
+              bacPrompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ الموقع الفعال للأنزيم.",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
               placeholder: "نلاحظ... بينما... ومنه نستنتج...",
               minLength: 90,
               modelAnswer:
-                "تمثل الوثيقة تغيرات امينيه بدلالة الزمن مقارنة بـ موقع. نلاحظ تغيرا واضحا في امينيه مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع موقع.",
+                "تمثل الوثيقة تغيرات أمينية بدلالة الزمن مقارنة بـ موقع. نلاحظ تغيرا واضحا في أمينية مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع موقع.",
+              answerStatus: "synthetic",
               rule: {
-                prompt: "استغلال الوثيقة المتعلقة بـ الموقع الفعال للإنزيم",
-                keywords: ["امينيه", "موقع", "نلاحظ"],
+                prompt: "استغلال الوثيقة المتعلقة بـ الموقع الفعال للأنزيم",
+                keywords: ["أمينية", "موقع", "نلاحظ"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
-                  axes: ["امينيه", "زمن"],
-                  comparisons: [["امينيه", "موقع"]],
-                  trends: [{ about: "امينيه", expect: ["امينيه", "موقع"] }],
+                  axes: ["أمينية", "زمن"],
+                  comparisons: [["أمينية", "موقع"]],
+                  trends: [{ about: "أمينية", expect: ["أمينية", "موقع"] }],
                   values: [],
                   strictValues: false
                 }
@@ -170,35 +176,37 @@ const YEAR_2013_SE = {
             },
             E: {
               points: 2.5,
-              prompt: "تفسير الآلية المرتبطة بـ الموقع الفعال للإنزيم",
-              bacPrompt: "اشرح الآلية التي تفسر الموقع الفعال للإنزيم انطلاقا من الوثيقة ومعلوماتك.",
+              prompt: "تفسير الآلية المرتبطة بـ الموقع الفعال للأنزيم",
+              bacPrompt: "اشرح الآلية التي تفسر الموقع الفعال للأنزيم انطلاقا من الوثيقة ومعلوماتك.",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
               placeholder: "يعود ذلك إلى...",
               minLength: 110,
               modelAnswer:
-                "يعود ذلك إلى تدخل امينيه وموقع عبر آلية دقيقة تؤدي إلى تخصص، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+                "يعود ذلك إلى تدخل أمينية وموقع عبر آلية دقيقة تؤدي إلى تخصص، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+              answerStatus: "synthetic",
               rule: {
-                prompt: "تفسير الآلية المرتبطة بـ الموقع الفعال للإنزيم",
-                keywords: ["امينيه", "موقع", "تخصص"],
+                prompt: "تفسير الآلية المرتبطة بـ الموقع الفعال للأنزيم",
+                keywords: ["أمينية", "موقع", "تخصص"],
                 minHits: 3,
                 forbidden: []
               }
             },
             W: {
               points: 1,
-              prompt: "الخاتمة التركيبية حول الموقع الفعال للإنزيم",
-              bacPrompt: "لخّص النتيجة النهائية المرتبطة بـ الموقع الفعال للإنزيم.",
+              prompt: "الخاتمة التركيبية حول الموقع الفعال للأنزيم",
+              bacPrompt: "لخّص النتيجة النهائية المرتبطة بـ الموقع الفعال للأنزيم.",
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
               placeholder: "في الختام...",
               minLength: 40,
-              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ امينيه وموقع فتُغلق الظاهرة على تخصص.",
+              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ أمينية وموقع فتُغلق الظاهرة على تخصص.",
+              answerStatus: "synthetic",
               rule: {
-                prompt: "الخاتمة التركيبية حول الموقع الفعال للإنزيم",
-                keywords: ["امينيه", "تخصص", "ختام"],
+                prompt: "الخاتمة التركيبية حول الموقع الفعال للأنزيم",
+                keywords: ["أمينية", "تخصص", "ختام"],
                 minHits: 2,
                 forbidden: []
               }
@@ -223,9 +231,10 @@ const YEAR_2013_SE = {
               minLength: 30,
               modelAnswer:
                 "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ الأجسام المضادة في الظاهرة المدروسة؟",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "تأطير الإشكالية حول: الأجسام المضادة",
-                keywords: ["مضاده", "مولد"],
+                keywords: ["مضادة", "مولد"],
                 minHits: 2,
                 forbidden: []
               }
@@ -240,17 +249,18 @@ const YEAR_2013_SE = {
               placeholder: "نلاحظ... بينما... ومنه نستنتج...",
               minLength: 60,
               modelAnswer:
-                "تمثل الوثيقة تغيرات مضاده بدلالة الزمن مقارنة بـ مولد. نلاحظ تغيرا واضحا في مضاده مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع مولد.",
+                "تمثل الوثيقة تغيرات مضادة بدلالة الزمن مقارنة بـ مولد. نلاحظ تغيرا واضحا في مضادة مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع مولد.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "استغلال الوثيقة المتعلقة بـ الأجسام المضادة",
-                keywords: ["مضاده", "مولد", "نلاحظ"],
+                keywords: ["مضادة", "مولد", "نلاحظ"],
                 minHits: 2,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
-                  axes: ["مضاده", "زمن"],
-                  comparisons: [["مضاده", "مولد"]],
-                  trends: [{ about: "مضاده", expect: ["مضاده", "مولد"] }],
+                  axes: ["مضادة", "زمن"],
+                  comparisons: [["مضادة", "مولد"]],
+                  trends: [{ about: "مضادة", expect: ["مضادة", "مولد"] }],
                   values: [],
                   strictValues: false
                 }
@@ -266,10 +276,11 @@ const YEAR_2013_SE = {
               placeholder: "يعود ذلك إلى...",
               minLength: 110,
               modelAnswer:
-                "يعود ذلك إلى تدخل مضاده ومولد عبر آلية دقيقة تؤدي إلى ضد، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+                "يعود ذلك إلى تدخل مضادة ومولد عبر آلية دقيقة تؤدي إلى ضد، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ الأجسام المضادة",
-                keywords: ["مضاده", "مولد", "ضد"],
+                keywords: ["مضادة", "مولد", "ضد"],
                 minHits: 3,
                 forbidden: []
               }
@@ -281,15 +292,16 @@ const YEAR_2013_SE = {
               ...RECON(
                 "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
               ),
-              placeholder: "مضاده → مولد → ضد",
+              placeholder: "مضادة → مولد → ضد",
               minLength: 40,
-              modelAnswer: "عنوان المخطط: مضاده. مضاده → مولد → ضد.",
+              modelAnswer: "عنوان المخطط: مضادة. مضادة → مولد → ضد.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول الأجسام المضادة",
-                keywords: ["مخطط", "مضاده", "ضد"],
+                keywords: ["مخطط", "مضادة", "ضد"],
                 minHits: 2,
                 forbidden: [],
-                schema: { arrows: true, title: "مضاده", ordered: ["مضاده", "مولد", "ضد"] }
+                schema: { arrows: true, title: "مضادة", ordered: ["مضادة", "مولد", "ضد"] }
               }
             }
           }
@@ -324,6 +336,7 @@ const YEAR_2013_SE = {
               placeholder: "صياغة المشكل العلمي...",
               minLength: 40,
               modelAnswer: "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ كمون العمل في الظاهرة المدروسة؟",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "تأطير الإشكالية حول: كمون العمل",
                 keywords: ["عمل", "قنوات"],
@@ -342,6 +355,7 @@ const YEAR_2013_SE = {
               minLength: 40,
               modelAnswer:
                 "تمثل الوثيقة تغيرات عمل بدلالة الزمن مقارنة بـ قنوات. نلاحظ تغيرا واضحا في عمل مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع قنوات.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "استغلال الوثيقة المتعلقة بـ كمون العمل",
                 keywords: ["عمل", "قنوات", "نلاحظ"],
@@ -367,10 +381,11 @@ const YEAR_2013_SE = {
               placeholder: "يعود ذلك إلى...",
               minLength: 120,
               modelAnswer:
-                "يعود ذلك إلى تدخل عمل وقنوات عبر آلية دقيقة تؤدي إلى فولطيه، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+                "يعود ذلك إلى تدخل عمل وقنوات عبر آلية دقيقة تؤدي إلى فولطية، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ كمون العمل",
-                keywords: ["عمل", "قنوات", "فولطيه"],
+                keywords: ["عمل", "قنوات", "فولطية"],
                 minHits: 3,
                 forbidden: []
               }
@@ -384,10 +399,11 @@ const YEAR_2013_SE = {
               ),
               placeholder: "في الختام...",
               minLength: 40,
-              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ عمل وقنوات فتُغلق الظاهرة على فولطيه.",
+              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ عمل وقنوات فتُغلق الظاهرة على فولطية.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول كمون العمل",
-                keywords: ["عمل", "فولطيه", "ختام"],
+                keywords: ["عمل", "فولطية", "ختام"],
                 minHits: 2,
                 forbidden: []
               }
@@ -412,6 +428,7 @@ const YEAR_2013_SE = {
               minLength: 40,
               modelAnswer:
                 "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ ATP في الميتوكوندري في الظاهرة المدروسة؟",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "تأطير الإشكالية حول: ATP في الميتوكوندري",
                 keywords: ["بروتون", "سنتاز"],
@@ -430,6 +447,7 @@ const YEAR_2013_SE = {
               minLength: 90,
               modelAnswer:
                 "تمثل الوثيقة تغيرات بروتون بدلالة الزمن مقارنة بـ سنتاز. نلاحظ تغيرا واضحا في بروتون مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع سنتاز.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "استغلال الوثيقة المتعلقة بـ ATP في الميتوكوندري",
                 keywords: ["بروتون", "سنتاز", "نلاحظ"],
@@ -456,6 +474,7 @@ const YEAR_2013_SE = {
               minLength: 110,
               modelAnswer:
                 "يعود ذلك إلى تدخل بروتون وسنتاز عبر آلية دقيقة تؤدي إلى ATP، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ ATP في الميتوكوندري",
                 keywords: ["بروتون", "سنتاز", "ATP"],
@@ -473,6 +492,7 @@ const YEAR_2013_SE = {
               placeholder: "في الختام...",
               minLength: 40,
               modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ بروتون وسنتاز فتُغلق الظاهرة على ATP.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول ATP في الميتوكوندري",
                 keywords: ["بروتون", "ATP", "ختام"],
@@ -500,6 +520,7 @@ const YEAR_2013_SE = {
               minLength: 30,
               modelAnswer:
                 "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ الحمل الحراري والصفائح في الظاهرة المدروسة؟",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "تأطير الإشكالية حول: الحمل الحراري والصفائح",
                 keywords: ["حمل", "حراري"],
@@ -518,6 +539,7 @@ const YEAR_2013_SE = {
               minLength: 60,
               modelAnswer:
                 "تمثل الوثيقة تغيرات حمل بدلالة الزمن مقارنة بـ حراري. نلاحظ تغيرا واضحا في حمل مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع حراري.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "استغلال الوثيقة المتعلقة بـ الحمل الحراري والصفائح",
                 keywords: ["حمل", "حراري", "نلاحظ"],
@@ -544,6 +566,7 @@ const YEAR_2013_SE = {
               minLength: 110,
               modelAnswer:
                 "يعود ذلك إلى تدخل حمل وحراري عبر آلية دقيقة تؤدي إلى رداء، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "تفسير الآلية المرتبطة بـ الحمل الحراري والصفائح",
                 keywords: ["حمل", "حراري", "رداء"],
@@ -561,6 +584,7 @@ const YEAR_2013_SE = {
               placeholder: "حمل → حراري → رداء",
               minLength: 40,
               modelAnswer: "عنوان المخطط: حمل. حمل → حراري → رداء.",
+              answerStatus: "synthetic",
               rule: {
                 prompt: "الخاتمة التركيبية حول الحمل الحراري والصفائح",
                 keywords: ["مخطط", "حمل", "رداء"],

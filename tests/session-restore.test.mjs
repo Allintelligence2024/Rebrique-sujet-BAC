@@ -71,7 +71,7 @@ test("parcours complet : épreuve, réponse, puis remise de la copie", () => {
   click("#guide-next");
   assert.ok(!$("#view-strategy").classList.contains("hidden"));
   // L'écran de choix parle de l'épreuve, plus d'un entraînement supprimé.
-  assert.equal($("#view-strategy h2").textContent.trim(), "اختر موضوع الإمتحان");
+  assert.equal($("#view-strategy h2").textContent.trim(), "اختر موضوع الامتحان");
   assert.doesNotMatch($("#view-strategy").textContent, /التدريب/);
 
   click('#view-strategy [data-confirm="1"][data-session-mode="bac"]');

@@ -47,13 +47,27 @@ function buildHubCatalog(appConfig, streamId) {
     kind: "exam",
     year
   }));
+  const trainingIds = new Set(training.map((item) => item.id));
   const consult = catalogYearsForStream(streamId)
-    .filter((group) => !training.some((item) => item.id === group.year))
-    .map((group) => ({
-      id: group.year,
-      kind: "consult",
-      entries: group.entries
-    }));
+    .map((group) => {
+      // Une année encodée en épreuve masque sa carte de consultation de
+      // session principale — jamais une autre session : la copie 2017
+      // exceptionnelle (شعبة رياضيات) reste consultable même quand la
+      // session principale 2017 ouvre l'épreuve.
+      const entries = trainingIds.has(group.year)
+        ? group.entries.filter((entry) => entry.session !== "main")
+        : group.entries;
+      if (!entries.length) return null;
+      return {
+        id: group.year,
+        // La carte-épreuve porte déjà l'année : le reliquat reçoit une clé
+        // DOM distincte sans changer le titre affiché.
+        key: entries.length === group.entries.length ? group.year : `${group.year}-exceptionnelle`,
+        kind: "consult",
+        entries
+      };
+    })
+    .filter(Boolean);
   return [...training, ...consult].sort((a, b) => (a.id < b.id ? 1 : -1));
 }
 
@@ -109,16 +123,16 @@ export function createHubScreen(deps) {
         <p class="small text-muted mt-0 mb-1" id="hub-stream-caption"></p>
       </div>
       <div class="grid grid-cards" id="year-grid"></div>
-      <footer class="screen-foot">منصة إمتحان بكالوريا علوم الطبيعة والحياة. <a href="legal/privacy.html">الخصوصية</a> · <a href="legal/legal-notice.html">المعلومات القانونية</a></footer>
+      <footer class="screen-foot">منصة امتحان بكالوريا علوم الطبيعة والحياة ورياضيات. <a href="legal/privacy.html">الخصوصية</a> · <a href="legal/legal-notice.html">المعلومات القانونية</a></footer>
     </div>`
     );
 
     const caption = $("#hub-stream-caption");
     caption.textContent =
       streamId === "se"
-        ? `الشعبة: ${stream.label} — مواضيع 2013–2026.`
+        ? `الشعبة: ${stream.label} — مواضيع 2013–2026 (دورة 2021 في وضع الورقة الحرة).`
         : streamId === "m"
-          ? `الشعبة: ${stream.label} — مواضيع 2021–2026 + رسمية 2013–2020.`
+          ? `الشعبة: ${stream.label} — مواضيع 2013–2026 (كل الدورات في وضع الامتحان) + الدورة الاستثنائية 2017 للقراءة.`
           : `الشعبة: ${stream.label} — لا موضوع SVT رسمي على المصادر المتاحة.`;
 
     const fab = $("#btn-stream-fab");
@@ -195,13 +209,14 @@ export function createHubScreen(deps) {
     return card;
   }
 
-  /* Une année « copie libre » n'a aucune consigne encodée : la carte ne peut
-     pas annoncer un جرد المهام qu'elle n'a pas. Elle le dit à la place. */
+  /* Une année « copie libre » n'a aucun inventaire : la carte ne peut pas
+     annoncer un جرد المهام qu'elle n'a pas. Elle dit ce qui est vrai —
+     épreuve ouverte, questions officielles recopiées, aucune note. */
   function examCardNote(y) {
     const duration = formatDuration(examMinutesForYear(y));
     return y.answerMode === "free"
-      ? `إمتحان الموضوع — وضع «الورقة الحرة»: تعليمات هذه الدورة غير مُشفَّرة، تقرأ الموضوع من الملف وتكتب إجابتك. مدة الاختبار الرسمية: ${duration}.`
-      : `إمتحان الموضوع — جرد المهام جزئي: بعض التعليمات مُعاد بناؤها. مدة الاختبار الرسمية: ${duration}.`;
+      ? `امتحان الموضوع — وضع «الورقة الحرة»: لا تصحيح آلي ولا نقطة؛ الأسئلة الرسمية منقولة، والموضوع الكامل في الملف. مدة الاختبار الرسمية: ${duration}.`
+      : `امتحان الموضوع — جرد المهام جزئي: بعض تعليمات الموضوع الرسمية غير مُدرجة بعد، وبعض الخطوات مُعاد بناؤها. مدة الاختبار الرسمية: ${duration}.`;
   }
 
   function examCard(y) {
@@ -229,7 +244,7 @@ export function createHubScreen(deps) {
       y.theme === "emerald" ? "btn-emerald" : y.theme === "indigo" ? "btn-indigo" : "btn-amber";
     const button = node("button", {
       className: `btn btn-block ${buttonTheme}`,
-      text: disabled ? "غير متاح بعد" : "▶ ابدأ الإمتحان",
+      text: disabled ? "غير متاح بعد" : "▶ ابدأ الامتحان",
       attrs: disabled ? { disabled: "" } : {},
       dataset: { year: y.id }
     });
@@ -242,7 +257,7 @@ export function createHubScreen(deps) {
   function consultCard(item) {
     const card = node("div", {
       className: "card year-card",
-      dataset: { hubYear: item.id, kind: "consult" }
+      dataset: { hubYear: item.key || item.id, kind: "consult" }
     });
     const stack = node("div", { className: "stack" });
     const header = node("div", { className: "flex spread" });
@@ -259,7 +274,7 @@ export function createHubScreen(deps) {
       node("p", {
         className: "small text-muted mt-0",
         text: localPdfs.length
-          ? "يُقرأ الموضوعان داخل التطبيق. وضع الإمتحان غير متاح: لم تُشفَّر تعليمات هذه الدورة بعد."
+          ? "يُقرأ الموضوعان داخل التطبيق. وضع الامتحان غير متاح: لم تُشفَّر تعليمات هذه الدورة بعد."
           : "الموضوعان والتصحيح النموذجي — للاستشارة فقط."
       })
     );
@@ -285,7 +300,8 @@ export function createHubScreen(deps) {
     }
     for (const entry of item.entries) {
       const session = ARCHIVE.sessions[entry.session] || entry.session;
-      const label = item.entries.length > 1 ? `🔗 ${session} (المصدر)` : "🔗 المصدر والتصحيح";
+      const label =
+        item.entries.length > 1 || entry.session !== "main" ? `🔗 ${session} (المصدر)` : "🔗 المصدر والتصحيح";
       if (entry.url) {
         actions.append(
           node("a", {
