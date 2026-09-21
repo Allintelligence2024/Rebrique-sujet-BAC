@@ -19,8 +19,29 @@ const VENDOR_DIR = "assets/vendor/pdfjs/";
 const SCRIPT_ID = "pdfjs-vendor-script";
 /* Paliers de zoom : la taille affichée passe par un attribut + une classe CSS
    (jamais par element.style, que la CSP stricte et P1.6 interdisent). */
-const ZOOM_STEPS = [0.8, 1, 1.25, 1.5, 1.75, 2];
+const ZOOM_STEPS = [0.8, 1, 1.25, 1.5, 1.75, 2, 2.5, 3];
 const DEFAULT_ZOOM_INDEX = 1;
+
+/* Préférence « وضوح » (mode lisibilité). Par défaut ACTIF : une part du
+   corpus officiel est une photocopie pâle, et l'élève qui découvre un sujet
+   illisible ne sait pas qu'un bouton existe. Le réglage est mémorisé pour
+   qu'un élève qui préfère le rendu brut n'ait à le couper qu'une fois. */
+const CLARITY_KEY = "boussole4d.pdfClarity";
+function storedClarity() {
+  try {
+    return globalThis.localStorage?.getItem(CLARITY_KEY) !== "off";
+  } catch {
+    /* Mode privé / stockage bloqué : on garde le défaut, jamais d'erreur. */
+    return true;
+  }
+}
+function persistClarity(on) {
+  try {
+    globalThis.localStorage?.setItem(CLARITY_KEY, on ? "on" : "off");
+  } catch {
+    /* La préférence n'est pas mémorisée ; l'affichage reste correct. */
+  }
+}
 
 const states = new WeakMap();
 let libraryPromise = null;
@@ -146,6 +167,7 @@ function toolbar() {
     <button type="button" class="btn btn-ghost btn-sm" data-pdf-zoom-out aria-label="تصغير">➖</button>
     <span class="pill"><span class="mono" data-pdf-zoom>100%</span></span>
     <button type="button" class="btn btn-ghost btn-sm" data-pdf-zoom-in aria-label="تكبير">➕</button>
+    <button type="button" class="btn btn-ghost btn-sm" data-pdf-clarity aria-pressed="false" aria-label="وضوح النص: تكثيف التباين في النسخ الباهتة">🔅 وضوح</button>
   </div>`;
 }
 
@@ -208,6 +230,21 @@ function setZoom(state, index) {
   renderAll(state.pdf, state);
 }
 
+/* Bascule le mode lisibilité. Purement visuel : aucun pixel du canvas n'est
+   recalculé, aucun octet du PDF n'est modifié — le filtre vit dans la
+   feuille de style et se retire en un clic. */
+function setClarity(state, on) {
+  state.clarity = on !== false;
+  state.host.dataset.pdfClarity = state.clarity ? "on" : "off";
+  const button = state.host.querySelector("[data-pdf-clarity]");
+  if (button) {
+    button.setAttribute("aria-pressed", String(state.clarity));
+    button.classList.toggle("btn-emerald", state.clarity);
+    button.classList.toggle("btn-ghost", !state.clarity);
+  }
+  persistClarity(state.clarity);
+}
+
 function goToPage(state, page) {
   const clamped = Math.min(state.pages, Math.max(1, page));
   state.current = clamped;
@@ -236,6 +273,9 @@ function bindToolbar(state) {
   });
   host.querySelector("[data-pdf-zoom-out]")?.addEventListener("click", () => {
     setZoom(state, state.zoomIndex - 1);
+  });
+  host.querySelector("[data-pdf-clarity]")?.addEventListener("click", () => {
+    setClarity(state, !state.clarity);
   });
   // Rotation du téléphone / redimensionnement : on re-rend à la bonne largeur
   // plutôt que d'étirer un canvas devenu flou.
@@ -291,7 +331,8 @@ export async function mountPdfViewer(host, options = {}) {
     pages: 1,
     canvases: [],
     token: host.dataset.pdfToken,
-    width: host.clientWidth || 720
+    width: host.clientWidth || 720,
+    clarity: storedClarity()
   };
   states.set(host, state);
 
@@ -302,6 +343,7 @@ export async function mountPdfViewer(host, options = {}) {
     state.pages = pdf.numPages;
     buildCanvases(state, pdf.numPages);
     bindToolbar(state);
+    setClarity(state, state.clarity);
     updateIndicator(state);
     await renderAll(pdf, state);
     if (state.current > 1) goToPage(state, state.current);

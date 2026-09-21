@@ -220,3 +220,75 @@ test("mountPdfViewers monte tous les visionneurs d'un écran, une seule fois", a
   assert.equal(mountPdfViewers(container()), 2);
   assert.equal(mountPdfViewers(container()), 0, "ne pas monter deux fois le même visionneur");
 });
+
+/* ----------------------------------------------------------------------------
+   Mode « وضوح » — lisibilité des photocopies pâles.
+   Une part du corpus officiel (SE 2014/2019/2024, M 2023-2025) est un scan
+   gris dont l'encre délavée devient illisible à l'écran. Le mode durcit le
+   contraste SANS toucher au PDF : il doit donc rester un attribut d'affichage,
+   réversible, et ne jamais écrire de style en ligne (CSP stricte).
+   -------------------------------------------------------------------------- */
+
+test("le mode وضوح est actif d'emblée et se coupe en un clic, sans style en ligne", async () => {
+  const { host } = scaffold();
+  globalThis.pdfjsLib = fakeLibrary(1).lib;
+  await mountPdfViewer(host);
+
+  const button = host.querySelector("[data-pdf-clarity]");
+  assert.ok(button, "le lecteur doit offrir un réglage de lisibilité");
+  assert.equal(host.dataset.pdfClarity, "on", "une photocopie pâle doit s'ouvrir lisible");
+  assert.equal(button.getAttribute("aria-pressed"), "true");
+
+  button.dispatchEvent(new dom.window.MouseEvent("click", { bubbles: true }));
+  assert.equal(host.dataset.pdfClarity, "off", "le clic doit rendre le rendu brut");
+  assert.equal(button.getAttribute("aria-pressed"), "false", "l'état doit être annoncé aux lecteurs d'écran");
+
+  // Le canvas et le document restent intacts : le filtre est dans la feuille de style.
+  assert.equal(host.getAttribute("style"), null, "aucun style inline ne doit être écrit");
+  assert.equal(
+    host.querySelector("canvas").getAttribute("style"),
+    null,
+    "le canvas ne doit pas être stylé en ligne"
+  );
+});
+
+test("le zoom descend plus loin qu'avant pour lire un texte fin", async () => {
+  const { host } = scaffold();
+  globalThis.pdfjsLib = fakeLibrary(1).lib;
+  await mountPdfViewer(host);
+
+  const zoomIn = host.querySelector("[data-pdf-zoom-in]");
+  for (let i = 0; i < 10; i++) {
+    zoomIn.dispatchEvent(new dom.window.MouseEvent("click", { bubbles: true }));
+  }
+  // Le palier maximal doit dépasser 200 % : c'est la seule issue quand une
+  // photocopie pâle n'est lisible qu'agrandie.
+  assert.equal(host.dataset.pdfZoom, "300");
+  assert.equal(host.querySelector("[data-pdf-zoom]").textContent, "300%");
+});
+
+test("le choix de lisibilité est mémorisé d'une séance à l'autre", async () => {
+  const previous = globalThis.localStorage;
+  globalThis.localStorage = dom.window.localStorage;
+  try {
+    dom.window.localStorage.setItem("boussole4d.pdfClarity", "off");
+    const { host } = scaffold();
+    globalThis.pdfjsLib = fakeLibrary(1).lib;
+    await mountPdfViewer(host);
+    assert.equal(
+      host.dataset.pdfClarity,
+      "off",
+      "un élève qui préfère le rendu brut ne doit pas le re-couper à chaque sujet"
+    );
+
+    host
+      .querySelector("[data-pdf-clarity]")
+      .dispatchEvent(new dom.window.MouseEvent("click", { bubbles: true }));
+    assert.equal(host.dataset.pdfClarity, "on");
+    assert.equal(dom.window.localStorage.getItem("boussole4d.pdfClarity"), "on");
+  } finally {
+    dom.window.localStorage.removeItem("boussole4d.pdfClarity");
+    if (previous === undefined) delete globalThis.localStorage;
+    else globalThis.localStorage = previous;
+  }
+});

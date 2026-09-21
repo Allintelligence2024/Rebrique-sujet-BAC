@@ -1847,6 +1847,27 @@ html[lang="ar"]
 .pdf-canvas-host[data-pdf-zoom="200"] .pdf-page-canvas {
   width: 200%;
 }
+.pdf-canvas-host[data-pdf-zoom="250"] .pdf-page-canvas {
+  width: 250%;
+}
+.pdf-canvas-host[data-pdf-zoom="300"] .pdf-page-canvas {
+  width: 300%;
+}
+/* Mode « وضوح » — lisibilité des photocopies pâles.
+   ------------------------------------------------------------
+   Une part du corpus officiel est un scan gris (SE 2014/2019/2024,
+   M 2023-2025) : l'encre y est délavée et le papier gris, si bien que
+   le texte fin devient illisible sur un écran, même rendu à sa taille
+   réelle par pdf.js. Ce filtre durcit le contraste et blanchit le
+   fond, SANS toucher au fichier PDF servi ni à ce que pdf.js dessine
+   dans le canvas : c'est un rendu d'affichage, réversible à tout
+   instant par le bouton.
+
+   Le filtre est porté par un attribut (comme le zoom), jamais par
+   element.style — la CSP stricte interdit le style en ligne. */
+.pdf-canvas-host[data-pdf-clarity="on"] .pdf-page-canvas {
+  filter: contrast(1.45) brightness(1.09);
+}
 .pdf-viewer-toolbar {
   position: sticky;
   top: 0;
