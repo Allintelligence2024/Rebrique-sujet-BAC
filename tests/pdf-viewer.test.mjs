@@ -220,3 +220,42 @@ test("mountPdfViewers monte tous les visionneurs d'un écran, une seule fois", a
   assert.equal(mountPdfViewers(container()), 2);
   assert.equal(mountPdfViewers(container()), 0, "ne pas monter deux fois le même visionneur");
 });
+
+test("le mode clarté est actif par défaut et bascule sans style inline", async () => {
+  const { host } = scaffold();
+  globalThis.pdfjsLib = fakeLibrary(2).lib;
+  await mountPdfViewer(host);
+  assert.equal(host.dataset.pdfClarity, "on", "clarté par défaut on pour les scans pâles");
+  const btn = host.querySelector("[data-pdf-clarity]");
+  assert.ok(btn, "bouton clarté présent");
+  assert.equal(btn.getAttribute("aria-pressed"), "true");
+  btn.dispatchEvent(new dom.window.MouseEvent("click", { bubbles: true }));
+  assert.equal(host.dataset.pdfClarity, "off");
+  assert.equal(btn.getAttribute("aria-pressed"), "false");
+  assert.equal(host.getAttribute("style"), null, "aucun style inline pour la clarté");
+});
+
+test("le zoom peut atteindre 250% et 300% pour les photocopies pâles", async () => {
+  const { host } = scaffold();
+  globalThis.pdfjsLib = fakeLibrary(2).lib;
+  await mountPdfViewer(host);
+  const zoomIn = host.querySelector("[data-pdf-zoom-in]");
+  for (let i = 0; i < 6; i++) {
+    zoomIn.dispatchEvent(new dom.window.MouseEvent("click", { bubbles: true }));
+  }
+  assert.equal(host.dataset.pdfZoom, "300");
+});
+
+test("préférence clarté stockée restaure l'état off au montage", async () => {
+  const { host } = scaffold();
+  globalThis.localStorage = dom.window.localStorage;
+  dom.window.localStorage.setItem("boussole4d.pdfClarity", "off");
+  globalThis.pdfjsLib = fakeLibrary(1).lib;
+  await mountPdfViewer(host);
+  assert.equal(host.dataset.pdfClarity, "off");
+  const btn = host.querySelector("[data-pdf-clarity]");
+  btn.dispatchEvent(new dom.window.MouseEvent("click", { bubbles: true }));
+  assert.equal(dom.window.localStorage.getItem("boussole4d.pdfClarity"), "on");
+  dom.window.localStorage.clear();
+  delete globalThis.localStorage;
+});

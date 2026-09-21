@@ -5545,7 +5545,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
   },
   "2017/S1": {
     schemaVersion: 1,
-    status: "partial",
+    status: "complete",
     source: {
       kind: "local-pdf",
       locator: "https://www.dzexams.com/uploads/sujets/officiels/bac/2017/dzexams-bac-sciences-2581269.pdf",
@@ -5556,11 +5556,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
     document: {
       localPath: "/subjects/SE/2017/sujet-1.pdf",
       pages: 4,
-      pageOffset: null
+      pageOffset: 0
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
-      taskCompleteExerciseNumbers: []
+      taskCompleteExerciseNumbers: [1, 2, 3]
     },
     tasks: [
       {
@@ -5568,13 +5568,18 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 1,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ الشفرة الوراثية والترجمة؟",
-        promptSource: "reconstructed",
+        page: 1,
+        prompt: "اكتب البيانات الموافقة للأرقام وسم المرحلتين (أ) و (ب).",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -5582,20 +5587,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2017-S1-E1-Q2",
         exerciseNumber: 1,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ الشفرة الوراثية والترجمة.",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        page: 1,
+        prompt: "حدد في جدول العناصر الضرورية لحدوث كل من المرحلة (أ) والمرحلة (ب) ودور كل عنصر.",
+        promptSource: "official",
+        maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -5603,20 +5613,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2017-S1-E1-Q3",
         exerciseNumber: 1,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر الشفرة الوراثية والترجمة انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
-        maxPoints: 2,
+        page: 1,
+        prompt:
+          "احسب عدد الوحدات البنائية في العنصر 6 الوظيفي إذا كان عدد النكليوتيدات في العنصر 3 يساوي 327.",
+        promptSource: "official",
+        maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -5624,20 +5640,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2017-S1-E1-Q4",
         exerciseNumber: 1,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ الشفرة الوراثية والترجمة.",
-        promptSource: "reconstructed",
+        page: 1,
+        prompt: "بين في نص علمي كيف يتحكم العنصر 7 في تحديد البنية الفراغية للعنصر 6.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -5645,20 +5666,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2017-S1-E2-Q1",
         exerciseNumber: 2,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ البنية الفراغية للبروتين؟",
-        promptSource: "reconstructed",
+        page: 2,
+        prompt:
+          "تعرف على الخلية a والخلية b. حدد المرحلة الممثلة في الوثيقة 1 ونوع الاستجابة المناعية المعنية.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -5666,20 +5693,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2017-S1-E2-Q2",
         exerciseNumber: 2,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ البنية الفراغية للبروتين.",
-        promptSource: "reconstructed",
-        maxPoints: 2.5,
+        page: 2,
+        prompt: "أ- أنجز رسما تخطيطيا تفسيريا للشكل (1). ب- اشرح الظاهرة الممثلة بالشكل (2).",
+        promptSource: "official",
+        maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -5687,20 +5719,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2017-S1-E2-Q3",
         exerciseNumber: 2,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر البنية الفراغية للبروتين انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
-        maxPoints: 2.5,
+        page: 3,
+        prompt:
+          "قدم تحليلا مقارنا للنتائج التجريبية للأوساط (1، 2 و 3) والوسطين (4 و 5)، استنتج العلاقة بين الخلايا اللمفاوية المستعملة.",
+        promptSource: "official",
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -5708,20 +5746,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2017-S1-E2-Q4",
         exerciseNumber: 2,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ البنية الفراغية للبروتين.",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        page: 3,
+        prompt: "لخص في نص علمي مراحل الرد المناعي مبرزا دور 4.",
+        promptSource: "official",
+        maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -5729,20 +5772,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2017-S1-E3-Q1",
         exerciseNumber: 3,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ المرحلة الكيميائية الضوئية؟",
-        promptSource: "reconstructed",
-        maxPoints: 0.5,
+        page: 3,
+        prompt:
+          "استخرج المعلومات التي تقدمها نتائج تجربة الشكل (1) من الوثيقة 1. سم الظاهرة المدروسة في الشكل (1) من الوثيقة 1. اكتب المعادلة الإجمالية التي تعبر عن الظاهرة المدروسة.",
+        promptSource: "official",
+        maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -5750,20 +5799,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2017-S1-E3-Q2",
         exerciseNumber: 3,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ المرحلة الكيميائية الضوئية.",
-        promptSource: "reconstructed",
-        maxPoints: 2,
+        page: 3,
+        prompt: "حلل المنحنى وماذا تستنتج؟",
+        promptSource: "official",
+        maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -5771,20 +5825,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2017-S1-E3-Q3",
         exerciseNumber: 3,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر المرحلة الكيميائية الضوئية انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
-        maxPoints: 4,
+        page: 4,
+        prompt:
+          "فسر النتائج التجريبية الممثلة بالشكل (1) من الوثيقة 2 مع إبراز نواتج المرحلة المعنية. لخص بمعادلات كيميائية مختلف التفاعلات التي تسمح بتشكيل نواتج هذه المرحلة.",
+        promptSource: "official",
+        maxPoints: 3.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -5792,20 +5852,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2017-S1-E3-Q4",
         exerciseNumber: 3,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ المرحلة الكيميائية الضوئية.",
-        promptSource: "reconstructed",
-        maxPoints: 1.5,
+        page: 4,
+        prompt:
+          "من خلال نتائج الدراسة السابقة ومعلوماتك المكتسبة أنجز رسما تخطيطيا وظيفيا تبرز فيه العلاقة بين مراحل الظاهرة المعنية في هذه الدراسة.",
+        promptSource: "official",
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -5813,13 +5879,13 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       }
     ]
   },
   "2017/S2": {
     schemaVersion: 1,
-    status: "partial",
+    status: "complete",
     source: {
       kind: "local-pdf",
       locator: "https://www.dzexams.com/uploads/sujets/officiels/bac/2017/dzexams-bac-sciences-2581269.pdf",
@@ -5834,7 +5900,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
-      taskCompleteExerciseNumbers: []
+      taskCompleteExerciseNumbers: [1, 2, 3]
     },
     tasks: [
       {
@@ -5842,13 +5908,18 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 1,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ الذات واللاذات؟",
-        promptSource: "reconstructed",
+        page: 5,
+        prompt: "سم العضيتين (س، ص)، صنف الخليتين (أ) و (ب) حسب نمط التغذية.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -5863,13 +5934,19 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 1,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ الذات واللاذات.",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        page: 5,
+        prompt:
+          "مستغلا الوثيقة استخرج ما يحدث في الخلية (أ) وعلاقته بما يحدث في الخلية (ب) من حيث التحولات الطاقوية مدعما إجابتك بمعادلات كيميائية إجمالية.",
+        promptSource: "official",
+        maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -5884,13 +5961,19 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 1,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر الذات واللاذات انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
-        maxPoints: 2,
+        page: 5,
+        prompt:
+          "تستعمل الخلايا الحية جزيئات الـ ATP للقيام بوظائفها المختلفة، من خلال ما تقدم ومعلوماتك اكتب نصا علميا توضح فيه ترافق تحولات المادة والطاقة عند الخلية (ب) مبرزا أهم النشاطات التي تستهلك فيها الطاقة.",
+        promptSource: "official",
+        maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -5905,13 +5988,18 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 1,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ الذات واللاذات.",
-        promptSource: "reconstructed",
+        page: 5,
+        prompt: "ارسم مخططا يوضح تحولات المادة والطاقة عند الخلية (ب).",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -5926,13 +6014,18 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 2,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ تأثير pH على النشاط الإنزيمي؟",
-        promptSource: "reconstructed",
+        page: 6,
+        prompt: "سم التسجيلين (أ)، (ب).",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [6]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -5947,13 +6040,18 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 2,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ تأثير pH على النشاط الإنزيمي.",
-        promptSource: "reconstructed",
-        maxPoints: 2.5,
+        page: 6,
+        prompt: "حلل التسجيلين (أ)، (ب) واستنتج العلاقة بينهما.",
+        promptSource: "official",
+        maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [6]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -5968,13 +6066,19 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 2,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر تأثير pH على النشاط الإنزيمي انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
+        page: 6,
+        prompt:
+          "ترجم نتائج الجدول إلى منحنيين على نفس المعلم. أوجد العلاقة بين المنحنيين والتسجيلين (أ) و (ب) من الوثيقة 1. حدد نمطي القنوات المقصودة في هذه الدراسة ومصدر كل تيار.",
+        promptSource: "official",
         maxPoints: 2.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [6]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -5989,13 +6093,19 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 2,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ تأثير pH على النشاط الإنزيمي.",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        page: 7,
+        prompt:
+          "وضح دور البروتينات المدروسة في نقل المعلومة العصبية عند إحداث تنبيه فعال على مستوى الخلية قبل المشبكية.",
+        promptSource: "official",
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [7]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -6010,13 +6120,18 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 3,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ فيروس VIH والمناعة؟",
-        promptSource: "reconstructed",
-        maxPoints: 0.5,
+        page: 7,
+        prompt: "تعرف على البرنامج الذي قدم به جدول الوثيقة 1. حدد الغرض من استعماله.",
+        promptSource: "official",
+        maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [7]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -6031,13 +6146,19 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 3,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ فيروس VIH والمناعة.",
-        promptSource: "reconstructed",
+        page: 7,
+        prompt:
+          "أعط تتالي نكليوتيدات الـ ARNm عند الشخصين وأنجز جدولا للشفرة الوراثية انطلاقا من معطيات الوثيقة 1.",
+        promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [7]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -6052,13 +6173,18 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 3,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر فيروس VIH والمناعة انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
-        maxPoints: 4,
+        page: 7,
+        prompt: "استخرج نوع الطفرة وحدد آثارها على البروتين ووظيفته وعلاقتها بالمرض.",
+        promptSource: "official",
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [7]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -6073,13 +6199,18 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 3,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ فيروس VIH والمناعة.",
-        promptSource: "reconstructed",
-        maxPoints: 1.5,
+        page: 7,
+        prompt: "بين في نص علمي آلية إصلاح ADN ودور الإنزيم XPA في الحفاظ على سلامة المعلومة الوراثية.",
+        promptSource: "official",
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [7]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,

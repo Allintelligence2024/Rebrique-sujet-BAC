@@ -5,8 +5,8 @@ import { officialTaskInventoryFor } from "../data/official-tasks.js";
 
 const ARCHIVE_IDS = ["2020", "2019", "2018", "2017", "2016", "2015", "2014", "2013"];
 const ENABLED_RECON_SE = ["2019", "2018", "2017", "2016", "2015", "2014", "2013"];
-const ENABLED_RECON_SE_REMAINING = ["2019", "2018", "2017"];
-const OFFICIAL_VERIFIED_SE = ["2016", "2015", "2014", "2013"];
+const ENABLED_RECON_SE_REMAINING = ["2019", "2018"];
+const OFFICIAL_VERIFIED_SE = ["2017", "2016", "2015", "2014", "2013"];
 const ARCHIVE_YEARS = APP_CONFIG.years.filter((year) => ENABLED_RECON_SE.includes(year.id));
 
 test("l'archive 2013-2019 SE est branchée dans APP_CONFIG ; 2020 SE reste le module officiel", () => {
@@ -101,6 +101,20 @@ test("chaque année reconstruite 2013–2019 est activée — 2013-2015 vérifi�
             `${year.id}/S${sujet.id} barème officiel 6/7/7`
           );
         }
+      } else if (year.id === "2017") {
+        if (sujet.id === 1) {
+          assert.deepEqual(
+            sujet.exercises.map((ex) => ex.max),
+            [5, 7, 8],
+            `${year.id}/S${sujet.id} barème officiel 5/7/8`
+          );
+        } else {
+          assert.deepEqual(
+            sujet.exercises.map((ex) => ex.max),
+            [5, 7, 8],
+            `${year.id}/S${sujet.id} barème officiel 5/7/8`
+          );
+        }
       } else {
         assert.deepEqual(
           sujet.exercises.map((ex) => ex.max),
@@ -115,7 +129,7 @@ test("chaque année reconstruite 2013–2019 est activée — 2013-2015 vérifi�
   }
 });
 
-test("les consignes de l'archive 2017-2019 sont toutes marquées reconstructed — 2013-2016 sont désormais official", () => {
+test("les consignes de l'archive 2018-2019 sont toutes marquées reconstructed — 2013-2017 sont désormais official", () => {
   for (const id of ENABLED_RECON_SE_REMAINING) {
     for (const sujet of [1, 2]) {
       const inventory = officialTaskInventoryFor(id, sujet);
@@ -138,7 +152,7 @@ test("les consignes de l'archive 2017-2019 sont toutes marquées reconstructed �
   }
 });
 
-test("aucune consigne d'archive 2017-2019 n'est marquée official — 2013-2016 sont official", () => {
+test("aucune consigne d'archive 2018-2019 n'est marquée official — 2013-2017 sont official", () => {
   for (const year of ARCHIVE_YEARS) {
     if (OFFICIAL_VERIFIED_SE.includes(year.id)) continue;
     for (const sujet of year.sujets) {
