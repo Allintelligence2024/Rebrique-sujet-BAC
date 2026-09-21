@@ -46,6 +46,9 @@ jobs:
             incoming/se-2023/bac-algerie-2023-se.pdf || true
           download "https://eddirasa.com/wp-content/uploads/2023/06/eddirasa.com-bac-sciences-se-2023.pdf" \
             incoming/se-2023/eddirasa-bac-sciences-se-2023.pdf || true
+          mkdir -p incoming/se-2014
+          download "https://eddirasa.com/wp-content/uploads/2014/06/eddirasa-com-bac-sci-science-2014.pdf" \
+            incoming/se-2014/eddirasa-bac-sci-science-2014.pdf || true
           download "https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf" \
             incoming/se-2023/dzexams-bac-sciences-naturelles-1780707.pdf || true
           ls -la incoming/se-2023
@@ -62,7 +65,11 @@ jobs:
           set -euo pipefail
           git config user.name "arena-ai-coding-agent[bot]"
           git config user.email "41898282+arena-ai-coding-agent[bot]@users.noreply.github.com"
-          git add incoming/se-2023
+          git add incoming/se-2023 incoming/se-2014
           git status
-          git commit -m "Fetch SE 2023 subject candidates for visual check"
+          if git diff --cached --quiet; then
+            echo "No new PDF to commit"
+            exit 0
+          fi
+          git commit -m "Fetch SE 2014 subject candidate for visual check"
           git push origin "HEAD:${{ github.ref_name }}"
