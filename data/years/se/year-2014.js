@@ -1,12 +1,18 @@
 /* ============================================================
-   BAC SVT Algérie 2014 — archive pédagogique reconstruite
+   BAC SVT Algérie 2014 — Sciences expérimentales
    ------------------------------------------------------------
-   Aucune consigne n'est marquée official. Les champs de provenance
-   restent attachés à chaque pôle. Chargé à la demande par le shell.
+   Barème officiel vérifié sur PDF dzexams :
+   Sujet 1 : 06 / 06 / 08 = 20
+   Sujet 2 : 5.5 / 7.5 / 07 = 20
+   Consignes transcrites verbatim depuis
+   /subjects/SE/2014/sujet-1.pdf (5 pages) et
+   /subjects/SE/2014/sujet-2.pdf (5 pages, doc 6-10).
    ============================================================ */
 
-const RECON = (notes) => ({
-  bacPromptSource: "reconstructed",
+const OFFICIAL = (page, notes) => ({
+  bacPromptSource: "official",
+  bacPromptPage: page,
+  bacPromptVerifiedAt: "2026-09-21",
   bacPromptNotes: notes
 });
 
@@ -25,91 +31,80 @@ const YEAR_2014_SE = {
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-4380238.pdf",
       pdfLocalUrl: "/subjects/SE/2014/sujet-1.pdf",
       pdfNote:
-        "PDF non redistribué dans le dépôt. Page dzexams : https://www.dzexams.com/ar/annales/SzdNaHlPbThvaEhSSUJjWDRsdUljdz09. 2014 : PDF dzexams دون طبقة نص قابلة للشهادة هنا. Thèmes pédagogiques reconstruits.",
+        "PDF local pages 1-5 = doc pages 1-5. Barème officiel 06 06 08. Consignes officielles verbatim pages 1-5.",
       title: "الموضوع الأول",
       exercises: [
         {
           number: 1,
           ui: "text",
-          label: "مراحل تركيب البروتين",
-          max: 5,
-          desc: "تكامل الاستنساخ والترجمة",
+          label: "تركيب البروتين — الأسيتابولاريا",
+          max: 6,
+          desc: "فصل عضيات، معايرة ARN وبروتين، Anagène",
           poles: {
             N: {
               points: 1,
-              prompt: "تأطير الإشكالية حول: مراحل تركيب البروتين",
-              bacPrompt: "ما المشكل العلمي المرتبط بـ مراحل تركيب البروتين؟",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "صياغة المشكل العلمي...",
-              minLength: 40,
+              prompt: "تأطير الإشكالية",
+              bacPrompt:
+                "ما هي المشكلة العلمية التي يراد معالجتها بواسطة التجربة الممثلة بالوثيقة (1)؟",
+              ...OFFICIAL(1, "س1 ت1 سؤال 1-ب صفحة 1"),
+              placeholder: "المشكل...",
+              minLength: 30,
               modelAnswer:
-                "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ مراحل تركيب البروتين في الظاهرة المدروسة؟",
+                "المشكل هو كيف تشرف النواة على تركيب البروتين وما علاقة ARN بذلك.",
               rule: {
-                prompt: "تأطير الإشكالية حول: مراحل تركيب البروتين",
-                keywords: ["استنساخ", "ترجمه"],
+                prompt: "المشكل العلمي",
+                keywords: ["نواة", "بروتين", "ARN"],
                 minHits: 2,
                 forbidden: []
               }
             },
             S: {
-              points: 1,
-              prompt: "استغلال الوثيقة المتعلقة بـ مراحل تركيب البروتين",
-              bacPrompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ مراحل تركيب البروتين.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "نلاحظ... بينما... ومنه نستنتج...",
+              points: 1.5,
+              prompt: "تسمية الأجزاء المفصولة",
+              bacPrompt:
+                "باستغلالك لمعطيات جدول الوثيقة (1)، سمّ الأجزاء (1، 2، 3) المفصولة محددا المعيار الذي اعتمدت عليه.",
+              ...OFFICIAL(1, "س1 ت1 سؤال 1 جدول 1 صفحة 1"),
+              placeholder: "الأجزاء هي...",
               minLength: 40,
               modelAnswer:
-                "تمثل الوثيقة تغيرات استنساخ بدلالة الزمن مقارنة بـ ترجمه. نلاحظ تغيرا واضحا في استنساخ مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع ترجمه.",
+                "الجزء 1 مستخلص كلي، الجزء 2 ميتوكوندري وشبكة، الجزء 3 ريبوزومات، المعيار سرعة الطرد المركزي وحجم العضية.",
               rule: {
-                prompt: "استغلال الوثيقة المتعلقة بـ مراحل تركيب البروتين",
-                keywords: ["استنساخ", "ترجمه", "نلاحظ"],
+                prompt: "تسمية الأجزاء",
+                keywords: ["ريبوزوم", "طرد", "عضية"],
                 minHits: 2,
-                forbidden: ["بسبب"],
-                document: {
-                  kind: "curve",
-                  axes: ["استنساخ", "زمن"],
-                  comparisons: [["استنساخ", "ترجمه"]],
-                  trends: [{ about: "استنساخ", expect: ["استنساخ", "ترجمه"] }],
-                  values: [],
-                  strictValues: false
-                }
+                forbidden: []
               }
             },
             E: {
-              points: 2,
-              prompt: "تفسير الآلية المرتبطة بـ مراحل تركيب البروتين",
-              bacPrompt: "اشرح الآلية التي تفسر مراحل تركيب البروتين انطلاقا من الوثيقة ومعلوماتك.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "يعود ذلك إلى...",
-              minLength: 120,
+              points: 2.5,
+              prompt: "تفسير معايرة ARN وبروتين ووحدة الشفرة",
+              bacPrompt:
+                "ما هي العلاقة التي توجد بين الظاهرتين الملاحظتين في التسجيلين (س) و(ع) وبنية الجزء (ج1)؟ وماذا تستنتج؟",
+              ...OFFICIAL(2, "س1 ت1 سؤال 2-ب صفحة 2"),
+              placeholder: "العلاقة...",
+              minLength: 60,
               modelAnswer:
-                "يعود ذلك إلى تدخل استنساخ وترجمه عبر آلية دقيقة تؤدي إلى بروتين، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+                "العلاقة طردية بين كمية ARN وكمية البروتين في الجزء الحاوي نواة، مما يدل أن النواة تصنع ARN رسول ضروري لتركيب البروتين.",
               rule: {
-                prompt: "تفسير الآلية المرتبطة بـ مراحل تركيب البروتين",
-                keywords: ["استنساخ", "ترجمه", "بروتين"],
-                minHits: 3,
+                prompt: "علاقة ARN بروتين",
+                keywords: ["ARN", "بروتين", "نواة"],
+                minHits: 2,
                 forbidden: []
               }
             },
             W: {
               points: 1,
-              prompt: "الخاتمة التركيبية حول مراحل تركيب البروتين",
-              bacPrompt: "لخّص النتيجة النهائية المرتبطة بـ مراحل تركيب البروتين.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "في الختام...",
+              prompt: "تفسير دور البروتينات و Anagène",
+              bacPrompt:
+                "أوجد عدد الأحماض الأمينية في البروتين الوظيفي الناتج عن هذه المورثة، مع التوضيح.",
+              ...OFFICIAL(2, "س1 ت1 سؤال 1-د صفحة 2"),
+              placeholder: "عدد الأحماض...",
               minLength: 40,
-              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ استنساخ وترجمه فتُغلق الظاهرة على بروتين.",
+              modelAnswer:
+                "عدد الأحماض 60 حمضا بعد حذف كودونات التوقف، لأن المورثة طولها 183 نكليوتيد أي 61 كودون ناقص التوقف.",
               rule: {
-                prompt: "الخاتمة التركيبية حول مراحل تركيب البروتين",
-                keywords: ["استنساخ", "بروتين", "ختام"],
+                prompt: "عدد الأحماض الأمينية",
+                keywords: ["حمض", "كودون", "مورثة"],
                 minHits: 2,
                 forbidden: []
               }
@@ -119,85 +114,72 @@ const YEAR_2014_SE = {
         {
           number: 2,
           ui: "text",
-          label: "التثبيط الإنزيمي",
-          max: 7,
-          desc: "تثبيط تنافسي وغير تنافسي على الموقع الفعال",
+          label: "الميتوكوندري — تدرج البروتونات و ATP",
+          max: 6,
+          desc: "بنية الغشاء، تأثير DNP، حويصلات",
           poles: {
             N: {
               points: 1,
-              prompt: "تأطير الإشكالية حول: التثبيط الإنزيمي",
-              bacPrompt: "ما المشكل العلمي المرتبط بـ التثبيط الإنزيمي؟",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "صياغة المشكل العلمي...",
-              minLength: 40,
+              prompt: "تأطير دور الغشاء الداخلي",
+              bacPrompt:
+                "بيّن بأن النتائج المعبر عنها بالجزء (أ، ب، ج) من المنحنى تعكس دور الغشاء الداخلي تجاه البروتونات.",
+              ...OFFICIAL(3, "س1 ت2 سؤال II-1-أ صفحة 3"),
+              placeholder: "المنحنى يوضح...",
+              minLength: 50,
               modelAnswer:
-                "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ التثبيط الإنزيمي في الظاهرة المدروسة؟",
+                "المنحنى يوضح ارتفاع pH الخارجي عند حقن O2 مما يدل على دخول بروتونات إلى الماتريس عبر السلسلة التنفسية.",
               rule: {
-                prompt: "تأطير الإشكالية حول: التثبيط الإنزيمي",
-                keywords: ["تثبيط", "موقع"],
+                prompt: "دور الغشاء الداخلي",
+                keywords: ["غشاء", "بروتون", "pH"],
                 minHits: 2,
                 forbidden: []
               }
             },
             S: {
-              points: 2.5,
-              prompt: "استغلال الوثيقة المتعلقة بـ التثبيط الإنزيمي",
-              bacPrompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ التثبيط الإنزيمي.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "نلاحظ... بينما... ومنه نستنتج...",
-              minLength: 90,
+              points: 1.5,
+              prompt: "بيانات الميتوكوندري",
+              bacPrompt: "اكتب البيانات المرقمة من 1 إلى 5 من الوثيقة (1) الشكل (أ).",
+              ...OFFICIAL(3, "س1 ت2 سؤال I-1 صفحة 3"),
+              placeholder: "البيانات...",
+              minLength: 40,
               modelAnswer:
-                "تمثل الوثيقة تغيرات تثبيط بدلالة الزمن مقارنة بـ موقع. نلاحظ تغيرا واضحا في تثبيط مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع موقع.",
+                "1 غشاء خارجي، 2 فراغ بين غشائي، 3 غشاء داخلي، 4 ماتريس، 5 كريستات.",
               rule: {
-                prompt: "استغلال الوثيقة المتعلقة بـ التثبيط الإنزيمي",
-                keywords: ["تثبيط", "موقع", "نلاحظ"],
+                prompt: "بيانات الميتوكوندري",
+                keywords: ["غشاء", "ماتريس", "كريستات"],
                 minHits: 2,
-                forbidden: ["بسبب"],
-                document: {
-                  kind: "curve",
-                  axes: ["تثبيط", "زمن"],
-                  comparisons: [["تثبيط", "موقع"]],
-                  trends: [{ about: "تثبيط", expect: ["تثبيط", "موقع"] }],
-                  values: [],
-                  strictValues: false
-                }
+                forbidden: []
               }
             },
             E: {
               points: 2.5,
-              prompt: "تفسير الآلية المرتبطة بـ التثبيط الإنزيمي",
-              bacPrompt: "اشرح الآلية التي تفسر التثبيط الإنزيمي انطلاقا من الوثيقة ومعلوماتك.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "يعود ذلك إلى...",
-              minLength: 110,
+              prompt: "تفسير تأثير DNP والحويصلات",
+              bacPrompt:
+                "ما أثر إضافة الـ DNP على استعمال الـ O2 وفسفرة الـ ADP؟ علّل إجابتك.",
+              ...OFFICIAL(4, "س1 ت2 سؤال II-2-ج صفحة 4"),
+              placeholder: "DNP يزيد...",
+              minLength: 60,
               modelAnswer:
-                "يعود ذلك إلى تدخل تثبيط وموقع عبر آلية دقيقة تؤدي إلى ركيزه، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+                "DNP يزيد استهلاك O2 لأنه يلغي تدرج البروتونات فيفصل الأكسدة عن الفسفرة فلا يتركب ATP.",
               rule: {
-                prompt: "تفسير الآلية المرتبطة بـ التثبيط الإنزيمي",
-                keywords: ["تثبيط", "موقع", "ركيزه"],
+                prompt: "تأثير DNP",
+                keywords: ["DNP", "O2", "ATP", "تدرج"],
                 minHits: 3,
                 forbidden: []
               }
             },
             W: {
               points: 1,
-              prompt: "الخاتمة التركيبية حول التثبيط الإنزيمي",
-              bacPrompt: "لخّص النتيجة النهائية المرتبطة بـ التثبيط الإنزيمي.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "في الختام...",
+              prompt: "رسم وظيفي لدور الغشاء الداخلي",
+              bacPrompt: "لخص برسم تخطيطي وظيفي دور الغشاء الداخلي للميتوكوندري في إنتاج الـ ATP.",
+              ...OFFICIAL(4, "س1 ت2 سؤال III صفحة 4"),
+              placeholder: "رسم...",
               minLength: 40,
-              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ تثبيط وموقع فتُغلق الظاهرة على ركيزه.",
+              modelAnswer:
+                "الرسم يوضح سلسلة نقل الكترونات تضخ بروتونات، عودة عبر ATP سنتاز لتركيب ATP من ADP و Pi.",
               rule: {
-                prompt: "الخاتمة التركيبية حول التثبيط الإنزيمي",
-                keywords: ["تثبيط", "ركيزه", "ختام"],
+                prompt: "رسم ATP",
+                keywords: ["ATP", "سنتاز", "بروتون"],
                 minHits: 2,
                 forbidden: []
               }
@@ -207,88 +189,75 @@ const YEAR_2014_SE = {
         {
           number: 3,
           ui: "text",
-          label: "الدفاع عن الذات",
+          label: "المناعة — نوعية الأجسام المضادة",
           max: 8,
-          desc: "آليات التعرف النوعي على اللاذات",
+          desc: "بلعميات، بنية الجسم المضاد، إحصائيات تغير الأحماض",
           poles: {
             N: {
-              points: 0.5,
-              prompt: "تأطير الإشكالية حول: الدفاع عن الذات",
-              bacPrompt: "ما المشكل العلمي المرتبط بـ الدفاع عن الذات؟",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "صياغة المشكل العلمي...",
+              points: 1,
+              prompt: "تسمية الجزيئة",
+              bacPrompt: "سمّ الجزيئة الموضحة على الوثيقة (1أ)، اكتب بياناتها.",
+              ...OFFICIAL(4, "س1 ت3 سؤال I-1 صفحة 4"),
+              placeholder: "الجزيئة هي...",
               minLength: 30,
               modelAnswer:
-                "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ الدفاع عن الذات في الظاهرة المدروسة؟",
+                "الجزيئة هي جسم مضاد، بياناتها سلسلتين ثقيلتين وخفيفتين ومنطقتين متغيرة وثابتة.",
               rule: {
-                prompt: "تأطير الإشكالية حول: الدفاع عن الذات",
-                keywords: ["ذات", "لاذات"],
+                prompt: "تسمية الجسم المضاد",
+                keywords: ["جسم", "مضاد", "سلسلة"],
                 minHits: 2,
                 forbidden: []
               }
             },
             S: {
               points: 2,
-              prompt: "استغلال الوثيقة المتعلقة بـ الدفاع عن الذات",
-              bacPrompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ الدفاع عن الذات.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "نلاحظ... بينما... ومنه نستنتج...",
-              minLength: 60,
+              prompt: "مميزات الخلية البلعمية",
+              bacPrompt:
+                "استخرج المميزات البنيوية التي تدل على أن الخلية الموضحة على الوثيقة (1ب) ليست الخلية المنتجة لجزيئات الوثيقة (1أ).",
+              ...OFFICIAL(4, "س1 ت3 سؤال I-2 صفحة 4"),
+              placeholder: "المميزات...",
+              minLength: 50,
               modelAnswer:
-                "تمثل الوثيقة تغيرات ذات بدلالة الزمن مقارنة بـ لاذات. نلاحظ تغيرا واضحا في ذات مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع لاذات.",
+                "الخلية كبيرة بفجوات وارجل كاذبة ونواة غير مركزية، ليست بلازمية التي بها شبكة هيولية فعالة لإنتاج الأجسام.",
               rule: {
-                prompt: "استغلال الوثيقة المتعلقة بـ الدفاع عن الذات",
-                keywords: ["ذات", "لاذات", "نلاحظ"],
+                prompt: "مميزات البلعمية",
+                keywords: ["بلعمية", "فجوات", "بلازمية"],
                 minHits: 2,
-                forbidden: ["بسبب"],
-                document: {
-                  kind: "curve",
-                  axes: ["ذات", "زمن"],
-                  comparisons: [["ذات", "لاذات"]],
-                  trends: [{ about: "ذات", expect: ["ذات", "لاذات"] }],
-                  values: [],
-                  strictValues: false
-                }
+                forbidden: []
               }
             },
             E: {
-              points: 4,
-              prompt: "تفسير الآلية المرتبطة بـ الدفاع عن الذات",
-              bacPrompt: "اشرح الآلية التي تفسر الدفاع عن الذات انطلاقا من الوثيقة ومعلوماتك.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "يعود ذلك إلى...",
-              minLength: 110,
+              points: 3,
+              prompt: "تفسير تغير الأحماض وتقارب المواقع",
+              bacPrompt:
+                "كيف تفسّر وجود أحماض أمينية ذات أرقام متباعدة في مواقع متقاربة من الجسم المضاد؟",
+              ...OFFICIAL(5, "س1 ت3 سؤال II-2 صفحة 5"),
+              placeholder: "التفسير...",
+              minLength: 70,
               modelAnswer:
-                "يعود ذلك إلى تدخل ذات ولاذات عبر آلية دقيقة تؤدي إلى تعرف، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+                "التفسير أن الطي ثلاثي الأبعاد للسلسلة يقرب أحماض متباعدة في التسلسل لتكون موقع ارتباط مولد الضد.",
               rule: {
-                prompt: "تفسير الآلية المرتبطة بـ الدفاع عن الذات",
-                keywords: ["ذات", "لاذات", "تعرف"],
-                minHits: 3,
+                prompt: "تقارب مواقع الجسم المضاد",
+                keywords: ["طي", "موقع", "مولد"],
+                minHits: 2,
                 forbidden: []
               }
             },
             W: {
-              points: 1.5,
-              prompt: "الخاتمة التركيبية حول الدفاع عن الذات",
-              bacPrompt: "لخّص النتيجة النهائية المرتبطة بـ الدفاع عن الذات.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "ذات → لاذات → تعرف",
-              minLength: 40,
-              modelAnswer: "عنوان المخطط: ذات. ذات → لاذات → تعرف.",
+              points: 2,
+              prompt: "استخلاص الدعامة الجزيئية للنوعية",
+              bacPrompt:
+                "من خلال تحليلك لمعطيات الوثيقة 2 (أ، ب، ج) استخرج المعلومات التي تؤكد ما ورد في مقدمة التمرين مستخلصا الدعامة الجزيئية المتسببة في ميزة النوعية للاستجابة المناعية الخلطية.",
+              ...OFFICIAL(5, "س1 ت3 سؤال II-3 صفحة 5"),
+              placeholder: "المعلومات تؤكد...",
+              minLength: 70,
+              modelAnswer:
+                "المعلومات تؤكد أن تنوع الأجسام يعود لتغير أحماض المنطقة المتغيرة، الدعامة هي المنطقة المتغيرة للسلاسل الثقيلة والخفيفة.",
               rule: {
-                prompt: "الخاتمة التركيبية حول الدفاع عن الذات",
-                keywords: ["مخطط", "ذات", "تعرف"],
+                prompt: "دعامة النوعية",
+                keywords: ["متغيرة", "تنوع", "نوعية"],
                 minHits: 2,
-                forbidden: [],
-                schema: { arrows: true, title: "ذات", ordered: ["ذات", "لاذات", "تعرف"] }
+                forbidden: []
               }
             }
           }
@@ -302,90 +271,78 @@ const YEAR_2014_SE = {
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-4380238.pdf",
       pdfLocalUrl: "/subjects/SE/2014/sujet-2.pdf",
       pdfNote:
-        "PDF non redistribué dans le dépôt. Page dzexams : https://www.dzexams.com/ar/annales/SzdNaHlPbThvaEhSSUJjWDRsdUljdz09. 2014 : PDF dzexams دون طبقة نص قابلة للشهادة هنا. Thèmes pédagogiques reconstruits.",
+        "PDF local pages 1-5 = doc pages 6-10. Barème officiel 5.5 7.5 07. Consignes officielles verbatim pages 6-10.",
       title: "الموضوع الثاني",
       exercises: [
         {
           number: 1,
           ui: "text",
-          label: "كمون الراحة",
-          max: 5,
-          desc: "توزيع Na⁺ وK⁺ ودور مضخة الصوديوم-بوتاسيوم",
+          label: "التنظيم الحجيري والنشاط الأنزيمي — الليزوزيم",
+          max: 5.5,
+          desc: "pH الأوساط، بروتياز، هكسوكيناز، بنية الليزوزيم",
           poles: {
             N: {
               points: 1,
-              prompt: "تأطير الإشكالية حول: كمون الراحة",
-              bacPrompt: "ما المشكل العلمي المرتبط بـ كمون الراحة؟",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "صياغة المشكل العلمي...",
+              prompt: "تأطير التنظيم الحجيري",
+              bacPrompt:
+                "بيّن بأن الليزوزوم هو مثال جيد لإبراز أهمية التنظيم الحجيري في المحافظة على النشاط الأنزيمي.",
+              ...OFFICIAL(6, "س2 ت1 سؤال I-1-ب صفحة 6"),
+              placeholder: "الليزوزوم مثال...",
               minLength: 40,
-              modelAnswer: "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ كمون الراحة في الظاهرة المدروسة؟",
+              modelAnswer:
+                "الليزوزوم مثال لأن pH داخله 5.5 حمضي ملائم لبروتياز بينما الهيولى pH 7.3 فيحمي الخلية من التحلل الذاتي.",
               rule: {
-                prompt: "تأطير الإشكالية حول: كمون الراحة",
-                keywords: ["راحه", "مضخه"],
+                prompt: "التنظيم الحجيري",
+                keywords: ["ليزوزوم", "pH", "تنظيم"],
                 minHits: 2,
                 forbidden: []
               }
             },
             S: {
-              points: 1,
-              prompt: "استغلال الوثيقة المتعلقة بـ كمون الراحة",
-              bacPrompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ كمون الراحة.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "نلاحظ... بينما... ومنه نستنتج...",
-              minLength: 40,
+              points: 1.5,
+              prompt: "تفسير نتائج الجدول ب",
+              bacPrompt:
+                "بالاعتماد على المعطيات السابقة فسّر نتائج الجدول (ب)، ماذا تستنتج؟",
+              ...OFFICIAL(6, "س2 ت1 سؤال I-1-أ صفحة 6"),
+              placeholder: "نلاحظ...",
+              minLength: 50,
               modelAnswer:
-                "تمثل الوثيقة تغيرات راحه بدلالة الزمن مقارنة بـ مضخه. نلاحظ تغيرا واضحا في راحه مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع مضخه.",
+                "نلاحظ أن بروتياز يعمل فقط في وسط حمضي مع بروتينات بكتيريا وهكسوكيناز يعمل في هيولى مع غلوكوز وATP، مما يدل على تخصص الأنزيمات بظروف pH ومادة تفاعل.",
               rule: {
-                prompt: "استغلال الوثيقة المتعلقة بـ كمون الراحة",
-                keywords: ["راحه", "مضخه", "نلاحظ"],
+                prompt: "تفسير جدول النشاط الأنزيمي",
+                keywords: ["بروتياز", "هكسوكيناز", "pH", "ATP"],
                 minHits: 2,
-                forbidden: ["بسبب"],
-                document: {
-                  kind: "curve",
-                  axes: ["راحه", "زمن"],
-                  comparisons: [["راحه", "مضخه"]],
-                  trends: [{ about: "راحه", expect: ["راحه", "مضخه"] }],
-                  values: [],
-                  strictValues: false
-                }
+                forbidden: []
               }
             },
             E: {
               points: 2,
-              prompt: "تفسير الآلية المرتبطة بـ كمون الراحة",
-              bacPrompt: "اشرح الآلية التي تفسر كمون الراحة انطلاقا من الوثيقة ومعلوماتك.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "يعود ذلك إلى...",
-              minLength: 120,
+              prompt: "بنية الليزوزيم ودور الجسور",
+              bacPrompt: "صف بنية الليزوزيم مبرزا دور الجسور ثنائية الكبريت.",
+              ...OFFICIAL(7, "س2 ت1 سؤال 2-ب صفحة 7"),
+              placeholder: "بنية الليزوزيم...",
+              minLength: 60,
               modelAnswer:
-                "يعود ذلك إلى تدخل راحه ومضخه عبر آلية دقيقة تؤدي إلى شوارد، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+                "الليزوزيم سلسلة بيبتيدية واحدة مطوية بثمانية جسور ثنائية الكبريت تثبت الموقع الفعال وتحافظ على البنية ثلاثية الأبعاد.",
               rule: {
-                prompt: "تفسير الآلية المرتبطة بـ كمون الراحة",
-                keywords: ["راحه", "مضخه", "شوارد"],
+                prompt: "بنية الليزوزيم",
+                keywords: ["جسور", "كبريت", "موقع", "بنية"],
                 minHits: 3,
                 forbidden: []
               }
             },
             W: {
               points: 1,
-              prompt: "الخاتمة التركيبية حول كمون الراحة",
-              bacPrompt: "لخّص النتيجة النهائية المرتبطة بـ كمون الراحة.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "في الختام...",
+              prompt: "شروط عمل الأنزيم",
+              bacPrompt: "استنتج، مما سبق، شروط عمل الأنزيم.",
+              ...OFFICIAL(7, "س2 ت1 سؤال 3 صفحة 7"),
+              placeholder: "شروط عمل الأنزيم...",
               minLength: 40,
-              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ راحه ومضخه فتُغلق الظاهرة على شوارد.",
+              modelAnswer:
+                "شروط عمل الأنزيم هي بنية فراغية محددة وموقع فعال متكامل مع مادة التفاعل وpH وحرارة مناسبة.",
               rule: {
-                prompt: "الخاتمة التركيبية حول كمون الراحة",
-                keywords: ["راحه", "شوارد", "ختام"],
+                prompt: "شروط عمل الأنزيم",
+                keywords: ["بنية", "موقع", "pH", "حرارة"],
                 minHits: 2,
                 forbidden: []
               }
@@ -395,85 +352,73 @@ const YEAR_2014_SE = {
         {
           number: 2,
           ui: "text",
-          label: "تحويل الطاقة في الميتوكوندري",
-          max: 7,
-          desc: "أكسدة النواقل وتشكل ATP",
+          label: "النقل العصبي — المنعكس الأخيلي وتجميع المشابك",
+          max: 7.5,
+          desc: "أنواع العصبونات، PPSE PPSI، معالجة العصبون المحرك",
           poles: {
             N: {
               points: 1,
-              prompt: "تأطير الإشكالية حول: تحويل الطاقة في الميتوكوندري",
-              bacPrompt: "ما المشكل العلمي المرتبط بـ تحويل الطاقة في الميتوكوندري؟",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "صياغة المشكل العلمي...",
+              prompt: "أنواع العصبونات في المنعكس",
+              bacPrompt:
+                "حدّد أنواع العصبونات المتدخلة في عمل العضلتين المتضادتين أثناء المنعكس الأخيلي.",
+              ...OFFICIAL(8, "س2 ت2 سؤال 1 صفحة 8"),
+              placeholder: "الأنواع...",
               minLength: 40,
               modelAnswer:
-                "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ تحويل الطاقة في الميتوكوندري في الظاهرة المدروسة؟",
+                "تتدخل عصبونات حسية تنقل التنبيه، عصبونات بينية مثبطة، وعصبونات محركة للعضلة الباسطة والقابضة.",
               rule: {
-                prompt: "تأطير الإشكالية حول: تحويل الطاقة في الميتوكوندري",
-                keywords: ["ميتوكوندري", "نواقل"],
+                prompt: "أنواع العصبونات",
+                keywords: ["حسية", "بينية", "محركة"],
                 minHits: 2,
                 forbidden: []
               }
             },
             S: {
-              points: 2.5,
-              prompt: "استغلال الوثيقة المتعلقة بـ تحويل الطاقة في الميتوكوندري",
-              bacPrompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ تحويل الطاقة في الميتوكوندري.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "نلاحظ... بينما... ومنه نستنتج...",
-              minLength: 90,
+              points: 2,
+              prompt: "تحليل تسجيلات الوثيقة 1 ب ج",
+              bacPrompt: "حلّل التسجيلات الممثلة على الوثيقة 1 (ب، ج)، ماذا تستنتج؟",
+              ...OFFICIAL(8, "س2 ت2 سؤال 2 صفحة 8"),
+              placeholder: "نلاحظ...",
+              minLength: 50,
               modelAnswer:
-                "تمثل الوثيقة تغيرات ميتوكوندري بدلالة الزمن مقارنة بـ نواقل. نلاحظ تغيرا واضحا في ميتوكوندري مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع نواقل.",
+                "نلاحظ في ب PPSE عند ع1 وفي ج PPSI عند ع3، مما يدل أن نفس المنبه يسبب تنبيه عضلة وتثبيط العضلة المتضادة.",
               rule: {
-                prompt: "استغلال الوثيقة المتعلقة بـ تحويل الطاقة في الميتوكوندري",
-                keywords: ["ميتوكوندري", "نواقل", "نلاحظ"],
+                prompt: "تحليل PPSE PPSI",
+                keywords: ["PPSE", "PPSI", "تنبيه", "تثبيط"],
                 minHits: 2,
-                forbidden: ["بسبب"],
-                document: {
-                  kind: "curve",
-                  axes: ["ميتوكوندري", "زمن"],
-                  comparisons: [["ميتوكوندري", "نواقل"]],
-                  trends: [{ about: "ميتوكوندري", expect: ["ميتوكوندري", "نواقل"] }],
-                  values: [],
-                  strictValues: false
-                }
+                forbidden: []
               }
             },
             E: {
-              points: 2.5,
-              prompt: "تفسير الآلية المرتبطة بـ تحويل الطاقة في الميتوكوندري",
-              bacPrompt: "اشرح الآلية التي تفسر تحويل الطاقة في الميتوكوندري انطلاقا من الوثيقة ومعلوماتك.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "يعود ذلك إلى...",
-              minLength: 110,
+              points: 3,
+              prompt: "آلية عمل المبلغين الكيميائيين",
+              bacPrompt:
+                "انطلاقا من معلوماتك ومعطيات الوثيقة 1 (أ، ب، ج) اشرح آلية عمل كل من المبلغين العصبيين الكيميائيين في المشبكين م1 و م3 لضمان عمل العضلتين المتضادتين.",
+              ...OFFICIAL(8, "س2 ت2 سؤال 4 صفحة 8"),
+              placeholder: "المبلغ التنبيهي...",
+              minLength: 80,
               modelAnswer:
-                "يعود ذلك إلى تدخل ميتوكوندري ونواقل عبر آلية دقيقة تؤدي إلى ATP، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+                "المبلغ التنبيهي يفتح قنوات Na فيسبب زوال استقطاب PPSE، والمبلغ التثبيطي يفتح قنوات Cl فيسبب فرط استقطاب PPSI فيضمن تقلص عضلة واسترخاء الأخرى.",
               rule: {
-                prompt: "تفسير الآلية المرتبطة بـ تحويل الطاقة في الميتوكوندري",
-                keywords: ["ميتوكوندري", "نواقل", "ATP"],
+                prompt: "آلية المبلغين",
+                keywords: ["Na", "Cl", "PPSE", "PPSI"],
                 minHits: 3,
                 forbidden: []
               }
             },
             W: {
-              points: 1,
-              prompt: "الخاتمة التركيبية حول تحويل الطاقة في الميتوكوندري",
-              bacPrompt: "لخّص النتيجة النهائية المرتبطة بـ تحويل الطاقة في الميتوكوندري.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "في الختام...",
-              minLength: 40,
-              modelAnswer: "في الختام، ترتبط النتيجة النهائية بـ ميتوكوندري ونواقل فتُغلق الظاهرة على ATP.",
+              points: 1.5,
+              prompt: "معالجة العصبون المحرك للمعلومات",
+              bacPrompt:
+                "فسّر نتائج الوثيقة (2)، ماذا تستنتج فيما يخص معالجة العصبون المحرك للمعلومات الواردة إليه؟",
+              ...OFFICIAL(9, "س2 ت2 سؤال II صفحة 9"),
+              placeholder: "العصبون المحرك يجمع...",
+              minLength: 60,
+              modelAnswer:
+                "العصبون المحرك يجمع الكمونات بعد مشبكية بالتجميع الزماني والمكاني، إذا بلغ العتبة يولد كمون عمل في R وإلا لا.",
               rule: {
-                prompt: "الخاتمة التركيبية حول تحويل الطاقة في الميتوكوندري",
-                keywords: ["ميتوكوندري", "ATP", "ختام"],
+                prompt: "تجميع العصبون المحرك",
+                keywords: ["تجميع", "عتبة", "كمون", "محرك"],
                 minHits: 2,
                 forbidden: []
               }
@@ -483,88 +428,73 @@ const YEAR_2014_SE = {
         {
           number: 3,
           ui: "text",
-          label: "النشاط التكتوني",
-          max: 8,
-          desc: "العلاقة بين الزلازل والحدود بين الصفائح",
+          label: "التركيب الضوئي — اقتناص الطاقة و RudiP",
+          max: 7,
+          desc: "بنية التيلاكويد، كمون الأكسدة، ستروما و CO2",
           poles: {
             N: {
-              points: 0.5,
-              prompt: "تأطير الإشكالية حول: النشاط التكتوني",
-              bacPrompt: "ما المشكل العلمي المرتبط بـ النشاط التكتوني؟",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "صياغة المشكل العلمي...",
-              minLength: 30,
+              points: 1,
+              prompt: "تسمية العضية والعناصر",
+              bacPrompt: "سمّ العضية (س) و العناصر المشار إليها بالأحرف و الأرقام.",
+              ...OFFICIAL(10, "س2 ت3 سؤال I-1 صفحة 9"),
+              placeholder: "العضية س هي...",
+              minLength: 40,
               modelAnswer:
-                "المشكل العلمي: كيف تتدخل الآليات المرتبطة بـ النشاط التكتوني في الظاهرة المدروسة؟",
+                "العضية س هي الصانعة الخضراء، أ غشاء خارجي، ب تيلاكويد، العناصر سلسلة نقل الكترونات و ATP سنتاز.",
               rule: {
-                prompt: "تأطير الإشكالية حول: النشاط التكتوني",
-                keywords: ["زلزال", "حدود"],
+                prompt: "تسمية الصانعة الخضراء",
+                keywords: ["صانعة", "تيلاكويد", "غشاء"],
                 minHits: 2,
                 forbidden: []
               }
             },
             S: {
               points: 2,
-              prompt: "استغلال الوثيقة المتعلقة بـ النشاط التكتوني",
-              bacPrompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ النشاط التكتوني.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "نلاحظ... بينما... ومنه نستنتج...",
+              prompt: "تحليل منحنى CO2 في الستروما",
+              bacPrompt: "حلّل منحنى الشكل (أ) من ز0 إلى ز3. ماذا تستنتج؟",
+              ...OFFICIAL(10, "س2 ت3 سؤال II-1-أ صفحة 10"),
+              placeholder: "المنحنى يوضح...",
               minLength: 60,
               modelAnswer:
-                "تمثل الوثيقة تغيرات زلزال بدلالة الزمن مقارنة بـ حدود. نلاحظ تغيرا واضحا في زلزال مقارنة بالشاهد، ومنه نستنتج علاقة مباشرة مع حدود.",
+                "المنحنى يوضح ثبات CO2 في الظلام ثم انخفاض سريع في الضوء مع حقن ATP و TH2 مما يدل أن تثبيت CO2 يحتاج نواتج المرحلة الضوئية.",
               rule: {
-                prompt: "استغلال الوثيقة المتعلقة بـ النشاط التكتوني",
-                keywords: ["زلزال", "حدود", "نلاحظ"],
-                minHits: 2,
-                forbidden: ["بسبب"],
-                document: {
-                  kind: "curve",
-                  axes: ["زلزال", "زمن"],
-                  comparisons: [["زلزال", "حدود"]],
-                  trends: [{ about: "زلزال", expect: ["زلزال", "حدود"] }],
-                  values: [],
-                  strictValues: false
-                }
+                prompt: "تحليل منحنى CO2",
+                keywords: ["CO2", "ضوء", "ATP", "TH2"],
+                minHits: 3,
+                forbidden: []
               }
             },
             E: {
-              points: 4,
-              prompt: "تفسير الآلية المرتبطة بـ النشاط التكتوني",
-              bacPrompt: "اشرح الآلية التي تفسر النشاط التكتوني انطلاقا من الوثيقة ومعلوماتك.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "يعود ذلك إلى...",
-              minLength: 110,
+              points: 2.5,
+              prompt: "مصير CO2 الممتص",
+              bacPrompt: "انطلاقا من معطيات الوثيقة 2 (ب)، وضّح مصير CO2 الممتص.",
+              ...OFFICIAL(10, "س2 ت3 سؤال II-2 صفحة 10"),
+              placeholder: "CO2 يتحول...",
+              minLength: 60,
               modelAnswer:
-                "يعود ذلك إلى تدخل زلزال وحدود عبر آلية دقيقة تؤدي إلى صفائح، فتتغير الوظيفة النهائية للظاهرة المدروسة.",
+                "CO2 يثبت على RudiP بواسطة روبيسكو ليعطي APG ثم هكسوزات، كمية RudiP تنخفض ثم تسترجع في حلقة كالفن.",
               rule: {
-                prompt: "تفسير الآلية المرتبطة بـ النشاط التكتوني",
-                keywords: ["زلزال", "حدود", "صفائح"],
+                prompt: "مصير CO2",
+                keywords: ["RudiP", "APG", "روبيسكو", "كالفن"],
                 minHits: 3,
                 forbidden: []
               }
             },
             W: {
               points: 1.5,
-              prompt: "الخاتمة التركيبية حول النشاط التكتوني",
-              bacPrompt: "لخّص النتيجة النهائية المرتبطة بـ النشاط التكتوني.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "زلزال → حدود → صفائح",
-              minLength: 40,
-              modelAnswer: "عنوان المخطط: زلزال. زلزال → حدود → صفائح.",
+              prompt: "العلاقة بين المرحلتين الضوئية والظلامية",
+              bacPrompt:
+                "مثّل في رسم تخطيطي وظيفي العلاقة بين الآليات المدروسة في الجزأين I و II.",
+              ...OFFICIAL(10, "س2 ت3 سؤال III صفحة 10"),
+              placeholder: "رسم يوضح...",
+              minLength: 50,
+              modelAnswer:
+                "الرسم يوضح أن المرحلة الضوئية تنتج ATP و NADPH في التيلاكويد تستعمل في الستروما لتثبيت CO2 وإنتاج سكر.",
               rule: {
-                prompt: "الخاتمة التركيبية حول النشاط التكتوني",
-                keywords: ["مخطط", "زلزال", "صفائح"],
+                prompt: "رسم العلاقة مرحلتين",
+                keywords: ["ATP", "NADPH", "ستروما", "تيلاكويد"],
                 minHits: 2,
-                forbidden: [],
-                schema: { arrows: true, title: "زلزال", ordered: ["زلزال", "حدود", "صفائح"] }
+                forbidden: []
               }
             }
           }

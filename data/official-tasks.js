@@ -4995,7 +4995,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
   },
   "2018/S1": {
     schemaVersion: 1,
-    status: "partial",
+    status: "complete",
     source: {
       kind: "local-pdf",
       locator: "https://www.dzexams.com/ar/annales/RGZmd0lTRW0xNmZTRUFjR0F5QzMwZz09",
@@ -5006,11 +5006,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
     document: {
       localPath: "/subjects/SE/2018/sujet-1.pdf",
       pages: 4,
-      pageOffset: null
+      pageOffset: 0
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
-      taskCompleteExerciseNumbers: []
+      taskCompleteExerciseNumbers: [1, 2, 3]
     },
     tasks: [
       {
@@ -5018,13 +5018,19 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 1,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "كيف تتدخل البروتينات الغشائية في توليد وانتشار الرسالة العصبية ودمجها؟",
-        promptSource: "reconstructed",
+        page: 1,
+        prompt:
+          "تتميز أغشية الخلايا العصبية بوجود بروتينات عالية التخصص وللتعرف على هذه البروتينات وتحديد دورها في نقل الرسائل العصبية وآلية دمجها، نقترح الوثيقة التي تمثل رسما تخطيطيا وظيفيا لانتقال الرسالة العصبية من خلية قبل مشبكية إلى خلية بعد مشبكية.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -5032,21 +5038,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2018-S1-E1-Q2",
         exerciseNumber: 1,
         order: 2,
         pole: "S",
-        page: null,
+        page: 1,
         prompt:
           "اذكر مختلف البروتينات الغشائية المتدخلة في توليد وانتشار الرسالة العصبية عبر سلسلة عصبونية محددا دور كل منها.",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        promptSource: "official",
+        maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -5054,20 +5065,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2018-S1-E1-Q3",
         exerciseNumber: 1,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اكتب نصا علميا تبيّن فيه آلية دمج الرسائل العصبية على مستوى العصبون المحرك.",
-        promptSource: "reconstructed",
-        maxPoints: 2,
+        page: 1,
+        prompt:
+          "انطلاقا من معطيات الوثيقة اكتب نصا علميا تبين فيه آلية دمج الرسائل العصبية على مستوى العصبون المحرك.",
+        promptSource: "official",
+        maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -5075,20 +5092,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2018-S1-E1-Q4",
         exerciseNumber: 1,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "ما شرط صدور رسالة عصبية حركية بعد الدمج؟",
-        promptSource: "reconstructed",
+        page: 1,
+        prompt: "وضح شرط صدور رسالة عصبية حركية بعد عملية الدمج على مستوى العصبون المحرك.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -5096,20 +5118,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2018-S1-E2-Q1",
         exerciseNumber: 2,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "كيف ترتبط بنية المستقبل الغشائي لـ LDL بالحالة الصحية وتصلب الشرايين؟",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        page: 2,
+        prompt: "مثل الصيغة الشاردية للحمض الأميني (Cys) في درجات PH ( 5 ، 2.77 ، 9.74 ).",
+        promptSource: "official",
+        maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -5117,21 +5144,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2018-S1-E2-Q2",
         exerciseNumber: 2,
         order: 2,
         pole: "S",
-        page: null,
+        page: 2,
         prompt:
-          "حدد بدقة دور الأحماض الأمينية في كشف وثبات البنية الفراغية للمستقبل R باستغلال الشكلين أ و ب.",
-        promptSource: "reconstructed",
-        maxPoints: 2.5,
+          "باستغلال الشكلين (أ) و(ب) حدد بدقة دور الأحماض الأمينية في تشكل وثبات البنية الفراغية للمستقبل R.",
+        promptSource: "official",
+        maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -5139,20 +5171,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2018-S1-E2-Q3",
         exerciseNumber: 2,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "ناقش العلاقة بين بنية المستقبل الغشائي لـ LDL والحالة الصحية للشخص السليم مقارنة بالمصاب.",
-        promptSource: "reconstructed",
-        maxPoints: 2.5,
+        page: 2,
+        prompt: "استخرج متتالية الأحماض الأمينية التي يشرف على تركيبها أجزاء الأليلين R1 وR2.",
+        promptSource: "official",
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -5160,20 +5197,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2018-S1-E2-Q4",
         exerciseNumber: 2,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "ما أصل تصلب الشرايين في هذه الدراسة؟",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        page: 2,
+        prompt:
+          "ناقش العلاقة بين بنية المستقبل الغشائي للـ LDL والحالة الصحية للشخص السليم مقارنة بالشخص المصاب.",
+        promptSource: "official",
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -5181,20 +5224,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2018-S1-E3-Q1",
         exerciseNumber: 3,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "اقترح فرضية تفسر قلة حركة النطاف عند الشخص س.",
-        promptSource: "reconstructed",
-        maxPoints: 0.5,
+        page: 3,
+        prompt:
+          "حلل النتائج المبينة في الوثيقة (1). قدم فرضيات تفسر من خلالها سبب قلة حركة النطاف عند الشخص (س).",
+        promptSource: "official",
+        maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -5202,20 +5251,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2018-S1-E3-Q2",
         exerciseNumber: 3,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل نتائج تغيرات نسبة O2 في المعلقين بعد إضافة الناقل TH2.",
-        promptSource: "reconstructed",
+        page: 4,
+        prompt:
+          "انطلاقا من الشكل (1) من الوثيقة (2) استخرج: عدد جزيئات الـ ATP (المتشكلة بشكل مباشر) - عدد النواقل المرجعة - عدد جزيئات CO2 المطروحة الخاص بكل مرحلة من المراحل المشار إليها بالأرقام (1)، (2) و(3) محددا بدقة مقر حدوث كل منها.",
+        promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -5223,20 +5278,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2018-S1-E3-Q3",
         exerciseNumber: 3,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "فسّر آلية تأثير الدواء المكون من Coenzyme Q10 على حركة النطاف مع المصادقة على الفرضية.",
-        promptSource: "reconstructed",
-        maxPoints: 4,
+        page: 4,
+        prompt:
+          "اشرح آلية تشكل الـ ATP الموضحة في الشكل (2) واستنتج الحصيلة الطاقوية لهذه المرحلة. فسر آلية تأثير الدواء الذي قدم للشخص (س)، مبرزا مدى توافق المعلومات المتوصل إليها مع إحدى الفرضيات السابقة.",
+        promptSource: "official",
+        maxPoints: 3.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -5244,20 +5305,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2018-S1-E3-Q4",
         exerciseNumber: 3,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "اشرح العلاقة بين هدم مادة الأيض واستهلاك O2 والقيام بالوظائف الحيوية.",
-        promptSource: "reconstructed",
+        page: 4,
+        prompt:
+          "بالاعتماد على الجزئين السابقين ومكتسباتك، اشرح العلاقة بين هدم مادة الأيض واستهلاك O2 والقيام بمختلف الوظائف الحيوية.",
+        promptSource: "official",
         maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -5265,13 +5332,13 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       }
     ]
   },
   "2018/S2": {
     schemaVersion: 1,
-    status: "partial",
+    status: "complete",
     source: {
       kind: "local-pdf",
       locator: "https://www.dzexams.com/ar/annales/RGZmd0lTRW0xNmZTRUFjR0F5QzMwZz09",
@@ -5282,11 +5349,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
     document: {
       localPath: "/subjects/SE/2018/sujet-2.pdf",
       pages: 5,
-      pageOffset: null
+      pageOffset: 4
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
-      taskCompleteExerciseNumbers: []
+      taskCompleteExerciseNumbers: [1, 2, 3]
     },
     tasks: [
       {
@@ -5294,13 +5361,18 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 1,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "كيف تفسر اختلاف المؤشرات الغشائية لنظام ABO بين الزمر؟",
-        promptSource: "reconstructed",
+        page: 5,
+        prompt: "قدم تعريفا للذات واللاذات ثم قارن بين الجزيئات المميزة لكل زمرة دموية.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -5308,20 +5380,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2018-S2-E1-Q2",
         exerciseNumber: 1,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "قارن بين المؤشرات الغشائية المميزة لكل زمرة دموية.",
-        promptSource: "reconstructed",
+        page: 5,
+        prompt: "قارن بين الجزيئات المميزة لكل زمرة دموية انطلاقا من الوثيقة.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -5329,20 +5406,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2018-S2-E1-Q3",
         exerciseNumber: 1,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اكتب نصا علميا تشرح فيه كيف يتحكم النمط الوراثي في النمط الظاهري لنظام ABO.",
-        promptSource: "reconstructed",
+        page: 5,
+        prompt:
+          "بالاعتماد على معطيات الوثيقة ومكتسباتك اكتب نصا علميا تشرح فيه سبب اختلاف النمط الظاهري على المستوى الخلوي في نظام (ABO).",
+        promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -5350,20 +5433,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2018-S2-E1-Q4",
         exerciseNumber: 1,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "ما أهمية معرفة مؤشرات الزمرة عند نقل الدم؟",
-        promptSource: "reconstructed",
+        page: 5,
+        prompt: "لخص العلاقة بين المورثة والإنزيم والنمط الظاهري في نظام ABO.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -5371,20 +5459,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2018-S2-E2-Q1",
         exerciseNumber: 2,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "كيف يرتبط نشاط اللاكتاز بأعراض عدم تحمل اللاكتوز؟",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        page: 6,
+        prompt: "أنجز منحنى تغير السرعة الابتدائية بدلالة درجة PH الوسط مفسرا تأثيرها على النشاط الأنزيمي.",
+        promptSource: "official",
+        maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [6]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -5392,20 +5485,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2018-S2-E2-Q2",
         exerciseNumber: 2,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "أنشئ منحنى تغير السرعة الابتدائية بدلالة pH الوسط مفسرا تأثيرها، ثم استنتج أثر الحرارة.",
-        promptSource: "reconstructed",
-        maxPoints: 2.5,
+        page: 6,
+        prompt: "من خلال النتائج التجريبية، استنتج تأثير درجة الحرارة على النشاط الأنزيمي.",
+        promptSource: "official",
+        maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [6]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -5413,20 +5511,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2018-S2-E2-Q3",
         exerciseNumber: 2,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح سبب ظهور أعراض عدم تحمل اللاكتوز عند المصاب وعدم ظهورها عند السليم.",
-        promptSource: "reconstructed",
+        page: 6,
+        prompt:
+          "نمذج العلاقة بين الجزيئات المتواجدة في الوسط (3) والوسط (5) لتفسر النتائج المحصل عليها في كل وسط ثم ضع مفهوما دقيقا للإنزيم.",
+        promptSource: "official",
         maxPoints: 2.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [6]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -5434,20 +5538,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2018-S2-E2-Q4",
         exerciseNumber: 2,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "ما المفهوم الدقيق للإنزيم انطلاقا من هذه الدراسة؟",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        page: 7,
+        prompt:
+          "بالاعتماد على أشكال الوثيقة (3) وباستدلال منطقي: اشرح سبب ظهور أعراض عدم تحمل اللاكتوز عند الشخص المصاب وعدم ظهورها عند الشخص السليم رغم حدوث هضم اللاكتوز عند الشخصين.",
+        promptSource: "official",
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [7]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -5455,20 +5565,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2018-S2-E3-Q1",
         exerciseNumber: 3,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "اقترح فرضية فيما يخص مصدر وآلية طرح ثنائي الأكسجين عند Cyanobacter.",
-        promptSource: "reconstructed",
-        maxPoints: 0.5,
+        page: 7,
+        prompt:
+          "لوحظ إثر إنجاز تجارب باستعمال بكتيريا Cyanobacter المعرضة للضوء ارتفاع نسبة غاز ثنائي الأكسجين في الوسط. اقترح فرضية فيما يخص مصدر وآلية طرح ثنائي الأكسجين في الوسط. استخرج من الوثيقة (3) ما يدعم صحة الفرضية المقترحة.",
+        promptSource: "official",
+        maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [7]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -5476,20 +5592,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2018-S2-E3-Q2",
         exerciseNumber: 3,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "استغل ارتفاع نسبة O2 عند تعريض Cyanobacter للضوء.",
-        promptSource: "reconstructed",
-        maxPoints: 2,
+        page: 8,
+        prompt:
+          "للتحقق من الفرضية أنجزت سلسلة التجارب على كائن حي وحيد الخلية (أشنة خضراء الكلوريلا) حيث تعتمد هذه التجربة على معايرة نسبة O18/O16 في غاز ثنائي الأكسجين المنطلق خلال المراحل التجريبية التالية: المرحلة الأولى: تم تعريض معلق أشنة كلوريلا للضوء في وجود ماء غني بـ O18 المشع حيث نسبة O18/O16 فيه تساوي 0.85% الذي يضاف إليه مادة NaHCO3 (مصدر لـ CO2). المرحلة الثانية: أعيدت نفس مراحل التجربة السابقة باستعمال الماء العادي وبإضافة HCO3- الغنية بالـ O18 المشع حيث نسبة O18/O16 فيه تساوي 0.85%. ملاحظة: نسبة O18/O16 في المركبات الكيميائية العادية H2O وNaHCO3 تساوي 0.2%. التجربة الثانية: توضع تيلاكوئيدات في وسط يحتوي على ماء عادي وخال من HCO3-، يضاف له مادة DCPIP، ويتابع خلال التجربة تطور تركيز O2 وتغير لون الوسط. (مادة DCPIP تأخذ لونا أزرقا في الحالة المؤكسدة يرمز لها بـ A وشفافا في الحالة المرجعة يرمز لها بـ AH2). النتائج المحصل عليها ممثلة في الوثيقتين (1) و(2): باستغلالك لنتائج التجارب (1) و(2) ومعلوماتك استدل عن مصدر ثنائي الأكسجين المطروح وبين آلية طرحه مدعما إجابتك بمعادلات كيميائية.",
+        promptSource: "official",
+        maxPoints: 2.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [8]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -5497,20 +5619,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2018-S2-E3-Q3",
         exerciseNumber: 3,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "فسّر الآلية التي تسمح لـ Cyanobacter بطرح O2 وتحويل الطاقة الضوئية.",
-        promptSource: "reconstructed",
-        maxPoints: 4,
+        page: 9,
+        prompt:
+          "حلل نتائج الوثيقة (4). بوضع علاقة بين نتائج الجزءين الأول والثاني، تحقق من صحة الفرضية المقترحة.",
+        promptSource: "official",
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [9]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -5518,20 +5646,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 5
       },
       {
         id: "2018-S2-E3-Q4",
         exerciseNumber: 3,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص في مخطط تحويل الطاقة الضوئية إلى طاقة كيميائية كامنة مع طرح O2.",
-        promptSource: "reconstructed",
+        page: 9,
+        prompt:
+          "باستغلال المعلومات المستخرجة مما سبق ومعارفك الخاصة وضح في رسم تخطيطي وظيفي مراحل التحويل الطاقوي المدروس.",
+        promptSource: "official",
         maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [9]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -5539,7 +5673,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 5
       }
     ]
   },

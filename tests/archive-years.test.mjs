@@ -5,8 +5,8 @@ import { officialTaskInventoryFor } from "../data/official-tasks.js";
 
 const ARCHIVE_IDS = ["2020", "2019", "2018", "2017", "2016", "2015", "2014", "2013"];
 const ENABLED_RECON_SE = ["2019", "2018", "2017", "2016", "2015", "2014", "2013"];
-const ENABLED_RECON_SE_REMAINING = ["2019", "2018"];
-const OFFICIAL_VERIFIED_SE = ["2017", "2016", "2015", "2014", "2013"];
+const ENABLED_RECON_SE_REMAINING = ["2019"];
+const OFFICIAL_VERIFIED_SE = ["2018", "2017", "2016", "2015", "2014", "2013"];
 const ARCHIVE_YEARS = APP_CONFIG.years.filter((year) => ENABLED_RECON_SE.includes(year.id));
 
 test("l'archive 2013-2019 SE est branchée dans APP_CONFIG ; 2020 SE reste le module officiel", () => {
@@ -115,6 +115,12 @@ test("chaque année reconstruite 2013–2019 est activée — 2013-2015 vérifi�
             `${year.id}/S${sujet.id} barème officiel 5/7/8`
           );
         }
+      } else if (year.id === "2018") {
+        assert.deepEqual(
+          sujet.exercises.map((ex) => ex.max),
+          [5, 7, 8],
+          `${year.id}/S${sujet.id} barème officiel 5/7/8`
+        );
       } else {
         assert.deepEqual(
           sujet.exercises.map((ex) => ex.max),

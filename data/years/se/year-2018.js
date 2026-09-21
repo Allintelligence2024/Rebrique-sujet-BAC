@@ -1,12 +1,16 @@
 /* ============================================================
-   BAC SVT Algérie 2018 — archive pédagogique reconstruite
+   BAC SVT Algérie 2018 — Sciences expérimentales
    ------------------------------------------------------------
-   Aucune consigne n'est marquée official. Les champs de provenance
-   restent attachés à chaque pôle. Chargé à la demande par le shell.
+   Barème officiel vérifié sur PDF dzexams / ONEC :
+   Sujet 1 : 05 / 07 / 08 = 20  (p1, p2, p3-4)
+   Sujet 2 : 05 / 07 / 08 = 20  (p5, p6-7, p7-9)
+   Consignes verbatim pages 1-9.
    ============================================================ */
 
-const RECON = (notes) => ({
-  bacPromptSource: "reconstructed",
+const OFFICIAL = (page, notes) => ({
+  bacPromptSource: "official",
+  bacPromptPage: page,
+  bacPromptVerifiedAt: "2026-09-21",
   bacPromptNotes: notes
 });
 
@@ -21,10 +25,10 @@ const YEAR_2018_SE = {
     {
       id: 1,
       pdf: null,
-      pdfExternalUrl: "https://www.dzexams.com/ar/annales/RGZmd0lTRW0xNmZTRUFjR0F5QzMwZz09",
+      pdfExternalUrl:
+        "https://www.dzexams.com/ar/annales/RGZmd0lTRW0xNmZTRUFjR0F5QzMwZz09",
       pdfLocalUrl: "/subjects/SE/2018/sujet-1.pdf",
-      pdfNote:
-        "PDF non redistribué dans le dépôt. Page dzexams : https://www.dzexams.com/ar/annales/RGZmd0lTRW0xNmZTRUFjR0F5QzMwZz09. Thèmes relus sur la couche texte dzexams (OCR inversé, 2026-08-30). Wording reconstructed.",
+      pdfNote: "PDF local 4p. Barème officiel 05/07/08. Verbatim officiel pages 1-4.",
       title: "الموضوع الأول",
       exercises: [
         {
@@ -32,76 +36,72 @@ const YEAR_2018_SE = {
           ui: "text",
           label: "البروتينات الغشائية والرسالة العصبية",
           max: 5,
-          desc: "بروتينات أغشية الخلايا العصبية المتدخلة في توليد وانتشار الرسالة العصبية وآلية دمجها على العصبون المحرك",
+          desc: "الوثيقة رسم تخطيطي وظيفي لانتقال الرسالة من خلية قبل مشبكية إلى خلية بعد مشبكية - حالتين",
           poles: {
             N: {
               points: 1,
-              prompt: "تأطير الإشكالية: كيف تؤمن البروتينات الغشائية نقل الرسالة العصبية ودمجها؟",
-              bacPrompt: "كيف تتدخل البروتينات الغشائية في توليد وانتشار الرسالة العصبية ودمجها؟",
-              ...RECON(
-                "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
-              ),
-              placeholder: "صياغة المشكل العلمي...",
+              prompt: "تأطير الإشكالية انطلاقا من الوثيقة",
+              bacPrompt:
+                "تتميز أغشية الخلايا العصبية بوجود بروتينات عالية التخصص وللتعرف على هذه البروتينات وتحديد دورها في نقل الرسائل العصبية وآلية دمجها، نقترح الوثيقة التي تمثل رسما تخطيطيا وظيفيا لانتقال الرسالة العصبية من خلية قبل مشبكية إلى خلية بعد مشبكية.",
+              ...OFFICIAL(1, "س1 ت1 مقدمة صفحة 1"),
+              placeholder: "المشكل العلمي...",
               minLength: 40,
               modelAnswer:
-                "المشكل العلمي: كيف تتدخل مختلف البروتينات الغشائية في توليد وانتشار الرسالة العصبية ودمجها على مستوى العصبون المحرك؟",
+                "المشكل: ما هي البروتينات الغشائية المتدخلة في توليد وانتشار الرسالة العصبية وما آلية دمج الرسائل على مستوى العصبون المحرك؟",
               rule: {
-                prompt: "تأطير الإشكالية: كيف تؤمن البروتينات الغشائية نقل الرسالة العصبية ودمجها؟",
-                keywords: ["غشائي", "رساله", "عصبيه"],
+                prompt: "تأطير إشكالية بروتينات غشائية",
+                keywords: ["بروتين", "غشائية", "رسالة", "عصبية"],
                 minHits: 2,
                 forbidden: []
               }
             },
             S: {
-              points: 1,
+              points: 1.5,
               prompt: "ذكر البروتينات الغشائية ودور كل منها",
               bacPrompt:
                 "اذكر مختلف البروتينات الغشائية المتدخلة في توليد وانتشار الرسالة العصبية عبر سلسلة عصبونية محددا دور كل منها.",
-              ...RECON(
-                "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
-              ),
-              placeholder: "قنوات فولطية، مضخة، مستقبلات...",
-              minLength: 40,
+              ...OFFICIAL(1, "س1 ت1 سؤال 1 صفحة 1"),
+              placeholder: "قنوات، مضخة، مستقبلات...",
+              minLength: 50,
               modelAnswer:
-                "القنوات الفولطية لـ Na⁺ وK⁺ تولد كمون العمل. مضخة Na⁺/K⁺ تحفظ كمون الراحة. قنوات الكالسيوم الفولطية تسمح بالتحرير. مستقبلات بعد مشبكية تولد PPSE أو PPSI.",
+                "قنوات Na+ و K+ المرتبطة بالفولطية تولد وتنشر كمون العمل، مضخة Na+/K+ تحافظ على كمون الراحة، قنوات Ca2+ الفولطية في النهاية المحورية تسمح بدخول Ca2+ وتحرير المبلغ الكيميائي، مستقبلات قنوية وكيميائية بعد مشبكية تولد كمونات بعد مشبكية تنبيهية أو تثبيطية.",
               rule: {
-                prompt: "ذكر البروتينات الغشائية ودور كل منها",
-                keywords: ["قنوات", "مضخه", "مستقبل"],
+                prompt: "بروتينات غشائية ودورها",
+                keywords: ["قنوات", "مضخة", "مستقبل", "كمون"],
                 minHits: 2,
-                forbidden: ["بسبب"]
+                forbidden: []
               }
             },
             E: {
-              points: 2,
-              prompt: "نص علمي حول دمج الرسائل على العصبون المحرك",
-              bacPrompt: "اكتب نصا علميا تبيّن فيه آلية دمج الرسائل العصبية على مستوى العصبون المحرك.",
-              ...RECON(
-                "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
-              ),
+              points: 1.5,
+              prompt: "نص علمي آلية دمج الرسائل على العصبون المحرك",
+              bacPrompt:
+                "انطلاقا من معطيات الوثيقة اكتب نصا علميا تبين فيه آلية دمج الرسائل العصبية على مستوى العصبون المحرك.",
+              ...OFFICIAL(1, "س1 ت1 سؤال 2 صفحة 1"),
               placeholder: "تجميع فضائي وزماني...",
-              minLength: 120,
+              minLength: 80,
               modelAnswer:
-                "تصل إلى العصبون المحرك جهود بعد مشبكية تنبيهية وتثبيطية. يُدمج المحصّل تجميعا فضائيا وزمانيا على مستوى القطعة الابتدائية، فإذا بلغ العتبة تولد كمون عمل وانتشر نحو العضلة.",
+                "يستقبل العصبون المحرك كمونات بعد مشبكية تنبيهية وتثبيطية من مشابك مختلفة. يتم جمعها تجميعا فضائيا وزمانيا على مستوى القطعة الابتدائية. إذا كان المحصل مزيلا للاستقطاب وبلغ العتبة تولد كمون عمل حركي، وإلا لا يصدر. الحالة الأولى في الوثيقة تظهر توليد كمون عمل بعد مشبكي وتنبيه، الثانية فشل التوليد.",
               rule: {
-                prompt: "نص علمي حول دمج الرسائل على العصبون المحرك",
-                keywords: ["دمج", "تنبيهي", "تثبيطي", "عتبه", "محرك"],
+                prompt: "دمج رسائل عصبون محرك",
+                keywords: ["دمج", "تنبيهية", "تثبيطية", "عتبة", "محرك"],
                 minHits: 3,
                 forbidden: []
               }
             },
             W: {
               points: 1,
-              prompt: "الخاتمة: شرط صدور الرسالة الحركية",
-              bacPrompt: "ما شرط صدور رسالة عصبية حركية بعد الدمج؟",
-              ...RECON(
-                "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
-              ),
+              prompt: "خلاصة شرط صدور الرسالة الحركية",
+              bacPrompt:
+                "وضح شرط صدور رسالة عصبية حركية بعد عملية الدمج على مستوى العصبون المحرك.",
+              ...OFFICIAL(1, "س1 ت1 ختامي صفحة 1"),
               placeholder: "في الختام...",
               minLength: 40,
-              modelAnswer: "في الختام، لا تصدر رسالة حركية إلا إذا بلغ محصّل الدمج عتبة توليد كمون العمل.",
+              modelAnswer:
+                "في الختام، شرط صدور الرسالة الحركية هو وصول محصلة الدمج إلى عتبة توليد كمون العمل على مستوى القطعة الابتدائية للعصبون المحرك.",
               rule: {
-                prompt: "الخاتمة: شرط صدور الرسالة الحركية",
-                keywords: ["دمج", "عتبه", "حركيه"],
+                prompt: "شرط رسالة حركية",
+                keywords: ["عتبة", "دمج", "محرك"],
                 minHits: 2,
                 forbidden: []
               }
@@ -111,88 +111,75 @@ const YEAR_2018_SE = {
         {
           number: 2,
           ui: "text",
-          label: "مستقبل LDL وتصلب الشرايين",
+          label: "مستقبل LDL وبنيته الفراغية وتصلب الشرايين",
           max: 7,
-          desc: "دخول LDL عبر المستقبل الغشائي R، ودور الأحماض الأمينية في ثبات بنيته، وأثر طفرة الأليل على تصلب الشرايين",
+          desc: "الوثيقة 1 شكل أ دخول LDL وتكبير مستقبل R وشكل ب جذور أحماض أمينية 166/177 و522 و581 مع PHi، الوثيقة 2 أليلين R1 وR2 وجدول شفرة",
           poles: {
             N: {
-              points: 1,
-              prompt: "تأطير الإشكالية: كيف تؤدي طفرة مستقبل LDL إلى تصلب الشرايين؟",
-              bacPrompt: "كيف ترتبط بنية المستقبل الغشائي لـ LDL بالحالة الصحية وتصلب الشرايين؟",
-              ...RECON(
-                "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
-              ),
-              placeholder: "صياغة المشكل العلمي...",
-              minLength: 40,
+              points: 1.5,
+              prompt: "الصيغة الشاردية للـ Cys في 3 درجات PH",
+              bacPrompt:
+                "مثل الصيغة الشاردية للحمض الأميني (Cys) في درجات PH ( 5 ، 2.77 ، 9.74 ).",
+              ...OFFICIAL(2, "س1 ت2 الجزء الأول سؤال 1 صفحة 2"),
+              placeholder: "PH=2.77 NH3+ CH2SH COOH...",
+              minLength: 30,
               modelAnswer:
-                "المشكل العلمي: كيف تضمن أحماض أمينية محددة ثبات مستقبل LDL، وكيف تفقد الطفرة هذا التخصص فيرتفع الكولسترول؟",
+                "عند PH=2.77 الحمضي: NH3+-CH(SH)-COOH مشحون +. عند PH=5 = PHi: NH3+-CH(S-?) متعادل، SH غير متأين. عند PH=9.74: NH2-CH(S-)-COO- مشحون -. الصيغ تظهر تأين COOH وNH2 وSH حسب PH.",
               rule: {
-                prompt: "تأطير الإشكالية: كيف تؤدي طفرة مستقبل LDL إلى تصلب الشرايين؟",
-                keywords: ["LDL", "مستقبل", "طفره"],
+                prompt: "صيغة شاردية Cys",
+                keywords: ["PH", "Cys", "شاردية", "NH3", "COO"],
                 minHits: 2,
                 forbidden: []
               }
             },
             S: {
-              points: 2.5,
-              prompt: "تحديد دور الأحماض الأمينية في ثبات المستقبل",
+              points: 1.5,
+              prompt: "دور الأحماض الأمينية في تشكل وثبات بنية المستقبل R",
               bacPrompt:
-                "حدد بدقة دور الأحماض الأمينية في كشف وثبات البنية الفراغية للمستقبل R باستغلال الشكلين أ و ب.",
-              ...RECON(
-                "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
-              ),
-              placeholder: "جسور، شحنات، تموضع...",
-              minLength: 90,
+                "باستغلال الشكلين (أ) و(ب) حدد بدقة دور الأحماض الأمينية في تشكل وثبات البنية الفراغية للمستقبل R.",
+              ...OFFICIAL(2, "س1 ت2 الجزء الأول سؤال 2 صفحة 2"),
+              placeholder: "جسور كبريتية، شحنات...",
+              minLength: 60,
               modelAnswer:
-                "تمثل الوثيقة تتابع الأحماض الأمينية في المستقبل LDL بدلالة الموضع عند السليم والمصاب. نلاحظ تموضعا دقيقا لأحماض مشحونة وكبريتية عند السليم، بينما يختل التموضع عند المصاب، ومنه نستنتج أن الروابط تثبّت البنية الفراغية اللازمة للتعرف على LDL.",
+                "الشكل أ يوضح مستقبل R غشائي، الشكل ب يبين Cys 166/177 تكون جسور ثنائية الكبريت، Asp 522 حمضي PHi 2.77 يكون روابط شاردية مع Lys 581 قاعدي PHi 9.74. هذه الروابط تثبت الطيات وتحدد البنية الفراغية لموقع تثبيت LDL.",
               rule: {
-                prompt: "تحديد دور الأحماض الأمينية في ثبات المستقبل",
-                keywords: ["احماض", "بنيه", "مستقبل", "LDL"],
-                minHits: 2,
-                forbidden: ["بسبب"],
-                document: {
-                  kind: "table",
-                  axes: ["حمض", "موضع"],
-                  comparisons: [["سليم", "مصاب"]],
-                  cells: [["LDL", "مستقبل"]],
-                  values: [],
-                  strictValues: false
-                }
-              }
-            },
-            E: {
-              points: 2.5,
-              prompt: "مناقشة العلاقة بين الطفرة وتصلب الشرايين",
-              bacPrompt:
-                "ناقش العلاقة بين بنية المستقبل الغشائي لـ LDL والحالة الصحية للشخص السليم مقارنة بالمصاب.",
-              ...RECON(
-                "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
-              ),
-              placeholder: "أليل R1 وR2، كولسترول...",
-              minLength: 110,
-              modelAnswer:
-                "عند السليم يثبت LDL على مستقبل وظيفي فيُقتنص. عند المصاب تغيّر الطفرة حمضا أمينيا فيفقد المستقبل شكله فلا يدخل LDL، فيرتفع الكولسترول في الدم ويتصلب الشريان.",
-              rule: {
-                prompt: "مناقشة العلاقة بين الطفرة وتصلب الشرايين",
-                keywords: ["طفره", "كولسترول", "مستقبل", "شرايين", "LDL"],
+                prompt: "دور أحماض في ثبات R",
+                keywords: ["جسور", "كبريتية", "شاردية", "بنية", "مستقبل"],
                 minHits: 3,
                 forbidden: []
               }
             },
-            W: {
-              points: 1,
-              prompt: "الخاتمة: أصل المرض",
-              bacPrompt: "ما أصل تصلب الشرايين في هذه الدراسة؟",
-              ...RECON(
-                "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
-              ),
-              placeholder: "في الختام...",
-              minLength: 40,
-              modelAnswer: "في الختام، أصل المرض طفرة في مورثة المستقبل تمنع اقتناص LDL فيتراكم الكولسترول.",
+            E: {
+              points: 2,
+              prompt: "متتالية الأحماض الأمينية لـ R1 وR2 ونوع الطفرة",
+              bacPrompt:
+                "استخرج متتالية الأحماض الأمينية التي يشرف على تركيبها أجزاء الأليلين R1 وR2.",
+              ...OFFICIAL(2, "س1 ت2 الجزء الثاني سؤال 1 صفحة 2"),
+              placeholder: "R1: Ser Leu Leu Lys Val Thr Val... R2: Ser Leu Leu Lys Ile Thr Val...",
+              minLength: 50,
+              modelAnswer:
+                "R1: TCT TTG CTC AAG GTC ACG GTT → Ser-Leu-Leu-Lys-Val-Thr-Val (أرقام 29-35). R2: TCT TTG CTC AAG ATC ACG GTT → Ser-Leu-Leu-Lys-Ile-Thr-Val. الطفرة استبدال GTC→ATC في الكودون 33 مما غير Val→Ile، وهي طفرة نقطية استبدال.",
               rule: {
-                prompt: "الخاتمة: أصل المرض",
-                keywords: ["طفره", "LDL", "كولسترول"],
+                prompt: "متتالية R1 R2",
+                keywords: ["R1", "R2", "Val", "Ile", "استبدال"],
                 minHits: 2,
+                forbidden: []
+              }
+            },
+            W: {
+              points: 2,
+              prompt: "مناقشة العلاقة بين بنية مستقبل LDL والحالة الصحية",
+              bacPrompt:
+                "ناقش العلاقة بين بنية المستقبل الغشائي للـ LDL والحالة الصحية للشخص السليم مقارنة بالشخص المصاب.",
+              ...OFFICIAL(2, "س1 ت2 الجزء الثاني سؤال 2 صفحة 2"),
+              placeholder: "سليم مستقبل وظيفي...",
+              minLength: 70,
+              modelAnswer:
+                "عند السليم بنية المستقبل R سليمة بفضل تتالي أحماض أمينية محدد يضمن موقع تثبيت LDL فيدخل الكولسترول ويستعمل فلا يرتفع في الدم. عند المصاب طفرة تغير حمضا أمينيا (Val→Ile) يخل بالبنية الفراغية فيفقد المستقبل وظيفته فلا يدخل LDL فيرتفع الكولسترول في الدم ويؤدي إلى تصلب الشرايين L'athérosclérose.",
+              rule: {
+                prompt: "علاقة بنية R وحالة صحية",
+                keywords: ["مستقبل", "LDL", "طفرة", "كولسترول", "تصلب"],
+                minHits: 3,
                 forbidden: []
               }
             }
@@ -201,90 +188,76 @@ const YEAR_2018_SE = {
         {
           number: 3,
           ui: "text",
-          label: "العقم والنطاف وCoenzyme Q10",
+          label: "العقم والنطاف والتحول الطاقوي وCoenzyme Q10",
           max: 8,
-          desc: "علاقة نقص حركة النطاف بتحول الطاقة، ودور Coenzyme Q10 في السلسلة التنفسية",
+          desc: "الوثيقة 1 منحنى O2% في معلقين ميتوكوندريات سليم ومصاب مع إضافة TH2، الوثيقة 2 شكل1 تحلل فركتوز وشكل2 سلسلة أكسدة مع Coenzyme Q10",
           poles: {
             N: {
-              points: 0.5,
-              prompt: "اقتراح فرضية حول سبب قلة حركة النطاف",
-              bacPrompt: "اقترح فرضية تفسر قلة حركة النطاف عند الشخص س.",
-              ...RECON(
-                "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
-              ),
-              placeholder: "الفرضية...",
-              minLength: 30,
+              points: 1,
+              prompt: "تحليل نتائج الوثيقة 1 وفرضيات قلة حركة النطاف",
+              bacPrompt:
+                "حلل النتائج المبينة في الوثيقة (1). قدم فرضيات تفسر من خلالها سبب قلة حركة النطاف عند الشخص (س).",
+              ...OFFICIAL(3, "س1 ت3 الجزء الأول سؤال 1 و2 صفحة 3"),
+              placeholder: "تحليل منحنى O2...",
+              minLength: 60,
               modelAnswer:
-                "الفرضية: يعود نقص الحركة إلى خلل في أكسدة النواقل المرجعة فلا يتشكل ATP الكافي لحركة النطفة.",
+                "الوثيقة 1 تظهر نسبة O2% بدلالة الزمن. المعلق الأول (سليم) ينخفض O2 بسرعة بعد إضافة TH2 من 100% إلى قريب الصفر عند 7 د، المعلق الثاني (الشخص س) يبقى O2 ثابتا 100% بعد TH2. الاستنتاج: ميتوكوندريات س تفشل في أكسدة TH2 واستهلاك O2. الفرضيات: نقص في نقل الإلكترونات في السلسلة التنفسية، أو غياب/خلل في Coenzyme Q10، أو خلل في مركب يضمن أكسدة النواقل المرجعة.",
               rule: {
-                prompt: "اقتراح فرضية حول سبب قلة حركة النطاف",
-                keywords: ["فرضيه", "نطاف", "ATP"],
-                minHits: 2,
+                prompt: "تحليل O2 وفرضيات عقم",
+                keywords: ["O2", "TH2", "ميتوكوندري", "فرضية", "نطاف"],
+                minHits: 3,
                 forbidden: []
               }
             },
             S: {
               points: 2,
-              prompt: "تحليل استهلاك O2 في معلق النطاف",
-              bacPrompt: "حلّل نتائج تغيرات نسبة O2 في المعلقين بعد إضافة الناقل TH2.",
-              ...RECON(
-                "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
-              ),
-              placeholder: "معلق سليم ومعلق الشخص س...",
-              minLength: 60,
+              prompt: "استخراج عدد ATP والنواقل وCO2 لكل مرحلة من الشكل 1",
+              bacPrompt:
+                "انطلاقا من الشكل (1) من الوثيقة (2) استخرج: عدد جزيئات الـ ATP (المتشكلة بشكل مباشر) - عدد النواقل المرجعة - عدد جزيئات CO2 المطروحة الخاص بكل مرحلة من المراحل المشار إليها بالأرقام (1)، (2) و(3) محددا بدقة مقر حدوث كل منها.",
+              ...OFFICIAL(4, "س1 ت3 الجزء الثاني سؤال 1 صفحة 4"),
+              placeholder: "مرحلة 1 انحلال سكر...",
+              minLength: 70,
               modelAnswer:
-                "تمثل الوثيقة نسبة الأكسجين بدلالة الزمن في المعلق السليم والمصاب. نلاحظ عند السليم انخفاضا واضحا في O2 بعد إضافة TH2، بينما يبقى الانخفاض ضعيفا عند المصاب، ومنه نستنتج ضعفا في أكسدة النواقل عند المصاب.",
+                "المرحلة 1: انحلال الفركتوز (شبيه انحلال الغلوكوز) في الهيولى الأساسية: 2 ATP مباشر، 2 TH2 (NADH.H+)، 0 CO2. المرحلة 2: تحول حمض البيروفيك إلى أستيل مرافق الإنزيم في ماتريس الميتوكوندري: 0 ATP، 1 TH2، 1 CO2 لكل بيروفات أي 2 لكل غلوكوز. المرحلة 3: حلقة كريبس في الماتريس: 1 ATP (GTP) لكل دورة أي 2 لكل غلوكوز، 3 TH2 +1 T'H2 (FADH2) لكل دورة أي 8 TH2 و2 T'H2 للغلوكوز، 2 CO2 لكل دورة أي 4 CO2.",
               rule: {
-                prompt: "تحليل استهلاك O2 في معلق النطاف",
-                keywords: ["اكسجين", "نطاف", "ناقل"],
-                minHits: 2,
-                forbidden: ["بسبب"],
-                document: {
-                  kind: "curve",
-                  axes: ["اكسجين", "زمن"],
-                  comparisons: [["سليم", "مصاب"]],
-                  trends: [{ about: "سليم", expect: ["انخفاض", "اكسجين"] }],
-                  values: [],
-                  strictValues: false
-                }
+                prompt: "ATP نواقل CO2 لكل مرحلة",
+                keywords: ["ATP", "TH2", "CO2", "هيولى", "كريبس"],
+                minHits: 3,
+                forbidden: []
               }
             },
             E: {
-              points: 4,
-              prompt: "تفسير تأثير Coenzyme Q10",
+              points: 3.5,
+              prompt: "شرح آلية تشكل ATP في الشكل 2 وحصيلة طاقوية وتأثير الدواء",
               bacPrompt:
-                "فسّر آلية تأثير الدواء المكون من Coenzyme Q10 على حركة النطاف مع المصادقة على الفرضية.",
-              ...RECON(
-                "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
-              ),
-              placeholder: "سلسلة تنفسية، ATP، حركة...",
-              minLength: 110,
+                "اشرح آلية تشكل الـ ATP الموضحة في الشكل (2) واستنتج الحصيلة الطاقوية لهذه المرحلة. فسر آلية تأثير الدواء الذي قدم للشخص (س)، مبرزا مدى توافق المعلومات المتوصل إليها مع إحدى الفرضيات السابقة.",
+              ...OFFICIAL(4, "س1 ت3 الجزء الثاني سؤال 2 و3 صفحة 4"),
+              placeholder: "الشكل 2 فسفرة تأكسدية...",
+              minLength: 100,
               modelAnswer:
-                "يعيد Coenzyme Q10 نقل الإلكترونات في السلسلة التنفسية فيستأنف تدرج البروتونات ويتشكل ATP فتعود حركة النطاف، فتتأكد فرضية الخلل الطاقوي.",
+                "الشكل 2 يمثل الفسفرة التأكسدية في الغشاء الداخلي للميتوكوندري: أكسدة النواقل TH2 وT'H2 عبر سلسلة نواقل تتدخل فيها Coenzyme Q10 ناقلا للإلكترونات والبروتونات، ينشأ تدرج بروتوني بين الفراغ بين الغشائين والماتريس، يعود H+ عبر الكرة المذنبة ATP synthase فيتشكل ATP من ADP+Pi. الحصيلة: كل NADH يعطي ~2.5 ATP، FADH2 ~1.5، الحصيلة الكلية للتنفس ~30-32 ATP. تفسير الدواء: Coenzyme Q10 المفقود/الناقص عند س يعاد تزويد السلسلة به فيستأنف نقل الإلكترونات فتستهلك O2 ويتشكل ATP فتعود حركة النطاف، وهذا يوافق فرضية خلل في ناقل الإلكترونات Q10.",
               rule: {
-                prompt: "تفسير تأثير Coenzyme Q10",
-                keywords: ["Q10", "سلسله", "ATP", "نطاف", "الكترون"],
+                prompt: "فسفرة تأكسدية وحصيلة وتأثير Q10",
+                keywords: ["Q10", "فسفرة", "تأكسدية", "تدرج", "ATP", "نطاف"],
                 minHits: 3,
                 forbidden: []
               }
             },
             W: {
               points: 1.5,
-              prompt: "مخطط العلاقة أيض-O2-وظائف حيوية",
-              bacPrompt: "اشرح العلاقة بين هدم مادة الأيض واستهلاك O2 والقيام بالوظائف الحيوية.",
-              ...RECON(
-                "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
-              ),
-              placeholder: "فركتوز → نواقل → O2 → ATP → حركة...",
-              minLength: 40,
+              prompt: "العلاقة بين هدم مادة الأيض واستهلاك O2 والوظائف الحيوية",
+              bacPrompt:
+                "بالاعتماد على الجزئين السابقين ومكتسباتك، اشرح العلاقة بين هدم مادة الأيض واستهلاك O2 والقيام بمختلف الوظائف الحيوية.",
+              ...OFFICIAL(4, "س1 ت3 الجزء الثالث صفحة 4"),
+              placeholder: "العلاقة...",
+              minLength: 60,
               modelAnswer:
-                "عنوان المخطط: طاقة النطفة. فركتوز → نواقل مرجعة → سلسلة تنفسية تستهلك O2 → ATP → نطاف. في وجود Q10 تُستأنف السلسلة.",
+                "هدم الفركتوز ينتج نواقل مرجعة تتأكسد باستهلاك O2 في السلسلة التنفسية منتجة ATP. الـ ATP يستعمل كمصدر طاقة مباشر للوظائف الحيوية كحركة النطاف والنقل النشط والتركيب. بدون O2 لا تتأكسد النواقل فلا يتشكل ATP فتتعطل الوظائف.",
               rule: {
-                prompt: "مخطط العلاقة أيض-O2-وظائف حيوية",
-                keywords: ["مخطط", "ATP", "نطاف"],
+                prompt: "علاقة هدم O2 وظائف",
+                keywords: ["هدم", "O2", "ATP", "وظائف", "نطاف"],
                 minHits: 2,
-                forbidden: [],
-                schema: { arrows: true, title: "ATP", ordered: ["فركتوز", "ATP", "نطاف"] }
+                forbidden: []
               }
             }
           }
@@ -294,10 +267,10 @@ const YEAR_2018_SE = {
     {
       id: 2,
       pdf: null,
-      pdfExternalUrl: "https://www.dzexams.com/ar/annales/RGZmd0lTRW0xNmZTRUFjR0F5QzMwZz09",
+      pdfExternalUrl:
+        "https://www.dzexams.com/ar/annales/RGZmd0lTRW0xNmZTRUFjR0F5QzMwZz09",
       pdfLocalUrl: "/subjects/SE/2018/sujet-2.pdf",
-      pdfNote:
-        "PDF non redistribué dans le dépôt. Page dzexams : https://www.dzexams.com/ar/annales/RGZmd0lTRW0xNmZTRUFjR0F5QzMwZz09. Thèmes relus sur la couche texte dzexams (OCR inversé, 2026-08-30). Wording reconstructed.",
+      pdfNote: "PDF local 5p. Barème officiel 05/07/08. Verbatim officiel pages 5-9.",
       title: "الموضوع الثاني",
       exercises: [
         {
@@ -305,76 +278,72 @@ const YEAR_2018_SE = {
           ui: "text",
           label: "نظام الزمر الدموية ABO",
           max: 5,
-          desc: "المؤشرات الغشائية لنظام ABO على كريات الدم الحمراء ودور الأليلات IA وIB وi",
+          desc: "مورثة على الصبغي 9 بثلاث أليلات I° I^A I^B، إنزيم A وB يضيفان سكريات على مستضد H",
           poles: {
             N: {
               points: 1,
-              prompt: "تأطير الإشكالية: كيف يظهر النمط الظاهري للزمرة؟",
-              bacPrompt: "كيف تفسر اختلاف المؤشرات الغشائية لنظام ABO بين الزمر؟",
-              ...RECON(
-                "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
-              ),
-              placeholder: "صياغة المشكل العلمي...",
+              prompt: "تعريف الذات واللاذات",
+              bacPrompt:
+                "قدم تعريفا للذات واللاذات ثم قارن بين الجزيئات المميزة لكل زمرة دموية.",
+              ...OFFICIAL(5, "س2 ت1 سؤال 1 صفحة 5"),
+              placeholder: "الذات...",
               minLength: 40,
               modelAnswer:
-                "المشكل العلمي: كيف تحدد الأليلات IA وIB وi نوع المستضد الغشائي على كرية الدم الحمراء؟",
+                "الذات مجموعة جزيئات غشائية مميزة للفرد لا تهاجمها المناعة، اللاذات كل ما هو غريب عنها. الزمرة O تحمل مستضد H فقط، الزمرة A تحمل مستضد A (H + N أستيل غلاكتو أمين)، الزمرة B تحمل مستضد B (H + غلاكتوز)، الزمرة AB تحمل A وB.",
               rule: {
-                prompt: "تأطير الإشكالية: كيف يظهر النمط الظاهري للزمرة؟",
-                keywords: ["زمره", "مستضد", "اليل"],
+                prompt: "ذات لاذات ومقارنة زمر",
+                keywords: ["ذات", "لاذات", "مستضد", "زمرة"],
                 minHits: 2,
                 forbidden: []
               }
             },
             S: {
               points: 1,
-              prompt: "المقارنة بين الزمر والمؤشرات",
-              bacPrompt: "قارن بين المؤشرات الغشائية المميزة لكل زمرة دموية.",
-              ...RECON(
-                "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
-              ),
-              placeholder: "مستضد H، A، B...",
+              prompt: "مقارنة الجزيئات المميزة لكل زمرة",
+              bacPrompt:
+                "قارن بين الجزيئات المميزة لكل زمرة دموية انطلاقا من الوثيقة.",
+              ...OFFICIAL(5, "س2 ت1 سؤال 1 تتمة صفحة 5"),
+              placeholder: "سلسلة سكرية قاعدية...",
               minLength: 40,
               modelAnswer:
-                "الزمرة O تحمل مستضد H فقط، والزمرة A تضيف غالاكتوز أمين على H، والزمرة B تضيف غالاكتوز، والزمرة AB تحمل المستضدين A وB.",
+                "السلسلة السكرية القاعدية مثبتة على بروتين غشائي، يضاف إليها سكر مميز حسب الأليل: لا إضافة في O فيبقى H، إضافة N أستيل غلاكتو أمين في A، إضافة غلاكتوز في B، كلاهما في AB.",
               rule: {
-                prompt: "المقارنة بين الزمر والمؤشرات",
-                keywords: ["مستضد", "زمره", "غشاء"],
+                prompt: "مقارنة مستضدات ABO",
+                keywords: ["سلسلة", "سكرية", "مستضد", "H", "A", "B"],
                 minHits: 2,
-                forbidden: ["بسبب"]
+                forbidden: []
               }
             },
             E: {
               points: 2,
-              prompt: "نص علمي حول وراثة الزمر",
-              bacPrompt: "اكتب نصا علميا تشرح فيه كيف يتحكم النمط الوراثي في النمط الظاهري لنظام ABO.",
-              ...RECON(
-                "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
-              ),
-              placeholder: "سيادة، غياب سيادة...",
-              minLength: 120,
+              prompt: "نص علمي سبب اختلاف النمط الظاهري الخلوي في ABO",
+              bacPrompt:
+                "بالاعتماد على معطيات الوثيقة ومكتسباتك اكتب نصا علميا تشرح فيه سبب اختلاف النمط الظاهري على المستوى الخلوي في نظام (ABO).",
+              ...OFFICIAL(5, "س2 ت1 سؤال 2 صفحة 5"),
+              placeholder: "النص العلمي...",
+              minLength: 80,
               modelAnswer:
-                "يشرف الصبغي 9 على أليلات IA وIB السائدتين بالنسبة إلى i المتنحي، وبين IA وIB غياب سيادة. يركّب كل أليل سائد إنزيما يضيف سكرا نوعيا على المستضد H فيظهر النمط الظاهري للزمرة.",
+                "المورثة ABO على الصبغي 9 تملك 3 أليلات I° متنحي لا ينتج إنزيما فعالا، I^A وI^B سائدان بالنسبة لـ I° وبينهما غياب سيادة. كل أليل سائد يشفر إنزيما نوعيا يضيف سكرا نوعيا على المستضد H في الشبكة الهيولية ثم يعرض على غشاء كرية الدم الحمراء. النمط الوراثي I^A//I° يعطي زمرة A، I^B//I° يعطي B، I^A//I^B يعطي AB، I°//I° يعطي O. اختلاف الإنزيمات يفسر اختلاف المستضدات أي النمط الظاهري الخلوي.",
               rule: {
-                prompt: "نص علمي حول وراثة الزمر",
-                keywords: ["اليل", "سياده", "مستضد", "زمره", "نمط"],
+                prompt: "نص اختلاف نمط ظاهري ABO",
+                keywords: ["أليل", "إنزيم", "مستضد", "نمط", "ABO"],
                 minHits: 3,
                 forbidden: []
               }
             },
             W: {
               points: 1,
-              prompt: "الخاتمة: أهمية معرفة الزمرة",
-              bacPrompt: "ما أهمية معرفة مؤشرات الزمرة عند نقل الدم؟",
-              ...RECON(
-                "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
-              ),
+              prompt: "خلاصة علاقة مورثة - إنزيم - نمط ظاهري",
+              bacPrompt:
+                "لخص العلاقة بين المورثة والإنزيم والنمط الظاهري في نظام ABO.",
+              ...OFFICIAL(5, "س2 ت1 ختامي صفحة 5"),
               placeholder: "في الختام...",
               minLength: 40,
               modelAnswer:
-                "في الختام، تحدد المؤشرات الغشائية التوافق عند النقل، فكل مستضد غريب يُرفض بالأجسام المضادة.",
+                "في الختام، المورثة تحدد نوع الإنزيم الذي يركب المستضد الغشائي فيحدد النمط الظاهري للزمرة، فالبروتين (إنزيم) هو حلقة وصل بين النمط الوراثي والنمط الظاهري.",
               rule: {
-                prompt: "الخاتمة: أهمية معرفة الزمرة",
-                keywords: ["زمره", "مستضد", "نقل"],
+                prompt: "خلاصة مورثة إنزيم نمط",
+                keywords: ["مورثة", "إنزيم", "نمط", "ABO"],
                 minHits: 2,
                 forbidden: []
               }
@@ -386,85 +355,73 @@ const YEAR_2018_SE = {
           ui: "text",
           label: "اللاكتاز وعدم تحمل اللاكتوز",
           max: 7,
-          desc: "نشاط إنزيم اللاكتاز وتأثير pH والحرارة والثيولاكتوز، وعلاقة نقصه بأعراض عدم التحمل",
+          desc: "الوثيقة 1 جدول Vi حسب T° وPH، الوثيقة 2 تفاعل لاكتاز و5 تجارب، الوثيقة 3 تخمرات بكتيرية في المعي الغليظ ومقاطع مع أجسام مضادة للاكتاز",
           poles: {
             N: {
-              points: 1,
-              prompt: "تأطير الإشكالية: ما أصل عدم تحمل اللاكتوز؟",
-              bacPrompt: "كيف يرتبط نشاط اللاكتاز بأعراض عدم تحمل اللاكتوز؟",
-              ...RECON(
-                "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
-              ),
-              placeholder: "صياغة المشكل العلمي...",
+              points: 1.5,
+              prompt: "منحنى Vi بدلالة PH وتأثيرها",
+              bacPrompt:
+                "أنجز منحنى تغير السرعة الابتدائية بدلالة درجة PH الوسط مفسرا تأثيرها على النشاط الأنزيمي.",
+              ...OFFICIAL(6, "س2 ت2 الجزء الأول تج1 سؤال1 صفحة 6"),
+              placeholder: "منحنى...",
               minLength: 40,
-              modelAnswer: "المشكل العلمي: كيف يؤثر نقص اللاكتاز على هضم اللاكتوز فتظهر أعراض عدم التحمل؟",
+              modelAnswer:
+                "المنحنى يظهر سرعة 0 عند PH 4، ترتفع إلى 20 عند PH10، ذروة بين 10 و10.5 ثم تنخفض. التفسير: PH يؤثر على شحنة المواقع الفعالة للإنزيم فيغير تكاملها مع مادة التفاعل، PH أمثل حوالي 10 في هذه التجربة المخبرية (قريب من 6 في المعي الدقيق في الواقع).",
               rule: {
-                prompt: "تأطير الإشكالية: ما أصل عدم تحمل اللاكتوز؟",
-                keywords: ["لاكتاز", "لاكتوز", "تحمل"],
+                prompt: "منحنى PH",
+                keywords: ["PH", "سرعة", "نشاط", "أنزيمي"],
                 minHits: 2,
                 forbidden: []
               }
             },
             S: {
-              points: 2.5,
-              prompt: "تحليل أثر pH والحرارة على السرعة الابتدائية",
+              points: 1,
+              prompt: "تأثير درجة الحرارة على النشاط الأنزيمي",
               bacPrompt:
-                "أنشئ منحنى تغير السرعة الابتدائية بدلالة pH الوسط مفسرا تأثيرها، ثم استنتج أثر الحرارة.",
-              ...RECON(
-                "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
-              ),
-              placeholder: "pH أمثل، حرارة منخفضة أو مرتفعة...",
-              minLength: 90,
+                "من خلال النتائج التجريبية، استنتج تأثير درجة الحرارة على النشاط الأنزيمي.",
+              ...OFFICIAL(6, "س2 ت2 الجزء الأول تج1 سؤال2 صفحة 6"),
+              placeholder: "الحرارة...",
+              minLength: 40,
               modelAnswer:
-                "تمثل الوثيقة تغير السرعة بدلالة pH. نلاحظ سرعة أعظمية عند pH قريب من المعتدل وحرارة متوسطة، بينما تنعدم عند الطرف، ومنه نستنتج أن اللاكتاز يعمل في ظروف المعي الدقيق.",
+                "السرعة 0.6 عند 10°، 2.5 عند 20°، 35 عند 37°، 8 عند 42°، 0.5 عند 48°. الحرارة تزيد السرعة إلى حد أمثل 37° (حرارة الجسم) ثم تثبط بتخريب البنية الفراغية للإنزيم.",
               rule: {
-                prompt: "تحليل أثر pH والحرارة على السرعة الابتدائية",
-                keywords: ["سرعه", "لاكتاز", "حراره"],
+                prompt: "تأثير حرارة",
+                keywords: ["حرارة", "37", "سرعة", "بنية"],
                 minHits: 2,
-                forbidden: ["بسبب"],
-                document: {
-                  kind: "curve",
-                  axes: ["سرعه", "PH"],
-                  comparisons: [["معتدل", "طرف"]],
-                  trends: [{ about: "معتدل", expect: ["اعظميه", "سرعه"] }],
-                  values: [],
-                  strictValues: false
-                }
+                forbidden: []
               }
             },
             E: {
               points: 2.5,
-              prompt: "تفسير أعراض عدم التحمل",
-              bacPrompt: "اشرح سبب ظهور أعراض عدم تحمل اللاكتوز عند المصاب وعدم ظهورها عند السليم.",
-              ...RECON(
-                "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
-              ),
-              placeholder: "تخمرات في المعي الغليظ...",
-              minLength: 110,
+              prompt: "نمذجة العلاقة في الوسط 3 و5 ومفهوم دقيق للإنزيم",
+              bacPrompt:
+                "نمذج العلاقة بين الجزيئات المتواجدة في الوسط (3) والوسط (5) لتفسر النتائج المحصل عليها في كل وسط ثم ضع مفهوما دقيقا للإنزيم.",
+              ...OFFICIAL(6, "س2 ت2 التجربة الثانية سؤال1 صفحة 6"),
+              placeholder: "الوسط 3 إنزيم+ركيزة...",
+              minLength: 80,
               modelAnswer:
-                "عند السليم يهضم اللاكتاز اللاكتوز في المعي الدقيق فلا يصل إلى الغليظ. عند المصاب ينقص اللاكتاز فيصل اللاكتوز إلى المعي الغليظ حيث تخمره البكتيريا فتتكون غازات وأحماض مسببة الانتفاخ والآلام.",
+                "الوسط 3: إنزيم لاكتاز + لاكتوز في PH10 غير ملائم، لا يحدث تفاعل (عدة أشهر). الوسط 5: نفس الشروط + ثيولاكتوز (مثبط منافس) بتركيز عال 1 ملي مول، مدة 3 دقائق فقط. التفسير: PH10 يمنع النشاط، لكن الثيولاكتوز يشبه اللاكتوز وينافسه على الموقع الفعال. المفهوم: الإنزيم وسيط حيوي نوعي يسرع التفاعل في شروط محددة (حرارة، PH) دون أن يستهلك، يتثبت ركيزته في موقع فعال مكمل لها، يخضع لتثبيط تنافسي.",
               rule: {
-                prompt: "تفسير أعراض عدم التحمل",
-                keywords: ["لاكتاز", "تخمر", "معي", "غازات", "مصاب"],
+                prompt: "نمذجة ومفهوم إنزيم",
+                keywords: ["إنزيم", "موقع", "فعال", "نوعي", "مثبط"],
                 minHits: 3,
                 forbidden: []
               }
             },
             W: {
-              points: 1,
-              prompt: "الخاتمة: مفهوم الإنزيم",
-              bacPrompt: "ما المفهوم الدقيق للإنزيم انطلاقا من هذه الدراسة؟",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "في الختام...",
-              minLength: 40,
+              points: 2,
+              prompt: "سبب ظهور أعراض عدم تحمل اللاكتوز",
+              bacPrompt:
+                "بالاعتماد على أشكال الوثيقة (3) وباستدلال منطقي: اشرح سبب ظهور أعراض عدم تحمل اللاكتوز عند الشخص المصاب وعدم ظهورها عند الشخص السليم رغم حدوث هضم اللاكتوز عند الشخصين.",
+              ...OFFICIAL(7, "س2 ت2 الجزء الثاني صفحة 7"),
+              placeholder: "الشرح...",
+              minLength: 80,
               modelAnswer:
-                "في الختام، الإنزيم وسيط حيوي نوعي يسرّع التفاعل في ظروف ملائمة دون أن يُستهلك، ونقصه يعطل الهضم.",
+                "الشكل1 يوضح لاكتوز يهضم إلى غلوكوز+غلاكتوز ثم تخمر بكتيري في المعي الغليظ يعطي حمض اللبن وغازات (ميثان) وحموض البيوتيريك... الشكل2 يبين تركيز بكتيريا قليل في الدقيق 10^1-10^4 وكثير في الغليظ 10^12-10^14. الشكل3 يبين مقاطع معي دقيق معالجة بأجسام مضادة للاكتاز مرتبطة بجزيئات مشعة، نقاط سوداء كثيرة عند السليم (3ب) وقليلة عند المصاب (3أ) مما يدل على نقص اللاكتاز عند المصاب. عند السليم يهضم اللاكتوز في الدقيق ويمتص فلا يصل للغليظ. عند المصاب نقص لاكتاز في الدقيق فيصل اللاكتوز للغليظ حيث تخمره البكتيريا الكثيرة فتنتج غازات وأحماض تسبب انتفاخ وآلام وإسهال. رغم هضم بسيط عند المصاب إلا أنه غير كاف.",
               rule: {
-                prompt: "الخاتمة: مفهوم الإنزيم",
-                keywords: ["انزيم", "نوعي", "تفاعل"],
-                minHits: 2,
+                prompt: "أعراض عدم تحمل لاكتوز",
+                keywords: ["لاكتاز", "معي", "بكتيريا", "تخمر", "غازات"],
+                minHits: 3,
                 forbidden: []
               }
             }
@@ -473,87 +430,76 @@ const YEAR_2018_SE = {
         {
           number: 3,
           ui: "text",
-          label: "Cyanobacter وتحويل الطاقة الضوئية",
+          label: "Cyanobacter والتحويل الطاقوي وطرح O2",
           max: 8,
-          desc: "قدرة بكتيريا Cyanobacter على تحويل الطاقة الضوئية إلى طاقة كيميائية كامنة مع طرح O2",
+          desc: "الوثيقة1 نسبة O18/O16، الوثيقة2 منحنيات O2 مع DCPIP، الوثيقة3 بنية Cyanobacter، الوثيقة4 تجارب C14",
           poles: {
             N: {
-              points: 0.5,
-              prompt: "اقتراح فرضية حول مصدر O2 المطروح",
-              bacPrompt: "اقترح فرضية فيما يخص مصدر وآلية طرح ثنائي الأكسجين عند Cyanobacter.",
-              ...RECON(
-                "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
-              ),
+              points: 1,
+              prompt: "فرضية مصدر وآلية طرح O2 وما يدعمها من الوثيقة 3",
+              bacPrompt:
+                "لوحظ إثر إنجاز تجارب باستعمال بكتيريا Cyanobacter المعرضة للضوء ارتفاع نسبة غاز ثنائي الأكسجين في الوسط. اقترح فرضية فيما يخص مصدر وآلية طرح ثنائي الأكسجين في الوسط. استخرج من الوثيقة (3) ما يدعم صحة الفرضية المقترحة.",
+              ...OFFICIAL(7, "س2 ت3 الجزء الأول سؤال1 صفحة 7 + الوثيقة3 صفحة 9"),
               placeholder: "الفرضية...",
-              minLength: 30,
-              modelAnswer: "الفرضية: ينتج O2 من أكسدة الماء خلال المرحلة الكيميائية الضوئية بوجود الضوء.",
+              minLength: 50,
+              modelAnswer:
+                "الفرضية: مصدر O2 هو الماء الذي يتأكسد خلال المرحلة الكيموضوئية بفعل الضوء (انحلال ضوئي للماء). الوثيقة3 تظهر بنية Cyanobacter بالمجهر الإلكتروني: وجود تيلاكويدات مشابهة للصانعات الخضراء، غياب صانعات، وجود ADN حلقي، مما يدل على قدرتها على التركيب الضوئي في التيلاكويدات، فيدعم أن مصدر O2 هو الماء كما في النبات.",
               rule: {
-                prompt: "اقتراح فرضية حول مصدر O2 المطروح",
-                keywords: ["فرضيه", "اكسجين", "ضوء"],
+                prompt: "فرضية مصدر O2 ودعم بنية",
+                keywords: ["فرضية", "ماء", "ضوء", "تيلاكويد", "Cyanobacter"],
                 minHits: 2,
                 forbidden: []
               }
             },
             S: {
-              points: 2,
-              prompt: "استغلال ارتفاع O2 في الضوء",
-              bacPrompt: "استغل ارتفاع نسبة O2 عند تعريض Cyanobacter للضوء.",
-              ...RECON(
-                "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
-              ),
-              placeholder: "في الضوء يرتفع O2...",
-              minLength: 60,
+              points: 2.5,
+              prompt: "استدلال مصدر O2 من الوثيقة 1 و2 بمعادلات",
+              bacPrompt:
+                "للتحقق من الفرضية أنجزت سلسلة التجارب على كائن حي وحيد الخلية (أشنة خضراء الكلوريلا) حيث تعتمد هذه التجربة على معايرة نسبة O18/O16 في غاز ثنائي الأكسجين المنطلق خلال المراحل التجريبية التالية: المرحلة الأولى: تم تعريض معلق أشنة كلوريلا للضوء في وجود ماء غني بـ O18 المشع حيث نسبة O18/O16 فيه تساوي 0.85% الذي يضاف إليه مادة NaHCO3 (مصدر لـ CO2). المرحلة الثانية: أعيدت نفس مراحل التجربة السابقة باستعمال الماء العادي وبإضافة HCO3- الغنية بالـ O18 المشع حيث نسبة O18/O16 فيه تساوي 0.85%. ملاحظة: نسبة O18/O16 في المركبات الكيميائية العادية H2O وNaHCO3 تساوي 0.2%. التجربة الثانية: توضع تيلاكوئيدات في وسط يحتوي على ماء عادي وخال من HCO3-، يضاف له مادة DCPIP، ويتابع خلال التجربة تطور تركيز O2 وتغير لون الوسط. (مادة DCPIP تأخذ لونا أزرقا في الحالة المؤكسدة يرمز لها بـ A وشفافا في الحالة المرجعة يرمز لها بـ AH2). النتائج المحصل عليها ممثلة في الوثيقتين (1) و(2): باستغلالك لنتائج التجارب (1) و(2) ومعلوماتك استدل عن مصدر ثنائي الأكسجين المطروح وبين آلية طرحه مدعما إجابتك بمعادلات كيميائية.",
+              ...OFFICIAL(8, "س2 ت3 تجربة1 و2 ووثيقة1 و2 صفحة 8"),
+              placeholder: "الاستدلال...",
+              minLength: 90,
               modelAnswer:
-                "تمثل الوثيقة نسبة الأكسجين بدلالة الزمن في الضوء والظلام. نلاحظ ارتفاع O2 في الضوء وعدم ارتفاعه في الظلام، ومنه نستنتج أن الضوء ضروري لطرح الأكسجين.",
+                "الوثيقة1: في المرحلة الأولى H2O مشع 0.85 وHCO3- عادي 0.20 وO2 المنطلق 0.85 مطابق للماء، في الثانية H2O عادي 0.20 وHCO3- مشع 0.85 وO2 0.20 مطابق للماء، مما يدل أن مصدر O2 هو الماء وليس CO2. الوثيقة2: في غياب DCPIP يبقى O2 ثابتا 150 في ظلام وضوء، في وجود DCPIP يبقى ثابتا في الظلام ثم يرتفع في الضوء من 70 إلى 145 مع تحول الوسط من أزرق إلى شفاف. التفسير: في الضوء يحدث انحلال ضوئي للماء ينتج O2 وإلكترونات تختزل DCPIP من A إلى AH2. المعادلات: 2H2O → O2 + 4H+ +4e-، A +2e- +2H+ → AH2، المعادلة الإجمالية: 2H2O +2A → O2 +2AH2.",
               rule: {
-                prompt: "استغلال ارتفاع O2 في الضوء",
-                keywords: ["اكسجين", "ضوء", "ظلام"],
-                minHits: 2,
-                forbidden: ["بسبب"],
-                document: {
-                  kind: "curve",
-                  axes: ["اكسجين", "زمن"],
-                  comparisons: [["ضوء", "ظلام"]],
-                  trends: [{ about: "ضوء", expect: ["ارتفاع", "اكسجين"] }],
-                  values: [],
-                  strictValues: false
-                }
+                prompt: "مصدر O2 ماء ومعادلات",
+                keywords: ["O18", "ماء", "CO2", "DCPIP", "انحلال"],
+                minHits: 3,
+                forbidden: []
               }
             },
             E: {
-              points: 4,
-              prompt: "تفسير آلية طرح O2",
-              bacPrompt: "فسّر الآلية التي تسمح لـ Cyanobacter بطرح O2 وتحويل الطاقة الضوئية.",
-              ...RECON(
-                "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
-              ),
-              placeholder: "فوتونات، أكسدة الماء، نواقل...",
-              minLength: 110,
+              points: 3,
+              prompt: "تحليل نتائج الوثيقة 4 وعلاقة الجزءين وتحقق صحة الفرضية",
+              bacPrompt:
+                "حلل نتائج الوثيقة (4). بوضع علاقة بين نتائج الجزءين الأول والثاني، تحقق من صحة الفرضية المقترحة.",
+              ...OFFICIAL(9, "س2 ت3 الوثيقة4 سؤال2 و3 صفحة 9"),
+              placeholder: "تحليل...",
+              minLength: 90,
               modelAnswer:
-                "تمتص الأنظمة الضوئية الفوتونات فتتأكسد جزيئة الماء وينطلق O2 وتتحرر إلكترونات تختزل النواقل، فتتحول الطاقة الضوئية إلى طاقة كيميائية كامنة. تتأكد الفرضية.",
+                "الوثيقة4: التجربة1 مستخلص سيتوبلازم بكتيري في وسط مظلم +14C مشع (به كربون مشع) كمية C14 المثبتة 4000 ضعيفة. التجربة2 نفس + +14C? كمية 43000 أعلى قليلا. التجربة3 + نواقل مرجعة كمية 97000 عالية. التجربة4 مستخلص سيتوبلازم بكتيري + تيلاكوئيدات معرضة للضوء في وجود نواقل مؤكسدة ( ) ينقل المحضر للظلام ويضاف إليه 14C كمية 96000 عالية. التحليل: تثبيت CO2 (C14) يحتاج نواقل مرجعة. في التجربة4 التيلاكوئيدات في الضوء تنتج نواقل مرجعة تستعمل في الظلام لتثبيت CO2. العلاقة: الجزء الأول أثبت أن الضوء يسبب انحلال الماء وطرح O2 وإنتاج نواقل مرجعة، الجزء الثاني أثبت أن هذه النواقل تستعمل لتثبيت CO2 في المادة العضوية (حلقة كالفن). التحقق: الفرضية صحيحة، مصدر O2 هو الماء، والتحويل الطاقوي ضوئي → كيميائي كامن.",
               rule: {
-                prompt: "تفسير آلية طرح O2",
-                keywords: ["ضوء", "ماء", "اكسجين", "الكترون", "طاقه"],
+                prompt: "تحليل C14 وعلاقة جزئين",
+                keywords: ["C14", "نواقل", "تيلاكوئيد", "ضوء", "تثبيت"],
                 minHits: 3,
                 forbidden: []
               }
             },
             W: {
               points: 1.5,
-              prompt: "مخطط تحويل الطاقة الضوئية",
-              bacPrompt: "لخّص في مخطط تحويل الطاقة الضوئية إلى طاقة كيميائية كامنة مع طرح O2.",
-              ...RECON(
-                "Couche texte dzexams bruitée ou inversée, relue le 2026-08-30. Wording reconstructed, non certifiable official. Pas de question autonome de cadrage pour N/W quand la consigne officielle est unique."
-              ),
-              placeholder: "ضوء → ماء → اكسجين",
-              minLength: 40,
-              modelAnswer: "عنوان المخطط: ضوء. ضوء → ماء → اكسجين.",
+              prompt: "رسم تخطيطي وظيفي مراحل التحويل الطاقوي المدروس",
+              bacPrompt:
+                "باستغلال المعلومات المستخرجة مما سبق ومعارفك الخاصة وضح في رسم تخطيطي وظيفي مراحل التحويل الطاقوي المدروس.",
+              ...OFFICIAL(9, "س2 ت3 الجزء الثالث صفحة 9"),
+              placeholder: "الرسم...",
+              minLength: 50,
+              modelAnswer:
+                "الرسم يوضح مرحلتين: مرحلة كيموضوئية في التيلاكويد: ضوء + H2O → O2 + نواقل مرجعة + ATP، مرحلة كيموحيوية في السيتوبلازم (مادة عضوية): CO2 + نواقل مرجعة + ATP → مادة عضوية. العنوان: التحويل الطاقوي عند Cyanobacter، أسهم من ضوء إلى ماء إلى O2، ومن نواقل إلى تثبيت CO2.",
               rule: {
-                prompt: "مخطط تحويل الطاقة الضوئية",
-                keywords: ["مخطط", "ضوء", "اكسجين"],
+                prompt: "رسم تحويل طاقوي Cyanobacter",
+                keywords: ["تيلاكويد", "ضوء", "O2", "ATP", "CO2"],
                 minHits: 2,
-                forbidden: [],
-                schema: { arrows: true, title: "ضوء", ordered: ["ضوء", "ماء", "اكسجين"] }
+                forbidden: []
               }
             }
           }

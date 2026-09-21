@@ -55,11 +55,12 @@ test("chaque sujet chargé possède un inventaire, et inversement", () => {
   // 2015 SE vérifiée 2026-09-21 : 2 sujets complets (7/6/7 et 6/7/7).
   // 2016 SE vérifiée 2026-09-21 : 2 sujets complets (6/7/7 et 6/7/7).
   // 2017 SE vérifiée 2026-09-21 : 2 sujets complets (5/7/8 et 5/7/8).
+  // 2018 SE vérifiée 2026-09-21 : 2 sujets complets (5/7/8 et 5/7/8).
   assert.equal(rows.length, 58);
   for (const { yearId, subject, inventory } of rows) {
     assert.ok(inventory, `${yearId}/S${subject.id} sans inventaire`);
     assert.equal(inventory.schemaVersion, 1);
-    if (["2013", "2014", "2015", "2016", "2017"].includes(yearId)) {
+    if (["2013", "2014", "2015", "2016", "2017", "2018"].includes(yearId)) {
       assert.equal(
         inventory.status,
         "complete",
@@ -156,8 +157,8 @@ test("les pages annoncées restent utilisables dans le PDF livré", () => {
       assert.equal(task.pageInPdf, task.page - pageOffset, `${task.id}: décalage incohérent`);
     }
   }
-  // 213 jusqu'au 2026-09-19 ; 261 avec OCR Maths ; 277 avec OCR SE 2021 ; 301 avec SE 2013 ; 325 avec SE 2014 ; 349 avec SE 2015 ; 373 avec SE 2016 ; 397 avec SE 2017
-  assert.equal(declared, 397);
+  // 213 jusqu'au 2026-09-19 ; 261 avec OCR Maths ; 277 avec OCR SE 2021 ; 301 avec SE 2013 ; 325 avec SE 2014 ; 349 avec SE 2015 ; 373 avec SE 2016 ; 397 avec SE 2017 ; 421 avec SE 2018
+  assert.equal(declared, 421);
   assert.ok(located / declared > 0.8, `trop de pages non locables: ${declared - located}`);
 });
 

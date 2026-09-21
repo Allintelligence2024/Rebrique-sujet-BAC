@@ -93,11 +93,11 @@ test("une tâche non mappée ou un total de points incohérent bloque la simulat
   assert.ok(report.errors.some((error) => error.includes("task points do not match")));
 });
 
-test("les inventaires réels ouvrent l'épreuve — 2013-2017 SE sont complets après vérification", () => {
+test("les inventaires réels ouvrent l'épreuve — 2013-2018 SE sont complets après vérification", () => {
   // Décision produit (data/bac-mode-policy.js) : l'épreuve est ouverte sur un
   // inventaire partiel, à condition que le partiel soit dit explicitement.
-  // 2013-2017 SE vérifiées 2026-09-21 : 10 sujets complets autorisés.
-  const COMPLETE_VERIFIED = ["2013", "2014", "2015", "2016", "2017"];
+  // 2013-2018 SE vérifiées 2026-09-21 : 12 sujets complets autorisés.
+  const COMPLETE_VERIFIED = ["2013", "2014", "2015", "2016", "2017", "2018"];
   for (const year of APP_CONFIG.years) {
     if (year.answerMode === "free") continue;
     for (const subject of year.sujets || []) {
