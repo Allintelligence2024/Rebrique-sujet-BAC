@@ -38,19 +38,15 @@ function completeFixture() {
 test("le pilote 2025/S1 inventorie les douze pôles et marque leur provenance", () => {
   const inventory = officialTaskInventoryFor("2025", 1);
   const report = buildOfficialCoverageReport({ yearId: "2025", subject: subject2025S1, inventory });
-
-  // Un pôle = une tâche inventoriée : les trois exercices du sujet sont couverts.
   assert.equal(inventory.tasks.length, 12);
   assert.deepEqual(inventory.scope.inventoriedExerciseNumbers, [1, 2, 3]);
   assert.deepEqual(inventory.tasks[0].id, "2025-S1-E1-Q1");
-  // Provenance réelle : seules les consignes officielles portent une page.
   const official = inventory.tasks.filter((task) => task.promptSource === "official");
   const reconstructed = inventory.tasks.filter((task) => task.promptSource === "reconstructed");
   assert.equal(official.length, 8);
   assert.equal(reconstructed.length, 4);
   assert.ok(official.every((task) => Number.isInteger(task.page)));
   assert.ok(reconstructed.every((task) => task.page === null));
-  // Le barème reste provisoire : rien n'est marqué vérifié.
   assert.ok(inventory.tasks.every((task) => task.scoringReviewStatus === "provisional"));
   assert.equal(inventory.source.humanVerified, false);
   assert.equal(report.inventoryStatus, "partial");
@@ -85,7 +81,6 @@ test("une tâche non mappée ou un total de points incohérent bloque la simulat
   inventory.tasks[0].trainingMappings = [];
   inventory.tasks[0].documentReviewStatus = "pending";
   const report = buildOfficialCoverageReport({ yearId: "2026", subject, inventory });
-
   assert.equal(report.simulationEligible, false);
   assert.ok(report.blockers.includes("task-mapping-incomplete"));
   assert.ok(report.blockers.includes("documents-unreviewed"));
@@ -93,11 +88,8 @@ test("une tâche non mappée ou un total de points incohérent bloque la simulat
   assert.ok(report.errors.some((error) => error.includes("task points do not match")));
 });
 
-test("les inventaires réels ouvrent l'épreuve — 2013-2018 SE sont complets après vérification", () => {
-  // Décision produit (data/bac-mode-policy.js) : l'épreuve est ouverte sur un
-  // inventaire partiel, à condition que le partiel soit dit explicitement.
-  // 2013-2018 SE vérifiées 2026-09-21 : 12 sujets complets autorisés.
-  const COMPLETE_VERIFIED = ["2013", "2014", "2015", "2016", "2017", "2018"];
+test("les inventaires réels ouvrent l'épreuve — 2013-2019 SE sont complets après vérification", () => {
+  const COMPLETE_VERIFIED = ["2013", "2014", "2015", "2016", "2017", "2018", "2019"];
   for (const year of APP_CONFIG.years) {
     if (year.answerMode === "free") continue;
     for (const subject of year.sujets || []) {
@@ -105,11 +97,7 @@ test("les inventaires réels ouvrent l'épreuve — 2013-2018 SE sont complets a
       const label = `${year.id}/S${subject.id}`;
       assert.ok(inventory, `${label} sans inventaire`);
       assert.equal(
-        buildOfficialCoverageReport({
-          yearId: year.id,
-          subject,
-          inventory
-        }).simulationEligible,
+        buildOfficialCoverageReport({ yearId: year.id, subject, inventory }).simulationEligible,
         true,
         `${label} devrait être ouvert à l'épreuve`
       );
@@ -128,9 +116,6 @@ test("les inventaires réels ouvrent l'épreuve — 2013-2018 SE sont complets a
 });
 
 test("le mécanisme « copie libre » ouvre l'épreuve sans rien inventer (sujet synthétique)", () => {
-  /* Plus aucune année réelle en copie libre depuis la structuration 4D de
-     SE 2021 (2026-09-20, OCR du sujet officiel) : le mécanisme reste gardé
-     pour une future armature, sur un sujet synthétique. */
   const freeYears = APP_CONFIG.years.filter((year) => year.answerMode === "free");
   assert.equal(freeYears.length, 0, "aucune année en copie libre");
   const syntheticYearId = "2099";
@@ -144,12 +129,11 @@ test("le mécanisme « copie libre » ouvre l'épreuve sans rien inventer (sujet
       { number: 3, max: 8, poles: {} }
     ]
   };
-  assert.equal(isFreeAnswerSubject(subject), true, "l'armature synthétique est en copie libre");
+  assert.equal(isFreeAnswerSubject(subject), true);
   const report = buildOfficialCoverageReport({ yearId: syntheticYearId, subject, inventory: null });
-  assert.equal(report.simulationEligible, false, "aucune note sans inventaire");
-  assert.equal(report.freeAnswerEligible, true, "l'épreuve doit rester ouverte");
+  assert.equal(report.simulationEligible, false);
+  assert.equal(report.freeAnswerEligible, true);
   assert.equal(examOpenable(report), true);
-  // Rien n'est inventé : ni tâche, ni pôle, ni consigne.
   assert.equal(officialTaskInventoryFor(syntheticYearId, subject.id), null);
 });
 
@@ -167,20 +151,11 @@ test("une armature sans PDF ni barème ne peut pas ouvrir d'épreuve", () => {
   assert.equal(isFreeAnswerSubject({ ...subject, pdfLocalUrl: null, pdfExternalUrl: null }), false);
   assert.equal(isFreeAnswerSubject({ ...subject, answerMode: undefined }), false);
   assert.equal(isFreeAnswerSubject({ ...subject, exercises: [] }), false);
-  assert.equal(
-    isFreeAnswerSubject({ ...subject, exercises: [{ number: 1, max: 0 }] }),
-    false,
-    "un exercice sans barème ne fait pas une épreuve"
-  );
-  // Et un sujet inventorié reste évalué par son inventaire, jamais par ce mode.
+  assert.equal(isFreeAnswerSubject({ ...subject, exercises: [{ number: 1, max: 0 }] }), false);
   const inventoried = APP_CONFIG.years.find((year) => year.answerMode !== "free").sujets[0];
   assert.equal(isFreeAnswerSubject(inventoried), false);
 });
 
-/* D14 — « exercise-not-inventoried » était émis par official-coverage.js:195
-   mais absent de BLOCKER_LABELS : l'élève voyait le message générique
-   « دليل الأهلية غير مكتمل » au lieu de la raison précise. Ce test verrouille
-   l'exhaustivité pour que la liste ne puisse plus dériver en silence. */
 test("D14 : chaque blocker émis possède un libellé arabe", async () => {
   const { readFileSync } = await import("node:fs");
   const { fileURLToPath } = await import("node:url");
@@ -188,19 +163,12 @@ test("D14 : chaque blocker émis possède un libellé arabe", async () => {
   const root = join(dirname(fileURLToPath(import.meta.url)), "..");
   const source = readFileSync(join(root, "js/domain/subjects/official-coverage.js"), "utf8");
   const { simulationBlockersArabic } = await import("../js/ui/coverage-messages.js");
-
   const emitted = new Set();
-  // blockers.push("x") et les tableaux littéraux `blockers: ["x"]` — se limiter
-  // à la première forme laisserait passer un blocker déclaré autrement.
   for (const match of source.matchAll(/blockers\.push\("([a-z-]+)"\)/g)) emitted.add(match[1]);
   for (const match of source.matchAll(/blockers:\s*\[([^\]]*)\]/g)) {
     for (const item of match[1].matchAll(/"([a-z-]+)"/g)) emitted.add(item[1]);
   }
-
-  assert.ok(emitted.size >= 9, `trop peu de blockers détectés (${emitted.size})`);
-  // Un code absent de BLOCKER_LABELS rend le message générique : on compare à
-  // ce que rend un code volontairement inconnu, plutôt qu'à une chaîne codée en
-  // dur qui dériverait avec le texte.
+  assert.ok(emitted.size >= 9);
   const generic = simulationBlockersArabic(["__code-inexistant__"]);
   const unlabeled = [...emitted].filter((blocker) => simulationBlockersArabic([blocker]) === generic);
   assert.deepEqual(unlabeled, [], "blockers sans libellé arabe");

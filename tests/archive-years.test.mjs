@@ -5,8 +5,8 @@ import { officialTaskInventoryFor } from "../data/official-tasks.js";
 
 const ARCHIVE_IDS = ["2020", "2019", "2018", "2017", "2016", "2015", "2014", "2013"];
 const ENABLED_RECON_SE = ["2019", "2018", "2017", "2016", "2015", "2014", "2013"];
-const ENABLED_RECON_SE_REMAINING = ["2019"];
-const OFFICIAL_VERIFIED_SE = ["2018", "2017", "2016", "2015", "2014", "2013"];
+const ENABLED_RECON_SE_REMAINING = [];
+const OFFICIAL_VERIFIED_SE = ["2019", "2018", "2017", "2016", "2015", "2014", "2013"];
 const ARCHIVE_YEARS = APP_CONFIG.years.filter((year) => ENABLED_RECON_SE.includes(year.id));
 
 test("l'archive 2013-2019 SE est branchée dans APP_CONFIG ; 2020 SE reste le module officiel", () => {
@@ -38,7 +38,7 @@ test("l'archive 2013-2019 SE est branchée dans APP_CONFIG ; 2020 SE reste le mo
   }
 });
 
-test("chaque année reconstruite 2013–2019 est activée — 2013-2015 vérifiées avec barèmes officiels", () => {
+test("chaque année reconstruite 2013–2019 est activée — 2013-2019 vérifiées avec barèmes officiels", () => {
   assert.equal(ARCHIVE_YEARS.length, 7);
   for (const year of ARCHIVE_YEARS) {
     assert.equal(year.enabled, true, `${year.id} doit être enabled`);
@@ -47,86 +47,34 @@ test("chaque année reconstruite 2013–2019 est activée — 2013-2015 vérifi�
       assert.equal(sujet.exercises.length, 3, `${year.id}/S${sujet.id}`);
       if (year.id === "2013") {
         if (sujet.id === 1) {
-          assert.deepEqual(
-            sujet.exercises.map((ex) => ex.max),
-            [8, 8, 4],
-            `${year.id}/S${sujet.id} barème officiel 8/8/4`
-          );
+          assert.deepEqual(sujet.exercises.map((ex) => ex.max), [8, 8, 4], `${year.id}/S${sujet.id} barème officiel 8/8/4`);
         } else {
-          assert.deepEqual(
-            sujet.exercises.map((ex) => ex.max),
-            [8, 6, 6],
-            `${year.id}/S${sujet.id} barème officiel 8/6/6`
-          );
+          assert.deepEqual(sujet.exercises.map((ex) => ex.max), [8, 6, 6], `${year.id}/S${sujet.id} barème officiel 8/6/6`);
         }
       } else if (year.id === "2014") {
         if (sujet.id === 1) {
-          assert.deepEqual(
-            sujet.exercises.map((ex) => ex.max),
-            [6, 6, 8],
-            `${year.id}/S${sujet.id} barème officiel 6/6/8`
-          );
+          assert.deepEqual(sujet.exercises.map((ex) => ex.max), [6, 6, 8], `${year.id}/S${sujet.id} barème officiel 6/6/8`);
         } else {
-          assert.deepEqual(
-            sujet.exercises.map((ex) => ex.max),
-            [5.5, 7.5, 7],
-            `${year.id}/S${sujet.id} barème officiel 5.5/7.5/7`
-          );
+          assert.deepEqual(sujet.exercises.map((ex) => ex.max), [5.5, 7.5, 7], `${year.id}/S${sujet.id} barème officiel 5.5/7.5/7`);
         }
       } else if (year.id === "2015") {
         if (sujet.id === 1) {
-          assert.deepEqual(
-            sujet.exercises.map((ex) => ex.max),
-            [7, 6, 7],
-            `${year.id}/S${sujet.id} barème officiel 7/6/7`
-          );
+          assert.deepEqual(sujet.exercises.map((ex) => ex.max), [7, 6, 7], `${year.id}/S${sujet.id} barème officiel 7/6/7`);
         } else {
-          assert.deepEqual(
-            sujet.exercises.map((ex) => ex.max),
-            [6, 7, 7],
-            `${year.id}/S${sujet.id} barème officiel 6/7/7`
-          );
+          assert.deepEqual(sujet.exercises.map((ex) => ex.max), [6, 7, 7], `${year.id}/S${sujet.id} barème officiel 6/7/7`);
         }
       } else if (year.id === "2016") {
         if (sujet.id === 1) {
-          assert.deepEqual(
-            sujet.exercises.map((ex) => ex.max),
-            [6, 7, 7],
-            `${year.id}/S${sujet.id} barème officiel 6/7/7`
-          );
+          assert.deepEqual(sujet.exercises.map((ex) => ex.max), [6, 7, 7], `${year.id}/S${sujet.id} barème officiel 6/7/7`);
         } else {
-          assert.deepEqual(
-            sujet.exercises.map((ex) => ex.max),
-            [6, 7, 7],
-            `${year.id}/S${sujet.id} barème officiel 6/7/7`
-          );
+          assert.deepEqual(sujet.exercises.map((ex) => ex.max), [6, 7, 7], `${year.id}/S${sujet.id} barème officiel 6/7/7`);
         }
       } else if (year.id === "2017") {
-        if (sujet.id === 1) {
-          assert.deepEqual(
-            sujet.exercises.map((ex) => ex.max),
-            [5, 7, 8],
-            `${year.id}/S${sujet.id} barème officiel 5/7/8`
-          );
-        } else {
-          assert.deepEqual(
-            sujet.exercises.map((ex) => ex.max),
-            [5, 7, 8],
-            `${year.id}/S${sujet.id} barème officiel 5/7/8`
-          );
-        }
+        assert.deepEqual(sujet.exercises.map((ex) => ex.max), [5, 7, 8], `${year.id}/S${sujet.id} barème officiel 5/7/8`);
       } else if (year.id === "2018") {
-        assert.deepEqual(
-          sujet.exercises.map((ex) => ex.max),
-          [5, 7, 8],
-          `${year.id}/S${sujet.id} barème officiel 5/7/8`
-        );
-      } else {
-        assert.deepEqual(
-          sujet.exercises.map((ex) => ex.max),
-          [5, 7, 8],
-          `${year.id}/S${sujet.id} barème 5/7/8 (en attente de vérification)`
-        );
+        assert.deepEqual(sujet.exercises.map((ex) => ex.max), [5, 7, 8], `${year.id}/S${sujet.id} barème officiel 5/7/8`);
+      } else if (year.id === "2019") {
+        assert.deepEqual(sujet.exercises.map((ex) => ex.max), [5, 7, 8], `${year.id}/S${sujet.id} barème officiel 5/7/8`);
       }
       assert.equal(sujet.pdf, null, `${year.id}/S${sujet.id} : PDF chargé à part, jamais inline`);
       assert.ok(sujet.pdfExternalUrl.startsWith("https://"));
@@ -135,7 +83,7 @@ test("chaque année reconstruite 2013–2019 est activée — 2013-2015 vérifi�
   }
 });
 
-test("les consignes de l'archive 2018-2019 sont toutes marquées reconstructed — 2013-2017 sont désormais official", () => {
+test("les consignes de l'archive 2016-2019 sont toutes marquées reconstructed — 2013-2019 sont désormais official", () => {
   for (const id of ENABLED_RECON_SE_REMAINING) {
     for (const sujet of [1, 2]) {
       const inventory = officialTaskInventoryFor(id, sujet);
@@ -158,7 +106,7 @@ test("les consignes de l'archive 2018-2019 sont toutes marquées reconstructed �
   }
 });
 
-test("aucune consigne d'archive 2018-2019 n'est marquée official — 2013-2017 sont official", () => {
+test("aucune consigne d'archive 2016-2019 n'est marquée official — 2013-2019 sont official", () => {
   for (const year of ARCHIVE_YEARS) {
     if (OFFICIAL_VERIFIED_SE.includes(year.id)) continue;
     for (const sujet of year.sujets) {
