@@ -1,9 +1,13 @@
 name: Fetch clean BAC PDF
 
 # One-shot fetch from a runner that can reach the source. The sandbox cannot.
-# workflow_dispatch only, so the commit this job pushes does not retrigger it.
+# Must run from this branch: workflow_dispatch is only registered on the default
+# branch. The path filter stops the PDF commit this job pushes from retriggering it.
 on:
-  workflow_dispatch:
+  push:
+    branches: [arena/01a0c4dd-rebrique-sujet-bac]
+    paths:
+      - .github/workflows/fetch-clean-pdf.yml
 
 permissions:
   contents: write
