@@ -3807,10 +3807,10 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
   },
   "2020/S1": {
     schemaVersion: 1,
-    status: "partial",
+    status: "complete",
     source: {
       kind: "local-pdf",
-      locator: "https://eddirasa.com/wp-content/uploads/2020/09/eddirasa.com-bac-se-science-2020.pdf",
+      locator: "/subjects/SE/2020/sujet-1.pdf",
       humanVerified: false,
       verifiedAt: null,
       notes: null
@@ -3822,7 +3822,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
-      taskCompleteExerciseNumbers: [3]
+      taskCompleteExerciseNumbers: [1, 2, 3]
     },
     tasks: [
       {
@@ -3830,14 +3830,19 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 1,
         order: 1,
         pole: "N",
-        page: null,
+        page: 1,
         prompt:
-          "كيف سمحت المعطيات الزلزالية بمعرفة البنية الداخلية للكرة الأرضية رغم أن أعمق نقطة بلغت 13 كيلومترا؟",
-        promptSource: "reconstructed",
+          "مكنت دراسات أهمها المعطيات الزلزالية من معرفة بنية وخصائص الكرة الأرضية بالرغم من أن أعمق نقطة تم الوصول إليها لا تتعدى 13 كيلومترا. للتعرف على بعض هذه الخصائص نقترح ما يلي:",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -3845,7 +3850,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2020-S1-E1-Q2",
@@ -3853,7 +3858,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 2,
         pole: "S",
         page: 1,
-        prompt: "انقل الجدول على ورقة إجابتك ثم املأ الخانات وفق البيانات المرقمة.",
+        prompt: "أنقل الجدول على ورقة إجابتك ثم املأ الخانات وفق التعليمات المطلوبة.",
         promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
@@ -3880,7 +3885,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "E",
         page: 1,
         prompt:
-          "بيّن في نص علمي كيف تم استغلال المعطيات الزلزالية لمعرفة البنية الداخلية للكرة الأرضية اعتمادا على معلوماتك.",
+          "بين في نص علمي كيف تم استغلال المعطيات الزلزالية لمعرفة البنية الداخلية للكرة الأرضية مما سبق ومعلوماتك.",
         promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
@@ -3905,13 +3910,18 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 1,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "ما النموذج الذي سمحت الدراسات الزلزالية ببنائه لبنية الكرة الأرضية؟",
-        promptSource: "reconstructed",
+        page: 1,
+        prompt: "خلاصة: ما النموذج البنيوي للكرة الأرضية المستنتج من المعطيات الزلزالية؟",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -3919,20 +3929,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2020-S1-E2-Q1",
         exerciseNumber: 2,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "كيف يختلف أنزيما Cox-1 و Cox-2 في الخصوصية، وما دور دواء الإيبوبروفين وآثاره الجانبية؟",
-        promptSource: "reconstructed",
+        page: 1,
+        prompt:
+          "ترتكز خاصية التأثير النوعي المزدوج للأنزيم على تشكل معقد أنزيم-مادة تفاعل تنشأ أثناء حدوثه روابط انتقالية بين جزء من مادة التفاعل ومنطقة خاصة من الأنزيم تدعى الموقع الفعال. لفهم كيف استغل الخبراء هذه الخاصية في إنتاج دواء ناجع مع أعراض جانبية محدودة نقترح الدراسة التالية: الجزء الأول: يمثل الشكل (أ) من الوثيقة (1) مخططا يوضح نشاط كل من أنزيم وأنزيم، بينما يبين جدول الشكل (ب) من نفس الوثيقة تركيز دواء إيبوبروفان اللازم لخفض نسبة نشاط الأنزيمين السابقين إلى 50% ويعبر عن هذا التركيز بـ ( ).",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -3940,7 +3956,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2020-S1-E2-Q2",
@@ -3948,9 +3964,10 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 2,
         pole: "S",
         page: 2,
-        prompt: "حلّل مخطط الشكل (أ) من الوثيقة 1.",
+        prompt:
+          "1. حلل مخطط الشكل (أ) من الوثيقة (1). 2. وضح دور دواء إيبوبروفان مبرزا أعراضه الجانبية باستغلالك لمعطيات الوثيقة (1).",
         promptSource: "official",
-        maxPoints: 2.5,
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -3974,9 +3991,10 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 3,
         pole: "E",
         page: 2,
-        prompt: "فسّر منحنى الشكل (ب) من الوثيقة 2.",
+        prompt:
+          "الجزء الثاني: يمثل الشكل (أ) من الوثيقة (2) رسومات تخطيطية للموقع الفعال لأنزيم ولأنزيم ( ) في وجود حمض أراشيدونيك كركيزة ( ) ودوائين مختلفين (إيبوبروفان وسلكوكزيب). بينما يوضح الشكل (ب) تغيرات النشاط الأنزيمي بدلالة تركيز دواء سلكوكزيب. 1. انطلاقا من الشكل (أ) من الوثيقة (2) علل: تأثير الأنزيمين و ( ) على نفس الركيزة. تأثير إيبوبروفان على نفس الأنزيمين. 2. فسر منحنى الشكل (ب) من الوثيقة (2).",
         promptSource: "official",
-        maxPoints: 2.5,
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -4000,7 +4018,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 4,
         pole: "W",
         page: 2,
-        prompt: "اقترح حلا.",
+        prompt: "3. اقترح حلا يبين كيفية تخفيف الأعراض الجانبية للأدوية التي تستهدف النشاط الأنزيمي.",
         promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
@@ -4026,9 +4044,10 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 1,
         pole: "N",
         page: 3,
-        prompt: "اقترح فرضية تبين طريقة علاجية للحد من تكاثر خلايا سرطان الثدي.",
+        prompt:
+          "تساهم الأجسام المضادة بفعالية في القضاء على الأجسام الغريبة ومع التقدم البيوتكنولوجي استعملت كعلاج مناعي ( ) لمكافحة سرطان الثدي. فكيف تتدخل الأجسام المضادة في القضاء على هذا النوع من السرطان؟ الجزء الأول: يمثل الشكل (أ) من الوثيقة (1) نتائج قياس كمية البروتين الغشائي ( ) عند نوعين من الخلايا السرطانية حيث الخلايا ( ) مأخوذة من ثدي مصاب والخلايا ( ) سرطانية من نوع آخر، بينما يوضح الشكل (ب) من نفس الوثيقة عدد هذه الخلايا السرطانية بعد سبعة أيام من الحضن علما أن عدد الخلايا في بداية التجربة كان متساويا بالنسبة للنوعين من الخلايا.",
         promptSource: "official",
-        maxPoints: 0.5,
+        maxPoints: 1,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -4051,8 +4070,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 3,
         order: 2,
         pole: "S",
-        page: 4,
-        prompt: "حلّل النتائج الموضحة في الجدول الشكل (أ) من الوثيقة 2.",
+        page: 3,
+        prompt:
+          "باستغلالك لنتائج الوثيقة (1): 1. استخرج علاقة بروتين ( ) بتطور الخلايا السرطانية للثدي. 2. اقترح فرضية تبين طريقة علاجية للحد من تكاثر خلايا سرطان الثدي.",
         promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
@@ -4060,7 +4080,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [3]
           }
         ],
         trainingMappings: [
@@ -4070,7 +4090,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: 4
+        pageInPdf: 3
       },
       {
         id: "2020-S1-E3-Q3",
@@ -4079,9 +4099,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "E",
         page: 4,
         prompt:
-          "فسّر آلية تأثير جزيئة تراستوزوماب على الخلايا السرطانية باستغلال معطيات الشكلين (ب) و(ج) من الوثيقة 2 معللا صحة الفرضية المقترحة.",
+          "الجزء الثاني: للتأكد من صحة الفرضية المقترحة، أجريت سلسلة من التجارب حيث وضع النوعان من الخلايا السرطانية ( ) و ( ) في أوساط مختلفة، الشروط والنتائج موضحة في الجدول (أ) للوثيقة (2). بينما يوضح الشكل (ب) من الوثيقة (2) العلاقة بين بروتين (2) وجزيئة تراستوزوماب (جسم مضاد مطور مخبريا). كما يبين الشكل (ج) من الوثيقة (2) تطور عدد الخلايا السرطانية ( ) بدلالة الزمن قبل وبعد معالجتها. 1. حلل النتائج الموضحة في الجدول (أ) من الوثيقة (2). 2. فسر آلية تأثير جزيئة ( ) على الخلايا السرطانية باستغلالك لمعطيات الشكلين (ب) و(ج) من الوثيقة (2) معللا صحة الفرضية المقترحة. 3. قدم مقترحا حول إمكانية استغلال نتائج هذه الدراسة في الكشف المبكر عن سرطان الثدي.",
         promptSource: "official",
-        maxPoints: 4,
+        maxPoints: 3.5,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -4105,7 +4125,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 4,
         pole: "W",
         page: 4,
-        prompt: "قدّم مقترحا حول إمكانية استغلال نتائج هذه الدراسة في الكشف المبكر عن سرطان الثدي.",
+        prompt:
+          "الجزء الثالث: بين من خلال ما سبق ومعلوماتك في نص علمي كيف تتدخل الأجسام المضادة في القضاء على الأجسام الغريبة عموما وخلايا سرطان الثدي على وجه الخصوص. انتهى الموضوع الأول",
         promptSource: "official",
         maxPoints: 1.5,
         scoringReviewStatus: "provisional",
@@ -4129,10 +4150,10 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
   },
   "2020/S2": {
     schemaVersion: 1,
-    status: "partial",
+    status: "complete",
     source: {
       kind: "local-pdf",
-      locator: "https://eddirasa.com/wp-content/uploads/2020/09/eddirasa.com-bac-se-science-2020.pdf",
+      locator: "/subjects/SE/2020/sujet-2.pdf",
       humanVerified: false,
       verifiedAt: null,
       notes: null
@@ -4144,7 +4165,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
-      taskCompleteExerciseNumbers: [3]
+      taskCompleteExerciseNumbers: [1, 2, 3]
     },
     tasks: [
       {
@@ -4152,14 +4173,19 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 1,
         order: 1,
         pole: "N",
-        page: null,
+        page: 5,
         prompt:
-          "كيف يتوقف انتقاء الببتيد المستضدي على مصدره لدى الخلايا العارضة، فيتحدد نمط الاستجابة المناعية النوعية؟",
-        promptSource: "reconstructed",
+          "يتوقف الانتقاء النسيلي للمفاويات على مصدر الببتيد المستضدي المقدم من طرف الخلايا العارضة، وبالتالي يتحدد نمط الاستجابة المناعية النوعية. للتعرف على نمطي الاستجابة نقترح الوثيقة التالية:",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -4167,7 +4193,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2020-S2-E1-Q2",
@@ -4175,9 +4201,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 2,
         pole: "S",
         page: 5,
-        prompt: "سمّ العناصر المرقمة من 1 إلى 11 ثم تعرّف على الخليتين (س) و(ع) ونمطي الاستجابة (أ) و(ب).",
+        prompt: "1. سم العناصر المرقمة من 01 إلى 06، ثم تعرف على الخليتين (س) و(ع) ونمطي الاستجابة (أ) و(ب).",
         promptSource: "official",
-        maxPoints: 1,
+        maxPoints: 1.5,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -4202,7 +4228,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "E",
         page: 5,
         prompt:
-          "اكتب نصا علميا تبين فيه دور مصدر الببتيد المستضدي في انتقاء وتحديد نمط الاستجابة المناعية النوعية انطلاقا من معطيات الوثيقة ومكتسباتك.",
+          "2. اكتب نصا علميا تبين فيه دور ومصدر المستضد في انتقاء اللمفاويات وتحديد نمط الاستجابة المناعية النوعية انطلاقا من معطيات الوثيقة ومكتسباتك.",
         promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
@@ -4227,53 +4253,10 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 1,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "ما الذي يحدد نمط الاستجابة المناعية النوعية عند عرض الببتيد المستضدي؟",
-        promptSource: "reconstructed",
-        maxPoints: 1,
-        scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
-        trainingMappings: [
-          {
-            exerciseNumber: 1,
-            pole: "W",
-            kind: "direct"
-          }
-        ],
-        pageInPdf: null
-      },
-      {
-        id: "2020-S2-E2-Q1",
-        exerciseNumber: 2,
-        order: 1,
-        pole: "N",
-        page: null,
-        prompt: "كيف تؤثر مادة الريسين المستخرجة من بذور الخروع على تركيب البروتين وعلاج الأورام السرطانية؟",
-        promptSource: "reconstructed",
-        maxPoints: 1,
-        scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
-        trainingMappings: [
-          {
-            exerciseNumber: 2,
-            pole: "N",
-            kind: "direct"
-          }
-        ],
-        pageInPdf: null
-      },
-      {
-        id: "2020-S2-E2-Q2",
-        exerciseNumber: 2,
-        order: 2,
-        pole: "S",
         page: 5,
-        prompt:
-          "حلّل الوثيقة 1 مبرزا العلاقة بين تكاثر الخلايا السرطانية والظواهر الحيوية المبينة في الشكل (ب).",
+        prompt: "خلاصة حول دور مصدر الببتيد في تحديد النمط المناعي",
         promptSource: "official",
-        maxPoints: 2.5,
+        maxPoints: 0.5,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -4284,12 +4267,66 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         ],
         trainingMappings: [
           {
+            exerciseNumber: 1,
+            pole: "W",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 1
+      },
+      {
+        id: "2020-S2-E2-Q1",
+        exerciseNumber: 2,
+        order: 1,
+        pole: "N",
+        page: 6,
+        prompt:
+          "تتأثر عملية تركيب البروتين بعوامل كثيرة، منها ما يعمل على إيقاف تركيبه وفي هذا الإطار يسعى الباحثون إلى استغلال المواد المثبطة لتركيب البروتين في علاج الأورام السرطانية ومن هذه المواد مادة الريسين المستخرجة من بذور نبات الخروع، لمعرفة آلية تأثير مادة الريسين نقترح عليك الدراسة التالية: الجزء الأول: تمثل الوثيقة (1) نتائج مخبرية لتأثير مادة الريسين حيث: يمثل الشكل (أ) من الوثيقة (1) تكاثر الخلايا السرطانية في وجود وغياب مادة الريسين. يمثل الشكل (ب) من الوثيقة (1) نتائج متابعة نسبة إدماج التايميدين واللوسين المشعين لعينات من الخلايا السرطانية تم حضنها في تراكيز متزايدة من مادة الريسين.",
+        promptSource: "official",
+        maxPoints: 1,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [6]
+          }
+        ],
+        trainingMappings: [
+          {
+            exerciseNumber: 2,
+            pole: "N",
+            kind: "direct"
+          }
+        ],
+        pageInPdf: 2
+      },
+      {
+        id: "2020-S2-E2-Q2",
+        exerciseNumber: 2,
+        order: 2,
+        pole: "S",
+        page: 7,
+        prompt:
+          "1. حلل منحنيي الشكلين (أ) و (ب) مبرزا المشكلة حول تأثير مادة الريسين على تركيب البروتين. 2. لإظهار آلية تأثير مادة الريسين نقترح عليك الوثيقة (3).",
+        promptSource: "official",
+        maxPoints: 2,
+        scoringReviewStatus: "provisional",
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [7]
+          }
+        ],
+        trainingMappings: [
+          {
             exerciseNumber: 2,
             pole: "S",
             kind: "direct"
           }
         ],
-        pageInPdf: 1
+        pageInPdf: 3
       },
       {
         id: "2020-S2-E2-Q3",
@@ -4297,9 +4334,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 3,
         pole: "E",
         page: 7,
-        prompt: "قدّم حلا للمشكل المطروح انطلاقا من استغلالك لمعطيات الوثيقة 3.",
+        prompt: "أعط حلا للمشكلة المطروحة انطلاقا من استغلالك لمعطيات الوثيقة (3).",
         promptSource: "official",
-        maxPoints: 2.5,
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -4322,13 +4359,18 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 2,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "إذا كانت مادة الريسين لا تؤثر على عملية النسخ وتعيق عملية الترجمة، فما مستوى تأثيرها؟",
-        promptSource: "reconstructed",
+        page: 7,
+        prompt: "خلاصة: مستوى تأثير الريسين — الترجمة لا النسخ",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [7]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -4336,7 +4378,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2020-S2-E3-Q1",
@@ -4344,9 +4386,10 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 1,
         pole: "N",
         page: 8,
-        prompt: "اقترح فرضية لحل هذه المشكلة.",
+        prompt:
+          "يتحكم المولود الجديد تدريجيا في حركاته نتيجة تغيرات فيزيولوجية من بينها تلك التي تمس المشابك المثبطة خلال نضج الخلايا العصبية. لمعرفة كيف يتم ذلك نقترح عليك الدراسة التالية: الجزء الأول: تم قياس تغيرات التيار الأيوني والكمون الغشائي على مستوى الغشاء بعد مشبكي لمشبك مثبط بعد يوم من الولادة وبعد شهرين من الولادة. النتائج مبينة في الوثيقة (1).",
         promptSource: "official",
-        maxPoints: 0.5,
+        maxPoints: 1,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -4369,8 +4412,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 3,
         order: 2,
         pole: "S",
-        page: 9,
-        prompt: "استخرج أهم مميزات البروتينات الغشائية الممثلة في الشكل (أ) من الوثيقة 2.",
+        page: 8,
+        prompt:
+          "1. حلل معطيات الوثيقة (1) محددا المشكلة العلمية المطروحة. 2. اقترح فرضية لحل هذه المشكلة. الجزء الثاني: للتحقق من صحة الفرضية المقترحة أجريت الدراسة الممثلة في الوثيقة (2) حيث: الشكل (أ): يبين توضع بعض البروتينات في الغشاء بعد مشبكي والمتمثلة في نوعين من مضخات شوارد الكلور ( ) تدعى ( ) و ( ) بالإضافة إلى المستقبلات القنوية للـ ( ).",
         promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
@@ -4378,7 +4422,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [9]
+            pages: [8]
           }
         ],
         trainingMappings: [
@@ -4388,7 +4432,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: 5
+        pageInPdf: 4
       },
       {
         id: "2020-S2-E3-Q3",
@@ -4396,9 +4440,10 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 3,
         pole: "E",
         page: 9,
-        prompt: "تأكد من صحة الفرضية المقترحة باستغلالك لمعطيات الوثيقة 2.",
+        prompt:
+          "الوثيقة (2) الشكل (ب) و(ج): تغيرات تركيز Cl- الداخلي بدلالة الزمن، تعبير ARNm لـ NKCC1 و KCC2. الأسئلة: استخرج مميزات البروتينات، تأكد من صحة الفرضية.",
         promptSource: "official",
-        maxPoints: 4,
+        maxPoints: 3.5,
         scoringReviewStatus: "provisional",
         documentReviewStatus: "pending",
         documentRefs: [
@@ -4423,7 +4468,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "W",
         page: 9,
         prompt:
-          "قدّم حلا مبنيا على أسس علمية لعلاج أشخاص بالغين يعانون من اضطرابات عصبية ناتجة عن تراكم شوارد Cl- في هيولى الخلية بعد المشبكية.",
+          "قدم حلا علاجيا لتراكم Cl- واكتب نصا علميا حول آلية عمل المشبك المثبط GABA. انتهى الموضوع الثاني",
         promptSource: "official",
         maxPoints: 1.5,
         scoringReviewStatus: "provisional",

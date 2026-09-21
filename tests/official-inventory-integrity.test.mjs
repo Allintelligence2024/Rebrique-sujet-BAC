@@ -51,7 +51,7 @@ test("chaque sujet chargé possède un inventaire, et inversement", () => {
   for (const { yearId, subject, inventory } of rows) {
     assert.ok(inventory, `${yearId}/S${subject.id} sans inventaire`);
     assert.equal(inventory.schemaVersion, 1);
-    if (["2013", "2014", "2015", "2016", "2017", "2018", "2019"].includes(yearId)) {
+    if (["2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020"].includes(yearId)) {
       assert.equal(inventory.status, "complete", `${yearId}/S${subject.id} doit être complet`);
     } else {
       assert.notEqual(inventory.status, "complete", `${yearId}/S${subject.id} se déclare complet`);
@@ -129,8 +129,8 @@ test("les pages annoncées restent utilisables dans le PDF livré", () => {
       assert.equal(task.pageInPdf, task.page - pageOffset);
     }
   }
-  // 445 officielles après SE 2019
-  assert.equal(declared, 445);
+  // 452 officielles après SE 2020
+  assert.equal(declared, 452);
   assert.ok(located / declared > 0.8, `trop de pages non locables: ${declared - located}`);
 });
 
