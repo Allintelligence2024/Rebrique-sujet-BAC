@@ -8,22 +8,11 @@ import {
   isFreeAnswerSubject
 } from "../js/domain/subjects/official-coverage.js";
 
-/* ============================================================
-   Intégrité des inventaires de tâches officielles.
-   ------------------------------------------------------------
-   Les inventaires sont générés (scripts/generate-official-inventories.mjs) :
-   ce test garantit qu'ils ne racontent pas autre chose que les données
-   d'année, et que les pages annoncées restent utilisables par l'élève.
-   ============================================================ */
-
 const years = await Promise.all(
   YEAR_CATALOG.map(async (entry) => ({ entry, year: await loadYear(entry.id) }))
 );
 const loaded = years.filter((item) => item.year);
 
-/* Les armatures « copie libre » (années dont les consignes ne sont pas
-   encodées) n'ont, par construction, aucun inventaire : elles sont vérifiées
-   par leur propre test, plus bas. */
 function eachSubject() {
   const rows = [];
   for (const { year } of loaded) {
@@ -36,10 +25,6 @@ function eachSubject() {
 }
 
 test("plus aucune armature « copie libre » : chaque année est structurée et inventoriée", () => {
-  /* Depuis la structuration 4D de SE 2021 (2026-09-20, OCR du sujet
-     officiel), aucune année n'est plus en copie libre. Le garde-fou
-     historique reste : une année « copie libre » ne doit avoir ni pôle,
-     ni inventaire, ni note — vérifié sur un sujet synthétique. */
   const freeYears = loaded.filter(({ year }) => year.answerMode === "free");
   assert.equal(freeYears.length, 0, "aucune année ne doit rester en copie libre");
   const synthetic = {
@@ -65,11 +50,22 @@ test("chaque sujet chargé possède un inventaire, et inversement", () => {
   // 48 sujets jusqu'au 2026-09-19 ; 56 depuis la structuration OCR de Maths
   // 2013–2015 + 2017 استثنائية ; 58 depuis celle de SE 2021 (2026-09-20) —
   // soit TOUS les sujets du catalogue.
+  // 2013 SE vérifiée 2026-09-21 : 2 sujets complets (8/8/4 et 8/6/6).
+  // 2014 SE vérifiée 2026-09-21 : 2 sujets complets (6/6/8 et 5.5/7.5/7).
+  // 2015 SE vérifiée 2026-09-21 : 2 sujets complets (7/6/7 et 6/7/7).
   assert.equal(rows.length, 58);
   for (const { yearId, subject, inventory } of rows) {
     assert.ok(inventory, `${yearId}/S${subject.id} sans inventaire`);
     assert.equal(inventory.schemaVersion, 1);
-    assert.notEqual(inventory.status, "complete", `${yearId}/S${subject.id} se déclare complet`);
+    if (["2013", "2014", "2015"].includes(yearId)) {
+      assert.equal(
+        inventory.status,
+        "complete",
+        `${yearId}/S${subject.id} doit être complet après vérification`
+      );
+    } else {
+      assert.notEqual(inventory.status, "complete", `${yearId}/S${subject.id} se déclare complet`);
+    }
     assert.equal(inventory.source.humanVerified, false);
     assert.equal(inventory.source.verifiedAt, null);
     assert.ok(inventory.source.locator, `${yearId}/S${subject.id} sans source`);
@@ -125,8 +121,6 @@ test("les identifiants de tâches sont uniques et dérivés de l'ordre réel", (
       seen.add(task.id);
     }
   }
-  // 488 tâches jusqu'au 2026-09-19 ; 552 avec les 8 sujets OCR Maths (64 pôles)
-  // ; 576 avec les 2 sujets OCR de SE 2021 (48 pôles).
   assert.equal(seen.size, 576);
 });
 
@@ -160,17 +154,12 @@ test("les pages annoncées restent utilisables dans le PDF livré", () => {
       assert.equal(task.pageInPdf, task.page - pageOffset, `${task.id}: décalage incohérent`);
     }
   }
-  // Le générateur rattache la très grande majorité des consignes à une page du
-  // fichier ; les autres restent annotées « (الأصل) » plutôt que d'être devinées.
-  // 213 consignes officielles jusqu'au 2026-09-19 ; 261 avec les 48 consignes
-  // OCR Maths ; 277 avec les 16 consignes OCR de SE 2021.
-  assert.equal(declared, 277);
+  // 213 jusqu'au 2026-09-19 ; 261 avec OCR Maths ; 277 avec OCR SE 2021 ; 301 avec SE 2013 ; 325 avec SE 2014 ; 349 avec SE 2015
+  assert.equal(declared, 349);
   assert.ok(located / declared > 0.8, `trop de pages non locables: ${declared - located}`);
 });
 
 test("la pagination déclarée n'est jamais silencieusement fausse", () => {
-  // Quand le fichier suit la numérotation du document, aucune tâche ne doit
-  // pointer au-delà de sa dernière page.
   for (const { yearId, subject, inventory } of eachSubject()) {
     if (inventory.document.pageOffset !== 0) continue;
     for (const task of inventory.tasks) {

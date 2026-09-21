@@ -11,13 +11,12 @@ test("le statut P1 refuse un faux 100 % tant que les inventaires et copies manqu
   assert.equal(byId["P1.1"].complete, false);
   /* 58 sujets = 29 sessions × 2 (15 SE, 14 Maths, 1 Maths exceptionnelle).
      Depuis la structuration OCR de SE 2021 (2026-09-20), TOUS les sujets
-     portent un inventaire — aucun n'est « complete » pour autant : les
-     pôles N restent reconstruits, le statut reste partial partout. */
+     portent un inventaire — 6 sont complets depuis SE 2013-2015 vérifiées. */
   assert.match(byId["P1.1"].evidence, /\/58 inventaires complets/);
-  /* 4155 = 277 consignes officielles × 15 copies (3195 jusqu'au 2026-09-19 ;
+  /* 5235 = 349 consignes officielles × 15 copies (3195 jusqu'au 2026-09-19 ;
      3915 avec les 48 consignes OCR Maths ; 4155 avec les 16 consignes OCR de
-     SE 2021). */
-  assert.match(byId["P1.5"].evidence, /0\/4155 copies/);
+     SE 2021 ; 4515 avec SE 2013 vérifiée ; 4875 avec SE 2014 vérifiée ; 5235 avec SE 2015). */
+  assert.match(byId["P1.5"].evidence, /0\/5235 copies/);
   assert.equal(byId["P1.2"].complete, false);
   assert.equal(byId["P1.3"].complete, true);
   assert.equal(byId["P1.4"].complete, true);

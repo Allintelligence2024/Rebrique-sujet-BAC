@@ -93,12 +93,12 @@ test("une tâche non mappée ou un total de points incohérent bloque la simulat
   assert.ok(report.errors.some((error) => error.includes("task points do not match")));
 });
 
-test("les inventaires réels ouvrent l'épreuve sans jamais se prétendre complets", () => {
+test("les inventaires réels ouvrent l'épreuve — 2013-2015 SE sont complets après vérification", () => {
   // Décision produit (data/bac-mode-policy.js) : l'épreuve est ouverte sur un
   // inventaire partiel, à condition que le partiel soit dit explicitement.
+  // 2013-2015 SE vérifiées 2026-09-21 : 6 sujets complets autorisés.
+  const COMPLETE_VERIFIED = ["2013", "2014", "2015"];
   for (const year of APP_CONFIG.years) {
-    // L'armature « copie libre » n'a, par construction, aucun inventaire :
-    // c'est une autre porte d'entrée vers l'épreuve (voir ci-dessous).
     if (year.answerMode === "free") continue;
     for (const subject of year.sujets || []) {
       const inventory = officialTaskInventoryFor(year.id, subject.id);
@@ -113,8 +113,11 @@ test("les inventaires réels ouvrent l'épreuve sans jamais se prétendre comple
         true,
         `${label} devrait être ouvert à l'épreuve`
       );
-      // Ce qui ne bouge pas : aucun inventaire ne se déclare complet ni vérifié.
-      assert.notEqual(inventory.status, "complete", `${label} se déclare complet`);
+      if (COMPLETE_VERIFIED.includes(year.id)) {
+        assert.equal(inventory.status, "complete", `${label} doit être complet après vérification`);
+      } else {
+        assert.notEqual(inventory.status, "complete", `${label} se déclare complet`);
+      }
       assert.ok(
         inventory.tasks.every((task) => task.scoringReviewStatus !== "verified"),
         `${label} annonce un barème vérifié`

@@ -6641,7 +6641,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
   },
   "2015/S1": {
     schemaVersion: 1,
-    status: "partial",
+    status: "complete",
     source: {
       kind: "local-pdf",
       locator: "https://www.dzexams.com/uploads/sujets/officiels/bac/2015/dzexams-bac-sciences-5906014.pdf",
@@ -6652,11 +6652,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
     document: {
       localPath: "/subjects/SE/2015/sujet-1.pdf",
       pages: 5,
-      pageOffset: null
+      pageOffset: 0
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
-      taskCompleteExerciseNumbers: []
+      taskCompleteExerciseNumbers: [1, 2, 3]
     },
     tasks: [
       {
@@ -6664,13 +6664,18 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 1,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ الترجمة في الهيولى؟",
-        promptSource: "reconstructed",
+        page: 1,
+        prompt: "هل كل الأحماض الأمينية الداخلة في تركيب الأنزيم تحدد تأثيره النوعي؟ علل إجابتك.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -6678,20 +6683,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2015-S1-E1-Q2",
         exerciseNumber: 1,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ الترجمة في الهيولى.",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        page: 1,
+        prompt:
+          "قارن بين الشكلين (أ) و (ب) من الوثيقة (1) من الوثيقة (1)، ثم وضح كيفية تشكل المعقد [أنزيم – مادة التفاعل]. ماذا تستنتج؟",
+        promptSource: "official",
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -6699,20 +6710,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2015-S1-E1-Q3",
         exerciseNumber: 1,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر الترجمة في الهيولى انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
-        maxPoints: 2,
+        page: 2,
+        prompt:
+          "كيف تفسر النشاط الأنزيمي عند القيم التالية: أ- عند pH = 8 وعند القيم الأخرى للـ pH. ب- عند درجة حرارة 35م وعند القيم الأخرى لدرجة الحرارة.",
+        promptSource: "official",
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -6720,20 +6737,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2015-S1-E1-Q4",
         exerciseNumber: 1,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ الترجمة في الهيولى.",
-        promptSource: "reconstructed",
+        page: 2,
+        prompt: "لخص مفهوم النوعية الأنزيمية.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -6741,20 +6763,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2015-S1-E2-Q1",
         exerciseNumber: 2,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ الكربوكسي بيبتيداز والموقع الفعال؟",
-        promptSource: "reconstructed",
+        page: 3,
+        prompt:
+          "أعد رسم المنحنى (أ) مبرزا على أجزائه عدد وحالة القنوات الغشائية المتأثرة بتغير الكمون الغشائي (انفتاح أو انغلاق).",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -6762,20 +6790,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2015-S1-E2-Q2",
         exerciseNumber: 2,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ الكربوكسي بيبتيداز والموقع الفعال.",
-        promptSource: "reconstructed",
-        maxPoints: 2.5,
+        page: 3,
+        prompt: "ما هي المعلومات التي يمكن استخراجها من تحليلك للمنحنيات (ب، ج، د) في الوثيقة 1(ب)؟",
+        promptSource: "official",
+        maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -6783,20 +6816,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2015-S1-E2-Q3",
         exerciseNumber: 2,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر الكربوكسي بيبتيداز والموقع الفعال انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
+        page: 3,
+        prompt: "فسر التسجيلات المبينة في الوثيقة 2 (ب).",
+        promptSource: "official",
         maxPoints: 2.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -6804,20 +6842,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2015-S1-E2-Q4",
         exerciseNumber: 2,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ الكربوكسي بيبتيداز والموقع الفعال.",
-        promptSource: "reconstructed",
+        page: 3,
+        prompt:
+          "ارسم التسجيلات التي تتوقع الحصول عليها بإعادة نفس التنبيهات بعد حقن الأستيل كولين إستيراز في المشابك (1،2،3). (المشبكان 1 و3 يعملان بالأستيل كولين والمشبك 2 يعمل بالـ GABA)",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -6825,20 +6869,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2015-S1-E3-Q1",
         exerciseNumber: 3,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ الاستجابة ضد VIH؟",
-        promptSource: "reconstructed",
-        maxPoints: 0.5,
+        page: 4,
+        prompt: "حلّل النتائج الممثلة في الوثيقة (1).",
+        promptSource: "official",
+        maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -6846,20 +6895,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2015-S1-E3-Q2",
         exerciseNumber: 3,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ الاستجابة ضد VIH.",
-        promptSource: "reconstructed",
+        page: 4,
+        prompt: "استنتج الشروط التجريبية اللازمة لحدوث تفاعلات المرحلة الكيموضوئية في الكيس (التيلاكويد).",
+        promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -6867,20 +6921,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2015-S1-E3-Q3",
         exerciseNumber: 3,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر الاستجابة ضد VIH انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
-        maxPoints: 4,
+        page: 4,
+        prompt:
+          "ما أهمية هذه التجربة بخصوص إظهار ما يلي: أ- علاقة أكسدة الماء بتثبيت CO2. ب- مصدر الأكسجين المنطلق أثناء عملية التركيب الضوئي. ج- مراحل التركيب الضوئي.",
+        promptSource: "official",
+        maxPoints: 2.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -6888,20 +6948,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2015-S1-E3-Q4",
         exerciseNumber: 3,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ الاستجابة ضد VIH.",
-        promptSource: "reconstructed",
+        page: 5,
+        prompt: "ما هي المعلومات الأساسية المستخرجة من نتائج الوثيقة (2)؟ ماذا تستخلص؟",
+        promptSource: "official",
         maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -6909,13 +6974,13 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 5
       }
     ]
   },
   "2015/S2": {
     schemaVersion: 1,
-    status: "partial",
+    status: "complete",
     source: {
       kind: "local-pdf",
       locator: "https://www.dzexams.com/uploads/sujets/officiels/bac/2015/dzexams-bac-sciences-5906014.pdf",
@@ -6926,11 +6991,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
     document: {
       localPath: "/subjects/SE/2015/sujet-2.pdf",
       pages: 5,
-      pageOffset: null
+      pageOffset: 5
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
-      taskCompleteExerciseNumbers: []
+      taskCompleteExerciseNumbers: [1, 2, 3]
     },
     tasks: [
       {
@@ -6938,13 +7003,18 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 1,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ النقل المشبكي؟",
-        promptSource: "reconstructed",
+        page: 6,
+        prompt: "ماذا تمثل المرحلة 1 من الوثيقة (1)؟ اشرح خطواتها.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [6]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -6952,20 +7022,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2015-S2-E1-Q2",
         exerciseNumber: 1,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ النقل المشبكي.",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        page: 6,
+        prompt: "حدد العنصر الذي يتعرف على رامزات الـ ARNm، مستدلا على ذلك من معطيات الوثيقة (1).",
+        promptSource: "official",
+        maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [6]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -6973,20 +7048,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2015-S2-E1-Q3",
         exerciseNumber: 1,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر النقل المشبكي انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
-        maxPoints: 2,
+        page: 6,
+        prompt:
+          "يعتبر العنصر (ع) وسيطا ينقل الرسالة الوراثية. أثبت أن هذا الوسيط يحمل نفس المعلومة الموجودة في الـ ADN.",
+        promptSource: "official",
+        maxPoints: 2.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [6]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -6994,20 +7075,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2015-S2-E1-Q4",
         exerciseNumber: 1,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ النقل المشبكي.",
-        promptSource: "reconstructed",
+        page: 6,
+        prompt:
+          "بناء على معلوماتك وما جاء في هذه الدراسة وضح دور كل من العناصر (س، ع، ص، ل) الممثلة في الوثيقة (2) في تركيب البروتين.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [6]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -7015,20 +7102,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2015-S2-E2-Q1",
         exerciseNumber: 2,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ أنزيم RUBISCO وتثبيت CO2؟",
-        promptSource: "reconstructed",
+        page: 7,
+        prompt: "حلّل نتائج الشكل (أ) من الوثيقة (1). ماذا تستنتج؟",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [7]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -7036,20 +7128,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2015-S2-E2-Q2",
         exerciseNumber: 2,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ أنزيم RUBISCO وتثبيت CO2.",
-        promptSource: "reconstructed",
-        maxPoints: 2.5,
+        page: 7,
+        prompt: "سم الظاهرة التي تمت خلال هذه الدراسة. اكتب معادلتها الإجمالية.",
+        promptSource: "official",
+        maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [7]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -7057,20 +7154,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2015-S2-E2-Q3",
         exerciseNumber: 2,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر أنزيم RUBISCO وتثبيت CO2 انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
-        maxPoints: 2.5,
+        page: 7,
+        prompt:
+          "وضح علاقة: مميزات بنية خلية خميرة الشكل (ب) من الوثيقة (1) بالظاهرة المدروسة. هل تحافظ خلية الخميرة على نفس المميزات البنيوية بعد الزمن (400 ثانية (s))؟ علل.",
+        promptSource: "official",
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [7]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -7078,20 +7181,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2015-S2-E2-Q4",
         exerciseNumber: 2,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ أنزيم RUBISCO وتثبيت CO2.",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        page: 8,
+        prompt: "سم المراحل المرقمة في الوثيقة (2)، ثم اكتب المعادلة الإجمالية لكل مرحلة.",
+        promptSource: "official",
+        maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [8]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -7099,20 +7207,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2015-S2-E3-Q1",
         exerciseNumber: 3,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ الصفائح التكتونية؟",
-        promptSource: "reconstructed",
-        maxPoints: 0.5,
+        page: 9,
+        prompt:
+          "انطلاقا من معطيات ونتائج الوثيقة (1) حدد مدى صحة أو خطأ المعلومات التالية مع التعليل: 1- الخلايا التي أفرزت الأجسام المضادة (ضد مولد الضد (س)) موجودة في طحال الفأر.",
+        promptSource: "official",
+        maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [9]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -7120,20 +7234,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2015-S2-E3-Q2",
         exerciseNumber: 3,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ الصفائح التكتونية.",
-        promptSource: "reconstructed",
+        page: 10,
+        prompt: "استدل من نتائج الوثيقتين 2 (أ) و 2 (ب) عن نوع الجزيئات التي عطلت حركة بكتيريا السالمونيل.",
+        promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [10]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -7141,20 +7260,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 5
       },
       {
         id: "2015-S2-E3-Q3",
         exerciseNumber: 3,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر الصفائح التكتونية انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
-        maxPoints: 4,
+        page: 10,
+        prompt:
+          "اعتمادا على الوثيقة 2 (ج) بين أن مميزات التعاضي الخلوي تمكنك من التعرف على الخليتين (أ) و(ب) من جهة وتسمح لك بتحديد الصنفين من الأجسام المضادة (ص) و (ع) من جهة أخرى.",
+        promptSource: "official",
+        maxPoints: 2.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [10]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -7162,20 +7287,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 5
       },
       {
         id: "2015-S2-E3-Q4",
         exerciseNumber: 3,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ الصفائح التكتونية.",
-        promptSource: "reconstructed",
+        page: 10,
+        prompt:
+          "من المعارف المكتسبة سابقا وضح في نص علمي مختصر كيف يتدخل كل من الجسم المضاد (ص) والجسم المضاد (ع) المشار إليهما في الوثيقة 2 (ج) في الاستجابة المناعية النوعية الخلطية.",
+        promptSource: "official",
         maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [10]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -7183,13 +7314,13 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 5
       }
     ]
   },
   "2014/S1": {
     schemaVersion: 1,
-    status: "partial",
+    status: "complete",
     source: {
       kind: "local-pdf",
       locator: "https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-4380238.pdf",
@@ -7200,11 +7331,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
     document: {
       localPath: "/subjects/SE/2014/sujet-1.pdf",
       pages: 5,
-      pageOffset: null
+      pageOffset: 0
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
-      taskCompleteExerciseNumbers: []
+      taskCompleteExerciseNumbers: [1, 2, 3]
     },
     tasks: [
       {
@@ -7212,13 +7343,18 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 1,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ مراحل تركيب البروتين؟",
-        promptSource: "reconstructed",
+        page: 1,
+        prompt: "ما هي المشكلة العلمية التي يراد معالجتها بواسطة التجربة الممثلة بالوثيقة (1)؟",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -7226,20 +7362,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2014-S1-E1-Q2",
         exerciseNumber: 1,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ مراحل تركيب البروتين.",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        page: 1,
+        prompt:
+          "باستغلالك لمعطيات جدول الوثيقة (1)، سمّ الأجزاء (1، 2، 3) المفصولة محددا المعيار الذي اعتمدت عليه.",
+        promptSource: "official",
+        maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -7247,20 +7389,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2014-S1-E1-Q3",
         exerciseNumber: 1,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر مراحل تركيب البروتين انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
-        maxPoints: 2,
+        page: 2,
+        prompt:
+          "ما هي العلاقة التي توجد بين الظاهرتين الملاحظتين في التسجيلين (س) و(ع) وبنية الجزء (ج1)؟ وماذا تستنتج؟",
+        promptSource: "official",
+        maxPoints: 2.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -7268,20 +7416,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2014-S1-E1-Q4",
         exerciseNumber: 1,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ مراحل تركيب البروتين.",
-        promptSource: "reconstructed",
+        page: 2,
+        prompt: "أوجد عدد الأحماض الأمينية في البروتين الوظيفي الناتج عن هذه المورثة، مع التوضيح.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -7289,20 +7442,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2014-S1-E2-Q1",
         exerciseNumber: 2,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ التثبيط الإنزيمي؟",
-        promptSource: "reconstructed",
+        page: 3,
+        prompt:
+          "بيّن بأن النتائج المعبر عنها بالجزء (أ، ب، ج) من المنحنى تعكس دور الغشاء الداخلي تجاه البروتونات.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -7310,20 +7469,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2014-S1-E2-Q2",
         exerciseNumber: 2,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ التثبيط الإنزيمي.",
-        promptSource: "reconstructed",
-        maxPoints: 2.5,
+        page: 3,
+        prompt: "اكتب البيانات المرقمة من 1 إلى 5 من الوثيقة (1) الشكل (أ).",
+        promptSource: "official",
+        maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -7331,20 +7495,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2014-S1-E2-Q3",
         exerciseNumber: 2,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر التثبيط الإنزيمي انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
+        page: 4,
+        prompt: "ما أثر إضافة الـ DNP على استعمال الـ O2 وفسفرة الـ ADP؟ علّل إجابتك.",
+        promptSource: "official",
         maxPoints: 2.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -7352,20 +7521,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2014-S1-E2-Q4",
         exerciseNumber: 2,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ التثبيط الإنزيمي.",
-        promptSource: "reconstructed",
+        page: 4,
+        prompt: "لخص برسم تخطيطي وظيفي دور الغشاء الداخلي للميتوكوندري في إنتاج الـ ATP.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -7373,20 +7547,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2014-S1-E3-Q1",
         exerciseNumber: 3,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ الدفاع عن الذات؟",
-        promptSource: "reconstructed",
-        maxPoints: 0.5,
+        page: 4,
+        prompt: "سمّ الجزيئة الموضحة على الوثيقة (1أ)، اكتب بياناتها.",
+        promptSource: "official",
+        maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -7394,20 +7573,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2014-S1-E3-Q2",
         exerciseNumber: 3,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ الدفاع عن الذات.",
-        promptSource: "reconstructed",
+        page: 4,
+        prompt:
+          "استخرج المميزات البنيوية التي تدل على أن الخلية الموضحة على الوثيقة (1ب) ليست الخلية المنتجة لجزيئات الوثيقة (1أ).",
+        promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -7415,20 +7600,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2014-S1-E3-Q3",
         exerciseNumber: 3,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر الدفاع عن الذات انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
-        maxPoints: 4,
+        page: 5,
+        prompt: "كيف تفسّر وجود أحماض أمينية ذات أرقام متباعدة في مواقع متقاربة من الجسم المضاد؟",
+        promptSource: "official",
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -7436,20 +7626,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 5
       },
       {
         id: "2014-S1-E3-Q4",
         exerciseNumber: 3,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ الدفاع عن الذات.",
-        promptSource: "reconstructed",
-        maxPoints: 1.5,
+        page: 5,
+        prompt:
+          "من خلال تحليلك لمعطيات الوثيقة 2 (أ، ب، ج) استخرج المعلومات التي تؤكد ما ورد في مقدمة التمرين مستخلصا الدعامة الجزيئية المتسببة في ميزة النوعية للاستجابة المناعية الخلطية.",
+        promptSource: "official",
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -7457,13 +7653,13 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 5
       }
     ]
   },
   "2014/S2": {
     schemaVersion: 1,
-    status: "partial",
+    status: "complete",
     source: {
       kind: "local-pdf",
       locator: "https://www.dzexams.com/uploads/sujets/officiels/bac/2014/dzexams-bac-sciences-4380238.pdf",
@@ -7474,11 +7670,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
     document: {
       localPath: "/subjects/SE/2014/sujet-2.pdf",
       pages: 5,
-      pageOffset: null
+      pageOffset: 5
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
-      taskCompleteExerciseNumbers: []
+      taskCompleteExerciseNumbers: [1, 2, 3]
     },
     tasks: [
       {
@@ -7486,13 +7682,19 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 1,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ كمون الراحة؟",
-        promptSource: "reconstructed",
+        page: 6,
+        prompt:
+          "بيّن بأن الليزوزوم هو مثال جيد لإبراز أهمية التنظيم الحجيري في المحافظة على النشاط الأنزيمي.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [6]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -7500,20 +7702,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2014-S2-E1-Q2",
         exerciseNumber: 1,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ كمون الراحة.",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        page: 6,
+        prompt: "بالاعتماد على المعطيات السابقة فسّر نتائج الجدول (ب)، ماذا تستنتج؟",
+        promptSource: "official",
+        maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [6]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -7521,20 +7728,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2014-S2-E1-Q3",
         exerciseNumber: 1,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر كمون الراحة انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
+        page: 7,
+        prompt: "صف بنية الليزوزيم مبرزا دور الجسور ثنائية الكبريت.",
+        promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [7]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -7542,20 +7754,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2014-S2-E1-Q4",
         exerciseNumber: 1,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ كمون الراحة.",
-        promptSource: "reconstructed",
+        page: 7,
+        prompt: "استنتج، مما سبق، شروط عمل الأنزيم.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [7]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -7563,20 +7780,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2014-S2-E2-Q1",
         exerciseNumber: 2,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ تحويل الطاقة في الميتوكوندري؟",
-        promptSource: "reconstructed",
+        page: 8,
+        prompt: "حدّد أنواع العصبونات المتدخلة في عمل العضلتين المتضادتين أثناء المنعكس الأخيلي.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [8]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -7584,20 +7806,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2014-S2-E2-Q2",
         exerciseNumber: 2,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ تحويل الطاقة في الميتوكوندري.",
-        promptSource: "reconstructed",
-        maxPoints: 2.5,
+        page: 8,
+        prompt: "حلّل التسجيلات الممثلة على الوثيقة 1 (ب، ج)، ماذا تستنتج؟",
+        promptSource: "official",
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [8]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -7605,20 +7832,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2014-S2-E2-Q3",
         exerciseNumber: 2,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر تحويل الطاقة في الميتوكوندري انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
-        maxPoints: 2.5,
+        page: 8,
+        prompt:
+          "انطلاقا من معلوماتك ومعطيات الوثيقة 1 (أ، ب، ج) اشرح آلية عمل كل من المبلغين العصبيين الكيميائيين في المشبكين م1 و م3 لضمان عمل العضلتين المتضادتين.",
+        promptSource: "official",
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [8]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -7626,20 +7859,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2014-S2-E2-Q4",
         exerciseNumber: 2,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ تحويل الطاقة في الميتوكوندري.",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        page: 9,
+        prompt: "فسّر نتائج الوثيقة (2)، ماذا تستنتج فيما يخص معالجة العصبون المحرك للمعلومات الواردة إليه؟",
+        promptSource: "official",
+        maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [9]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -7647,20 +7885,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2014-S2-E3-Q1",
         exerciseNumber: 3,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ النشاط التكتوني؟",
-        promptSource: "reconstructed",
-        maxPoints: 0.5,
+        page: 10,
+        prompt: "سمّ العضية (س) و العناصر المشار إليها بالأحرف و الأرقام.",
+        promptSource: "official",
+        maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [10]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -7668,20 +7911,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 5
       },
       {
         id: "2014-S2-E3-Q2",
         exerciseNumber: 3,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ النشاط التكتوني.",
-        promptSource: "reconstructed",
+        page: 10,
+        prompt: "حلّل منحنى الشكل (أ) من ز0 إلى ز3. ماذا تستنتج؟",
+        promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [10]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -7689,20 +7937,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 5
       },
       {
         id: "2014-S2-E3-Q3",
         exerciseNumber: 3,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر النشاط التكتوني انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
-        maxPoints: 4,
+        page: 10,
+        prompt: "انطلاقا من معطيات الوثيقة 2 (ب)، وضّح مصير CO2 الممتص.",
+        promptSource: "official",
+        maxPoints: 2.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [10]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -7710,20 +7963,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 5
       },
       {
         id: "2014-S2-E3-Q4",
         exerciseNumber: 3,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ النشاط التكتوني.",
-        promptSource: "reconstructed",
+        page: 10,
+        prompt: "مثّل في رسم تخطيطي وظيفي العلاقة بين الآليات المدروسة في الجزأين I و II.",
+        promptSource: "official",
         maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [10]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -7731,13 +7989,13 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 5
       }
     ]
   },
   "2013/S1": {
     schemaVersion: 1,
-    status: "partial",
+    status: "complete",
     source: {
       kind: "local-pdf",
       locator: "https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-4463279.pdf",
@@ -7748,11 +8006,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
     document: {
       localPath: "/subjects/SE/2013/sujet-1.pdf",
       pages: 4,
-      pageOffset: null
+      pageOffset: 0
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
-      taskCompleteExerciseNumbers: []
+      taskCompleteExerciseNumbers: [1, 2, 3]
     },
     tasks: [
       {
@@ -7760,13 +8018,18 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 1,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ النسخ والترجمة؟",
-        promptSource: "reconstructed",
+        page: 1,
+        prompt: "ما هي المشكلة العلمية التي يراد معالجتها بواسطة التجربة الممثلة بالوثيقة (1)؟",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -7774,20 +8037,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2013-S1-E1-Q2",
         exerciseNumber: 1,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ النسخ والترجمة.",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        page: 1,
+        prompt: "حلّل التجربة ونتائجها.",
+        promptSource: "official",
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -7795,20 +8063,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2013-S1-E1-Q3",
         exerciseNumber: 1,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر النسخ والترجمة انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
-        maxPoints: 2,
+        page: 2,
+        prompt:
+          "ما هي العلاقة التي توجد بين الظاهرتين الملاحظتين في التسجيلين (س) و(ع) وبنية الجزء (ج1)؟ وماذا تستنتج؟",
+        promptSource: "official",
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -7816,20 +8090,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2013-S1-E1-Q4",
         exerciseNumber: 1,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ النسخ والترجمة.",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        page: 2,
+        prompt: "بيّن كيف تتدخل البروتينات في تحقيق النتائج الممثلة في الوثيقة (1).",
+        promptSource: "official",
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -7837,20 +8116,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2013-S1-E2-Q1",
         exerciseNumber: 2,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ الموقع الفعال للإنزيم؟",
-        promptSource: "reconstructed",
+        page: 3,
+        prompt: "ماذا تستنتج فيما يخص نوع الاستجابة المناعية؟ علّل إجابتك.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -7858,20 +8142,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2013-S1-E2-Q2",
         exerciseNumber: 2,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ الموقع الفعال للإنزيم.",
-        promptSource: "reconstructed",
-        maxPoints: 2.5,
+        page: 3,
+        prompt: "حلّل هذه النتائج التجريبية.",
+        promptSource: "official",
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -7879,20 +8168,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2013-S1-E2-Q3",
         exerciseNumber: 2,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر الموقع الفعال للإنزيم انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
-        maxPoints: 2.5,
+        page: 3,
+        prompt: "بيّن كيف يساهم كل من العنصر(2) والعنصر(3) في تحديد الخواص الوظيفية لهذه الجزيئة.",
+        promptSource: "official",
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -7900,20 +8194,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2013-S1-E2-Q4",
         exerciseNumber: 2,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ الموقع الفعال للإنزيم.",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        page: 3,
+        prompt: "مثّل برسومات تخطيطية طريقة تدخل هذه الجزيئة في تثبيت مولد الضد والتثبت على الخلايا البالعة.",
+        promptSource: "official",
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -7921,20 +8220,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2013-S1-E3-Q1",
         exerciseNumber: 3,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ الأجسام المضادة؟",
-        promptSource: "reconstructed",
-        maxPoints: 0.5,
+        page: 4,
+        prompt: "هل التنبيهات (ت1) و(ت2) تنبيهات فعالة؟ ولماذا؟",
+        promptSource: "official",
+        maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -7942,20 +8246,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2013-S1-E3-Q2",
         exerciseNumber: 3,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ الأجسام المضادة.",
-        promptSource: "reconstructed",
-        maxPoints: 2,
+        page: 4,
+        prompt: "فسّر تغيرات الاستقطاب عند (م3) في التجربة 1، ثمّ في التجربة 2.",
+        promptSource: "official",
+        maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -7963,20 +8272,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2013-S1-E3-Q3",
         exerciseNumber: 3,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر الأجسام المضادة انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
-        maxPoints: 4,
+        page: 4,
+        prompt: "كيف يكون التسجيل عند (م5) عند إحداث التنبيه (ت1) و(ت2) في نفس الوقت؟",
+        promptSource: "official",
+        maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -7984,20 +8298,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2013-S1-E3-Q4",
         exerciseNumber: 3,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ الأجسام المضادة.",
-        promptSource: "reconstructed",
-        maxPoints: 1.5,
+        page: 4,
+        prompt:
+          "قارن بين مفعول (GABA) ومفعول الأستيل كولين علما أنّ الأستيل كولين تفرز على مستوى الفراغ المشبكي للعصبون (ع2).",
+        promptSource: "official",
+        maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -8005,13 +8325,13 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       }
     ]
   },
   "2013/S2": {
     schemaVersion: 1,
-    status: "partial",
+    status: "complete",
     source: {
       kind: "local-pdf",
       locator: "https://www.dzexams.com/uploads/sujets/officiels/bac/2013/dzexams-bac-sciences-4463279.pdf",
@@ -8022,11 +8342,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
     document: {
       localPath: "/subjects/SE/2013/sujet-2.pdf",
       pages: 4,
-      pageOffset: null
+      pageOffset: 4
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
-      taskCompleteExerciseNumbers: []
+      taskCompleteExerciseNumbers: [1, 2, 3]
     },
     tasks: [
       {
@@ -8034,13 +8354,18 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 1,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ كمون العمل؟",
-        promptSource: "reconstructed",
+        page: 5,
+        prompt: "فسّر نتائج الجدول.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -8048,20 +8373,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2013-S2-E1-Q2",
         exerciseNumber: 1,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ كمون العمل.",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        page: 5,
+        prompt: "استخرج من الجدول شروط استمرار انطلاق الـ O2.",
+        promptSource: "official",
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -8069,20 +8399,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2013-S2-E1-Q3",
         exerciseNumber: 1,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر كمون العمل انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
-        maxPoints: 2,
+        page: 6,
+        prompt: "اشرح آلية انتقال الالكترونات في الأجزاء أ، ب، ج من الشكل (ب).",
+        promptSource: "official",
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [6]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -8090,20 +8425,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2013-S2-E1-Q4",
         exerciseNumber: 1,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ كمون العمل.",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        page: 6,
+        prompt: "حلّل منحنى الشكل (أ) من الوثيقة (2). ماذا تستنتج؟",
+        promptSource: "official",
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [6]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -8111,20 +8451,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2013-S2-E2-Q1",
         exerciseNumber: 2,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ ATP في الميتوكوندري؟",
-        promptSource: "reconstructed",
+        page: 6,
+        prompt: "ماذا يمثل (E-S)؟",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [6]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -8132,20 +8477,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2013-S2-E2-Q2",
         exerciseNumber: 2,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ ATP في الميتوكوندري.",
-        promptSource: "reconstructed",
-        maxPoints: 2.5,
+        page: 6,
+        prompt: "حلّل منحنيي الوثيقة (1).",
+        promptSource: "official",
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [6]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -8153,20 +8503,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2013-S2-E2-Q3",
         exerciseNumber: 2,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر ATP في الميتوكوندري انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
-        maxPoints: 2.5,
+        page: 7,
+        prompt: "ما هي الأسباب التي أدت إلى فقدان الإنزيم نشاطه؟ علّل إجابتك.",
+        promptSource: "official",
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [7]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -8174,20 +8529,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2013-S2-E2-Q4",
         exerciseNumber: 2,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ ATP في الميتوكوندري.",
-        promptSource: "reconstructed",
+        page: 6,
+        prompt: "ما هي طبيعة العلاقة البنيوية بين (E) و(S)؟",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [6]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -8195,20 +8555,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2013-S2-E3-Q1",
         exerciseNumber: 3,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ الحمل الحراري والصفائح؟",
-        promptSource: "reconstructed",
-        maxPoints: 0.5,
+        page: 7,
+        prompt: "حدّد المعطي الأكثر توافقا. برّر اختيارك.",
+        promptSource: "official",
+        maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [7]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -8216,20 +8581,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2013-S2-E3-Q2",
         exerciseNumber: 3,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ الحمل الحراري والصفائح.",
-        promptSource: "reconstructed",
+        page: 8,
+        prompt: "استخرج النمط التكويني للزمر الدموية للآباء، ثمّ حدّد الزمر الدموية للأبناء.",
+        promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [8]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -8237,20 +8607,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2013-S2-E3-Q3",
         exerciseNumber: 3,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر الحمل الحراري والصفائح انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
-        maxPoints: 4,
+        page: 8,
+        prompt: "كيف تفسّر حالة المعطي الأكثر توافقا؟",
+        promptSource: "official",
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [8]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -8258,20 +8633,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2013-S2-E3-Q4",
         exerciseNumber: 3,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ الحمل الحراري والصفائح.",
-        promptSource: "reconstructed",
-        maxPoints: 1.5,
+        page: 8,
+        prompt:
+          "من خلال ما توصلت إليه في الدراسة السابقة، استخلص نوع البروتينات الغشائية المتدخلة في تحديد الذات.",
+        promptSource: "official",
+        maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [8]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -8279,7 +8660,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       }
     ]
   },
