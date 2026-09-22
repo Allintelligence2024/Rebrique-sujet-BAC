@@ -1,15 +1,16 @@
 SRC subjects/SE/2019/sujet-1.pdf : 5 pages
-page 1 : ERREUR ValueError: object is no PDF dict
-page 2 : ERREUR ValueError: object is no PDF dict
-page 3 : ERREUR ValueError: object is no PDF dict
-page 4 : ERREUR ValueError: object is no PDF dict
-page 5 : ERREUR ValueError: object is no PDF dict
-img=3683863 txt=1292 échecs=5
+page 1 : mots=197 lignes=25 rtl=23 alpha=101 conf<30=3
+  ligne1 : 9
+page 2 : mots=338 lignes=44 rtl=29 alpha=109 conf<30=14
+page 3 : mots=149 lignes=20 rtl=14 alpha=92 conf<30=1
+page 4 : mots=149 lignes=33 rtl=27 alpha=81 conf<30=6
+page 5 : mots=269 lignes=29 rtl=27 alpha=85 conf<30=11
+img=3683863 txt=25282 échecs=0
 qpdf exit=0 
-FINAL incoming/se-2019-logical/sujet-1.pdf : 5 pages, 3685930 octets
+FINAL incoming/se-2019-logical/sujet-1.pdf : 5 pages, 3710046 octets
 --- page 1 couche finale ---
-
+9 / ةيروهمجلا / ةيرئازجلا / ةيطارقميدلا / ةيبعشلا / )= / ةرازو / ةيبرتلا / ةينطولاQW)‏ / ناويدلا / ينطولا / تاناحتمالل / تاقباسملاو / 2% / ناحتما / ايرولاكب / ميلعتلا / يوناثلا / :ةرود2019 / :ةبعشلا / مولع / ةيبيرجت / رابتخا / يف / :ةدام / مولع / ةعيبطلا / ةايحلاو / :ةدملا04اس / و30د / ىلع / حشرتملا / نأ / راتخي / دحأ / نيعوضوملا / :نييتآلا / عوضوملا / لوألا / يوتحي / عوضوملا / ىلع(05)تاحفص(نم / ةحفصلا1نم9ىلإ / ةحفصلا5نم9) / نيرمتلا / لوألا(05:)طاقن / Lay‏ / نوثحابلا / يف / لاجم / ةينوتكتلا / َّن َأ / نيكاربلا / ةيحفطلا / رشتنت / ىلع / ىوتسم / تارهظ / طسو / ةيطيحمCass‏ / اهنم / افال / bye’‏ / ةلئاس / لمعت / ىلع / ديدجت / ةرشقل
 --- page 2 couche finale ---
-
+9 / رابتخا / يف / :ةدام / مولع / ةعيبطلا / ةايحلاو//:ةبعشلا / مولع / ةيبيرجت//ايرولاكب2019 / جئاتنلا / لصحتملا / اهيلع / ةلثمم / يف / ةقيثولا(1): / Gus‏ / ُك ْي َم ُيJEAN‏(i)ضعب / صئاصخلا / ةيوينبلا / ميزنألGO‏ / دنع / نيرطفلا / مت / لوصحلا / اهيلع / ةطساوبeye‏ / بوتسار«(Rastop)‏Las / Jibلكشلا()ب / لسلستGales)‏ / ةينيمألا / يف / ةلسلسلا / ةيديتببلا / ميزنألGO‏ / دنع / لك / رطفEal‏ / نم / جمربم / نيجانأ(Anagène)‏ / ميزنأ / زوكولغ / زاديسكأGO‏ / رطف / سوليجريبسألا / رطف / مويلسينيبلا / ددع / ضامحألا / ةينيمألا581 / 587 / ددع / تاينبلا / ةيوناثلاOf‏26 / 25 / ددع / تاينبلا / ةيوناثلاB‏71 / 24 / Cys16s-Cysa10 / 01 / -Cy
 HEADER_LOGIQUE=NON
-RESIDU_VISUEL=NON
+RESIDU_VISUEL=OUI
