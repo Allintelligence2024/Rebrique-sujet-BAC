@@ -1,0 +1,1 @@
+PLANTAGE SCRIPT: ImportError: cannot import name 'HocrTransform' from 'ocrmypdf.hocrtransform' (/home/runner/.local/lib/python3.12/site-packages/ocrmypdf/hocrtransform/__init__.py)
