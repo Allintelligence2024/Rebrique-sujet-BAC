@@ -39,22 +39,34 @@ def qa(msg: str) -> None:
     print(msg, flush=True)
 
 
+def roundtrip_ok(fontfile: str) -> bool:
+    try:
+        d = fitz.open()
+        p = d.new_page(width=400, height=100)
+        p.insert_text(
+            fitz.Point(10, 50), "الجمهورية ابتث 2019", fontfile=fontfile, fontsize=12, render_mode=0
+        )
+        t = p.get_text()
+        d.close()
+        return "الجمهورية" in t and "ابتث" in t
+    except Exception:  # noqa: BLE001
+        return False
+
+
 def arabic_font(tmpdir: Path) -> str:
-    for pattern in ("/usr/share/fonts/**/Amiri*.ttf", "/usr/share/fonts/**/*.ttf"):
-        for cand in glob.glob(pattern, recursive=True):
-            try:
-                font = fitz.Font(fontfile=cand)
-                ok = font.has_glyph(ord("ا")) if hasattr(font, "has_glyph") else True
-                if ok:
-                    qa(f"police système : {cand}")
-                    return cand
-            except Exception:  # noqa: BLE001
-                continue
+    cands = sorted(glob.glob("/usr/share/fonts/**/*.ttf", recursive=True))
+    cands.sort(key=lambda c: (0 if re.search(r"amir|arab|naskh|lateef|kacst|scheher|noto", c, re.I) else 1))
+    qa(f"polices candidates : {len(cands)}")
+    for cand in cands[:40]:
+        if roundtrip_ok(cand):
+            qa(f"police système OK : {cand}")
+            return cand
     dest = tmpdir / "Amiri-Regular.ttf"
     urllib.request.urlretrieve(AMIRI_URL, str(dest))
-    fitz.Font(fontfile=str(dest))
-    qa(f"police téléchargée : {AMIRI_URL} ({dest.stat().st_size} o)")
-    return str(dest)
+    if roundtrip_ok(str(dest)):
+        qa(f"police téléchargée OK : Amiri OFL ({dest.stat().st_size} o)")
+        return str(dest)
+    raise RuntimeError("aucune police arabe utilisable")
 
 
 def read_tsv(path: Path):
@@ -94,19 +106,6 @@ def main(src: str, dest: str, qa_path: str) -> int:
             qa(f"POLICE INTROUVABLE : {type(e).__name__}: {e}")
             Path(qa_path).write_text("\n".join(QA) + "\n", encoding="utf-8")
             return 2
-        # Test aller-retour police/extraction.
-        probe_doc = fitz.open()
-        probe_page = probe_doc.new_page(width=400, height=100)
-        probe_page.insert_text(
-            fitz.Point(10, 50), "الجمهورية", fontfile=fontfile, fontsize=12, render_mode=0
-        )
-        roundtrip = "الجمهورية" in probe_page.get_text()
-        qa(f"aller-retour police/extraction : {'OK' if roundtrip else 'ÉCHEC'}")
-        probe_doc.close()
-        if not roundtrip:
-            Path(qa_path).write_text("\n".join(QA) + "\n", encoding="utf-8")
-            return 2
-
         doc = fitz.open(src)
         qa(f"SRC {src} : {doc.page_count} pages")
         img_doc = fitz.open()
