@@ -55,29 +55,26 @@ jobs:
           ls -la incoming/se-2023
           find incoming/se-2023 -type f -name '*.pdf' | grep -q .
 
-      # Les miroirs (eddirasa, ency, bac-algerie, dzexams) redistribuent tous le
-      # MÊME fichier à couche brouillée (vérifié : « اجلمهورية » partout) ou des
-      # scans sans couche. Télécharger ailleurs ne sert à rien : on reconstruit
-      # une couche saine par OCR (tesseract ara+fra+eng) depuis nos propres
-      # fichiers. --force-ocr jette la couche corrompue et garde un rendu
-      # 300 dpi visuellement identique.
-      - name: OCR SE 2019 Sciences (rebuild text layer)
+      # Les miroirs redistribuent tous le MÊME fichier brouillé (vérifié). On
+      # reconstruit donc une couche LOGIQUE par OCR : tesseract hOCR puis
+      # réordonnancement RTL (scripts/ocr-logical-layer.py) avant fusion.
+      # Tout diagnostic part dans incoming/ (commité) car les logs Actions sont
+      # inaccessibles depuis le sandbox.
+      - name: OCR SE 2019 Sciences (logical layer rebuild)
         run: |
           set -euo pipefail
           sudo apt-get update -qq
-          sudo apt-get install -y -qq ocrmypdf tesseract-ocr tesseract-ocr-ara tesseract-ocr-fra tesseract-ocr-eng
-          mkdir -p incoming/se-2019-ocr
-          ocr() {
-            local src="$1" dest="$2"
-            echo "OCR $src -> $dest"
-            ocrmypdf -l ara+fra+eng --force-ocr --optimize 1 --oversample 300 \
-              --output-type pdf "$src" "$dest"
-            echo "OK $dest $(wc -c < "$dest") bytes"
-          }
-          ocr subjects/SE/2019/sujet-1.pdf incoming/se-2019-ocr/sujet-1.pdf
-          ocr subjects/SE/2019/sujet-2.pdf incoming/se-2019-ocr/sujet-2.pdf
-          ls -la incoming/se-2019-ocr
-          find incoming/se-2019-ocr -type f -name '*.pdf' | grep -q .
+          sudo apt-get install -y -qq tesseract-ocr tesseract-ocr-ara tesseract-ocr-fra tesseract-ocr-eng qpdf
+          pip install --quiet ocrmypdf pymupdf lxml
+          mkdir -p incoming/se-2019-logical
+          python3 scripts/ocr-logical-layer.py subjects/SE/2019/sujet-1.pdf \
+            incoming/se-2019-logical/sujet-1.pdf incoming/se-2019-logical/qa-sujet-1.txt \
+            incoming/se-2019-logical/hocr-p1-sujet-1.html
+          python3 scripts/ocr-logical-layer.py subjects/SE/2019/sujet-2.pdf \
+            incoming/se-2019-logical/sujet-2.pdf incoming/se-2019-logical/qa-sujet-2.txt \
+            incoming/se-2019-logical/hocr-p1-sujet-2.html
+          ls -la incoming/se-2019-logical
+          find incoming/se-2019-logical -type f -name '*.pdf' | grep -q .
 
       - uses: actions/upload-artifact@v4
         with:
@@ -87,8 +84,8 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: se-2019-ocr
-          path: incoming/se-2019-ocr
+          name: se-2019-logical
+          path: incoming/se-2019-logical
           if-no-files-found: error
 
       - name: Commit the PDFs so they can be pulled over github.com
@@ -96,11 +93,11 @@ jobs:
           set -euo pipefail
           git config user.name "arena-ai-coding-agent[bot]"
           git config user.email "41898282+arena-ai-coding-agent[bot]@users.noreply.github.com"
-          git add incoming/se-2023 incoming/se-2014 incoming/se-2019-ocr
+          git add incoming/se-2023 incoming/se-2014 incoming/se-2019-logical
           git status
           if git diff --cached --quiet; then
             echo "No new PDF to commit"
             exit 0
           fi
-          git commit -m "OCR SE 2019 Sciences : couche texte reconstruite (tesseract ara+fra+eng)"
+          git commit -m "OCR SE 2019 Sciences : couche texte LOGIQUE reconstruite"
           git push origin "HEAD:${{ github.ref_name }}"
