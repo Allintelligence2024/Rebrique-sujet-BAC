@@ -63,10 +63,16 @@ jobs:
       - name: OCR SE 2019 Sciences (logical layer rebuild)
         run: |
           set -euo pipefail
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq tesseract-ocr tesseract-ocr-ara tesseract-ocr-fra tesseract-ocr-eng qpdf
-          pip install --quiet ocrmypdf pymupdf lxml
           mkdir -p incoming/se-2019-logical
+          {
+            echo "## versions"
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq tesseract-ocr tesseract-ocr-ara tesseract-ocr-fra tesseract-ocr-eng qpdf
+            pip install --quiet --break-system-packages ocrmypdf pymupdf lxml
+            tesseract --version | head -2
+            qpdf --version
+            python3 -c "import ocrmypdf, fitz; print('ocrmypdf OK', ocrmypdf.__version__)"
+          } 2>&1 | tee incoming/se-2019-logical/setup.log
           python3 scripts/ocr-logical-layer.py subjects/SE/2019/sujet-1.pdf \
             incoming/se-2019-logical/sujet-1.pdf incoming/se-2019-logical/qa-sujet-1.txt \
             incoming/se-2019-logical/hocr-p1-sujet-1.html
@@ -89,6 +95,7 @@ jobs:
           if-no-files-found: error
 
       - name: Commit the PDFs so they can be pulled over github.com
+        if: always()
         run: |
           set -euo pipefail
           git config user.name "arena-ai-coding-agent[bot]"
