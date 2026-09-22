@@ -81,8 +81,28 @@ def reorder_hocr_rtl(hocr_path: Path) -> tuple:
     return etree.tostring(tree, encoding="utf-8"), stats, sample_before, sample_after
 
 
+def load_hocr_transform():
+    import ocrmypdf
+
+    qa(f"ocrmypdf version={ocrmypdf.__version__}")
+    try:
+        from ocrmypdf.hocrtransform import HocrTransform
+
+        qa("HocrTransform via ocrmypdf.hocrtransform")
+        return HocrTransform
+    except ImportError as e:
+        qa(f"import direct impossible : {e}")
+    import ocrmypdf.hocrtransform as ht
+
+    qa("exports hocrtransform : " + ", ".join(n for n in dir(ht) if not n.startswith("_"))[:300])
+    from ocrmypdf.hocrtransform.hocrtransform import HocrTransform
+
+    qa("HocrTransform via ocrmypdf.hocrtransform.hocrtransform")
+    return HocrTransform
+
+
 def main(src: str, dest: str, qa_path: str, hocr_sample_path: str) -> int:
-    from ocrmypdf.hocrtransform import HocrTransform
+    HocrTransform = load_hocr_transform()
 
     failures = 0
     with tempfile.TemporaryDirectory() as tmp:
@@ -165,6 +185,8 @@ if __name__ == "__main__":
     try:
         code = main(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
     except Exception as e:  # noqa: BLE001
-        Path(sys.argv[3]).write_text(f"PLANTAGE SCRIPT: {type(e).__name__}: {e}\n", encoding="utf-8")
+        Path(sys.argv[3]).write_text(
+            "\n".join(qa_lines) + f"\nPLANTAGE SCRIPT: {type(e).__name__}: {e}\n", encoding="utf-8"
+        )
         raise
     sys.exit(code)

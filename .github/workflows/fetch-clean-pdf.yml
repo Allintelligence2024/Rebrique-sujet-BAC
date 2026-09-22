@@ -72,7 +72,7 @@ jobs:
             tesseract --version | head -2
             qpdf --version
             python3 -c "import ocrmypdf, fitz; print('ocrmypdf OK', ocrmypdf.__version__)"
-          } 2>&1 | tee incoming/se-2019-logical/setup.log
+          } 2>&1 | tee incoming/se-2019-logical/setup.txt
           python3 scripts/ocr-logical-layer.py subjects/SE/2019/sujet-1.pdf \
             incoming/se-2019-logical/sujet-1.pdf incoming/se-2019-logical/qa-sujet-1.txt \
             incoming/se-2019-logical/hocr-p1-sujet-1.html
