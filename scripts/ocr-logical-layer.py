@@ -30,7 +30,7 @@ import fitz  # pymupdf
 DPI = 300
 ARABIC_RE = re.compile(r"[\u0600-\u06FF]")
 LATIN_RE = re.compile(r"[A-Za-z]")
-AMIRI_URL = "https://github.com/google/fonts/raw/main/ofl/amiri/Amiri-Regular.ttf"
+AMIRI_URL = "https://raw.githubusercontent.com/google/fonts/main/ofl/amiri/Amiri-Regular.ttf"
 QA: list = []
 
 
@@ -39,7 +39,8 @@ def qa(msg: str) -> None:
     print(msg, flush=True)
 
 
-def roundtrip_ok(fontfile: str) -> bool:
+def roundtrip_probe(fontfile: str):
+    """Retourne (ok, extrait_repr) : diagnostic complet pour le QA."""
     try:
         d = fitz.open()
         p = d.new_page(width=400, height=100)
@@ -48,9 +49,15 @@ def roundtrip_ok(fontfile: str) -> bool:
         )
         t = p.get_text()
         d.close()
-        return "الجمهورية" in t and "ابتث" in t
-    except Exception:  # noqa: BLE001
-        return False
+        ok = "الجمهورية" in t and "ابتث" in t
+        return ok, repr(t[:60])
+    except Exception as e:  # noqa: BLE001
+        return False, f"{type(e).__name__}: {e}"
+
+
+def roundtrip_ok(fontfile: str) -> bool:
+    ok, _ = roundtrip_probe(fontfile)
+    return ok
 
 
 def arabic_font(tmpdir: Path) -> str:
@@ -58,13 +65,18 @@ def arabic_font(tmpdir: Path) -> str:
     cands.sort(key=lambda c: (0 if re.search(r"amir|arab|naskh|lateef|kacst|scheher|noto", c, re.I) else 1))
     qa(f"polices candidates : {len(cands)}")
     for cand in cands[:40]:
-        if roundtrip_ok(cand):
+        ok, extrait = roundtrip_probe(cand)
+        if ok:
             qa(f"police système OK : {cand}")
             return cand
+    qa(f"exemple rejeté : {cands[0] if cands else '?'} -> {roundtrip_probe(cands[0])[1] if cands else '?'}")
     dest = tmpdir / "Amiri-Regular.ttf"
     urllib.request.urlretrieve(AMIRI_URL, str(dest))
-    if roundtrip_ok(str(dest)):
-        qa(f"police téléchargée OK : Amiri OFL ({dest.stat().st_size} o)")
+    qa(f"Amiri téléchargée : {dest.stat().st_size} o")
+    ok, extrait = roundtrip_probe(str(dest))
+    qa(f"Amiri extrait : {extrait}")
+    if ok:
+        qa("police téléchargée OK : Amiri OFL")
         return str(dest)
     raise RuntimeError("aucune police arabe utilisable")
 

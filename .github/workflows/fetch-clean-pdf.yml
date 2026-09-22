@@ -70,6 +70,7 @@ jobs:
             echo "## versions"
             sudo apt-get update -qq
             sudo apt-get install -y -qq tesseract-ocr tesseract-ocr-ara tesseract-ocr-fra tesseract-ocr-eng qpdf
+            sudo apt-get install -y -qq fonts-sil-lateef fonts-kacst fonts-hosny-amiri || echo "polices apt optionnelles indisponibles"
           pip install --quiet --break-system-packages pymupdf
             tesseract --version | head -2
             qpdf --version
