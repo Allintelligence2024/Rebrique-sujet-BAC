@@ -1,5 +1,15 @@
-polices candidates : 83
-exemple rejeté : /usr/share/fonts/opentype/fonts-hosny-amiri/Amiri-Bold.ttf -> '········· ···· 2019\n'
-Amiri téléchargée : 431116 o
-Amiri extrait : '········· ···· 2019\n'
-POLICE INTROUVABLE : RuntimeError: aucune police arabe utilisable
+SRC subjects/SE/2019/sujet-1.pdf : 5 pages
+page 1 : ERREUR ValueError: object is no PDF dict
+page 2 : ERREUR ValueError: object is no PDF dict
+page 3 : ERREUR ValueError: object is no PDF dict
+page 4 : ERREUR ValueError: object is no PDF dict
+page 5 : ERREUR ValueError: object is no PDF dict
+img=3683863 txt=1292 échecs=5
+qpdf exit=0 
+FINAL incoming/se-2019-logical/sujet-1.pdf : 5 pages, 3685930 octets
+--- page 1 couche finale ---
+
+--- page 2 couche finale ---
+
+HEADER_LOGIQUE=NON
+RESIDU_VISUEL=NON
