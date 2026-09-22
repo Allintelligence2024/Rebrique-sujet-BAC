@@ -1,1 +1,4 @@
-PLANTAGE SCRIPT: ImportError: cannot import name 'HocrTransform' from 'ocrmypdf.hocrtransform' (/home/runner/.local/lib/python3.12/site-packages/ocrmypdf/hocrtransform/__init__.py)
+ocrmypdf version=17.12.1
+import direct impossible : cannot import name 'HocrTransform' from 'ocrmypdf.hocrtransform' (/home/runner/.local/lib/python3.12/site-packages/ocrmypdf/hocrtransform/__init__.py)
+exports hocrtransform : Baseline, BoundingBox, FontInfo, HocrParseError, HocrParser, OcrClass, OcrElement, annotations, hocr_parser
+PLANTAGE SCRIPT: ModuleNotFoundError: No module named 'ocrmypdf.hocrtransform.hocrtransform'
