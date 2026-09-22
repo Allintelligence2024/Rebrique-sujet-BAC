@@ -1,31 +1,8 @@
-ocrmypdf version=15.4.4
-HocrTransform via ocrmypdf.hocrtransform
 SRC subjects/SE/2019/sujet-1.pdf : 5 pages
-page 1 : lignes=24 rtl=20 réordonnées=2
-  avant : الجمهورية | الجزائرية | الديمقراطية | الشعبية
-  après : الجمهورية | الجزائرية | الديمقراطية | الشعبية
-page 1 : ERREUR TypeError: HocrTransform.__init__() takes 1 positional argument but 2 were given
-page 2 : lignes=43 rtl=21 réordonnées=2
-  avant : عدد | الأحماض | الأمينية
-  après : عدد | الأحماض | الأمينية
-page 2 : ERREUR TypeError: HocrTransform.__init__() takes 1 positional argument but 2 were given
-page 3 : lignes=19 rtl=13 réordonnées=2
-  avant : اختبار | في | مادة: | علوم | الطبيعة | والحياة
-  après : اختبار | في | مادة: | علوم | الطبيعة | والحياة
-page 3 : ERREUR TypeError: HocrTransform.__init__() takes 1 positional argument but 2 were given
-page 4 : lignes=24 rtl=17 réordonnées=0
-  avant : الجزء | الأول:
-  après : الجزء | الأول:
-page 4 : ERREUR TypeError: HocrTransform.__init__() takes 1 positional argument but 2 were given
-page 5 : lignes=29 rtl=25 réordonnées=2
-  avant : اختبار | في | مادة: | علوم | الطبيعة | والحياة
-  après : اختبار | في | مادة: | علوم | الطبيعة | والحياة
-page 5 : ERREUR TypeError: HocrTransform.__init__() takes 1 positional argument but 2 were given
-img.pdf=130555803 txt.pdf=1188 échecs=5
-qpdf overlay exit=0 
-FINAL incoming/se-2019-logical/sujet-1.pdf : 5 pages, 5482719 octets
+hocr p1 : OK
+FINAL incoming/se-2019-logical/sujet-1.pdf : 5 pages, 3698339 octets, échecs=0
 --- page 1 couche finale ---
-
+9  /  ةيبعشلا ةيطارقميدلا ةيرئازجلا ةيروهمجلا /  =) /  ةينطولا ةيبرتلا ةرازو / QW) ‏ /  تاقباسملاو تاناحتمالل ينطولا ناويدلا2%  /  يوناثلا ميلعتلا ايرولاكب ناحتما /  :ةرود2019  /  ةيبيرجت مولع :ةبعشلا /  ةايحلاو ةعيبطلا مولع :ةدام يف رابتخا /  :ةدملا04 و اس30  د /  :نييتآلا نيعوضوملا دحأ راتخي نأ حشرتملا ىلع /  لوألا عوضوملا / ( ىلع عوضوملا يوتحي05)  ةحفصلا نم( تاحفص1  نم9  ةحفصلا ىلإ5  نم9)  / ( لوألا نيرمتلا05  :)طاقن / Lay ‏ /  لاجم يف نوثحابلا /  ةيطيحم طسو تارهظ ىوتسم ىلع رشتنت ةيحفطلا نيكاربلا َّن َأ ةينوتكتلا / Cass ‏ /  افال
 --- page 2 couche finale ---
-
+9  /  ايرولاكب // ةيبيرجت مولع :ةبعشلا // ةايحلاو ةعيبطلا مولع :ةدام يف رابتخا2019  / ( ةقيثولا يف ةلثمم اهيلع لصحتملا جئاتنلا1):  / Gus ‏ /  ُك ْي َم ُي / (i) JEAN ‏ /  ميزنأل ةيوينبلا صئاصخلا ضعب / GO ‏ /  دنع /  ةطساوب اهيلع لوصحلا مت نيرطفلا / eye ‏ /  بوتسار / Jib Las «(Rastop) ‏ /  لسلست )ب( لكشلا / Gales) ‏ /  يف ةينيمألا /  ميزنأل ةيديتببلا ةلسلسلا / GO ‏ /  رطف لك دنع / Eal ‏ /  نيجانأ جمربم نم / (Anagène) ‏ /  زاديسكأ زوكولغ ميزنأ / GO ‏ /  سوليجريبسألا رطف /  مويلسينيبلا رطف /  ةينيمألا ضامحألا ددع581  / 587  /  ةيوناثلا تاينبلا ددع / Of ‏26
 HEADER_LOGIQUE=NON
