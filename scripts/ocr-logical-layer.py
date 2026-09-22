@@ -2,27 +2,26 @@
 """Reconstruit un PDF « image + couche texte LOGIQUE » depuis un PDF source.
 
 Contexte : les PDF dzexams ont une couche texte irrécupérable (ordre visuel
-+ paires de lettres échangées). tesseract reconnaît juste mais sérialise les
-mots de gauche à droite (couche visuelle), avec ou sans ocrmypdf. Ce script
-prend donc le TSV tesseract (mots logiques + boîtes) et écrit lui-même la
-couche invisible avec PyMuPDF : lignes RTL triées droite→gauche, mots en
-ordre logique, render_mode=3 (invisible). Fusion image+texte via qpdf.
++ paires de lettres échangées). tesseract reconnaît juste (mots logiques)
+mais tous les sérialiseurs couchent les mots de gauche à droite. Ce script
+écrit donc la couche lui-même : police simple Helvetica (jamais rastérisée,
+render mode 3 = invisible) + ToUnicode maison qui mappe chaque octet vers le
+caractère logique canonique (U+0600–U+06FF, pas de formes de présentation).
+Aucune police arabe requise, aucun façonnage : l'extraction rend l'arabe
+logique, que le navigateur met en forme à la copie.
+
+Pipeline : rendu 300 dpi → tesseract TSV → tri RTL droite→gauche par ligne
+→ page de texte invisible → qpdf --overlay sur l'image.
 
 Usage (sur le runner CI) :
     python3 scripts/ocr-logical-layer.py <src.pdf> <dest.pdf> <qa.txt>
-
-Dépendances runner : tesseract-ocr + langs, qpdf, python3 + pymupdf.
-Police arabe : cherchée sur le système, sinon téléchargée (Amiri, OFL).
-Tout diagnostic part dans le QA (commité).
 """
 
 import csv
-import glob
 import re
 import subprocess
 import sys
 import tempfile
-import urllib.request
 from pathlib import Path
 
 import fitz  # pymupdf
@@ -30,55 +29,12 @@ import fitz  # pymupdf
 DPI = 300
 ARABIC_RE = re.compile(r"[\u0600-\u06FF]")
 LATIN_RE = re.compile(r"[A-Za-z]")
-AMIRI_URL = "https://raw.githubusercontent.com/google/fonts/main/ofl/amiri/Amiri-Regular.ttf"
 QA: list = []
 
 
 def qa(msg: str) -> None:
     QA.append(msg)
     print(msg, flush=True)
-
-
-def roundtrip_probe(fontfile: str):
-    """Retourne (ok, extrait_repr) : diagnostic complet pour le QA."""
-    try:
-        d = fitz.open()
-        p = d.new_page(width=400, height=100)
-        p.insert_text(
-            fitz.Point(10, 50), "الجمهورية ابتث 2019", fontfile=fontfile, fontsize=12, render_mode=0
-        )
-        t = p.get_text()
-        d.close()
-        ok = "الجمهورية" in t and "ابتث" in t
-        return ok, repr(t[:60])
-    except Exception as e:  # noqa: BLE001
-        return False, f"{type(e).__name__}: {e}"
-
-
-def roundtrip_ok(fontfile: str) -> bool:
-    ok, _ = roundtrip_probe(fontfile)
-    return ok
-
-
-def arabic_font(tmpdir: Path) -> str:
-    cands = sorted(glob.glob("/usr/share/fonts/**/*.ttf", recursive=True))
-    cands.sort(key=lambda c: (0 if re.search(r"amir|arab|naskh|lateef|kacst|scheher|noto", c, re.I) else 1))
-    qa(f"polices candidates : {len(cands)}")
-    for cand in cands[:40]:
-        ok, extrait = roundtrip_probe(cand)
-        if ok:
-            qa(f"police système OK : {cand}")
-            return cand
-    qa(f"exemple rejeté : {cands[0] if cands else '?'} -> {roundtrip_probe(cands[0])[1] if cands else '?'}")
-    dest = tmpdir / "Amiri-Regular.ttf"
-    urllib.request.urlretrieve(AMIRI_URL, str(dest))
-    qa(f"Amiri téléchargée : {dest.stat().st_size} o")
-    ok, extrait = roundtrip_probe(str(dest))
-    qa(f"Amiri extrait : {extrait}")
-    if ok:
-        qa("police téléchargée OK : Amiri OFL")
-        return str(dest)
-    raise RuntimeError("aucune police arabe utilisable")
 
 
 def read_tsv(path: Path):
@@ -108,16 +64,112 @@ def read_tsv(path: Path):
     return words
 
 
+def byte_pool():
+    pool = [b for b in range(0x20, 0x7F) if b not in (0x28, 0x29, 0x5C)]
+    pool += list(range(0xA0, 0x100))
+    return pool
+
+
+def encode_word(word, code_of):
+    out = bytearray()
+    for ch in word:
+        code = code_of.get(ch)
+        if code is None:
+            continue
+        if code in (0x28, 0x29, 0x5C):
+            out.append(0x5C)
+        out.append(code)
+    return bytes(out)
+
+
+def build_text_page(txt_doc, ordered_lines, page_w_pt, page_h_pt):
+    """Page de texte invisible : alphabet de la page → octets → ToUnicode."""
+    alphabet = []
+    for _, words in ordered_lines:
+        for w in words:
+            for ch in w["text"]:
+                if ch not in alphabet:
+                    alphabet.append(ch)
+    pool = byte_pool()
+    if len(alphabet) > len(pool):
+        alphabet = alphabet[: len(pool)]
+    code_of = {ch: pool[i] for i, ch in enumerate(alphabet)}
+    # Largeurs relatives mesurées (moyenne par caractère).
+    acc: dict = {}
+    for _, words in ordered_lines:
+        for w in words:
+            fs = max(w["h"] * 72 / DPI * 0.72, 4)
+            if not w["text"]:
+                continue
+            rel = (w["w"] * 72 / DPI) / (len(w["text"]) * fs) * 1000
+            for ch in w["text"]:
+                if ch in code_of:
+                    s, n = acc.get(ch, (0.0, 0))
+                    acc[ch] = (s + min(max(rel, 200), 1200), n + 1)
+    widths = []
+    for code in range(32, 256):
+        ch = next((c for c, b in code_of.items() if b == code), None)
+        if ch is not None and ch in acc:
+            s, n = acc[ch]
+            widths.append(str(int(s / n)))
+        else:
+            widths.append("500")
+    # ToUnicode CMap (blocs de 100 max).
+    items = sorted(code_of.items(), key=lambda kv: kv[1])
+    bfchars = []
+    for i in range(0, len(items), 100):
+        block = items[i : i + 100]
+        bfchars.append(f"{len(block)} beginbfchar")
+        for ch, code in block:
+            bfchars.append(f"<{code:02X}> <{ord(ch):04X}>")
+        bfchars.append("endbfchar")
+    cmap = (
+        "/CIDInit /ProcSet findresource begin 12 dict begin begincmap "
+        "/CIDSystemInfo << /Registry (Adobe) /Ordering (UCS) /Supplement 0 >> def "
+        "/CMapName /Adobe-Identity-UCS def /CMapType 2 def "
+        "1 begincodespacerange <00> <FF> endcodespacerange "
+        + " ".join(bfchars)
+        + " endcmap CMapName currentdict /CMap defineresource pop end end"
+    )
+    page = txt_doc.new_page(width=page_w_pt, height=page_h_pt)
+    txref = txt_doc.get_new_xref()
+    txt_doc.update_stream(txref, cmap.encode("ascii"))
+    fxref = txt_doc.get_new_xref()
+    txt_doc.update_object(
+        fxref,
+        "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /FirstChar 32 /LastChar 255 "
+        f"/Widths [{' '.join(widths)}] /Encoding /WinAnsiEncoding /ToUnicode {txref} 0 R >>",
+    )
+    txt_doc.xref_set_key(page.xref, "Resources", f"<< /Font << /F1 {fxref} 0 R >> >>")
+    ops = []
+    for _, words in ordered_lines:
+        for w in words:
+            enc = encode_word(w["text"], code_of)
+            if not enc:
+                continue
+            fs = max(w["h"] * 72 / DPI * 0.72, 4)
+            x_pt = w["left"] * 72 / DPI
+            baseline = page_h_pt - (w["top"] + 0.8 * w["h"]) * 72 / DPI
+            ops.append(
+                f"BT /F1 {fs:.2f} Tf 3 Tr 1 0 0 1 {x_pt:.2f} {baseline:.2f} Tm (".encode("ascii")
+                + enc
+                + b") Tj ET"
+            )
+    content = b"\n".join(ops)
+    existing = page.get_contents()
+    if existing:
+        txt_doc.update_stream(existing[0], content)
+    else:
+        cxref = txt_doc.get_new_xref()
+        txt_doc.update_stream(cxref, content)
+        txt_doc.xref_set_key(page.xref, "Contents", f"{cxref} 0 R")
+    return len(alphabet)
+
+
 def main(src: str, dest: str, qa_path: str) -> int:
     failures = 0
     with tempfile.TemporaryDirectory() as tmp:
         tmpdir = Path(tmp)
-        try:
-            fontfile = arabic_font(tmpdir)
-        except Exception as e:  # noqa: BLE001
-            qa(f"POLICE INTROUVABLE : {type(e).__name__}: {e}")
-            Path(qa_path).write_text("\n".join(QA) + "\n", encoding="utf-8")
-            return 2
         doc = fitz.open(src)
         qa(f"SRC {src} : {doc.page_count} pages")
         img_doc = fitz.open()
@@ -147,31 +199,20 @@ def main(src: str, dest: str, qa_path: str) -> int:
                 lines: dict = {}
                 for w in words:
                     lines.setdefault(w["line"], []).append(w)
-                tp = txt_doc.new_page(width=w_pt, height=h_pt)
+                ordered = []
                 rtl_count = 0
                 for key in sorted(lines, key=lambda k: min(w["top"] for w in lines[k])):
                     line = lines[key]
                     joined = " ".join(w["text"] for w in line)
                     rtl = len(ARABIC_RE.findall(joined)) >= len(LATIN_RE.findall(joined))
                     rtl_count += 1 if rtl else 0
-                    ordered = sorted(line, key=lambda w: w["left"], reverse=rtl)
-                    for w in ordered:
-                        x_pt = w["left"] * 72 / DPI
-                        h_pt_w = max(w["h"] * 72 / DPI, 4)
-                        baseline = h_pt - (w["top"] + 0.8 * w["h"]) * 72 / DPI
-                        tp.insert_text(
-                            fitz.Point(x_pt, baseline),
-                            w["text"],
-                            fontfile=fontfile,
-                            fontsize=max(h_pt_w * 0.72, 4),
-                            render_mode=3,
-                        )
+                    ordered.append((key, sorted(line, key=lambda w: w["left"], reverse=rtl)))
+                nalpha = build_text_page(txt_doc, ordered, w_pt, h_pt)
                 confs = [w["conf"] for w in words]
                 lo = sum(1 for c in confs if c < 30)
-                qa(f"page {pno + 1} : mots={len(words)} lignes={len(lines)} rtl={rtl_count} conf<30={lo}")
-                if pno == 0:
-                    first = sorted(lines, key=lambda k: min(w["top"] for w in lines[k]))[0]
-                    qa("  ligne1 : " + " | ".join(w["text"] for w in lines[first][:8]))
+                qa(f"page {pno + 1} : mots={len(words)} lignes={len(lines)} rtl={rtl_count} alpha={nalpha} conf<30={lo}")
+                if pno == 0 and ordered:
+                    qa("  ligne1 : " + " | ".join(w["text"] for w in ordered[0][1][:8]))
             except Exception as e:  # noqa: BLE001
                 qa(f"page {pno + 1} : ERREUR {type(e).__name__}: {str(e)[:300]}")
                 failures += 1
@@ -195,7 +236,9 @@ def main(src: str, dest: str, qa_path: str) -> int:
         for pno in range(min(final.page_count, 2)):
             qa(f"--- page {pno + 1} couche finale ---")
             qa(final[pno].get_text()[:500].replace("\n", " / "))
-        qa(f"HEADER_LOGIQUE={'OUI' if 'الجمهورية الجزائرية الديمقراطية الشعبية' in final[0].get_text() else 'NON'}")
+        t0 = final[0].get_text()
+        qa(f"HEADER_LOGIQUE={'OUI' if 'الجمهورية الجزائرية الديمقراطية الشعبية' in t0 else 'NON'}")
+        qa(f"RESIDU_VISUEL={'OUI' if ('اجلمهورية' in t0 or 'ةيروهمجلا' in t0) else 'NON'}")
         final.close()
     Path(qa_path).write_text("\n".join(QA) + "\n", encoding="utf-8")
     return 0 if failures == 0 else 1

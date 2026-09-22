@@ -60,8 +60,8 @@ jobs:
       # rendu 300 dpi → tesseract TSV (mots logiques + boîtes) → tri RTL
       # droite→gauche → couche invisible PyMuPDF → qpdf --overlay.
       # Tout diagnostic part dans incoming/ (commité) car les logs Actions sont
-      # inaccessibles depuis le sandbox. Police : test aller-retour obligatoire
-      # (DejaVu passe has_glyph mais ne rend pas l'arabe).
+      # inaccessibles depuis le sandbox. Couche : Helvetica invisible +
+      # ToUnicode maison (aucune police arabe requise, extraction canonique).
       - name: OCR SE 2019 Sciences (logical layer rebuild)
         run: |
           set -euo pipefail
