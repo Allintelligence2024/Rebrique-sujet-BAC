@@ -4,21 +4,28 @@ SRC subjects/SE/2019/sujet-1.pdf : 5 pages
 page 1 : lignes=24 rtl=20 réordonnées=2
   avant : الجمهورية | الجزائرية | الديمقراطية | الشعبية
   après : الجمهورية | الجزائرية | الديمقراطية | الشعبية
-page 1 : ERREUR TypeError: HocrTransform.__init__() takes 1 positional argument but 3 were given
+page 1 : ERREUR TypeError: HocrTransform.__init__() takes 1 positional argument but 2 were given
 page 2 : lignes=43 rtl=21 réordonnées=2
   avant : عدد | الأحماض | الأمينية
   après : عدد | الأحماض | الأمينية
-page 2 : ERREUR TypeError: HocrTransform.__init__() takes 1 positional argument but 3 were given
+page 2 : ERREUR TypeError: HocrTransform.__init__() takes 1 positional argument but 2 were given
 page 3 : lignes=19 rtl=13 réordonnées=2
   avant : اختبار | في | مادة: | علوم | الطبيعة | والحياة
   après : اختبار | في | مادة: | علوم | الطبيعة | والحياة
-page 3 : ERREUR TypeError: HocrTransform.__init__() takes 1 positional argument but 3 were given
+page 3 : ERREUR TypeError: HocrTransform.__init__() takes 1 positional argument but 2 were given
 page 4 : lignes=24 rtl=17 réordonnées=0
   avant : الجزء | الأول:
   après : الجزء | الأول:
-page 4 : ERREUR TypeError: HocrTransform.__init__() takes 1 positional argument but 3 were given
+page 4 : ERREUR TypeError: HocrTransform.__init__() takes 1 positional argument but 2 were given
 page 5 : lignes=29 rtl=25 réordonnées=2
   avant : اختبار | في | مادة: | علوم | الطبيعة | والحياة
   après : اختبار | في | مادة: | علوم | الطبيعة | والحياة
-page 5 : ERREUR TypeError: HocrTransform.__init__() takes 1 positional argument but 3 were given
-PLANTAGE SCRIPT: ValueError: cannot save with zero pages
+page 5 : ERREUR TypeError: HocrTransform.__init__() takes 1 positional argument but 2 were given
+img.pdf=130555803 txt.pdf=1188 échecs=5
+qpdf overlay exit=0 
+FINAL incoming/se-2019-logical/sujet-1.pdf : 5 pages, 5482719 octets
+--- page 1 couche finale ---
+
+--- page 2 couche finale ---
+
+HEADER_LOGIQUE=NON
