@@ -15,18 +15,52 @@ import { simulationBlockersArabic } from "../coverage-messages.js";
    structurées 4D depuis le 2026-09-20), et noter
    sa propre copie sur 8 ou 12 points avant de l'avoir écrite n'a jamais rien
    mesuré. Une échelle de confiance, si. */
+/* Le pourcentage n'est pas une note d'examen. C'est la lecture, en %, du
+   choix de l'élève sur chaque exercice. « جيد » partout = 70 %. Le barème
+   imprimé (5, 7, 8…) pèse : un exercice à 8 points compte plus qu'un
+   exercice à 5. Le bouton ne rougit pas parce que le pourcentage est bas :
+   il rougit seulement si l'autre sujet a une probabilité plus haute. */
 export const CONFIDENCE_LEVELS = [
-  { value: 4, label: "ممتاز" },
-  { value: 3, label: "جيد جداً" },
-  { value: 2, label: "جيد" },
-  { value: 1, label: "متوسط" },
-  { value: 0, label: "يحتاج تعلّماً" }
+  { value: 4, label: "ممتاز", percent: 90 },
+  { value: 3, label: "جيد جداً", percent: 80 },
+  { value: 2, label: "جيد", percent: 70 },
+  { value: 1, label: "متوسط", percent: 50 },
+  { value: 0, label: "يحتاج تعلّماً", percent: 30 }
 ];
+
+const PERCENT_BY_VALUE = new Map(CONFIDENCE_LEVELS.map((level) => [level.value, level.percent]));
 
 function confidenceLabel(mean) {
   return CONFIDENCE_LEVELS.reduce((closest, level) =>
     Math.abs(level.value - mean) < Math.abs(closest.value - mean) ? level : closest
   ).label;
+}
+
+function clampLevel(value) {
+  if (!Number.isFinite(value)) return null;
+  return Math.min(4, Math.max(0, Math.round(value)));
+}
+
+/** Moyenne des % de chaque exercice. `weights` = barème imprimé, si mesuré. */
+export function masteryPercent(values, weights) {
+  const pairs = [];
+  for (let index = 0; index < values.length; index += 1) {
+    const level = clampLevel(Number(values[index]));
+    if (level === null || !PERCENT_BY_VALUE.has(level)) continue;
+    pairs.push({ percent: PERCENT_BY_VALUE.get(level), weight: Number(weights?.[index]) });
+  }
+  if (!pairs.length) return null;
+  const canWeight = pairs.every((pair) => Number.isFinite(pair.weight) && pair.weight > 0);
+  const totalWeight = canWeight ? pairs.reduce((sum, pair) => sum + pair.weight, 0) : pairs.length;
+  const weighted = pairs.reduce((sum, pair) => sum + pair.percent * (canWeight ? pair.weight : 1), 0);
+  return Math.round(weighted / totalWeight);
+}
+
+/** Rouge seulement si un autre sujet a une probabilité strictement plus haute. */
+export function masteryBandAgainst(percent, otherPercents) {
+  const rivals = (otherPercents || []).filter((value) => Number.isFinite(value));
+  if (!Number.isFinite(percent) || rivals.length === 0) return "strong";
+  return percent < Math.max(...rivals) ? "weak" : "strong";
 }
 
 export function createStrategyScreen(deps) {
@@ -96,14 +130,11 @@ export function createStrategyScreen(deps) {
           </div>
           <div class="strategy-pdf-container" id="pdf-preview-container"></div>
         </div>
+        <p class="subject-method-note">كنز العلوم يقترح طريقة لاختيار الموضوع الذي تتمكن فيه اكثر</p>
         <div class="grid grid-2">
           ${year.sujets
             .map((subject, index) => calcCard(year, subject, index === 0 ? "indigo" : "purple"))
             .join("")}
-        </div>
-        <div class="card strategy-summary">
-          <span class="bold" id="recommendation-text">التوصية المنهجية: …</span>
-          <span class="mono text-emerald" id="recommendation-gain"></span>
         </div>
       </div>
     </div>`
@@ -175,9 +206,13 @@ export function createStrategyScreen(deps) {
         <div class="flex spread small mt-1 subject-estimate">
           <span class="bold text-muted">مجموع تقدير الموضوع ${subject.id}:</span><span class="mono text-${theme}" id="s${subject.id}-total"></span>
         </div>
+        <p class="small subject-mastery" id="s${subject.id}-mastery" aria-live="polite"></p>
       </div>
       <div class="stack subject-mode-actions">
-        <button class="btn btn-block btn-emerald" data-confirm="${subject.id}" data-session-mode="bac">ابدأ الإمتحان</button>
+        <div class="subject-start">
+          <button class="btn btn-block btn-emerald" data-confirm="${subject.id}" data-session-mode="bac" data-mastery-band="strong">ابدأ الإمتحان</button>
+          <span class="subject-start-percent mono" id="s${subject.id}-start-percent" aria-hidden="true"></span>
+        </div>
         ${inventoryNote}
       </div>
     </div>`;
@@ -207,50 +242,71 @@ export function createStrategyScreen(deps) {
     if (timer) timer.textContent = helpers.fmt(store.state.strategyRemaining);
   }
 
-  function subjectConfidence(subject) {
-    const values = subject.exercises
+  function subjectEstimate(subject) {
+    const samples = subject.exercises
       .map((exercise) => {
         const input = $(`[data-subject="${subject.id}"][data-exercise="${exercise.number}"]`);
-        const value = Number.parseFloat(input?.value ?? "");
-        return Number.isFinite(value) ? Math.min(4, Math.max(0, value)) : null;
+        const level = clampLevel(Number.parseFloat(input?.value ?? ""));
+        return level === null ? null : { level, weight: Number(exercise.max) };
       })
-      .filter((value) => value !== null);
-    if (!values.length) return null;
-    return values.reduce((sum, value) => sum + value, 0) / values.length;
+      .filter(Boolean);
+    if (!samples.length) return null;
+    const mean = samples.reduce((sum, sample) => sum + sample.level, 0) / samples.length;
+    return {
+      mean,
+      percent: masteryPercent(
+        samples.map((sample) => sample.level),
+        samples.map((sample) => sample.weight)
+      )
+    };
+  }
+
+  function paintMastery(subjectId, percent, otherPercents) {
+    const band = percent === null ? "" : masteryBandAgainst(percent, otherPercents);
+    const note = $(`#s${subjectId}-mastery`);
+    if (note) {
+      note.textContent = percent === null ? "" : `انت متمكن في هذا الموضوع بنسبة ${percent}%`;
+      note.classList.toggle("is-strong", band === "strong");
+      note.classList.toggle("is-weak", band === "weak");
+    }
+    const beside = $(`#s${subjectId}-start-percent`);
+    if (beside) {
+      beside.textContent = percent === null ? "" : `${percent}%`;
+      beside.classList.toggle("is-strong", band === "strong");
+      beside.classList.toggle("is-weak", band === "weak");
+    }
+    const button = $(`#view-strategy [data-confirm="${subjectId}"]`);
+    if (!button) return;
+    /* Sans estimation, le bouton revient au neutre : sinon une couleur et
+       un aria-label calculés sur une ancienne valeur resteraient affichés. */
+    if (percent === null) {
+      button.classList.add("btn-emerald");
+      button.classList.remove("btn-rose");
+      button.dataset.masteryBand = "strong";
+      button.removeAttribute("aria-label");
+      return;
+    }
+    button.classList.toggle("btn-emerald", band === "strong");
+    button.classList.toggle("btn-rose", band === "weak");
+    button.dataset.masteryBand = band;
+    button.setAttribute("aria-label", `ابدأ الإمتحان، ${percent}%`);
   }
 
   function calculateStrategicScores() {
     const year = yearObj(store.state.yearId);
     if (!year) return;
-    const estimates = year.sujets.map((subject) => {
-      const confidence = subjectConfidence(subject);
+    const estimates = year.sujets.map((subject) => ({ subject, estimate: subjectEstimate(subject) }));
+    for (const { subject, estimate } of estimates) {
       const output = $(`#s${subject.id}-total`);
       if (output) {
         output.textContent =
-          confidence === null ? "" : `${confidenceLabel(confidence)} · ${confidence.toFixed(1)}/4`;
+          estimate === null ? "" : `${confidenceLabel(estimate.mean)} · ${estimate.mean.toFixed(1)}/4`;
       }
-      return { subject, confidence };
-    });
-    const recommendation = $("#recommendation-text");
-    const gain = $("#recommendation-gain");
-    if (!recommendation || !gain) return;
-    const ranked = estimates.filter((entry) => entry.confidence !== null);
-    if (!ranked.length) {
-      recommendation.textContent = "قدّر ثقتك في كل تمرين ليظهر ميل الاختيار.";
-      gain.textContent = "";
-      return;
+      const others = estimates
+        .filter((item) => item.subject.id !== subject.id)
+        .map((item) => item.estimate?.percent);
+      paintMastery(subject.id, estimate?.percent ?? null, others);
     }
-    const sorted = [...ranked].sort((a, b) => b.confidence - a.confidence);
-    const best = sorted[0];
-    const second = sorted[1];
-    if (!second || Math.abs(best.confidence - second.confidence) < 0.05) {
-      recommendation.textContent = "التقديران متكافئان — اختر الموضوع الذي تفهم وثائقه وتعليماته بوضوح أكبر.";
-    } else {
-      recommendation.textContent = `يميل تقديرك إلى الموضوع ${best.subject.id} (${confidenceLabel(
-        best.confidence
-      )} مقابل ${confidenceLabel(second.confidence)}).`;
-    }
-    gain.textContent = `${confidenceLabel(best.confidence)} · ${best.confidence.toFixed(1)}/4`;
   }
 
   function confirmChoice(sujetNum, mode = "bac") {

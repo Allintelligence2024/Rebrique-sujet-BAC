@@ -1258,15 +1258,14 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
     status: "partial",
     source: {
       kind: "local-pdf",
-      locator:
-        "https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf",
+      locator: "https://eddirasa.com/wp-content/uploads/2023/06/eddirasa.com-bac-sciences-se-2023.pdf",
       humanVerified: false,
       verifiedAt: null,
       notes: null
     },
     document: {
       localPath: "/subjects/SE/2023/sujet-1.pdf",
-      pages: 5,
+      pages: 4,
       pageOffset: 0
     },
     scope: {
@@ -1302,7 +1301,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "S",
         page: 1,
         prompt:
-          "سمّ التسجيلين المتوقع الحصول عليهما في جهاز راسم الاهتزاز المهبطي (أ) و(ب)، وكذلك البروتين الغشائي للخلية بعد المشبكية المسؤول عن كل تسجيل.",
+          "سمّ التسجيلين المتوقع الحصول عليهما في أجهزة راسم الاهتزاز المهبطي (أ) و(ب) وكذا البروتين الغشائي للخلية بعد المشبكية المسؤول عن كل تسجيل.",
         promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
@@ -1329,7 +1328,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "E",
         page: 1,
         prompt:
-          "بيّن في نص علمي دور مختلف البروتينات الغشائية في عمل المشبك وتأثير ذيفان الكزاز على ذلك انطلاقا من معطيات الوثيقة ومعلوماتك (النص العلمي مهيكل بمقدمة وعرض وخاتمة).",
+          "بيّن في نص علمي دور مختلف البروتينات الغشائية في عمل المشابك وتأثير توكسين الكزاز على ذلك انطلاقا من معطيات الوثيقة ومعلوماتك. (النص العلمي مُهيكل بمقدمة وعرض وخاتمة)",
         promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
@@ -1422,7 +1421,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 2,
         order: 3,
         pole: "E",
-        page: 2,
+        page: 3,
         prompt: "برّر أهمية استعمال دواء ML901 انطلاقا من معلوماتك ونتائج الوثيقتين 2 و3.",
         promptSource: "official",
         maxPoints: 2.5,
@@ -1431,7 +1430,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [2]
+            pages: [3]
           }
         ],
         trainingMappings: [
@@ -1441,7 +1440,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: 2
+        pageInPdf: 3
       },
       {
         id: "2023-S1-E2-Q4",
@@ -1470,7 +1469,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 1,
         pole: "N",
         page: 3,
-        prompt: "اقترح فرضيتين للحد من تطور سرطان الثدي باستغلال معلوماتك ونتائج شكلي الوثيقة 1.",
+        prompt: "اقترح فرضيتين للحدّ من تطور سرطان الثدي باستغلال معلوماتك ونتائج شكلي الوثيقة 1.",
         promptSource: "official",
         maxPoints: 0.5,
         scoringReviewStatus: "provisional",
@@ -1519,7 +1518,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "E",
         page: 4,
         prompt:
-          "ناقش صحة الفرضيتين المقترحتين اعتمادا على معلوماتك ونتائج الوثيقتين 2 و3، ثم قدّم نصيحة للوقاية من سرطان الثدي.",
+          "ناقش صحة الفرضيتين المقترحتين بناءً على معلوماتك وما تُقدّمه لك نتائج الوثيقتين 2 و3، ثُمّ قدّم نصيحة للوقاية من سرطان الثدي.",
         promptSource: "official",
         maxPoints: 4,
         scoringReviewStatus: "provisional",
@@ -1546,7 +1545,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "W",
         page: 4,
         prompt:
-          "لخّص في مخطط بيانات ما توصلت إليه في هذه الدراسة حول تطور الورم السرطاني في غياب ووجود مادة الكيرسيتين معتمدا على معلوماتك ومكتسباتك.",
+          "لخّص في مخطط تطور الورم السرطاني في غياب ووجود مادة الكيرسيتين اعتمادا على ما توصلت إليه في هذه الدراسة ومكتسباتك.",
         promptSource: "official",
         maxPoints: 1.5,
         scoringReviewStatus: "provisional",
@@ -1573,16 +1572,15 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
     status: "partial",
     source: {
       kind: "local-pdf",
-      locator:
-        "https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf",
+      locator: "https://eddirasa.com/wp-content/uploads/2023/06/eddirasa.com-bac-sciences-se-2023.pdf",
       humanVerified: false,
       verifiedAt: null,
       notes: null
     },
     document: {
       localPath: "/subjects/SE/2023/sujet-2.pdf",
-      pages: 5,
-      pageOffset: null
+      pages: 6,
+      pageOffset: 4
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -1618,7 +1616,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "S",
         page: 5,
         prompt:
-          "اختر العبارة الصحيحة من العبارات المقترحة لإكمال الجمل التالية: أ- الروابط التكافئية التي تساهم في استقرار البنية الفراغية للبروتينات هي… ب- تتوقف البنية الفراغية وبالتالي التخصص الوظيفي للبروتينات على… ت- إن ترتيب الأحماض الأمينية في السلسلة البيبتيدية يفرضه ترتيب… في… ث- أصل الطفرة الوراثية هو تغير على مستوى…",
+          "إختر العبارة الصحيحة من العبارات المقترحة لتكملة الجمل التالية: أ- الروابط التكافئية التي تساهم في استقرار البنية الفراغية للبروتينات هي: a الجسور ثنائية الكبريت. b الروابط الكارهة للماء. c الروابط الشاردية. ب- تتوقف البنية الفراغية وبالتالي التخصص الوظيفي للبروتينات على: a الروابط التي تنشأ بين أحماض أمينية محددة ومتموضعة بشكل دقيق في السلسلة الببتيدية. b طبيعة وعدد الأحماض الأمينية فقط في السلسلة الببتيدية. c عدد وترتيب الاحماض الأمينية فقط في السلسلة الببتيدية. ت- إن ترتيب الأحماض الأمينية في السلسلة الببتيدية يفرضه ترتيب الرامزات في: a ARNr. b ARNm. c ARNt. ث- أصل الطفرة الوراثية هو تغير على مستوى: a ARNm. b ADN. c البروتين.",
         promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
@@ -1636,7 +1634,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2023-S2-E1-Q3",
@@ -1645,7 +1643,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "E",
         page: 5,
         prompt:
-          "أبرز في نص علمي دور بعض مكونات المورثة في الحفاظ على التتابع النوكليوتيدي وفي وظيفة البروتين وكيف تؤثر الطفرات في فقدان التخصص الوظيفي (النص العلمي مهيكل بمقدمة وعرض وخاتمة).",
+          "وضّح في نص علمي كيف يحافظ التسلسل النيكليوتيدي للمورثة على وظيفة البروتين مبرزًا دور بعض الطفرات في فقدان التخصص الوظيفي. (النص العلمي مُهيكل بمقدمة وعرض وخاتمة)",
         promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
@@ -1663,7 +1661,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2023-S2-E1-Q4",
@@ -1715,7 +1713,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         pole: "S",
         page: 6,
         prompt:
-          "قدّم تحليلا مقارنا للبنية الجزيئية لغشاء الـ LTc والخلايا المصابة الممثلة في الشكل (أ) من الوثيقة 1.",
+          "قدّم تحليلا مقارنا للبنية الجزيئية لغشائي الـ (LTc) والخلايا المصابة الممثلة في الشكل (أ) من الوثيقة 1.",
         promptSource: "official",
         maxPoints: 2.5,
         scoringReviewStatus: "provisional",
@@ -1733,16 +1731,16 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2023-S2-E2-Q3",
         exerciseNumber: 2,
         order: 3,
         pole: "E",
-        page: 6,
+        page: 7,
         prompt:
-          "اشرح الآلية التي تحمي بها الخلايا (LTc) نفسها من تأثير البيرفورين انطلاقا من النتائج المبينة في أشكال الوثيقة 2.",
+          "اشرح الآلية التي تحمي بها الخلايا (LTc) نفسها من تأثير البرفورين على مستوى العضوية وذلك انطلاقا من استغلال النتائج المبينة في أشكال الوثيقة 2.",
         promptSource: "official",
         maxPoints: 2.5,
         scoringReviewStatus: "provisional",
@@ -1750,7 +1748,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [7]
           }
         ],
         trainingMappings: [
@@ -1760,7 +1758,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2023-S2-E2-Q4",
@@ -1788,9 +1786,9 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 3,
         order: 1,
         pole: "N",
-        page: 7,
+        page: 8,
         prompt:
-          "اقترح فرضيتين حول آلية تأثير DCMU على المرحلة الكيميائية الضوئية مستغلا معلوماتك ونتائج أشكال الوثيقة 1.",
+          "اقترح فرضيتين حول آلية تأثير (DCMU) على المرحلة الكيموضوئية باستغلال معلوماتك ونتائج أشكال الوثيقة 1.",
         promptSource: "official",
         maxPoints: 0.5,
         scoringReviewStatus: "provisional",
@@ -1798,7 +1796,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [7]
+            pages: [8]
           }
         ],
         trainingMappings: [
@@ -1808,7 +1806,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2023-S2-E3-Q2",
@@ -1837,8 +1835,8 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 3,
         order: 3,
         pole: "E",
-        page: 9,
-        prompt: "ناقش صحة إحدى الفرضيتين المقترحتين مستغلا معلوماتك والنتائج الممثلة في أشكال الوثيقة 2.",
+        page: 10,
+        prompt: "ناقش صحة إحدى الفرضيتين المقترحتين باستغلالك لمعلوماتك والنتائج الممثلة في أشكال الوثيقة 2.",
         promptSource: "official",
         maxPoints: 4,
         scoringReviewStatus: "provisional",
@@ -1846,7 +1844,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [9]
+            pages: [10]
           }
         ],
         trainingMappings: [
@@ -1856,16 +1854,16 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 6
       },
       {
         id: "2023-S2-E3-Q4",
         exerciseNumber: 3,
         order: 4,
         pole: "W",
-        page: 11,
+        page: 10,
         prompt:
-          "حوّل في رسم تخطيطي وظيفي آليات تحويل الطاقة الضوئية خلال المرحلة الكيميائية الضوئية معتمدا على البيانات ومعلوماتك في غياب المبيد ووجوده (DCMU).",
+          "وضّح في رسم تخطيطي وظيفي عليه البيانات آليات تحويل الطاقة الضوئية خلال المرحلة الكيموضوئية في وجود وغياب المبيد (DCMU) اعتمادا على معلوماتك وما استخلصته مما سبق.",
         promptSource: "official",
         maxPoints: 1.5,
         scoringReviewStatus: "provisional",
@@ -1873,7 +1871,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [11]
+            pages: [10]
           }
         ],
         trainingMappings: [
@@ -1883,7 +1881,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 6
       }
     ]
   },

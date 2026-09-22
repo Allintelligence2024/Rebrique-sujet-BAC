@@ -52,9 +52,10 @@ export const BAC_MODE_POLICY = Object.freeze({
   neverClaimOfficialCorrection: true
 });
 
-/** Libellés arabes affichés à l'élève pour chaque assouplissement actif. */
+/** Libellés arabes affichés à l'élève pour chaque assouplissement actif.
+ *  L'absence de note chiffrée n'est plus annoncée par une phrase : le
+ *  propriétaire a demandé de retirer ce texte de tout ce que le site sert. */
 export const BAC_MODE_NOTICES = Object.freeze({
   reconstructed: "⚠️ خطوة مُعاد بناؤها لأغراض التدريب، وليست نصّ التعليمات الرسمية.",
-  provisionalScoring: "التنقيط غير معاير: لا تُعرض أي علامة رقمية، لا قبل التسليم ولا بعده.",
   unverifiedPages: "إحالات الصفحات غير مراجعة بشرياً."
 });

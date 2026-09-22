@@ -1,5 +1,8 @@
-/* 2023 — Sciences expérimentales. Données extraites du catalogue historique sans modifier les champs de contenu ni de provenance.
- * Chargé à la demande par data/subjects.js.
+/* 2023 — Sciences expérimentales.
+ * Le livret dzexams imprimait de faux chiffres (40 سا، 40 نقاط، الوثيقة 0).
+ * Remplacé le 2026-09-21 par le PDF eddirasa, relu sur l'image : المدة 04 سا
+ * و 30 د، barème 05+07+08، documents numérotés. Découpé en sujet-1 = pages
+ * 1–4 et sujet-2 = pages 5–10. Chargé à la demande par data/subjects.js.
  */
 const YEAR_2023_SE = {
   id: "2023",
@@ -10,19 +13,18 @@ const YEAR_2023_SE = {
     {
       id: 1,
       pdf: null,
-      pdfExternalUrl:
-        "https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf",
+      pdfExternalUrl: "https://eddirasa.com/wp-content/uploads/2023/06/eddirasa.com-bac-sciences-se-2023.pdf",
       pdfLocalUrl: "/subjects/SE/2023/sujet-1.pdf",
       pdfNote:
-        "PDF non redistribué dans le dépôt ; source : https://www.dzexams.com/ar/annales/STRDZEowcCtwN0JmT1NwS3p4cEVmdz09 (consulté 2026-08-25). La couche texte du PDF est inversée (miroir mot à mot) ; les consignes ont été reconstituées mot à mot à partir de cette couche. Session de remplacement non localisée.",
+        "Remplace le livret dzexams dont l'impression montrait « المدة: 40 سا و 04 د », « (40 نقاط) » et « الوثيقة 0 ». Source eddirasa relue sur l'image le 2026-09-21 : المدة 04 سا و 30 د, exercice 3 à 08 نقاط, documents 1, 2 et 3. Le fichier local est le sujet 1 seul (pages 1 à 4). Le chronomètre reste 4 h 30 et le barème encodé 5+7+8, ce que le PDF propre confirme.",
       title: "الموضوع الأول",
       exercises: [
         {
           number: 1,
           ui: "text",
-          label: "البروتينات الغشائية في المشبك وذيفان الكزاز",
+          label: "البروتينات الغشائية في المشبك وتوكسين الكزاز",
           max: 5,
-          desc: "دور البروتينات الغشائية (مستقبلات وقنوات) للخلية بعد المشبكية في النقل المشبكي، وأثر ذيفان بكتيريا الكزاز (Clostridium tetani) المثبط للإفراز",
+          desc: "دور البروتينات الغشائية (مستقبلات وقنوات) للخلية بعد المشبكية في النقل المشبكي، وأثر توكسين بكتيريا الكزاز (Clostridium tetani) المثبط للإفراز",
           poles: {
             N: {
               points: 1,
@@ -47,12 +49,12 @@ const YEAR_2023_SE = {
               points: 1,
               prompt: "تسمية التسجيلين والبروتين الغشائي المسؤول عن كل تسجيل",
               bacPrompt:
-                "سمّ التسجيلين المتوقع الحصول عليهما في جهاز راسم الاهتزاز المهبطي (أ) و(ب)، وكذلك البروتين الغشائي للخلية بعد المشبكية المسؤول عن كل تسجيل.",
+                "سمّ التسجيلين المتوقع الحصول عليهما في أجهزة راسم الاهتزاز المهبطي (أ) و(ب) وكذا البروتين الغشائي للخلية بعد المشبكية المسؤول عن كل تسجيل.",
               bacPromptSource: "official",
               bacPromptPage: 1,
-              bacPromptVerifiedAt: "2026-08-25",
+              bacPromptVerifiedAt: "2026-09-21",
               bacPromptNotes:
-                "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : سمّ. Question 1 du التمرين الأول (Sujet 1).",
+                "Relecture visuelle de la page 1 (image, pas la couche texte). Verbe officiel : سمّ. Question 1 du التمرين الأول.",
               placeholder: "تسجيل تنبيهي/تثبيطي، مستقبل غشائي...",
               minLength: 30,
               modelAnswer:
@@ -68,12 +70,12 @@ const YEAR_2023_SE = {
               points: 2,
               prompt: "النص العلمي: دور البروتينات الغشائية في عمل المشبك وأثر ذيفان الكزاز",
               bacPrompt:
-                "بيّن في نص علمي دور مختلف البروتينات الغشائية في عمل المشبك وتأثير ذيفان الكزاز على ذلك انطلاقا من معطيات الوثيقة ومعلوماتك (النص العلمي مهيكل بمقدمة وعرض وخاتمة).",
+                "بيّن في نص علمي دور مختلف البروتينات الغشائية في عمل المشابك وتأثير توكسين الكزاز على ذلك انطلاقا من معطيات الوثيقة ومعلوماتك. (النص العلمي مُهيكل بمقدمة وعرض وخاتمة)",
               bacPromptSource: "official",
               bacPromptPage: 1,
-              bacPromptVerifiedAt: "2026-08-25",
+              bacPromptVerifiedAt: "2026-09-21",
               bacPromptNotes:
-                "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : بيّن. Question 2 (texte scientifique structuré) du التمرين الأول.",
+                "Relecture visuelle de la page 1. Verbe officiel : بيّن. Le sujet écrit توكسين et المشابك, pas ذيفان ni المشبك.",
               placeholder: "مقدمة، عرض، خاتمة...",
               minLength: 120,
               modelAnswer:
@@ -139,7 +141,7 @@ const YEAR_2023_SE = {
               bacPromptPage: 2,
               bacPromptVerifiedAt: "2026-08-25",
               bacPromptNotes:
-                "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : قارن. Question 1 du الجزء الأول. Consigne « حلّل منحنى الشكل (ب) من الوثيقة 1 » (question 2 du même الجزء) non mappée (un pôle = une consigne).",
+                "Relecture visuelle de la page 2. Verbe officiel : قارن. Question 1 du الجزء الأول. Consigne « حلّل منحنَيَي الشكل (ب) من الوثيقة 1 » (question 2) non mappée (un pôle = une consigne).",
               placeholder: "قارن بالتوازي: في غياب العلاج وفي وجوده...",
               minLength: 90,
               modelAnswer:
@@ -180,10 +182,10 @@ const YEAR_2023_SE = {
               prompt: "تبرير أهمية استعمال دواء ML901",
               bacPrompt: "برّر أهمية استعمال دواء ML901 انطلاقا من معلوماتك ونتائج الوثيقتين 2 و3.",
               bacPromptSource: "official",
-              bacPromptPage: 2,
-              bacPromptVerifiedAt: "2026-08-25",
+              bacPromptPage: 3,
+              bacPromptVerifiedAt: "2026-09-21",
               bacPromptNotes:
-                "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : برّر. Question du الجزء الثاني.",
+                "Relecture visuelle de la page 3 du PDF eddirasa. Verbe officiel : برّر. La figure au-dessus est la الوثيقة 3, pas 0.",
               placeholder: "الموقع الفعال، Tyr-ARNt، تثبيط الترجمة...",
               minLength: 110,
               modelAnswer:
@@ -225,12 +227,12 @@ const YEAR_2023_SE = {
             N: {
               points: 0.5,
               prompt: "اقتراح فرضيتين للحد من تطور سرطان الثدي",
-              bacPrompt: "اقترح فرضيتين للحد من تطور سرطان الثدي باستغلال معلوماتك ونتائج شكلي الوثيقة 1.",
+              bacPrompt: "اقترح فرضيتين للحدّ من تطور سرطان الثدي باستغلال معلوماتك ونتائج شكلي الوثيقة 1.",
               bacPromptSource: "official",
               bacPromptPage: 3,
-              bacPromptVerifiedAt: "2026-08-25",
+              bacPromptVerifiedAt: "2026-09-21",
               bacPromptNotes:
-                "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : اقترح فرضيتين. Question unique du الجزء الأول.",
+                "Relecture visuelle de la page 3 du PDF eddirasa. Verbe officiel : اقترح فرضيتين. Question unique du الجزء الأول. Le fichier propre imprime (08 نقاط) ; le barème encodé reste 8.",
               placeholder: "فرضية 1، فرضية 2...",
               minLength: 30,
               modelAnswer:
@@ -282,12 +284,12 @@ const YEAR_2023_SE = {
               points: 4,
               prompt: "مناقشة صحة الفرضيتين وتقديم نصيحة",
               bacPrompt:
-                "ناقش صحة الفرضيتين المقترحتين اعتمادا على معلوماتك ونتائج الوثيقتين 2 و3، ثم قدّم نصيحة للوقاية من سرطان الثدي.",
+                "ناقش صحة الفرضيتين المقترحتين بناءً على معلوماتك وما تُقدّمه لك نتائج الوثيقتين 2 و3، ثُمّ قدّم نصيحة للوقاية من سرطان الثدي.",
               bacPromptSource: "official",
               bacPromptPage: 4,
-              bacPromptVerifiedAt: "2026-08-25",
+              bacPromptVerifiedAt: "2026-09-21",
               bacPromptNotes:
-                "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : ناقش. Question du الجزء الثاني (la نصيحة finale est incluse dans la même consigne).",
+                "Relecture visuelle de la page 4 du PDF eddirasa. Verbe officiel : ناقش. La نصيحة est dans la même consigne. Les figures sont légendées الوثيقة 2 et الوثيقة 3.",
               placeholder: "الموقع الفعال للأروماتاز، مستقبل الأستراديول...",
               minLength: 110,
               modelAnswer:
@@ -303,12 +305,12 @@ const YEAR_2023_SE = {
               points: 1.5,
               prompt: "المخطط: تطور الورم في غياب ووجود الكيرسيتين",
               bacPrompt:
-                "لخّص في مخطط بيانات ما توصلت إليه في هذه الدراسة حول تطور الورم السرطاني في غياب ووجود مادة الكيرسيتين معتمدا على معلوماتك ومكتسباتك.",
+                "لخّص في مخطط تطور الورم السرطاني في غياب ووجود مادة الكيرسيتين اعتمادا على ما توصلت إليه في هذه الدراسة ومكتسباتك.",
               bacPromptSource: "official",
               bacPromptPage: 4,
-              bacPromptVerifiedAt: "2026-08-25",
+              bacPromptVerifiedAt: "2026-09-21",
               bacPromptNotes:
-                "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : لخّص في مخطط. Question du الجزء الثالث.",
+                "Relecture visuelle de la page 4. Verbe officiel : لخّص في مخطط. Question du الجزء الثالث.",
               placeholder: "أستراديول → تكاثر → ورم؛ وفي وجود الكيرسيتين...",
               minLength: 0,
               modelAnswer:
@@ -332,11 +334,10 @@ const YEAR_2023_SE = {
     {
       id: 2,
       pdf: null,
-      pdfExternalUrl:
-        "https://www.dzexams.com/uploads/sujets/officiels/bac/2023/dzexams-bac-sciences-naturelles-1780707.pdf",
+      pdfExternalUrl: "https://eddirasa.com/wp-content/uploads/2023/06/eddirasa.com-bac-sciences-se-2023.pdf",
       pdfLocalUrl: "/subjects/SE/2023/sujet-2.pdf",
       pdfNote:
-        "PDF non redistribué dans le dépôt ; même fichier que le sujet 1 (session normale, sujets 1 et 2 réunis). Couche texte inversée reconstituée mot à mot (2026-08-25).",
+        "Même livret eddirasa que le sujet 1, pages 5 à 10. Relu sur l'image le 2026-09-21 : التمرين الأول (05 نقاط), التمرين الثاني (07 نقاط), التمرين الثالث (08 نقاط), documents 1 et 2. La couche texte reste inversée ; les consignes viennent de l'image.",
       title: "الموضوع الثاني",
       exercises: [
         {
@@ -369,12 +370,12 @@ const YEAR_2023_SE = {
               points: 1,
               prompt: "اختيار العبارات الصحيحة حول البنية الفراغية للبروتين",
               bacPrompt:
-                "اختر العبارة الصحيحة من العبارات المقترحة لإكمال الجمل التالية: أ- الروابط التكافئية التي تساهم في استقرار البنية الفراغية للبروتينات هي… ب- تتوقف البنية الفراغية وبالتالي التخصص الوظيفي للبروتينات على… ت- إن ترتيب الأحماض الأمينية في السلسلة البيبتيدية يفرضه ترتيب… في… ث- أصل الطفرة الوراثية هو تغير على مستوى…",
+                "إختر العبارة الصحيحة من العبارات المقترحة لتكملة الجمل التالية: أ- الروابط التكافئية التي تساهم في استقرار البنية الفراغية للبروتينات هي: a الجسور ثنائية الكبريت. b الروابط الكارهة للماء. c الروابط الشاردية. ب- تتوقف البنية الفراغية وبالتالي التخصص الوظيفي للبروتينات على: a الروابط التي تنشأ بين أحماض أمينية محددة ومتموضعة بشكل دقيق في السلسلة الببتيدية. b طبيعة وعدد الأحماض الأمينية فقط في السلسلة الببتيدية. c عدد وترتيب الاحماض الأمينية فقط في السلسلة الببتيدية. ت- إن ترتيب الأحماض الأمينية في السلسلة الببتيدية يفرضه ترتيب الرامزات في: a ARNr. b ARNm. c ARNt. ث- أصل الطفرة الوراثية هو تغير على مستوى: a ARNm. b ADN. c البروتين.",
               bacPromptSource: "official",
               bacPromptPage: 5,
-              bacPromptVerifiedAt: "2026-08-25",
+              bacPromptVerifiedAt: "2026-09-21",
               bacPromptNotes:
-                "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : اختر العبارة الصحيحة. Question 1 (QCM à 4 items : جسور ثنائية الكبريت، الروابط بين أحماض أمينية، ARNm، ADN).",
+                "Relecture visuelle de la page 5 du livret (page 1 du fichier sujet 2). Verbe officiel : إختر. QCM à 4 items, choix recopiés tels qu'imprimés (dont « الاحماض » sans hamza).",
               placeholder: "أ- جسور ثنائية الكبريت، ب- …، ت- ARNm، ث- ADN...",
               minLength: 30,
               modelAnswer:
@@ -390,12 +391,12 @@ const YEAR_2023_SE = {
               points: 2,
               prompt: "النص العلمي: دور مكونات المورثة وأثر الطفرات",
               bacPrompt:
-                "أبرز في نص علمي دور بعض مكونات المورثة في الحفاظ على التتابع النوكليوتيدي وفي وظيفة البروتين وكيف تؤثر الطفرات في فقدان التخصص الوظيفي (النص العلمي مهيكل بمقدمة وعرض وخاتمة).",
+                "وضّح في نص علمي كيف يحافظ التسلسل النيكليوتيدي للمورثة على وظيفة البروتين مبرزًا دور بعض الطفرات في فقدان التخصص الوظيفي. (النص العلمي مُهيكل بمقدمة وعرض وخاتمة)",
               bacPromptSource: "official",
               bacPromptPage: 5,
-              bacPromptVerifiedAt: "2026-08-25",
+              bacPromptVerifiedAt: "2026-09-21",
               bacPromptNotes:
-                "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : أبرز. Question 2 (texte scientifique structuré).",
+                "Relecture visuelle de la page 5 du livret. Verbe officiel : وضّح, pas أبرز. Question 2 du التمرين الأول.",
               placeholder: "مقدمة، عرض، خاتمة...",
               minLength: 120,
               modelAnswer:
@@ -430,9 +431,9 @@ const YEAR_2023_SE = {
         {
           number: 2,
           ui: "text",
-          label: "الخلايا التائية السامة والبيرفورين",
+          label: "الخلايا التائية السامة والبرفورين",
           max: 7,
-          desc: "إقصاء الخلايا المصابة ببروتين البيرفورين الذي تفرزه الخلايا التائية السامة (LTc)، وآلية حماية هذه الخلايا لنفسها من تأثيره",
+          desc: "إقصاء الخلايا المصابة ببروتين البرفورين الذي تفرزه الخلايا التائية السامة (LTc)، وآلية حماية هذه الخلايا لنفسها من تأثيره",
           poles: {
             N: {
               points: 1,
@@ -457,12 +458,12 @@ const YEAR_2023_SE = {
               points: 2.5,
               prompt: "تحليل مقارن للبنية الجزيئية لغشاء LTc والخلايا المصابة",
               bacPrompt:
-                "قدّم تحليلا مقارنا للبنية الجزيئية لغشاء الـ LTc والخلايا المصابة الممثلة في الشكل (أ) من الوثيقة 1.",
+                "قدّم تحليلا مقارنا للبنية الجزيئية لغشائي الـ (LTc) والخلايا المصابة الممثلة في الشكل (أ) من الوثيقة 1.",
               bacPromptSource: "official",
               bacPromptPage: 6,
-              bacPromptVerifiedAt: "2026-08-25",
+              bacPromptVerifiedAt: "2026-09-21",
               bacPromptNotes:
-                "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : قدّم تحليلا مقارنا. Question 1 du الجزء الأول. Consigne « برّر الاختلاف بين بنية غشاء LTc والخلايا المصابة » (question 2) non mappée (un pôle = une consigne).",
+                "Relecture visuelle de la page 6 du livret. Verbe officiel : قدّم تحليلا مقارنا. Question 1 du الجزء الأول. Consigne « برّر الاختلاف بين بنيتي غشائي الـ (LTc) والخلايا المصابة انطلاقا من نتائج الشكل (ب) من الوثيقة 1 » non mappée (un pôle = une consigne).",
               placeholder: "قارن: الكوليسترول، البيرفورين، الغشاء...",
               minLength: 90,
               modelAnswer:
@@ -498,12 +499,12 @@ const YEAR_2023_SE = {
               points: 2.5,
               prompt: "شرح آلية حماية الخلايا LTc لنفسها من البيرفورين",
               bacPrompt:
-                "اشرح الآلية التي تحمي بها الخلايا (LTc) نفسها من تأثير البيرفورين انطلاقا من النتائج المبينة في أشكال الوثيقة 2.",
+                "اشرح الآلية التي تحمي بها الخلايا (LTc) نفسها من تأثير البرفورين على مستوى العضوية وذلك انطلاقا من استغلال النتائج المبينة في أشكال الوثيقة 2.",
               bacPromptSource: "official",
-              bacPromptPage: 6,
-              bacPromptVerifiedAt: "2026-08-25",
+              bacPromptPage: 7,
+              bacPromptVerifiedAt: "2026-09-21",
               bacPromptNotes:
-                "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : اشرح. Question du الجزء الثاني.",
+                "Relecture visuelle de la page 7 du livret. Verbe officiel : اشرح. Le sujet écrit البرفورين, pas البيرفورين.",
               placeholder: "الكوليسترول، السيولة الغشائية، تثبيت البيرفورين...",
               minLength: 110,
               modelAnswer:
@@ -538,20 +539,20 @@ const YEAR_2023_SE = {
         {
           number: 3,
           ui: "text",
-          label: "مبيد DCMU والمرحلة الكيميائية الضوئية",
+          label: "مبيد DCMU والمرحلة الكيموضوئية",
           max: 8,
-          desc: "آلية تأثير مبيد DCMU على المرحلة الكيميائية الضوئية (النظام الضوئي الثاني PSII) وتحويل الطاقة الضوئية عند النباتات",
+          desc: "آلية تأثير مبيد DCMU على المرحلة الكيموضوئية (النظام الضوئي الثاني PSII) وتحويل الطاقة الضوئية عند النباتات",
           poles: {
             N: {
               points: 0.5,
               prompt: "اقتراح فرضيتين حول آلية تأثير DCMU",
               bacPrompt:
-                "اقترح فرضيتين حول آلية تأثير DCMU على المرحلة الكيميائية الضوئية مستغلا معلوماتك ونتائج أشكال الوثيقة 1.",
+                "اقترح فرضيتين حول آلية تأثير (DCMU) على المرحلة الكيموضوئية باستغلال معلوماتك ونتائج أشكال الوثيقة 1.",
               bacPromptSource: "official",
-              bacPromptPage: 7,
-              bacPromptVerifiedAt: "2026-08-25",
+              bacPromptPage: 8,
+              bacPromptVerifiedAt: "2026-09-21",
               bacPromptNotes:
-                "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : اقترح فرضيتين. Question unique du الجزء الأول.",
+                "Relecture visuelle de la page 8 du livret. Verbe officiel : اقترح فرضيتين. Le sujet écrit الكيموضوئية, pas المرحلة الكيميائية الضوئية.",
               placeholder: "فرضية 1، فرضية 2...",
               minLength: 30,
               modelAnswer:
@@ -610,12 +611,12 @@ const YEAR_2023_SE = {
               points: 4,
               prompt: "مناقشة صحة إحدى الفرضيتين",
               bacPrompt:
-                "ناقش صحة إحدى الفرضيتين المقترحتين مستغلا معلوماتك والنتائج الممثلة في أشكال الوثيقة 2.",
+                "ناقش صحة إحدى الفرضيتين المقترحتين باستغلالك لمعلوماتك والنتائج الممثلة في أشكال الوثيقة 2.",
               bacPromptSource: "official",
-              bacPromptPage: 9,
-              bacPromptVerifiedAt: "2026-08-25",
+              bacPromptPage: 10,
+              bacPromptVerifiedAt: "2026-09-21",
               bacPromptNotes:
-                "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : ناقش. Question 1 du الجزء الثاني. Consigne « قدّم نصيحة للمزارعين » (question 2 du même الجزء) non mappée (un pôle = une consigne).",
+                "Relecture visuelle de la page 10 du livret. Verbe officiel : ناقش. Question 1 du الجزء الثاني. Consigne « قدّم على ضوء ذلك نصيحة للمزارعين فيما يخص استعمال (DCMU) في الميدان الزراعي » non mappée (un pôle = une consigne).",
               placeholder: "PSII، الناقل T1، انتقال الإلكترونات...",
               minLength: 110,
               modelAnswer:
@@ -631,12 +632,12 @@ const YEAR_2023_SE = {
               points: 1.5,
               prompt: "رسم تخطيطي وظيفي لتحويل الطاقة الضوئية",
               bacPrompt:
-                "حوّل في رسم تخطيطي وظيفي آليات تحويل الطاقة الضوئية خلال المرحلة الكيميائية الضوئية معتمدا على البيانات ومعلوماتك في غياب المبيد ووجوده (DCMU).",
+                "وضّح في رسم تخطيطي وظيفي عليه البيانات آليات تحويل الطاقة الضوئية خلال المرحلة الكيموضوئية في وجود وغياب المبيد (DCMU) اعتمادا على معلوماتك وما استخلصته مما سبق.",
               bacPromptSource: "official",
-              bacPromptPage: 11,
-              bacPromptVerifiedAt: "2026-08-25",
+              bacPromptPage: 10,
+              bacPromptVerifiedAt: "2026-09-21",
               bacPromptNotes:
-                "Relecture du PDF dzexams 2023 (couche texte inversée, reconstituée). Verbe officiel : حوّل في رسم تخطيطي. Question du الجزء الثالث.",
+                "Relecture visuelle de la page 10 du livret. Verbe officiel : وضّح في رسم تخطيطي, pas حوّل. La page 11 n'existe pas dans le livret.",
               placeholder: "ضوء → PSII → إلكترونات → T1 → H⁺...",
               minLength: 0,
               modelAnswer:

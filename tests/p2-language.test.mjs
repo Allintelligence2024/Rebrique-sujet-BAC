@@ -55,9 +55,13 @@ test("les anciens avertissements français du parcours élève ont une version a
      La méthode reste enseignée dans l'épreuve, consigne par consigne. */
   assert.doesNotMatch(visibleUi, /الخطوات الأربع/);
   assert.match(visibleUi, /لا يوجد ملف موضوع متاح لهذه الدورة في التطبيق/);
-  // Les avis d'épreuve sont en arabe : provenance des consignes et barème.
+  // La provenance des consignes reste en arabe. L'avis de barème n'est plus
+  // affiché sur la page de réponses.
   assert.match(visibleUi, /مُعاد بناؤها/);
-  assert.match(visibleUi, /التنقيط غير معاير/);
+  assert.doesNotMatch(
+    visibleUi,
+    /اختبار صامت: لا تلميح، لا إجابة نموذجية، لا تشخيص ولا نقطة أثناء الاختبار|التنقيط غير معاير: لا تُعرض أي علامة رقمية، لا قبل التسليم ولا بعده|الأسئلة كلها في ملف الموضوع الرسمي المعروض أدناه: اقرأ كل تمرين من الملف، ثم اكتب إجابتك الكاملة في حقله/
+  );
   assert.doesNotMatch(
     visibleUi,
     /subject\?\.pdfNote/,

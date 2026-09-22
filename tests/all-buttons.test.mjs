@@ -266,8 +266,9 @@ test("6. Épreuve : les exercices avec leur barème, AUCUNE question affichée",
   input.value = "إجابة الطالب في الإمتحان";
   input.dispatchEvent(new dom.window.Event("input", { bubbles: true }));
   assert.equal(store.exercise("2025", 1, 1).freeAnswer, "إجابة الطالب في الإمتحان");
-  // « اختبار صامت » promet l'absence de diagnostic PENDANT l'épreuve : aucun
-  // contrôle d'évaluation ne doit y être rendu. Il réapparaît en relecture.
+  // L'épreuve reste silencieuse (aucun diagnostic PENDANT l'épreuve, même si
+  // le bandeau qui l'annonçait a été retiré) : aucun contrôle d'évaluation
+  // ne doit y être rendu. Il réapparaît en relecture.
   assert.equal($("#view-workspace .qualitative-check"), null, "aucun bouton تقييم نوعي en épreuve");
 });
 
@@ -323,5 +324,5 @@ test("10. La copie n'affiche aucun indice de confiance ni barème", () => {
   click('#view-strategy [data-confirm="1"][data-session-mode="bac"]');
   assert.equal($$("#view-workspace .confidence-chip").length, 0, "aucun indice de confiance en épreuve");
   assert.doesNotMatch($("#view-workspace").textContent, /ثقة (مرتفعة|متوسطة|منخفضة)/);
-  assert.match($("#view-workspace").textContent, /اختبار صامت/);
+  assert.doesNotMatch($("#view-workspace").textContent, /اختبار صامت/);
 });

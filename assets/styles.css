@@ -1074,11 +1074,49 @@ select.calc-input {
   border-bottom: 1px solid var(--line);
   padding-bottom: 0.5rem;
 }
+.subject-method-note {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: 0.8rem;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  background: rgba(16, 185, 129, 0.08);
+  color: var(--ink);
+  font-weight: 800;
+  line-height: 1.7;
+}
 .subject-estimate {
   background: rgba(99, 102, 241, 0.08);
   border: 1px solid var(--line);
   padding: 0.5rem 0.75rem;
   border-radius: 0.8rem;
+}
+.subject-mastery {
+  margin: 0.15rem 0 0;
+  font-weight: 800;
+  line-height: 1.7;
+}
+.subject-mastery.is-strong,
+.subject-start-percent.is-strong {
+  color: var(--emerald-soft);
+}
+.subject-mastery.is-weak,
+.subject-start-percent.is-weak {
+  color: #fb7185;
+}
+.subject-start {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+.subject-start .btn {
+  flex: 1 1 auto;
+}
+.subject-start-percent {
+  flex: 0 0 auto;
+  min-width: 3.25rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  text-align: center;
 }
 .progress > .step-1 {
   width: 25%;
@@ -1627,6 +1665,18 @@ html[lang="ar"]
   background: #000;
   border-color: #fff;
   color: #fff;
+}
+:root[data-theme="contrast"] .btn[data-mastery-band="strong"],
+:root[data-theme="contrast"] .subject-mastery.is-strong,
+:root[data-theme="contrast"] .subject-start-percent.is-strong {
+  color: #00ff9d;
+  border-color: #00ff9d;
+}
+:root[data-theme="contrast"] .btn[data-mastery-band="weak"],
+:root[data-theme="contrast"] .subject-mastery.is-weak,
+:root[data-theme="contrast"] .subject-start-percent.is-weak {
+  color: #ff6685;
+  border-color: #ff6685;
 }
 
 /* --- Demonstration ---------------------------------------------- */

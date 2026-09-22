@@ -52,9 +52,13 @@ test("l'expiration globale termine la session et verrouille la copie affichée",
   );
   assert.equal(document.querySelector("#simulation-finish"), null, "plus de remise après expiration");
   assert.ok(document.querySelector("#view-workspace").dataset.reviewMode === "true");
-  // L'élève est prévenu : relecture autorisée, aucune note affichée.
+  // L'élève est prévenu : relecture autorisée, aucune note chiffrée.
+  // L'avis de barème non calibré a été retiré de la page (décision du
+  // propriétaire) : on vérifie l'absence de note, pas la phrase.
   assert.ok(document.querySelector("#simulation-review-notice"));
-  assert.match(document.querySelector("#view-workspace").textContent, /لا تُعرض أي علامة رقمية/);
+  assert.match(document.querySelector("#view-workspace").textContent, /تم التسليم/);
+  assert.doesNotMatch(document.querySelector("#view-workspace").textContent, /التنقيط غير معاير/);
+  assert.doesNotMatch(document.querySelector("#view-workspace").textContent, /\d+[.,]\d+\s*\/\s*\d+/);
   // Le motif de fin est annoncé dans une boîte de dialogue, pas dans un toast.
   assert.match(document.querySelector(".modal").textContent, /انتهى وقت الإمتحان/);
   assert.match(document.querySelector(".modal").textContent, /راجع الإجابات/);
