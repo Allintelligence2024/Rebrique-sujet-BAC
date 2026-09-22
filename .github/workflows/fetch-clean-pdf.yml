@@ -59,7 +59,7 @@ jobs:
       # reconstruit donc une couche LOGIQUE par OCR : tesseract hOCR puis
       # réordonnancement RTL (scripts/ocr-logical-layer.py) avant fusion.
       # Tout diagnostic part dans incoming/ (commité) car les logs Actions sont
-      # inaccessibles depuis le sandbox.
+      # inaccessibles depuis le sandbox. (itération 4 : dpi en mot-clé)
       - name: OCR SE 2019 Sciences (logical layer rebuild)
         run: |
           set -euo pipefail

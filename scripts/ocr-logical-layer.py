@@ -140,7 +140,10 @@ def main(src: str, dest: str, qa_path: str, hocr_sample_path: str) -> int:
                     Path(hocr_sample_path).write_bytes(hocr_bytes)
                 fixed = tmpdir / f"p{pno}.fixed.hocr"
                 fixed.write_bytes(hocr_bytes)
-                tr = HocrTransform(str(fixed), DPI)
+                try:
+                    tr = HocrTransform(str(fixed), dpi=DPI)
+                except TypeError:
+                    tr = HocrTransform(str(fixed))
                 try:
                     pdf_bytes = tr.to_pdf()
                 except TypeError:
@@ -153,6 +156,12 @@ def main(src: str, dest: str, qa_path: str, hocr_sample_path: str) -> int:
             except Exception as e:  # noqa: BLE001 - tout échec est consigné
                 qa(f"page {pno + 1} : ERREUR {type(e).__name__}: {str(e)[:300]}")
                 failures += 1
+                # Page blanche de même taille : garde l'alignement img/txt.
+                try:
+                    w_pt, h_pt = pix.width * 72 / DPI, pix.height * 72 / DPI
+                    txt_pdf.new_page(width=w_pt, height=h_pt)
+                except Exception:  # noqa: BLE001, S110
+                    pass
         img_path = tmpdir / "img.pdf"
         txt_path = tmpdir / "txt.pdf"
         img_pdf.save(str(img_path))
