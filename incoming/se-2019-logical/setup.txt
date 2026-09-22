@@ -58,4 +58,4 @@ tesseract 5.3.4
 qpdf version 11.9.0
 Run qpdf --copyright to see copyright and license information.
 warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
-ocrmypdf OK 17.12.1
+ocrmypdf OK 15.4.4
