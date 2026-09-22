@@ -114,6 +114,27 @@ function setStatus(host, message) {
   statusNode(host).textContent = message;
 }
 
+/* Cause probable d'un échec de rendu, en une phrase arabe courte. Quand le
+   sujet ne s'affiche pas dans l'application, l'élève (ou le rapport de bug)
+   doit savoir s'il s'agit du fichier, du réseau ou du lecteur embarqué —
+   une note générique ne permet aucun diagnostic. */
+function describeViewerFailure(error) {
+  const detail = String(error?.message || error || "");
+  if (/\(404\)|Missing PDF|ressources? (?:manquante|introuvable)/i.test(detail)) {
+    return "ملف الموضوع غير موجود";
+  }
+  if (/Unexpected server response|NetworkError|Failed to fetch|Load failed|network/i.test(detail)) {
+    return "تعذّر تحميل الملف (مشكلة شبكة)";
+  }
+  if (/pdf\.js|pdfjsLib|worker|Worker/i.test(detail)) {
+    return "تعذّر تشغيل قارئ PDF المدمج";
+  }
+  if (/Password|protégé|محمي/i.test(detail)) {
+    return "الملف محمي بكلمة مرور أو تالف";
+  }
+  return "خطأ غير متوقع أثناء العرض";
+}
+
 /** Révèle l'iframe de repli et explique pourquoi le rendu direct a échoué. */
 function fallbackToFrame(host, message) {
   const parent = host.parentElement;
@@ -310,7 +331,8 @@ export async function mountPdfViewer(host, options = {}) {
     disposePdfViewer(host);
     fallbackToFrame(
       host,
-      "تعذّر عرض الموضوع داخل التطبيق. استخدم «فتح في نافذة مستقلة» أو «تنزيل PDF» أدناه لقراءته."
+      `تعذّر عرض الموضوع داخل التطبيق (السبب: ${describeViewerFailure(error)}). ` +
+        "استخدم «فتح في نافذة مستقلة» أو «تنزيل PDF» أدناه لقراءته."
     );
     if (globalThis.console) console.warn("pdf.js indisponible:", error);
   }

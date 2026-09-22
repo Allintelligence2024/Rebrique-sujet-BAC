@@ -207,6 +207,17 @@ test("un fichier introuvable n'est pas retéléchargé pour rien", async () => {
   assert.equal(frame.hidden, false, "l'élève garde une sortie de secours");
   assert.match(container().textContent, /تعذّر عرض الموضوع داخل التطبيق/);
 });
+test("la note de repli nomme la cause probable de l'échec", async () => {
+  const { host } = scaffold();
+  globalThis.pdfjsLib = {
+    GlobalWorkerOptions: {},
+    getDocument() {
+      return { promise: Promise.reject(new Error("Unexpected server response (404) while retrieving PDF")) };
+    }
+  };
+  await mountPdfViewer(host);
+  assert.match(container().textContent, /السبب: ملف الموضوع غير موجود/);
+});
 test("un sujet sans fichier local garde le lien source, sans cadre vide", () => {
   const html = pdfViewerHTML({ id: 1, pdfExternalUrl: "https://www.dzexams.com/x.pdf" });
   assert.doesNotMatch(html, /<iframe/);
