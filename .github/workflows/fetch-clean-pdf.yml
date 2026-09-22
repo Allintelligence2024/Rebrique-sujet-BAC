@@ -68,7 +68,8 @@ jobs:
             echo "## versions"
             sudo apt-get update -qq
             sudo apt-get install -y -qq tesseract-ocr tesseract-ocr-ara tesseract-ocr-fra tesseract-ocr-eng qpdf
-            pip install --quiet --break-system-packages ocrmypdf pymupdf lxml
+            # ocrmypdf<16 : la v17 a supprimé HocrTransform (refonte hocrtransform).
+          pip install --quiet --break-system-packages "ocrmypdf<16" pymupdf lxml
             tesseract --version | head -2
             qpdf --version
             python3 -c "import ocrmypdf, fitz; print('ocrmypdf OK', ocrmypdf.__version__)"
