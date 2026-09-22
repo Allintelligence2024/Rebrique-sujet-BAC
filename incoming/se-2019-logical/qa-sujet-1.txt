@@ -1,2 +1,5 @@
-polices candidates : 53
+polices candidates : 83
+exemple rejeté : /usr/share/fonts/opentype/fonts-hosny-amiri/Amiri-Bold.ttf -> '········· ···· 2019\n'
+Amiri téléchargée : 431116 o
+Amiri extrait : '········· ···· 2019\n'
 POLICE INTROUVABLE : RuntimeError: aucune police arabe utilisable
