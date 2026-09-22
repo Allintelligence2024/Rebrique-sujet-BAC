@@ -1,6 +1,7 @@
-name: Fetch clean BAC PDF
+name: Fetch or rebuild BAC PDFs
 
-# One-shot fetch from a runner that can reach the source. The sandbox cannot.
+# One-shot fetch/rebuild from a runner that can reach the sources and run apt.
+# The sandbox can do neither (TLS allowlist, no tesseract).
 # Must run from this branch: workflow_dispatch is only registered on the default
 # branch. The path filter stops the PDF commit this job pushes from retriggering it.
 on:
@@ -54,47 +55,29 @@ jobs:
           ls -la incoming/se-2023
           find incoming/se-2023 -type f -name '*.pdf' | grep -q .
 
-      - name: Download SE 2019 Sciences candidates (text-layer fix)
+      # Les miroirs (eddirasa, ency, bac-algerie, dzexams) redistribuent tous le
+      # MÊME fichier à couche brouillée (vérifié : « اجلمهورية » partout) ou des
+      # scans sans couche. Télécharger ailleurs ne sert à rien : on reconstruit
+      # une couche saine par OCR (tesseract ara+fra+eng) depuis nos propres
+      # fichiers. --force-ocr jette la couche corrompue et garde un rendu
+      # 300 dpi visuellement identique.
+      - name: OCR SE 2019 Sciences (rebuild text layer)
         run: |
           set -euo pipefail
-          mkdir -p incoming/se-2019
-          download() {
-            local url="$1" dest="$2"
-            echo "GET $url"
-            if curl -fL --retry 4 --retry-delay 2 -A "Mozilla/5.0" -o "$dest" "$url"; then
-              if head -c 5 "$dest" | grep -q '%PDF'; then
-                echo "OK $dest $(wc -c < "$dest") bytes"
-                return 0
-              fi
-              echo "NOT A PDF: $dest"
-              file "$dest" || true
-              rm -f "$dest"
-            else
-              echo "FAIL $url"
-            fi
-            return 1
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ocrmypdf tesseract-ocr tesseract-ocr-ara tesseract-ocr-fra tesseract-ocr-eng
+          mkdir -p incoming/se-2019-ocr
+          ocr() {
+            local src="$1" dest="$2"
+            echo "OCR $src -> $dest"
+            ocrmypdf -l ara+fra+eng --force-ocr --optimize 1 --oversample 300 \
+              --output-type pdf "$src" "$dest"
+            echo "OK $dest $(wc -c < "$dest") bytes"
           }
-          # Source exacte référencée par subjects/manifest.json (peut avoir changé depuis).
-          download "https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-3051478.pdf" \
-            incoming/se-2019/dzexams-2019-current.pdf || true
-          # Mêmes motifs d'URL que les candidats SE 2023 déjà validés.
-          download "https://www.ency-education.com/uploads/3/0/9/3/309326/bac2019-sciences-se.pdf" \
-            incoming/se-2019/ency-2019-se.pdf || true
-          download "https://bac-algerie.net/sujets/2019/bac2019-Sciences-experimentales.pdf" \
-            incoming/se-2019/bac-algerie-2019-se.pdf || true
-          download "https://eddirasa.com/wp-content/uploads/2019/06/eddirasa.com-bac-sciences-se-2019.pdf" \
-            incoming/se-2019/eddirasa-2019-se.pdf || true
-          download "https://eddirasa.com/wp-content/uploads/2019/06/eddirasa-com-bac-se-science-2019.pdf" \
-            incoming/se-2019/eddirasa-2019-se-alt.pdf || true
-          # Ratissage : page de recherche eddirasa → liens .pdf 2019 sciences.
-          echo "--- scrape eddirasa search ---"
-          curl -sL --retry 2 -A "Mozilla/5.0" "https://eddirasa.com/?s=bac+2019+sciences" \
-            | grep -o 'https://eddirasa\.com[^"]*\.pdf' | sort -u | head -8 || true
-          curl -sL --retry 2 -A "Mozilla/5.0" "https://eddirasa.com/?s=bac+2019+sciences" \
-            | grep -o 'https://eddirasa\.com[^"]*\.pdf' | sort -u | head -8 \
-            | nl -v0 | while read -r n u; do download "$u" "incoming/se-2019/eddirasa-scrape-$n.pdf" || true; done
-          ls -la incoming/se-2019
-          find incoming/se-2019 -type f -name '*.pdf' | grep -q .
+          ocr subjects/SE/2019/sujet-1.pdf incoming/se-2019-ocr/sujet-1.pdf
+          ocr subjects/SE/2019/sujet-2.pdf incoming/se-2019-ocr/sujet-2.pdf
+          ls -la incoming/se-2019-ocr
+          find incoming/se-2019-ocr -type f -name '*.pdf' | grep -q .
 
       - uses: actions/upload-artifact@v4
         with:
@@ -104,8 +87,8 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: se-2019-candidates
-          path: incoming/se-2019
+          name: se-2019-ocr
+          path: incoming/se-2019-ocr
           if-no-files-found: error
 
       - name: Commit the PDFs so they can be pulled over github.com
@@ -113,11 +96,11 @@ jobs:
           set -euo pipefail
           git config user.name "arena-ai-coding-agent[bot]"
           git config user.email "41898282+arena-ai-coding-agent[bot]@users.noreply.github.com"
-          git add incoming/se-2023 incoming/se-2014 incoming/se-2019
+          git add incoming/se-2023 incoming/se-2014 incoming/se-2019-ocr
           git status
           if git diff --cached --quiet; then
             echo "No new PDF to commit"
             exit 0
           fi
-          git commit -m "Fetch SE 2019 subject candidates for text-layer check"
+          git commit -m "OCR SE 2019 Sciences : couche texte reconstruite (tesseract ara+fra+eng)"
           git push origin "HEAD:${{ github.ref_name }}"
