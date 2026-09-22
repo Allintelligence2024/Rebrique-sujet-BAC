@@ -2,27 +2,35 @@
 """Reconstruit un PDF « image + couche texte LOGIQUE » depuis un PDF source.
 
 Contexte : les PDF dzexams ont une couche texte irrécupérable (ordre visuel
-+ paires de lettres échangées : « اجلمهورية »). ocrmypdf sérialise les mots
-de gauche à droite (couche visuelle). En revanche tesseract émet les mots
-hOCR en ordre logique — et son moteur PDF propre (`tesseract … pdf`) écrit
-la couche dans cet ordre : on l'utilise directement, sans ocrmypdf.
-
-Pipeline : rendu 300 dpi (JPEG q85) → tesseract pdf par page → fusion.
-Le diagnostic part dans le fichier QA (commité) car les logs Actions sont
-inaccessibles depuis le sandbox.
++ paires de lettres échangées). tesseract reconnaît juste mais sérialise les
+mots de gauche à droite (couche visuelle), avec ou sans ocrmypdf. Ce script
+prend donc le TSV tesseract (mots logiques + boîtes) et écrit lui-même la
+couche invisible avec PyMuPDF : lignes RTL triées droite→gauche, mots en
+ordre logique, render_mode=3 (invisible). Fusion image+texte via qpdf.
 
 Usage (sur le runner CI) :
-    python3 scripts/ocr-logical-layer.py <src.pdf> <dest.pdf> <qa.txt> <hocr_p1.html>
+    python3 scripts/ocr-logical-layer.py <src.pdf> <dest.pdf> <qa.txt>
+
+Dépendances runner : tesseract-ocr + langs, qpdf, python3 + pymupdf.
+Police arabe : cherchée sur le système, sinon téléchargée (Amiri, OFL).
+Tout diagnostic part dans le QA (commité).
 """
 
+import csv
+import glob
+import re
 import subprocess
 import sys
 import tempfile
+import urllib.request
 from pathlib import Path
 
 import fitz  # pymupdf
 
 DPI = 300
+ARABIC_RE = re.compile(r"[\u0600-\u06FF]")
+LATIN_RE = re.compile(r"[A-Za-z]")
+AMIRI_URL = "https://github.com/google/fonts/raw/main/ofl/amiri/Amiri-Regular.ttf"
 QA: list = []
 
 
@@ -31,67 +39,160 @@ def qa(msg: str) -> None:
     print(msg, flush=True)
 
 
-def main(src: str, dest: str, qa_path: str, hocr_sample_path: str) -> int:
+def arabic_font(tmpdir: Path) -> str:
+    for pattern in ("/usr/share/fonts/**/Amiri*.ttf", "/usr/share/fonts/**/*.ttf"):
+        for cand in glob.glob(pattern, recursive=True):
+            try:
+                font = fitz.Font(fontfile=cand)
+                ok = font.has_glyph(ord("ا")) if hasattr(font, "has_glyph") else True
+                if ok:
+                    qa(f"police système : {cand}")
+                    return cand
+            except Exception:  # noqa: BLE001
+                continue
+    dest = tmpdir / "Amiri-Regular.ttf"
+    urllib.request.urlretrieve(AMIRI_URL, str(dest))
+    fitz.Font(fontfile=str(dest))
+    qa(f"police téléchargée : {AMIRI_URL} ({dest.stat().st_size} o)")
+    return str(dest)
+
+
+def read_tsv(path: Path):
+    words = []
+    with open(path, encoding="utf-8") as f:
+        reader = csv.DictReader(f, delimiter="\t", quoting=csv.QUOTE_NONE)
+        for row in reader:
+            try:
+                if int(row["level"]) != 5:
+                    continue
+                text = (row["text"] or "").strip()
+                if not text:
+                    continue
+                words.append(
+                    {
+                        "line": (int(row["block_num"]), int(row["par_num"]), int(row["line_num"])),
+                        "left": int(row["left"]),
+                        "top": int(row["top"]),
+                        "w": int(row["width"]),
+                        "h": int(row["height"]),
+                        "conf": float(row["conf"]),
+                        "text": text,
+                    }
+                )
+            except (ValueError, KeyError):
+                continue
+    return words
+
+
+def main(src: str, dest: str, qa_path: str) -> int:
     failures = 0
     with tempfile.TemporaryDirectory() as tmp:
         tmpdir = Path(tmp)
+        try:
+            fontfile = arabic_font(tmpdir)
+        except Exception as e:  # noqa: BLE001
+            qa(f"POLICE INTROUVABLE : {type(e).__name__}: {e}")
+            Path(qa_path).write_text("\n".join(QA) + "\n", encoding="utf-8")
+            return 2
+        # Test aller-retour police/extraction.
+        probe_doc = fitz.open()
+        probe_page = probe_doc.new_page(width=400, height=100)
+        probe_page.insert_text(
+            fitz.Point(10, 50), "الجمهورية", fontfile=fontfile, fontsize=12, render_mode=0
+        )
+        roundtrip = "الجمهورية" in probe_page.get_text()
+        qa(f"aller-retour police/extraction : {'OK' if roundtrip else 'ÉCHEC'}")
+        probe_doc.close()
+        if not roundtrip:
+            Path(qa_path).write_text("\n".join(QA) + "\n", encoding="utf-8")
+            return 2
+
         doc = fitz.open(src)
         qa(f"SRC {src} : {doc.page_count} pages")
-        merged = fitz.open()
+        img_doc = fitz.open()
+        txt_doc = fitz.open()
         for pno in range(doc.page_count):
             try:
-                pix = doc[pno].get_pixmap(dpi=DPI)
+                page = doc[pno]
+                pix = page.get_pixmap(dpi=DPI)
+                w_pt, h_pt = pix.width * 72 / DPI, pix.height * 72 / DPI
                 img = tmpdir / f"p{pno}.jpg"
                 pix.save(str(img), jpg_quality=85)
+                ip = img_doc.new_page(width=w_pt, height=h_pt)
+                ip.insert_image(fitz.Rect(0, 0, w_pt, h_pt), stream=img.read_bytes())
                 base = tmpdir / f"p{pno}"
                 r = subprocess.run(
-                    ["tesseract", str(img), str(base), "-l", "ara+fra+eng", "pdf"],
+                    ["tesseract", str(img), str(base), "-l", "ara+fra+eng", "tsv"],
                     capture_output=True,
                     text=True,
                     timeout=600,
                 )
                 if r.returncode != 0:
-                    qa(f"page {pno + 1} : TESSERACT EXIT {r.returncode} :: {r.stderr[:300]}")
+                    qa(f"page {pno + 1} : TESSERACT EXIT {r.returncode} :: {r.stderr[:200]}")
                     failures += 1
+                    txt_doc.new_page(width=w_pt, height=h_pt)
                     continue
-                one = fitz.open(tmpdir / f"p{pno}.pdf")
-                merged.insert_pdf(one)
-                one.close()
+                words = read_tsv(base.with_suffix(".tsv"))
+                lines: dict = {}
+                for w in words:
+                    lines.setdefault(w["line"], []).append(w)
+                tp = txt_doc.new_page(width=w_pt, height=h_pt)
+                rtl_count = 0
+                for key in sorted(lines, key=lambda k: min(w["top"] for w in lines[k])):
+                    line = lines[key]
+                    joined = " ".join(w["text"] for w in line)
+                    rtl = len(ARABIC_RE.findall(joined)) >= len(LATIN_RE.findall(joined))
+                    rtl_count += 1 if rtl else 0
+                    ordered = sorted(line, key=lambda w: w["left"], reverse=rtl)
+                    for w in ordered:
+                        x_pt = w["left"] * 72 / DPI
+                        h_pt_w = max(w["h"] * 72 / DPI, 4)
+                        baseline = h_pt - (w["top"] + 0.8 * w["h"]) * 72 / DPI
+                        tp.insert_text(
+                            fitz.Point(x_pt, baseline),
+                            w["text"],
+                            fontfile=fontfile,
+                            fontsize=max(h_pt_w * 0.72, 4),
+                            render_mode=3,
+                        )
+                confs = [w["conf"] for w in words]
+                lo = sum(1 for c in confs if c < 30)
+                qa(f"page {pno + 1} : mots={len(words)} lignes={len(lines)} rtl={rtl_count} conf<30={lo}")
                 if pno == 0:
-                    h = subprocess.run(
-                        ["tesseract", str(img), str(tmpdir / "p0h"), "-l", "ara+fra+eng", "hocr"],
-                        capture_output=True,
-                        text=True,
-                        timeout=600,
-                    )
-                    if h.returncode == 0:
-                        Path(hocr_sample_path).write_bytes((tmpdir / "p0h.hocr").read_bytes())
-                        qa("hocr p1 : OK")
-                    else:
-                        qa(f"hocr p1 : EXIT {h.returncode}")
-            except Exception as e:  # noqa: BLE001 - tout échec est consigné
+                    first = sorted(lines, key=lambda k: min(w["top"] for w in lines[k]))[0]
+                    qa("  ligne1 : " + " | ".join(w["text"] for w in lines[first][:8]))
+            except Exception as e:  # noqa: BLE001
                 qa(f"page {pno + 1} : ERREUR {type(e).__name__}: {str(e)[:300]}")
                 failures += 1
-        if merged.page_count == 0:
-            qa("AUCUNE PAGE PRODUITE")
+        img_path = tmpdir / "img.pdf"
+        txt_path = tmpdir / "txt.pdf"
+        img_doc.save(str(img_path))
+        txt_doc.save(str(txt_path))
+        qa(f"img={img_path.stat().st_size} txt={txt_path.stat().st_size} échecs={failures}")
+        r = subprocess.run(
+            ["qpdf", str(img_path), "--overlay", str(txt_path), "--", dest],
+            capture_output=True,
+            text=True,
+            timeout=300,
+        )
+        qa(f"qpdf exit={r.returncode} {r.stderr[:200]}")
+        if r.returncode != 0:
             Path(qa_path).write_text("\n".join(QA) + "\n", encoding="utf-8")
             return 2
-        merged.save(dest, garbage=4, deflate=True)
-        qa(f"FINAL {dest} : {merged.page_count} pages, {Path(dest).stat().st_size} octets, échecs={failures}")
-        for pno in range(min(merged.page_count, 2)):
-            t = merged[pno].get_text()[:500].replace("\n", " / ")
+        final = fitz.open(dest)
+        qa(f"FINAL {dest} : {final.page_count} pages, {Path(dest).stat().st_size} octets")
+        for pno in range(min(final.page_count, 2)):
             qa(f"--- page {pno + 1} couche finale ---")
-            qa(t)
-        probe = "الجمهورية الجزائرية الديمقراطية الشعبية"
-        qa(f"HEADER_LOGIQUE={'OUI' if probe in merged[0].get_text() else 'NON'}")
-        merged.close()
+            qa(final[pno].get_text()[:500].replace("\n", " / "))
+        qa(f"HEADER_LOGIQUE={'OUI' if 'الجمهورية الجزائرية الديمقراطية الشعبية' in final[0].get_text() else 'NON'}")
+        final.close()
     Path(qa_path).write_text("\n".join(QA) + "\n", encoding="utf-8")
     return 0 if failures == 0 else 1
 
 
 if __name__ == "__main__":
     try:
-        code = main(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
+        code = main(sys.argv[1], sys.argv[2], sys.argv[3])
     except Exception as e:  # noqa: BLE001
         Path(sys.argv[3]).write_text(
             "\n".join(QA) + f"\nPLANTAGE SCRIPT: {type(e).__name__}: {e}\n", encoding="utf-8"

@@ -56,9 +56,9 @@ jobs:
           find incoming/se-2023 -type f -name '*.pdf' | grep -q .
 
       # Les miroirs redistribuent tous le MÊME fichier brouillé (vérifié). On
-      # reconstruit donc une couche LOGIQUE par OCR : tesseract émet les mots
-      # en ordre logique, son moteur PDF propre conserve cet ordre
-      # (scripts/ocr-logical-layer.py : rendu 300 dpi → tesseract pdf → fusion).
+      # reconstruit donc une couche LOGIQUE par OCR (scripts/ocr-logical-layer.py) :
+      # rendu 300 dpi → tesseract TSV (mots logiques + boîtes) → tri RTL
+      # droite→gauche → couche invisible PyMuPDF → qpdf --overlay.
       # Tout diagnostic part dans incoming/ (commité) car les logs Actions sont
       # inaccessibles depuis le sandbox.
       - name: OCR SE 2019 Sciences (logical layer rebuild)
@@ -68,17 +68,16 @@ jobs:
           {
             echo "## versions"
             sudo apt-get update -qq
-            sudo apt-get install -y -qq tesseract-ocr tesseract-ocr-ara tesseract-ocr-fra tesseract-ocr-eng
+            sudo apt-get install -y -qq tesseract-ocr tesseract-ocr-ara tesseract-ocr-fra tesseract-ocr-eng qpdf
           pip install --quiet --break-system-packages pymupdf
             tesseract --version | head -2
+            qpdf --version
             python3 -c "import fitz; print('pymupdf OK')"
           } 2>&1 | tee incoming/se-2019-logical/setup.txt
           python3 scripts/ocr-logical-layer.py subjects/SE/2019/sujet-1.pdf \
-            incoming/se-2019-logical/sujet-1.pdf incoming/se-2019-logical/qa-sujet-1.txt \
-            incoming/se-2019-logical/hocr-p1-sujet-1.html
+            incoming/se-2019-logical/sujet-1.pdf incoming/se-2019-logical/qa-sujet-1.txt
           python3 scripts/ocr-logical-layer.py subjects/SE/2019/sujet-2.pdf \
-            incoming/se-2019-logical/sujet-2.pdf incoming/se-2019-logical/qa-sujet-2.txt \
-            incoming/se-2019-logical/hocr-p1-sujet-2.html
+            incoming/se-2019-logical/sujet-2.pdf incoming/se-2019-logical/qa-sujet-2.txt
           ls -la incoming/se-2019-logical
           find incoming/se-2019-logical -type f -name '*.pdf' | grep -q .
 
