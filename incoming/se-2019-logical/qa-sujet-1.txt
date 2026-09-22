@@ -1,2 +1,2 @@
-police système : /usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf
-aller-retour police/extraction : ÉCHEC
+polices candidates : 53
+POLICE INTROUVABLE : RuntimeError: aucune police arabe utilisable
