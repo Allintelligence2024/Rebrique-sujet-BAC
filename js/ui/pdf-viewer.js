@@ -27,7 +27,7 @@ export function pdfViewerHTML(subject, { showCover = true, page = null } = {}) {
       <div class="flex wrap pdf-viewer-actions">
         <a class="btn btn-indigo btn-sm" href="${escapeHTML(local)}${anchor}" target="_blank" rel="noopener noreferrer">📄 فتح في نافذة مستقلة</a>
         <a class="btn btn-ghost btn-sm" href="${escapeHTML(local)}" download>⬇️ تنزيل PDF</a>
-        ${external ? `<a class="small" href="${escapeHTML(external)}" target="_blank" rel="noopener noreferrer">المصدر الخارجي</a>` : ""}
+        ${external ? `<a class="small" href="${escapeHTML(external)}" target="_blank" rel="noopener noreferrer" title="يُفتح في عارض خارجي قد يعرض النص العربي معكوسا — العرض الداخلي أعلاه هو المرجع الصحيح">المصدر الخارجي ⚠️</a>` : ""}
       </div>
     </div>`;
   }
@@ -38,7 +38,7 @@ export function pdfViewerHTML(subject, { showCover = true, page = null } = {}) {
         <strong>لا يوجد ملف محلي لهذا الموضوع</strong>
         <p class="small text-muted">يُفتح الموضوع على المصدر الخارجي في نافذة مستقلة.</p>
       </div>
-      <a class="btn btn-indigo btn-block pdf-open" href="${escapeHTML(external)}" target="_blank" rel="noopener noreferrer">📄 فتح المصدر الخارجي</a>
+      <a class="btn btn-indigo btn-block pdf-open" href="${escapeHTML(external)}" target="_blank" rel="noopener noreferrer" title="يُفتح في عارض خارجي قد يعرض النص العربي معكوسا">📄 فتح المصدر الخارجي ⚠️</a>
     </div>`;
   }
   return `<div class="center stack preview-empty"><p class="small text-muted">لا يوجد ملف موضوع متاح لهذه الدورة في التطبيق.</p></div>`;

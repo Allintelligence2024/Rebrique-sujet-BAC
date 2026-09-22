@@ -224,6 +224,19 @@ test("un sujet sans fichier local garde le lien source, sans cadre vide", () => 
   assert.match(html, /فتح المصدر الخارجي/);
 });
 
+test("le lien externe prévient que l'afficheur tiers peut inverser l'arabe", () => {
+  const html = pdfViewerHTML({
+    id: 1,
+    pdfLocalUrl: "subjects/SE/2019/sujet-1.pdf",
+    pdfExternalUrl: "https://www.dzexams.com/x.pdf"
+  });
+  assert.match(html, /المصدر الخارجي/);
+  assert.match(html, /معكوسا/);
+  const externalOnly = pdfViewerHTML({ id: 1, pdfExternalUrl: "https://www.dzexams.com/x.pdf" });
+  assert.match(externalOnly, /فتح المصدر الخارجي/);
+  assert.match(externalOnly, /معكوسا/);
+});
+
 test("mountPdfViewers monte tous les visionneurs d'un écran, une seule fois", async () => {
   document.getElementById("host-container").innerHTML =
     pdfViewerHTML({ id: 1, pdfLocalUrl: "/a.pdf" }) + pdfViewerHTML({ id: 2, pdfLocalUrl: "/b.pdf" });
