@@ -22,6 +22,7 @@ import re
 import subprocess
 import sys
 import tempfile
+import traceback
 from pathlib import Path
 
 import fitz  # pymupdf
@@ -133,6 +134,7 @@ def build_text_page(txt_doc, ordered_lines, page_w_pt, page_h_pt):
     )
     page = txt_doc.new_page(width=page_w_pt, height=page_h_pt)
     txref = txt_doc.get_new_xref()
+    txt_doc.update_object(txref, "<< >>")
     txt_doc.update_stream(txref, cmap.encode("ascii"))
     fxref = txt_doc.get_new_xref()
     txt_doc.update_object(
@@ -161,6 +163,7 @@ def build_text_page(txt_doc, ordered_lines, page_w_pt, page_h_pt):
         txt_doc.update_stream(existing[0], content)
     else:
         cxref = txt_doc.get_new_xref()
+        txt_doc.update_object(cxref, "<< >>")
         txt_doc.update_stream(cxref, content)
         txt_doc.xref_set_key(page.xref, "Contents", f"{cxref} 0 R")
     return len(alphabet)
@@ -215,6 +218,8 @@ def main(src: str, dest: str, qa_path: str) -> int:
                     qa("  ligne1 : " + " | ".join(w["text"] for w in ordered[0][1][:8]))
             except Exception as e:  # noqa: BLE001
                 qa(f"page {pno + 1} : ERREUR {type(e).__name__}: {str(e)[:300]}")
+                for line in traceback.format_exc().strip().splitlines()[-4:]:
+                    qa(f"    {line.strip()[:160]}")
                 failures += 1
         img_path = tmpdir / "img.pdf"
         txt_path = tmpdir / "txt.pdf"
