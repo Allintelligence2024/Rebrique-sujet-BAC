@@ -26,6 +26,7 @@ import traceback
 from pathlib import Path
 
 import fitz  # pymupdf
+from bidi.algorithm import get_display
 
 DPI = 300
 ARABIC_RE = re.compile(r"[\u0600-\u06FF]")
@@ -49,10 +50,9 @@ def read_tsv(path: Path):
                 text = (row["text"] or "").strip()
                 if not text:
                     continue
-                if ARABIC_RE.search(text):
-                    # tesseract sérialise les mots RTL en ordre VISUEL
-                    # (octets inversés) : on restaure l'ordre logique.
-                    text = text[::-1]
+                # tesseract donne du LOGIQUE ; les consommateurs pdf.js appliquent
+                # bidi à l'extraction : on écrit du VISUEL exact (pur + mixte).
+                text = get_display(text)
                 words.append(
                     {
                         "line": (int(row["block_num"]), int(row["par_num"]), int(row["line_num"])),
@@ -155,7 +155,7 @@ def build_text_page(txt_doc, ordered_lines, page_w_pt, page_h_pt):
                 continue
             fs = max(w["h"] * 72 / DPI * 0.72, 4)
             x_pt = w["left"] * 72 / DPI
-            baseline = page_h_pt - (w["top"] + 0.8 * w["h"]) * 72 / DPI
+            baseline = w["base"]
             ops.append(
                 f"BT /F1 {fs:.2f} Tf 3 Tr 1 0 0 1 {x_pt:.2f} {baseline:.2f} Tm (".encode("ascii")
                 + enc
@@ -216,13 +216,23 @@ def main(src: str, dest: str, qa_path: str) -> int:
                     joined = " ".join(w["text"] for w in line)
                     rtl = len(ARABIC_RE.findall(joined)) >= len(LATIN_RE.findall(joined))
                     rtl_count += 1 if rtl else 0
-                    ordered.append((key, sorted(line, key=lambda w: w["left"], reverse=rtl)))
+                    srt = sorted(line, key=lambda w: w["left"], reverse=rtl)
+                    # Base uniforme par ligne : les extracteurs trient par y,
+                    # des y distincts par mot entrelacent les lignes voisines.
+                    bottom = max(w["top"] + 0.8 * w["h"] for w in line)
+                    base = h_pt - bottom * 72 / DPI
+                    for w in srt:
+                        w["base"] = base
+                    ordered.append((key, srt))
                 nalpha = build_text_page(txt_doc, ordered, w_pt, h_pt)
                 confs = [w["conf"] for w in words]
                 lo = sum(1 for c in confs if c < 30)
                 qa(f"page {pno + 1} : mots={len(words)} lignes={len(lines)} rtl={rtl_count} alpha={nalpha} conf<30={lo}")
                 if pno == 0 and ordered:
-                    qa("  ligne1 : " + " | ".join(w["text"] for w in ordered[0][1][:8]))
+                    for _, ws in ordered:
+                        if sum(1 for w in ws if ARABIC_RE.search(w["text"])) >= 3:
+                            qa("  INTENT " + ascii(" ".join(w["text"] for w in ws[:6])))
+                            break
             except Exception as e:  # noqa: BLE001
                 qa(f"page {pno + 1} : ERREUR {type(e).__name__}: {str(e)[:300]}")
                 for line in traceback.format_exc().strip().splitlines()[-4:]:
@@ -248,9 +258,8 @@ def main(src: str, dest: str, qa_path: str) -> int:
         for pno in range(min(final.page_count, 2)):
             qa(f"--- page {pno + 1} couche finale ---")
             qa(final[pno].get_text()[:500].replace("\n", " / "))
-        t0 = final[0].get_text()
-        qa(f"HEADER_LOGIQUE={'OUI' if 'الجمهورية الجزائرية الديمقراطية الشعبية' in t0 else 'NON'}")
-        qa(f"RESIDU_VISUEL={'OUI' if ('اجلمهورية' in t0 or 'ةيروهمجلا' in t0) else 'NON'}")
+        qa("VERDICT : extraits fitz ci-dessus = tri+bidi (non contractuel) ;")
+        qa("vrai verdict = correcteur pdf.js du dépôt (sandbox) sur les PDF.")
         final.close()
     Path(qa_path).write_text("\n".join(QA) + "\n", encoding="utf-8")
     return 0 if failures == 0 else 1
