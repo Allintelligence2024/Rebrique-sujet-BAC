@@ -49,6 +49,10 @@ def read_tsv(path: Path):
                 text = (row["text"] or "").strip()
                 if not text:
                     continue
+                if ARABIC_RE.search(text):
+                    # tesseract sérialise les mots RTL en ordre VISUEL
+                    # (octets inversés) : on restaure l'ordre logique.
+                    text = text[::-1]
                 words.append(
                     {
                         "line": (int(row["block_num"]), int(row["par_num"]), int(row["line_num"])),
@@ -199,6 +203,9 @@ def main(src: str, dest: str, qa_path: str) -> int:
                     txt_doc.new_page(width=w_pt, height=h_pt)
                     continue
                 words = read_tsv(base.with_suffix(".tsv"))
+                if pno == 0:
+                    for w in words[:8]:
+                        qa(f"  TSV {w['left']:4d} c={w['conf']:5.1f} {ascii(w['text'])}")
                 lines: dict = {}
                 for w in words:
                     lines.setdefault(w["line"], []).append(w)
