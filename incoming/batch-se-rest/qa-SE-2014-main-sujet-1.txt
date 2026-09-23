@@ -1,0 +1,24 @@
+SRC /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/SE/2014/sujet-1.pdf : 5 pages
+  TSV 1128 c= 90.5 'A'
+  TSV 1221 c= 48.5 '#'
+  TSV 1267 c= 23.9 'BAC'
+  TSV 1405 c= 69.1 '\xe0'
+  TSV 1448 c= 86.5 '0.'
+  TSV 1492 c= 42.1 '1.4'
+  TSV  865 c= 16.3 'DE'
+  TSV 1159 c=  7.7 'LE'
+page 1 : mots=298 lignes=35 rtl=29 alpha=97 conf<30=14
+  INTENT '\u0629\u064a\u0631\u0648\u0647\u0645\u062c\u0644\u0627 \u0629\u064a\u0631\u0626\u0627\u0632\u062c\u0644\u0627 \u0629\u064a\u0637\u0627\u0631\u0642\u0645\u0628\u062f\u0644\u0627 \u200e\u0629\u064a\u0628\u0639\u0634\u0644\u0627'
+page 2 : mots=146 lignes=21 rtl=11 alpha=98 conf<30=11
+page 3 : mots=255 lignes=54 rtl=32 alpha=101 conf<30=14
+page 4 : mots=302 lignes=39 rtl=33 alpha=97 conf<30=19
+page 5 : mots=323 lignes=36 rtl=23 alpha=102 conf<30=24
+img=3897847 txt=25443 échecs=0
+qpdf exit=0 
+FINAL incoming/batch-se-rest/SE-2014-main-sujet-1.pdf : 5 pages, 3924287 octets
+--- page 1 couche finale ---
+A / # / BAC / à / 0. 1.4 / DE / LE / EAN / الجمهورية / الجزائرية / الدبمقراطية‎الشعبية / وزارة / التربيةJi‏dbالديوانgt‏obللامتحانات / والمسابقات / امتحان / بكالوريا / التعليمSP‏:دورة / جوان2014 / الشعبة:علوم / تجريبية / اخبار / في:مادة / علوم / الطبيعة / والحياة. / :المدة04سا30و / د / على / المترشح / أن / يختار / أحد / الموضوعين:التاليين / الموضوع / الأول / التمرين:الأول( / 6 / (نقاط / تركب / الخلايا / حقيقية / النواة / بروتينات / متخصتصة / بآليات / منظمة / للقيام / بمختلف / نشاطاتها.الحيوية / ]‏- / OSsالهدم / الآني / للخلايا / الإنشائية / للكريات / الحمراء / .من / الحصول / على / مستخلصات / خلوية / متجانسة؛ / أخطيعت / 
+--- page 2 couche finale ---
+MO / TN / BoA / C / 2 ‎م / يمثل / الشكل)2(رسما / تخطيطيا / تفسيريا / لبعض / المراحل / التي / تتم / على / مستوى.الهيولى / EPA / qu / ACGIG / anGTATCACTAR / tUalHisLeuThrProéluéluLysSerAlavalThrAlaLeuTrpGlylLysvalasnval / LysTyr His / a / E / SRE / 3:١ane / a / iit. / fii / ff / ‎ق1 / “le6 / 12 / الشكل2 / 1-باستغلالك / لمعطيات / الوثيقة(2): / أ-ماذاJus‏ / العناضر( / (س / و(Ge)‏ / و()ع / وأرقام / الشكل / (؟1) / sha‏pall / Aisالممثلة / في / الشكل(2). / =سسب / عهa‏ / من / الشكل)1(٠‏ / مستنئتجا / وحدة / الشفرة.الوراثية / ج-مثل / القواعد / الآزوتية / الموافقة / للجزء / المؤطر / من / الشكل)2( / د-أوجد / عدد / الأحماض / الأمينية / في / ا
+VERDICT : extraits fitz ci-dessus = tri+bidi (non contractuel) ;
+vrai verdict = correcteur pdf.js du dépôt (sandbox) sur les PDF.

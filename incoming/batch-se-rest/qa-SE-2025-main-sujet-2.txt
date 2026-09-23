@@ -1,0 +1,30 @@
+SRC /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/SE/2025/sujet-2.pdf : 11 pages
+  TSV 1693 c= 29.6 'BA\u200f'
+  TSV 1552 c= 30.8 '\u0627\u0644'
+  TSV 1371 c= 29.7 '\u0627'
+  TSV  987 c=  9.0 'By'
+  TSV 1348 c= 43.7 '\u200f2112007111'
+  TSV 1984 c= 17.4 'Pt'
+  TSV 2297 c= 91.0 '\xa9'
+  TSV 1819 c= 84.9 '\u0631\u0627\u0628\u062a\u062e\u0627'
+page 1 : mots=339 lignes=36 rtl=30 alpha=109 conf<30=29
+  INTENT '\u0631\u0627\u0628\u062a\u062e\u0627 \u0641 :\u0629\u062f\u0627\u0647 \u0645\u0648\u0644\u0639 \u0629\u0639\u064a\u0628\u0637\u0644\u0627 \u0629\u0627\u064a\u0645\u0644\u0627\u0648'
+page 2 : mots=189 lignes=31 rtl=20 alpha=105 conf<30=16
+page 3 : mots=253 lignes=37 rtl=29 alpha=107 conf<30=18
+page 4 : mots=373 lignes=38 rtl=33 alpha=107 conf<30=28
+page 5 : mots=237 lignes=42 rtl=24 alpha=109 conf<30=18
+page 6 : mots=275 lignes=38 rtl=30 alpha=99 conf<30=19
+page 7 : mots=328 lignes=49 rtl=44 alpha=103 conf<30=11
+page 8 : mots=330 lignes=40 rtl=39 alpha=94 conf<30=13
+page 9 : mots=345 lignes=41 rtl=41 alpha=91 conf<30=7
+page 10 : mots=383 lignes=42 rtl=41 alpha=101 conf<30=13
+page 11 : mots=106 lignes=15 rtl=13 alpha=70 conf<30=3
+img=7953598 txt=59595 échecs=0
+qpdf exit=0 
+FINAL incoming/batch-se-rest/SE-2025-main-sujet-2.pdf : 11 pages, 8016086 octets
+--- page 1 couche finale ---
+BA‏ / لا / ا / By‏2112007111 / Pt / © / اختبار / ف:هادة / علوم / الطبيعة / والمياة/ / :الشعبة / علومLyd‏/بكالوربا2025 / 0الموضوع / الثاني / يحنوي / الموضوخ / على)05(صنحاتث / )بن / الصلحة6من10إلى / الصنحة10من10( / pail‏gu / :الأؤلOS)‏(نقاط / التنفس / ظاهرة / حبوبة / تسمح / بتحويلASLAN‏ / الكيميائبة / الكامئة / في / جزيئات / الغلركوز / إلى / طاتة / قابلة / للاستعمال(ATP)‏ / يبدأ / هذا / التحول / بالتحال / السكرثي / المتمئل / في / مملسلة / من / التفاعلات / المحت ّزة / أنزيمبا / على / مستوى / الييونى / والتي / تم / اختصارها / في.خطوتينLeb‏ / اسثعمال / جزيئة2-Désoxyglucose‏(2-DG) / aa!العلاجاث / الواعدة / ضد / الأورام / ا
+--- page 2 couche finale ---
+2, / BALAI / S/ 5345] / HU / HASH / et / اختبار / في:مادة / علوم / الطبيعة / والحياة/ / :الشعبة / علوم / تجريبية/بكالوربا2025 / — / ]إنسبة / نشاطSOD‏nase / (ighيدت / jy / 80- / - / 16 / À‏9نراكيزROS‏A / 44 / نسبةAL‏ / الخلايا129 / - / -60 / 43 / 2 4 / 5 / PACE / PS‏ / ee‏ / ايو> / 08 / - / — / 40 / 1 / | / © / 8= / 20 / L.04‏£ / = / 00 / 00 / | / és / R143‏ / 5-2 / ass / À‏ / أنزيمSOD‏ / عند / الشخص / السليم / أنزيمSOD‏ / عند / الشخصhall‏ / الزلك53,14:Zn°°‏|شاردة النحاسCut / | / (Gin) :Q / (Thr) :T / (Asp) :D | / (Arg) :R | / (His) :H‏ / (الشكل)ب / الوثيقة1[ / 1)حل / النتائج / الممكله / في(الشكل)أ / منDARN‏ / ‏2) / oyسبب / الخلل / في / وظيفة / الأنزيمS
+VERDICT : extraits fitz ci-dessus = tri+bidi (non contractuel) ;
+vrai verdict = correcteur pdf.js du dépôt (sandbox) sur les PDF.
