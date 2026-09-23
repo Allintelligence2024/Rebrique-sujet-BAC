@@ -173,3 +173,71 @@ portent une formulation pédagogique et une note datée expliquant l'absence
 de question autonome : ils ne doivent pas être promus `official` sans une
 phrase interrogative lue sur l'image. Total : 17 pôles `official`
 proposés sur 24.
+
+---
+
+## Application (Phase 3 du plan) — 2026-09-23
+
+Encodage fait **depuis les tableaux ci-dessus**, jamais depuis la couche
+texte. Aucune page n'a été lue à nouveau : la Phase 3 applique la Phase 1.
+
+### Consignes passées en `official` (17/24, chiffre inchangé)
+
+| Pôle | Avant | Après |
+| --- | --- | --- |
+| S1-E1 S | « انقل الجدول … وفق البيانات المرقمة. » (p.1) | « 1. أنقل الجدول … وفق التّعليمات المطلوبة. » (p.1) |
+| S1-E1 E | « بيّن في نص علمي … اعتمادا على معلوماتك. » | « 2. بيّن في نصّ علمي … ممّا سبق ومعلوماتك. » (p.1) |
+| S1-E2 S | « حلّل مخطط الشكل (أ) من الوثيقة 1. » | + consigne 2 du الجزء الأول (وضّح دور إيبوبروفان) — regroupement noté |
+| S1-E2 E | « فسّر منحنى الشكل (ب) من الوثيقة 2. » | + consigne 1 du الجزء الثاني et ses deux tirets (علّل) — regroupement noté |
+| S1-E2 W | « اقترح حلا. » | « 3. اقترح حلا يُبيّن كيفية تخفيف الأعراض الجانبية… » (p.2) |
+| S1-E3 N | « اقترح فرضية … » (p.3) | « فكيف تتدخل الأجسام المضادة … ؟ » (p.3) — la question de cadrage remplace la question d'hypothèse |
+| S1-E3 S | « حلّل النتائج الموضحة في الجدول الشكل (أ) … » | « 1- استخرج علاقة بروتين (Her 2)… 2- اقترح فرضية … » (p.3) — l'analyse du tableau part au pôle E |
+| S1-E3 E | « فسّر آلية تأثير جزيئة تراستوزوماب … » | + consignes 1 et 3 du الجزء الثاني (جدول + كشف مبكّر) — regroupement noté (p.4) |
+| S1-E3 W | « قدّم مقترحا … الكشف المبكر … » | « بيّن … في نص علمي كيف تتدخل الأجسام المضادة … » (p.4) |
+| S2-E1 S | « من 1 إلى 11 … » | « من 01 إلى 06 … » (p.5) — la 6e cellule est bien la dernière (11 était faux) |
+| S2-E1 E | « … دور مصدر الببتيد المستضدي في انتقاء … » | « … دور ومصدر المستضد في انتقاء اللمفاويات … » (p.5) |
+| S2-E2 S | « حلّل الوثيقة 1 … » (p.5) | « . حلّل الوثيقة (1) … » (p.6) — page corrigée, puce imprimée conservée |
+| S2-E2 E | « قدّم حلا … الوثيقة 3. » (p.7) | « . حلّل منحنيات الشكلين (أ) و (ب) … » (p.7) |
+| S2-E2 W | pôle reconstruit (نسخ/ترجمة) | « . أعط حلا للمشكلة المطروحة … الوثيقة (3). » (p.7) |
+| S2-E3 N | « اقترح فرضية لحل هذه المشكلة. » (p.8) | pôle reconstruit : cadrage pédagogique, aucune question imprimée |
+| S2-E3 S | « استخرج أهم مميزات البروتينات … » (p.9) | « 1- حلّل معطيات الوثيقة (1) مُحدّدا المشكلة … 2- اقترح فرضية … » (p.8) |
+| S2-E3 E | « تأكد من صحة الفرضية … » (p.9) | + consignes 1 et 3 du الجزء الثاني (استخرج + قدّم حلا) — regroupement noté (p.9) |
+| S2-E3 W | « قدّم حلا مبنيا على أسس علمية … » | « لخّص في نص علمي دقيق آلية عمل المشبك المثبط … » (p.9) |
+
+### Ce que la Phase 3 a corrigé dans les données servies
+
+- **600, pas 655** : le tableau de S1-E3 imprime 600 (première ligne du
+  tableau, relue sur l'image) ; la couche texte écrivait 655. La valeur est
+  corrigée dans la réponse modèle **et** dans la règle `rule.document.values`.
+- **CI50 : 10 et 9** au lieu de 15 et 9,5. La couche texte donne 9 et 10
+  (pièges ci-dessus) ; l'ordre (Cox-1 lent, Cox-2 rapide) est conservé.
+  Ce sont des réponses modèles, jamais un corrigé officiel.
+- **« الجدول الشكل (أ) »** (conflation) disparaît : la phrase imprimée dit
+  « الجدول (أ) من الوثيقة (2) ».
+- **« من 1 إلى 11 »** devient « من 01 إلى 06 » : le schéma numérote six
+  éléments, pas onze.
+- **La question pédagogique « نسخ / ترجمة » de S2-E2-W n'est plus un pôle** :
+  la phrase imprimée est « أعط حلا … ». Son contenu est porté par la consigne
+  du pôle E (حلّل منحنيات الشكلين (أ) و (ب) …).
+- **Sept cadrages restent `reconstructed`** (S1-E1 N/W, S1-E2 N, S2-E1 N/W,
+  S2-E2 N, S2-E3 N) avec une note datée disant pourquoi.
+
+### Gardes ajoutées (Phase 5) et verrou
+
+- `tests/data-integrity.test.mjs` : refus d'un préfixe `خلاصة`/`الخاتمة`, de
+  parenthèses vides, du doublon « أنزيم وأنزيم », et d'une consigne officielle
+  recopiée sur deux années ou deux exercices. Mesure faite **avant** l'ajout :
+  aucune consigne du corpus ne déclenchait ces refus ; deux paires légitimes
+  de formules passe-partout (2024, 2026) sont nommées dans le test plutôt que
+  tolérées en silence.
+- `tests/se-2020-recopy.test.mjs` (8 tests) : fige les 17 textes et leurs
+  pages, le refus de page sur un pôle reconstruit, les barèmes 5/7/8 lus sur
+  l'image, le 600, les regroupements notés et l'inventaire `partial`.
+
+### Mesures après encodage
+
+`npm run inventory:generate` → **58 sujets, 576 tâches, 277 consignes
+officielles, 299 étapes reconstruites, 0/58 inventaire `complete`,
+277/277 pages rattachées**. Le compte 277 et `activePoles` **ne bougent pas** :
+2020 échange des pôles entre exercices, n'en certifie aucun de plus.
+`calibration:check` reste vert, `p1:check` reste rouge — c'est attendu.

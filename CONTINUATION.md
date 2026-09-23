@@ -6,6 +6,34 @@ Test status at handoff: **256 pass / 0 fail / 1 skipped** (`npm test`).
 PWA build id: `f54ac619b7a2` (stale as soon as any source file changes — regenerate with `npm run pwa:version`).
 Production build: `dist/site` 136 files, standalone `dist/boussole-4d-standalone.html` 1.80 MB (reproducible sha256).
 
+> **2026-09-23 (soir) — SE 2020 : Phase 3 du plan `PLAN_SE_2013_2020` appliquée.**
+> Branche de session `arena/01a0cebc-rebrique-sujet-bac`, base `93706ee` (= `main`).
+>
+> - **17 consignes `official` recopiées mot à mot sur l'image des 9 pages**
+>   (`docs/RELECTURE_SE_2020_CHECKLIST.md`, deux passes du même jour), **7
+>   cadrages `reconstructed`** assumés avec note datée. `data/years/se/year-2020.js`
+>   réordonné selon les pages : la question d'hypothèse de S1-E3 et de S2-E3
+>   repart sur le pôle S, l'analyse du tableau Her2 et le « حل » GABA montent
+>   sur E, les deux نص علمي passent sur W (voir le journal de la checklist).
+> - **Données servies corrigées** : `600` au lieu de `655` (tableau Her2, la
+>   couche texte mentait), CI50 `10`/`9` au lieu de `15`/`9,5`, « من 01 إلى 06 »
+>   au lieu de « من 1 إلى 11 », « الجدول الشكل (أ) » (conflation) supprimé,
+>   préfixes `خلاصة` disparus. Les réponses modèles restent des aides.
+> - **Généré** : `inventory:generate` → 58 sujets / 576 tâches / **277 consignes
+>   officielles** / 299 reconstruites / 277 pages rattachées / **0/58 `complete`** ;
+>   `activePoles` et `data/calibration-status.js` **inchangés** (277).
+> - **Gardes** : `tests/data-integrity.test.mjs` refuse désormais un préfixe
+>   `خلاصة`/`الخاتمة`, des parenthèses vides, « أنزيم وأنزيم » et une consigne
+>   officielle recopiée sur deux années/exercices (deux paires de formules
+>   passe-partout de 2024 et 2026 sont nommées, pages distinctes). Nouveau
+>   `tests/se-2020-recopy.test.mjs` (8 tests) : textes, pages, barèmes 5/7/8,
+>   600, regroupements notés, inventaires `partial`.
+> - **Mesures** : `npm test` → **395 tests** (README régénéré) ; `p1:check`
+>   **reste rouge** (0/58 inventaires complets, 0/4155 copies) — attendu ;
+>   `p2:check` 6/7, `p3:check` 6/6.
+> - **Suite du chantier** : 2019 (checklist image → Phases 2-6), puis 2016/2015,
+>   puis 2013/2014, puis 2017/2018 — ordre du plan, inchangé.
+
 > **2026-09-23 — état vérifié après le merge de la PR #30** (branche de session
 > `arena/01a0cebc-rebrique-sujet-bac`, base `93706ee` = `origin/main`, merge de #30 à
 > 13:37:56Z ; CI « Quality » **verte sur `main`** au run 13:38:01Z). Mesures relancées

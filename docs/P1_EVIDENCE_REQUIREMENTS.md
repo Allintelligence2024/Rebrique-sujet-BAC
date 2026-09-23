@@ -16,6 +16,16 @@ Pour chacun des 58 couples année/sujet configurés (29 sessions × 2, SE 2021 c
 
 Un thème, un corrigé non attribué ou une consigne reconstruite ne suffit pas. Une URL accessible ne prouve pas que son contenu a été relu. Le premier pilote couvre seulement 2025/S1/E1.
 
+> **2026-09-23 — ce qui a avancé, sans fermer P1.1.** SE 2020 a été relu page
+> par page sur l'image (`docs/RELECTURE_SE_2020_CHECKLIST.md`, deux passes) et
+> ses 17 consignes recopiées mot à mot (`docs/PLAN_SE_2013_2020.md`, journal de
+> Phase 3). Le compte de consignes officielles reste **277** : 2020 échange des
+> pôles entre exercices, n'en certifie aucun de plus. Le critère 2 (liste
+> exhaustive) et le critère 7 (`complete`) ne sont **pas** satisfaits : un
+> exercice imprimé porte souvent deux ou trois consignes pour quatre pôles, et
+> sept cadrages n'ont aucune phrase imprimée. Les inventaires 2020 restent
+> `partial`, `p1:check` reste rouge. Rien ici ne s'assouplit.
+
 ## P1.5 — corpus humain
 
 Le périmètre numérique actuel contient 277 pôles dont la consigne est marquée officielle (213 jusqu'au 2026-09-19 ; +48 par la structuration OCR des Maths 2013–2015 + 2017 استثنائية ; +16 par celle de SE 2021, toutes le 2026-09-20). La politique exige au minimum 15 copies par pôle : **4 155 réponses réelles** au minimum, chacune avec :
