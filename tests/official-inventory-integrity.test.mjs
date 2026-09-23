@@ -183,6 +183,25 @@ test("la pagination déclarée n'est jamais silencieusement fausse", () => {
   }
 });
 
+test("les références documentaires restent dans le fichier livré", () => {
+  // documentRefs[] désigne des pages du PDF livré (numérotation fichier,
+  // comme pageInPdf) : toute référence au-delà de la dernière page est un
+  // reste de numérotation livret non converti (2025/S2, 2026/S1, 2024-m/S2…).
+  for (const { yearId, subject, inventory } of eachSubject()) {
+    const pages = inventory.document.pages;
+    for (const task of inventory.tasks) {
+      for (const reference of task.documentRefs || []) {
+        for (const page of reference.pages || []) {
+          assert.ok(
+            Number.isInteger(page) && page >= 1 && page <= pages,
+            `${yearId}/S${subject.id} ${task.id}: référence page ${page} hors du fichier (${pages} pages)`
+          );
+        }
+      }
+    }
+  }
+});
+
 test("les 58 sujets restent éligibles à l'épreuve sans inventaire invalide", () => {
   let invalid = 0;
   for (const { yearId, subject, inventory } of eachSubject()) {

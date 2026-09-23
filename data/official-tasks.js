@@ -348,7 +348,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
     document: {
       localPath: "/subjects/SE/2025/sujet-2.pdf",
       pages: 11,
-      pageOffset: 0
+      pageOffset: 5
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -390,7 +390,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -400,7 +400,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: 6
+        pageInPdf: 1
       },
       {
         id: "2025-S2-E1-Q3",
@@ -417,7 +417,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -427,7 +427,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: 6
+        pageInPdf: 1
       },
       {
         id: "2025-S2-E1-Q4",
@@ -485,7 +485,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [7]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -495,7 +495,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: 7
+        pageInPdf: 2
       },
       {
         id: "2025-S2-E2-Q3",
@@ -512,7 +512,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [7]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -522,7 +522,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: 7
+        pageInPdf: 2
       },
       {
         id: "2025-S2-E2-Q4",
@@ -539,7 +539,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [8]
+            pages: [3]
           }
         ],
         trainingMappings: [
@@ -549,7 +549,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: 8
+        pageInPdf: 3
       },
       {
         id: "2025-S2-E3-Q1",
@@ -566,7 +566,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [9]
+            pages: [4]
           }
         ],
         trainingMappings: [
@@ -576,7 +576,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: 9
+        pageInPdf: 4
       },
       {
         id: "2025-S2-E3-Q2",
@@ -614,7 +614,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [10]
+            pages: [5]
           }
         ],
         trainingMappings: [
@@ -624,7 +624,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: 10
+        pageInPdf: 5
       },
       {
         id: "2025-S2-E3-Q4",
@@ -641,7 +641,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [10]
+            pages: [5]
           }
         ],
         trainingMappings: [
@@ -651,7 +651,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: 10
+        pageInPdf: 5
       }
     ]
   },
@@ -999,7 +999,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -1026,7 +1026,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -1094,7 +1094,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [7]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -1121,7 +1121,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [7]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -1212,7 +1212,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [10]
+            pages: [5]
           }
         ],
         trainingMappings: [
@@ -1239,7 +1239,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [10]
+            pages: [5]
           }
         ],
         trainingMappings: [
@@ -1624,7 +1624,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [5]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -1651,7 +1651,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [5]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -1721,7 +1721,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -1748,7 +1748,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [7]
+            pages: [3]
           }
         ],
         trainingMappings: [
@@ -1796,7 +1796,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [8]
+            pages: [4]
           }
         ],
         trainingMappings: [
@@ -1844,7 +1844,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [10]
+            pages: [6]
           }
         ],
         trainingMappings: [
@@ -1871,7 +1871,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [10]
+            pages: [6]
           }
         ],
         trainingMappings: [
@@ -2264,7 +2264,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -2291,7 +2291,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -2360,7 +2360,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [7]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -2387,7 +2387,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [7]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -2479,7 +2479,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [9]
+            pages: [4]
           }
         ],
         trainingMappings: [
@@ -2506,7 +2506,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [10]
+            pages: [5]
           }
         ],
         trainingMappings: [
@@ -3174,7 +3174,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
     document: {
       localPath: "/subjects/SE/2026/sujet-1.pdf",
       pages: 5,
-      pageOffset: null
+      pageOffset: 0
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -3228,7 +3228,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2026-S1-E1-Q3",
@@ -3254,7 +3254,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2026-S1-E1-Q4",
@@ -3322,7 +3322,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2026-S1-E2-Q3",
@@ -3348,7 +3348,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2026-S1-E2-Q4",
@@ -3374,7 +3374,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2026-S1-E3-Q1",
@@ -3400,14 +3400,14 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2026-S1-E3-Q2",
         exerciseNumber: 3,
         order: 2,
         pole: "S",
-        page: 3,
+        page: 4,
         prompt:
           "بيّن من خلال استغلالك لمعطيات شكلي الوثيقة 1 أن مبيد الأترازين يستهدف تعطيل عملية التركيب الضوئي وأن له تأثيرا متباينا على المحاصيل الزراعية والنباتات الضارة.",
         promptSource: "official",
@@ -3417,7 +3417,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [3]
+            pages: [4]
           }
         ],
         trainingMappings: [
@@ -3427,7 +3427,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2026-S1-E3-Q3",
@@ -3453,14 +3453,14 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 5
       },
       {
         id: "2026-S1-E3-Q4",
         exerciseNumber: 3,
         order: 4,
         pole: "W",
-        page: 6,
+        page: 5,
         prompt:
           "أنجز مخططا وظيفيا يوضح تأثير مبيد الأترازين على عملية التركيب الضوئي اعتمادا على الدراسة والسند المرفق.",
         promptSource: "official",
@@ -3470,7 +3470,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [5]
           }
         ],
         trainingMappings: [
@@ -3480,7 +3480,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 5
       }
     ]
   },
@@ -3539,7 +3539,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -3566,7 +3566,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -3634,7 +3634,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -3660,7 +3660,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [7]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -3687,7 +3687,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [8]
+            pages: [3]
           }
         ],
         trainingMappings: [
@@ -3714,7 +3714,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [8]
+            pages: [3]
           }
         ],
         trainingMappings: [
@@ -3762,7 +3762,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [9]
+            pages: [4]
           }
         ],
         trainingMappings: [
@@ -3789,7 +3789,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [10]
+            pages: [5]
           }
         ],
         trainingMappings: [
@@ -4181,7 +4181,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [5]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -4208,7 +4208,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [5]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -4277,7 +4277,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [5]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -4303,7 +4303,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [7]
+            pages: [3]
           }
         ],
         trainingMappings: [
@@ -4350,7 +4350,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [8]
+            pages: [4]
           }
         ],
         trainingMappings: [
@@ -4376,7 +4376,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [9]
+            pages: [5]
           }
         ],
         trainingMappings: [
@@ -4402,7 +4402,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [9]
+            pages: [5]
           }
         ],
         trainingMappings: [
@@ -4429,7 +4429,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [9]
+            pages: [5]
           }
         ],
         trainingMappings: [
@@ -9905,7 +9905,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [3]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -9931,7 +9931,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [3]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -9957,7 +9957,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [3]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -10006,7 +10006,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -10033,7 +10033,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -10060,7 +10060,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -10354,7 +10354,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [3]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -10380,7 +10380,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [3]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -10406,7 +10406,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [3]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -10455,7 +10455,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -10482,7 +10482,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -10509,7 +10509,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -10799,7 +10799,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -10825,7 +10825,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -10852,7 +10852,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -10900,7 +10900,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [5]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -10927,7 +10927,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [3]
           }
         ],
         trainingMappings: [
@@ -10953,7 +10953,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [3]
           }
         ],
         trainingMappings: [
@@ -11253,7 +11253,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -11279,7 +11279,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -11305,7 +11305,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -11332,7 +11332,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -11359,7 +11359,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -11386,7 +11386,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [5]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -11413,7 +11413,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [5]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -11711,7 +11711,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -11738,7 +11738,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -11765,7 +11765,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -11792,7 +11792,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [5]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -11818,7 +11818,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [5]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -11844,7 +11844,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [5]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -11870,7 +11870,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [5]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -12162,7 +12162,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -12188,7 +12188,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -12235,7 +12235,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [5]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -12261,7 +12261,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [5]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -12287,7 +12287,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [3]
           }
         ],
         trainingMappings: [
@@ -12313,7 +12313,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [3]
           }
         ],
         trainingMappings: [
@@ -12607,7 +12607,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -12634,7 +12634,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -12681,7 +12681,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [5]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -12729,7 +12729,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [3]
           }
         ],
         trainingMappings: [
@@ -12756,7 +12756,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [3]
           }
         ],
         trainingMappings: [
@@ -13046,7 +13046,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -13073,7 +13073,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -13121,7 +13121,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [5]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -13170,7 +13170,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [3]
           }
         ],
         trainingMappings: [
@@ -13197,7 +13197,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [3]
           }
         ],
         trainingMappings: [
@@ -13436,7 +13436,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
     document: {
       localPath: "/subjects/M/2024/sujet-2.pdf",
       pages: 3,
-      pageOffset: null
+      pageOffset: 3
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2],
@@ -13478,7 +13478,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -13488,7 +13488,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2024-m-S2-E1-Q3",
@@ -13505,7 +13505,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -13515,7 +13515,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2024-m-S2-E1-Q4",
@@ -13552,7 +13552,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [5]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -13562,7 +13562,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2024-m-S2-E2-Q2",
@@ -13578,7 +13578,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [5]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -13588,14 +13588,14 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2024-m-S2-E2-Q3",
         exerciseNumber: 2,
         order: 3,
         pole: "E",
-        page: 7,
+        page: 6,
         prompt:
           "وضّح خطوات تعبير المورثة المسؤولة عن ظهور ألياف الكولاجين في الغشاء القاعدي لوحدة التصفية عند الشخصين العادي والمصاب بمتلازمة ألبورت.",
         promptSource: "official",
@@ -13605,7 +13605,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [7]
+            pages: [3]
           }
         ],
         trainingMappings: [
@@ -13615,7 +13615,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2024-m-S2-E2-Q4",
@@ -13913,7 +13913,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -13940,7 +13940,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -13987,7 +13987,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [5]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -14034,7 +14034,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [3]
           }
         ],
         trainingMappings: [
@@ -14061,7 +14061,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [3]
           }
         ],
         trainingMappings: [
@@ -14327,7 +14327,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -14353,7 +14353,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -14380,7 +14380,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [4]
+            pages: [1]
           }
         ],
         trainingMappings: [
@@ -14427,7 +14427,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [5]
+            pages: [2]
           }
         ],
         trainingMappings: [
@@ -14474,7 +14474,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [3]
           }
         ],
         trainingMappings: [
@@ -14501,7 +14501,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         documentRefs: [
           {
             id: "subject-pdf",
-            pages: [6]
+            pages: [3]
           }
         ],
         trainingMappings: [

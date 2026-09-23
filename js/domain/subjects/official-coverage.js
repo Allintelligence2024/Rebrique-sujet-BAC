@@ -155,6 +155,11 @@ export function buildOfficialCoverageReport({ yearId, subject, inventory }) {
         errors.push(`document reference has no pages: ${task?.id}`);
       } else if (reference.pages.some((page) => !Number.isInteger(page) || page < 1)) {
         errors.push(`document reference has invalid pages: ${task?.id}`);
+      } else if (
+        Number.isInteger(inventory?.document?.pages) &&
+        reference.pages.some((page) => page > inventory.document.pages)
+      ) {
+        errors.push(`document reference beyond last page: ${task?.id}`);
       }
     }
     for (const mapping of taskMappings(task)) {
