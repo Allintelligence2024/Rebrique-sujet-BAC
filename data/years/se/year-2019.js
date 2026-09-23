@@ -1,13 +1,43 @@
 /* ============================================================
-   BAC SVT Algérie 2019 — archive pédagogique reconstruite
+   BAC SVT Algérie 2019 — شعبة علوم تجريبية — entraînement 4D
    ------------------------------------------------------------
-   Aucune consigne n'est marquée official. Les champs de provenance
-   restent attachés à chaque pôle. Chargé à la demande par le shell.
+   Énoncé : sujets officiels du dépôt
+     subjects/SE/2019/sujet-1.pdf (5 pages = livret 1-5)
+     subjects/SE/2019/sujet-2.pdf (4 pages = livret 6-9)
+   Consignes : recopiées mot à mot sur l'IMAGE des neuf pages
+     (deux passes, 2026-09-23) → docs/RELECTURE_SE_2019_CHECKLIST.md.
+     `bacPromptPage` porte la page du LIVRET (1-9), pas celle du
+     fichier local.
+     La couche texte du fichier local (brutie : « Lay » pour لاحظ,
+     « المُضاتات » pour المُضادَّات, chiffres absents) a servi de repère
+     de page, jamais de source.
+   Réponses modèles : aides pédagogiques, jamais un corrigé officiel
+     (aucun corrigé local dans le dépôt).
+   Plan : docs/PLAN_SE_2013_2020.md, Phase 3 (2026-09-23). Les six
+     exercices remplacent des thèmes pédagogiques qui ne correspondaient
+     pas aux pages imprimées (ex. S1-E1 portait « الاستنساخ », la page
+     imprime la مغماتية المرتبطة بالظهرة).
    ============================================================ */
 
+const OFFICIAL = (page, notes) => ({
+  bacPromptSource: "official",
+  bacPromptPage: page,
+  bacPromptVerifiedAt: "2026-09-23",
+  bacPromptNotes: notes
+});
+
+/* Note obligatoire d'une consigne officielle de 2019 : page du livret,
+   verbe imprimé, numéro de question, renvoi à la checklist. */
+const PAGE19 = (page, verbe, question) =>
+  `Page ${page} du livret : ${question}. Verbe imprimé : ${verbe}. Recopié mot à mot sur l'image ` +
+  `(docs/RELECTURE_SE_2019_CHECKLIST.md, passes 1 et 2 du 2026-09-23).`;
+
+/* Pôle pédagogique : aucune phrase interrogative imprimée à cet endroit. */
 const RECON = (notes) => ({
   bacPromptSource: "reconstructed",
-  bacPromptNotes: notes
+  bacPromptNotes:
+    `${notes} Relu sur l'image le 2026-09-23 (docs/RELECTURE_SE_2019_CHECKLIST.md) : ` +
+    `aucune question imprimée autonome à cet endroit de la page.`
 });
 
 const YEAR_2019_SE = {
@@ -25,82 +55,82 @@ const YEAR_2019_SE = {
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-3051478.pdf",
       pdfLocalUrl: "/subjects/SE/2019/sujet-1.pdf",
       pdfNote:
-        "PDF non redistribué dans le dépôt. Page dzexams : https://www.dzexams.com/ar/annales/OHlmRldmdmdDVUNVRHBadTE5em0vdz09. PDF dzexams محمي بكلمة مرور في العارض. Thèmes reconstruits pédagogiquement, non certifiables.",
+        "Sujet officiel servi par l'application (livret 1-9 : sujet-1 = pages 1-5, sujet-2 = pages 6-9). Consignes recopiées mot à mot sur l'image des pages le 2026-09-23 (docs/RELECTURE_SE_2019_CHECKLIST.md). Page dzexams : https://www.dzexams.com/ar/annales/OHlmRldmdmdDVUNVRHBadTE5em0vdz09. Réponses modèles = aides pédagogiques, pas un corrigé officiel.",
       title: "الموضوع الأول",
       exercises: [
         {
           number: 1,
           ui: "text",
-          label: "الاستنساخ وتركيب ARNm",
+          label: "المغماتية المرتبطة بالظهرة وسط محيطية",
           max: 5,
-          desc: "آلية الاستنساخ ودور إنزيم ARN بوليميراز في تركيب ARNm",
+          desc: "البراكين الطفحية والبيريدوتيت وانقطاع موهو: أدلة أن مناطق التباعد مرتبطة بمغماتية نشطة",
           poles: {
             N: {
               points: 1,
-              prompt: "تأطير الإشكالية: كيف يُستنسخ ARNm من ADN؟",
-              bacPrompt: "كيف يتم استنساخ المعلومة الوراثية من ADN إلى ARNm؟",
+              prompt: "تأطير الإشكالية: كيف نفسر المغماتية النشطة على مستوى ظهرة وسط محيطية؟",
+              bacPrompt:
+                "لماذا تنتشر البراكين الطفحية على مستوى ظهرات وسط محيطية وتعمل على تجديد القشرة المحيطية؟",
               ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
+                "Cadrage pédagogique : l'énoncé affirme l'observation et l'interprétation par l'anatexie du péridotite, sans phrase interrogative de cadrage."
               ),
               placeholder: "صياغة المشكل العلمي...",
               minLength: 40,
-              modelAnswer: "المشكل العلمي: كيف يقرأ ARN بوليميراز السلسلة الناسخة فيركب ARNm مكملا؟",
+              modelAnswer:
+                "المشكل العلمي: كيف تفسر البراكين الطفحية وتجديد القشرة المحيطية عند مناطق التباعد، وما دور انصهار البيريدوتيت المعطف (البرنس) فيها؟",
               rule: {
-                prompt: "تأطير الإشكالية: كيف يُستنسخ ARNm من ADN؟",
-                keywords: ["استنساخ", "ARNm", "بوليميراز"],
+                prompt: "حدد المشكل العلمي حول المغماتية عند الظهرة",
+                keywords: ["تباعد", "بيريدوتيت"],
                 minHits: 2,
                 forbidden: []
               }
             },
             S: {
               points: 1,
-              prompt: "تعرف على مراحل الاستنساخ",
-              bacPrompt: "تعرّف على مراحل الاستنساخ: بداية واستطالة ونهاية.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "بداية، استطالة، نهاية...",
+              prompt: "التعرف على البيانات المرقمة من 1 إلى 8 في مخطط الظهرة",
+              bacPrompt: "1- تَعَرَّفْ على البيانات المرقمة من 1 إلى 8.",
+              ...OFFICIAL(1, PAGE19(1, "تَعَرَّفْ على", "consigne 1 du التمرين الأول")),
+              placeholder: "1 اتجاه التباعد، 2 لافا حديثة، 3 القشرة المحيطية...",
               minLength: 40,
               modelAnswer:
-                "البداية: يرتبط ARN بوليميراز ببداية المورثة ويفتح السلسلتين. الاستطالة: يقرأ السلسلة الناسخة ويربط نوكليوتيدات مكملة. النهاية: يصل إلى نهاية المورثة فينفصل ARNm.",
+                "1: اتجاه التباعد (اتجاهان متعاكسان). 2: لافا حديثة التكوين على السطح. 3: القشرة المحيطية (فوق انقطاع موهو). 4: البرنس (المعطف) أسفل انقطاع موهو. 5: الصهارة الصاعدة إلى محور الظهرة. 6: القوى التي تسبب التباعد (سهمان في اتجاهين متعاكسين). 7: سدود وشقوق عمودية تغذي السيالات. 8: بيريدوتيت المعطف (المادة الأصلية قبل الانصهار). التعرف: نشاط مغماتي في وسط محيطي عند مناطق التباعد.",
               rule: {
-                prompt: "تعرف على مراحل الاستنساخ",
-                keywords: ["بدايه", "استطاله", "نهايه"],
+                prompt: "تعرف على بيانات مخطط الظهرة",
+                keywords: ["قشره", "برنس", "موهو", "صهاره"],
                 minHits: 2,
-                forbidden: ["بسبب"]
+                forbidden: []
               }
             },
             E: {
               points: 2,
-              prompt: "نص علمي حول الاستنساخ",
-              bacPrompt: "اشرح في نص علمي آلية الاستنساخ داخل النواة.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "مقدمة، عرض، خاتمة...",
+              prompt: "النص العلمي: الأدلة على أن مناطق التباعد مرتبطة بمغماتية نشطة",
+              bacPrompt:
+                "2- قَدِّمْ في نص علمي الأدلة التي تُبَيِّنُ أن مناطق التباعد مرتبطة بمغماتية نشطة مستغلا معطيات الوثيقة ومعلوماتك.",
+              ...OFFICIAL(1, PAGE19(1, "قَدِّمْ في نص علمي", "consigne 2 du التمرين الأول")),
+              placeholder: "مقدمة، عرض: اللافا الحديثة، السدود، انصهار البيريدوتيت، خاتمة...",
               minLength: 120,
               modelAnswer:
-                "في النواة يرتبط ARN بوليميراز بالمورثة ويكسر الروابط الهيدروجينية، ثم يركب ARNm وفق تتابع السلسلة الناسخة حتى نهاية المورثة فينفصل الجزيء حاملا المعلومة إلى الهيولى.",
+                "في نص علمي: يبين المخطط تدفق لافا حديثة التكوين على جانبي محور الظهرة (البيانات 2)، ووجود سدود وشقوق عمودية (البيانات 7) تفصل بينها قوى تباعد في اتجاهين متعاكسين (البيانات 6)، وصعود صهارة نحو السطح (البيانات 5) يبني براكين طفحية. ويظهر المخطط أن انصهار بيريدوتيت المعطف (البيانات 8) يحدث عند أعماق قريبة من 10 كيلومترات (ملاحظة: درجة حرارة 1300°C وضغط منخفض)، وينتج عنه صهارة تجدد القشرة المحيطية على جانبي المحور، وأن انقطاع موهو يفصل القشرة المحيطية عن البرنس. ومنه، مناطق التباعد هي مراكز انتشار للقشرة المحيطية، وتحمل مغماتية نشطة تفسرها هذه الأدلة.",
               rule: {
-                prompt: "نص علمي حول الاستنساخ",
-                keywords: ["نواه", "بوليميراز", "ARNm", "ناسخه", "هيولي"],
+                prompt: "بين في نص علمي أن مناطق التباعد مرتبطة بمغماتية نشطة",
+                keywords: ["لافا", "تباعد", "بيريدوتيت", "قشره"],
                 minHits: 3,
                 forbidden: []
               }
             },
             W: {
               points: 1,
-              prompt: "الخاتمة: مصير ARNm",
-              bacPrompt: "ما مصير ARNm بعد نهاية الاستنساخ؟",
+              prompt: "الخلاصة: نموذج المغماتية النشطة عند الظهرة",
+              bacPrompt: "ما النموذج الذي تبنيه معطيات الوثيقة عن الظهرة وسط محيطية؟",
               ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
+                "Clôture pédagogique : la synthèse est incluse dans la consigne 2 du نصّ علمي (pôle E)."
               ),
               placeholder: "في الختام...",
               minLength: 40,
-              modelAnswer: "في الختام، ينتقل ARNm إلى الهيولى ليُترجم إلى بروتين ثم يُهدم بعد استعماله.",
+              modelAnswer:
+                "في الختام: الظهرة وسط محيطية منطقة تباعد تنفصل فيها الصفيحتان، فيصعد البيريدوتيت وينصهر جزئيا فيتجدد القرش المحيطي بصهارة بازلتية وسدود ولافا حديثة.",
               rule: {
-                prompt: "الخاتمة: مصير ARNm",
-                keywords: ["ARNm", "هيولي", "ترجمه"],
+                prompt: "خلاصة حول نموذج الظهرة",
+                keywords: ["ظهره", "تباعد", "بيريدوتيت"],
                 minHits: 2,
                 forbidden: []
               }
@@ -110,87 +140,88 @@ const YEAR_2019_SE = {
         {
           number: 2,
           ui: "text",
-          label: "الموقع الفعال والتخصص الإنزيمي",
+          label: "أنزيم غلوكوز أكسيداز: البنية والوظيفة",
           max: 7,
-          desc: "العلاقة بين بنية الموقع الفعال ومادة التفاعل وتأثير درجة الحرارة وpH",
+          desc: "مقارنة بنية أنزيم GO عند فطرين ودراسة الطفرات لبيان علاقة البنية الفراغية للموقع الفعال بالوظيفة",
           poles: {
             N: {
-              points: 1,
-              prompt: "تأطير الإشكالية: ما أصل التخصص الإنزيمي؟",
-              bacPrompt: "كيف تضمن البنية الفراغية للإنزيم تخصصه الوظيفي؟",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
+              points: 0.5,
+              prompt: "تأطير الإشكالية: هل كل اختلاف في بنية الأنزيم يؤدي حتما إلى اختلاف في وظيفته؟",
+              bacPrompt: "فَهَلْ كل اختلاف في بنية الأنزيمات يؤدي حتما إلى اختلاف في وظائفها؟",
+              ...OFFICIAL(1, PAGE19(1, "فَهَلْ", "question de cadrage de l'énoncé du التمرين الثاني")),
               placeholder: "صياغة المشكل العلمي...",
-              minLength: 40,
+              minLength: 30,
               modelAnswer:
-                "المشكل العلمي: كيف يتكامل الموقع الفعال مع مادة التفاعل فيحدد التخصص، وكيف تؤثر الحرارة وpH؟",
+                "المشكل العلمي: هل يؤدي كل اختلاف في البنية الفراغية للأنزيم إلى اختلاف في وظيفته، أم أن الموقع الفعال وحده هو ما يحدد النشاط الأنزيمي؟",
               rule: {
-                prompt: "تأطير الإشكالية: ما أصل التخصص الإنزيمي؟",
-                keywords: ["موقع", "فعال", "تخصص"],
+                prompt: "حدد المشكل العلمي حول بنية الأنزيم ووظيفته",
+                keywords: ["انزيم", "بنيه"],
                 minHits: 2,
                 forbidden: []
               }
             },
             S: {
               points: 2.5,
-              prompt: "تحليل تغيرات السرعة بدلالة pH والحرارة",
-              bacPrompt: "حلّل تغيرات السرعة الابتدائية بدلالة pH ودرجة الحرارة.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
+              prompt: "الخطوات العملية المتبعة من معطيات الوثيقة (1)، وتفسير نتائج الوثيقة (2)",
+              bacPrompt:
+                "1- اسْتَخْرِجْ الخطوات العملية المتبعة التي تسمح بحل المشكلة المطروحة انطلاقا من معطيات الوثيقة (1).",
+              ...OFFICIAL(
+                2,
+                PAGE19(
+                  2,
+                  "اسْتَخْرِجْ",
+                  "consigne 1 du الجزء الأول ; le pôle porte aussi la consigne 1 de la page 3 (فَسِّرْ النتائج التجريبية) — regroupement noté"
+                )
               ),
-              placeholder: "درجة مثلى، انخفاض على الطرفين...",
+              placeholder: "مقارنة الخصائص، برامج المقارنة، إحداث الطفرات، قياس النشاط...",
               minLength: 90,
               modelAnswer:
-                "نلاحظ سرعة أعظمية عند درجة pH وحرارة مثلى، بينما تنخفض السرعة في الطرفين، ومنه نستنتج وجود ظروف مثلى للنشاط الإنزيمي.",
+                "الخطوات: 1) تحديد كائن الدراسة (أنزيم غلوكوز أكسيداز عند فطر Aspergillus niger وفطر Penicillium amagasakiense)؛ 2) مقارنة الخصائص البنيوية: عدد الأحماض الأمينية، البنيات الثانوية α وβ، جسور ثنائي الكبريت، والأحماض الأمينية للموقع الفعال (الوثيقة 1 الشكل (أ))؛ 3) مقارنة تسلسل الأحماض الأمينية ببرنامجي (Rastop) و(Anagène) (الشكل (ب))؛ 4) إحداث طفرات موجهة في الموقع الفعال واستبدال أحماض أمينية (Tyr→Phe، Asp→Ala، His→Ala، Arg→Gln، Asn→Thr) وقياس النشاط الأنزيمي المتبقي؛ 5) استخلاص علاقة البنية الفراغية للموقع الفعال بالوظيفة.",
               rule: {
-                prompt: "تحليل تغيرات السرعة بدلالة pH والحرارة",
-                keywords: ["سرعه", "حراره", "نشاط"],
+                prompt: "استخرج الخطوات العملية لحل المشكلة",
+                keywords: ["طفرات", "موقع", "مقارنه"],
                 minHits: 2,
-                forbidden: ["بسبب"],
-                document: {
-                  kind: "curve",
-                  axes: ["سرعه", "PH"],
-                  comparisons: [["مثلى", "طرف"]],
-                  trends: [{ about: "مثلى", expect: ["اعظميه", "سرعه"] }],
-                  values: [],
-                  strictValues: false
-                }
+                forbidden: []
               }
             },
             E: {
               points: 2.5,
-              prompt: "تفسير تأثير pH والحرارة على الموقع الفعال",
-              bacPrompt: "فسّر تأثير تغير pH وارتفاع الحرارة على الموقع الفعال.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "شحنات، تشوه، تخريب...",
-              minLength: 110,
+              prompt: "مقارنة الخصائص البنيوية لأنزيم GO عند الفطرين",
+              bacPrompt: "2- قارن بين الخصائص البنيوية لأنزيم GO عند الفطرين.",
+              ...OFFICIAL(2, PAGE19(2, "قارن بين", "consigne 2 du الجزء الأول")),
+              placeholder: "581 مقابل 587 حمضا أمينيا، البنيات α وβ...",
+              minLength: 90,
               modelAnswer:
-                "يغيّر pH شحنات الأحماض الأمينية في الموقع الفعال فيضعف التكامل مع الركيزة. وارتفاع الحرارة يخرب البنية الفراغية فيفقد الإنزيم تخصصه.",
+                "يمثل الجدول في الوثيقة (1) مقارنة بين أنزيم GO عند الفطر Aspergillus niger والفطر Penicillium amagasakiense. البنيتان متقاربتان من حيث عدد الأحماض الأمينية (581 و587) وعدد البنيات α (26 و25)، مع اختلاف واضح في عدد البنيات β (71 مقابل 24). كما تختلف مواضع جسور ثنائي الكبريت (Cys164-Cys206 عند البنيسيليوم مقابل Cys168-Cys210 عند الأسبرجيلوس)، وتتشابه أحماض الموقع الفعال: Arg512، His516، His559، Asp424 عند Penicillium مقابل Arg516، His520، His563، Asp428 عند Aspergillus. ومنه فالبنيتان متشابهتان في المبدأ وتختلفان في بعض التفاصيل.",
               rule: {
-                prompt: "تفسير تأثير pH والحرارة على الموقع الفعال",
-                keywords: ["موقع", "فعال", "شحنات", "بنيه", "تخريب"],
+                prompt: "قارن الخصائص البنيوية لأنزيم GO عند الفطرين",
+                keywords: ["فطر", "احماض", "بنيات", "موقع"],
                 minHits: 3,
-                forbidden: []
+                forbidden: ["بسبب"],
+                document: {
+                  kind: "table",
+                  axes: ["احماض", "بنيات"],
+                  comparisons: [["581", "587"]],
+                  cells: [["موقع", "فعال"]],
+                  values: ["581"],
+                  strictValues: true
+                }
               }
             },
             W: {
-              points: 1,
-              prompt: "الخاتمة: شروط النشاط",
-              bacPrompt: "ما الشروط التي تحفظ النشاط الإنزيمي؟",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "في الختام...",
-              minLength: 40,
+              points: 1.5,
+              prompt: "الإجابة الملخصة للمشكلة العلمية",
+              bacPrompt:
+                "2- قَدِّمْ إجابة ملخصة للمشكلة العلمية المطروحة في بداية التمرين انطلاقا مما توصلت إليه في هذه الدراسة.",
+              ...OFFICIAL(3, PAGE19(3, "قَدِّمْ إجابة ملخصة", "consigne 2 du الجزء الثاني")),
+              placeholder: "لا يغيّر كل اختلاف الوظيفة؛ الموقع الفعال وحده حاسم...",
+              minLength: 60,
               modelAnswer:
-                "في الختام، يحفظ النشاط عند pH وحرارة قريبين من الوسط الخلوي حتى يبقى الموقع الفعال متكاملا.",
+                "الإجابة الملخصة: ليس كل اختلاف في بنية الأنزيم يؤدي حتما إلى اختلاف في وظيفته. فالاختلافات البنيوية المحدودة بين الأنزيمين (عدد الأحماض الأمينية، عدد البنيات α وβ، موضع الجسور) لا تغيّر النشاط، لأن الموقع الفعال بقي محافظا عليه. أما إحداث طفرات في أحماض الموقع الفعال فيقلل النشاط بشدة (النسب المتبقية: 32% عند Tyr68، 7,2% عند Asp424، 1,1% عند His516، 3,5% عند Arg512، 58,2% عند Asn514) أو يعطله. ومنه فالبنية الفراغية للموقع الفعال شرط أساسي للأداء الوظيفي لأنزيم GO.",
               rule: {
-                prompt: "الخاتمة: شروط النشاط",
-                keywords: ["نشاط", "موقع", "خلوي"],
-                minHits: 2,
+                prompt: "قدم إجابة ملخصة للمشكلة العلمية",
+                keywords: ["موقع", "فعال", "نشاط", "طفرات"],
+                minHits: 3,
                 forbidden: []
               }
             }
@@ -199,90 +230,102 @@ const YEAR_2019_SE = {
         {
           number: 3,
           ui: "text",
-          label: "الاستجابة المناعية النوعية",
+          label: "الاستجابة المناعية ضد الخلايا السرطانية",
           max: 8,
-          desc: "تعرف نوعي على المستضد وتدخل LB وLT في الاستجابة الفاعلة",
+          desc: "دور الخلايا المناعية والبرفورين في القضاء على الخلايا السرطانية وآليات إفلاتها والعلاج المناعي",
           poles: {
             N: {
               points: 0.5,
-              prompt: "اقتراح فرضيتين حول آلية القضاء على المستضد",
-              bacPrompt: "اقترح فرضيتين حول آلية الاستجابة المناعية النوعية ضد مستضد.",
+              prompt: "تأطير الإشكالية: كيف تفلت بعض الخلايا السرطانية من الجهاز المناعي؟",
+              bacPrompt:
+                "كيف تطور الخلايا الورمية آليات للإفلات من الجهاز المناعي فتفقد القدرة على مقاومة المرض؟",
               ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
+                "Cadrage pédagogique : l'énoncé présente l'échappement tumoral (« تُطَوِّرُ الخلايا الورمية آليات للإفلات ») sans phrase interrogative."
               ),
-              placeholder: "فرضية 1، فرضية 2...",
-              minLength: 30,
+              placeholder: "صياغة المشكل العلمي...",
+              minLength: 40,
               modelAnswer:
-                "الفرضية 1: تستجيب LB بإنتاج أجسام مضادة نوعية. الفرضية 2: تستجيب LTc بتخريب الخلايا المصابة.",
+                "المشكل العلمي: كيف يعجز الجهاز المناعي بعد تخريب بعض الخلايا السرطانية عن القضاء على أخرى، فتفقد قدرة المريض على مقاومة المرض؟",
               rule: {
-                prompt: "اقتراح فرضيتين حول آلية القضاء على المستضد",
-                keywords: ["فرضيه", "مستضد", "مضاده"],
+                prompt: "حدد المشكل العلمي حول إفلات الخلايا السرطانية",
+                keywords: ["مناعي", "خلايا"],
                 minHits: 2,
-                forbidden: [],
-                hypotheses: { min: 2, distinct: true }
+                forbidden: []
               }
             },
             S: {
               points: 2,
-              prompt: "استغلال نتائج حقن المستضد",
-              bacPrompt: "استغل تطور كمية الأجسام المضادة وعدد LTc بعد حقن المستضد.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
+              prompt: "دور الخلايا المناعية المتدخلة وفرضيتان لتفسير الإفلات",
+              bacPrompt:
+                "1- حَدِّدْ دور الخلايا المناعية المتدخلة في الاستجابة المناعية ضد الخلايا السرطانية الممثلة في الوثيقة (1). 2 - اقْتَرِحْ فرضيتين لتفسير إفلات بعض الخلايا السرطانية من الجهاز المناعي.",
+              ...OFFICIAL(
+                4,
+                PAGE19(
+                  4,
+                  "حَدِّدْ / اقْتَرِحْ",
+                  "les 2 consignes de l'énoncé, regroupées sur ce pôle (regroupement noté)"
+                )
               ),
-              placeholder: "طور كموني ثم ارتفاع...",
-              minLength: 60,
+              placeholder: "LT8/CD8 تعرف HLA I، الببتيد المستضدي، البرفورين... ثم فرضيتان...",
+              minLength: 90,
               modelAnswer:
-                "تمثل الوثيقة كمية الأجسام المضادة وعدد LTc بدلالة الزمن. نلاحظ بعد الحقن طورا كمونيا ثم ارتفاع كمية الأجسام المضادة وعدد LTc، ومنه نستنتج استجابة نوعية خلطية وخلوية.",
+                "الدور: الخلية السرطانية تعرض ببتيدا مستضديا على جزيئة HLA I، فيتعرف عليه LT-CD8 (LTc) بمستقبله TCR فيتشكل معقد؛ تنشط هذه الخلايا فتتكاثر وتهاجم الخلية السرطانية وتقضي عليها (بالبرفورين)، وتتدخل الخلايا العارضة (CPA) واللمفاويات في عرض المستضد. الفرضية الأولى: فقدان الخلية السرطانية تعبيرها عن HLA I فلا تعرض الببتيد المستضدي، فلا تتعرف عليها خلايا LT8 فتنجو من الإفلات. الفرضية الثانية: إفراز مواد تثبط الخلايا المناعية أو تغيير محدداتها فتتوقف الاستجابة المناعية وتستمر الخلية السرطانية في التكاثر.",
               rule: {
-                prompt: "استغلال نتائج حقن المستضد",
-                keywords: ["اجسام", "مضاده", "LTc"],
-                minHits: 2,
-                forbidden: ["بسبب"],
+                prompt: "دور الخلايا المناعية وفرضيتا الإفلات",
+                keywords: ["LT8", "HLA", "ببتيد"],
+                minHits: 3,
+                forbidden: [],
+                hypotheses: { min: 2 }
+              }
+            },
+            E: {
+              points: 4,
+              prompt: "تفسير نتائج التجارب واستنتاج حول فعالية العلاج",
+              bacPrompt:
+                "1- فَسِّرْ إفلات وعدم إفلات الخلايا الورمية من الجهاز المناعي الطبيعي مُبْرِرًا دور البروتينات في ذلك ثم بَيِّن الفرضية الأكثر وجاهة. 2- استنتِجْ بأن التدخل العلاجي غير فعال دوما ضد السرطان ثم قدم نصيحة وقائية لتفادي تطور هذا المرض.",
+              ...OFFICIAL(
+                5,
+                PAGE19(
+                  5,
+                  "فَسِّرْ / استنتِجْ",
+                  "les 2 consignes de la page 5, regroupées sur ce pôle (regroupement noté)"
+                )
+              ),
+              placeholder: "الوسط (أ) و(ب): وجود الفلورة على الغشاء أو في الوسط...",
+              minLength: 110,
+              modelAnswer:
+                "في الوسط (أ): توجد الفلورة الخضراء والفلورة الحمراء بكثافة على سطح غشاء خلايا الورم (++++) بينما تبقى قليلة في الوسط (+). وفي الوسط (ب): تنتقل الفلورتان إلى الوسط (++++) ولا تكادان تظهران على الغشاء. يفسر ذلك بأن جزيئة HLA I والببتيد المستضدي معروضان على سطح غشاء خلايا الوسط (أ)، فالجسم المضاد يثبت عليهما؛ أما في الوسط (ب) فالببتيد المستضدي غير معروض (أو غابت HLA I) فرجع الجسم المضاد إلى الوسط، ومنه إفلات هذه الخلايا من التعرف عليها من قبل LT8. دور البروتينات: HLA I والببتيد المستضدي شرطان لتعرف LTc التي تقضي على الخلية السرطانية بالبرفورين. الفرضية الأكثر وجاهة: غياب عرض الببتيد المستضدي على HLA I. الاستنتاج: العلاجات التي تستهدف الخلايا السرطانية غير فعالة دوما لأن الخلايا المتفلتة لا تعرض المستضد فتنجو؛ والنصيحة الوقائية: الكشف المبكر، تجنب عوامل الخطر (التدخين، التعرض للعوامل المطفرة)، ومراقبة طبية منتظمة.",
+              rule: {
+                prompt: "فسر الإفلات وعدم الإفلات واستنتج",
+                keywords: ["HLA", "ببتيد", "افلات", "فلوره"],
+                minHits: 3,
+                forbidden: [],
                 document: {
-                  kind: "curve",
-                  axes: ["كميه", "زمن"],
-                  comparisons: [["مضاده", "LTc"]],
-                  trends: [{ about: "مضاده", expect: ["ارتفاع", "كميه"] }],
+                  kind: "table",
+                  axes: ["وسط", "فلوره"],
+                  comparisons: [["أ", "ب"]],
+                  cells: [["غشاء", "خلايا"]],
                   values: [],
                   strictValues: false
                 }
               }
             },
-            E: {
-              points: 4,
-              prompt: "تفسير التعاون المناعي",
-              bacPrompt: "فسّر دور LT4 في التعاون بين الاستجابة الخلطية والخلوية.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "إنترلوكينات، تكاثر، تمايز...",
-              minLength: 110,
-              modelAnswer:
-                "تتعرف LT4 على الببتيد المعروض مع CMH II فتفرز إنترلوكينات تحفّز تكاثر LB وتمايزها إلى بلاسموسيت وتكاثر LTc، فتتأكد الفرضيتان بالتعاون المناعي.",
-              rule: {
-                prompt: "تفسير التعاون المناعي",
-                keywords: ["LT4", "انترلوكين", "LB", "LTc", "تعاون"],
-                minHits: 3,
-                forbidden: []
-              }
-            },
             W: {
               points: 1.5,
-              prompt: "مخطط الاستجابة النوعية",
-              bacPrompt: "لخّص في مخطط مسار الاستجابة المناعية النوعية.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "مستضد → LT4 → LB/LTc...",
-              minLength: 40,
+              prompt: "مخطط مراحل الاستجابة المناعية ضد الخلايا السرطانية",
+              bacPrompt:
+                "لَخِّصْ في مخطط مراحل الاستجابة المناعية ضد الخلايا السرطانية اعتمادا على مكتسباتك ومُوَظِّفًا المعلومات التي توصلت إليها من هذه الدراسة.",
+              ...OFFICIAL(5, PAGE19(5, "لَخِّصْ في مخطط", "consigne du الجزء الثالث")),
+              placeholder: "عنوان المخطط: مراحل الاستجابة...",
+              minLength: 60,
               modelAnswer:
-                "عنوان المخطط: استجابة نوعية. مستضد → عرض على CMH → LT4 → إنترلوكينات → أجسام مضادة وتخريب خلوي.",
+                "عنوان المخطط: مراحل الاستجابة المناعية ضد الخلايا السرطانية → تعرض الخلية السرطانية الببتيد المستضدي على HLA I → تعرف LT8 بمستقبل TCR → تنشيط وتكاثر LTc → إفراز البرفورين وتحلل الخلية السرطانية → في حالة الإفلات (غياب العرض) يستمر الورم فتُستعمل العلاجات المناعية (LTc من TIL أو IL2) لتراجع الورم.",
               rule: {
-                prompt: "مخطط الاستجابة النوعية",
-                keywords: ["مخطط", "مستضد", "LT4"],
-                minHits: 2,
+                prompt: "مخطط مراحل الاستجابة المناعية",
+                keywords: ["مخطط", "HLA", "LT8", "برفورين"],
+                minHits: 3,
                 forbidden: [],
-                schema: { arrows: true, title: "استجابة نوعية", ordered: ["مستضد", "LT4", "مضاده"] }
+                schema: { arrows: true, title: "المناعية", ordered: ["عرض", "تعرف", "برفورين"] }
               }
             }
           }
@@ -296,82 +339,81 @@ const YEAR_2019_SE = {
         "https://www.dzexams.com/uploads/sujets/officiels/bac/2019/dzexams-bac-sciences-3051478.pdf",
       pdfLocalUrl: "/subjects/SE/2019/sujet-2.pdf",
       pdfNote:
-        "PDF non redistribué dans le dépôt. Page dzexams : https://www.dzexams.com/ar/annales/OHlmRldmdmdDVUNVRHBadTE5em0vdz09. PDF dzexams محمي بكلمة مرور في العارض. Thèmes reconstruits pédagogiquement, non certifiables.",
+        "Sujet officiel servi par l'application (livret 1-9 : sujet-2 = pages 6-9). Consignes recopiées mot à mot sur l'image des pages le 2026-09-23 (docs/RELECTURE_SE_2019_CHECKLIST.md). Page dzexams : https://www.dzexams.com/ar/annales/OHlmRldmdmdDVUNVRHBadTE5em0vdz09. Réponses modèles = aides pédagogiques, pas un corrigé officiel.",
       title: "الموضوع الثاني",
       exercises: [
         {
           number: 1,
           ui: "text",
-          label: "كمون العمل والقنوات الفولطية",
+          label: "الأنديز: منطقة غوص وبركان انفجاري",
           max: 5,
-          desc: "دور قنوات Na⁺ وK⁺ الفولطية في توليد كمون العمل",
+          desc: "بنية سلسلة الأنديز: غوص الصفيحة المحيطية وانصهار البرنس وتشكل بركان انفجاري",
           poles: {
             N: {
               points: 1,
-              prompt: "تأطير الإشكالية: كيف يتولد كمون العمل؟",
-              bacPrompt: "كيف تتدخل القنوات الفولطية في توليد كمون العمل؟",
+              prompt: "تأطير الإشكالية: كيف يشتغل النشاط التكتوني على طول ساحل الأنديز؟",
+              bacPrompt: "كيف تفسر الحركة التكتونية على طول ساحل أمريكا اللاتينية وما ينتج عنها من براكين؟",
               ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
+                "Cadrage pédagogique : l'énoncé situe la chaîne des Andes (« تَقَعُ سلسلة جبال الأنديز … يتميّز بنشاط تكتوني هام ») sans question."
               ),
               placeholder: "صياغة المشكل العلمي...",
               minLength: 40,
-              modelAnswer: "المشكل العلمي: كيف يؤدي تتابع انفتاح قنوات Na⁺ ثم K⁺ الفولطية إلى كمون العمل؟",
+              modelAnswer:
+                "المشكل العلمي: كيف ينتج عن غوص الصفيحة المحيطية تحت القارة الأمريكية تكوّن سلسلة الأنديز وبراكينها الانفجارية؟",
               rule: {
-                prompt: "تأطير الإشكالية: كيف يتولد كمون العمل؟",
-                keywords: ["كمون", "عمل", "قنوات"],
+                prompt: "حدد المشكل العلمي حول الأنديز",
+                keywords: ["انديز", "غوص", "صفيحه"],
                 minHits: 2,
                 forbidden: []
               }
             },
             S: {
               points: 1,
-              prompt: "تعرف على أطوار كمون العمل",
-              bacPrompt: "سمّ أطوار كمون العمل والشوارد المتدخلة في كل طور.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "زوال استقطاب، عودة استقطاب...",
+              prompt: "التعرف على العناصر المرقمة وعلى النشاط التكتوني",
+              bacPrompt: "1- سمّ العناصر المرقمة وتعرّف على هذا النّشاط التكتوني.",
+              ...OFFICIAL(6, PAGE19(6, "سمّ / تعرّف", "consigne 1 du التمرين الأول")),
+              placeholder: "1 و2: القشرة القارية، 3 الصهارة، 4 البرنس...",
               minLength: 40,
               modelAnswer:
-                "زوال الاستقطاب بدخول Na⁺ عبر قنوات فولطية، ثم عودة الاستقطاب بخروج K⁺، يليه فرط استقطاب عابر قبل العودة إلى كمون الراحة.",
+                "1 و2: القشرة القارية (علوية وسفلى). 3: الجيب الصهاري (الصهارة) المتشكل من انصهار البرنس. 4: البرنس (المعطف). 5: الرسوبيات والصفيحة المحيطية في منطقة الغوص. 6: الخندق والمغلافات الناتجة عن الغوص. 7: الصفيحة المحيطية الغائصة. 8: الأستينوسفير (البرنس العلوي). التعرف: نشاط تكتوني عند منطقة تقارب (حدود انغراز) ينتج عنه بركان انفجاري.",
               rule: {
-                prompt: "تعرف على أطوار كمون العمل",
-                keywords: ["استقطاب", "صوديوم", "بوتاسيوم"],
-                minHits: 2,
-                forbidden: ["بسبب"]
+                prompt: "تعرف على العناصر والنشاط التكتوني",
+                keywords: ["قشره", "صهاره", "برنس", "غوص"],
+                minHits: 3,
+                forbidden: []
               }
             },
             E: {
               points: 2,
-              prompt: "نص علمي حول آلية كمون العمل",
-              bacPrompt: "اشرح في نص علمي آلية توليد كمون العمل على غشاء العصبون.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "عتبة، قنوات فولطية...",
+              prompt: "النص العلمي: تشكل البركان الانفجاري",
+              bacPrompt:
+                "2- اشرح في نصّ علمي كيف تشكّل البركان الانفجاري معتمدا على معطيات الوثيقة ومكتسباتك.",
+              ...OFFICIAL(6, PAGE19(6, "اشرح في نصّ علمي", "consigne 2 du التمرين الأول")),
+              placeholder: "مقدمة، عرض: غوص، ماء، انصهار، صهارة لزجة وغنية بالغازات، خاتمة...",
               minLength: 120,
               modelAnswer:
-                "عند بلوغ العتبة تنفتح قنوات Na⁺ الفولطية فيدخل الصوديوم ويزول الاستقطاب، ثم تنفتح قنوات K⁺ فيخرج البوتاسيوم وتعود القطبية، فينتشر كمون العمل على طول الليف.",
+                "في نص علمي: تغوص الصفيحة المحيطية المحملة بالرسوبيات والماء تحت الصفيحة القارية فتتشكل منطقة الانغراز (الأنديز)، ويتحرر الماء من الصفيحة الغائصة فيقلل درجة انصهار البيريدوتيت فينصهر البرنس جزئيا وتتشكل صهارة أقل كثافة تصعد إلى الأعلى وتتجمع في جيب صهاري. وعند صعودها تتغير خصائصها (لزوجة مرتفعة ونسبة غازات مهمة) فينتج عن خروجها ثوران انفجاري تبني منه المواد المنبثقة بركانا انفجاريا على السطح. ومنه فالبركان الانفجاري ظاهرة مرتبطة بحدود التقارب ومناطق الغوص.",
               rule: {
-                prompt: "نص علمي حول آلية كمون العمل",
-                keywords: ["عتبه", "قنوات", "صوديوم", "بوتاسيوم", "ليف"],
+                prompt: "اشرح في نص علمي تشكل البركان الانفجاري",
+                keywords: ["غوص", "انصهار", "صهاره", "غازات"],
                 minHits: 3,
                 forbidden: []
               }
             },
             W: {
               points: 1,
-              prompt: "الخاتمة: قابلية التنبيه",
-              bacPrompt: "ما شرط قابلية تنبيه الليف العصبي؟",
+              prompt: "الخلاصة: من الغوص إلى البركان",
+              bacPrompt: "ما العلاقة بين منطقة الغوص والبركان الانفجاري؟",
               ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
+                "Clôture pédagogique : la synthèse est incluse dans la consigne 2 du نصّ علمي (pôle E)."
               ),
               placeholder: "في الختام...",
               minLength: 40,
-              modelAnswer: "في الختام، تبقى قابلية التنبيه مرتبطة بوجود كمون راحة وقنوات فولطية وظيفية.",
+              modelAnswer:
+                "في الختام: غوص الصفيحة المحيطية يحمل الماء إلى العمق، فينصهر البرنس جزئيا وتصعد الصهارة اللزجة الغنية بالغازات فتبني على السطح بركانا انفجاريا.",
               rule: {
-                prompt: "الخاتمة: قابلية التنبيه",
-                keywords: ["تنبيه", "كمون", "قنوات"],
+                prompt: "خلاصة حول الغوص والبركان الانفجاري",
+                keywords: ["غوص", "صهاره", "بركان"],
                 minHits: 2,
                 forbidden: []
               }
@@ -381,88 +423,106 @@ const YEAR_2019_SE = {
         {
           number: 2,
           ui: "text",
-          label: "التنفس الخلوي والحصيلة الطاقوية",
+          label: "مادة الـ DDT والقنوات الفولطية",
           max: 7,
-          desc: "مراحل هدم الغلوكوز في وجود O2 وحصيلة ATP",
+          desc: "تأثير DDT على الكمون الغشائي وعلى قنوات الصوديوم والبوتاسيوم الفولطية الخلية العصبية",
           poles: {
             N: {
               points: 1,
-              prompt: "تأطير الإشكالية: كيف تُحوَّل طاقة الغلوكوز إلى ATP؟",
-              bacPrompt: "كيف تُحوَّل الطاقة الكيميائية الكامنة في الغلوكوز إلى ATP في وجود O2؟",
+              prompt: "تأطير الإشكالية: كيف يؤثر الـ DDT على النشاط العصبي؟",
+              bacPrompt: "لماذا يسبب الـ DDT اختلالا وظيفيا في الجهاز العصبي؟",
               ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
+                "Cadrage pédagogique : l'énoncé présente l'usage agricole du DDT et ses effets avant « لمعرفة آلية تأثير مادة الـ DDT تُقدَّم الدراسة التالية »."
               ),
               placeholder: "صياغة المشكل العلمي...",
               minLength: 40,
               modelAnswer:
-                "المشكل العلمي: كيف تتكامل التحلل السكري وحلقة كريبس والفسفرة التأكسدية لإنتاج ATP؟",
+                "المشكل العلمي: كيف يؤثر الـ DDT على الكمون الغشائي للليف العصبي فيُحدث اختلالا وظيفيا في الجهاز العصبي؟",
               rule: {
-                prompt: "تأطير الإشكالية: كيف تُحوَّل طاقة الغلوكوز إلى ATP؟",
-                keywords: ["غلوكوز", "ATP", "تنفس"],
+                prompt: "حدد المشكل العلمي حول الـ DDT",
+                keywords: ["DDT", "كمون", "عصبي"],
                 minHits: 2,
                 forbidden: []
               }
             },
             S: {
               points: 2.5,
-              prompt: "تحليل استهلاك O2 وإنتاج CO2 وATP",
-              bacPrompt: "حلّل تغيرات O2 وCO2 وATP خلال التنفس.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
+              prompt: "التمثيل البياني بمقياس الرسم وتحليل نتائج الوثيقة (1)",
+              bacPrompt:
+                "1- مَثِّلْ بيانيا ثم حَلِّلْ النتائج المُوضَحة في الوثيقة (1). (يُعطى مقياس الرسم التالي: 1cm ← 0,5ms / 1cm ← 20mv).",
+              ...OFFICIAL(
+                7,
+                PAGE19(
+                  7,
+                  "مَثِّلْ / حَلِّلْ",
+                  "consigne 1 du الجزء الأول ; le pôle porte aussi la consigne 2 (اقترح فرضيتين) — regroupement noté"
+                )
               ),
-              placeholder: "انخفاض O2، ارتفاع CO2 وATP...",
+              placeholder: "في غياب DDT: -70 ثم +30 ثم الرجوع إلى -70...",
               minLength: 90,
               modelAnswer:
-                "تمثل الوثيقة تغيرات الأكسجين وATP بدلالة الزمن. نلاحظ انخفاض O2 وارتفاع CO2 وATP في وجود الغلوكوز، ومنه نستنتج أكسدة الغلوكوز المقترنة بإنتاج طاقة قابلة للاستعمال.",
+                "في غياب مادة الـ DDT: يبدأ الكمون الغشائي عند قيمة الراحة (-70 mv) ويرتفع عند الزمن 2 ms إلى +30 mv (زوال الاستقطاب)، ثم يعود سريعا إلى 0 mv ثم إلى -70 mv (إعادة الاستقطاب). وفي وجود الـ DDT: يرتفع الكمون إلى +30 mv في نفس الزمن، لكنه يبقى عاليا عند +25 mv دون رجوع إلى قيمة الراحة. ومنه: الـ DDT يعطل عودة الكمون الغشائي إلى قيمة الراحة، والعلاقة بين الزمن والكمون الغشائي عكسية بالنسبة للمرحلة الأخيرة. (التمثيل البياني بمقياس: 1cm ← 0,5ms و 1cm ← 20mv). الفرضيتان: (1) يتثبت الـ DDT على قنوات الصوديوم الفولطية فيمنع تعطيلها؛ (2) يتثبت على قنوات البوتاسيوم الفولطية فيمنع خروج أيونات البوتاسيوم وإعادة الاستقطاب.",
               rule: {
-                prompt: "تحليل استهلاك O2 وإنتاج CO2 وATP",
-                keywords: ["اكسجين", "ATP", "غلوكوز"],
-                minHits: 2,
+                prompt: "مثل وحلل نتائج الكمون الغشائي",
+                keywords: ["كمون", "زوال", "استقطاب", "DDT"],
+                minHits: 3,
                 forbidden: ["بسبب"],
                 document: {
                   kind: "curve",
-                  axes: ["اكسجين", "زمن"],
-                  comparisons: [["O2", "ATP"]],
-                  trends: [{ about: "ATP", expect: ["ارتفاع", "ATP"] }],
-                  values: [],
-                  strictValues: false
+                  axes: ["زمن", "كمون"],
+                  comparisons: [["غياب", "وجود"]],
+                  values: ["30"],
+                  strictValues: true
                 }
               }
             },
             E: {
               points: 2.5,
-              prompt: "شرح مراحل التنفس",
-              bacPrompt: "اشرح مراحل هدم الغلوكوز في وجود الأكسجين.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
+              prompt: "مميزات القنوات الفولطية وتأثير الكمون المفروض عليها",
+              bacPrompt:
+                "1- حَدِّدْ أهم مُمَيِّزات القنوات المُمَثَّلة في الشكل (أ) ثم علّل تسميتها. 2- فَسِّرْ باستغلال معطيات شكلي الوثيقة (2) تأثير الكمون المفروض على القنوات الفولطية في غياب مادة الـ DDT.",
+              ...OFFICIAL(
+                7,
+                PAGE19(
+                  7,
+                  "حَدِّدْ / فَسِّرْ",
+                  "les 2 consignes du الجزء الثاني, regroupées sur ce pôle (regroupement noté)"
+                )
               ),
-              placeholder: "تحلل سكري، كريبس، سلسلة تنفسية...",
+              placeholder: "قناة الصوديوم: حالات مغلقة/مفتوحة/غير نشطة...",
               minLength: 110,
               modelAnswer:
-                "يتحلل الغلوكوز في الهيولى إلى حمض بيروفيك، ثم تتأكسد في المادة الأساسية للميتوكوندري داخل حلقة كريبس، وتُؤكسَد النواقل في السلسلة التنفسية فينتج ATP وماء.",
+                "المميزات: القنوات الممثلة بروتينات غشائية تسمح بمرور شوارد خاصة (Na+ لقناة الصوديوم وK+ لقناة البوتاسيوم) ولها حالات متعددة: مغلقة، مفتوحة، وغير نشطة؛ ونوع الشاردة المسموح بمرورها يحدد الانتقائية. ويستنتج أن C لكل قناة وظيفتها في المرحلة التي تظهر فيها. علل تسميتها: يتحكم اختلاف الكمون الغشائي في فتحها وغلقها فهي قنوات فولطية. التفسير في غياب DDT: عند فرض كمون منزوع الاستقطاب على الجزء (1) الذي يحتوي قناة الصوديوم الفولطية تنفتح القناة فيحدث تيار أيوني داخل (دخول Na+) سريع ثم تتوقف (تعطل)، بينما في الجزء (2) الذي يحتوي قناة البوتاسيوم تنفتح القناة بتأخر وتُحدث تيارا أيونيا خارجا (خروج K+) نشاطه أبطأ وأطول، وهو ما يسمح بعودة الكمون الغشائي إلى قيمة الراحة.",
               rule: {
-                prompt: "شرح مراحل التنفس",
-                keywords: ["تحلل", "كريبس", "سلسله", "بيروفيك", "ATP"],
+                prompt: "مميزات القنوات الفولطية وتأثير الكمون عليها",
+                keywords: ["صوديوم", "بوتاسيوم", "فولطيه", "تيار"],
                 minHits: 3,
-                forbidden: []
+                forbidden: [],
+                document: {
+                  kind: "curve",
+                  axes: ["تيار", "قناة"],
+                  comparisons: [["صوديوم", "بوتاسيوم"]],
+                  values: [],
+                  strictValues: false
+                }
               }
             },
             W: {
               points: 1,
-              prompt: "الخاتمة: أهمية O2",
-              bacPrompt: "ما دور O2 في استمرار إنتاج ATP؟",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "في الختام...",
-              minLength: 40,
+              prompt: "مناقشة إحدى الفرضيتين وآلية تأثير الـ DDT",
+              bacPrompt:
+                "3- ناقش صحة إحدى الفرضيتين المقترحتين انطلاقا من النتائج السابقة، مُبَيِّنًا آلية تأثير مادة الـ DDT على النشاط العصبي.",
+              ...OFFICIAL(7, PAGE19(7, "ناقش صحة", "consigne 3 du الجزء الثاني")),
+              placeholder: "الفرضية الصحيحة: تثبيط قنوات البوتاسيوم...",
+              minLength: 60,
               modelAnswer:
-                "في الختام، يستقبل O2 الإلكترونات في نهاية السلسلة فيستمر تدرج البروتونات وتشكل ATP.",
+                "الفرضية الثانية هي الأكثر صحة: يتثبت الـ DDT على القنوات الفولطية للبوتاسيوم فيمنع فتحها وخروج شوارد K+، فيتوقف فرط الاستقطاب ولا يعود الكمون الغشائي إلى قيمة الراحة، ويبقى الليف العصبي في حالة زوال استقطاب دائم. ومنه يتعطل انتقال السيالة العصبية ويتعذر التحكم في التنبيه فتحدث الاضطرابات الوظيفية في الجهاز العصبي.",
               rule: {
-                prompt: "الخاتمة: أهمية O2",
-                keywords: ["اكسجين", "ATP", "الكترون"],
-                minHits: 2,
-                forbidden: []
+                prompt: "ناقش الفرضية وآلية تأثير الـ DDT",
+                keywords: ["بوتاسيوم", "DDT", "راحه", "سياله"],
+                minHits: 3,
+                forbidden: [],
+                causalOrder: ["DDT", "بوتاسيوم"]
               }
             }
           }
@@ -470,88 +530,107 @@ const YEAR_2019_SE = {
         {
           number: 3,
           ui: "text",
-          label: "التكتونية العامة للصفائح",
+          label: "المضادات الحيوية وتركيب البروتين",
           max: 8,
-          desc: "حركة الصفائح وعلاقتها بالظهرة المحيطية وآلية الحمل الحراري",
+          desc: "مستوى تأثير المضاد الحيوي Rifamycine على تركيب البروتين عند البكتيريا: النسخ أم الترجمة",
           poles: {
             N: {
               points: 0.5,
-              prompt: "اقتراح فرضية حول محرك الصفائح",
-              bacPrompt: "اقترح فرضية حول الآلية المحركة للصفائح التكتونية.",
+              prompt: "تأطير الإشكالية: أين يقع مستوى تأثير المضاد الحيوي على تركيب البروتين؟",
+              bacPrompt: "عند أي مستوى من مراحل تركيب البروتين يؤثر المضاد الحيوي؟",
               ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
+                "Cadrage pédagogique : l'énoncé annonce que les antibactériens visent la synthèse des protéines avant « لتحديد مستويات تأثير هذه الأدوية تُقدَّم الدراسة التالية »."
               ),
-              placeholder: "الفرضية...",
+              placeholder: "صياغة المشكل العلمي...",
               minLength: 30,
               modelAnswer:
-                "الفرضية: تيارات الحمل الحراري في الرداء تحرك الصفائح عند الظهرة والمناطق الهابطة.",
+                "المشكل العلمي: هل يوقف المضاد الحيوي (Rifamycine) عملية تركيب البروتين عند مستوى النسخ أم عند مستوى الترجمة؟",
               rule: {
-                prompt: "اقتراح فرضية حول محرك الصفائح",
-                keywords: ["فرضيه", "صفائح", "حمل"],
+                prompt: "حدد المشكل العلمي حول مستوى تأثير المضاد",
+                keywords: ["مضاد", "بروتين", "نسخ"],
                 minHits: 2,
                 forbidden: []
               }
             },
             S: {
               points: 2,
-              prompt: "استغلال أعمار البازلت وتدفق الحرارة",
-              bacPrompt: "استغل توزع أعمار البازلت وتدفق الحرارة على جانبي الظهرة.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
+              prompt: "تحليل نتائج الشكل (أ) واقتراح ثلاث فرضيات من الشكل (ب)",
+              bacPrompt:
+                "1. حَلِّلْ النتائج المُمَثَّلة في الشكل (أ) من الوثيقة (1). 2. اقترح باستغلال مُعطيات الشكل (ب) من الوثيقة (1) ثلاث فرضيات تُحدِّد من خلالها مستوى تأثير المضاد الحيوي (Rifamycine) على تركيب البروتين.",
+              ...OFFICIAL(
+                8,
+                PAGE19(
+                  8,
+                  "حَلِّلْ / اقترح",
+                  "les 2 consignes du الجزء الأول, regroupées sur ce pôle (regroupement noté)"
+                )
               ),
-              placeholder: "العمر يزداد بالابتعاد عن الظهرة...",
-              minLength: 60,
+              placeholder: "نسبة تركيب البروتين بدلالة الزمن والتركيز...",
+              minLength: 110,
               modelAnswer:
-                "تمثل الوثيقة عمر البازلت وتدفق الحرارة بدلالة المسافة. نلاحظ عند الظهرة حرارة أعلى وعمرا أصغر، بينما عند الطرف يزداد العمر وتنخفض الحرارة، ومنه نستنتج توسعا محيطيا.",
+                "التحليل: يمثل الشكل (أ) نسبة تركيب البروتين بدلالة الزمن عند تراكيز مختلفة من المضاد الحيوي. عند التركيز 1 ميكروغرام/مل تزيد النسبة إلى 200%، وعند 2 ميكروغرام/مل تبقى في حدود 100%، وعند 4 ميكروغرام/مل تنخفض إلى نحو 50%، بينما تنعدم عند 8 ميكروغرام/مل. ومنه توجد علاقة عكسية بين تركيز المضاد الحيوي ونسبة تركيب البروتين. الفرضية الأولى: يثبط المضاد الحيوي عملية النسخ على مستوى ARN بوليميراز فتنعدم نسخ ARNm. الفرضية الثانية: يثبط عملية الترجمة على مستوى الريبوزوم فلا يقرأ ARNm. الفرضية الثالثة: يثبط تنشيط الأحماض الأمينية أو إمداد الترجمة بالطاقة فتتوقف عملية تركيب البروتين.",
               rule: {
-                prompt: "استغلال أعمار البازلت وتدفق الحرارة",
-                keywords: ["ظهره", "بازلت", "حراره"],
+                prompt: "حلل نتائج الشكل (أ) واقترح ثلاث فرضيات",
+                keywords: ["تركيز", "بروتين", "تركيب"],
                 minHits: 2,
                 forbidden: ["بسبب"],
+                hypotheses: { min: 3 },
                 document: {
-                  kind: "table",
-                  axes: ["عمر", "مسافه"],
-                  comparisons: [["ظهره", "طرف"]],
-                  cells: [["بازلت", "حراره"]],
-                  values: [],
-                  strictValues: false
+                  kind: "curve",
+                  axes: ["زمن", "نسبه"],
+                  comparisons: [["1", "8"]],
+                  values: ["200"],
+                  strictValues: true
                 }
               }
             },
             E: {
               points: 4,
-              prompt: "تفسير محرك الصفائح",
-              bacPrompt: "فسّر كيف تحرك تيارات الحمل الصفائح التكتونية.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
+              prompt: "مقارنة نتائج الوثيقة (2) وتحديد مستوى تأثير المضاد بدقة",
+              bacPrompt:
+                "1- قارن بين النتائج التجريبية الممثلة في الشكل (أ) للوثيقة (2). 2- ناقش باستغلال معطيات الوثيقة (2) صحة إحدى الفرضيات المقترحة سابقا محددا بدقة مستوى تأثير المضاد الحيوي (Rifamycine).",
+              ...OFFICIAL(
+                9,
+                PAGE19(
+                  9,
+                  "قارن / ناقش",
+                  "les 2 consignes de la page 9, regroupées sur ce pôle (regroupement noté)"
+                )
               ),
-              placeholder: "صعود مادة ساخنة، غوص...",
+              placeholder: "الوسط 1: إشعاع قوي، الوسط 2: إشعاع ضعيف، الوسط 3: إشعاع قوي...",
               minLength: 110,
               modelAnswer:
-                "تصعد مادة ساخنة قليلة الكثافة عند الظهرة فتتكون قشرة جديدة، وتهبط الصفيحة الباردة في مناطق الغوص، فتتأكد فرضية الحمل الحراري كمحرك.",
+                "المقارنة: في الوسط 1 (جميع مكونات تركيب البروتين، بدون المضاد) يكون إشعاع الأحماض الأمينية المدمجة قويا جدا (++++++++)؛ وفي الوسط 2 (نفس المكونات + المضاد الحيوي) يتراجع الإشعاع بشكل واضح (+)؛ وفي الوسط 3 (مكونات الترجمة + ARNm + المضاد الحيوي، بدون ADN وARN بوليميراز) يعود الإشعاع قويا جدا (++++++++) مثل الوسط 1. المناقشة: بما أن المضاد الحيوي لم يثبط دمج الأحماض الأمينية في الوسط 3 الذي تتوفر فيه الترجمة دون نسخ، فإن الفرضية الأولى هي الصحيحة: يثبط الـ Rifamycine عملية النسخ على مستوى ARN بوليميراز فلا يتشكل ARNm. ويتأكد ذلك بمتابعة السرعة الابتدائية للأنزيم التي تنخفض من Vmax=10 عند التركيز 0 إلى نحو 8 عند 2 و6 عند 4 و2 عند 6 لتنعدم عند 8 ميكروغرام/مل.",
               rule: {
-                prompt: "تفسير محرك الصفائح",
-                keywords: ["حمل", "ظهره", "غوص", "صفائح", "رداء"],
+                prompt: "قارن النتائج وحدد مستوى تأثير المضاد",
+                keywords: ["وسط", "بروتين", "نسخ", "بوليميراز"],
                 minHits: 3,
-                forbidden: []
+                forbidden: [],
+                document: {
+                  kind: "table",
+                  axes: ["وسط", "بروتين"],
+                  comparisons: [["1", "3"]],
+                  cells: [["نسخ", "ترجمه"]],
+                  values: [],
+                  strictValues: false
+                }
               }
             },
             W: {
               points: 1.5,
-              prompt: "مخطط دورة الصفيحة",
-              bacPrompt: "لخّص في مخطط دورة المادة من الظهرة إلى منطقة الغوص.",
-              ...RECON(
-                "Thème recoupé sur des sources secondaires et le programme 3AS, sans relecture visuelle d un PDF ministériel dans cette session. Wording reconstructed, non certifiable official. À confronter au PDF dzexams avant toute utilisation comme énoncé."
-              ),
-              placeholder: "ظهرة → صفيحة → غوص...",
-              minLength: 40,
-              modelAnswer: "عنوان المخطط: دورة تكتونية. ظهرة → صفائح → غوص.",
+              prompt: "النص العلمي: مراحل تركيب البروتين ومستويات تأثير المضادات",
+              bacPrompt:
+                "لَخِّصْ في نص علمي من خلال ما سبق ومعلوماتك مراحل تركيب البروتين مبرزا المستويات المحتملة لتأثير مختلف المضادات الحيوية.",
+              ...OFFICIAL(9, PAGE19(9, "لَخِّصْ في نص علمي", "consigne du الجزء الثالث")),
+              placeholder: "مقدمة، عرض: النسخ ثم الترجمة... ثم المستويات...",
+              minLength: 120,
+              modelAnswer:
+                "في نص علمي: يمر تركيب البروتين بمرحلتين. الأولى النسخ داخل النواة: ينفتح الـ ADN ويرتبط به أنزيم ARN بوليميراز الذي يركب ARNm مكملا للسلسلة الناسخة. والثانية الترجمة في الهيولى على مستوى الريبوزوم: تُقرأ الثلاثيات في ARNm ويتم استدعاء الأحماض الأمينية بواسطة ARNt فترتبط ببعضها فيتشكل متعدد البيبتيد. وتؤثر المضادات الحيوية في مستويات متعددة من هذه المسار: مستوى النسخ بتثبيط ARN بوليميراز (كما ثبت للـ Rifamycine في هذه الدراسة)، ومستوى الترجمة بتثبيط ارتباط الريبوزوم بـ ARNm أو منع وظيفة ARNt، ومستوى الطاقة أو الأحماض الأمينية المنشطة. وبهذا توقف هذه المضادات تركيب البروتين فتمنع تكاثر البكتيريا وتقضي عليها.",
               rule: {
-                prompt: "مخطط دورة الصفيحة",
-                keywords: ["مخطط", "ظهره", "غوص"],
-                minHits: 2,
-                forbidden: [],
-                schema: { arrows: true, title: "تكتونية", ordered: ["ظهره", "صفائح", "غوص"] }
+                prompt: "اكتب نصا علميا حول مراحل تركيب البروتين ومستويات تأثير المضادات",
+                keywords: ["نسخ", "ترجمه", "ريبوزوم", "بوليميراز"],
+                minHits: 3,
+                forbidden: []
               }
             }
           }

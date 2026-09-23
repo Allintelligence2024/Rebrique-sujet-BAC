@@ -25,10 +25,23 @@ Un thème, un corrigé non attribué ou une consigne reconstruite ne suffit pas.
 > exercice imprimé porte souvent deux ou trois consignes pour quatre pôles, et
 > sept cadrages n'ont aucune phrase imprimée. Les inventaires 2020 restent
 > `partial`, `p1:check` reste rouge. Rien ici ne s'assouplit.
+>
+> **Même date — SE 2019, second résultat du plan.** Les 9 pages du livret ont
+> été relues deux fois sur image (`docs/RELECTURE_SE_2019_CHECKLIST.md`) et les
+> **17 consignes officielles** recopiées mot à mot (`docs/PLAN_SE_2013_2020.md`,
+> journal SE 2019). Le total passe donc de 277 à **294** pôles `official` et le
+> besoin en copies de 4 155 à **4 410** (15 par pôle). Ce n'est pas 2020 qui a
+> fait bouger le compte : 2020 échangeait des pôles entre exercices sans en
+> certifier un de plus. Ici, 2019 certifie — et les six exercices de l'année
+> étaient encodés sur d'autres thèmes que les pages imprimées, donc la
+> certification a exigé une réécriture complète, pas une retouche. Le critère 2
+> (liste exhaustive) et le critère 7 (`complete`) restent **non satisfaits** :
+> sept cadrages de 2019 n'ont aucune phrase imprimée autonome, les inventaires
+> 2019 sont `partial`, `p1:check` reste rouge. Aucun critère n'est déplacé.
 
 ## P1.5 — corpus humain
 
-Le périmètre numérique actuel contient 277 pôles dont la consigne est marquée officielle (213 jusqu'au 2026-09-19 ; +48 par la structuration OCR des Maths 2013–2015 + 2017 استثنائية ; +16 par celle de SE 2021, toutes le 2026-09-20). La politique exige au minimum 15 copies par pôle : **4 155 réponses réelles** au minimum, chacune avec :
+Le périmètre numérique actuel contient 294 pôles dont la consigne est marquée officielle (213 jusqu'au 2026-09-19 ; +48 par la structuration OCR des Maths 2013–2015 + 2017 استثنائية ; +16 par celle de SE 2021, le 2026-09-20 ; +17 par la relecture image de SE 2019, le 2026-09-23). La politique exige au minimum 15 copies par pôle : **4 410 réponses réelles** au minimum, chacune avec :
 
 - consentement et anonymisation vérifiables ;
 - transcription fidèle ;

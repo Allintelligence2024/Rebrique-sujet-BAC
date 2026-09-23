@@ -6,6 +6,43 @@ Test status at handoff: **256 pass / 0 fail / 1 skipped** (`npm test`).
 PWA build id: `f54ac619b7a2` (stale as soon as any source file changes — regenerate with `npm run pwa:version`).
 Production build: `dist/site` 136 files, standalone `dist/boussole-4d-standalone.html` 1.80 MB (reproducible sha256).
 
+> **2026-09-23 (nuit) — SE 2019 : Phases 3 à 6 du plan `PLAN_SE_2013_2020` appliquées.**
+> Branche de session `arena/01a0cebc-rebrique-sujet-bac`, base `fcd2a90`.
+>
+> - **17 consignes `official` recopiées mot à mot sur l'image des 9 pages**
+>   (`docs/RELECTURE_SE_2019_CHECKLIST.md`, deux passes du même jour) et **7
+>   cadrages `reconstructed`** assumés avec note datée. `data/years/se/year-2019.js`
+>   n'est pas retouché : il est **réécrit** — les six exercices portaient d'autres
+>   thèmes que les pages imprimées (مغماتية الظهرة au lieu de « الاستنساخ »,
+>   GO أنزيم au lieu du « الموقع الفعال », immunité antitumorale au lieu de la
+>   « المناعة النوعية », Andes/بركان au lieu du « كمون العمل », DDT/canaux au lieu
+>   de la « التنفس », Rifamycine au lieu de la tectonique). `bacPrompt`, `desc`,
+>   `label`, réponses modèles et règles pôle sont remplacés pôle par pôle.
+> - **Texte lu sur image, jamais sur la couche texte** : le tableau DDT a été
+>   relevé à la main (0, 1, 1,5, 2, 2,5, 3,5, 4, 4,5, 5 ms ; −70 → +30 à 2 ms →
+>   −70, et +25 maintenu avec DDT), les légendes 1-8 des deux schémas
+>   (ظهرة/برنس/بيريدوتيت ; قشرة قارية/جيب صهاري/خندق/أستينوسفير) vérifiées sur
+>   bandes zoomées. La couche texte de 2019 est inutilisable : elle a déjà menti
+>   sur les chiffres ailleurs, elle n'a servi qu'à confirmer des numéros de page.
+> - **Généré** : `inventory:generate` → 58 sujets / 576 tâches / **294 consignes
+>   officielles** / 282 reconstruites / 294 pages rattachées / **0/58 `complete`** ;
+>   `calibration:update` → `activePoles` **277 → 294** (corpusSha256 mis à jour).
+> - **Gardes** : `tests/se-2019-recopy.test.mjs` (8 tests) fige les 17 textes, les
+>   pages 1-9, les dates, les sept cadrages sans page, le barème 5/7/8, les
+>   regroupements de phrases imprimées et les thèmes réels ; `tests/archive-years.test.mjs`
+>   restreint sa règle « tout `reconstructed` » à 2013-2018 et exige pour 2019 et
+>   2020 une page, une date ISO et une note citant la checklist par pôle officiel.
+> - **Mesures** : `npm test` → **404 tests** (README régénéré) ; `p1:check` **reste
+>   rouge** (0/58 inventaires complets, 0/4410 copies) — attendu ; `p2:check` 6/7,
+>   `p3:check` 6/6. **Un garde a dû être ajusté, pas retiré** : le budget de 3 Mo du
+>   monofichier était une approximation de « pas de PDF tiers » devenue fausse par
+>   accumulation légitime de contenu certifié (+16 Ko pour 2019). Il passe à 4 Mo
+>   (~1 Mo de marge quand le plus petit PDF du dépôt pèse 1,07 Mo) et l'invariant
+>   réel est désormais testé directement : aucun `%PDF-` ni `JVBERi0` (base64) dans
+>   le fichier.
+> - **Suite du chantier** : 2016 et 2015, puis 2013 et 2014, puis 2017 et 2018 —
+>   ordre du plan, inchangé. Phase 1 (checklist image) avant toute donnée.
+
 > **2026-09-23 (nuit) — SE 2019 : Phase 1 du plan faite (checklist image).**
 > Branche `arena/01a0cebc-rebrique-sujet-bac`.
 >
@@ -41,15 +78,18 @@ Production build: `dist/site` 136 files, standalone `dist/boussole-4d-standalone
 >   préfixes `خلاصة` disparus. Les réponses modèles restent des aides.
 > - **Généré** : `inventory:generate` → 58 sujets / 576 tâches / **277 consignes
 >   officielles** / 299 reconstruites / 277 pages rattachées / **0/58 `complete`** ;
->   `activePoles` et `data/calibration-status.js` **inchangés** (277).
+>   `activePoles` et `data/calibration-status.js` **inchangés** (277). *(Mesure
+>   datée : la Phase 3 de SE 2019, même date, porte ensuite le total à **294**
+>   consignes officielles / 282 reconstruites / 294 pages.)*
 > - **Gardes** : `tests/data-integrity.test.mjs` refuse désormais un préfixe
 >   `خلاصة`/`الخاتمة`, des parenthèses vides, « أنزيم وأنزيم » et une consigne
 >   officielle recopiée sur deux années/exercices (deux paires de formules
 >   passe-partout de 2024 et 2026 sont nommées, pages distinctes). Nouveau
 >   `tests/se-2020-recopy.test.mjs` (8 tests) : textes, pages, barèmes 5/7/8,
 >   600, regroupements notés, inventaires `partial`.
-> - **Mesures** : `npm test` → **395 tests** (README régénéré) ; `p1:check`
->   **reste rouge** (0/58 inventaires complets, 0/4155 copies) — attendu ;
+> - **Mesures** : `npm test` → **395 tests** au moment du chantier (README
+>   régénéré ; **404** après la Phase 3 de SE 2019) ; `p1:check` **reste rouge**
+>   (0/58 inventaires complets, 0/4155 copies à cette date, 0/4410 après 2019) — attendu ;
 >   `p2:check` 6/7, `p3:check` 6/6.
 > - **Suite du chantier** : 2019 (checklist image → Phases 2-6), puis 2016/2015,
 >   puis 2013/2014, puis 2017/2018 — ordre du plan, inchangé.
@@ -70,7 +110,9 @@ Production build: `dist/site` 136 files, standalone `dist/boussole-4d-standalone
 >   mesurée par import des `data/years/**` :
 >   **SE 2013→2019 = 0/24 chacun** ; SE 2020 = 17 ; 2021 = 16 ; 2022 = 14 ; 2023 = 14 ;
 >   2024 = 8 ; 2025 = 16 ; 2026 = 17. Maths : 9 à 14 sur 16 selon l'année.
->   Ce total reste la valeur verrouillée par `tests/official-inventory-integrity.test.mjs:172`.
+>   Ce total reste la valeur verrouillée par `tests/official-inventory-integrity.test.mjs:172`
+>   — portée à **294** le 2026-09-23 par la Phase 3 de SE 2019 (voir le bloc de
+>   tête), la valeur 277 ci-dessus restant la mesure datée de l'après-PR #30.
 > - **Chantier en cours — `docs/PLAN_SE_2013_2020.md`.** Phase 1 faite pour **SE 2020**
 >   (`docs/RELECTURE_SE_2020_CHECKLIST.md`, 9 pages lues deux fois sur image ; 17 pôles
 >   `official` proposés mot à mot, 7 cadrages laissés `reconstructed` ; barèmes imprimés

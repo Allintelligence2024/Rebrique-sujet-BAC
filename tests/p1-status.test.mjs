@@ -14,10 +14,10 @@ test("le statut P1 refuse un faux 100 % tant que les inventaires et copies manqu
      portent un inventaire — aucun n'est « complete » pour autant : les
      pôles N restent reconstruits, le statut reste partial partout. */
   assert.match(byId["P1.1"].evidence, /\/58 inventaires complets/);
-  /* 4155 = 277 consignes officielles × 15 copies (3195 jusqu'au 2026-09-19 ;
+  /* 4410 = 294 consignes officielles × 15 copies (3195 jusqu'au 2026-09-19 ;
      3915 avec les 48 consignes OCR Maths ; 4155 avec les 16 consignes OCR de
-     SE 2021). */
-  assert.match(byId["P1.5"].evidence, /0\/4155 copies/);
+     SE 2021 ; 4410 avec les 17 consignes de SE 2019 relues sur image). */
+  assert.match(byId["P1.5"].evidence, /0\/4410 copies/);
   assert.equal(byId["P1.2"].complete, false);
   assert.equal(byId["P1.3"].complete, true);
   assert.equal(byId["P1.4"].complete, true);

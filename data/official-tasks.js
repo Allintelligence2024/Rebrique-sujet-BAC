@@ -4463,11 +4463,11 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
     document: {
       localPath: "/subjects/SE/2019/sujet-1.pdf",
       pages: 5,
-      pageOffset: null
+      pageOffset: 0
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
-      taskCompleteExerciseNumbers: []
+      taskCompleteExerciseNumbers: [2]
     },
     tasks: [
       {
@@ -4476,7 +4476,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 1,
         pole: "N",
         page: null,
-        prompt: "كيف يتم استنساخ المعلومة الوراثية من ADN إلى ARNm؟",
+        prompt: "لماذا تنتشر البراكين الطفحية على مستوى ظهرات وسط محيطية وتعمل على تجديد القشرة المحيطية؟",
         promptSource: "reconstructed",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
@@ -4496,13 +4496,18 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 1,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "تعرّف على مراحل الاستنساخ: بداية واستطالة ونهاية.",
-        promptSource: "reconstructed",
+        page: 1,
+        prompt: "1- تَعَرَّفْ على البيانات المرقمة من 1 إلى 8.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -4510,20 +4515,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2019-S1-E1-Q3",
         exerciseNumber: 1,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح في نص علمي آلية الاستنساخ داخل النواة.",
-        promptSource: "reconstructed",
+        page: 1,
+        prompt:
+          "2- قَدِّمْ في نص علمي الأدلة التي تُبَيِّنُ أن مناطق التباعد مرتبطة بمغماتية نشطة مستغلا معطيات الوثيقة ومعلوماتك.",
+        promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -4531,7 +4542,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2019-S1-E1-Q4",
@@ -4539,7 +4550,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 4,
         pole: "W",
         page: null,
-        prompt: "ما مصير ARNm بعد نهاية الاستنساخ؟",
+        prompt: "ما النموذج الذي تبنيه معطيات الوثيقة عن الظهرة وسط محيطية؟",
         promptSource: "reconstructed",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
@@ -4559,13 +4570,18 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 2,
         order: 1,
         pole: "N",
-        page: null,
-        prompt: "كيف تضمن البنية الفراغية للإنزيم تخصصه الوظيفي؟",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        page: 1,
+        prompt: "فَهَلْ كل اختلاف في بنية الأنزيمات يؤدي حتما إلى اختلاف في وظائفها؟",
+        promptSource: "official",
+        maxPoints: 0.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -4573,20 +4589,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2019-S1-E2-Q2",
         exerciseNumber: 2,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل تغيرات السرعة الابتدائية بدلالة pH ودرجة الحرارة.",
-        promptSource: "reconstructed",
+        page: 2,
+        prompt:
+          "1- اسْتَخْرِجْ الخطوات العملية المتبعة التي تسمح بحل المشكلة المطروحة انطلاقا من معطيات الوثيقة (1).",
+        promptSource: "official",
         maxPoints: 2.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -4594,20 +4616,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2019-S1-E2-Q3",
         exerciseNumber: 2,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "فسّر تأثير تغير pH وارتفاع الحرارة على الموقع الفعال.",
-        promptSource: "reconstructed",
+        page: 2,
+        prompt: "2- قارن بين الخصائص البنيوية لأنزيم GO عند الفطرين.",
+        promptSource: "official",
         maxPoints: 2.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -4615,20 +4642,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2019-S1-E2-Q4",
         exerciseNumber: 2,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "ما الشروط التي تحفظ النشاط الإنزيمي؟",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        page: 3,
+        prompt:
+          "2- قَدِّمْ إجابة ملخصة للمشكلة العلمية المطروحة في بداية التمرين انطلاقا مما توصلت إليه في هذه الدراسة.",
+        promptSource: "official",
+        maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -4636,7 +4669,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2019-S1-E3-Q1",
@@ -4644,7 +4677,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 1,
         pole: "N",
         page: null,
-        prompt: "اقترح فرضيتين حول آلية الاستجابة المناعية النوعية ضد مستضد.",
+        prompt: "كيف تطور الخلايا الورمية آليات للإفلات من الجهاز المناعي فتفقد القدرة على مقاومة المرض؟",
         promptSource: "reconstructed",
         maxPoints: 0.5,
         scoringReviewStatus: "provisional",
@@ -4664,13 +4697,19 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 3,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "استغل تطور كمية الأجسام المضادة وعدد LTc بعد حقن المستضد.",
-        promptSource: "reconstructed",
+        page: 4,
+        prompt:
+          "1- حَدِّدْ دور الخلايا المناعية المتدخلة في الاستجابة المناعية ضد الخلايا السرطانية الممثلة في الوثيقة (1). 2 - اقْتَرِحْ فرضيتين لتفسير إفلات بعض الخلايا السرطانية من الجهاز المناعي.",
+        promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -4678,20 +4717,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2019-S1-E3-Q3",
         exerciseNumber: 3,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "فسّر دور LT4 في التعاون بين الاستجابة الخلطية والخلوية.",
-        promptSource: "reconstructed",
+        page: 5,
+        prompt:
+          "1- فَسِّرْ إفلات وعدم إفلات الخلايا الورمية من الجهاز المناعي الطبيعي مُبْرِرًا دور البروتينات في ذلك ثم بَيِّن الفرضية الأكثر وجاهة. 2- استنتِجْ بأن التدخل العلاجي غير فعال دوما ضد السرطان ثم قدم نصيحة وقائية لتفادي تطور هذا المرض.",
+        promptSource: "official",
         maxPoints: 4,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -4699,20 +4744,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 5
       },
       {
         id: "2019-S1-E3-Q4",
         exerciseNumber: 3,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص في مخطط مسار الاستجابة المناعية النوعية.",
-        promptSource: "reconstructed",
+        page: 5,
+        prompt:
+          "لَخِّصْ في مخطط مراحل الاستجابة المناعية ضد الخلايا السرطانية اعتمادا على مكتسباتك ومُوَظِّفًا المعلومات التي توصلت إليها من هذه الدراسة.",
+        promptSource: "official",
         maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -4720,7 +4771,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 5
       }
     ]
   },
@@ -4737,7 +4788,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
     document: {
       localPath: "/subjects/SE/2019/sujet-2.pdf",
       pages: 4,
-      pageOffset: null
+      pageOffset: 5
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -4750,7 +4801,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 1,
         pole: "N",
         page: null,
-        prompt: "كيف تتدخل القنوات الفولطية في توليد كمون العمل؟",
+        prompt: "كيف تفسر الحركة التكتونية على طول ساحل أمريكا اللاتينية وما ينتج عنها من براكين؟",
         promptSource: "reconstructed",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
@@ -4770,13 +4821,18 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 1,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "سمّ أطوار كمون العمل والشوارد المتدخلة في كل طور.",
-        promptSource: "reconstructed",
+        page: 6,
+        prompt: "1- سمّ العناصر المرقمة وتعرّف على هذا النّشاط التكتوني.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -4784,20 +4840,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2019-S2-E1-Q3",
         exerciseNumber: 1,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح في نص علمي آلية توليد كمون العمل على غشاء العصبون.",
-        promptSource: "reconstructed",
+        page: 6,
+        prompt: "2- اشرح في نصّ علمي كيف تشكّل البركان الانفجاري معتمدا على معطيات الوثيقة ومكتسباتك.",
+        promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -4805,7 +4866,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2019-S2-E1-Q4",
@@ -4813,7 +4874,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 4,
         pole: "W",
         page: null,
-        prompt: "ما شرط قابلية تنبيه الليف العصبي؟",
+        prompt: "ما العلاقة بين منطقة الغوص والبركان الانفجاري؟",
         promptSource: "reconstructed",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
@@ -4834,7 +4895,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 1,
         pole: "N",
         page: null,
-        prompt: "كيف تُحوَّل الطاقة الكيميائية الكامنة في الغلوكوز إلى ATP في وجود O2؟",
+        prompt: "لماذا يسبب الـ DDT اختلالا وظيفيا في الجهاز العصبي؟",
         promptSource: "reconstructed",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
@@ -4854,13 +4915,19 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 2,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل تغيرات O2 وCO2 وATP خلال التنفس.",
-        promptSource: "reconstructed",
+        page: 7,
+        prompt:
+          "1- مَثِّلْ بيانيا ثم حَلِّلْ النتائج المُوضَحة في الوثيقة (1). (يُعطى مقياس الرسم التالي: 1cm ← 0,5ms / 1cm ← 20mv).",
+        promptSource: "official",
         maxPoints: 2.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -4868,20 +4935,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2019-S2-E2-Q3",
         exerciseNumber: 2,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح مراحل هدم الغلوكوز في وجود الأكسجين.",
-        promptSource: "reconstructed",
+        page: 7,
+        prompt:
+          "1- حَدِّدْ أهم مُمَيِّزات القنوات المُمَثَّلة في الشكل (أ) ثم علّل تسميتها. 2- فَسِّرْ باستغلال معطيات شكلي الوثيقة (2) تأثير الكمون المفروض على القنوات الفولطية في غياب مادة الـ DDT.",
+        promptSource: "official",
         maxPoints: 2.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -4889,20 +4962,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2019-S2-E2-Q4",
         exerciseNumber: 2,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "ما دور O2 في استمرار إنتاج ATP؟",
-        promptSource: "reconstructed",
+        page: 7,
+        prompt:
+          "3- ناقش صحة إحدى الفرضيتين المقترحتين انطلاقا من النتائج السابقة، مُبَيِّنًا آلية تأثير مادة الـ DDT على النشاط العصبي.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -4910,7 +4989,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2019-S2-E3-Q1",
@@ -4918,7 +4997,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 1,
         pole: "N",
         page: null,
-        prompt: "اقترح فرضية حول الآلية المحركة للصفائح التكتونية.",
+        prompt: "عند أي مستوى من مراحل تركيب البروتين يؤثر المضاد الحيوي؟",
         promptSource: "reconstructed",
         maxPoints: 0.5,
         scoringReviewStatus: "provisional",
@@ -4938,13 +5017,19 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 3,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "استغل توزع أعمار البازلت وتدفق الحرارة على جانبي الظهرة.",
-        promptSource: "reconstructed",
+        page: 8,
+        prompt:
+          "1. حَلِّلْ النتائج المُمَثَّلة في الشكل (أ) من الوثيقة (1). 2. اقترح باستغلال مُعطيات الشكل (ب) من الوثيقة (1) ثلاث فرضيات تُحدِّد من خلالها مستوى تأثير المضاد الحيوي (Rifamycine) على تركيب البروتين.",
+        promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -4952,20 +5037,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2019-S2-E3-Q3",
         exerciseNumber: 3,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "فسّر كيف تحرك تيارات الحمل الصفائح التكتونية.",
-        promptSource: "reconstructed",
+        page: 9,
+        prompt:
+          "1- قارن بين النتائج التجريبية الممثلة في الشكل (أ) للوثيقة (2). 2- ناقش باستغلال معطيات الوثيقة (2) صحة إحدى الفرضيات المقترحة سابقا محددا بدقة مستوى تأثير المضاد الحيوي (Rifamycine).",
+        promptSource: "official",
         maxPoints: 4,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -4973,20 +5064,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2019-S2-E3-Q4",
         exerciseNumber: 3,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص في مخطط دورة المادة من الظهرة إلى منطقة الغوص.",
-        promptSource: "reconstructed",
+        page: 9,
+        prompt:
+          "لَخِّصْ في نص علمي من خلال ما سبق ومعلوماتك مراحل تركيب البروتين مبرزا المستويات المحتملة لتأثير مختلف المضادات الحيوية.",
+        promptSource: "official",
         maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -4994,7 +5091,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       }
     ]
   },
