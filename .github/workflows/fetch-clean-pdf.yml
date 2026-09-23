@@ -55,14 +55,15 @@ jobs:
           ls -la incoming/se-2023
           find incoming/se-2023 -type f -name '*.pdf' | grep -q .
 
-      # BATCH A : SE 2013,2014,2025,2026 (8 scans, les 20 SE 2015-2024 sont
-      # livrés). Pilote manifest-driven scripts/ocr-batch.py -> même pipeline
-      # LOGIQUE : rendu 300 dpi → tesseract TSV → tri RTL → visuel bidi exact
-      # → qpdf --overlay. Diagnostics incoming/batch-se-rest/ (commité).
-      - name: OCR batch A SE-rest (logical layer rebuild)
+      # BATCH B : M 2013-2019 (16 sujets : scans + transposés + session
+      # exceptionnelle 2017 ; SE entière livrée). Pilote manifest-driven
+      # scripts/ocr-batch.py -> pipeline LOGIQUE : rendu 300 dpi → tesseract
+      # TSV → tri RTL → visuel bidi exact → qpdf --overlay.
+      # Diagnostics incoming/batch-m-old/ (commité).
+      - name: OCR batch B M-old (logical layer rebuild)
         run: |
           set -euo pipefail
-          mkdir -p incoming/batch-se-rest
+          mkdir -p incoming/batch-m-old
           {
             echo "## versions"
             sudo apt-get update -qq
@@ -72,10 +73,10 @@ jobs:
             tesseract --version | head -2
             qpdf --version
             python3 -c "import fitz; print('pymupdf OK')"
-          } 2>&1 | tee incoming/batch-se-rest/setup.txt
-          python3 scripts/ocr-batch.py incoming/batch-se-rest --only SE:2013,2014,2025,2026
-          ls -la incoming/batch-se-rest
-          find incoming/batch-se-rest -type f -name '*.pdf' | grep -q .
+          } 2>&1 | tee incoming/batch-m-old/setup.txt
+          python3 scripts/ocr-batch.py incoming/batch-m-old --only M:2013-2019
+          ls -la incoming/batch-m-old
+          find incoming/batch-m-old -type f -name '*.pdf' | grep -q .
 
       - uses: actions/upload-artifact@v4
         with:
@@ -85,8 +86,8 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: batch-se-rest
-          path: incoming/batch-se-rest
+          name: batch-m-old
+          path: incoming/batch-m-old
           if-no-files-found: error
 
       - name: Commit the PDFs so they can be pulled over github.com
@@ -95,11 +96,11 @@ jobs:
           set -euo pipefail
           git config user.name "arena-ai-coding-agent[bot]"
           git config user.email "41898282+arena-ai-coding-agent[bot]@users.noreply.github.com"
-          git add incoming/se-2023 incoming/se-2014 incoming/se-2019-logical incoming/se-rebuild incoming/batch-se-rest
+          git add incoming/
           git status
           if git diff --cached --quiet; then
             echo "No new PDF to commit"
             exit 0
           fi
-          git commit -m "OCR batch A SE 2013,2014,2025,2026 : couches LOGIQUES reconstruites"
+          git commit -m "OCR batch B M 2013-2019 : couches LOGIQUES reconstruites"
           git push origin "HEAD:${{ github.ref_name }}"
