@@ -1,9 +1,0 @@
-=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/M/2025/sujet-1.pdf ===
-OK incoming/batch-hq-2025/M-2025-main-sujet-1.pdf 3360463 bytes
-=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/M/2025/sujet-2.pdf ===
-OK incoming/batch-hq-2025/M-2025-main-sujet-2.pdf 3442338 bytes
-=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/SE/2025/sujet-1.pdf ===
-OK incoming/batch-hq-2025/SE-2025-main-sujet-1.pdf 13551322 bytes
-=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/SE/2025/sujet-2.pdf ===
-OK incoming/batch-hq-2025/SE-2025-main-sujet-2.pdf 14037418 bytes
-done=4 failures=0
