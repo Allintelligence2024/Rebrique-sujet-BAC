@@ -6,6 +6,26 @@ Test status at handoff: **256 pass / 0 fail / 1 skipped** (`npm test`).
 PWA build id: `f54ac619b7a2` (stale as soon as any source file changes — regenerate with `npm run pwa:version`).
 Production build: `dist/site` 136 files, standalone `dist/boussole-4d-standalone.html` 1.80 MB (reproducible sha256).
 
+> **2026-09-23 (nuit) — SE 2019 : Phase 1 du plan faite (checklist image).**
+> Branche `arena/01a0cebc-rebrique-sujet-bac`.
+>
+> - Nouveau `docs/RELECTURE_SE_2019_CHECKLIST.md` : les **9 pages** du livret
+>   lues sur image à 2× (puis bandes de consignes zoomées ×1,7 à ×2,6), deux
+>   passes le même jour, **aucune page non vue**. Barèmes imprimés **5/7/8**
+>   confirmés pour les deux sujets (`(05 نقاط)` / `(07 نقاط)` / `(08 نقاط)`).
+> - **17 consignes `official`** proposées sur 24 pôles (5 pour S1-E2 qui porte
+>   aussi la question de cadrage imprimée), **7 cadrages `reconstructed`**.
+> - **Constat majeur** : les **six** exercices encodés aujourd'hui portent un
+>   thème qui n'est pas celui de la page — S1-E1 = مغماتية مرتبطة بالظهرة (et
+>   non « الاستنساخ »), S1-E2 = أنزيم غلوكوز أكسيداز GO, S1-E3 = immunité
+>   antitumorale (LT8/CD8, TIL, IL2), S2-E1 = Andes/بركان انفجاري, S2-E2 =
+>   DDT et canaux voltage-dépendants, S2-E3 = Rifamycine et niveaux d'action
+>   des antibiotiques. La Phase 3 devra **remplacer** `bacPrompt`, `desc`,
+>   `label`, réponses modèles et règles pôle par pôle.
+> - **Aucune donnée touchée** (Phase 1 = document seul) : `data/**` inchangé,
+>   les 24 pôles 2019 restent `reconstructed`, `p1:check` inchangé.
+> - Suite : **Phase 3 de 2019** (encodage depuis la checklist) puis Phases 4-6.
+
 > **2026-09-23 (soir) — SE 2020 : Phase 3 du plan `PLAN_SE_2013_2020` appliquée.**
 > Branche de session `arena/01a0cebc-rebrique-sujet-bac`, base `93706ee` (= `main`).
 >

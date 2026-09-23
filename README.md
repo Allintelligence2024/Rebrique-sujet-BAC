@@ -435,7 +435,8 @@ Les entrées de `data/archive.js` ne sont plus des cartes : elles servent de **s
 
 Statut honnête :
 
-- **2013–2019 SE** : sujets reconstruits (`data/years/se/`). Toutes consignes `reconstructed`. **2018** : thèmes relus OCR dzexams. **2013–2017, 2019** : thèmes pédagogiques 3AS, **non certifiables** comme énoncés officiels. Confiance UI basse.
+- **2013–2019 SE** : sujets reconstruits (`data/years/se/`). Toutes consignes `reconstructed`. **2018** : thèmes relus OCR dzexams. **2013–2017** : thèmes pédagogiques 3AS, **non certifiables** comme énoncés officiels. Confiance UI basse.
+- **2019 SE — relecture d'image faite (2026-09-23, Phase 1 du plan `docs/PLAN_SE_2013_2020.md`)** : `docs/RELECTURE_SE_2019_CHECKLIST.md` donne les neuf pages lues deux fois sur image, les **6 barèmes imprimés (5/7/8 ×2)** et **17 consignes** candidates `official` (7 cadrages restent `reconstructed`). Elle constate que **les six thèmes actuellement encodés contredisent les pages** (S1-E1 porte sur la مغماتية المرتبطة بالظهرة imprimée, pas sur « الاستنساخ » ; S2-E1 sur les Andes, pas sur le potentiel d'action) : `bacPrompt`, réponses modèles et `label` de cette année seront remplacés en Phase 3. Les données servies n'ont pas encore changé.
 - **2013–2026 SE** et **2013–2026 Maths (+ 2017 استثنائية)** : sujets chargés à la demande depuis `data/years/{se,m}/`, indexés par le catalogue `data/subjects.js`.
 - **Consultation** : sujet officiel + تصحيح النموذجي via dzexams. Aucun
   barème, mot-clé ou réponse modèle : le moteur ne s'applique pas.
