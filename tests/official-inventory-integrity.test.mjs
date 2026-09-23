@@ -1,5 +1,9 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { YEAR_CATALOG, loadYear } from "../data/subjects.js";
 import { OFFICIAL_TASK_INVENTORIES, officialTaskInventoryFor } from "../data/official-tasks.js";
 import {
@@ -20,6 +24,7 @@ const years = await Promise.all(
   YEAR_CATALOG.map(async (entry) => ({ entry, year: await loadYear(entry.id) }))
 );
 const loaded = years.filter((item) => item.year);
+const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
 /* Les armatures « copie libre » (années dont les consignes ne sont pas
    encodées) n'ont, par construction, aucun inventaire : elles sont vérifiées
@@ -165,7 +170,10 @@ test("les pages annoncées restent utilisables dans le PDF livré", () => {
   // 213 consignes officielles jusqu'au 2026-09-19 ; 261 avec les 48 consignes
   // OCR Maths ; 277 avec les 16 consignes OCR de SE 2021.
   assert.equal(declared, 277);
-  assert.ok(located / declared > 0.8, `trop de pages non locables: ${declared - located}`);
+  // Depuis la correction des offsets (2026-09-23), toute consigne officielle
+  // est rattachée à son fichier : une page « non locable » est un bug, pas
+  // une tolérance du générateur.
+  assert.equal(located, declared, `pages non locables: ${declared - located}`);
 });
 
 test("la pagination déclarée n'est jamais silencieusement fausse", () => {
@@ -200,6 +208,76 @@ test("les références documentaires restent dans le fichier livré", () => {
       }
     }
   }
+});
+
+test("sans convention de pagination, aucune tâche n'est localisée", () => {
+  // pageOffset null = inventaire sans consigne officielle (SE 2013-2019) :
+  // le générateur n'affirme alors aucune correspondance de pages, et aucune
+  // édition manuelle ne doit en ajouter une sans fixer l'offset.
+  for (const { yearId, subject, inventory } of eachSubject()) {
+    if (inventory.document.pageOffset !== null) continue;
+    for (const task of inventory.tasks) {
+      assert.equal(task.page ?? null, null, `${yearId}/S${subject.id} ${task.id}: page sans offset`);
+      assert.equal(
+        task.pageInPdf ?? null,
+        null,
+        `${yearId}/S${subject.id} ${task.id}: pageInPdf sans offset`
+      );
+      assert.deepEqual(
+        task.documentRefs ?? [],
+        [],
+        `${yearId}/S${subject.id} ${task.id}: refs sans offset`
+      );
+    }
+  }
+});
+
+test("2025/S2 : le faisceau sujet+corrigé ne renvoie jamais au corrigé", () => {
+  // Le fichier livré contient le sujet (p1-5) puis le corrigé (p6-11) :
+  // toute navigation élève doit rester sur le span du sujet.
+  const inventory = officialTaskInventoryFor("2025", 2);
+  assert.equal(inventory.document.pages, 11);
+  assert.equal(inventory.document.pageOffset, 5);
+  for (const task of inventory.tasks) {
+    if (!Number.isInteger(task.pageInPdf)) continue;
+    assert.ok(task.pageInPdf <= 5, `${task.id}: renvoie au corrigé (p${task.pageInPdf})`);
+  }
+});
+
+test("la pagination déclarée suit le manifest et le PDF réel", async () => {
+  // document.pages est relu sur le PDF à chaque génération : ce test garde
+  // la chaîne manifest → inventaire → fichier réelle après une recoupe.
+  const { createRequire } = await import("node:module");
+  const pdfjs = createRequire(import.meta.url)("pdfjs-dist/legacy/build/pdf.js");
+  const manifest = JSON.parse(readFileSync(join(root, "subjects", "manifest.json"), "utf8"));
+  const manifestPages = new Map(manifest.map((entry) => [entry.file.replace(/^subjects\//, "/subjects/"), entry.pages]));
+  for (const { yearId, subject, inventory } of eachSubject()) {
+    const localPath = inventory.document.localPath;
+    assert.ok(manifestPages.has(localPath), `${yearId}/S${subject.id} absent du manifest`);
+    assert.equal(
+      inventory.document.pages,
+      manifestPages.get(localPath),
+      `${yearId}/S${subject.id} inventaire hors manifest`
+    );
+    const doc = await pdfjs.getDocument({
+      data: new Uint8Array(readFileSync(join(root, localPath.replace(/^\//, "")))),
+      isEvalSupported: false
+    }).promise;
+    assert.equal(
+      doc.numPages,
+      manifestPages.get(localPath),
+      `${yearId}/S${subject.id} manifest hors PDF réel`
+    );
+  }
+});
+
+test("l'inventaire versionné est exactement la sortie du générateur", () => {
+  // Verrou maître : data/official-tasks.js ne s'édite jamais à la main, sinon
+  // la preuve de provenance (official/reconstructed) ne vaut plus rien.
+  execFileSync(process.execPath, [join(root, "scripts", "generate-official-inventories.mjs"), "--check"], {
+    cwd: root,
+    stdio: "pipe"
+  });
 });
 
 test("les 58 sujets restent éligibles à l'épreuve sans inventaire invalide", () => {

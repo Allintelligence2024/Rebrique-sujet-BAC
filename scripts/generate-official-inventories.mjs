@@ -22,6 +22,12 @@ const pdfjs = require("pdfjs-dist/legacy/build/pdf.js");
 const outputPath = join(root, "data", "official-tasks.js");
 const POLES = ["N", "S", "E", "W"];
 
+/** Sujets en faisceau : pages du sujet seul (offset calculé dessus). */
+const BUNDLED_SUJET_PAGES = new Map([
+  ["2025/S1", 5],
+  ["2025/S2", 5]
+]);
+
 /** Notes de relecture humaine déjà consignées — jamais inventées ici. */
 const HUMAN_NOTES = new Map([
   [
@@ -87,7 +93,7 @@ function buildTasks(yearId, subject, exercise) {
       maxPoints: Number(data.points) > 0 ? Number(data.points) : 1,
       scoringReviewStatus: "provisional",
       documentReviewStatus: official && page ? "pending" : "not-required",
-      documentRefs: official && page ? [{ id: "subject-pdf", pages: [page] }] : [],
+      documentRefs: [], // renseigné après l'offset (page fichier, voir buildInventory)
       trainingMappings: [{ exerciseNumber: exercise.number, pole, kind: "direct" }]
     });
   }
@@ -98,14 +104,22 @@ async function buildInventory(yearId, year, subject) {
   const tasks = (subject.exercises || []).flatMap((exercise) => buildTasks(yearId, subject, exercise));
   const documentPath = subject.pdfLocalUrl || null;
   const documentPages = documentPath ? await pdfPageCount(join(root, documentPath.replace(/^\//, ""))) : null;
+  // Sujets livrés en faisceau sujet+corrigé : pages du SUJET seul, vérifiées
+  // par lecture (2025/S1 : p1-5 sujet + p6-11 corrigé ; idem 2025/S2).
+  const sujetPages = BUNDLED_SUJET_PAGES.get(`${yearId}/S${subject.id}`) ?? documentPages;
   const offset = computePageOffset(
     tasks.map((task) => task.page).filter((page) => Number.isInteger(page)),
-    documentPages
+    sujetPages
   );
-  // pageInPdf : la page à ouvrir dans le fichier local, uniquement si certaine.
+  // pageInPdf + documentRefs : la page à ouvrir dans le fichier local, uniquement
+  // si certaine. Les refs désignent le fichier livré (comme pageInPdf), jamais
+  // la numérotation livret (qui reste portée par task.page).
   for (const task of tasks) {
     const local = Number.isInteger(task.page) && offset !== null ? task.page - offset : null;
-    task.pageInPdf = local !== null && local >= 1 && local <= documentPages ? local : null;
+    task.pageInPdf = local !== null && local >= 1 && local <= sujetPages ? local : null;
+    if (task.promptSource === "official" && Number.isInteger(task.pageInPdf)) {
+      task.documentRefs = [{ id: "subject-pdf", pages: [task.pageInPdf] }];
+    }
   }
   const inventoriedExerciseNumbers = [...new Set(tasks.map((task) => task.exerciseNumber))].sort(
     (a, b) => a - b

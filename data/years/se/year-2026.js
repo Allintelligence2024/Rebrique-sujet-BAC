@@ -257,7 +257,7 @@ export const YEAR_2026_SE = {
                 "بيّن من خلال استغلالك لمعطيات شكلي الوثيقة 1 أن مبيد الأترازين يستهدف تعطيل عملية التركيب الضوئي وأن له تأثيرا متباينا على المحاصيل الزراعية والنباتات الضارة.",
               ...OFFICIAL(
                 4,
-                "Consigne 1- Bayyin lue fichier local dzexams p4 (Juz1, Doc1). Anc 3 (eddirasa) corrigee 2026-09-23."
+                "Verbe officiel : demontrer. Consigne lue sur le fichier local dzexams p4 (partie 1, document 1). Ancienne valeur 3 (relecture eddirasa fautive), corrigee le 2026-09-23."
               ),
               placeholder: "النبات الشاهد: امتصاص CO2 مرتفع... النبات المعامل...",
               minLength: 90,
@@ -309,7 +309,7 @@ export const YEAR_2026_SE = {
                 "أنجز مخططا وظيفيا يوضح تأثير مبيد الأترازين على عملية التركيب الضوئي اعتمادا على الدراسة والسند المرفق.",
               ...OFFICIAL(
                 5,
-                "Consigne Juz3 (mukhattat) lue fichier local dzexams p5. Anc 6 = pagination corrige eddirasa, corrigee 2026-09-23."
+                "Verbe officiel : realiser un schema fonctionnel. Consigne lue sur le fichier local dzexams p5 (partie 3). Ancienne valeur 6 = pagination du corrige eddirasa, corrigee le 2026-09-23."
               ),
               placeholder: "شاهد → QB-D1 → نقل إلكترونات... في وجود ATZ...",
               minLength: 0,

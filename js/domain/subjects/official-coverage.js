@@ -131,6 +131,13 @@ export function buildOfficialCoverageReport({ yearId, subject, inventory }) {
     if (!pageKnown && task?.promptSource !== "reconstructed") {
       errors.push(`invalid task page: ${task?.id}`);
     }
+    if (
+      Number.isInteger(task?.pageInPdf) &&
+      Number.isInteger(inventory?.document?.pages) &&
+      (task.pageInPdf < 1 || task.pageInPdf > inventory.document.pages)
+    ) {
+      errors.push(`task page outside delivered file: ${task?.id}`);
+    }
     if (typeof task?.prompt !== "string" || !task.prompt.trim())
       errors.push(`missing task prompt: ${task?.id}`);
     if (!Number.isFinite(task?.maxPoints) || task.maxPoints <= 0) {
