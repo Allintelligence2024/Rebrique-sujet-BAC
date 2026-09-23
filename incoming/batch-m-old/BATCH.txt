@@ -1,0 +1,33 @@
+=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/M/2013/sujet-1.pdf ===
+OK incoming/batch-m-old/M-2013-main-sujet-1.pdf 1642103 bytes
+=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/M/2013/sujet-2.pdf ===
+OK incoming/batch-m-old/M-2013-main-sujet-2.pdf 1278622 bytes
+=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/M/2014/sujet-1.pdf ===
+OK incoming/batch-m-old/M-2014-main-sujet-1.pdf 1720030 bytes
+=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/M/2014/sujet-2.pdf ===
+OK incoming/batch-m-old/M-2014-main-sujet-2.pdf 1510628 bytes
+=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/M/2015/sujet-1.pdf ===
+OK incoming/batch-m-old/M-2015-main-sujet-1.pdf 2648431 bytes
+=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/M/2015/sujet-2.pdf ===
+OK incoming/batch-m-old/M-2015-main-sujet-2.pdf 2724151 bytes
+=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/M/2016/sujet-1.pdf ===
+OK incoming/batch-m-old/M-2016-main-sujet-1.pdf 1562359 bytes
+=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/M/2016/sujet-2.pdf ===
+OK incoming/batch-m-old/M-2016-main-sujet-2.pdf 1497451 bytes
+=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/M/2017/sujet-1.pdf ===
+OK incoming/batch-m-old/M-2017-main-sujet-1.pdf 1336274 bytes
+=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/M/2017/sujet-2.pdf ===
+OK incoming/batch-m-old/M-2017-main-sujet-2.pdf 1416706 bytes
+=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/M/2018/sujet-1.pdf ===
+OK incoming/batch-m-old/M-2018-main-sujet-1.pdf 1464193 bytes
+=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/M/2018/sujet-2.pdf ===
+OK incoming/batch-m-old/M-2018-main-sujet-2.pdf 1666391 bytes
+=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/M/2019/sujet-1.pdf ===
+OK incoming/batch-m-old/M-2019-main-sujet-1.pdf 1626342 bytes
+=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/M/2019/sujet-2.pdf ===
+OK incoming/batch-m-old/M-2019-main-sujet-2.pdf 1534193 bytes
+=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/M/2017/exceptional/sujet-1.pdf ===
+OK incoming/batch-m-old/M-2017-exceptional-sujet-1.pdf 1251171 bytes
+=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/M/2017/exceptional/sujet-2.pdf ===
+OK incoming/batch-m-old/M-2017-exceptional-sujet-2.pdf 1122722 bytes
+done=16 failures=0
