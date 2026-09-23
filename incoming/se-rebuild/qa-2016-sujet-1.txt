@@ -1,0 +1,24 @@
+SRC subjects/SE/2016/sujet-1.pdf : 5 pages
+  TSV 1396 c= 91.9 '\u0629\u064a\u0631\u0648\u0647\u0645\u062c\u0644\u0627'
+  TSV 1225 c= 89.1 '\u0629\u064a\u0631\u0626\u0627\u0632\u062c\u0644\u0627'
+  TSV 1000 c= 90.7 '\u0629\u064a\u0637\u0627\u0631\u0642\u0645\u0628\u062f\u0644\u0627'
+  TSV  839 c= 92.3 '\u0629\u064a\u0628\u0639\u0634\u0644\u0627'
+  TSV 2172 c= 92.5 '\u0629\u0631\u0627\u0632\u0648'
+  TSV 2043 c= 92.5 '\u0629\u064a\u0628\u0631\u062a\u0644\u0627'
+  TSV 1890 c= 82.1 '\u0629\u064a\u0646\u0637\u0648\u0644\u0627'
+  TSV  789 c= 93.1 '\u0646\u0627\u0648\u064a\u062f\u0644\u0627'
+page 1 : mots=176 lignes=22 rtl=20 alpha=69 conf<30=0
+  INTENT '\u0629\u064a\u0631\u0648\u0647\u0645\u062c\u0644\u0627 \u0629\u064a\u0631\u0626\u0627\u0632\u062c\u0644\u0627 \u0629\u064a\u0637\u0627\u0631\u0642\u0645\u0628\u062f\u0644\u0627 \u0629\u064a\u0628\u0639\u0634\u0644\u0627'
+page 2 : mots=251 lignes=30 rtl=17 alpha=104 conf<30=17
+page 3 : mots=275 lignes=62 rtl=57 alpha=87 conf<30=3
+page 4 : mots=217 lignes=20 rtl=17 alpha=85 conf<30=3
+page 5 : mots=116 lignes=17 rtl=15 alpha=66 conf<30=1
+img=3055739 txt=22311 échecs=0
+qpdf exit=0 
+FINAL incoming/se-rebuild/2016-sujet-1.pdf : 5 pages, 3078927 octets
+--- page 1 couche finale ---
+الجمهورية / الجزائرية / الدبمقراطية / الشعبية / وزارة / التربية / الوطنية / الديوان / الوطني / للامتحانات / والمسابقات / امتحان / بكالوريا / التعليمEE‏ / دورة: / 2016 / :الشعبة / علوم / تجريبية / اختبار / في:مادة / علوم / الطبيعة / والحياة:المدة04سا / د30و / الموضوع / الأول / يحتوي / الموضوع / الأول / على05صفحات / )من / الصفحة1من10إلى / الصفحة5من10) / التمرين:الأول(06نقاط) / لإبراز / العلاقة / بين / المورثة / المتواجدة / في / الADN‏ / وناتج / تعبيرها / المورثي / عند / حقيقيات / النواة / تقترح / الدراسة:التالية / 1-يمثل(الشكل)أ / للوثيقة)1(صورة / بالمجهر / الإلكتروني / لوحدة / متمايزة / تساهم / في / تحويل / اللغ
+--- page 2 couche finale ---
+2 / b / كك / بي‎كك / ‎د- / Ca / =. / te. / Peecegeeee / onu: / ssssssss / MIT / EIT / Ya ou] 22 lauccec / GUCGACUUUAAA........ / CCCAACGAUUAA / € / Met / Arg / Val / Asp / Phe / Lys / ........ / Pro / Asn / Asp / Dak / 5 gall / ‎كل_|AUGGUGUCCGCCUAUGGG........ / UUUUUCGGCUAG / & / Met / Val / Ser / Ala / Tyr / Gly / -:------- Phe / Phe / Gly / 32% 5gall / oo / AUGUUGUUCGACCCGGUA........ / CACGGCUUUUGA / 4 / E / |Met / Leu / Phe / Asp / Pro / Val / -------- / His / Gly / Phe / 4‎المورثةWm / |AUGAACGC GGUUUAUGUU'::::::- / UCACGGGAUUAA / € / [Met / Asn / Ala / Val / Tyr / Val / Ser / Arg / A / et / Asn / a / a / Wr / Val / ----+-:- / er / Arg / As / ‎الوثي
+VERDICT : extraits fitz ci-dessus = tri+bidi (non contractuel) ;
+vrai verdict = correcteur pdf.js du dépôt (sandbox) sur les PDF.

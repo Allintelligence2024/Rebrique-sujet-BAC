@@ -1,0 +1,24 @@
+SRC subjects/SE/2024/sujet-2.pdf : 5 pages
+  TSV  948 c= 24.9 'ge'
+  TSV  988 c= 22.5 '\xe0'
+  TSV 1269 c= 31.8 'CLS\u200f'
+  TSV  898 c= 33.6 '\u0633\u0631\u062f'
+  TSV 1571 c= 53.3 '\u0645'
+  TSV  819 c=  5.4 'mn'
+  TSV 1257 c=  2.7 'REMI\u200f'
+  TSV 1865 c= 54.9 'jlo!\u200f'
+page 1 : mots=206 lignes=28 rtl=19 alpha=100 conf<30=18
+  INTENT 'jlo!\u200f \u064a\u0641 cdots\u200f \u0645\u0648\u0644\u0639 \u0629\u0639\u064a\u0628\u0637\u0644\u0627 \u0629\u0627\u064a\u062d\u0644\u0627\u0648'
+page 2 : mots=225 lignes=27 rtl=22 alpha=101 conf<30=11
+page 3 : mots=244 lignes=31 rtl=24 alpha=102 conf<30=12
+page 4 : mots=156 lignes=23 rtl=19 alpha=82 conf<30=7
+page 5 : mots=195 lignes=33 rtl=25 alpha=91 conf<30=19
+img=4562906 txt=22742 échecs=0
+qpdf exit=0 
+FINAL incoming/se-rebuild/2024-sujet-2.pdf : 5 pages, 4586487 octets
+--- page 1 couche finale ---
+درسge / à / CLS‏ / mn / REMI‏م / jlo!‏ / فيcdots‏ / علوم / الطبيعة / والحياة// / :الشعبة / علوم / تجرببية//بكالوريا2024 / الموضوع / الثاني / يحتوي / الموضوع / على(05)ضفحات / )من / الصفحة6من10إلى / الصفحة10من10) / التمرين:الأول(05 / (نقاط / (Sips‏ٌمرحلة / الترجمةGrill‏ / عن / المعلومة / الوراثية / التي / يحملها / الARNm‏ / بمتتالية / أحماض / أميئية / قي / الهيولى / .الخلوية / وقدٌيتم / تثبيط / هذه / المرحلة / بمركبات / كيميائية.مختلفة / hax filمرحلة ‏LTetracycline; Oxazolidinone‏ / منم ُركبيDSالوثيقةالتاليةتآثير ‏és‏ / الحمضن / الأميني / Met‏ / ذه\\ / 1 / | / CENT.‏ / Gane)‏ / Tetracycline / OOCO / esser
+--- page 2 couche finale ---
+D) / UE” / اختبار / في:مادة / علوم / الطبيعة / والحياة// / :الشعبة / علوم / تجرببية// / ‎بكالوريا2024 / ejall / ‎:الأول / ُضعت / و / أوراق / من / نبات / الفاصولياء / لمدة / كافية / في / الظلام / بعدها / أجريت / على / مستخلضها / التجارب:التالية / —التجرية:الأولى / بتقتيات / خاصة / تم / قياس / نسبة / نشاط / انزيمRubisco‏ / قي / وسطين / مناسبين / أحذهما / في / الضوء / والآخر / في / الظلام / ويهما / مستخلص / الأوراق / مع / إضافةmM)‏1.00)منRudip‏ / وتركيز / كاف.00منج / النتائجthes‏ / في: / الشكل)|(من / الوثيقة1. / -التجرية:الثانية35قياس / كمية / كربوكسي1ارابيتيتول(0/8817)فوسفات / في / مستخلص / الأرراق / بعد / تعريضه / لفترتين
+VERDICT : extraits fitz ci-dessus = tri+bidi (non contractuel) ;
+vrai verdict = correcteur pdf.js du dépôt (sandbox) sur les PDF.

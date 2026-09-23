@@ -1,0 +1,37 @@
+=== subjects/SE/2015/sujet-1.pdf ===
+OK incoming/se-rebuild/2015-sujet-1.pdf 3463697 bytes
+=== subjects/SE/2015/sujet-2.pdf ===
+OK incoming/se-rebuild/2015-sujet-2.pdf 3583822 bytes
+=== subjects/SE/2016/sujet-1.pdf ===
+OK incoming/se-rebuild/2016-sujet-1.pdf 3078927 bytes
+=== subjects/SE/2016/sujet-2.pdf ===
+OK incoming/se-rebuild/2016-sujet-2.pdf 3033787 bytes
+=== subjects/SE/2017/sujet-1.pdf ===
+OK incoming/se-rebuild/2017-sujet-1.pdf 2253230 bytes
+=== subjects/SE/2017/sujet-2.pdf ===
+OK incoming/se-rebuild/2017-sujet-2.pdf 2232593 bytes
+=== subjects/SE/2018/sujet-1.pdf ===
+OK incoming/se-rebuild/2018-sujet-1.pdf 2465477 bytes
+=== subjects/SE/2018/sujet-2.pdf ===
+OK incoming/se-rebuild/2018-sujet-2.pdf 3009570 bytes
+=== subjects/SE/2020/sujet-1.pdf ===
+OK incoming/se-rebuild/2020-sujet-1.pdf 2388970 bytes
+=== subjects/SE/2020/sujet-2.pdf ===
+OK incoming/se-rebuild/2020-sujet-2.pdf 2950807 bytes
+=== subjects/SE/2021/sujet-1.pdf ===
+OK incoming/se-rebuild/2021-sujet-1.pdf 3251665 bytes
+=== subjects/SE/2021/sujet-2.pdf ===
+OK incoming/se-rebuild/2021-sujet-2.pdf 3186465 bytes
+=== subjects/SE/2022/sujet-1.pdf ===
+OK incoming/se-rebuild/2022-sujet-1.pdf 3120680 bytes
+=== subjects/SE/2022/sujet-2.pdf ===
+OK incoming/se-rebuild/2022-sujet-2.pdf 2831485 bytes
+=== subjects/SE/2023/sujet-1.pdf ===
+OK incoming/se-rebuild/2023-sujet-1.pdf 2361312 bytes
+=== subjects/SE/2023/sujet-2.pdf ===
+OK incoming/se-rebuild/2023-sujet-2.pdf 3283442 bytes
+=== subjects/SE/2024/sujet-1.pdf ===
+OK incoming/se-rebuild/2024-sujet-1.pdf 5039171 bytes
+=== subjects/SE/2024/sujet-2.pdf ===
+OK incoming/se-rebuild/2024-sujet-2.pdf 4586487 bytes
+failures=0
