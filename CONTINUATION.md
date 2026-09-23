@@ -6,6 +6,43 @@ Test status at handoff: **256 pass / 0 fail / 1 skipped** (`npm test`).
 PWA build id: `f54ac619b7a2` (stale as soon as any source file changes — regenerate with `npm run pwa:version`).
 Production build: `dist/site` 136 files, standalone `dist/boussole-4d-standalone.html` 1.80 MB (reproducible sha256).
 
+> **2026-09-23 — état vérifié après le merge de la PR #30** (branche de session
+> `arena/01a0cebc-rebrique-sujet-bac`, base `93706ee` = `origin/main`, merge de #30 à
+> 13:37:56Z ; CI « Quality » **verte sur `main`** au run 13:38:01Z). Mesures relancées
+> localement sur ce SHA, pas recopiées d'un rapport :
+>
+> - `npm test` → **385 tests (384 pass / 0 fail / 1 skip)** ; `lint`, `typecheck`,
+>   `format:check`, `docs:check`, `calibration:check`, `inventory:check`, `p3:check`,
+>   `rights:check`, `impact:check` : **tous verts**.
+> - `npm run p1:status` → **3/6** (P1.1, P1.2, P1.5 bloqués) ; `p2:status` → **6/7**
+>   (P2.7 : 0/5 élèves) ; `p3:status` → **6/6** ; `coverage:official` → 58 sujets
+>   éligibles, 0 inventaire invalide ; `pdftext:status` → **50 sujets `propre`,
+>   8 `indéterminé`**, 0 `scan` (les couches logiques 450 dpi ont été reconstruites).
+> - **Pôles `official` : 277 / 576** (M : 175 sur 240 ; SE : 102 sur 336). Répartition
+>   mesurée par import des `data/years/**` :
+>   **SE 2013→2019 = 0/24 chacun** ; SE 2020 = 17 ; 2021 = 16 ; 2022 = 14 ; 2023 = 14 ;
+>   2024 = 8 ; 2025 = 16 ; 2026 = 17. Maths : 9 à 14 sur 16 selon l'année.
+>   Ce total reste la valeur verrouillée par `tests/official-inventory-integrity.test.mjs:172`.
+> - **Chantier en cours — `docs/PLAN_SE_2013_2020.md`.** Phase 1 faite pour **SE 2020**
+>   (`docs/RELECTURE_SE_2020_CHECKLIST.md`, 9 pages lues deux fois sur image ; 17 pôles
+>   `official` proposés mot à mot, 7 cadrages laissés `reconstructed` ; barèmes imprimés
+>   5/7/8 confirmés). **Phase 3 non faite** : `data/years/se/year-2020.js` porte encore
+>   les divergences listées par la checklist (préfixes `خلاصة`, questions tronquées
+>   « اقترح حلا. », question d'hypothèse placée sur S1-E3/N au lieu de S, S2-E2 E/W à
+>   permuter, S2-E3 à regrouper). Rien de `data/` n'a été touché par la PR #30.
+> - **Ordre de reprise du plan** (inchangé) : 2020 (Phase 3) → 2019 → 2016/2015 →
+>   2013/2014 → 2017/2018, puis régénération, gardes (Phase 5), décompte (Phase 6).
+>   `npm run p1:status` **doit rester rouge** : un inventaire `partial` n'est pas une preuve.
+> - **En attente du propriétaire** : (a) fermeture du ticket **#13** — obsolète, la CI
+>   tourne bien sur `main`, mais l'App GitHub de la session n'a pas `issues:write` ;
+>   (b) arbitrage juridique des PDF (`docs/rights/request-dossier.md` et
+>   `docs/rights/external-links-impact.md` prêts, décision non prise) ; (c) 5 élèves
+>   réels pour P2.7 ; (d) `travail 4` de `PROMPT_DECISIONS_PROPRIETAIRE.md` (cases
+>   encore vides) si le propriétaire veut fournir des transcriptions lui-même.
+> - **Hygiène CI** : `.github/workflows/fetch-clean-pdf.yml` (one-shot) est encore sur
+>   `main` avec un trigger `push` sur la branche **mergée** `arena/01a0c9d4-…` ; il ne
+>   sert plus. À supprimer ou convertir en `workflow_dispatch` au prochain lot OCR en CI.
+
 > **2026-09-16 — état courant de la session** (branche `arena/01a09be6-rebrique-sujet-bac`,
 > PR **#26** OPEN — ne pas merger sans consigne du propriétaire ; tête `2e44da9`, suivie du présent
 > bandeau ; commits poussés ce jour : `5b9e947`, `0b2ec31`, `ad26660`, `71b0cf7`, `0afdee4`,
