@@ -55,17 +55,15 @@ jobs:
           ls -la incoming/se-2023
           find incoming/se-2023 -type f -name '*.pdf' | grep -q .
 
-      # Les miroirs redistribuent tous le MÊME fichier brouillé (vérifié). On
-      # reconstruit donc une couche LOGIQUE par OCR (scripts/ocr-logical-layer.py) :
-      # rendu 300 dpi → tesseract TSV (mots logiques + boîtes) → tri RTL
-      # droite→gauche → couche invisible PyMuPDF → qpdf --overlay.
-      # Tout diagnostic part dans incoming/ (commité) car les logs Actions sont
-      # inaccessibles depuis le sandbox. Visuel exact via python-bidi,
-      # base uniforme par ligne (anti-entrelacement), verdict = correcteur.
-      - name: OCR SE 2019 Sciences (logical layer rebuild)
+      # Série SE 2015→2024 (2019 déjà livré, exclu) : même pipeline LOGIQUE
+      # (scripts/ocr-logical-layer.py) sur chaque sujet : rendu 300 dpi →
+      # tesseract TSV → tri RTL → visuel bidi exact → qpdf --overlay.
+      # Boucle tolérante : un sujet en échec n'arrête pas la série.
+      # Diagnostics dans incoming/se-rebuild/ (commité, logs Actions inaccessibles).
+      - name: OCR SE 2015-2024 (logical layer batch rebuild)
         run: |
           set -euo pipefail
-          mkdir -p incoming/se-2019-logical
+          mkdir -p incoming/se-rebuild
           {
             echo "## versions"
             sudo apt-get update -qq
@@ -75,13 +73,31 @@ jobs:
             tesseract --version | head -2
             qpdf --version
             python3 -c "import fitz; print('pymupdf OK')"
-          } 2>&1 | tee incoming/se-2019-logical/setup.txt
-          python3 scripts/ocr-logical-layer.py subjects/SE/2019/sujet-1.pdf \
-            incoming/se-2019-logical/sujet-1.pdf incoming/se-2019-logical/qa-sujet-1.txt
-          python3 scripts/ocr-logical-layer.py subjects/SE/2019/sujet-2.pdf \
-            incoming/se-2019-logical/sujet-2.pdf incoming/se-2019-logical/qa-sujet-2.txt
-          ls -la incoming/se-2019-logical
-          find incoming/se-2019-logical -type f -name '*.pdf' | grep -q .
+          } 2>&1 | tee incoming/se-rebuild/setup.txt
+          failures=0
+          : > incoming/se-rebuild/BATCH.txt
+          for year in 2015 2016 2017 2018 2020 2021 2022 2023 2024; do
+            for n in 1 2; do
+              src="subjects/SE/$year/sujet-$n.pdf"
+              dest="incoming/se-rebuild/$year-sujet-$n.pdf"
+              qa="incoming/se-rebuild/qa-$year-sujet-$n.txt"
+              if [ ! -f "$src" ]; then
+                echo "SKIP $src absent" | tee -a incoming/se-rebuild/BATCH.txt
+                continue
+              fi
+              echo "=== $src ===" | tee -a incoming/se-rebuild/BATCH.txt
+              if python3 scripts/ocr-logical-layer.py "$src" "$dest" "$qa"; then
+                echo "OK $dest $(wc -c < "$dest") bytes" | tee -a incoming/se-rebuild/BATCH.txt
+              else
+                echo "FAILED $src" | tee -a incoming/se-rebuild/BATCH.txt
+                failures=$((failures+1))
+              fi
+            done
+          done
+          echo "failures=$failures" | tee -a incoming/se-rebuild/BATCH.txt
+          ls -la incoming/se-rebuild
+          find incoming/se-rebuild -type f -name '*.pdf' | grep -q .
+          [ "$failures" -eq 0 ]
 
       - uses: actions/upload-artifact@v4
         with:
@@ -91,8 +107,8 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: se-2019-logical
-          path: incoming/se-2019-logical
+          name: se-rebuild
+          path: incoming/se-rebuild
           if-no-files-found: error
 
       - name: Commit the PDFs so they can be pulled over github.com
@@ -101,11 +117,11 @@ jobs:
           set -euo pipefail
           git config user.name "arena-ai-coding-agent[bot]"
           git config user.email "41898282+arena-ai-coding-agent[bot]@users.noreply.github.com"
-          git add incoming/se-2023 incoming/se-2014 incoming/se-2019-logical
+          git add incoming/se-2023 incoming/se-2014 incoming/se-2019-logical incoming/se-rebuild
           git status
           if git diff --cached --quiet; then
             echo "No new PDF to commit"
             exit 0
           fi
-          git commit -m "OCR SE 2019 Sciences : couche texte LOGIQUE reconstruite"
+          git commit -m "OCR SE 2015-2024 : couches LOGIQUES reconstruites (série)"
           git push origin "HEAD:${{ github.ref_name }}"
