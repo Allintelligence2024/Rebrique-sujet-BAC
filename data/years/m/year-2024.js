@@ -372,8 +372,8 @@ export const YEAR_2024_M = {
               bacPrompt:
                 "وضّح خطوات تعبير المورثة المسؤولة عن ظهور ألياف الكولاجين في الغشاء القاعدي لوحدة التصفية عند الشخصين العادي والمصاب بمتلازمة ألبورت.",
               ...OFFICIAL(
-                7,
-                "Relecture du corrigé officiel eddirasa 2024 Maths (pages 6-7). Verbe officiel : وضّح. Question du الجزء الثاني / المخطط."
+                6,
+                "Consigne وضّح (تعبير المورثة/الكولاجين) lue sur le fichier local dzexams p3 = livret p6. Ancienne valeur 7 = pagination du corrigé eddirasa, corrigée le 2026-09-23."
               ),
               placeholder: "عند السليم: GGA → Gly... عند المصاب: GAA → Glu طفرة...",
               minLength: 110,

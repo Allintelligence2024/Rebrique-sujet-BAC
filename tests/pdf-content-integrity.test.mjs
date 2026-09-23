@@ -116,6 +116,22 @@ test("deux sessions différentes ne partagent jamais les mêmes PDF", () => {
   assert.deepEqual(collisions, [], "deux sessions partagent les mêmes fichiers");
 });
 
+test("SE 2023 : le sujet 1 s'arrête à sa dernière page, le sujet 2 commence au sien", async () => {
+  const { createRequire } = await import("node:module");
+  const pdfjs = createRequire(import.meta.url)("pdfjs-dist/legacy/build/pdf.js");
+  async function pages(path) {
+    const doc = await pdfjs.getDocument({
+      data: new Uint8Array(readFileSync(join(root, path))),
+      isEvalSupported: false
+    }).promise;
+    return doc.numPages;
+  }
+  /* Livret dzexams de 10 pages, mal coupé jusqu'au 2026-09-21 : la page 5
+     (début du sujet 2) était collée à la fin du sujet 1, et manquait au sujet 2. */
+  assert.equal(await pages("subjects/SE/2023/sujet-1.pdf"), 4);
+  assert.equal(await pages("subjects/SE/2023/sujet-2.pdf"), 6);
+});
+
 test("le service worker place tout PDF de sujet dans le cache runtime borné", () => {
   const api = serviceWorkerApi();
   const leaked = [];

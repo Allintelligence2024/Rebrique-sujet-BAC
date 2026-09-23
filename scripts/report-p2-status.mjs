@@ -175,7 +175,8 @@ export function buildP2Status() {
     pdfViewer.includes('<iframe class="pdf-frame"') &&
     pdfViewer.includes("download") &&
     simulation.includes('input.value = progress.freeAnswer || ""') &&
-    simulation.includes('id="exam-paper-notice"') &&
+    simulation.includes("function examPaperHTML") &&
+    simulation.includes("bac-answers") &&
     simulation.includes('id="simulation-finish-yes"') &&
     simulation.includes('id="simulation-finish-no"') &&
     simulation.includes('id="simulation-review-notice"') &&

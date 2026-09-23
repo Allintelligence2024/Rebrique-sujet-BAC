@@ -256,8 +256,8 @@ export const YEAR_2026_SE = {
               bacPrompt:
                 "بيّن من خلال استغلالك لمعطيات شكلي الوثيقة 1 أن مبيد الأترازين يستهدف تعطيل عملية التركيب الضوئي وأن له تأثيرا متباينا على المحاصيل الزراعية والنباتات الضارة.",
               ...OFFICIAL(
-                3,
-                "Relecture du PDF eddirasa 2026 (OCR pages 3-4). Verbe officiel : بيّن. Question 1 du الجزء الأول."
+                4,
+                "Verbe officiel : demontrer. Consigne lue sur le fichier local dzexams p4 (partie 1, document 1). Ancienne valeur 3 (relecture eddirasa fautive), corrigee le 2026-09-23."
               ),
               placeholder: "النبات الشاهد: امتصاص CO2 مرتفع... النبات المعامل...",
               minLength: 90,
@@ -308,8 +308,8 @@ export const YEAR_2026_SE = {
               bacPrompt:
                 "أنجز مخططا وظيفيا يوضح تأثير مبيد الأترازين على عملية التركيب الضوئي اعتمادا على الدراسة والسند المرفق.",
               ...OFFICIAL(
-                6,
-                "Relecture du corrigé officiel eddirasa 2026 (schéma page 6). Verbe officiel : أنجز مخططا وظيفيا. Question du الجزء الثالث."
+                5,
+                "Verbe officiel : realiser un schema fonctionnel. Consigne lue sur le fichier local dzexams p5 (partie 3). Ancienne valeur 6 = pagination du corrige eddirasa, corrigee le 2026-09-23."
               ),
               placeholder: "شاهد → QB-D1 → نقل إلكترونات... في وجود ATZ...",
               minLength: 0,

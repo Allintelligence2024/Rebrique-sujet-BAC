@@ -163,7 +163,9 @@ test("l'épreuve n'affiche AUCUNE question : les exercices et leur barème", () 
   assert.match(paper, /7 نقطة/);
   assert.match(paper, /8 نقطة/);
   assert.match(paper, /بارم الموضوع/);
-  assert.match(paper, /الأسئلة كلها في ملف الموضوع الرسمي/);
+  assert.doesNotMatch(paper, /الأسئلة كلها في ملف الموضوع الرسمي/);
+  assert.doesNotMatch(paper, /اختبار صامت/);
+  assert.doesNotMatch(paper, /التنقيط غير معاير/);
   assert.doesNotMatch(paper, /\d+[.,]\d+\s*\/\s*\d+/);
 });
 
@@ -242,7 +244,7 @@ test("la remise verrouille la copie et ouvre la relecture", async () => {
   // Réponses conservées mais verrouillées.
   assert.equal($("#view-workspace [data-exercise-free]").disabled, true);
   assert.equal($("#simulation-finish"), null, "plus de remise après remise");
-  // Aucune note : le barème reste provisoire.
-  assert.match($("#view-workspace").textContent, /التنقيط غير معاير/);
+  // Aucune note chiffrée, et plus d'avis qui l'annonce.
+  assert.doesNotMatch($("#view-workspace").textContent, /التنقيط غير معاير/);
   assert.doesNotMatch($("#view-workspace").textContent, /\d+[.,]\d+\s*\/\s*\d+/);
 });

@@ -3,7 +3,6 @@ import { simulationBlockersArabic } from "../coverage-messages.js";
 import { escapeHTML, setInternalHTML } from "../dom.js";
 import { disposeAllPdfViewers, mountPdfViewers, pdfViewerHTML } from "../pdf-viewer.js";
 import { debounce } from "../../application/debounce.js";
-import { BAC_MODE_NOTICES } from "../../../data/bac-mode-policy.js";
 
 /* ÉPREUVE = LES EXERCICES DU SUJET, PAS LES QUESTIONS (décision du
    propriétaire, 2026-09-20). L'écran d'épreuve n'affiche plus AUCUNE
@@ -57,18 +56,14 @@ function examTotalBadge(subject) {
 }
 
 /** Pure renderer used by browser code and regression tests. */
-export function examPaperHTML({ subject, inventory, completed = false, micButton = () => "" }) {
-  /* Le barème n'est vérifié nulle part : c'est une propriété de la session.
-     L'avis reste donc affiché même quand tout est mesuré. */
-  const provisional = (inventory?.tasks || []).some((task) => task.scoringReviewStatus !== "verified");
-  const provisionalNotice = provisional
-    ? `<div class="feedback mid mb-2" role="note">${escapeHTML(BAC_MODE_NOTICES.provisionalScoring)}</div>`
-    : "";
+export function examPaperHTML({ subject, completed = false, micButton = () => "" }) {
+  /* Les bandeaux d'annonce (silence de l'épreuve, absence de note, renvoi
+     au fichier) ont été retirés de la page de réponses à la demande du
+     propriétaire. L'épreuve reste sans question affichée et sans note
+     chiffrée : ce n'est plus annoncé par un bandeau. */
   const modeNotice = completed
     ? `<div class="feedback good mb-2" id="simulation-review-notice" role="status">تم التسليم. هذه شاشة إعادة القراءة؛ الإجابات مقفلة ولا تعرض أي نقطة آلية.</div>`
-    : `<div class="feedback bad mb-2" id="simulation-active-notice" role="note">اختبار صامت: لا تلميح، لا إجابة نموذجية، لا تشخيص ولا نقطة أثناء الاختبار.</div>`;
-  /* Les questions vivent dans le sujet officiel, pas dans l'écran. */
-  const paperNotice = `<div class="feedback mid mb-2" role="note" id="exam-paper-notice">الأسئلة كلها في ملف الموضوع الرسمي المعروض أدناه: اقرأ كل تمرين من الملف، ثم اكتب إجابتك الكاملة في حقله. لا تعرض هذه الشاشة أي سؤال ولا أي تصحيح.</div>`;
+    : "";
   const exercises = (subject?.exercises || [])
     .map(
       (exercise) => `<article class="card stack simulation-task" data-free-exercise="${exercise.number}">
@@ -94,7 +89,7 @@ export function examPaperHTML({ subject, inventory, completed = false, micButton
       </article>`
     )
     .join("");
-  return `${modeNotice}${provisionalNotice}${paperNotice}
+  return `${modeNotice}
     ${examTotalBadge(subject)}
     <section class="card center stack bac-reading-card">
       ${pdfViewerHTML(subject, { showCover: false })}

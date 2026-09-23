@@ -56,8 +56,8 @@ export function buildP1Status() {
   const sessionModeSource = read("js/store.js") + read("js/ui/screens/simulation.js");
   const separateModes =
     sessionModeSource.includes('SESSION_MODES = Object.freeze(["bac"])') &&
-    sessionModeSource.includes("simulation-active-notice") &&
-    sessionModeSource.includes("simulation-review-notice");
+    sessionModeSource.includes("simulation-review-notice") &&
+    !sessionModeSource.includes("simulation-active-notice");
   const coverageGuard =
     read("js/ui/screens/strategy.js").includes("assertSimulationEligible") &&
     read("js/ui/screens/simulation.js").includes("assertSimulationEligible");

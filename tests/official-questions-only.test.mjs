@@ -32,8 +32,8 @@ test("aucune épreuve n'affiche de question : un champ par exercice, avec le bar
     const html = examPaperHTML({ subject: sujet, inventory });
     // Aucune structure de tâche ni de question affichée.
     assert.doesNotMatch(html, /data-task-answer|data-official-task|bac-consigne/, `${year.id}/S${sujet.id}`);
-    // L'annonce : les questions vivent dans le sujet officiel.
-    assert.match(html, /exam-paper-notice/, `${year.id}/S${sujet.id} doit annoncer le sujet comme source`);
+    // Plus d'avis : le sujet officiel est rendu, pas annoncé par un bandeau.
+    assert.doesNotMatch(html, /exam-paper-notice|اختبار صامت|التنقيط غير معاير/, `${year.id}/S${sujet.id}`);
     assert.match(html, /data-pdf-canvas|لا يوجد ملف موضوع/, `${year.id}/S${sujet.id} doit rendre le sujet`);
     // Un champ par exercice, avec le barème officiel (année + filière).
     for (const exercise of sujet.exercises) {

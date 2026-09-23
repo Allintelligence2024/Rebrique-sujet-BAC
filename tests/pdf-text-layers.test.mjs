@@ -70,7 +70,17 @@ test("le statut compte les sujets à relecture assistée possible, sans jamais c
     "T3 n'est pas atteint : tous les PDF n'ont pas une couche texte propre"
   );
   const classes = Object.keys(status.parClasse);
-  assert.ok(classes.includes("scan"), "ce corpus contient des scans purs");
+  /* Tous les scans et couches brouillées ont été reconstruits en couches
+     logiques (batches OCR SE 2013-2026 + M 2013-2026) : il ne reste que du
+     « propre » et des « indéterminé » (sujets sans bloc d'en-tête dans le
+     scan : plafonds de contenu, pas des défauts de couche). */
+  assert.ok(!classes.includes("scan"), "plus aucun scan pur : chaque PDF a une couche texte");
+  assert.ok(!classes.includes("transposé"), "plus aucune couche à ligatures inversées");
+  assert.ok(!classes.includes("formes-visuelles"), "plus aucun encodage en formes visuelles");
+  assert.ok(
+    classes.includes("indéterminé"),
+    "ce corpus garde des sujets sans marqueurs (plafonds de contenu)"
+  );
   for (const sujet of status.sujets) {
     assert.ok(sujet.label && sujet.path, "chaque sujet mesuré doit être identifiable");
     assert.ok(sujet.classe, "chaque sujet mesuré doit être classé");

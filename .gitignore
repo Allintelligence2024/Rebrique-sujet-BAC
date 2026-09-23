@@ -20,3 +20,6 @@ playwright-report/
 # Ancré à la racine (/SE/) pour ne pas ignorer data/years/se/** (les fichiers
 # d'années SVT passent bien par Prettier — angle mort fermé le 2026-09-20).
 /SE/
+
+# Renders de travail pour les checklists de relecture (ne jamais committer).
+rendered/

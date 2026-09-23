@@ -57,9 +57,10 @@ test("l'épreuve active expose les exercices et le barème, jamais une question 
   // Le sujet officiel est la source des questions : il est rendu dans l'app.
   assert.match(html, /data-pdf-canvas/);
   assert.match(html, /data-exercise-pdf="1"/);
-  assert.match(html, /اختبار صامت/);
-  // Le barème provisoire est annoncé, jamais transformé en note.
-  assert.match(html, /التنقيط غير معاير/);
+  // Les trois avis ont été retirés de la page de réponses.
+  assert.doesNotMatch(html, /اختبار صامت/);
+  assert.doesNotMatch(html, /التنقيط غير معاير/);
+  assert.doesNotMatch(html, /الأسئلة كلها في ملف الموضوع الرسمي/);
   // AUCUNE question : ni le texte officiel, ni la structure de tâche.
   assert.doesNotMatch(html, /اشرح آلية تركيب البروتين/);
   assert.doesNotMatch(html, /data-task-answer|data-official-task|bac-consigne|data-task-source/);
