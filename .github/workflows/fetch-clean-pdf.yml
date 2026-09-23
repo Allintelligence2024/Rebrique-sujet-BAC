@@ -55,15 +55,14 @@ jobs:
           ls -la incoming/se-2023
           find incoming/se-2023 -type f -name '*.pdf' | grep -q .
 
-      # BATCH D (phase 2A) : M 2020-2021 (4 sujets jamais reconstruits :
-      # couches d'origine sales — mots scindés, chiffres permutés).
-      # Pilote manifest-driven scripts/ocr-batch.py -> pipeline LOGIQUE :
-      # rendu 300 dpi → tesseract TSV → tri RTL → visuel bidi exact →
-      # qpdf --overlay. Diagnostics incoming/batch-m-2021/ (commité).
-      - name: OCR batch D M-2021 (logical layer rebuild)
+      # BATCH E (phase 2B) : HQ 2025 — SE:2025 + M:2025 (4 sujets) à 450 dpi
+      # + filtre conf>=15 (tampons QR/code-barres lus comme texte, lettres
+      # d'en-tête confuses). On garde le meilleur des deux rendus par fichier.
+      # Pilote scripts/ocr-batch.py. Diagnostics incoming/batch-hq-2025/.
+      - name: OCR batch E HQ-2025 (logical layer rebuild)
         run: |
           set -euo pipefail
-          mkdir -p incoming/batch-m-2021
+          mkdir -p incoming/batch-hq-2025
           {
             echo "## versions"
             sudo apt-get update -qq
@@ -73,10 +72,10 @@ jobs:
             tesseract --version | head -2
             qpdf --version
             python3 -c "import fitz; print('pymupdf OK')"
-          } 2>&1 | tee incoming/batch-m-2021/setup.txt
-          python3 scripts/ocr-batch.py incoming/batch-m-2021 --only M:2020,2021
-          ls -la incoming/batch-m-2021
-          find incoming/batch-m-2021 -type f -name '*.pdf' | grep -q .
+          } 2>&1 | tee incoming/batch-hq-2025/setup.txt
+          python3 scripts/ocr-batch.py incoming/batch-hq-2025 --only SE:2025 M:2025 --dpi 450 --min-conf 15
+          ls -la incoming/batch-hq-2025
+          find incoming/batch-hq-2025 -type f -name '*.pdf' | grep -q .
 
       - uses: actions/upload-artifact@v4
         with:
@@ -86,8 +85,8 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: batch-m-2021
-          path: incoming/batch-m-2021
+          name: batch-hq-2025
+          path: incoming/batch-hq-2025
           if-no-files-found: error
 
       - name: Commit the PDFs so they can be pulled over github.com
@@ -102,5 +101,5 @@ jobs:
             echo "No new PDF to commit"
             exit 0
           fi
-          git commit -m "OCR batch D M 2020-2021 : couches LOGIQUES reconstruites"
+          git commit -m "OCR batch E HQ 2025 : couches LOGIQUES 450dpi conf>=15"
           git push origin "HEAD:${{ github.ref_name }}"

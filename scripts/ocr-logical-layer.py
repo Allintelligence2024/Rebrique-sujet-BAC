@@ -14,7 +14,7 @@ Pipeline : rendu 300 dpi → tesseract TSV → tri RTL droite→gauche par ligne
 → page de texte invisible → qpdf --overlay sur l'image.
 
 Usage (sur le runner CI) :
-    python3 scripts/ocr-logical-layer.py <src.pdf> <dest.pdf> <qa.txt>
+    python3 scripts/ocr-logical-layer.py <src.pdf> <dest.pdf> <qa.txt> [--dpi N] [--min-conf C]
 """
 
 import csv
@@ -29,6 +29,7 @@ import fitz  # pymupdf
 from bidi.algorithm import get_display
 
 DPI = 300
+MIN_CONF = 0.0
 ARABIC_RE = re.compile(r"[\u0600-\u06FF]")
 LATIN_RE = re.compile(r"[A-Za-z]")
 QA: list = []
@@ -41,6 +42,7 @@ def qa(msg: str) -> None:
 
 def read_tsv(path: Path):
     words = []
+    dropped = 0
     with open(path, encoding="utf-8") as f:
         reader = csv.DictReader(f, delimiter="\t", quoting=csv.QUOTE_NONE)
         for row in reader:
@@ -49,6 +51,9 @@ def read_tsv(path: Path):
                     continue
                 text = (row["text"] or "").strip()
                 if not text:
+                    continue
+                if float(row["conf"]) < MIN_CONF:
+                    dropped += 1
                     continue
                 # tesseract donne du LOGIQUE ; les consommateurs pdf.js appliquent
                 # bidi à l'extraction : on écrit du VISUEL exact (pur + mixte).
@@ -66,7 +71,7 @@ def read_tsv(path: Path):
                 )
             except (ValueError, KeyError):
                 continue
-    return words
+    return words, dropped
 
 
 def byte_pool():
@@ -178,7 +183,7 @@ def main(src: str, dest: str, qa_path: str) -> int:
     with tempfile.TemporaryDirectory() as tmp:
         tmpdir = Path(tmp)
         doc = fitz.open(src)
-        qa(f"SRC {src} : {doc.page_count} pages")
+        qa(f"SRC {src} : {doc.page_count} pages (dpi={DPI} min-conf={MIN_CONF:g})")
         img_doc = fitz.open()
         txt_doc = fitz.open()
         for pno in range(doc.page_count):
@@ -202,7 +207,9 @@ def main(src: str, dest: str, qa_path: str) -> int:
                     failures += 1
                     txt_doc.new_page(width=w_pt, height=h_pt)
                     continue
-                words = read_tsv(base.with_suffix(".tsv"))
+                words, dropped = read_tsv(base.with_suffix(".tsv"))
+                if dropped:
+                    qa(f"page {pno + 1} : rejetés conf<{MIN_CONF:g} : {dropped}")
                 if pno == 0:
                     for w in words[:8]:
                         qa(f"  TSV {w['left']:4d} c={w['conf']:5.1f} {ascii(w['text'])}")
@@ -266,6 +273,11 @@ def main(src: str, dest: str, qa_path: str) -> int:
 
 
 if __name__ == "__main__":
+    args = sys.argv[1:]
+    if "--dpi" in args:
+        DPI = int(args[args.index("--dpi") + 1])
+    if "--min-conf" in args:
+        MIN_CONF = float(args[args.index("--min-conf") + 1])
     try:
         code = main(sys.argv[1], sys.argv[2], sys.argv[3])
     except Exception as e:  # noqa: BLE001

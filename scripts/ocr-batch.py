@@ -8,6 +8,7 @@ pas la série, mais le code de sortie final est non nul).
 Usage (sur le runner CI) :
     python3 scripts/ocr-batch.py <outdir> --only SE:2013,2014,2025,2026
     python3 scripts/ocr-batch.py <outdir> --only M:2013-2019
+    python3 scripts/ocr-batch.py <outdir> --only SE:2025 --dpi 450 --min-conf 15
 """
 
 import json
@@ -37,7 +38,7 @@ def parse_only(specs):
     return wanted
 
 
-def main(outdir, only_specs):
+def main(outdir, only_specs, extra):
     outdir = Path(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
     wanted = parse_only(only_specs)
@@ -62,7 +63,8 @@ def main(outdir, only_specs):
         print(f"=== {src} ===", flush=True)
         batch.append(f"=== {src} ===")
         r = subprocess.run(
-            [sys.executable, str(ROOT / "scripts" / "ocr-logical-layer.py"), str(src), str(dest), str(qa)],
+            [sys.executable, str(ROOT / "scripts" / "ocr-logical-layer.py"), str(src), str(dest), str(qa)]
+            + extra,
         )
         if r.returncode == 0 and dest.exists():
             line = f"OK {dest} {dest.stat().st_size} bytes"
@@ -82,4 +84,6 @@ if __name__ == "__main__":
     if len(sys.argv) < 4 or sys.argv[2] != "--only":
         print(__doc__)
         sys.exit(2)
-    sys.exit(main(sys.argv[1], sys.argv[3:]))
+    rest = sys.argv[3:]
+    cut = next((i for i, a in enumerate(rest) if a.startswith("--")), len(rest))
+    sys.exit(main(sys.argv[1], rest[:cut], rest[cut:]))
