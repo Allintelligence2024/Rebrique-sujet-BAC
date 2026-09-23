@@ -45,7 +45,9 @@ async function auditOne(rel) {
   const exo = exerciseOrder(text);
   const expectSecond = rel.includes("sujet-2");
   const hasMawdou3 = expectSecond ? text.includes("الموضوع الثاني") : text.includes("الموضوع الأول");
-  const mixed = [...new Set(items.map((i) => i.str).filter((s) => /\d/.test(s) && /[\u0600-\u06FF]/.test(s)))];
+  const mixed = [
+    ...new Set(items.map((i) => i.str).filter((s) => /\d/.test(s) && /[\u0600-\u06FF]/.test(s)))
+  ];
   const latin = [...new Set(text.match(/[A-Za-zÀ-ÿ]{2,}/g) || [])];
   const reasons = [];
   if (c.transpose > 0) reasons.push(`FAIL transposé=${c.transpose}`);
@@ -56,23 +58,45 @@ async function auditOne(rel) {
   if (!hasMawdou3) reasons.push(expectSecond ? "WARN sans-الموضوع-الثاني" : "WARN sans-الموضوع-الأول");
   if (c.correct <= 1) reasons.push(`WARN marqueurs=${c.correct}/5`);
   const verdict = reasons.some((r) => r.startsWith("FAIL")) ? "FAIL" : reasons.length ? "WARN" : "OK";
-  return { rel, classe: c.classe, correct: c.correct, tr: c.transpose, exo, mixed, latin, verdict, reasons, head: text.slice(0, 130) };
+  return {
+    rel,
+    classe: c.classe,
+    correct: c.correct,
+    tr: c.transpose,
+    exo,
+    mixed,
+    latin,
+    verdict,
+    reasons,
+    head: text.slice(0, 130)
+  };
 }
 
 const files = [];
-for (const y of YEARS) for (const t of TRACKS) for (const n of [1, 2]) files.push(`subjects/${t}/${y}/sujet-${n}.pdf`);
-files.splice(files.indexOf("subjects/M/2017/sujet-2.pdf") + 1, 0, "subjects/M/2017/exceptional/sujet-1.pdf", "subjects/M/2017/exceptional/sujet-2.pdf");
+for (const y of YEARS)
+  for (const t of TRACKS) for (const n of [1, 2]) files.push(`subjects/${t}/${y}/sujet-${n}.pdf`);
+files.splice(
+  files.indexOf("subjects/M/2017/sujet-2.pdf") + 1,
+  0,
+  "subjects/M/2017/exceptional/sujet-1.pdf",
+  "subjects/M/2017/exceptional/sujet-2.pdf"
+);
 
 console.log("rel | verdict | classe correct/5 tr | exo | mixtes | raisons");
 for (const rel of files) {
   const a = await auditOne(rel);
-  const tag = rel.replace("subjects/", "").replace("/sujet-", "-s").replace(".pdf", "").replace("exceptional", "EXC");
+  const tag = rel
+    .replace("subjects/", "")
+    .replace("/sujet-", "-s")
+    .replace(".pdf", "")
+    .replace("exceptional", "EXC");
   console.log(
     `${tag} | ${a.verdict} | ${a.classe} ${a.correct}/5 tr=${a.tr} | exo=${a.exo.found}${a.exo.ok ? "" : "!"} | mixtes=${a.mixed.length} | ${a.reasons.join(" ; ") || "—"}`
   );
   if (a.verdict !== "OK") {
     console.log(`    DEBUT: ${JSON.stringify(a.head)}`);
     if (a.mixed.length) console.log(`    MIXTES: ${JSON.stringify(a.mixed.slice(0, 10))}`);
-    if (a.latin.length > 12) console.log(`    LATIN(${a.latin.length}): ${JSON.stringify(a.latin.slice(0, 12))}`);
+    if (a.latin.length > 12)
+      console.log(`    LATIN(${a.latin.length}): ${JSON.stringify(a.latin.slice(0, 12))}`);
   }
 }

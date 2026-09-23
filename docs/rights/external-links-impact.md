@@ -19,7 +19,7 @@ Mesure : `node scripts/measure-external-links-impact.mjs` → **14/14 consommate
 
 ## 2. Ce qui existe déjà en externe (mesuré fichier par fichier)
 
-- `subjects/manifest.json` : **58 entrées · 44 avec URL source · 14 sans URL** · 221 pages · 40,88 Mio.
+- `subjects/manifest.json` : **58 entrées · 44 avec URL source · 14 sans URL** · 221 pages · 143,99 Mio.
 - `data/years/**` : 29 payloads, 58 références `pdfLocalUrl`, 58 fichiers avec `pdfExternalUrl` mesuré (page annales, PDF direct ou miroir).
 - `data/archive.js` : 17 entrées de consultation, dont 11 avec `pdfUrl` direct observé.
 
@@ -59,7 +59,7 @@ Conséquence : sans autorisation, ces sujets deviendraient inaccessibles en lect
 
 - Lecture intégrée (canvas + iframe de repli même origine), téléchargement et prévisualisation stratégie : perdus pour tout sujet sans local (le rendu pdf.js ne peut pas lire un domaine tiers via la CSP).
 - Hors ligne : le cache runtime borné (`sw.js`) ne couvre qu'une même origine — les sujets externes ne sont plus disponibles hors connexion.
-- `dist/site` : −40,88 Mio de PDF ; le monofichier standalone est déjà sans PDF (aucun changement).
+- `dist/site` : −143,99 Mio de PDF ; le monofichier standalone est déjà sans PDF (aucun changement).
 - Tests à réécrire : `tests/pdf-content-integrity.test.mjs` (« aucun PDF orphelin », refs `data/` existantes), `tests/lazy-loading.test.mjs` (`pdfLocalUrl`), `tests/server.test.mjs` (Range PDF local), `tests/service-worker-runtime.test.mjs` (cache borné d'un PDF de sujet), `tests/e2e/offline-pwa.spec.mjs` (téléchargement PDF).
 - Le garde-fou P3.2 (`scripts/report-p3-status.mjs:71-77`) exige la branche externe sans iframe ni download — il resterait vert, la branche existe déjà.
 

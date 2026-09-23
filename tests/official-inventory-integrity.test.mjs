@@ -223,11 +223,7 @@ test("sans convention de pagination, aucune tâche n'est localisée", () => {
         null,
         `${yearId}/S${subject.id} ${task.id}: pageInPdf sans offset`
       );
-      assert.deepEqual(
-        task.documentRefs ?? [],
-        [],
-        `${yearId}/S${subject.id} ${task.id}: refs sans offset`
-      );
+      assert.deepEqual(task.documentRefs ?? [], [], `${yearId}/S${subject.id} ${task.id}: refs sans offset`);
     }
   }
 });
@@ -250,7 +246,9 @@ test("la pagination déclarée suit le manifest et le PDF réel", async () => {
   const { createRequire } = await import("node:module");
   const pdfjs = createRequire(import.meta.url)("pdfjs-dist/legacy/build/pdf.js");
   const manifest = JSON.parse(readFileSync(join(root, "subjects", "manifest.json"), "utf8"));
-  const manifestPages = new Map(manifest.map((entry) => [entry.file.replace(/^subjects\//, "/subjects/"), entry.pages]));
+  const manifestPages = new Map(
+    manifest.map((entry) => [entry.file.replace(/^subjects\//, "/subjects/"), entry.pages])
+  );
   for (const { yearId, subject, inventory } of eachSubject()) {
     const localPath = inventory.document.localPath;
     assert.ok(manifestPages.has(localPath), `${yearId}/S${subject.id} absent du manifest`);

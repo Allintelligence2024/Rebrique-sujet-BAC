@@ -48,7 +48,10 @@ function buildCMap(head, entries, foot) {
   for (let i = 0; i < entries.length; i += 100) {
     const block = entries.slice(i, i + 100);
     blocks.push(`${block.length} beginbfchar`);
-    for (const [code, ch] of block) blocks.push(`<${code.toString(16).toUpperCase().padStart(2, "0")}> <${ch.codePointAt(0).toString(16).toUpperCase().padStart(4, "0")}>`);
+    for (const [code, ch] of block)
+      blocks.push(
+        `<${code.toString(16).toUpperCase().padStart(2, "0")}> <${ch.codePointAt(0).toString(16).toUpperCase().padStart(4, "0")}>`
+      );
     blocks.push("endbfchar");
   }
   return `${head} ${blocks.join(" ")} ${foot}`;
@@ -71,8 +74,10 @@ function streamWrite(st, text, flate) {
 function unescape(bytes) {
   const out = [];
   for (let i = 0; i < bytes.length; i += 1) {
-    if (bytes[i] === 0x5c && i + 1 < bytes.length) { out.push(bytes[i + 1]); i += 1; }
-    else out.push(bytes[i]);
+    if (bytes[i] === 0x5c && i + 1 < bytes.length) {
+      out.push(bytes[i + 1]);
+      i += 1;
+    } else out.push(bytes[i]);
   }
   return out;
 }
@@ -138,74 +143,87 @@ async function patchFile(src, patchmap, dest) {
         }
         return codeOf.get(ch);
       };
-      const streams = content && typeof content.size === "function"
-        ? Array.from({ length: content.size() }, (_, i) => content.lookup(i))
-        : [content];
+      const streams =
+        content && typeof content.size === "function"
+          ? Array.from({ length: content.size() }, (_, i) => content.lookup(i))
+          : [content];
       const before = report.newChars.length;
       for (const st of streams) {
         if (!st || !st.getContents) continue;
-      const { text, flate } = streamText(st);
-      if (text === null) continue;
-      const re = /\((?:\\[\\()]|[^()\\])*\)\s*Tj/g;
-      const found = [];
-      let m;
-      while ((m = re.exec(text))) {
-        report.tj += 1;
-        const inner = Buffer.from(m[0].slice(1, m[0].indexOf(")")), "latin1");
-        const bytes = unescape(inner);
-        let shown = null;
-        if (!bytes.some((b) => !byteOf.has(b))) {
-          shown = flip(bytes.map((b) => byteOf.get(b)).join(""));
-        }
-        found.push({ m, shown });
-      }
-      /* Gauche→droite glouton : clés multi-mots (les plus longues d'abord),
-         sinon mot seul. Clé multi = 1er Tj remplacé, suivants vidés. */
-      const multi = Object.keys(patchmap).filter((k) => k.includes(" ")).sort((a, b) => b.length - a.length);
-      let out = "";
-      let last = 0;
-      let dirty = false;
-      let i = 0;
-      while (i < found.length) {
-        let done = null;
-        for (const k of multi) {
-          const parts = k.split(" ");
-          if (found.slice(i, i + parts.length).every((f, j) => f.shown === parts[j])) {
-            done = { n: parts.length, key: k };
-            break;
+        const { text, flate } = streamText(st);
+        if (text === null) continue;
+        const re = /\((?:\\[\\()]|[^()\\])*\)\s*Tj/g;
+        const found = [];
+        let m;
+        while ((m = re.exec(text))) {
+          report.tj += 1;
+          const inner = Buffer.from(m[0].slice(1, m[0].indexOf(")")), "latin1");
+          const bytes = unescape(inner);
+          let shown = null;
+          if (!bytes.some((b) => !byteOf.has(b))) {
+            shown = flip(bytes.map((b) => byteOf.get(b)).join(""));
           }
+          found.push({ m, shown });
         }
-        if (!done && found[i].shown !== null && found[i].shown in patchmap) {
-          done = { n: 1, key: found[i].shown };
+        /* Gauche→droite glouton : clés multi-mots (les plus longues d'abord),
+         sinon mot seul. Clé multi = 1er Tj remplacé, suivants vidés. */
+        const multi = Object.keys(patchmap)
+          .filter((k) => k.includes(" "))
+          .sort((a, b) => b.length - a.length);
+        let out = "";
+        let last = 0;
+        let dirty = false;
+        let i = 0;
+        while (i < found.length) {
+          let done = null;
+          for (const k of multi) {
+            const parts = k.split(" ");
+            if (found.slice(i, i + parts.length).every((f, j) => f.shown === parts[j])) {
+              done = { n: parts.length, key: k };
+              break;
+            }
+          }
+          if (!done && found[i].shown !== null && found[i].shown in patchmap) {
+            done = { n: 1, key: found[i].shown };
+          }
+          if (!done) {
+            i += 1;
+            continue;
+          }
+          const newBytes = [...flip(patchmap[done.key])].map(alloc);
+          const first = found[i];
+          out += text.slice(last, first.m.index) + escapeStr(newBytes) + " Tj";
+          last = first.m.index + first.m[0].length;
+          for (let j = 1; j < done.n; j += 1) {
+            const f = found[i + j];
+            out += text.slice(last, f.m.index) + "() Tj";
+            last = f.m.index + f.m[0].length;
+          }
+          dirty = true;
+          report.patched += 1;
+          report.words[done.key] = (report.words[done.key] || 0) + 1;
+          i += done.n;
         }
-        if (!done) { i += 1; continue; }
-        const newBytes = [...flip(patchmap[done.key])].map(alloc);
-        const first = found[i];
-        out += text.slice(last, first.m.index) + escapeStr(newBytes) + " Tj";
-        last = first.m.index + first.m[0].length;
-        for (let j = 1; j < done.n; j += 1) {
-          const f = found[i + j];
-          out += text.slice(last, f.m.index) + "() Tj";
-          last = f.m.index + f.m[0].length;
+        if (dirty) {
+          out += text.slice(last);
+          streamWrite(st, out, flate);
         }
-        dirty = true;
-        report.patched += 1;
-        report.words[done.key] = (report.words[done.key] || 0) + 1;
-        i += done.n;
-      }
-      if (dirty) {
-        out += text.slice(last);
-        streamWrite(st, out, flate);
-      }
       }
       if (report.newChars.length > before) {
-        const rebuilt = buildCMap(head, entries.sort((a, b) => a[0] - b[0]), foot);
+        const rebuilt = buildCMap(
+          head,
+          entries.sort((a, b) => a[0] - b[0]),
+          foot
+        );
         streamWrite(target.stream, rebuilt, target.flate);
       }
     }
   }
   mkdirSync(join(dest), { recursive: true });
-  const tag = src.replace(/^subjects\//, "").replaceAll("/", "-").replace(/\.pdf$/, "");
+  const tag = src
+    .replace(/^subjects\//, "")
+    .replaceAll("/", "-")
+    .replace(/\.pdf$/, "");
   writeFileSync(join(dest, tag + ".patched.pdf"), await doc.save());
   return report;
 }
@@ -216,7 +234,9 @@ for (const [file, map] of Object.entries(patchlist)) {
   if (file.startsWith("_")) continue;
   try {
     const r = await patchFile(file, map, outdir);
-    console.log(`${file} => targets=${r.targets} tj=${r.tj} patched=${r.patched} ${JSON.stringify(r.words)} newChars=${r.newChars.length}`);
+    console.log(
+      `${file} => targets=${r.targets} tj=${r.tj} patched=${r.patched} ${JSON.stringify(r.words)} newChars=${r.newChars.length}`
+    );
   } catch (e) {
     console.log(`${file} => ERREUR ${e.message}`);
   }
