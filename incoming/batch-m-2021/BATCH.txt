@@ -1,9 +1,0 @@
-=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/M/2020/sujet-1.pdf ===
-OK incoming/batch-m-2021/M-2020-main-sujet-1.pdf 1707975 bytes
-=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/M/2020/sujet-2.pdf ===
-OK incoming/batch-m-2021/M-2020-main-sujet-2.pdf 1397042 bytes
-=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/M/2021/sujet-1.pdf ===
-OK incoming/batch-m-2021/M-2021-main-sujet-1.pdf 1926874 bytes
-=== /home/runner/work/Rebrique-sujet-BAC/Rebrique-sujet-BAC/subjects/M/2021/sujet-2.pdf ===
-OK incoming/batch-m-2021/M-2021-main-sujet-2.pdf 1791551 bytes
-done=4 failures=0
