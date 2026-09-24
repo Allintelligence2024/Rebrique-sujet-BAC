@@ -309,3 +309,26 @@ rattachées, **0/58 inventaire `complete`**. `activePoles` passe de 277 à
 **294** et le minimum de copies exigé (P1.5) de 4155 à **4410** : la
 promotion de 2019 rend la barre de calibration plus haute, elle ne la baisse
 pas. `p1:check` reste rouge (0/58 complets, 0/4410 copies) — attendu.
+
+### Précision après encodage — 2026-09-24 (relecture ciblée p. 5)
+
+La réponse modèle du pôle **S1-E3 E** disait « في الوسط (ب): تنتقل الفلورتان
+إلى الوسط (++++) ولا تكادان تظهران على الغشاء », ce qui aplatit le tableau.
+Nouvelle lecture **cellule par cellule** de `sujet-1.pdf` p. 5 (zoom ×3 / ×4 /
+×8, `rendered/crops/`) :
+
+| الوسط | أخضر في الوسط | أخضر على الغشاء | أحمر في الوسط | أحمر على الغشاء |
+| ----- | ------------- | --------------- | ------------- | --------------- |
+| (أ) خلايا (X) من ورم حديث، غير مقاومة لـ TIL | + | ++++ | + | ++++ |
+| (ب) خلايا (Y) من ورم متقدم، مقاومة لـ TIL | +++++ | **−** | ++++ | + |
+
+Et la page imprime l'identité des sondes (الأخضر ↔ HLA I, الأحمر ↔ الببتيد
+المستضدي) dans **التجربة (1)**, juste avant le tableau : la disparition
+**totale** du vert sur la membrane de (ب) et la persistance **faible** du rouge
+(+) ne sont donc pas symétriques. La réponse modèle a été réécrite sur ces
+valeurs exactes ; aucun texte officiel n'a changé (les 17 consignes restent
+celles du 2026-09-23), donc `tests/se-2019-recopy.test.mjs` reste vert.
+
+Contrôle de pagination à la même occasion : le pied de la page 4 du fichier
+imprime « صفحة 4 من 9 » → `sujet-1.pdf` = pages 1-5 du livret, `pageOffset 0`
+confirmé.
