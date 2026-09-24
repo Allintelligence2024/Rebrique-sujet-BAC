@@ -43,6 +43,31 @@ Production build: `dist/site` 136 files, standalone `dist/boussole-4d-standalone
 > - **Suite du chantier** : 2016 et 2015, puis 2013 et 2014, puis 2017 et 2018 —
 >   ordre du plan, inchangé. Phase 1 (checklist image) avant toute donnée.
 
+> **2026-09-24 — SE 2016 : Phase 1 du plan faite (checklist image).**
+> Branche `arena/01a0cebc-rebrique-sujet-bac`.
+>
+> - Nouveau `docs/RELECTURE_SE_2016_CHECKLIST.md` : les **10 pages** du livret
+>   lues sur image à 2× puis bandes de consignes zoomées (×1,8 à ×3,0), deux
+>   passes le même jour, **aucune page non vue**. **60 consignes imprimées**
+>   relevées ; **18 pôles `official` proposés** (3 par exercice : S, E, W, avec
+>   les regroupements écrits) et **6 pôles de cadrage `reconstructed`** (aucun
+>   exercice de 2016 n'imprime de question de cadrage).
+> - **Écart de barème trouvé** : les titres imprimés annoncent **07 points** pour
+>   le 3ᵉ exercice des **deux** sujets, alors que `data/years/se/year-2016.js`
+>   porte **8**. Les deux sujets valent **20 pts** (6+7+7). À corriger en Phase 3
+>   avec la somme des pôles.
+> - **Même constat qu'en 2019** : les six exercices encodés portent un thème
+>   générique qui n'est pas celui des pages — S1-E1 = مورثة وتعبيرها/Anagène
+>   (et non « الاستنساخ »), S1-E2 = الخلية اللمفاوية (س), S1-E3 = إنتاج الـ
+>   ATP/تيلاكوئيد (et non la المناعة الخلطية), S2-E1 = الأميلاز/Glucobay,
+>   S2-E2 = التحول الطاقوي/ATP synthase, S2-E3 = المشبك المثبط/الـ BZD (et non
+>   la بنية الكرة الأرضية). Les `bacPrompt` actuels sont tous du type « حلّل أو
+>   استخرج من الوثيقة المعطيات المرتبطة بـ … ».
+> - **Aucune donnée touchée** : `data/**` et les inventaires sont inchangés,
+>   les 24 pôles 2016 restent `reconstructed`, `p1:check` inchangé.
+> - Suite : **Phase 3 de 2016** (réécriture des six exercices + correction des
+>   `max`), puis Phases 4 à 6, puis 2015.
+
 > **2026-09-23 (nuit) — SE 2019 : Phase 1 du plan faite (checklist image).**
 > Branche `arena/01a0cebc-rebrique-sujet-bac`.
 >
