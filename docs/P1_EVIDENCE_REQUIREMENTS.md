@@ -38,10 +38,26 @@ Un thème, un corrigé non attribué ou une consigne reconstruite ne suffit pas.
 > (liste exhaustive) et le critère 7 (`complete`) restent **non satisfaits** :
 > sept cadrages de 2019 n'ont aucune phrase imprimée autonome, les inventaires
 > 2019 sont `partial`, `p1:check` reste rouge. Aucun critère n'est déplacé.
+>
+> **2026-09-24 — SE 2016, troisième résultat du plan.** Les 10 pages du livret
+> ont été relues deux fois sur image (`docs/RELECTURE_SE_2016_CHECKLIST.md`,
+> passes du 2026-09-23) puis l'encodage a été revérifié sur l'image le
+> 2026-09-24 (`docs/PLAN_SE_2013_2020.md`, journal SE 2016). **18 consignes**
+> sont désormais recopiées mot à mot, et les deux erreurs de barème relevées à
+> l'impression (`التمرين الثالث: (07 نقاط)` sur les deux sujets) sont
+> corrigées : S1-E3 et S2-E3 passent de 8 à 7 points, les deux sujets
+> totalisent 20 points. Le total passe donc de 294 à **312** pôles `official`
+> et le besoin en copies de 4 410 à **4 680** (15 par pôle). Ce n'est pas un
+> assouplissement : le dénominateur suit le nombre réel de consignes
+> officielles, il ne baisse jamais. Le critère 2 (liste exhaustive) et le
+> critère 7 (`complete`) restent **non satisfaits** : les six pôles N de 2016
+> n'ont aucune phrase imprimée de cadrage, douze pôles regroupent plusieurs
+> consignes imprimées, les inventaires 2016 restent `partial` et `p1:check`
+> reste rouge.
 
 ## P1.5 — corpus humain
 
-Le périmètre numérique actuel contient 294 pôles dont la consigne est marquée officielle (213 jusqu'au 2026-09-19 ; +48 par la structuration OCR des Maths 2013–2015 + 2017 استثنائية ; +16 par celle de SE 2021, le 2026-09-20 ; +17 par la relecture image de SE 2019, le 2026-09-23). La politique exige au minimum 15 copies par pôle : **4 410 réponses réelles** au minimum, chacune avec :
+Le périmètre numérique actuel contient 312 pôles dont la consigne est marquée officielle (213 jusqu'au 2026-09-19 ; +48 par la structuration OCR des Maths 2013–2015 + 2017 استثنائية ; +16 par celle de SE 2021, le 2026-09-20 ; +17 par la relecture image de SE 2019, le 2026-09-23 ; +18 par la relecture image de SE 2016, le 2026-09-24). La politique exige au minimum 15 copies par pôle : **4 680 réponses réelles** au minimum, chacune avec :
 
 - consentement et anonymisation vérifiables ;
 - transcription fidèle ;

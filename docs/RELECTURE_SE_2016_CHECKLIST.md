@@ -215,3 +215,66 @@ pôle depuis les tableaux ci-dessus, et **corrigera les `max`** (S1-E3 et S2-E3 
   interrogative de cadrage n'est imprimée).
 - Corrections de barème à porter en Phase 3 : **S1-E3 et S2-E3 passent de 8 à 7
   points** (titres imprimés), les deux sujets restant à 20 points.
+
+---
+
+## Journal des Phases 2 et 3 — encodage du 2026-09-24
+
+Recopie pôle par pôle sur l'image : les dix pages ont été rendues à nouveau
+(échelle 2) puis relues en bandes zoomées ×2,4. Cette relecture d'encodage
+**revérifie** la checklist, elle ne la remplace pas : les deux passes du
+2026-09-23 restent la source des textes, et les écarts trouvés sont écrits ici.
+
+### Ce que la relecture d'encodage a corrigé
+
+| Point                               | Checklist (2026-09-23)       | Image (2026-09-24)                                                                                        | Effet                      |
+| ----------------------------------- | ---------------------------- | --------------------------------------------------------------------------------------------------------- | -------------------------- |
+| Pôle S de S1-E2                     | « official p.2 »             | consignes imprimées **page 3** (`تَعَرَّفْ` / `أنجز رسما تخطيطيا` / `اشرح`)                               | `bacPromptPage` = 3        |
+| Consigne `2- ب- اشرح نشاط الخلية …` | listée « non mappée »        | imprimée page 3, juste après `2- أ-`                                                                      | rattachée au pôle S (noté) |
+| S1-E3, consignes `1-` et `2- أ/ب`   | « official p.5 »             | imprimées **page 4** (`حدّد نوع الخلية` / `ترجم` / `سمّ الآلية`)                                          | `bacPromptPage` = 4        |
+| S1-E3 `2- …` (fragment non lu)      | resté en point de suspension | `2- تتميز السلاسل (ع) الموافقة للمورثات الأربعة بتخصص وظيفي.`                                             | recopié                    |
+| S2-E3 `3- …` (fragment non lu)      | resté en point de suspension | `3- حُقنت المنطقة (ع) من الشكل (أ) للوثيقة (1) بتراكيز متزايدة من BZD … والنتائج ممثلة في الجدول التالي:` | recopié                    |
+| Pôle E de S2-E1                     | « official p.7 »             | première consigne (`أ- فسّر النتائج التجريبية`) imprimée **page 6**                                       | `bacPromptPage` = 6        |
+
+Aucune autre page n'a été modifiée : les pages 1, 2, 5, 7, 8, 9 et 10 sont
+celles déjà relevées le 2026-09-23.
+
+### Barème (Phase 2)
+
+- Titres lus sur l'image : `التمرين الأول: (06 نقاط)` (p.1 et p.6),
+  `التمرين الثاني: (07 نقاط)` (p.2 et p.7), `التمرين الثالث: (07 نقاط)`
+  (p.3 et p.9). Les deux sujets totalisent **20 points**, pas 21.
+- `data/years/se/year-2016.js` portait **8** points sur S1-E3 et S2-E3 :
+  corrigés en **7**.
+- Répartition N/S/E/W retenue (pédagogique, elle somme au total imprimé) :
+  S1-E1 `1 / 1 / 2 / 2` · S1-E2 `1 / 2,5 / 2,5 / 1` · S1-E3 `0,5 / 2 / 3 / 1,5`
+  · S2-E1 `1 / 1 / 2 / 2` · S2-E2 `1 / 2,5 / 2,5 / 1` · S2-E3 `0,5 / 2 / 3 / 1,5`.
+  Le pôle E de S1-E3 et de S2-E3 passe de 4 à 3 points pour que la somme des
+  quatre pôles égale le total imprimé 07 ; c'est la seule redistribution.
+
+### Ce qui est encodé
+
+- **18 pôles `official`** (3 par exercice : S, E, W) et **6 pôles N
+  `reconstructed`** (aucune phrase interrogative de cadrage n'est imprimée).
+- Pages de livret portées par `bacPromptPage` : S1-E1 1-2 ; S1-E2 3 ;
+  S1-E3 4-5 ; S2-E1 6-7 ; S2-E2 7-8 ; S2-E3 9-10.
+- `bacPromptVerifiedAt: "2026-09-24"` = date de la relecture d'encodage ; la
+  date des deux passes d'image (2026-09-23) reste citée dans chaque note.
+- Tous les regroupements de plusieurs consignes imprimées sur un même pôle sont
+  écrits dans `bacPromptNotes` (12 pôles sur 18) et **n'autorisent pas** un
+  inventaire `complete` : les quatre pôles ne sont pas quatre questions
+  imprimées.
+- Thèmes encodés (régression corrigée) : S1-E1 المورثة وتعبيرها (Anagène) ·
+  S1-E2 الخلية اللمفاوية (س) · S1-E3 إنتاج الـ ATP (تيلاكوئيد / ميتوكوندري) ·
+  S2-E1 الأميلاز و α غلوكوزيداز والـ Glucobay · S2-E2 العضية وتدرج H⁺ ·
+  S2-E3 المشبك المثبط (GABA) والـ BZD.
+- Champs conservés : `pdfExternalUrl`, `pdfLocalPath`, `placeholder`,
+  `minLength`, `rule`. Aucun pôle n'a perdu sa réponse modèle.
+- Réponses modèles = aides pédagogiques, jamais un corrigé officiel.
+
+### Ce qui n'est pas certifié
+
+- Aucun barème de pôle : `scoringReviewStatus` reste `provisional`.
+- Les six pôles N ne sont pas des consignes imprimées : ils restent
+  `reconstructed` avec une note datée.
+- L'inventaire 2016 reste `partial` ; `p1:check` reste rouge.

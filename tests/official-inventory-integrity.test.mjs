@@ -169,8 +169,10 @@ test("les pages annoncées restent utilisables dans le PDF livré", () => {
   // fichier ; les autres restent annotées « (الأصل) » plutôt que d'être devinées.
   // 213 consignes officielles jusqu'au 2026-09-19 ; 261 avec les 48 consignes
   // OCR Maths ; 277 avec les 16 consignes OCR de SE 2021 ; 294 avec les 17
-  // consignes de SE 2019 recopiées sur l'image (Phase 3 du 2026-09-23).
-  assert.equal(declared, 294);
+  // consignes de SE 2019 recopiées sur l'image (Phase 3 du 2026-09-23) ;
+  // 312 avec les 18 consignes de SE 2016 recopiées sur l'image (Phase 3 du
+  // 2026-09-24).
+  assert.equal(declared, 312);
   // Depuis la correction des offsets (2026-09-23), toute consigne officielle
   // est rattachée à son fichier : une page « non locable » est un bug, pas
   // une tolérance du générateur.

@@ -67,6 +67,43 @@ Production build: `dist/site` 136 files, standalone `dist/boussole-4d-standalone
 >   les 24 pôles 2016 restent `reconstructed`, `p1:check` inchangé.
 > - Suite : **Phase 3 de 2016** (réécriture des six exercices + correction des
 >   `max`), puis Phases 4 à 6, puis 2015.
+>
+> **2026-09-24 — SE 2016 : Phases 2 à 6 du plan appliquées.** Branche
+> `arena/01a0cebc-rebrique-sujet-bac`, base `968f209`.
+>
+> - **18 consignes `official` recopiées mot à mot sur l'image des 10 pages**
+>   (recopie revérifiée le 2026-09-24 sur les pages rendues à nouveau et sur
+>   bandes zoomées ×2,4) et **6 pôles N `reconstructed`** avec note datée.
+>   `data/years/se/year-2016.js` est **réécrit** : les six exercices portaient
+>   d'autres thèmes que les pages (S1-E1 « الاستنساخ داخل النواة » au lieu de
+>   مورثة وتعبيرها/Anagène ; S2-E3 « بنية الكرة الأرضية » au lieu du
+>   المشبك المثبط/الـ BZD, etc.).
+> - **Barème imprimé corrigé** : `التمرين الثالث: (07 نقاط)` sur les deux
+>   sujets, S1-E3 et S2-E3 passent de **8 à 7** points (les deux sujets valent
+>   20 pts). Répartition N/S/E/W : 1/1/2/2, 1/2,5/2,5/1, 0,5/2/3/1,5 sur le
+>   sujet 1 ; 1/1/2/2, 1/2,5/2,5/1, 0,5/2/3/1,5 sur le sujet 2 — chaque somme
+>   égale le total imprimé.
+> - **La relecture d'encodage a corrigé la checklist** (écrit dans son journal) :
+>   pôle S de S1-E2 imprimé **p.3** (et non p.2) et la consigne
+>   `2- ب- اشرح نشاط الخلية (س)…` rattachée au lieu d'être « non mappée » ;
+>   les consignes `1-` et `2- أ/ب` de S1-E3 imprimées **p.4** (et non p.5) ;
+>   première consigne du pôle E de S2-E1 imprimée **p.6** (et non p.7). Les deux
+>   fragments laissés en « 2- … » et « 3- … » ont été lus et recopiés.
+> - **Généré** : `inventory:generate` → 58 sujets / 576 tâches / **312 consignes
+>   officielles** / 264 reconstruites / **312 pages rattachées** / **0/58
+>   `complete`** ; `calibration:update` → `activePoles` **294 → 312**.
+> - **Gardes** : `tests/se-2016-recopy.test.mjs` (8 tests : textes, pages,
+>   dates, thèmes réels, barème 6/7/7, six cadrages, regroupements, décalage du
+>   sujet 2) ; `tests/archive-years.test.mjs` déplace 2016 dans la liste
+>   certifiée (page de livret 1-10, date 2026-09-24, note citant la checklist) et
+>   laisse 2013-2015 + 2017-2018 sous la règle « tout `reconstructed` ». Deux
+>   dénominateurs de garde suivent le réel : 294 → 312 consignes rattachées et
+>   4410 → 4680 copies exigées (15 par pôle officiel). **Aucun critère assoupli.**
+> - **Mesures** : `npm test` → **412 tests, 0 échec, 1 skip** ; `p1:check` **reste
+>   rouge** (0/58 inventaires complets, 0/4680 copies) — attendu ; `p2:check`
+>   6/7, `p3:check` 6/6.
+> - Suite : **2015** (checklist image d'abord, Phases 1 → 6), puis 2013-2014,
+>   puis 2017-2018 — ordre du plan, inchangé.
 
 > **2026-09-23 (nuit) — SE 2019 : Phase 1 du plan faite (checklist image).**
 > Branche `arena/01a0cebc-rebrique-sujet-bac`.

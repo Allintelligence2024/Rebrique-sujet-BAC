@@ -6206,7 +6206,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
     document: {
       localPath: "/subjects/SE/2016/sujet-1.pdf",
       pages: 5,
-      pageOffset: null
+      pageOffset: 0
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -6219,7 +6219,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 1,
         pole: "N",
         page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ الاستنساخ داخل النواة؟",
+        prompt: "ما العلاقة بين المورثة وناتج تعبيرها المورثي؟",
         promptSource: "reconstructed",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
@@ -6239,13 +6239,19 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 1,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ الاستنساخ داخل النواة.",
-        promptSource: "reconstructed",
+        page: 1,
+        prompt:
+          "1- قَدِّمْ عنوانا مناسبا لكل من الشكلين (أ) و(ب) للوثيقة (1). 2- أ- اكتب أسماء البيانات المرقمة في الشكلين (أ) و(ب) للوثيقة (1). ب- وَضِّحْ العلاقة الوظيفية بين الشكلين (أ) و(ب) للوثيقة (1).",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -6253,20 +6259,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2016-S1-E1-Q3",
         exerciseNumber: 1,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر الاستنساخ داخل النواة انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
+        page: 2,
+        prompt:
+          "1- انطلاقا من نتائج الوثيقة (2): أ- بيّن الجوانب التي عالجتها دراسة هذه المورثات باستعمال مبرمج Anagène. علل إجابتك. ب- حدّد وحدة الشفرة الوراثية مع التعليل. ج- استخرج خصائص الشفرة الوراثية. د- مَثِّلْ قطعة المورثة (1) الموافقة للجزء (a) محددا السلسلة الناسخة. 2- تتميز السلاسل (ع) الموافقة للمورثات الأربعة بتخصص وظيفي. أ- احسب عدد الوحدات البنائية للسلسلة (ع) الوظيفية للمورثات الأربعة. ب- برّر إذن سبب تخصصها الوظيفي.",
+        promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -6274,20 +6286,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2016-S1-E1-Q4",
         exerciseNumber: 1,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ الاستنساخ داخل النواة.",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        page: 2,
+        prompt:
+          "III- مما سبق ومن معارفك أنجز رسما تخطيطيا تفصيليا تُبرز فيه مراحل العلاقة بين المورثة ونتائج تعبيرها المورثي.",
+        promptSource: "official",
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -6295,7 +6313,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2016-S1-E2-Q1",
@@ -6303,7 +6321,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 1,
         pole: "N",
         page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ التخصص الوظيفي للإنزيم؟",
+        prompt: "كيف تتمكن العضوية من القضاء على الخلايا المصابة بفيروس معين؟",
         promptSource: "reconstructed",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
@@ -6323,13 +6341,19 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 2,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ التخصص الوظيفي للإنزيم.",
-        promptSource: "reconstructed",
+        page: 3,
+        prompt:
+          "1- تَعَرَّفْ على الخلية اللمفاوية (س) والعناصر (ح). 2- أ- أنجز رسما تخطيطيا على المستوى الجزيئي للجزء المؤطر في الشكل (أ) للوثيقة (1). 2- ب- اشرح نشاط الخلية اللمفاوية (س) الذي نتج عنه مظهر الغشاء الهيولي الممثل في الشكل (ب).",
+        promptSource: "official",
         maxPoints: 2.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -6337,20 +6361,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2016-S1-E2-Q3",
         exerciseNumber: 2,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر التخصص الوظيفي للإنزيم انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
+        page: 3,
+        prompt:
+          "1- بيّن مصدر الخلية (س) باستغلال نتائج جدول الوثيقة (2). 2- أ- حلّل الشكل (أ) من الوثيقة (2). ب- فسّر النتائج المحصل عليها في الشكل (ب) للوثيقة (2). ج- ما هي المعلومات المستخلصة من الشكلين (أ) و(ب) للوثيقة (2)؟",
+        promptSource: "official",
         maxPoints: 2.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -6358,20 +6388,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2016-S1-E2-Q4",
         exerciseNumber: 2,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ التخصص الوظيفي للإنزيم.",
-        promptSource: "reconstructed",
+        page: 3,
+        prompt:
+          "III- ممّا سبق ومن معلوماتك بيّن في نص علمي مراحل الاستجابة المناعية التي تتوسطها الخلايا اللمفاوية (س).",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -6379,7 +6415,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2016-S1-E3-Q1",
@@ -6387,7 +6423,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 1,
         pole: "N",
         page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ المناعة الخلطية؟",
+        prompt: "كيف تنتج الخلية الـ ATP على مستوى أغشيتها؟",
         promptSource: "reconstructed",
         maxPoints: 0.5,
         scoringReviewStatus: "provisional",
@@ -6407,13 +6443,19 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 3,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ المناعة الخلطية.",
-        promptSource: "reconstructed",
+        page: 4,
+        prompt:
+          "1- أ- تَعَرَّفْ على المركبات الكيميائية الممثلة بالأحرف (س، ص، ع، ل، م) في الشكل (أ) للوثيقة (2). ب- حَدِّدْ بدقة على المستوى الجزيئي مقر حدوث كل من التفاعلين (1) و(2). ج- عَيِّنْ التفاعل الذي يتطلب حدوثه طاقة من مصدر خارجي. علّل إجابتك مبيّنا مصدر هذه الطاقة.",
+        promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -6421,20 +6463,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2016-S1-E3-Q3",
         exerciseNumber: 3,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر المناعة الخلطية انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
-        maxPoints: 4,
+        page: 4,
+        prompt:
+          "1- حدّد نوع الخلية التي يتواجد بها الشكلان (أ) و(ب) معا. 2- أ- ترجم كل من شكلي الوثيقة (1) إلى رسم تخطيطي عليه البيانات اللازمة. ب- سمّ الآلية التي تسمح بتركيب ATP في كل من شكلي الوثيقة (1). ثم أ- حلّل نتائج الشكل (ب) للوثيقة (2). ماذا تستنتج؟ ب- علّل ثبات كمية الـ ATP المتشكلة في المرحلة (3). ج- حدّد بدقة مصير الـ ATP المتشكل على مستوى الصانعة الخضراء. د- ما هي النتائج التي يمكن الحصول عليها إذا أعدنا التجربة السابقة على حويصلات مُغلقة للغشاء الداخلي للميتوكوندري في نفس الشروط التجريبية السابقة؟ 3- أوجد العلاقة بين التفاعلين (1) و(2) وتركيب الـ ATP.",
+        promptSource: "official",
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -6442,20 +6490,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2016-S1-E3-Q4",
         exerciseNumber: 3,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ المناعة الخلطية.",
-        promptSource: "reconstructed",
+        page: 5,
+        prompt:
+          "III- مما سبق ومن معلوماتك قارن في جدول بين آلية تركيب الـ ATP على مستوى الغشاء الداخلي للميتوكوندري وعلى مستوى تيلاكوئيد الصانعة الخضراء.",
+        promptSource: "official",
         maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -6463,7 +6517,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 5
       }
     ]
   },
@@ -6480,7 +6534,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
     document: {
       localPath: "/subjects/SE/2016/sujet-2.pdf",
       pages: 5,
-      pageOffset: null
+      pageOffset: 5
     },
     scope: {
       inventoriedExerciseNumbers: [1, 2, 3],
@@ -6493,7 +6547,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 1,
         pole: "N",
         page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ المشبك الكيميائي؟",
+        prompt: "كيف يرتبط التخصص الوظيفي للأنزيم ببنيته الفراغية؟",
         promptSource: "reconstructed",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
@@ -6513,13 +6567,19 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 1,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ المشبك الكيميائي.",
-        promptSource: "reconstructed",
+        page: 6,
+        prompt:
+          "1- ماذا يمثل الجزء المؤطر (س)؟ علّل إجابتك. 2- أ- تَعَرَّفْ على المستوى البنائي لجزيئة الأميلاز مع التعليل. ب- اذكر الروابط الكيميائية المساهمة في ثبات هذه البنية.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -6527,20 +6587,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2016-S2-E1-Q3",
         exerciseNumber: 1,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر المشبك الكيميائي انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
+        page: 6,
+        prompt:
+          "أ- فسّر النتائج التجريبية. ب- ماذا تستخلص بخصوص الجزء المؤطر (س)؟ 2- أ- حلّل منحنيي الشكل (ب) من الوثيقة (2). ماذا تستنتج؟ ب- فسّر معتمدا على الوثيقة (2) كيف يعمل هذا الدواء على تخفيض نسبة السكر في دم المصاب.",
+        promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [1]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -6548,20 +6614,25 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 1
       },
       {
         id: "2016-S2-E1-Q4",
         exerciseNumber: 1,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ المشبك الكيميائي.",
-        promptSource: "reconstructed",
-        maxPoints: 1,
+        page: 7,
+        prompt: "III- انطلاقا مما سبق بيّن كيف يكتسب الأنزيم تخصصه الوظيفي.",
+        promptSource: "official",
+        maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 1,
@@ -6569,7 +6640,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2016-S2-E2-Q1",
@@ -6577,7 +6648,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 1,
         pole: "N",
         page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ التخمر والتنفس؟",
+        prompt: "كيف تحوّل العضية الطاقة خلال ظاهرة بيولوجية معينة؟",
         promptSource: "reconstructed",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
@@ -6597,13 +6668,19 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 2,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ التخمر والتنفس.",
-        promptSource: "reconstructed",
+        page: 7,
+        prompt:
+          "1- أ- تَعَرَّفْ على هذه العضية. ب- اكتب بيانات العناصر المرقمة. 2- أ- حَدِّدْ نمط التحول الطاقوي الذي يحدث على مستوى هذه العضية. ب- ما هي الظاهرة البيولوجية المعنية؟ اكتب معادلاتها الإجمالية.",
+        promptSource: "official",
         maxPoints: 2.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [2]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -6611,20 +6688,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 2
       },
       {
         id: "2016-S2-E2-Q3",
         exerciseNumber: 2,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر التخمر والتنفس انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
+        page: 8,
+        prompt:
+          "أ- علّل سبب إجراء التجربة في الظلام. ب- ما هي المعلومات المستخلصة من هذه النتائج التجريبية؟ 3- يتدخل الأنزيم (E) للشكل (ب) من الوثيقة (2) في المرحلة التي تلي المرحلة السابقة في الظاهرة المدروسة. أ- تعرّف على الأنزيم (E) ثم حدّد مادة تفاعله (الركيزة S) والناتج المتحرر (P). ب- حدّد المرحلة التي يتدخل فيها الأنزيم (E). ج- يتوقف استمرار عمل الأنزيم (E) على نشاط جزيئة الشكل (أ)، بيّن ذلك وحدد دور الأنزيم (E) في هذه الظاهرة.",
+        promptSource: "official",
         maxPoints: 2.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -6632,20 +6715,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2016-S2-E2-Q4",
         exerciseNumber: 2,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ التخمر والتنفس.",
-        promptSource: "reconstructed",
+        page: 8,
+        prompt:
+          "III- من معلوماتك ومما سبق، وَضِّح برسم تخطيطي آلية تحويل الطاقة خلال الظاهرة البيولوجية المدروسة.",
+        promptSource: "official",
         maxPoints: 1,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [3]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 2,
@@ -6653,7 +6742,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 3
       },
       {
         id: "2016-S2-E3-Q1",
@@ -6661,7 +6750,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         order: 1,
         pole: "N",
         page: null,
-        prompt: "ما المشكل العلمي المرتبط بـ بنية الكرة الأرضية؟",
+        prompt: "كيف يُنظَّم عمل العضلات المتضادتين أثناء المنعكس العضلي؟",
         promptSource: "reconstructed",
         maxPoints: 0.5,
         scoringReviewStatus: "provisional",
@@ -6681,13 +6770,19 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
         exerciseNumber: 3,
         order: 2,
         pole: "S",
-        page: null,
-        prompt: "حلّل أو استخرج من الوثيقة المعطيات المرتبطة بـ بنية الكرة الأرضية.",
-        promptSource: "reconstructed",
+        page: 9,
+        prompt:
+          "1- أ- حلّل النتائج الممثلة في الشكل (ب) للوثيقة (1). ب- ما نوع المشبك بين العصبون الجامع والعصبون الحركي؟",
+        promptSource: "official",
         maxPoints: 2,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -6695,20 +6790,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2016-S2-E3-Q3",
         exerciseNumber: 3,
         order: 3,
         pole: "E",
-        page: null,
-        prompt: "اشرح الآلية التي تفسر بنية الكرة الأرضية انطلاقا من الوثيقة ومعلوماتك.",
-        promptSource: "reconstructed",
-        maxPoints: 4,
+        page: 9,
+        prompt:
+          "2- اشرح أهمية تدخل هذا المشبك في تنسيق عمل العضلتين المتضادتين خلال المنعكس العضلي. 1- أ- حلّل النتائج الممثلة في الوثيقة (2). ب- فسّر نتائج المرحلة (1). 2- اقترح فرضية تفسيرية لتأثير مادة Benzodiazépine (BZD). 3- حُقنت المنطقة (ع) من الشكل (أ) للوثيقة (1) بتراكيز متزايدة من BZD بوجود كمية كافية من GABA وتم قياس النسبة المئوية (%) لتثبيت الـ GABA على القنوات الغشائية والنتائج ممثلة في الجدول التالي: أ- هل هذه النتائج تؤكد صحة الفرضية المقترحة؟ علّل. ب- اشرح إذن لماذا تستعمل مادة BZD في معالجة التشنج العضلي.",
+        promptSource: "official",
+        maxPoints: 3,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [4]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -6716,20 +6817,26 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 4
       },
       {
         id: "2016-S2-E3-Q4",
         exerciseNumber: 3,
         order: 4,
         pole: "W",
-        page: null,
-        prompt: "لخّص النتيجة النهائية المرتبطة بـ بنية الكرة الأرضية.",
-        promptSource: "reconstructed",
+        page: 10,
+        prompt:
+          "III- من معارفك ومما استخلصته من هذه الدراسة، بَيِّن برسم تخطيطي وظيفي على المستوى الجزيئي آلية عمل المشبك بين العصبون الجامع والعصبون الحركي.",
+        promptSource: "official",
         maxPoints: 1.5,
         scoringReviewStatus: "provisional",
-        documentReviewStatus: "not-required",
-        documentRefs: [],
+        documentReviewStatus: "pending",
+        documentRefs: [
+          {
+            id: "subject-pdf",
+            pages: [5]
+          }
+        ],
         trainingMappings: [
           {
             exerciseNumber: 3,
@@ -6737,7 +6844,7 @@ export const OFFICIAL_TASK_INVENTORIES = Object.freeze({
             kind: "direct"
           }
         ],
-        pageInPdf: null
+        pageInPdf: 5
       }
     ]
   },
