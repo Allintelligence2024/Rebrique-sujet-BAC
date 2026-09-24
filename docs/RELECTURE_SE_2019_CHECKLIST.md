@@ -218,3 +218,94 @@ question autonome : ils ne doivent pas être promus `official` sans une phrase
 interrogative lue sur l'image. **Total : 17 pôles `official` proposés sur 24**
 (S1 : S1-E1 S/E ; S1-E2 N/S/E/W ; S1-E3 S/E/W — S2 : S2-E1 S/E ;
 S2-E2 S/E/W ; S2-E3 S/E/W).
+
+---
+
+## Application (Phase 3 du plan) — 2026-09-23
+
+Encodage fait **depuis les tableaux ci-dessus**, jamais depuis la couche
+texte ni depuis l'ancien payload. Aucune page n'a été relue à nouveau.
+
+### Les six exercices réécrits
+
+| Exercice | Avant (jamais vu sur une page)            | Après (imprimé)                                                    |
+| -------- | ----------------------------------------- | ------------------------------------------------------------------ |
+| S1-E1    | الاستنساخ وتركيب ARNm                     | **المغماتية المرتبطة بالظهرة وسط محيطية**                          |
+| S1-E2    | الموقع الفعال (pH وحرارة)                 | **أنزيم غلوكوز أكسيداز GO وعلاقة البنية بالوظيفة**                 |
+| S1-E3    | الاستجابة المناعية النوعية (مستضد neutre) | **الاستجابة المناعية ضد الخلايا السرطانية** (HLA I، LT8، TIL، IL2) |
+| S2-E1    | كمون العمل والقنوات الفولطية              | **الأنديز: منطقة الغوص والبركان الانفجاري**                        |
+| S2-E2    | التنفس الخلوي والحصيلة الطاقوية           | **مادة الـ DDT والقنوات الفولطية**                                 |
+| S2-E3    | التكتونية العامة للصفائح                  | **المضاد الحيوي (Rifamycine) ومستويات تأثيره على تركيب البروتين**  |
+
+### Consignes passées en `official` (17/24)
+
+| Pôle    | Verbe imprimé                                                                      | Page |
+| ------- | ---------------------------------------------------------------------------------- | ---- |
+| S1-E1 S | تَعَرَّفْ على البيانات المرقمة من 1 إلى 8                                          | 1    |
+| S1-E1 E | قَدِّمْ في نص علمي الأدلة… (المغماتية النشطة)                                      | 1    |
+| S1-E2 N | فَهَلْ كل اختلاف في بنية الأنزيمات…                                                | 1    |
+| S1-E2 S | اسْتَخْرِجْ الخطوات العملية المتبعة…                                               | 2    |
+| S1-E2 E | قارن بين الخصائص البنيوية… + فَسِّرْ النتائج التجريبية (regroupement)              | 2    |
+| S1-E2 W | قَدِّمْ إجابة ملخصة للمشكلة العلمية…                                               | 3    |
+| S1-E3 S | حَدِّدْ دور الخلايا المناعية… + اقْتَرِحْ فرضيتين (regroupement)                   | 4    |
+| S1-E3 E | فَسِّرْ إفلات وعدم إفلات الخلايا الورمية… + استنتِجْ… (regroupement)               | 5    |
+| S1-E3 W | لَخِّصْ في مخطط مراحل الاستجابة المناعية…                                          | 5    |
+| S2-E1 S | سمّ العناصر المرقمة وتعرّف على هذا النّشاط التكتوني                                | 6    |
+| S2-E1 E | اشرح في نصّ علمي كيف تشكّل البركان الانفجاري…                                      | 6    |
+| S2-E2 S | مَثِّلْ بيانيا ثم حَلِّلْ… + اقترح فرضيتين (regroupement, avec le barème de tracé) | 7    |
+| S2-E2 E | حَدِّدْ أهم مُمَيِّزات القنوات… + فَسِّرْ تأثير الكمون المفروض (regroupement)      | 7    |
+| S2-E2 W | ناقش صحة إحدى الفرضيتين…                                                           | 7    |
+| S2-E3 S | حَلِّلْ النتائج… + اقترح ثلاث فرضيات (regroupement)                                | 8    |
+| S2-E3 E | قارن بين النتائج التجريبية… + ناقش صحة إحدى الفرضيات (regroupement)                | 9    |
+| S2-E3 W | لَخِّصْ في نص علمي… مراحل تركيب البروتين…                                          | 9    |
+
+### Cadrages restés `reconstructed` (7)
+
+S1-E1 N et W ; S1-E3 N ; S2-E1 N et W ; S2-E2 N ; S2-E3 N — chacun avec une
+note datée du 2026-09-23 disant qu'aucune phrase interrogative n'est imprimée
+à cet endroit. Les réponses modèles de ces pôles sont des aides pédagogiques.
+
+### Réponses modèles réécrites
+
+Elles suivent les documents imprimés (elles ne sont pas un corrigé officiel —
+aucun corrigé local n'existe dans le dépôt) :
+
+- **S1-E1** : la numérotation 1-8 du schéma est décrite telle que lue sur
+  l'image (1 اتجاه التباعد، 2 لافا حديثة، 3 البرنس، 4 العمق، 5 صعود الصهارة،
+  6 الاتجاهان المتعاكسان، 7 سيالات بازلتية، 8 بيريدوتيت المعطف) ; mention de
+  la ملاحظة imprimée : 1300°C وضغط منخفض.
+- **S1-E2** : les chiffres du tableau sont recopiés (581/587، 26/25، 71/24،
+  Cys164-Cys206 / Cys168-Cys210، Arg512-His516-His559-Asp424 /
+  Arg516-His520-His563-Asp428) ainsi que les Vmax des six expériences.
+- **S1-E3** : les quatre colonnes du tableau de fluorescence sont décrites
+  (الوسط (أ) : فلورة خضراء وحمراء على الغشاء بأربع إشارات ; الوسط (ب) :
+  غياب الفلورة الخضراء على الغشاء) → الفرضية الأكثر وجاهة : تغير أو غياب
+  HLA I.
+- **S2-E2** : les valeurs du tableau sont recopiées (70- mV ثم +30 mV ثم
+  عودة سريعة في غياب الـ DDT ; البقاء عند نحو +25 mV في وجوده) مع barème
+  الرسم كما هو مطبوع.
+- **S2-E3** : les barres du الشكل (ب) (10 / 8 / 6 / 2 / ≈0) et les trois
+  أوساط du tableau sont décrits ; le niveau de تأثير retenu est **النسخ**
+  (الوسط 3 يثبت أن الترجمة غير معيقة).
+
+### Gardes ajoutées (Phase 5) et verrou
+
+- `tests/archive-years.test.mjs` : la garde « archive 2013-2019 = tout
+  `reconstructed` » n'est **pas supprimée ni assouplie** ; elle est restreinte
+  à une **liste blanche explicite** des 17 pôles de 2019 relus sur image.
+  Toute consigne officielle hors liste blanche fait échouer le test, et
+  2013-2018 doit rester intégralement `reconstructed`.
+- `tests/se-2019-recopy.test.mjs` (8 tests) : fige les 17 textes et leurs
+  pages, les 7 cadrages, les barèmes 5/7/8 lus sur les titres, la disparition
+  des cinq thèmes périmés (aucun retour possible par inadvertance), la
+  longueur des réponses modèles et le rattachement du générateur
+  (2019/S2 offset +5, 294 consignes officielles au total).
+
+### Mesures après encodage
+
+`npm run inventory:generate` → **58 sujets, 576 tâches, 294 consignes
+officielles** (277 + 17), **282 étapes reconstruites**, 294/294 pages
+rattachées, **0/58 inventaire `complete`**. `activePoles` passe de 277 à
+**294** et le minimum de copies exigé (P1.5) de 4155 à **4410** : la
+promotion de 2019 rend la barre de calibration plus haute, elle ne la baisse
+pas. `p1:check` reste rouge (0/58 complets, 0/4410 copies) — attendu.
