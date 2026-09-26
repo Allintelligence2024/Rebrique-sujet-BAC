@@ -6,6 +6,195 @@ Test status at handoff: **256 pass / 0 fail / 1 skipped** (`npm test`).
 PWA build id: `f54ac619b7a2` (stale as soon as any source file changes — regenerate with `npm run pwa:version`).
 Production build: `dist/site` 136 files, standalone `dist/boussole-4d-standalone.html` 1.80 MB (reproducible sha256).
 
+> **2026-09-23 (nuit) — SE 2019 : Phases 3 à 6 du plan `PLAN_SE_2013_2020` appliquées.**
+> Branche de session `arena/01a0cebc-rebrique-sujet-bac`, base `fcd2a90`.
+>
+> - **17 consignes `official` recopiées mot à mot sur l'image des 9 pages**
+>   (`docs/RELECTURE_SE_2019_CHECKLIST.md`, deux passes du même jour) et **7
+>   cadrages `reconstructed`** assumés avec note datée. `data/years/se/year-2019.js`
+>   n'est pas retouché : il est **réécrit** — les six exercices portaient d'autres
+>   thèmes que les pages imprimées (مغماتية الظهرة au lieu de « الاستنساخ »,
+>   GO أنزيم au lieu du « الموقع الفعال », immunité antitumorale au lieu de la
+>   « المناعة النوعية », Andes/بركان au lieu du « كمون العمل », DDT/canaux au lieu
+>   de la « التنفس », Rifamycine au lieu de la tectonique). `bacPrompt`, `desc`,
+>   `label`, réponses modèles et règles pôle sont remplacés pôle par pôle.
+> - **Texte lu sur image, jamais sur la couche texte** : le tableau DDT a été
+>   relevé à la main (0, 1, 1,5, 2, 2,5, 3,5, 4, 4,5, 5 ms ; −70 → +30 à 2 ms →
+>   −70, et +25 maintenu avec DDT), les légendes 1-8 des deux schémas
+>   (ظهرة/برنس/بيريدوتيت ; قشرة قارية/جيب صهاري/خندق/أستينوسفير) vérifiées sur
+>   bandes zoomées. La couche texte de 2019 est inutilisable : elle a déjà menti
+>   sur les chiffres ailleurs, elle n'a servi qu'à confirmer des numéros de page.
+> - **Généré** : `inventory:generate` → 58 sujets / 576 tâches / **294 consignes
+>   officielles** / 282 reconstruites / 294 pages rattachées / **0/58 `complete`** ;
+>   `calibration:update` → `activePoles` **277 → 294** (corpusSha256 mis à jour).
+> - **Gardes** : `tests/se-2019-recopy.test.mjs` (8 tests) fige les 17 textes, les
+>   pages 1-9, les dates, les sept cadrages sans page, le barème 5/7/8, les
+>   regroupements de phrases imprimées et les thèmes réels ; `tests/archive-years.test.mjs`
+>   restreint sa règle « tout `reconstructed` » à 2013-2018 et exige pour 2019 et
+>   2020 une page, une date ISO et une note citant la checklist par pôle officiel.
+> - **Mesures** : `npm test` → **404 tests** (README régénéré) ; `p1:check` **reste
+>   rouge** (0/58 inventaires complets, 0/4410 copies) — attendu ; `p2:check` 6/7,
+>   `p3:check` 6/6. **Un garde a dû être ajusté, pas retiré** : le budget de 3 Mo du
+>   monofichier était une approximation de « pas de PDF tiers » devenue fausse par
+>   accumulation légitime de contenu certifié (+16 Ko pour 2019). Il passe à 4 Mo
+>   (~1 Mo de marge quand le plus petit PDF du dépôt pèse 1,07 Mo) et l'invariant
+>   réel est désormais testé directement : aucun `%PDF-` ni `JVBERi0` (base64) dans
+>   le fichier.
+> - **Suite du chantier** : 2016 et 2015, puis 2013 et 2014, puis 2017 et 2018 —
+>   ordre du plan, inchangé. Phase 1 (checklist image) avant toute donnée.
+
+> **2026-09-24 — SE 2016 : Phase 1 du plan faite (checklist image).**
+> Branche `arena/01a0cebc-rebrique-sujet-bac`.
+>
+> - Nouveau `docs/RELECTURE_SE_2016_CHECKLIST.md` : les **10 pages** du livret
+>   lues sur image à 2× puis bandes de consignes zoomées (×1,8 à ×3,0), deux
+>   passes le même jour, **aucune page non vue**. **60 consignes imprimées**
+>   relevées ; **18 pôles `official` proposés** (3 par exercice : S, E, W, avec
+>   les regroupements écrits) et **6 pôles de cadrage `reconstructed`** (aucun
+>   exercice de 2016 n'imprime de question de cadrage).
+> - **Écart de barème trouvé** : les titres imprimés annoncent **07 points** pour
+>   le 3ᵉ exercice des **deux** sujets, alors que `data/years/se/year-2016.js`
+>   porte **8**. Les deux sujets valent **20 pts** (6+7+7). À corriger en Phase 3
+>   avec la somme des pôles.
+> - **Même constat qu'en 2019** : les six exercices encodés portent un thème
+>   générique qui n'est pas celui des pages — S1-E1 = مورثة وتعبيرها/Anagène
+>   (et non « الاستنساخ »), S1-E2 = الخلية اللمفاوية (س), S1-E3 = إنتاج الـ
+>   ATP/تيلاكوئيد (et non la المناعة الخلطية), S2-E1 = الأميلاز/Glucobay,
+>   S2-E2 = التحول الطاقوي/ATP synthase, S2-E3 = المشبك المثبط/الـ BZD (et non
+>   la بنية الكرة الأرضية). Les `bacPrompt` actuels sont tous du type « حلّل أو
+>   استخرج من الوثيقة المعطيات المرتبطة بـ … ».
+> - **Aucune donnée touchée** : `data/**` et les inventaires sont inchangés,
+>   les 24 pôles 2016 restent `reconstructed`, `p1:check` inchangé.
+> - Suite : **Phase 3 de 2016** (réécriture des six exercices + correction des
+>   `max`), puis Phases 4 à 6, puis 2015.
+>
+> **2026-09-24 — SE 2016 : Phases 2 à 6 du plan appliquées.** Branche
+> `arena/01a0cebc-rebrique-sujet-bac`, base `968f209`.
+>
+> - **18 consignes `official` recopiées mot à mot sur l'image des 10 pages**
+>   (recopie revérifiée le 2026-09-24 sur les pages rendues à nouveau et sur
+>   bandes zoomées ×2,4) et **6 pôles N `reconstructed`** avec note datée.
+>   `data/years/se/year-2016.js` est **réécrit** : les six exercices portaient
+>   d'autres thèmes que les pages (S1-E1 « الاستنساخ داخل النواة » au lieu de
+>   مورثة وتعبيرها/Anagène ; S2-E3 « بنية الكرة الأرضية » au lieu du
+>   المشبك المثبط/الـ BZD, etc.).
+> - **Barème imprimé corrigé** : `التمرين الثالث: (07 نقاط)` sur les deux
+>   sujets, S1-E3 et S2-E3 passent de **8 à 7** points (les deux sujets valent
+>   20 pts). Répartition N/S/E/W : 1/1/2/2, 1/2,5/2,5/1, 0,5/2/3/1,5 sur le
+>   sujet 1 ; 1/1/2/2, 1/2,5/2,5/1, 0,5/2/3/1,5 sur le sujet 2 — chaque somme
+>   égale le total imprimé.
+> - **La relecture d'encodage a corrigé la checklist** (écrit dans son journal) :
+>   pôle S de S1-E2 imprimé **p.3** (et non p.2) et la consigne
+>   `2- ب- اشرح نشاط الخلية (س)…` rattachée au lieu d'être « non mappée » ;
+>   les consignes `1-` et `2- أ/ب` de S1-E3 imprimées **p.4** (et non p.5) ;
+>   première consigne du pôle E de S2-E1 imprimée **p.6** (et non p.7). Les deux
+>   fragments laissés en « 2- … » et « 3- … » ont été lus et recopiés.
+> - **Généré** : `inventory:generate` → 58 sujets / 576 tâches / **312 consignes
+>   officielles** / 264 reconstruites / **312 pages rattachées** / **0/58
+>   `complete`** ; `calibration:update` → `activePoles` **294 → 312**.
+> - **Gardes** : `tests/se-2016-recopy.test.mjs` (8 tests : textes, pages,
+>   dates, thèmes réels, barème 6/7/7, six cadrages, regroupements, décalage du
+>   sujet 2) ; `tests/archive-years.test.mjs` déplace 2016 dans la liste
+>   certifiée (page de livret 1-10, date 2026-09-24, note citant la checklist) et
+>   laisse 2013-2015 + 2017-2018 sous la règle « tout `reconstructed` ». Deux
+>   dénominateurs de garde suivent le réel : 294 → 312 consignes rattachées et
+>   4410 → 4680 copies exigées (15 par pôle officiel). **Aucun critère assoupli.**
+> - **Mesures** : `npm test` → **412 tests, 0 échec, 1 skip** ; `p1:check` **reste
+>   rouge** (0/58 inventaires complets, 0/4680 copies) — attendu ; `p2:check`
+>   6/7, `p3:check` 6/6.
+> - Suite : **2015** (checklist image d'abord, Phases 1 → 6), puis 2013-2014,
+>   puis 2017-2018 — ordre du plan, inchangé.
+
+> **2026-09-23 (nuit) — SE 2019 : Phase 1 du plan faite (checklist image).**
+> Branche `arena/01a0cebc-rebrique-sujet-bac`.
+>
+> - Nouveau `docs/RELECTURE_SE_2019_CHECKLIST.md` : les **9 pages** du livret
+>   lues sur image à 2× (puis bandes de consignes zoomées ×1,7 à ×2,6), deux
+>   passes le même jour, **aucune page non vue**. Barèmes imprimés **5/7/8**
+>   confirmés pour les deux sujets (`(05 نقاط)` / `(07 نقاط)` / `(08 نقاط)`).
+> - **17 consignes `official`** proposées sur 24 pôles (5 pour S1-E2 qui porte
+>   aussi la question de cadrage imprimée), **7 cadrages `reconstructed`**.
+> - **Constat majeur** : les **six** exercices encodés aujourd'hui portent un
+>   thème qui n'est pas celui de la page — S1-E1 = مغماتية مرتبطة بالظهرة (et
+>   non « الاستنساخ »), S1-E2 = أنزيم غلوكوز أكسيداز GO, S1-E3 = immunité
+>   antitumorale (LT8/CD8, TIL, IL2), S2-E1 = Andes/بركان انفجاري, S2-E2 =
+>   DDT et canaux voltage-dépendants, S2-E3 = Rifamycine et niveaux d'action
+>   des antibiotiques. La Phase 3 devra **remplacer** `bacPrompt`, `desc`,
+>   `label`, réponses modèles et règles pôle par pôle.
+> - **Aucune donnée touchée** (Phase 1 = document seul) : `data/**` inchangé,
+>   les 24 pôles 2019 restent `reconstructed`, `p1:check` inchangé.
+> - Suite : **Phase 3 de 2019** (encodage depuis la checklist) puis Phases 4-6.
+
+> **2026-09-23 (soir) — SE 2020 : Phase 3 du plan `PLAN_SE_2013_2020` appliquée.**
+> Branche de session `arena/01a0cebc-rebrique-sujet-bac`, base `93706ee` (= `main`).
+>
+> - **17 consignes `official` recopiées mot à mot sur l'image des 9 pages**
+>   (`docs/RELECTURE_SE_2020_CHECKLIST.md`, deux passes du même jour), **7
+>   cadrages `reconstructed`** assumés avec note datée. `data/years/se/year-2020.js`
+>   réordonné selon les pages : la question d'hypothèse de S1-E3 et de S2-E3
+>   repart sur le pôle S, l'analyse du tableau Her2 et le « حل » GABA montent
+>   sur E, les deux نص علمي passent sur W (voir le journal de la checklist).
+> - **Données servies corrigées** : `600` au lieu de `655` (tableau Her2, la
+>   couche texte mentait), CI50 `10`/`9` au lieu de `15`/`9,5`, « من 01 إلى 06 »
+>   au lieu de « من 1 إلى 11 », « الجدول الشكل (أ) » (conflation) supprimé,
+>   préfixes `خلاصة` disparus. Les réponses modèles restent des aides.
+> - **Généré** : `inventory:generate` → 58 sujets / 576 tâches / **277 consignes
+>   officielles** / 299 reconstruites / 277 pages rattachées / **0/58 `complete`** ;
+>   `activePoles` et `data/calibration-status.js` **inchangés** (277). *(Mesure
+>   datée : la Phase 3 de SE 2019, même date, porte ensuite le total à **294**
+>   consignes officielles / 282 reconstruites / 294 pages.)*
+> - **Gardes** : `tests/data-integrity.test.mjs` refuse désormais un préfixe
+>   `خلاصة`/`الخاتمة`, des parenthèses vides, « أنزيم وأنزيم » et une consigne
+>   officielle recopiée sur deux années/exercices (deux paires de formules
+>   passe-partout de 2024 et 2026 sont nommées, pages distinctes). Nouveau
+>   `tests/se-2020-recopy.test.mjs` (8 tests) : textes, pages, barèmes 5/7/8,
+>   600, regroupements notés, inventaires `partial`.
+> - **Mesures** : `npm test` → **395 tests** au moment du chantier (README
+>   régénéré ; **404** après la Phase 3 de SE 2019) ; `p1:check` **reste rouge**
+>   (0/58 inventaires complets, 0/4155 copies à cette date, 0/4410 après 2019) — attendu ;
+>   `p2:check` 6/7, `p3:check` 6/6.
+> - **Suite du chantier** : 2019 (checklist image → Phases 2-6), puis 2016/2015,
+>   puis 2013/2014, puis 2017/2018 — ordre du plan, inchangé.
+
+> **2026-09-23 — état vérifié après le merge de la PR #30** (branche de session
+> `arena/01a0cebc-rebrique-sujet-bac`, base `93706ee` = `origin/main`, merge de #30 à
+> 13:37:56Z ; CI « Quality » **verte sur `main`** au run 13:38:01Z). Mesures relancées
+> localement sur ce SHA, pas recopiées d'un rapport :
+>
+> - `npm test` → **385 tests (384 pass / 0 fail / 1 skip)** ; `lint`, `typecheck`,
+>   `format:check`, `docs:check`, `calibration:check`, `inventory:check`, `p3:check`,
+>   `rights:check`, `impact:check` : **tous verts**.
+> - `npm run p1:status` → **3/6** (P1.1, P1.2, P1.5 bloqués) ; `p2:status` → **6/7**
+>   (P2.7 : 0/5 élèves) ; `p3:status` → **6/6** ; `coverage:official` → 58 sujets
+>   éligibles, 0 inventaire invalide ; `pdftext:status` → **50 sujets `propre`,
+>   8 `indéterminé`**, 0 `scan` (les couches logiques 450 dpi ont été reconstruites).
+> - **Pôles `official` : 277 / 576** (M : 175 sur 240 ; SE : 102 sur 336). Répartition
+>   mesurée par import des `data/years/**` :
+>   **SE 2013→2019 = 0/24 chacun** ; SE 2020 = 17 ; 2021 = 16 ; 2022 = 14 ; 2023 = 14 ;
+>   2024 = 8 ; 2025 = 16 ; 2026 = 17. Maths : 9 à 14 sur 16 selon l'année.
+>   Ce total reste la valeur verrouillée par `tests/official-inventory-integrity.test.mjs:172`
+>   — portée à **294** le 2026-09-23 par la Phase 3 de SE 2019 (voir le bloc de
+>   tête), la valeur 277 ci-dessus restant la mesure datée de l'après-PR #30.
+> - **Chantier en cours — `docs/PLAN_SE_2013_2020.md`.** Phase 1 faite pour **SE 2020**
+>   (`docs/RELECTURE_SE_2020_CHECKLIST.md`, 9 pages lues deux fois sur image ; 17 pôles
+>   `official` proposés mot à mot, 7 cadrages laissés `reconstructed` ; barèmes imprimés
+>   5/7/8 confirmés). **Phase 3 non faite** : `data/years/se/year-2020.js` porte encore
+>   les divergences listées par la checklist (préfixes `خلاصة`, questions tronquées
+>   « اقترح حلا. », question d'hypothèse placée sur S1-E3/N au lieu de S, S2-E2 E/W à
+>   permuter, S2-E3 à regrouper). Rien de `data/` n'a été touché par la PR #30.
+> - **Ordre de reprise du plan** (inchangé) : 2020 (Phase 3) → 2019 → 2016/2015 →
+>   2013/2014 → 2017/2018, puis régénération, gardes (Phase 5), décompte (Phase 6).
+>   `npm run p1:status` **doit rester rouge** : un inventaire `partial` n'est pas une preuve.
+> - **En attente du propriétaire** : (a) fermeture du ticket **#13** — obsolète, la CI
+>   tourne bien sur `main`, mais l'App GitHub de la session n'a pas `issues:write` ;
+>   (b) arbitrage juridique des PDF (`docs/rights/request-dossier.md` et
+>   `docs/rights/external-links-impact.md` prêts, décision non prise) ; (c) 5 élèves
+>   réels pour P2.7 ; (d) `travail 4` de `PROMPT_DECISIONS_PROPRIETAIRE.md` (cases
+>   encore vides) si le propriétaire veut fournir des transcriptions lui-même.
+> - **Hygiène CI** : `.github/workflows/fetch-clean-pdf.yml` (one-shot) est encore sur
+>   `main` avec un trigger `push` sur la branche **mergée** `arena/01a0c9d4-…` ; il ne
+>   sert plus. À supprimer ou convertir en `workflow_dispatch` au prochain lot OCR en CI.
+
 > **2026-09-16 — état courant de la session** (branche `arena/01a09be6-rebrique-sujet-bac`,
 > PR **#26** OPEN — ne pas merger sans consigne du propriétaire ; tête `2e44da9`, suivie du présent
 > bandeau ; commits poussés ce jour : `5b9e947`, `0b2ec31`, `ad26660`, `71b0cf7`, `0afdee4`,

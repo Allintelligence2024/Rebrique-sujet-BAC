@@ -147,6 +147,71 @@ test("un même bacPrompt certifié officiel ne peut pas être partagé par deux 
   }
 });
 
+/* Phase 5 du plan docs/PLAN_SE_2013_2020.md : un encodage bâclé se
+   reconnaît à quatre signatures, toutes refusées ici. Ajoutées le
+   2026-09-23 avec la Phase 3 de SE 2020 ; aucune consigne du corpus ne
+   les déclenchait à cette date (mesure faite avant l'ajout). */
+test("une consigne officielle ne porte ni خلاصة/الخاتمة, ni parenthèses vides, ni mot dupliqué", () => {
+  const offenders = [];
+  for (const year of APP_CONFIG.years) {
+    for (const sujet of year.sujets || []) {
+      for (const ex of sujet.exercises || []) {
+        for (const [poleLetter, pole] of Object.entries(ex.poles || {})) {
+          if (pole.bacPromptSource !== "official" || !pole.bacPrompt) continue;
+          const tag = `${year.id}/S${sujet.id}/E${ex.number}/${poleLetter}`;
+          if (/^\s*(خلاصة|الخاتمة)\s*[:：]/.test(pole.bacPrompt)) {
+            offenders.push(`${tag} : la consigne commence par un titre pédagogique خلاصة/الخاتمة`);
+          }
+          if (/\(\s*\)/.test(pole.bacPrompt)) {
+            offenders.push(`${tag} : parenthèses vides dans une consigne officielle`);
+          }
+          if (pole.bacPrompt.includes("أنزيم وأنزيم")) {
+            offenders.push(`${tag} : terme dupliqué « أنزيم وأنزيم » (perte de contenu OCR)`);
+          }
+        }
+      }
+    }
+  }
+  assert.deepEqual(offenders, [], offenders.join("\n"));
+});
+
+/* Une phrase imprimée identique sur deux exercices différents est une
+   signature de recopie paresseuse — SAUF quand le sujet officiel imprime
+   réellement la même formule passe-partout (constaté, avec pages et
+   notes distinctes, sur deux paires de 2024 et 2026). Ces paires sont
+   donc nommées ici : toute nouvelle paire exige une relecture humaine
+   et une décision, pas un silence. */
+const PHRASES_PASSE_PART_VERIFIEES = [
+  ["2024/S1/E2/S", "2024/S2/E2/S"],
+  ["2026/S1/E3/E", "2026/S2/E3/E"]
+];
+
+test("une consigne officielle n'est jamais recopiée sur deux années ou deux exercices", () => {
+  const seen = new Map();
+  const offenders = [];
+  for (const year of APP_CONFIG.years) {
+    for (const sujet of year.sujets || []) {
+      for (const ex of sujet.exercises || []) {
+        for (const [poleLetter, pole] of Object.entries(ex.poles || {})) {
+          if (pole.bacPromptSource !== "official" || !pole.bacPrompt) continue;
+          const tag = `${year.id}/S${sujet.id}/E${ex.number}/${poleLetter}`;
+          if (seen.has(pole.bacPrompt)) {
+            const other = seen.get(pole.bacPrompt);
+            const pair = [other.tag, tag];
+            const known = PHRASES_PASSE_PART_VERIFIEES.some(
+              ([a, b]) => (pair[0] === a && pair[1] === b) || (pair[0] === b && pair[1] === a)
+            );
+            if (!known) offenders.push(`${tag} recopie la consigne de ${other.tag}`);
+          } else {
+            seen.set(pole.bacPrompt, { tag, page: pole.bacPromptPage });
+          }
+        }
+      }
+    }
+  }
+  assert.deepEqual(offenders, [], offenders.join("\n"));
+});
+
 test("la somme des points N/S/E/W égale ex.max pour chaque exercice", () => {
   for (const year of APP_CONFIG.years) {
     // Armature « copie libre » : aucun pôle encodé, donc rien à sommer.
